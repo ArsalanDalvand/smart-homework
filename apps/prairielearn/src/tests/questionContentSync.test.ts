@@ -335,6 +335,7 @@ describe('content-only question save', () => {
       coursePath: courseDir,
       courseId,
       qids: [qid],
+      replacedQids: [qid],
     });
     expect((await targeted.mock.results[0].value).changes).toEqual({
       updatedChunks: [{ type: 'question', questionName: qid }],
@@ -434,6 +435,7 @@ describe('content-only question save', () => {
         coursePath: courseDir,
         courseId,
         qids: [qid],
+        replacedQids: [qid],
       });
       assert.sameDeepMembers(
         await util.dumpTableWithSchema('questions', QuestionSchema),
