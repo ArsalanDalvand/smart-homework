@@ -1,5 +1,11 @@
 # @prairielearn/browser-utils
 
+## 2.7.9
+
+### Patch Changes
+
+- 333f741: Keep focus inside a `trapFocus()` container when Tab is pressed while focus is on an element outside the tab order, such as one with `tabindex="-1"`
+
 ## 2.7.8
 
 ### Patch Changes
