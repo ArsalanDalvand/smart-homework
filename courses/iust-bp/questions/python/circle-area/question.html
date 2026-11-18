@@ -1,0 +1,23 @@
+<pl-question-panel>
+  <div dir="rtl" style="text-align: right; line-height: 1.8;">
+    <h4>مسئله ۱: محاسبه مساحت دایره</h4>
+    <p>
+      تابعی به نام <code>circle_area(r)</code> بنویسید که شعاع دایره ($r$) را به عنوان ورودی دریافت کرده و مساحت دایره را با فرمول $\pi r^2$ محاسبه کند و برگرداند.
+    </p>
+    <ul>
+      <li>می‌توانید از <code>math.pi</code> برای مقدار دقیق عدد پی استفاده کنید.</li>
+      <li>اگر مقدار شعاع نامعتبر و منفی بود ($r < 0$)، تابع باید مقدار <code>0</code> برگرداند.</li>
+    </ul>
+  </div>
+  <hr>
+  <pl-file-editor
+    file-name="student_code.py"
+    ace-mode="ace/mode/python"
+    source-file-name="tests/initial_code.py">
+  </pl-file-editor>
+</pl-question-panel>
+
+<pl-submission-panel>
+  <pl-external-grader-results></pl-external-grader-results>
+  <pl-file-preview></pl-file-preview>
+</pl-submission-panel>

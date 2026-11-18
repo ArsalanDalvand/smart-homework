@@ -1,0 +1,50 @@
+{
+  "uuid": "6e947fde-6fc3-4ec6-aad5-c57e3e409651",
+  "name": "IUST-BP",
+  "title": "مبانی برنامه‌نویسی پایتون - دانشگاه علم و صنعت ایران (IUST)",
+  "timezone": "Asia/Tehran",
+  "assessmentSets": [
+    {
+      "abbreviation": "HW",
+      "name": "Homework",
+      "heading": "تکالیف هفتگی",
+      "color": "green1"
+    },
+    {
+      "abbreviation": "LAB",
+      "name": "Lab",
+      "heading": "کارگاه‌ها",
+      "color": "blue1"
+    },
+    {
+      "abbreviation": "Q",
+      "name": "Quiz",
+      "heading": "آزمونک‌ها",
+      "color": "yellow1"
+    },
+    {
+      "abbreviation": "MID",
+      "name": "Midterm",
+      "heading": "آزمون میان‌ترم",
+      "color": "pink1"
+    },
+    {
+      "abbreviation": "FIN",
+      "name": "Final",
+      "heading": "آزمون پایانی",
+      "color": "pink2"
+    }
+  ],
+  "topics": [
+    { "name": "PythonBasics", "color": "gray1", "description": "مفاهیم پایه و متغیرها" },
+    { "name": "Conditionals", "color": "blue1", "description": "دستورات شرطی" },
+    { "name": "Loops", "color": "turquoise1", "description": "حلقه‌های تکرار" },
+    { "name": "Functions", "color": "green1", "description": "توابع در پایتون" },
+    { "name": "DataStructures", "color": "orange1", "description": "ساختارهای داده" }
+  ],
+  "tags": [
+    { "name": "python", "color": "blue1", "description": "تمرینات پایتون" },
+    { "name": "iust", "color": "green1", "description": "دانشگاه علم و صنعت ایران" },
+    { "name": "math", "color": "purple1", "description": "مسائل ریاضیاتی" }
+  ]
+}

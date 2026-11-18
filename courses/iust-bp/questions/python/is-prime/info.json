@@ -1,0 +1,13 @@
+{
+  "uuid": "51323ddf-d199-481a-b95b-69758c7dbcb7",
+  "title": "تشخیص عدد اول (Prime Number Checker)",
+  "topic": "Loops",
+  "tags": ["python", "loops", "math", "iust"],
+  "type": "v3",
+  "singleVariant": true,
+  "gradingMethod": "External",
+  "externalGradingOptions": {
+    "image": "prairielearn/grader-python-pytest:lite",
+    "timeout": 20
+  }
+}

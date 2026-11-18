@@ -1,0 +1,20 @@
+services:
+  prairielearn:
+    image: prairielearn/prairielearn:latest
+    container_name: iust_prairielearn
+    ports:
+      - "${PL_PORT:-3080}:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/pl_ag_jobs:/jobs
+      - ./courses/iust-bp:/course
+      - pl_postgres_data:/var/postgres
+    environment:
+      - HOST_JOBS_DIR=${HOME}/pl_ag_jobs
+      - DOCKER_HOST=/var/run/docker.sock
+    extra_hosts:
+      - 'host.docker.internal:172.17.0.1'
+    restart: unless-stopped
+
+volumes:
+  pl_postgres_data:

@@ -1,0 +1,28 @@
+<pl-question-panel>
+  <div dir="rtl" style="text-align: right; line-height: 1.8;">
+    <h4>مسئله ۲: حل معادله درجه دوم</h4>
+    <p>
+      تابعی با نام <code>solve_quadratic(a, b, c)</code> پیاده‌سازی کنید که ضرایب معادله درجه دو به فرم زیر را دریافت کند:
+    </p>
+    <p style="text-align: center; direction: ltr;">
+      $$ax^2 + bx + c = 0 \quad (a \neq 0)$$
+    </p>
+    <p>ریشه‌های حقیقی معادله را با فرمول $\Delta = b^2 - 4ac$ پیدا کرده و به شکل یک <b>تاپل (tuple) مرتب‌شده از کوچک به بزرگ</b> برگردانید:</p>
+    <ul>
+      <li>اگر $\Delta > 0$ بود: تاپلی با ۲ ریشه به صورت <code>(x1, x2)</code> برگردانید به طوری که $x_1 \le x_2$.</li>
+      <li>اگر $\Delta = 0$ بود: تاپلی با یک عضو که ریشه مضاعف است برگردانید: <code>(x,)</code>.</li>
+      <li>اگر $\Delta < 0$ بود (معادله ریشه حقیقی نداشت): تاپل خالی <code>()</code> برگردانید.</li>
+    </ul>
+  </div>
+  <hr>
+  <pl-file-editor
+    file-name="student_code.py"
+    ace-mode="ace/mode/python"
+    source-file-name="tests/initial_code.py">
+  </pl-file-editor>
+</pl-question-panel>
+
+<pl-submission-panel>
+  <pl-external-grader-results></pl-external-grader-results>
+  <pl-file-preview></pl-file-preview>
+</pl-submission-panel>

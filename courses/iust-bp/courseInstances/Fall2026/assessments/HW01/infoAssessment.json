@@ -1,0 +1,23 @@
+{
+  "uuid": "73d444b7-7ad5-46d6-97f0-140349fc0d0b",
+  "type": "Homework",
+  "title": "تکلیف اول: متغیرها، عبارات و توابع در پایتون",
+  "set": "Homework",
+  "number": "1",
+  "allowAccess": [
+    {
+      "mode": "Public",
+      "credit": 100
+    }
+  ],
+  "zones": [
+    {
+      "title": "بخش ۱: توابع و محاسبات پایه",
+      "questions": [
+        { "id": "python/circle-area", "points": 20 },
+        { "id": "python/solve-quadratic", "points": 40 },
+        { "id": "python/is-prime", "points": 40 }
+      ]
+    }
+  ]
+}

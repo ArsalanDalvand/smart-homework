@@ -1,0 +1,13 @@
+{
+  "uuid": "30c5e10a-5f52-49b4-807d-a660fe5b5c23",
+  "title": "محاسبه مساحت دایره (Circle Area)",
+  "topic": "Functions",
+  "tags": ["python", "functions", "iust"],
+  "type": "v3",
+  "singleVariant": true,
+  "gradingMethod": "External",
+  "externalGradingOptions": {
+    "image": "prairielearn/grader-python-pytest:lite",
+    "timeout": 20
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "uuid": "b231c6b0-6d9e-4421-a2f3-28d52a835e9a",
+  "title": "حل معادله درجه دوم (Quadratic Equation)",
+  "topic": "Conditionals",
+  "tags": ["python", "math", "conditionals", "iust"],
+  "type": "v3",
+  "singleVariant": true,
+  "gradingMethod": "External",
+  "externalGradingOptions": {
+    "image": "prairielearn/grader-python-pytest:lite",
+    "timeout": 20
+  }
+}
