@@ -1,58 +1,58 @@
-# Contributing to PrairieLearn
+# مشارکت در پریری‌لرن (PrairieLearn)
 
-PrairieLearn is an open-source project and welcomes contributions from anyone. See the [contributing guidelines](https://github.com/PrairieLearn/PrairieLearn/blob/master/CONTRIBUTING.md) to learn more about the contribution process.
+پریری‌لرن (PrairieLearn) یک پروژه متن‌باز (Open Source) است و از مشارکت همگان استقبال می‌کند. برای کسب اطلاعات بیشتر درباره فرآیند مشارکت، [دستورالعمل‌های مشارکت](https://github.com/PrairieLearn/PrairieLearn/blob/master/CONTRIBUTING.md) را مطالعه کنید.
 
-## Maintainer guidelines
+## دستورالعمل‌های نگه‌دارندگان (Maintainers)
 
-A trusted group of core developers are responsible for maintaining the PrairieLearn repository. This responsibility includes upholding code quality, ensuring smooth collaboration, and fostering an open-source community. These guidelines outline the expectations and conventions for maintainers.
+گروهی قابل اعتماد از توسعه‌دهندگان اصلی، مسئولیت نگه‌داری مخزن پریری‌لرن را بر عهده دارند. این مسئولیت شامل حفظ کیفیت کد، تضمین همکاری روان و پرورش جامعه کاربری متن‌باز است. این دستورالعمل‌ها انتظارات و قواعد مورد انتظار از نگه‌دارندگان را مشخص می‌کنند.
 
-### General principles
+### اصول کلی
 
-- **Use maintainer privileges wisely**
-  - Do not approve or merge changes you do not fully understand.
-  - If you’d like to understand a PR better, ask questions rather than making assumptions.
+- **استفاده هوشمندانه از اختیارات نگه‌دارنده**
+  - تغییراتی را که کاملاً متوجه آن‌ها نشده‌اید، تایید (Approve) یا ادغام (Merge) نکنید.
+  - اگر تمایل دارید درخواست ادغام (PR) را بهتر درک کنید، به جای فرضیه‌سازی، سوال بپرسید.
 
-- **Responsibilities for reviewing**
-  - The primary reviewer should not approve a PR until it is in a satisfactory state for merging (i.e. testing has been performed). This may involve testing the changes via the instructions in the PR description, or indicating to the author that further testing is needed.
-  - Maintainers are expected to participate in code reviews. Not all maintainers are expected to review every PR, but each PR should have at least one maintainer review it, and more complex ones likely benefit from multiple reviewers.
-  - If a maintainer was assigned to a PR (e.g. via the auto-assignment review assignment process) but is unable to review the PR for any reason, they should unassign themselves and request that another maintainer take over the review.
-  - Even if you aren't the primary reviewer, you are still encouraged to leave comments on PRs. More eyes on a PR generally results in higher-quality code.
+- **مسئولیت‌های بازبینی (Reviewing)**
+  - بازبین اصلی نباید پیش از رسیدن PR به وضعیت رضایت‌بخش برای ادغام (یعنی انجام آزمایش‌ها و تست‌ها)، آن را تایید کند. این امر ممکن است شامل آزمایش تغییرات از طریق دستورالعمل‌های موجود در توضیحات PR، یا اعلام به نویسنده مبنی بر نیاز به آزمایش‌های بیشتر باشد.
+  - از نگه‌دارندگان انتظار می‌رود در بازبینی کدها مشارکت کنند. انتظار نمی‌رود همه نگه‌دارندگان تک‌تک PRها را بازبینی کنند، اما هر PR باید حداقل توسط یک نگه‌دارنده بازبینی شود، و موارد پیچیده‌تر احتمالاً از بازبینی چندین نفر بهره‌مند خواهند شد.
+  - اگر نگه‌دارنده‌ای برای یک PR تعیین شده باشد (مثلاً از طریق فرآیند انتساب خودکار بازبینی) اما بنا به هر دلیلی قادر به بازبینی آن نباشد، باید خود را از بازبینی خارج کند (Unassign) و از نگه‌دارنده دیگری بخواهد بازبینی را بر عهده بگیرد.
+  - حتی اگر بازبین اصلی نیستید، همواره تشویق می‌شوید که نظرات خود را روی PRها ثبت کنید. توجه و دقت افراد بیشتر روی یک PR معمولاً به کدی باکیفیت‌تر منجر می‌شود.
 
-- **Responsibilities for merging**
-  - If a maintainer opens a PR, that person is responsible for merging it after it has been approved.
-  - For PRs from non-maintainers, the primary reviewer is responsible for merging the PR. If there are outstanding nitpicks or unresolved discussions, consult the author before merging.
+- **مسئولیت‌های ادغام (Merging)**
+  - اگر یک نگه‌دارنده PR باز کند، خود آن شخص پس از تایید شدن مسئول ادغام آن خواهد بود.
+  - برای PRهای ارسال‌شده از سوی افراد غیر نگه‌دارنده، بازبین اصلی مسئول ادغام PR است. در صورت وجود ریزه‌کاری‌های باقی‌مانده (Nitpicks) یا بحث‌های حل‌نشده، پیش از ادغام با نویسنده مشورت کنید.
 
-- **Responsibilities for production issues**
-  - Maintainers are ultimately responsible for ensuring that changes will not cause issues in production.
-  - Mistakes happen. If there _is_ an issue after a change is deployed to production, a maintainer is responsible for resolving it.
-    - For a PR opened by a maintainer, the author is responsible for resolving any issues. The author should understand that reviewing is done on a best-effort basis.
-    - For a PR opened by a non-maintainer, the primary reviewer is responsible for resolving any issues.
+- **مسئولیت‌های مشکلات محیط عملیاتی (Production)**
+  - نگه‌دارندگان در نهایت مسئول اطمینان از این هستند که تغییرات موجب بروز مشکل در محیط عملیاتی (Production) نخواهند شد.
+  - اشتباه رخ می‌دهد. اگر پس از استقرار (Deploy) یک تغییر در محیط عملیاتی مشکلی به وجود _آمد_، یکی از نگه‌دارندگان مسئول حل آن است.
+    - برای PR باز شده توسط یک نگه‌دارنده، نویسنده مسئول حل هرگونه مشکل است. نویسنده باید درک کند که بازبینی بر اساس تمام توان و تلاش ممکن (Best-effort) انجام می‌شود.
+    - برای PR باز شده توسط فرد غیر نگه‌دارنده، بازبین اصلی مسئول برطرف کردن هرگونه مشکل پیش‌آمده است.
 
-- **Taking over abandoned PRs**
-  - If a PR appears abandoned, another maintainer may choose to take it over. That maintainer then assumes responsibility for responding to feedback and ultimately merging.
-  - Use your best judgment when deciding to take over a PR. For larger PRs, consider reaching out to the original author first. For smaller PRs, it's likely acceptable to fix things up and merge without the original author's input.
-  - If you make significant changes, seek review from the original author or another maintainer.
+- **به دست گرفتن PRهای رهاشده**
+  - اگر به نظر برسد PRای رها شده است، نگه‌دارنده دیگری می‌تواند ادامه آن را به دست بگیرد. آن نگه‌دارنده در این صورت مسئولیت پاسخ‌گویی به بازخوردها و در نهایت ادغام آن را بر عهده می‌گیرد.
+  - هنگام تصمیم‌گیری برای به دست گرفتن یک PR، بهترین قضاوت خود را به کار بگیرید. برای PRهای بزرگ‌تر، ابتدا ارتباط با نویسنده اصلی را در نظر داشته باشید. برای PRهای کوچک‌تر، اصلاح موارد و ادغام بدون نیاز به مشارکت نویسنده اصلی معمولاً قابل قبول است.
+  - اگر تغییرات چشمگیری اعمال می‌کنید، از نویسنده اصلی یا نگه‌دارنده دیگری بخواهید آن را بازبینی کند.
 
-### Code review guidelines
+### دستورالعمل‌های بازبینی کد (Code Review)
 
-- **Self review**
-  - It's almost always very valuable for an author to review their own code before requesting a PR from others. This gives the author a chance to catch any mistakes and clarify their own understanding of the code.
-  - Self review is also a good opportunity for the author to add comments to the PR for other reviewers. For example, the author may want to highlight specific changes that are particularly important or may be difficult to understand.
+- **بازبینی شخصی (Self review)**
+  - تقریباً همیشه برای نویسنده بسیار ارزشمند است که پیش از درخواست بررسی PR از دیگران، کد خود را بازبینی کند. این کار به نویسنده این فرصت را می‌دهد تا اشتباهات را پیدا کرده و درک خود از کد را روشن‌تر سازد.
+  - بازبینی شخصی همچنین فرصت خوبی برای نویسنده است تا برای سایر بازبین‌ها در PR کامنت بگذارد؛ به عنوان مثال، ممکن است نویسنده بخواهد تغییرات خاصی را که از اهمیت ویژه‌ای برخوردارند یا ممکن است درک آن‌ها دشوار باشد، برجسته کند.
 
-- **Review comments**
-  - Be kind and respectful. Remember that the author is a person who has put time and effort into this work.
-  - Be constructive and helpful. If you're requesting a non-obvious change, explain why it's necessary to help the author understand the code better and provide context for future maintainers.
-  - Err on the side of leaving more comments than fewer. This generally helps result in a higher-quality product and a better experience for the author.
-  - Small, subjective suggestions ("nits") are acceptable in reviews, but don't be unnecessarily pedantic.
-  - Give extra scrutiny to changes that would be difficult to undo later, such as changes to the database schema or public APIs.
-  - It is acceptable to approve a PR and still leave comments. The expectation is that these comments will be addressed by the PR author before the PR is merged.
+- **نظرات بازبینی (Review comments)**
+  - مهربان و محترمانه برخورد کنید. به یاد داشته باشید نویسنده انسانی است که زمان و انرژی خود را صرف این کار کرده است.
+  - سازنده و یاری‌رسان باشید. اگر درخواست تغییری غیربدیهی دارید، توضیح دهید که چرا این تغییر لازم است تا به نویسنده در درک بهتر کد کمک کرده و زمینه‌ای برای نگه‌دارندگان آینده فراهم آورید.
+  - بهتر است به جای نظرات کمتر، نظرات بیشتری بگذارید. این کار معمولاً به تولید محصولی با کیفیت بالاتر و تجربه‌ای بهتر برای نویسنده منجر می‌شود.
+  - پیشنهادات جزئی و سلیقه‌ای ("ریزه‌کاری‌ها" یا "nits") در بازبینی‌ها قابل قبول هستند، اما بی‌جهت سخت‌گیر و وسواسی نباشید.
+  - به تغییراتی که بازگردانی آن‌ها در آینده دشوار خواهد بود، مانند تغییرات در شِمای پایگاه داده یا APIهای عمومی، دقت مضاعف داشته باشید.
+  - تایید کردن (Approve) یک PR همزمان با گذاشتن کامنت بلامانع است؛ انتظار می‌رود این کامنت‌ها پیش از ادغام PR توسط نویسنده بررسی و برطرف شوند.
 
-- **Addressing code review comments**
-  - All code review comments should be addressed before merging.
-    - If you made a change that resolved a comment, you should reply to the comment with the commit that resolves it.
-  - Addressing a comment does not always mean making a change. It may involve:
-    - Explaining why a change is unnecessary. Ideally, wait for the reviewer to acknowledge this before considering the comment to be addressed.
-    - Deferring a fix to a fast-follow PR and explicitly stating that in a comment.
-    - For non-critical issues, opening an issue to track the need for a change in the future.
-  - Use your best judgment to determine whether a comment has been sufficiently addressed.
-  - Once you have addressed or responded to all review comments, re-request review from the primary reviewer. This signals to the reviewer that you are ready for another review.
+- **رسیدگی به نظرات بازبینی کد**
+  - تمامی نظرات بازبینی کد باید پیش از ادغام بررسی و پاسخ داده شوند.
+    - اگر تغییری اعمال کرده‌اید که کامنتی را برطرف کرده است، باید با اشاره به کامیت مربوطه به آن کامنت پاسخ دهید.
+  - رسیدگی به یک نظر همیشه به معنای اعمال تغییر نیست؛ بلکه می‌تواند شامل موارد زیر باشد:
+    - توضیح این‌که چرا تغییر لازم نیست. در حالت ایده‌آل، پیش از نهایی دانستن رسیدگی به کامنت، منتظر تایید بازبین بمانید.
+    - موکول کردن اصلاح به یک PR پیگیری سریع (fast-follow) و بیان صریح این موضوع در قالب کامنت.
+    - برای موارد غیرضروری، باز کردن یک Issue به منظور پیگیری نیاز به تغییر در آینده.
+  - از بهترین قضاوت خود برای تشخیص این‌که آیا به یک نظر به اندازه کافی رسیدگی شده است یا خیر استفاده کنید.
+  - پس از این‌که به تمامی نظرات بازبینی رسیدگی کرده یا پاسخ دادید، دوباره از بازبین اصلی درخواست بررسی (Re-request review) کنید. این کار به بازبین نشان می‌دهد که شما آماده بازبینی مجدد هستید.

@@ -1,45 +1,45 @@
-# Editing and syncing course content
+# ویرایش و همگام‌سازی محتوای درس
 
-All course content in PrairieLearn lives in a [Git](https://git-scm.com/) repository, typically hosted on [GitHub](https://github.com/). That repository is synced to/from PrairieLearn.
+تمام محتوای درس در پریری‌لرن در یک مخزن [گیت (Git)](https://git-scm.com/) قرار دارد که معمولاً روی [گیت‌هاب (GitHub)](https://github.com/) میزبانی می‌شود. این مخزن با پریری‌لرن (از/به آن) همگام‌سازی (Sync) می‌شود.
 
-![High-level sync overview](dev-guide/high-level.d2){pad="0" scale="1"}
+![نمای کلی سطح‌بالای همگام‌سازی](dev-guide/high-level.d2){pad="0" scale="1"}
 
-There are two ways to edit your content: through the in-browser editor in PrairieLearn, and by interacting directly with the repository.
+دو روش برای ویرایش محتوای شما وجود دارد: از طریق ویرایشگر درون مرورگر در پریری‌لرن، و از طریق تعامل مستقیم با مخزن.
 
-## In-browser editor
+## ویرایشگر درون مرورگر (In-browser editor)
 
-If you don't want to set up Docker on your computer and use Git/GitHub directly, you can access and edit all content directly in PrairieLearn via the "Files" tab that appears on supported pages. When you save an edit to a file, your change is automatically synced to your GitHub repository. Note that you must have "Editor" or "Owner" permissions in the course to edit files.
+اگر نمی‌خواهید داکر (Docker) را روی رایانه خود راه‌اندازی کنید و مستقیماً از Git/GitHub استفاده نمایید، می‌توانید از طریق زبانه "Files" که در صفحات پشتیبانی‌شده نمایش داده می‌شود، به تمام محتوا مستقیماً در پریری‌لرن دسترسی داشته باشید و آن را ویرایش کنید. هنگامی که ویرایش یک فایل را ذخیره می‌کنید، تغییرات شما به صورت خودکار با مخزن گیت‌هاب همگام‌سازی می‌شود. توجه داشته باشید که برای ویرایش فایل‌ها باید دسترسی "Editor" یا "Owner" در درس داشته باشید.
 
-The in-browser editor is great for getting started with PrairieLearn and can work well for managing content with a small number of instructors. However, with a large course staff, you may want to exert more control over changes via software engineering best practices like code reviews or continuous integration. For that, you can use Git and GitHub as discussed in the next section.
+ویرایشگر درون مرورگر برای شروع کار با پریری‌لرن بسیار عالی است و برای مدیریت محتوا با تعداد کمی از مدرسان به خوبی پاسخگو خواهد بود. با این حال، در کادر آموزشی بزرگ‌تر، ممکن است تمایل داشته باشید کنترل بیشتری روی تغییرات از طریق الگوهای برتر مهندسی نرم‌افزار مانند بازبینی کد (Code Review) یا یکپارچه‌سازی مداوم (CI) اعمال کنید. برای این منظور، می‌توانید همان‌طور که در بخش بعد توضیح داده شده است، از Git و GitHub استفاده کنید.
 
-## Git/GitHub
+## استفاده از Git/GitHub
 
-Since your course content is a Git repository hosted on GitHub, you can work directly with the underlying repository on your computer. This has a number of benefits:
+از آنجا که محتوای درس شما یک مخزن گیت میزبانی‌شده روی گیت‌هاب است، می‌توانید مستقیماً با مخزن مربوطه بر روی رایانه خود کار کنید. این امر مزایای متعددی به همراه دارد:
 
-- You can develop and test content locally without impacting your live questions or assessments.
-- You can require code review to ensure that changes are validated by multiple people on your course staff.
-- If you wish, you can use continuous integration services to automatically test and validate changes to your content.
+- می‌توانید محتوا را به صورت محلی توسعه داده و آزمایش کنید بدون این‌که سوالات یا آزمون‌های زنده و فعال تحت تاثیر قرار گیرند.
+- می‌توانید فرآیند بازبینی کد (Code Review) را الزامی کنید تا مطمئن شوید تغییرات توسط چند نفر از کادر آموزشی درس تایید می‌شوند.
+- در صورت تمایل، می‌توانید از سرویس‌های یکپارچه‌سازی مداوم (CI) برای آزمایش و اعتبارسنجی خودکار تغییرات در محتوای خود استفاده کنید.
 
-To get started, ensure you have access to your course's repository. You may need to request access from an owner of the repository. Next, follow the [local installation instructions](installing.md) to get PrairieLearn running on your computer. From there, you can edit your course content in your preferred file editor and preview the changes locally.
+برای شروع، مطمئن شوید که به مخزن درس خود دسترسی دارید. ممکن است لازم باشد از مالک (Owner) مخزن درخواست دسترسی کنید. سپس، [دستورالعمل‌های نصب محلی](installing.md) را دنبال نمایید تا پریری‌لرن روی رایانه شما اجرا شود. از آنجا می‌توانید محتوای درس خود را در ویرایشگر فایل دلخواهتان ویرایش کرده و پیش‌نمایش تغییرات را به صورت محلی مشاهده کنید.
 
-We recommend the [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow): users should clone the course repository, check out a new branch, push their changes to the branch, and open a pull request. Once their changes have been reviewed, approved, and merged into the course's [configured branch](#which-branch-prairielearn-syncs-from), an instructor with "Editor" permissions in the course can navigate to the "Sync" page of the course and sync the changes into PrairieLearn with the "Pull from remote git repository" button. Note that you must have "Editor" or "Owner" permissions in the course to sync the repository.
+ما روش [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) را توصیه می‌کنیم: کاربران باید مخزن درس را کلون (Clone) کنند، یک شاخه (Branch) جدید بسازند، تغییرات خود را به آن شاخه پوش (Push) کرده و یک پول‌ریکوئست (Pull Request) باز نمایند. پس از بازبینی، تایید و ادغام (Merge) تغییرات در [شاخه پیکربندی‌شده](#which-branch-prairielearn-syncs-from) درس، یک مدرس با مجوز "Editor" در درس می‌تواند به صفحه "Sync" درس رفته و با دکمه "Pull from remote git repository" تغییرات را در پریری‌لرن همگام‌سازی کند. توجه داشته باشید که برای همگام‌سازی مخزن باید مجوز "Editor" یا "Owner" در درس داشته باشید.
 
-If you're new to Git, the following resources can help get you started:
+اگر در کار با گیت تازه‌کار هستید، منابع زیر می‌توانند به شروع شما کمک کنند:
 
-- [Git book](https://git-scm.com/book/en/v2)
-- [Software Carpentry's git course](https://swcarpentry.github.io/git-novice/)
-- [tryGit tutorial](https://try.github.io/)
+- [کتاب گیت](https://git-scm.com/book/en/v2)
+- [دوره گیت Software Carpentry](https://swcarpentry.github.io/git-novice/)
+- [آموزش tryGit](https://try.github.io/)
 
-You can use any Git client you like on your computer. The [`git` CLI](https://git-scm.com/downloads) is available on all platforms. Some popular graphical clients are [GitHub Desktop](https://desktop.github.com) and [SourceTree](https://www.sourcetreeapp.com).
+می‌توانید از هر کلاینت گیتی که مایلید روی رایانه خود استفاده کنید. رابط خط فرمان [`git` CLI](https://git-scm.com/downloads) روی تمامی پلتفرم‌ها در دسترس است. برخی از کلاینت‌های گرافیکی محبوب عبارتند از [GitHub Desktop](https://desktop.github.com) و [SourceTree](https://www.sourcetreeapp.com).
 
-## Which branch PrairieLearn syncs from
+## پریری‌لرن با کدام شاخه (Branch) همگام‌سازی می‌شود
 
-Each course is configured with a single branch, which is shown in the "Branch" field on the course settings page. "Pull from remote git repository" only pulls from that branch, and edits made in the in-browser editor are only pushed to that branch. Other branches in the repository are ignored, so you can push work-in-progress branches without affecting your live course; merge them into the configured branch when you want them synced.
+هر درس با یک شاخه واحد پیکربندی شده است که در فیلد "Branch" در صفحه تنظیمات درس نمایش داده می‌شود. عملیات "Pull from remote git repository" تنها از همان شاخه پول (Pull) می‌کند، و ویرایش‌های انجام‌شده در ویرایشگر درون مرورگر نیز تنها به همان شاخه پوش (Push) می‌شوند. سایر شاخه‌های موجود در مخزن نادیده گرفته می‌شوند، بنابراین می‌توانید شاخه‌های در حال توسعه را بدون تاثیرگذاری روی درس فعال و زنده خود پوش کنید؛ و هر زمان که خواستید همگام‌سازی شوند، آن‌ها را در شاخه پیکربندی‌شده ادغام کنید.
 
-PrairieLearn does **not** use your repository's default branch on GitHub. Changing the default branch in your GitHub repository settings has no effect on which branch PrairieLearn syncs from.
+پریری‌لرن از شاخه پیش‌فرض مخزن شما در گیت‌هاب استفاده **نمی‌کند**. تغییر شاخه پیش‌فرض در تنظیمات مخزن گیت‌هاب، هیچ تاثیری بر این‌که پریری‌لرن با کدام شاخه همگام‌سازی می‌شود ندارد.
 
-Instructors can't change the configured branch themselves. If you want PrairieLearn to sync from a different branch (for example, because you are renaming `master` to `main`), email [support@prairielearn.com](mailto:support@prairielearn.com) with your course's URL and the new branch name. If you run your own PrairieLearn server, an administrator can change it on the administrator "Courses" page. To avoid failed syncs, ask for the change at the same time as you rename the branch.
+مدرسان نمی‌توانند خودشان شاخه پیکربندی‌شده را تغییر دهند. اگر می‌خواهید پریری‌لرن با شاخه دیگری همگام‌سازی شود (برای مثال به دلیل تغییر نام `master` به `main`)، نشانی URL درس و نام شاخه جدید را به [support@prairielearn.com](mailto:support@prairielearn.com) ایمیل کنید. اگر سرور پریری‌لرن اختصاصی خود را اجرا می‌کنید، یک مدیر (Administrator) می‌تواند آن را در صفحه مدیریت "Courses" تغییر دهد. برای جلوگیری از خطای همگام‌سازی، همزمان با تغییر نام شاخه، درخواست این تغییر را ارسال کنید.
 
-If the configured branch no longer exists in the repository, syncing will fail with an error like `Branch "master" does not exist in the remote git repository.` This usually means the branch was renamed or deleted on GitHub; ask for the course's branch to be updated as described above.
+اگر شاخه پیکربندی‌شده دیگر در مخزن وجود نداشته باشد، عملیات همگام‌سازی با خطایی مانند `Branch "master" does not exist in the remote git repository.` با شکست مواجه خواهد شد. این معمولاً به این معنی است که شاخه در گیت‌هاب تغییر نام یافته یا حذف شده است؛ در این صورت طبق توضیحات بالا درخواست به‌روزرسانی شاخه درس را ارائه دهید.
 
-This only applies to syncing on a PrairieLearn server. When you [run PrairieLearn locally](installing.md), it uses whatever is checked out in your local course directory, so you can switch branches with `git checkout` as usual.
+این موضوع فقط برای همگام‌سازی در یک سرور پریری‌لرن صدق می‌کند. هنگامی که [پریری‌لرن را به صورت محلی اجرا می‌کنید](installing.md)، از هر شاخه‌ای که در پوشه محلی درس شما چک‌اوت (Checkout) شده باشد استفاده می‌کند، بنابراین می‌توانید طبق معمول با دستور `git checkout` بین شاخه‌ها جابه‌جا شوید.
