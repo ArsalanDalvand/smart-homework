@@ -1,0 +1,365 @@
+/* ==========================================================================
+   دانشگاه علم و صنعت ایران - دانشکده مهندسی کامپیوتر
+   IUST PrairieLearn Custom Theme & Typography System (RTL Friendly)
+   Version: 2.1.0
+   ========================================================================== */
+
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --iust-navy-deep: #0C2340;
+  --iust-navy-primary: #1A0959;
+  --iust-navy-light: #253D6B;
+  --iust-teal-primary: #008080;
+  --iust-teal-light: #00A896;
+  --iust-teal-accent: #028090;
+  --iust-gold: #D4AF37;
+  --iust-light-bg: #F8FAFC;
+  --iust-card-border: #E2E8F0;
+  --iust-text-dark: #1E293B;
+  --iust-text-muted: #64748B;
+  --iust-success: #10B981;
+  --iust-warning: #F59E0B;
+  --iust-danger: #EF4444;
+
+  --iust-font-sans: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --iust-font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
+}
+
+/* Persian RTL Container */
+.iust-rtl-container,
+.bp-task-box {
+  direction: rtl;
+  text-align: right;
+  font-family: var(--iust-font-sans);
+  line-height: 1.85;
+  color: var(--iust-text-dark);
+}
+
+.iust-ltr-inline {
+  direction: ltr;
+  display: inline-block;
+  font-family: var(--iust-font-mono);
+}
+
+/* ==========================================================================
+   Zero-Collision Strict LTR Isolation Engine (Code, Ace Editor, Math, Logs)
+   ========================================================================== */
+.iust-rtl-container pre,
+.iust-rtl-container code,
+.iust-rtl-container kbd,
+.iust-rtl-container samp,
+.iust-rtl-container .pl-code,
+.iust-rtl-container .badge-monospace,
+.iust-rtl-container .terminal,
+.iust-rtl-container .test-suite-results,
+.iust-rtl-container .ace_editor,
+.iust-rtl-container .ace_editor *,
+.iust-rtl-container .katex,
+.iust-rtl-container .katex-display,
+.iust-rtl-container .MathJax,
+.iust-rtl-container .MathJax_Display,
+.iust-rtl-container input.code-input,
+.iust-rtl-container textarea.code-input,
+.bp-task-box pre,
+.bp-task-box code,
+.bp-task-box .ace_editor,
+.bp-task-box .ace_editor *,
+.bp-task-box .katex,
+.bp-task-box .MathJax {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate !important;
+}
+
+/* Inline code inside Persian sentences */
+.iust-rtl-container p code,
+.iust-rtl-container li code,
+.iust-rtl-container td code,
+.iust-rtl-container span code,
+.bp-task-box p code,
+.bp-task-box li code,
+.bp-task-box td code,
+.bp-task-box span code {
+  font-family: var(--iust-font-mono) !important;
+  font-size: 0.88em !important;
+  direction: ltr !important;
+  display: inline-block;
+  padding: 0.15em 0.45em;
+  margin: 0 0.25em;
+  background-color: #F1F5F9;
+  color: var(--iust-navy-deep);
+  border: 1px solid #CBD5E1;
+  border-radius: 5px;
+  vertical-align: baseline;
+  unicode-bidi: isolate;
+}
+
+/* Ace Editor Custom Polish */
+.ace_editor {
+  border-radius: 10px !important;
+  border: 1px solid #CBD5E1 !important;
+  font-family: var(--iust-font-mono) !important;
+  line-height: 1.6 !important;
+  box-shadow: 0 4px 6px -1px rgba(12, 35, 64, 0.08);
+}
+
+.ace_gutter {
+  direction: ltr !important;
+  text-align: right !important;
+}
+
+.ace_scroller {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+/* Hero / Header Section */
+.iust-hero-banner {
+  background: linear-gradient(135deg, #0C2340 0%, #1A0959 50%, #004D40 100%);
+  color: #FFFFFF;
+  border-radius: 12px;
+  padding: 2.2rem 2.5rem;
+  box-shadow: 0 10px 25px -5px rgba(12, 35, 64, 0.25), 0 8px 10px -6px rgba(12, 35, 64, 0.2);
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.iust-hero-banner::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(0, 168, 150, 0.25) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.iust-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.iust-logo-img {
+  width: 78px;
+  height: 78px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 12px;
+}
+
+.iust-title-group h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.5px;
+}
+
+.iust-title-group .iust-subtitle {
+  font-size: 1rem;
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.iust-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background: rgba(0, 168, 150, 0.2);
+  color: #5EEAD4;
+  border: 1px solid rgba(94, 234, 212, 0.3);
+}
+
+.iust-badge-gold {
+  background: rgba(212, 175, 55, 0.2);
+  color: #FDE047;
+  border: 1px solid rgba(253, 224, 71, 0.3);
+}
+
+/* Feature Cards Grid */
+.iust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.iust-card {
+  background: #FFFFFF;
+  border: 1px solid var(--iust-card-border);
+  border-radius: 10px;
+  padding: 1.4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.iust-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.iust-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 2px solid var(--iust-light-bg);
+  padding-bottom: 0.6rem;
+}
+
+.iust-card-icon {
+  font-size: 1.25rem;
+  color: var(--iust-teal-primary);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 128, 128, 0.08);
+  border-radius: 8px;
+}
+
+.iust-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--iust-navy-deep);
+  margin: 0;
+}
+
+.iust-card p, .iust-card ul {
+  font-size: 0.92rem;
+  color: #334155;
+  margin-bottom: 0;
+}
+
+.iust-card ul {
+  padding-right: 1.2rem;
+}
+
+.iust-card li {
+  margin-bottom: 0.4rem;
+}
+
+/* Question Task & Hint Components */
+.bp-alert-warning {
+  background-color: #FFFBEB;
+  border-right: 4px solid #F59E0B;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin: 12px 0;
+  color: #92400E;
+  font-size: 0.93rem;
+}
+
+.bp-table th {
+  background-color: #F1F5F9;
+  color: var(--iust-navy-deep);
+  font-weight: 600;
+}
+
+.bp-hint-card {
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.bp-hint-btn {
+  width: 100%;
+  text-align: right;
+  padding: 10px 15px;
+  font-weight: 600;
+  background-color: #F8FAFC;
+  border: none;
+  color: #028090;
+  transition: background-color 0.15s ease;
+}
+
+.bp-hint-btn:hover {
+  background-color: #F0FDFA;
+}
+
+/* Alert Boxes */
+.iust-alert {
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+}
+
+.iust-alert-info {
+  background-color: #F0FDF4;
+  border-right: 4px solid var(--iust-teal-light);
+  color: #065F46;
+}
+
+.iust-alert-warning {
+  background-color: #FFFBEB;
+  border-right: 4px solid var(--iust-warning);
+  color: #92400E;
+}
+
+/* Footer Section */
+.iust-footer-section {
+  background: var(--iust-navy-deep);
+  color: #E2E8F0;
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin-top: 2rem;
+  border-top: 3px solid var(--iust-teal-light);
+}
+
+.iust-footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.iust-footer-links {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.iust-footer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  transition: background 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.iust-footer-btn:hover {
+  background: var(--iust-teal-primary);
+  color: #FFFFFF;
+}
+
+.iust-copyright {
+  font-size: 0.85rem;
+  color: #94A3B8;
+}

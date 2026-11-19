@@ -1,23 +1,137 @@
+<pl-load-style file="iust-theme.css" directory="clientFilesCourse"></pl-load-style>
+
 <pl-question-panel>
-  <div dir="rtl" style="text-align: right; line-height: 1.8;">
-    <h4>مسئله ۱: محاسبه مساحت دایره</h4>
+  <div dir="rtl" class="bp-task-box">
+    <!-- عنوان و برچسب سطح -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0 text-primary font-weight-bold">مسئله ۱: محاسبه مساحت دایره (Circle Area)</h4>
+      <span class="badge bg-info text-dark" style="font-size: 0.85rem; padding: 0.35rem 0.65rem; border-radius: 6px;">سطح: مقدماتی | توابع و محاسبات</span>
+    </div>
+
+    <!-- شرح مسئله -->
     <p>
-      تابعی به نام <code>circle_area(r)</code> بنویسید که شعاع دایره ($r$) را به عنوان ورودی دریافت کرده و مساحت دایره را با فرمول $\pi r^2$ محاسبه کند و برگرداند.
+      تابعی با نام <code>circle_area(r)</code> پیاده‌سازی کنید که شعاع یک دایره ($r$) را به عنوان ورودی دریافت کرده و مساحت دایره را با فرمول $\pi r^2$ محاسبه کند و بازگرداند.
     </p>
-    <ul>
-      <li>می‌توانید از <code>math.pi</code> برای مقدار دقیق عدد پی استفاده کنید.</li>
-      <li>اگر مقدار شعاع نامعتبر و منفی بود ($r < 0$)، تابع باید مقدار <code>0</code> برگرداند.</li>
-    </ul>
+
+    <!-- هشدار صریح برای ترم اولی‌ها -->
+    <div class="bp-alert-warning">
+      <strong>⚠️ نکته بسیار مهم:</strong> تابع شما باید حاصل مساحت را با دستور <code>return</code> برگرداند. از نوشتن <code>input()</code> یا <code>print()</code> داخل تابع خودداری فرمایید.
+    </div>
+
+    <!-- جدول مشخصات تابع (Contract) -->
+    <h6 class="font-weight-bold mt-3 mb-2">📋 مشخصات تابع (Contract):</h6>
+    <table class="table table-bordered table-sm bp-table" style="direction: ltr; text-align: left;">
+      <thead>
+        <tr>
+          <th>نام تابع</th>
+          <th>پارامترهای ورودی</th>
+          <th>نوع خروجی</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>circle_area(r)</code></td>
+          <td><code>r: float | int</code> (شعاع دایره)</td>
+          <td><code>float | int</code> (مساحت دایره یا ۰)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- جدول نمونه‌های تست -->
+    <h6 class="font-weight-bold mt-3 mb-2">🔍 نمونه‌های تست و رفتار تابع:</h6>
+    <table class="table table-bordered table-hover bp-table" style="direction: ltr; text-align: left;">
+      <thead>
+        <tr>
+          <th style="width: 25%;">فراخوانی نمونه</th>
+          <th style="width: 25%;">خروجی مورد انتظار</th>
+          <th>توضیح و منطق</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>circle_area(1)</code></td>
+          <td><code>3.14159...</code></td>
+          <td>$\pi \times 1^2 = \pi$</td>
+        </tr>
+        <tr>
+          <td><code>circle_area(2.5)</code></td>
+          <td><code>19.63495...</code></td>
+          <td>$\pi \times 2.5^2$</td>
+        </tr>
+        <tr>
+          <td><code>circle_area(0)</code></td>
+          <td><code>0.0</code></td>
+          <td>شعاع صفر، مساحت صفر</td>
+        </tr>
+        <tr>
+          <td><code>circle_area(-3)</code></td>
+          <td><code>0</code></td>
+          <td>شعاع منفی نامعتبر است و طبق صورت سوال باید ۰ برگردد.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- کادرهای راهنمای تاشو (Collapsible Accordion Hints) -->
+    <div class="accordion my-3" id="circleAreaHints">
+      <div class="accordion-item bp-hint-card">
+        <h2 class="accordion-header" id="headingCircleAlg">
+          <button class="accordion-button collapsed bp-hint-btn" type="button" data-bs-toggle="collapse" data-bs-target="#hintCircleAlg" aria-expanded="false" aria-controls="hintCircleAlg">
+            💡 راهنمای طراحی تابع (اگر ایده اولیه‌ای ندارید کلیک کنید)
+          </button>
+        </h2>
+        <div id="hintCircleAlg" class="accordion-collapse collapse" data-bs-parent="#circleAreaHints">
+          <div class="accordion-body bg-white">
+            <ol class="mb-0 pe-3">
+              <li>برای استفاده از مقدار دقیق عدد پی، ماژول ریاضی را ایمپورت کنید: <code>import math</code></li>
+              <li>ابتدا با یک شرط بررسی کنید: اگر $r < 0$ بود، فوراً <code>return 0</code> را برگردانید.</li>
+              <li>در غیر این صورت، مقدار <code>math.pi * (r ** 2)</code> را محاسبه کرده و <code>return</code> کنید.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item bp-hint-card mt-2">
+        <h2 class="accordion-header" id="headingCircleDebug">
+          <button class="accordion-button collapsed bp-hint-btn" type="button" data-bs-toggle="collapse" data-bs-target="#hintCircleDebug" aria-expanded="false" aria-controls="hintCircleDebug">
+            🛠️ راهنمای رفع خطاهای متداول
+          </button>
+        </h2>
+        <div id="hintCircleDebug" class="accordion-collapse collapse" data-bs-parent="#circleAreaHints">
+          <div class="accordion-body bg-white">
+            <ul class="mb-0 pe-3">
+              <li><strong>خطای NoneType:</strong> اگر تست می‌گوید خروجی <code>None</code> دریافت شده است، به این معنی است که به جای <code>return</code> از <code>print()</code> استفاده کرده‌اید.</li>
+              <li><strong>خطای دقت اعشار:</strong> از نوشتن مقدار تقریبی <code>3.14</code> به جای <code>math.pi</code> خودداری کنید.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <hr>
-  <pl-file-editor
-    file-name="student_code.py"
-    ace-mode="ace/mode/python"
-    source-file-name="tests/initial_code.py">
-  </pl-file-editor>
+
+  <!-- ادیتور کد با تم تاریک Monokai و فونت مدرن -->
+  <div class="mt-3">
+    <label class="form-label font-weight-bold" style="font-family: var(--iust-font-sans);">کد پایتون خود را در کادر زیر بنویسید:</label>
+    <pl-file-editor
+      file-name="student_code.py"
+      ace-mode="ace/mode/python"
+      ace-theme="ace/theme/monokai"
+      font-size="15px"
+      min-lines="16"
+      auto-resize="true"
+      source-file-name="tests/initial_code.py">
+    </pl-file-editor>
+  </div>
 </pl-question-panel>
 
 <pl-submission-panel>
+  <div dir="rtl" class="mb-3" style="font-family: var(--iust-font-sans);">
+    <h5>📊 نتیجه ارزیابی خودکار پاسخ شما:</h5>
+  </div>
   <pl-external-grader-results></pl-external-grader-results>
+  <div dir="rtl" class="mt-3" style="font-family: var(--iust-font-sans);">
+    <h6>کد ارسال‌شده:</h6>
+  </div>
   <pl-file-preview></pl-file-preview>
 </pl-submission-panel>

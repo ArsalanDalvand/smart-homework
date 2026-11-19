@@ -1,6 +1,24 @@
 {
   "uuid": "6bff10a5-8f4f-4da2-b43a-fbdf8314a6d0",
   "longName": "نیم‌سال اول ۱۴۰۵-۱۴۰۶ (Fall 2026)",
+  "timezone": "Asia/Tehran",
+  "groupAssessmentsBy": "Set",
+  "selfEnrollment": {
+    "enabled": true,
+    "restrictToInstitution": false
+  },
+  "studentLabels": [
+    {
+      "uuid": "b53efca7-e89c-4c60-a292-23cce55dc312",
+      "name": "گروه ۱ (روزهای زوج)",
+      "color": "turquoise1"
+    },
+    {
+      "uuid": "d32b57e9-a477-4b78-b1fb-4ee9108c8477",
+      "name": "گروه ۲ (روزهای فرد)",
+      "color": "blue1"
+    }
+  ],
   "publishing": {
     "startDate": "2026-09-01T00:00:01",
     "endDate": "2027-02-01T23:59:59"

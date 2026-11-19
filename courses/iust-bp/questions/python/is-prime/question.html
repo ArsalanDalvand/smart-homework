@@ -1,27 +1,142 @@
+<pl-load-style file="iust-theme.css" directory="clientFilesCourse"></pl-load-style>
+
 <pl-question-panel>
-  <div dir="rtl" style="text-align: right; line-height: 1.8;">
-    <h4>مسئله ۳: تشخیص عدد اول</h4>
+  <div dir="rtl" class="bp-task-box">
+    <!-- عنوان و برچسب سطح -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0 text-primary font-weight-bold">مسئله ۳: تشخیص عدد اول (Prime Number Checker)</h4>
+      <span class="badge bg-success text-white" style="font-size: 0.85rem; padding: 0.35rem 0.65rem; border-radius: 6px;">سطح: متوسط | حلقه‌ها و کارایی الگوریتم</span>
+    </div>
+
+    <!-- شرح مسئله -->
     <p>
-      تابعی به نام <code>is_prime(n)</code> بنویسید که یک عدد صحیح $n$ را دریافت کرده و در صورتی که عدد <b>اول</b> باشد، مقدار <code>True</code> و در غیر این صورت مقدار <code>False</code> برگرداند.
+      تابعی با نام <code>is_prime(n)</code> پیاده‌سازی کنید که یک عدد صحیح $n$ را دریافت کرده و در صورتی که عدد اول باشد مقدار <code>True</code> و در غیر این صورت مقدار <code>False</code> را برگرداند.
     </p>
-    <div style="background-color: #f8f9fa; border-right: 4px solid #17a2b8; padding: 10px; margin: 10px 0;">
-      <b>نکات مهم:</b>
+
+    <!-- هشدار صریح برای ترم اولی‌ها -->
+    <div class="bp-alert-warning">
+      <strong>⚠️ نکات کلیدی:</strong>
       <ul>
-        <li>اعداد کوچک‌تر یا مساوی ۱ (شامل اعداد منفی، صفر و ۱) اول <b>نیستند</b>.</li>
-        <li>عدد ۲ کوچک‌ترین و تنها عدد اول زوج است.</li>
-        <li>کد شما باید بهینه باشد و برای اعداد نسبتاً بزرگ هم سریع پاسخ دهد.</li>
+        <li>تابع باید مقدار بولین <code>True</code> یا <code>False</code> را با <code>return</code> بازگرداند (نه چاپ با <code>print</code>).</li>
+        <li>اعداد کوچک‌تر یا مساوی ۱ (شامل اعداد منفی، صفر و یک) اول <b>نیستند</b>.</li>
+        <li>کد شما باید بهینه باشد تا برای اعداد بزرگ به خطای محدودیت زمانی (Time Limit) نخورد.</li>
       </ul>
     </div>
+
+    <!-- جدول مشخصات تابع (Contract) -->
+    <h6 class="font-weight-bold mt-3 mb-2">📋 مشخصات تابع (Contract):</h6>
+    <table class="table table-bordered table-sm bp-table" style="direction: ltr; text-align: left;">
+      <thead>
+        <tr>
+          <th>نام تابع</th>
+          <th>پارامترهای ورودی</th>
+          <th>نوع خروجی</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>is_prime(n)</code></td>
+          <td><code>n: int</code> (عدد صحیح مورد بررسی)</td>
+          <td><code>bool</code> (مقدار <code>True</code> یا <code>False</code>)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- جدول نمونه‌های تست -->
+    <h6 class="font-weight-bold mt-3 mb-2">🔍 نمونه‌های تست و رفتار تابع:</h6>
+    <table class="table table-bordered table-hover bp-table" style="direction: ltr; text-align: left;">
+      <thead>
+        <tr>
+          <th style="width: 25%;">فراخوانی نمونه</th>
+          <th style="width: 25%;">خروجی مورد انتظار</th>
+          <th>توضیح و منطق</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>is_prime(7)</code></td>
+          <td><code>True</code></td>
+          <td>تنها بر ۱ و ۷ بخش‌پذیر است.</td>
+        </tr>
+        <tr>
+          <td><code>is_prime(4)</code></td>
+          <td><code>False</code></td>
+          <td>بر ۲ نیز بخش‌پذیر است.</td>
+        </tr>
+        <tr>
+          <td><code>is_prime(1)</code></td>
+          <td><code>False</code></td>
+          <td>عدد ۱ طبق تعریف عدد اول نیست.</td>
+        </tr>
+        <tr>
+          <td><code>is_prime(-5)</code></td>
+          <td><code>False</code></td>
+          <td>اعداد منفی اول نیستند.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- کادرهای راهنمای تاشو (Collapsible Accordion Hints) -->
+    <div class="accordion my-3" id="primeHints">
+      <div class="accordion-item bp-hint-card">
+        <h2 class="accordion-header" id="headingPrimeAlg">
+          <button class="accordion-button collapsed bp-hint-btn" type="button" data-bs-toggle="collapse" data-bs-target="#hintPrimeAlg" aria-expanded="false" aria-controls="hintPrimeAlg">
+            💡 راهنمای طراحی الگوریتم بهینه
+          </button>
+        </h2>
+        <div id="hintPrimeAlg" class="accordion-collapse collapse" data-bs-parent="#primeHints">
+          <div class="accordion-body bg-white">
+            <ol class="mb-0 pe-3">
+              <li>ابتدا بررسی کنید آیا $n \le 1$ است؛ اگر بله، بلافاصله <code>return False</code>.</li>
+              <li>اگر $n == 2$ بود، عدد اول است و <code>return True</code>.</li>
+              <li>اگر $n$ زوج بود ($n \pmod 2 == 0$)، اول نیست و <code>return False</code>.</li>
+              <li>برای بقیه اعداد، بررسی مقسوم‌علیه‌ها را از ۳ با گام‌های ۲ تایی تا $\lfloor\sqrt{n}\rfloor + 1$ ادامه دهید. اگر بر هیچ مقسوم‌علیهی بخش‌پذیر نبود، <code>return True</code>.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item bp-hint-card mt-2">
+        <h2 class="accordion-header" id="headingPrimeDebug">
+          <button class="accordion-button collapsed bp-hint-btn" type="button" data-bs-toggle="collapse" data-bs-target="#hintPrimeDebug" aria-expanded="false" aria-controls="hintPrimeDebug">
+            🛠️ خطای رایج خروج زودهنگام (Early Return)
+          </button>
+        </h2>
+        <div id="hintPrimeDebug" class="accordion-collapse collapse" data-bs-parent="#primeHints">
+          <div class="accordion-body bg-white">
+            <p class="mb-0 pe-3 text-danger">
+              خیلی از دانشجویان داخل حلقه دستور <code>else: return True</code> می‌گذارند! این کار غلط است چون به محض اینکه عدد بر اولین شمارنده بخش‌پذیر نباشد، حلقه قطع می‌شود. دستور <code>return True</code> باید <b>بعد از اتمام کامل حلقه</b> قرار گیرد.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <hr>
-  <pl-file-editor
-    file-name="student_code.py"
-    ace-mode="ace/mode/python"
-    source-file-name="tests/initial_code.py">
-  </pl-file-editor>
+
+  <!-- ادیتور کد با تم و فونت بهینه‌شده -->
+  <div class="mt-3">
+    <label class="form-label font-weight-bold" style="font-family: var(--iust-font-sans);">کد پایتون خود را در کادر زیر بنویسید:</label>
+    <pl-file-editor
+      file-name="student_code.py"
+      ace-mode="ace/mode/python"
+      ace-theme="ace/theme/monokai"
+      font-size="15px"
+      min-lines="16"
+      auto-resize="true"
+      source-file-name="tests/initial_code.py">
+    </pl-file-editor>
+  </div>
 </pl-question-panel>
 
 <pl-submission-panel>
+  <div dir="rtl" class="mb-3" style="font-family: var(--iust-font-sans);">
+    <h5>📊 نتیجه ارزیابی خودکار پاسخ شما:</h5>
+  </div>
   <pl-external-grader-results></pl-external-grader-results>
+  <div dir="rtl" class="mt-3" style="font-family: var(--iust-font-sans);">
+    <h6>کد ارسال‌شده:</h6>
+  </div>
   <pl-file-preview></pl-file-preview>
 </pl-submission-panel>

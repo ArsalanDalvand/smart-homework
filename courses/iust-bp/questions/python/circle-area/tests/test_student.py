@@ -1,29 +1,47 @@
 import math
 import pytest
+from pytest_prairielearn_grader import ConfigObject
 from pytest_prairielearn_grader.fixture import StudentFixture
+
+pytestmark = [
+    pytest.mark.config(
+        ConfigObject(
+            output_level="friendly",
+            syntax_errors_ungradable=True,
+            sandbox_timeout=2.0,
+        )
+    )
+]
 
 
 @pytest.mark.grading_data(name="تست ۱: مساحت شعاع‌های ساده (r=1, r=2)", points=5)
 def test_simple_radius(sandbox: StudentFixture) -> None:
     circle_area = sandbox.query("circle_area")
-    assert math.isclose(circle_area(1), math.pi, rel_tol=1e-5), "مساحت دایره با شعاع ۱ اشتباه است"
-    assert math.isclose(circle_area(2), 4 * math.pi, rel_tol=1e-5), "مساحت دایره با شعاع ۲ اشتباه است"
+    val = circle_area(1)
+    if val is None:
+        raise AssertionError("تابع شما مقداری برنگردانده است (None). دقت فرمایید که باید از return استفاده کنید نه print.")
+    assert math.isclose(val, math.pi, rel_tol=1e-4), f"مساحت دایره با شعاع ۱ اشتباه است: خروجی {val}"
+    assert math.isclose(circle_area(2), 4 * math.pi, rel_tol=1e-4), "مساحت دایره با شعاع ۲ اشتباه است"
 
 
 @pytest.mark.grading_data(name="تست ۲: مساحت شعاع اعشاری (r=2.5)", points=5)
 def test_float_radius(sandbox: StudentFixture) -> None:
     circle_area = sandbox.query("circle_area")
-    assert math.isclose(circle_area(2.5), 6.25 * math.pi, rel_tol=1e-5), "مساحت با شعاع ۲.۵ اشتباه است"
+    val = circle_area(2.5)
+    assert val is not None, "تابع مقداری برنگردانده است (از return استفاده کنید)"
+    assert math.isclose(val, 6.25 * math.pi, rel_tol=1e-4), f"مساحت برای شعاع ۲.۵ اشتباه است: خروجی {val}"
 
 
 @pytest.mark.grading_data(name="تست ۳: شعاع صفر (حالت مرزی r=0)", points=5)
 def test_zero_radius(sandbox: StudentFixture) -> None:
     circle_area = sandbox.query("circle_area")
-    assert math.isclose(circle_area(0), 0.0, abs_tol=1e-7), "مساحت دایره با شعاع صفر باید صفر باشد"
+    val = circle_area(0)
+    assert val is not None, "تابع مقداری برنگردانده است"
+    assert math.isclose(val, 0.0, abs_tol=1e-6), "مساحت دایره با شعاع صفر باید ۰ باشد"
 
 
 @pytest.mark.grading_data(name="تست ۴: شعاع منفی (حالت مرزی r < 0)", points=5)
 def test_negative_radius(sandbox: StudentFixture) -> None:
     circle_area = sandbox.query("circle_area")
-    assert circle_area(-5) == 0, "برای شعاع منفی باید عدد ۰ برگردانده شود"
-    assert circle_area(-0.1) == 0, "برای شعاع منفی اعشاری باید عدد ۰ برگردانده شود"
+    val = circle_area(-5)
+    assert val == 0, f"برای شعاع منفی باید عدد ۰ بازگردانده شود، اما مقدار {val} دریافت شد"

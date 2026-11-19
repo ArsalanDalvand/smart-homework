@@ -1,28 +1,133 @@
+<pl-load-style file="iust-theme.css" directory="clientFilesCourse"></pl-load-style>
+
 <pl-question-panel>
-  <div dir="rtl" style="text-align: right; line-height: 1.8;">
-    <h4>مسئله ۲: حل معادله درجه دوم</h4>
+  <div dir="rtl" class="bp-task-box">
+    <!-- عنوان و برچسب سطح -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0 text-primary font-weight-bold">مسئله ۲: حل معادله درجه دوم (Quadratic Equation)</h4>
+      <span class="badge bg-warning text-dark" style="font-size: 0.85rem; padding: 0.35rem 0.65rem; border-radius: 6px;">سطح: متوسط | شرط‌ها و تاپل‌ها</span>
+    </div>
+
+    <!-- شرح مسئله -->
     <p>
-      تابعی با نام <code>solve_quadratic(a, b, c)</code> پیاده‌سازی کنید که ضرایب معادله درجه دو به فرم زیر را دریافت کند:
+      تابعی با نام <code>solve_quadratic(a, b, c)</code> پیاده‌سازی کنید که ضرایب معادله درجه دو زیر را دریافت کند:
     </p>
     <p style="text-align: center; direction: ltr;">
       $$ax^2 + bx + c = 0 \quad (a \neq 0)$$
     </p>
-    <p>ریشه‌های حقیقی معادله را با فرمول $\Delta = b^2 - 4ac$ پیدا کرده و به شکل یک <b>تاپل (tuple) مرتب‌شده از کوچک به بزرگ</b> برگردانید:</p>
-    <ul>
-      <li>اگر $\Delta > 0$ بود: تاپلی با ۲ ریشه به صورت <code>(x1, x2)</code> برگردانید به طوری که $x_1 \le x_2$.</li>
-      <li>اگر $\Delta = 0$ بود: تاپلی با یک عضو که ریشه مضاعف است برگردانید: <code>(x,)</code>.</li>
-      <li>اگر $\Delta < 0$ بود (معادله ریشه حقیقی نداشت): تاپل خالی <code>()</code> برگردانید.</li>
-    </ul>
+    <p>
+      ریشه‌های حقیقی معادله را با استفاده از مبین دلتا ($\Delta = b^2 - 4ac$) محاسبه کرده و به شکل یک <b>تاپل (tuple) مرتب‌شده از کوچک به بزرگ</b> بازگردانید.
+    </p>
+
+    <!-- هشدار صریح برای ترم اولی‌ها -->
+    <div class="bp-alert-warning">
+      <strong>⚠️ نکات کلیدی:</strong>
+      <ul>
+        <li>خروجی حتماً باید از نوع <code>tuple</code> باشد.</li>
+        <li>اگر دو ریشه وجود داشت، اول ریشه کوچک‌تر و سپس بزرگ‌تر قرار گیرد: <code>(x1, x2)</code> به طوری که $x_1 \le x_2$.</li>
+        <li>اگر ریشه مضاعف داشت ($\Delta = 0$)، یک تاپل تک‌عضوی باشد: <code>(x,)</code>.</li>
+        <li>اگر معادله ریشه حقیقی نداشت ($\Delta < 0$)، تاپل خالی باشد: <code>()</code>.</li>
+      </ul>
+    </div>
+
+    <!-- جدول مشخصات تابع (Contract) -->
+    <h6 class="font-weight-bold mt-3 mb-2">📋 مشخصات تابع (Contract):</h6>
+    <table class="table table-bordered table-sm bp-table" style="direction: ltr; text-align: left;">
+      <thead>
+        <tr>
+          <th>نام تابع</th>
+          <th>پارامترهای ورودی</th>
+          <th>نوع خروجی</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>solve_quadratic(a, b, c)</code></td>
+          <td><code>a, b, c: float | int</code></td>
+          <td><code>tuple</code> (تاپل مرتب ریشه‌ها)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- جدول نمونه‌های تست -->
+    <h6 class="font-weight-bold mt-3 mb-2">🔍 نمونه‌های تست و رفتار تابع:</h6>
+    <table class="table table-bordered table-hover bp-table" style="direction: ltr; text-align: left;">
+      <thead>
+        <tr>
+          <th style="width: 30%;">فراخوانی نمونه</th>
+          <th style="width: 25%;">خروجی مورد انتظار</th>
+          <th>توضیح</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>solve_quadratic(1, -5, 6)</code></td>
+          <td><code>(2.0, 3.0)</code></td>
+          <td>$\Delta = 1 > 0$؛ دو ریشه حقیقی $2$ و $3$</td>
+        </tr>
+        <tr>
+          <td><code>solve_quadratic(1, -4, 4)</code></td>
+          <td><code>(2.0,)</code></td>
+          <td>$\Delta = 0$؛ ریشه مضاعف $2$</td>
+        </tr>
+        <tr>
+          <td><code>solve_quadratic(1, 0, 1)</code></td>
+          <td><code>()</code></td>
+          <td>$\Delta = -4 < 0$؛ بدون ریشه حقیقی</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- کادرهای راهنمای تاشو (Collapsible Accordion Hints) -->
+    <div class="accordion my-3" id="quadraticHints">
+      <div class="accordion-item bp-hint-card">
+        <h2 class="accordion-header" id="headingQuadAlg">
+          <button class="accordion-button collapsed bp-hint-btn" type="button" data-bs-toggle="collapse" data-bs-target="#hintQuadAlg" aria-expanded="false" aria-controls="hintQuadAlg">
+            💡 راهنمای طراحی الگوریتم
+          </button>
+        </h2>
+        <div id="hintQuadAlg" class="accordion-collapse collapse" data-bs-parent="#quadraticHints">
+          <div class="accordion-body bg-white">
+            <ol class="mb-0 pe-3">
+              <li>مقدار دلتا را با فرمول <code>delta = b**2 - 4*a*c</code> محاسبه کنید.</li>
+              <li>اگر <code>delta < 0</code> بود، بلافاصله تاپل خالی را برگردانید: <code>return ()</code></li>
+              <li>اگر <code>delta == 0</code> بود، ریشه برابر است با <code>-b / (2*a)</code> و تاپل تک‌عضوی برگردانید: <code>return (-b / (2*a),)</code> (کاما بعد از عدد الزامی است تا پایتون آن را تاپل تشخیص دهد).</li>
+              <li>اگر <code>delta > 0</code> بود، دو ریشه را حساب کنید:
+                <code>x1 = (-b - math.sqrt(delta)) / (2*a)</code> و
+                <code>x2 = (-b + math.sqrt(delta)) / (2*a)</code>
+                و به صورت مرتب برگردانید: <code>return (min(x1, x2), max(x1, x2))</code>.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <hr>
-  <pl-file-editor
-    file-name="student_code.py"
-    ace-mode="ace/mode/python"
-    source-file-name="tests/initial_code.py">
-  </pl-file-editor>
+
+  <!-- ادیتور کد با تم و فونت بهینه‌شده -->
+  <div class="mt-3">
+    <label class="form-label font-weight-bold" style="font-family: var(--iust-font-sans);">کد پایتون خود را در کادر زیر بنویسید:</label>
+    <pl-file-editor
+      file-name="student_code.py"
+      ace-mode="ace/mode/python"
+      ace-theme="ace/theme/monokai"
+      font-size="15px"
+      min-lines="16"
+      auto-resize="true"
+      source-file-name="tests/initial_code.py">
+    </pl-file-editor>
+  </div>
 </pl-question-panel>
 
 <pl-submission-panel>
+  <div dir="rtl" class="mb-3" style="font-family: var(--iust-font-sans);">
+    <h5>📊 نتیجه ارزیابی خودکار پاسخ شما:</h5>
+  </div>
   <pl-external-grader-results></pl-external-grader-results>
+  <div dir="rtl" class="mt-3" style="font-family: var(--iust-font-sans);">
+    <h6>کد ارسال‌شده:</h6>
+  </div>
   <pl-file-preview></pl-file-preview>
 </pl-submission-panel>

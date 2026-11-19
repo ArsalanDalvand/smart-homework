@@ -1,50 +1,69 @@
 {
   "uuid": "6e947fde-6fc3-4ec6-aad5-c57e3e409651",
   "name": "IUST-BP",
-  "title": "مبانی برنامه‌نویسی پایتون - دانشگاه علم و صنعت ایران (IUST)",
+  "title": "مبانی برنامه‌نویسی پایتون - دانشکده مهندسی کامپیوتر دانشگاه علم و صنعت ایران",
   "timezone": "Asia/Tehran",
+  "assessmentModules": [
+    {
+      "name": "Introduction",
+      "heading": "فصل ۱: مقدمات، متغیرها و عبارات حسابی"
+    },
+    {
+      "name": "ControlFlow",
+      "heading": "فصل ۲: ساختارهای تصمیم و حلقه‌های تکرار"
+    },
+    {
+      "name": "Functions",
+      "heading": "فصل ۳: طراحی توابع، پیمانه‌ای بودن و بازگشت"
+    },
+    {
+      "name": "DataStructures",
+      "heading": "فصل ۴: ساختارهای داده: لیست‌ها، رشته‌ها و دیکشنری‌ها"
+    }
+  ],
   "assessmentSets": [
     {
       "abbreviation": "HW",
       "name": "Homework",
-      "heading": "تکالیف هفتگی",
-      "color": "green1"
+      "heading": "تکالیف برنامه‌نویسی هفتگی",
+      "color": "turquoise1"
     },
     {
       "abbreviation": "LAB",
       "name": "Lab",
-      "heading": "کارگاه‌ها",
+      "heading": "کارگاه‌های عملی دانشکده",
       "color": "blue1"
     },
     {
       "abbreviation": "Q",
       "name": "Quiz",
-      "heading": "آزمونک‌ها",
+      "heading": "آزمونک‌های سنجش مستمر",
       "color": "yellow1"
     },
     {
       "abbreviation": "MID",
       "name": "Midterm",
-      "heading": "آزمون میان‌ترم",
-      "color": "pink1"
+      "heading": "آزمون میان‌ترم هماهنگ",
+      "color": "orange1"
     },
     {
       "abbreviation": "FIN",
       "name": "Final",
-      "heading": "آزمون پایانی",
-      "color": "pink2"
+      "heading": "آزمون پایانی جامع",
+      "color": "red1"
     }
   ],
   "topics": [
-    { "name": "PythonBasics", "color": "gray1", "description": "مفاهیم پایه و متغیرها" },
-    { "name": "Conditionals", "color": "blue1", "description": "دستورات شرطی" },
-    { "name": "Loops", "color": "turquoise1", "description": "حلقه‌های تکرار" },
-    { "name": "Functions", "color": "green1", "description": "توابع در پایتون" },
-    { "name": "DataStructures", "color": "orange1", "description": "ساختارهای داده" }
+    { "name": "PythonBasics", "color": "gray1", "description": "مفاهیم پایه، متغیرها و انواع داده‌ای در پایتون" },
+    { "name": "Conditionals", "color": "blue1", "description": "دستورات شرطی، عبارات منطقی و انشعاب" },
+    { "name": "Loops", "color": "turquoise1", "description": "حلقه‌های تکرار for و while و کنترل جریان" },
+    { "name": "Functions", "color": "green1", "description": "توابع در پایتون، آرگومان‌ها، بازگشت مقادیر و دامنه دید" },
+    { "name": "DataStructures", "color": "orange1", "description": "ساختارهای داده توکار: لیست، تاپل، دیکشنری و مجموعه‌ها" }
   ],
   "tags": [
-    { "name": "python", "color": "blue1", "description": "تمرینات پایتون" },
-    { "name": "iust", "color": "green1", "description": "دانشگاه علم و صنعت ایران" },
-    { "name": "math", "color": "purple1", "description": "مسائل ریاضیاتی" }
+    { "name": "python", "color": "blue1", "description": "تمرینات زبان برنامه‌نویسی پایتون ۳" },
+    { "name": "iust", "color": "turquoise1", "description": "دانشگاه علم و صنعت ایران - دانشکده مهندسی کامپیوتر" },
+    { "name": "math", "color": "purple1", "description": "مسائل محاسباتی و الگوریتمی" },
+    { "name": "autograded", "color": "green1", "description": "ارزیابی خودکار با تست‌های ایزوله داکر" }
   ]
 }
