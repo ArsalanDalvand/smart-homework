@@ -1,10 +1,10 @@
-# `pl-integer-input` element
+# المان `pl-integer-input`
 
-Fill in the blank field that requires an **integer** input.
+فیلد جای خالی را پر کنید که نیازمند یک ورودی از نوع **عدد صحیح (integer)** است.
 
-## Sample element
+## نمونه المان
 
-![Screenshot of the pl-integer-input element](pl-integer-input.png)
+![تصویر المان pl-integer-input](pl-integer-input.png)
 
 ```html title="question.html"
 <pl-integer-input answers-name="int_value" label="$y =$"></pl-integer-input>
@@ -23,51 +23,51 @@ def generate(data):
     data["correct_answers"]["int_value"] = x
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute        | Type                    | Default         | Description                                                                                                                                                                                                                                                             |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | ---------------- | ----------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allow-blank`    | boolean                 | false           | Whether an empty input box is allowed. By default, empty input boxes will not be graded (invalid format).                                                                                                                                                               |
-| `answers-name`   | string                  | —               | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.                                                                                                    |
-| `aria-label`     | string                  | —               | An accessible label for the input.                                                                                                                                                                                                                                      |
-| `base`           | integer                 | 10              | The base used to parse and represent the answer, or the special value 0 (see below).                                                                                                                                                                                    |
-| `blank-value`    | string                  | 0 (zero)        | Value to be used as an answer if element is left blank. Only applied if `allow-blank` is `true`. Must be `""` (empty string) or an integer.                                                                                                                             |
-| `correct-answer` | string                  | See description | Correct answer for grading. Defaults to `data["correct_answers"][answers-name]`. If `base` is provided, then this answer must be given in the provided base. A blank correct answer (`correct-answer=""`) is only valid when `allow-blank="true"` and `blank-value=""`. |
-| `display`        | `"block"` or `"inline"` | `"inline"`      | How to display the input field.                                                                                                                                                                                                                                         |
-| `initial-value`  | string                  | —               | Initial value to prefill the input box the first time it is rendered.                                                                                                                                                                                                   |
-| `label`          | string                  | —               | A prefix to display before the input box (e.g., `label="$x =$"`).                                                                                                                                                                                                       |
-| `placeholder`    | string                  | See description | Custom placeholder text. If not set, defaults to `"integer"` if `base` is 10 or 0, otherwise `"integer in base <base>"`.                                                                                                                                                |
-| `show-help-text` | boolean                 | true            | Show the question mark at the end of the input displaying required input parameters.                                                                                                                                                                                    |
-| `show-score`     | boolean                 | true            | Whether to show the score badge next to this element.                                                                                                                                                                                                                   |
-| `size`           | integer                 | 35              | Size of the input box.                                                                                                                                                                                                                                                  |
-| `suffix`         | string                  | —               | A suffix to display after the input box (e.g., `suffix="items"`).                                                                                                                                                                                                       |
-| `weight`         | integer                 | 1               | Weight to use when computing a weighted average score over elements.                                                                                                                                                                                                    |
+| `allow-blank`    | boolean                 | false           | مشخص می‌کند که آیا کادر ورودی خالی مجاز است یا خیر. به طور پیش‌فرض، کادرهای ورودی خالی نمره‌دهی نمی‌شوند (قالب نامعتبر).                                                                                                                                                               |
+| `answers-name`   | string                  | —               | نام متغیر برای ذخیره داده‌ها در آن. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد، یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود.                                                                                                    |
+| `aria-label`     | string                  | —               | یک برچسب دسترس‌پذیر برای ورودی.                                                                                                                                                                                                                                      |
+| `base`           | integer                 | 10              | مبنای مورد استفاده برای تجزیه و نمایش پاسخ، یا مقدار ویژه 0 (به زیر مراجعه کنید).                                                                                                                                                                                    |
+| `blank-value`    | string                  | 0 (zero)        | مقداری که در صورت خالی ماندن המان به عنوان پاسخ استفاده می‌شود. فقط در صورتی اعمال می‌شود که `allow-blank` برابر `true` باشد. باید `""` (رشته خالی) یا یک عدد صحیح باشد.                                                                                                                             |
+| `correct-answer` | string                  | به توضیحات مراجعه کنید | پاسخ صحیح برای نمره‌دهی. پیش‌فرض برابر `data["correct_answers"][answers-name]` است. اگر `base` مشخص شده باشد، این پاسخ باید در همان مبنای ارائه‌شده داده شود. پاسخ صحیح خالی (`correct-answer=""`) فقط زمانی معتبر است که `allow-blank="true"` و `blank-value=""` باشند. |
+| `display`        | `"block"` یا `"inline"` | `"inline"`      | نحوه نمایش فیلد ورودی.                                                                                                                                                                                                                                         |
+| `initial-value`  | string                  | —               | مقدار اولیه برای پر کردن پیش‌فرض کادر ورودی در اولین باری که رندر می‌شود.                                                                                                                                                                                                   |
+| `label`          | string                  | —               | یک پیشوند برای نمایش قبل از کادر ورودی (مثلاً `label="$x =$"`).                                                                                                                                                                                                       |
+| `placeholder`    | string                  | به توضیحات مراجعه کنید | متن جای‌نگهدار سفارشی. در صورت عدم تنظیم، اگر `base` برابر ۱۰ یا ۰ باشد به طور پیش‌فرض `"integer"` است، در غیر این صورت `"integer in base <base>"`.                                                                                                                                                |
+| `show-help-text` | boolean                 | true            | نمایش علامت سوال در انتهای ورودی که پارامترهای ورودی مورد نیاز را نمایش می‌دهد.                                                                                                                                                                                    |
+| `show-score`     | boolean                 | true            | مشخص می‌کند که آیا نشان نمره در کنار این المان نمایش داده شود یا خیر.                                                                                                                                                                                                                   |
+| `size`           | integer                 | 35              | اندازه کادر ورودی.                                                                                                                                                                                                                                                  |
+| `suffix`         | string                  | —               | یک پسوند برای نمایش پس از کادر ورودی (مثلاً `suffix="items"`).                                                                                                                                                                                                       |
+| `weight`         | integer                 | 1               | وزنی که هنگام محاسبه میانگین وزنی نمره روی المان‌ها استفاده می‌شود.                                                                                                                                                                                                    |
 
-## Specifying a non-trivial base
+## مشخص کردن یک مبنای غیربدیهی
 
-By default, the values are interpreted in base 10. The `base` argument may also be used, with a value between 2 and 36, to indicate a different base to interpret the student input, as well as to print the final result.
+به طور پیش‌فرض، مقادیر در مبنای ۱۰ تفسیر می‌شوند. از آرگومان `base` نیز می‌توان با مقداری بین ۲ تا ۳۶ برای مشخص کردن مبنایی متفاوت جهت تفسیر ورودی دانشجو و همچنین چاپ نتیجه نهایی استفاده کرد.
 
-The `base` argument can also accept a special value of 0. In this case, the values will by default be interpreted in base 10, however the student has the option of using different prefixes to indicate a value in a different format:
+آرگومان `base` همچنین می‌تواند مقدار ویژه ۰ را بپذیرد. در این حالت، مقادیر به طور پیش‌فرض در مبنای ۱۰ تفسیر می‌شوند، اما دانشجو این امکان را دارد که از پیشوندهای متفاوتی برای تعیین مقدار در قالبی متفاوت استفاده کند:
 
-- The prefixes `0x` and `0X` can be used for base-16 values (e.g., `0x1a`);
-- The prefixes `0b` and `0B` can be used for base-2 values (e.g., `0b1101`);
-- The prefixes `0o` and `0O` can be used for base-8 values (e.g., `0o777`).
+- پیشوندهای `0x` و `0X` می‌توانند برای مقادیر در مبنای ۱۶ استفاده شوند (مثلاً `0x1a`)؛
+- پیشوندهای `0b` و `0B` می‌توانند برای مقادیر در مبنای ۲ استفاده شوند (مثلاً `0b1101`)؛
+- پیشوندهای `0o` و `0O` می‌توانند برای مقادیر در مبنای ۸ استفاده شوند (مثلاً `0o777`).
 
-## Integer range
+## محدوده عدد صحیح
 
-pl-integer-input can accept integers of unbounded size, however the correct answer will only be stored as the Python `int` if it is between -9007199254740991 and +9007199254740991 (between -(2^53 - 1) and +(2^53 - 1)). Otherwise, the correct answer will be stored as a string. This distinction is important in `server.py` scripts for `parse()` and `grade()`, as well as downloaded assessment results.
+المان `pl-integer-input` می‌تواند اعداد صحیح با اندازه نامحدود را بپذیرد، با این حال پاسخ صحیح تنها در صورتی به عنوان یک `int` پایتون ذخیره می‌شود که بین ۹۰۰۷۱۹۹۲۵۴۷۴۰۹۹۱- و ۹۰۰۷۱۹۹۲۵۴۷۴۰۹۹۱+ باشد (بین $-(2^{53} - 1)$ و $+(2^{53} - 1)$). در غیر این صورت، پاسخ صحیح به عنوان یک رشته ذخیره خواهد شد. این تمایز در اسکریپت‌های `server.py` برای `parse()` و `grade()` و همچنین نتایج دانلودشده ارزیابی اهمیت دارد.
 
-Note that answers can include underscores which are ignored (i.e., `1_000` will be parsed as `1000`).
+توجه داشته باشید که پاسخ‌ها می‌توانند شامل خط زیرین (underscore) باشند که نادیده گرفته می‌شوند (یعنی `1_000` به صورت `1000` تجزیه خواهد شد).
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/integerInput]
 
-## See also
+## همچنین ببینید
 
-- [`pl-number-input` for numeric input](pl-number-input.md)
-- [`pl-symbolic-input` for mathematical expression input](pl-symbolic-input.md)
-- [`pl-string-input` for string input](pl-string-input.md)
+- [`pl-number-input` برای ورودی عددی](pl-number-input.md)
+- [`pl-symbolic-input` برای ورودی عبارت‌های جبری و ریاضی](pl-symbolic-input.md)
+- [`pl-string-input` برای ورودی رشته](pl-string-input.md)
 
 ---
 

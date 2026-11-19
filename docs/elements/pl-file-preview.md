@@ -1,25 +1,25 @@
-# `pl-file-preview` element
+# المان `pl-file-preview`
 
-Provides an in-browser list of all files submitted by a student through submission elements like `pl-file-editor`, `pl-file-upload`, and `pl-rich-text-editor`, or through [workspaces](../workspaces/index.md). A preview of each file's content is also displayed for text-only files (including source code), images, PDF files and Jupyter Notebooks. It is commonly used in the submission panel in conjunction with the `pl-external-grader-results` element, though it can also be used when manual or internal grading is used to grade files.
+فهرستی از تمام فایل‌های ارسال‌شده توسط دانشجو از طریق المان‌های ارسال پاسخ مانند `pl-file-editor`، `pl-file-upload` و `pl-rich-text-editor` یا از طریق [محیط‌های کاری (workspaces)](../workspaces/index.md) را درون مرورگر فراهم می‌کند. همچنین پیش‌نمایشی از محتوای هر فایل برای فایل‌های متنی (شامل کد منبع)، تصاویر، فایل‌های PDF و نوت‌بوک‌های ژوپیتر (Jupyter Notebooks) نمایش داده می‌شود. این المان معمولاً در پنل ارسال پاسخ (submission panel) در کنار المان `pl-external-grader-results` استفاده می‌شود، هرچند زمانی که از نمره‌دهی دستی یا داخلی برای نمره‌دهی فایل‌ها استفاده می‌شود نیز می‌تواند به کار رود.
 
-## Sample element
+## نمونه المان
 
 ```html
 <pl-file-preview></pl-file-preview>
 ```
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/fileEditor]
 - [demo/autograder/codeEditor]
 
-## See also
+## همچنین ببینید
 
-- [`pl-file-editor` to provide an in-browser code environment](pl-file-editor.md)
-- [`pl-file-upload` to receive files as a submission](pl-file-upload.md)
-- [`pl-external-grader-results` to include output from autograded code](pl-external-grader-results.md)
-- [`pl-code` to display blocks of code with syntax highlighting](pl-code.md)
-- [`pl-xss-safe` to display HTML or Markdown code provided by students](pl-xss-safe.md)
+- [`pl-file-editor` برای فراهم کردن محیط کدنویسی درون مرورگر](pl-file-editor.md)
+- [`pl-file-upload` برای دریافت فایل‌ها به عنوان پاسخ ارسالی](pl-file-upload.md)
+- [`pl-external-grader-results` برای گنجاندن خروجی حاصل از کد تصحیح‌شده به صورت خودکار](pl-external-grader-results.md)
+- [`pl-code` برای نمایش بلوک‌های کد با برجسته‌سازی نحو](pl-code.md)
+- [`pl-xss-safe` برای نمایش کدهای HTML یا Markdown ارائه‌شده توسط دانشجویان](pl-xss-safe.md)
 
 ---
 

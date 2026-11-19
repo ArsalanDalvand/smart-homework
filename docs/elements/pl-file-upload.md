@@ -1,91 +1,80 @@
-# `pl-file-upload` element
+# المان `pl-file-upload`
 
-Provides a way to accept file uploads as part of an answer. They will be stored in the format expected by externally graded questions.
+روشی برای پذیرش آپلود فایل به عنوان بخشی از پاسخ ارائه می‌دهد. فایل‌ها در قالبی که مورد انتظار سوالات نمره‌دهی‌شده به صورت خارجی (externally graded) است ذخیره خواهند شد.
 
-!!! note
+!!! note "نکته"
 
-    There is a file size limit of **5 MB per answer**. This limit is not customizable as larger
-    requests will be rejected by the server. For the same reason, it is also not possible to bypass the
-    limit by using multiple `pl-file-upload` elements in the same question. To avoid unexpected errors or
-    potentially misleading error messages for large file uploads, we recommend not using more than one
-    `pl-file-upload` element per question.
+    محدودیت حجم فایل **۵ مگابایت به ازای هر پاسخ** وجود دارد. این محدودیت قابل سفارشی‌سازی نیست زیرا درخواست‌های بزرگ‌تر توسط سرور رد خواهند شد. به همین دلیل، دور زدن این محدودیت با استفاده از چند المان `pl-file-upload` در یک سوال نیز امکان‌پذیر نیست. برای جلوگیری از خطاهای غیرمنتظره یا پیام‌های خطای گمراه‌کننده هنگام آپلود فایل‌های بزرگ، توصیه می‌کنیم در هر سوال بیش از یک المان `pl-file-upload` استفاده نکنید.
 
-## Sample element
+## نمونه المان
 
-![Screenshot of the pl-file-upload element](pl-file-upload.png)
+![تصویر المان pl-file-upload](pl-file-upload.png)
 
 ```html title="question.html"
 <pl-file-upload file-names="foo.py, bar.c, filename with\, comma.txt"></pl-file-upload>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute                | Type     | Default | description                                                                                                                                                                                                                                                   |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | ------------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `file-names`             | CSV list | ""      | List of files that must be submitted. Commas in a filename should be escaped with a backslash, and filenames cannot contain quotes.                                                                                                                           |
-| `file-patterns`          | CSV list | ""      | List of file name patterns (see below) that must be submitted. For each pattern, exactly one matching file must be uploaded. Commas and special pattern character should be escaped with a backslash, and filenames cannot contain quotes.                    |
-| `optional-file-names`    | CSV list | ""      | List of files that can be submitted, but are optional. Commas should be escaped with a backslash, and filenames cannot contain quotes.                                                                                                                        |
-| `optional-file-patterns` | CSV list | ""      | List of file name patterns (see below) that can be submitted, but are optional. For each pattern, any number of matching files can be uploaded. Commas and special pattern character should be escaped with a backslash, and filenames cannot contain quotes. |
+| `file-names`             | CSV list | ""      | فهرستی از فایل‌هایی که باید ارسال شوند. کاماها در نام فایل باید با یک بک‌اسلش اسکیپ شوند، و نام فایل‌ها نمی‌تواند شامل علامت نقل‌قول باشد.                                                                                                                           |
+| `file-patterns`          | CSV list | ""      | فهرستی از الگوهای نام فایل (به زیر مراجعه کنید) که باید ارسال شوند. برای هر الگو، دقیقاً یک فایل منطبق باید آپلود شود. کاماها و کاراکترهای الگوی خاص باید با یک بک‌اسلش اسکیپ شوند، و نام فایل‌ها نمی‌تواند شامل علامت نقل‌قول باشد.                    |
+| `optional-file-names`    | CSV list | ""      | فهرستی از فایل‌هایی که ارسال آن‌ها اختیاری است. کاماها باید با یک بک‌اسلش اسکیپ شوند، و نام فایل‌ها نمی‌تواند شامل علامت نقل‌قول باشد.                                                                                                                        |
+| `optional-file-patterns` | CSV list | ""      | فهرستی از الگوهای نام فایل (به زیر مراجعه کنید) که ارسال آن‌ها اختیاری است. برای هر الگو، هر تعداد فایل منطبق می‌تواند آپلود شود. کاماها و کاراکترهای الگوی خاص باید با یک بک‌اسلش اسکیپ شوند، و نام فایل‌ها نمی‌تواند شامل علامت نقل‌قول باشد. |
 
-## Supported wildcard patterns
+## الگوهای عمومی (Wildcard) پشتیبانی‌شده
 
-The `file-patterns` and `optional-file-patterns` attributes support a number of wildcards to allow a range of file names:
+ویژگی‌های `file-patterns` و `optional-file-patterns` از چندین نویسه عام (wildcard) برای پذیرش طیفی از نام‌های فایل پشتیبانی می‌کنند:
 
-- The `?` placeholder allows a single wildcard character. For example, `solution?.txt` allows
-  files like "solution1.txt", "solution2.txt", and so on, but not "solution10.txt".
-- The `*` placeholder allows an arbitrary number of wildcard characters. For example, `*.txt`
-  allows files like "solution.txt", "my_file.txt", and also ".txt".
-- The `[seq]` placeholder allows a single character from the set of options listed inside the square
-  brackets. For example, `file_[abc].txt` allows "file_a.txt", "file_b.txt" and "file_c.txt" (as well
-  as their uppercase equivalents like "file_A.txt", since matching is case-insensitive), but not
-  "file_x.txt".
-- The `[seq]` placeholder also supports ranges like "a-z" or "0-9". For example, `file[0-9].txt`
-  allows "file5.txt", but not "filex.txt". Ranges can also be combined. For example,`file[0-9a-z].txt` allows a single alphanumeric
-  character and therefore both "file5.txt" and "filex.txt".
+- جای‌نگهدار `?` یک کاراکتر عام تکی را مجاز می‌داند. برای مثال، `solution?.txt` فایل‌هایی مانند "solution1.txt"، "solution2.txt" و غیره را مجاز می‌داند، اما "solution10.txt" را مجاز نمی‌داند.
+- جای‌نگهدار `*` تعداد دلخواهی از کاراکترهای عام را مجاز می‌داند. برای مثال، `*.txt` فایل‌هایی مانند "solution.txt"، "my_file.txt" و همچنین ".txt" را مجاز می‌داند.
+- جای‌نگهدار `[seq]` یک کاراکتر تکی از مجموعه گزینه‌های ذکرشده در داخل کروشه‌ها را مجاز می‌داند. برای مثال، `file_[abc].txt` فایل‌های "file_a.txt"، "file_b.txt" و "file_c.txt" (و همچنین معادل‌های حروف بزرگ آن‌ها مانند "file_A.txt"، زیرا تطبیق به بزرگی و کوچکی حروف حساس نیست) را مجاز می‌داند، اما "file_x.txt" را مجاز نمی‌داند.
+- جای‌نگهدار `[seq]` همچنین از بازه‌هایی مانند "a-z" یا "0-9" پشتیبانی می‌کند. برای مثال، `file[0-9].txt` فایل "file5.txt" را مجاز می‌داند، اما "filex.txt" را مجاز نمی‌داند. بازه‌ها را نیز می‌توان ترکیب کرد. برای مثال، `file[0-9a-z].txt` یک کاراکتر حرفی-عددی تکی را مجاز می‌داند و بنابراین هر دو فایل "file5.txt" و "filex.txt" را می‌پذیرد.
 
-!!! note
+!!! note "نکته"
 
-    `file-patterns` and `optional-file-patterns` accepts [fnmatch](https://docs.python.org/3/library/fnmatch.html) file globs, not regular expressions. Brace expansion (`{foo,bar}.txt`) is not currently supported.
+    `file-patterns` و `optional-file-patterns` الگوهای نام فایل بر اساس [fnmatch](https://docs.python.org/3/library/fnmatch.html) را می‌پذیرند، نه عبارت‌های منظم (regular expressions). بسط با آکولاد (`{foo,bar}.txt`) در حال حاضر پشتیبانی نمی‌شود.
 
-!!! note
+!!! note "نکته"
 
-    Pattern matching is case-insensitive, so a pattern like `file[0-9a-z].txt` also matches uppercase characters (e.g. "fileX.txt"). Files matched by a pattern keep the case of the uploaded file name.
+    تطبیق الگو به بزرگی و کوچکی حروف حساس نیست (case-insensitive)، بنابراین الگویی مانند `file[0-9a-z].txt` با کاراکترهای بزرگ نیز تطبیق دارد (مانند "fileX.txt"). فایل‌های تطبیق‌یافته با یک الگو، بزرگی و کوچکی حروف نام فایل آپلودشده را حفظ می‌کنند.
 
-| File pattern       | Allowed :white_check_mark:                        | Disallowed :x:                   |
+| الگوی فایل | مجاز :white_check_mark: | غیرمجاز :x: |
 | ------------------ | ------------------------------------------------- | -------------------------------- |
-| `solution?.txt`    | `solution1.txt`, `solution2.txt`, `solutionA.txt` | `solution10.txt`, `solution.txt` |
-| `*.txt`            | `solution.txt`, `my_file.txt`, `.txt`             | `solution.py`, `my_file`         |
-| `file_[abc].txt`   | `file_a.txt`, `file_b.txt`, `file_c.txt`          | `file_x.txt`, `file_ab.txt`      |
-| `file[0-9].txt`    | `file5.txt`, `file0.txt`, `file9.txt`             | `filex.txt`, `file10.txt`        |
-| `file[0-9a-z].txt` | `file5.txt`, `filex.txt`, `fileX.txt`             | `file10.txt`, `file_.txt`        |
-| `[!_]*.py`         | `solution.py`, `my_file.py`                       | `_foo.py`, `file.txt`            |
+| `solution?.txt`    | `solution1.txt`، `solution2.txt`، `solutionA.txt` | `solution10.txt`، `solution.txt` |
+| `*.txt`            | `solution.txt`، `my_file.txt`، `.txt`             | `solution.py`، `my_file`         |
+| `file_[abc].txt`   | `file_a.txt`، `file_b.txt`، `file_c.txt`          | `file_x.txt`، `file_ab.txt`      |
+| `file[0-9].txt`    | `file5.txt`، `file0.txt`، `file9.txt`             | `filex.txt`، `file10.txt`        |
+| `file[0-9a-z].txt` | `file5.txt`، `filex.txt`، `fileX.txt`             | `file10.txt`، `file_.txt`        |
+| `[!_]*.py`         | `solution.py`، `my_file.py`                       | `_foo.py`، `file.txt`            |
 
-If file names or patterns overlap, uploaded files are first used to fill the required file names in `file-names`. Next, files that match a required pattern in `file-patterns` are used to fill that pattern. Any remaining uploaded files are accepted if they match either a name in `optional-file-names` or a pattern in `optional-file-patterns`.
+اگر نام‌ها یا الگوهای فایل هم‌پوشانی داشته باشند، فایل‌های آپلودشده ابتدا برای پر کردن نام‌های فایل الزامی در `file-names` استفاده می‌شوند. سپس، فایل‌هایی که با یک الگوی الزامی در `file-patterns` مطابقت دارند برای پر کردن آن الگو به کار می‌روند. هر فایل آپلودشده باقی‌مانده در صورتی پذیرفته می‌شود که با نامی در `optional-file-names` یا با الگویی در `optional-file-patterns` مطابقت داشته باشد.
 
-Required files (`file-names` or `file-patterns`) and optional files (`optional-file-names` or `optional-file-patterns`) are handled identically, so if you need to distinguish between the two sets, you should ensure that the patterns don't overlap.
+فایل‌های الزامی (`file-names` یا `file-patterns`) و فایل‌های اختیاری (`optional-file-names` یا `optional-file-patterns`) به طور یکسان پردازش می‌شوند، بنابراین اگر لازم است بین این دو مجموعه تمایز قائل شوید، باید اطمینان حاصل کنید که الگوها هم‌پوشانی ندارند.
 
-!!! tip
+!!! tip "نکته تکمیلی"
 
-    The same required pattern in `file-patterns` can be repeated, for example `*.py,*.py` means that exactly two Python files must be uploaded. However, different required patterns should not overlap (e.g. `*.py,solution.*`) because files are assigned to a matching pattern arbitrarily, and this can lead to unintended behavior.
+    یک الگوی الزامی یکسان در `file-patterns` می‌تواند تکرار شود؛ برای مثال `*.py,*.py` بدین معناست که دقیقاً دو فایل پایتون باید آپلود شوند. با این حال، الگوهای الزامی متفاوت نباید هم‌پوشانی داشته باشند (مثلاً `*.py,solution.*`) زیرا فایل‌ها به صورت تصادفی به الگوی منطبق اختصاص می‌یابند، و این می‌تواند منجر به رفتار ناخواسته شود.
 
-## Details
+## جزئیات
 
-The `pl-file-upload` element and the contents of the uploaded file(s) are only displayed by default in the question panel. If the contents are expected to be listed in the submission panel, they should be explicitly added using other elements such as [`pl-file-preview`](pl-file-preview.md) or [`pl-xss-safe`](pl-xss-safe.md).
+المان `pl-file-upload` و محتویات فایل(های) آپلودشده به طور پیش‌فرض فقط در پنل سوال نمایش داده می‌شوند. اگر انتظار می‌رود محتویات در پنل ارسال پاسخ (submission panel) فهرست شوند، باید صریحاً با استفاده از المان‌های دیگر مانند [`pl-file-preview`](pl-file-preview.md) یا [`pl-xss-safe`](pl-xss-safe.md) اضافه شوند.
 
-AI grading supports text and source-code files (including `.py`, `.cpp`, `.java`, and `.txt`) as well as PDF, JPEG, PNG, and WebP files submitted with `pl-file-upload`. Text is decoded from UTF-8 (with or without a byte-order mark) or UTF-16 (with a byte-order mark) and sent with its filename. Other binary formats cause an explicit AI grading error; they can still be used with manual or external grading. Questions can combine `pl-file-upload` with other supported elements such as [`pl-file-editor`](pl-file-editor.md) and [`pl-image-capture`](pl-image-capture.md); each distinct submitted file is sent to the model once. See [supported file formats](../aiGrading/index.md#submitted-file-formats) for encoding details and limitations.
+نمره‌دهی با هوش مصنوعی (AI grading) از فایل‌های متنی و کد منبع (شامل `.py`، `.cpp`، `.java` و `.txt`) و همچنین فایل‌های PDF، JPEG، PNG و WebP که با `pl-file-upload` ارسال می‌شوند پشتیبانی می‌کند. متن از UTF-8 (با یا بدون نشانگر ترتیب بایت - BOM) یا UTF-16 (با نشانگر ترتیب بایت) رمزگشایی شده و همراه با نام فایل ارسال می‌شود. سایر فرمت‌های باینری باعث خطای صریح در نمره‌دهی هوش مصنوعی می‌شوند؛ آن‌ها همچنان می‌توانند با نمره‌دهی دستی یا خارجی استفاده شوند. سوالات می‌توانند `pl-file-upload` را با سایر المان‌های پشتیبانی‌شده مانند [`pl-file-editor`](pl-file-editor.md) و [`pl-image-capture`](pl-image-capture.md) ترکیب کنند؛ هر فایل ارسالی متمایز تنها یک بار به مدل ارسال می‌شود. برای جزئیات رمزگذاری و محدودیت‌ها به [فرمت‌های فایل پشتیبانی‌شده](../aiGrading/index.md#submitted-file-formats) مراجعه کنید.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [demo/autograder/codeUpload]
 - [demo/manualGrade/codeUpload]
 
-## See also
+## همچنین ببینید
 
-- [`pl-file-editor` to provide an in-browser code environment](pl-file-editor.md)
-- [`pl-external-grader-results` to include output from autograded code](pl-external-grader-results.md)
-- [`pl-code` to display blocks of code with syntax highlighting](pl-code.md)
-- [`pl-string-input` for receiving a single string value](pl-string-input.md)
-- [AI grading for file submissions](../aiGrading/index.md)
+- [`pl-file-editor` برای فراهم کردن محیط کدنویسی درون مرورگر](pl-file-editor.md)
+- [`pl-external-grader-results` برای گنجاندن خروجی حاصل از کد تصحیح‌شده به صورت خودکار](pl-external-grader-results.md)
+- [`pl-code` برای نمایش بلوک‌های کد با برجسته‌سازی نحو](pl-code.md)
+- [`pl-string-input` برای دریافت یک مقدار رشته‌ای تکی](pl-string-input.md)
+- [نمره‌دهی با هوش مصنوعی برای فایل‌های ارسالی](../aiGrading/index.md)
 
 ---
 

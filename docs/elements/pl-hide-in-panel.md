@@ -1,8 +1,8 @@
-# `pl-hide-in-panel` element
+# المان `pl-hide-in-panel`
 
-Hide the contents so that it is **not** displayed in specific panels ("question", "submission", or "answer").
+محتوا را پنهان می‌کند به طوری که در پنل‌های مشخصی ("question"، "submission" یا "answer") نمایش داده **نمی‌شود**.
 
-## Sample element
+## نمونه المان
 
 ```html title="question.html"
 <pl-hide-in-panel submission="true" answer="true">
@@ -10,33 +10,31 @@ Hide the contents so that it is **not** displayed in specific panels ("question"
 </pl-hide-in-panel>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute    | Type    | Default | Description                                                   |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | ------------ | ------- | ------- | ------------------------------------------------------------- |
-| `answer`     | boolean | false   | Whether to hide the element contents in the answer panel.     |
-| `question`   | boolean | false   | Whether to hide the element contents in the question panel.   |
-| `submission` | boolean | false   | Whether to hide the element contents in the submission panel. |
+| `answer`     | boolean | false   | مشخص می‌کند که آیا محتوای المان در پنل پاسخ و راه‌حل (answer panel) پنهان شود یا خیر.     |
+| `question`   | boolean | false   | مشخص می‌کند که آیا محتوای المان در پنل سوال (question panel) پنهان شود یا خیر.   |
+| `submission` | boolean | false   | مشخص می‌کند که آیا محتوای المان در پنل ارسال پاسخ (submission panel) پنهان شود یا خیر. |
 
-## Details
+## جزئیات
 
-Hide the element contents in those panels for which the corresponding
-attribute is `true`. This is the reverse of
-[`pl-question-panel`](pl-question-panel.md),
-[`pl-submission-panel`](pl-submission-panel.md), or
-[`pl-answer-panel`](pl-answer-panel.md), all of which explicitly show the
-element contents only in a specific panel.
+محتوای المان را در پنل‌هایی که ویژگی مربوط به آن‌ها برابر `true` است پنهان می‌کند. این المان معکوس المان‌های
+[`pl-question-panel`](pl-question-panel.md)،
+[`pl-submission-panel`](pl-submission-panel.md) یا
+[`pl-answer-panel`](pl-answer-panel.md) عمل می‌کند که همگی محتوای المان را صریحاً فقط در یک پنل خاص نشان می‌دهند.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/panels]
 
-## See also
+## همچنین ببینید
 
-- [`pl-question-panel` for displaying the question prompt.](pl-question-panel.md)
-- [`pl-submission-panel` for changing how a submitted answer is displayed.](pl-submission-panel.md)
-- [`pl-answer-panel` for displaying the question's solution.](pl-answer-panel.md)
-- [`pl-external-grader-results` for showing the results from an externally graded code question.](pl-external-grader-results.md)
+- [`pl-question-panel` برای نمایش صورت سوال.](pl-question-panel.md)
+- [`pl-submission-panel` برای تغییر نحوه نمایش پاسخ ارسال‌شده.](pl-submission-panel.md)
+- [`pl-answer-panel` برای نمایش پاسخ و راه‌حل سوال.](pl-answer-panel.md)
+- [`pl-external-grader-results` برای نمایش نتایج حاصل از یک سوال کدنویسی تصحیح‌شده به صورت خارجی.](pl-external-grader-results.md)
 
 ---
 

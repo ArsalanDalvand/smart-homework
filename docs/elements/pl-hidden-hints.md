@@ -1,15 +1,13 @@
-# `pl-hidden-hints` element
+# المان `pl-hidden-hints`
 
-Display progressive hints that become accessible as the number of student submissions increases for the current variant.
-Hints are revealed based on the total number of valid submissions for the variant, both correct or incorrect. Invalid submissions (e.g., those with an incorrect format) are not counted.
-Hints are only open on page load when they are first revealed (when first reaching the desired submission count).
-Otherwise, hints start closed and must be opened by the user. The submission counter is reset when new variants are
-generated. Note that **this element does not reveal new hints across variants.**
+نمایش راهنمایی‌های تدریجی که با افزایش تعداد پاسخ‌های ارسالی دانشجو برای گونه (واریانت) فعلی در دسترس قرار می‌گیرند.
+راهنمایی‌ها بر اساس تعداد کل ارسال‌های معتبر برای گونه، چه درست و چه نادرست، آشکار می‌شوند. ارسال‌های نامعتبر (مانند مواردی با فرمت نادرست) شمرده نمی‌شوند.
+راهنمایی‌ها در هنگام بارگذاری صفحه فقط زمانی به صورت باز نمایش داده می‌شوند که برای نخستین بار آشکار شده باشند (هنگامی که برای اولین بار به تعداد ارسال‌های مورد نظر برسند).
+در غیر این صورت، راهنمایی‌ها به حالت بسته شروع می‌شوند و باید توسط کاربر باز شوند. شمارنده ارسال‌ها هنگام ایجاد گونه‌های جدید بازنشانی (ریست) می‌شود. توجه داشته باشید که **این المان راهنمایی‌های جدید را در بین گونه‌های مختلف آشکار نمی‌کند.**
 
-Best used in situations where there is a penalty for more submissions to a given variant. This prevents students from
-spamming incorrect submissions to reveal all hints right away.
+بهترین کاربرد آن در موقعیت‌هایی است که برای ارسال‌های بیشتر به یک گونه خاص جریمه (کسر نمره) وجود دارد. این کار از ارسال مکرر و اسپم‌گونه پاسخ‌های نادرست توسط دانشجویان برای مشاهده فوری همه راهنمایی‌ها جلوگیری می‌کند.
 
-## Sample element
+## نمونه المان
 
 ```html title="question.html"
 <pl-hidden-hints>
@@ -25,30 +23,28 @@ spamming incorrect submissions to reveal all hints right away.
 </pl-hidden-hints>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-For the inner `pl-hint` tag:
+برای تگ درونی `pl-hint`:
 
-| Attribute               | Type   | Default | Description                                                                                                                                                                                                 |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | ----------------------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `hint-name`             | string | —       | Custom heading to display for the given hint. If not set, then displays a default heading including the hint number.                                                                                        |
-| `show-after-submission` | int    | —       | Number of submissions on the current variant needed before the hint is accessible. If not set, hint is always accessible. **Should only be set for questions that allow multiple submissions per variant.** |
+| `hint-name`             | string | —       | عنوان سفارشی برای نمایش برای راهنمای مربوطه. اگر تنظیم نشود، یک عنوان پیش‌فرض شامل شماره راهنما نمایش داده می‌شود.                                                                                        |
+| `show-after-submission` | int    | —       | تعداد ارسال‌ها در گونه فعلی که پیش از در دسترس قرار گرفتن راهنما مورد نیاز است. در صورت عدم تنظیم، راهنما همیشه در دسترس است. **فقط باید برای سوالاتی تنظیم شود که اجازه چندین ارسال در هر گونه را می‌دهند.** |
 
-## Details
+## جزئیات
 
-Add hints to a variant that are revealed with more submissions using the `show-after-submission` attribute. By default, hints without
-`show-after-submission` set are always shown. Hints with the same `show-after-submission` appear in the order they're written in the
-question HTML.
+با استفاده از ویژگی `show-after-submission`، راهنمایی‌هایی را به یک گونه اضافه کنید که با ارسال‌های بیشتر آشکار می‌شوند. به طور پیش‌فرض، راهنمایی‌های بدون مقدار `show-after-submission` همیشه نشان داده می‌شوند. راهنمایی‌هایی با مقدار یکسان `show-after-submission` به همان ترتیبی که در HTML سوال نوشته شده‌اند نشان داده می‌شوند.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/hiddenHints]
 
-## See also
+## همچنین ببینید
 
-- [`pl-question-panel` for displaying the question prompt.](pl-question-panel.md)
-- [`pl-submission-panel` for changing how a submitted answer is displayed.](pl-submission-panel.md)
-- [`pl-hide-in-panel` to hide contents in one or more display panels.](pl-hide-in-panel.md)
+- [`pl-question-panel` برای نمایش صورت سوال.](pl-question-panel.md)
+- [`pl-submission-panel` برای تغییر نحوه نمایش پاسخ ارسال‌شده.](pl-submission-panel.md)
+- [`pl-hide-in-panel` برای پنهان کردن محتوا در یک یا چند پنل نمایشی.](pl-hide-in-panel.md)
 
 ---
 

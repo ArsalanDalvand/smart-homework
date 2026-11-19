@@ -1,52 +1,52 @@
-# `pl-image-capture` element
+# المان `pl-image-capture`
 
-Provides a way for students to capture and submit an image as part of their answer using a local camera like a webcam, an external device such as a mobile phone or tablet camera, or an image already stored on their device.
+روشی را برای دانشجویان فراهم می‌کند تا تصویری را به عنوان بخشی از پاسخ خود با استفاده از دوربین محلی مانند وب‌کم، یک دستگاه خارجی مانند دوربین گوشی موبایل یا تبلت، یا تصویری که از قبل در دستگاه آن‌ها ذخیره شده است، ثبت و ارسال کنند.
 
-## Sample element
+## نمونه المان
 
-![Screenshot of the pl-image-capture element](pl-image-capture.png)
+![تصویر المان pl-image-capture](pl-image-capture.png)
 
 ```html title="question.html"
 <pl-image-capture file-name="solution.jpeg" mobile-capture-enabled="true"></pl-image-capture>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute                | Type    | Default | description                                                                                                                                                                                                                                                                                                  |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | ------------------------ | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `allow-blank`            | boolean | false   | When `true`, students can submit without capturing an image for this element. This is useful when a question has multiple `pl-image-capture` elements and students may not need all of them (e.g., some students fit their work in fewer images than others).                                                |
-| `file-name`              | string  | —       | The name under which the captured image will be saved. This must end with `.jpeg` or `.jpg`, and be unique within a single question.                                                                                                                                                                         |
-| `manual-upload-enabled`  | boolean | true    | When `true`, students can click "Upload image" to upload JPEG, PNG, HEIC, or HEIF images already stored on their device. All submitted images are stored as JPEGs. This is especially useful for students who write on a tablet and export their work as an image. Set to `false` to disable manual uploads. |
-| `mobile-capture-enabled` | boolean | true    | When `true`, students can click "Capture with mobile device" to scan a QR code on a phone or tablet to a page where they can capture an image of their work. In most cases, this `mobile-capture-enabled` should be true.                                                                                    |
+| `allow-blank`            | boolean | false   | در صورت `true` بودن، دانشجویان می‌توانند بدون ثبت تصویر برای این المان، پاسخ خود را ارسال کنند. این ویژگی زمانی مفید است که یک سوال چندین المان `pl-image-capture` داشته باشد و دانشجویان ممکن است به همه آن‌ها نیاز نداشته باشند (به عنوان مثال، برخی از دانشجویان پاسخ خود را در تعداد تصاویر کمتری نسبت به دیگران جای می‌دهند).                                                |
+| `file-name`              | string  | —       | نامی که تصویر ثبت‌شده تحت آن ذخیره خواهد شد. این مقدار باید به `.jpeg` یا `.jpg` ختم شود، و در یک سوال منفرد یکتا باشد.                                                                                                                                                                         |
+| `manual-upload-enabled`  | boolean | true    | در صورت `true` بودن، دانشجویان می‌توانند روی «Upload image» کلیک کنند تا تصاویر JPEG، PNG، HEIC یا HEIF را که از قبل روی دستگاهشان ذخیره شده است آپلود نمایند. همه تصاویر ارسالی به صورت JPEG ذخیره می‌شوند. این قابلیت به ویژه برای دانشجویانی مفید است که روی تبلت می‌نویسند و کار خود را به عنوان تصویر خروجی می‌گیرند. برای غیرفعال کردن آپلود دستی، مقدار آن را روی `false` قرار دهید. |
+| `mobile-capture-enabled` | boolean | true    | در صورت `true` بودن، دانشجویان می‌توانند روی «Capture with mobile device» کلیک کنند تا یک کد QR را روی گوشی یا تبلت اسکن کرده و به صفحه‌ای بروند که می‌توانند در آنجا تصویری از پاسخ خود بگیرند. در اکثر موارد، مقدار `mobile-capture-enabled` باید true باشد.                                                                                    |
 
-## Details
+## جزئیات
 
-The `pl-image-capture` element is particularly useful for capturing handwritten work on paper, such as sketches or step-by-step calculations.
+المان `pl-image-capture` به ویژه برای تصویربرداری از کارهای دست‌نویس روی کاغذ، مانند طرح‌ها یا محاسبات مرحله‌به‌مرحله بسیار مفید است.
 
-`pl-image-capture` allows users to submit images through their camera, whether it’s a local device like a webcam or an external device such as a mobile phone or tablet camera. Users can submit by capturing a new image with their camera or uploading existing images from their device. Manual uploads are enabled by default; set `manual-upload-enabled="false"` to disable them. `pl-image-capture` does not save images to their device.
+`pl-image-capture` به کاربران امکان می‌دهد تصاویر را از طریق دوربین خود، خواه یک دستگاه محلی مانند وب‌کم باشد یا یک دستگاه خارجی مانند دوربین تلفن همراه یا تبلت، ارسال کنند. کاربران می‌توانند با گرفتن یک تصویر جدید با دوربین خود یا آپلود تصاویر موجود از روی دستگاهشان، پاسخ را ارسال کنند. آپلودهای دستی به طور پیش‌فرض فعال هستند؛ برای غیرفعال کردن آن‌ها مقدار `manual-upload-enabled="false"` را قرار دهید. המان `pl-image-capture` تصاویر را در دستگاه آن‌ها ذخیره نمی‌کند.
 
-AI grading supports `pl-image-capture`. Handwritten mathematical work, graphs, diagrams, and any other free-form image submissions can be graded automatically. Questions can combine `pl-image-capture` with other supported elements such as [`pl-file-upload`](pl-file-upload.md); each distinct submitted file is sent to the model once. Learn more in the [AI grading docs](../aiGrading/index.md).
+نمره‌دهی با هوش مصنوعی (AI grading) از `pl-image-capture` پشتیبانی می‌کند. پاسخ‌های دست‌نویس ریاضی، نمودارها، دیاگرام‌ها و هرگونه تصویر ارسالی آزاد دیگر می‌توانند به صورت خودکار نمره‌دهی شوند. سوالات می‌توانند `pl-image-capture` را با سایر المان‌های پشتیبانی‌شده مانند [`pl-file-upload`](pl-file-upload.md) ترکیب کنند؛ هر فایل ارسالی متمایز تنها یک بار به مدل ارسال می‌شود. در [مستندات نمره‌دهی هوش مصنوعی](../aiGrading/index.md) اطلاعات بیشتری کسب کنید.
 
-A single question page can contain multiple `pl-image-capture` elements, each operating independently and saving files under its specified `file-name`.
+یک صفحه سوال منفرد می‌تواند شامل چندین المان `pl-image-capture` باشد که هر کدام به صورت مستقل عمل می‌کنند و فایل‌ها را تحت `file-name` مشخص‌شده خود ذخیره می‌نمایند.
 
-In manual grading mode, staff can view submitted images in the submission panel and, if added, through the [`pl-file-preview`](pl-file-preview.md) element, where submitted images will appear under their associated `file-name`.
+در حالت نمره‌دهی دستی، مصححان می‌توانند تصاویر ارسالی را در پنل ارسال پاسخ و در صورت اضافه شدن، از طریق المان [`pl-file-preview`](pl-file-preview.md) مشاهده کنند، جایی که تصاویر ارسالی زیر `file-name` مربوط به خود ظاهر می‌شوند.
 
-By default, the `mobile-capture-enabled` setting is `true`. We strongly recommend keeping mobile capture enabled for most questions to allow students to capture high-quality images easily.
+به طور پیش‌فرض، تنظیمات `mobile-capture-enabled` برابر `true` است. ما قویاً توصیه می‌کنیم برای اکثر سوالات تصویربرداری با موبایل را فعال نگه دارید تا دانشجویان بتوانند به راحتی تصاویری با کیفیت بالا ثبت کنند.
 
-Using mobile device capture in a local development environment requires additional setup. To use this feature locally, see the [Setting up external image capture locally](../dev-guide/configJson.md#setting-up-external-image-capture-locally) section of the server configuration guide.
+استفاده از تصویربرداری با دستگاه تلفن همراه در یک محیط توسعه محلی نیازمند راه‌اندازی و تنظیمات اضافی است. برای استفاده محلی از این قابلیت، بخش [راه‌اندازی تصویربرداری خارجی به صورت محلی](../dev-guide/configJson.md#setting-up-external-image-capture-locally) در راهنمای پیکربندی سرور را مشاهده کنید.
 
-## Accessibility
+## دسترس‌پذیری
 
-Manual uploads improve accessibility for students who have difficulty drawing or writing on paper, holding paper in view of a webcam, or positioning and holding a phone steady to photograph their work. Keeping manual uploads enabled lets students submit work created with digital tools or images captured using other equipment, such as a scanner.
+آپلود دستی دسترس‌پذیری را برای دانشجویانی بهبود می‌بخشد که برای کشیدن یا نوشتن روی کاغذ، نگه‌داشتن کاغذ در مقابل وب‌کم، یا نگه‌داشتن و ثابت نگه داشتن گوشی برای عکس گرفتن از کار خود با مشکل مواجه هستند. فعال نگه داشتن آپلود دستی به دانشجویان اجازه می‌دهد کارهای ایجادشده با ابزارهای دیجیتال یا تصاویر گرفته‌شده با تجهیزات دیگر مانند اسکنر را ارسال کنند.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/imageCapture]
 
-## See also
+## همچنین ببینید
 
-- [`pl-file-preview` to display previously submitted files](pl-file-preview.md)
-- [AI grading for handwritten and image submissions](../aiGrading/index.md)
+- [`pl-file-preview` برای نمایش فایل‌های ارسال‌شده قبلی](pl-file-preview.md)
+- [نمره‌دهی با هوش مصنوعی برای پاسخ‌های دست‌نویس و تصویری](../aiGrading/index.md)
 
 ---
 

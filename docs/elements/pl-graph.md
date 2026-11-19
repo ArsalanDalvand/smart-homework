@@ -1,10 +1,10 @@
-# `pl-graph` element
+# المان `pl-graph`
 
-Using the [PyGraphviz](https://pygraphviz.github.io/) library, create Graphviz DOT visualizations.
+با استفاده از کتابخانه [PyGraphviz](https://pygraphviz.github.io/)، مصورسازی‌های Graphviz DOT را ایجاد کنید.
 
-## Sample elements
+## نمونه المان‌ها
 
-![Screenshot of the pl-graph element using graphviz syntax](pl-graph1.png)
+![تصویر المان pl-graph با استفاده از نحو graphviz](pl-graph1.png)
 
 ```html title="question.html"
 <pl-graph> digraph G { A -> B } </pl-graph>
@@ -12,7 +12,7 @@ Using the [PyGraphviz](https://pygraphviz.github.io/) library, create Graphviz D
 
 ---
 
-![Screenshot of the pl-graph element using a matrix](pl-graph2.png)
+![تصویر المان pl-graph با استفاده از یک ماتریس](pl-graph2.png)
 
 ```html title="question.html"
 <pl-graph params-name="matrix" params-name-labels="labels"></pl-graph>
@@ -53,48 +53,48 @@ def generate(data):
     data["params"]["random-graph"] = pl.to_json(random_graph)
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute                   | Type    | Default              | Description                                                                                                                                                                                                                                                                           |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | --------------------------- | ------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `aria-label`                | string  | —                    | A short text alternative describing the graph, read by screen readers. See the [accessibility section](#accessibility).                                                                                                                                                               |
-| `aria-description`          | string  | —                    | A longer, more detailed text description of the graph, read by screen readers. Requires `aria-label`. See the [accessibility section](#accessibility).                                                                                                                                |
-| `directed`                  | boolean | true                 | Whether to treat edges in an adjacency matrix as directed or undirected. If set to false, then edges will be rendered as undirected. _The input adjacency matrix must be symmetric if this is set to false._                                                                          |
-| `directory`                 | string  | `"."`                | Directory where the source file is located. Can be `"."` (question directory), `"clientFilesCourse"`, or `"serverFilesCourse"`.                                                                                                                                                       |
-| `engine`                    | string  | dot                  | The rendering engine to use; supports `"circo"`, `"dot"`, `"fdp"`, `"neato"`, `"osage"`, and `"twopi"`.                                                                                                                                                                               |
-| `log-warnings`              | boolean | true                 | Whether to log warnings that occur during Graphviz rendering. Set to `false` to suppress nonfatal warnings; rendering errors are still reported.                                                                                                                                      |
-| `negative-weights`          | boolean | false                | Whether to recognize negative weights in an adjacency matrix. If set to false, then all weights at most 0 are ignored (not counted as an edge). If set to true, then all weights that are not `None` are recognized.                                                                  |
-| `params-name`               | string  | —                    | The name of a parameter containing the data to use as input. Data type to use depends on `params-type` attribute.                                                                                                                                                                     |
-| `params-name-labels`        | string  | —                    | When using an adjacency matrix, the parameter that contains the labels for each node.                                                                                                                                                                                                 |
-| `params-type`               | string  | `"adjacency-matrix"` | Which backend to use for rendering a graph from data. By default, only `adjacency-matrix` and `networkx` exist, but custom types can be added through extensions.                                                                                                                     |
-| `source-file-name`          | string  | —                    | Name of the file to load graph content from. If provided, the file content will be used instead of the element's inner HTML. Useful for complex graphs with special characters like angle brackets in record-based nodes.                                                             |
-| `weights`                   | boolean | —                    | When using an adjacency matrix, whether to show the edge weights. By default, will automatically show weights for stochastic matrices (when they are not binary `0`/`1`).                                                                                                             |
-| `weights-digits`            | integer | 2                    | When using an adjacency matrix, how many digits to show for the weights.                                                                                                                                                                                                              |
-| `weights-presentation-type` | string  | `"f"`                | Number display format for the weights when using an adjacency matrix. If `weights-presentation-type` is `"sigfig"`, each number is formatted using the `to_precision` module to digits significant figures. Otherwise, each number is formatted as `{:.{digits}{presentation-type}}`. |
+| `aria-label`                | string  | —                    | یک متن جایگزین کوتاه برای توصیف گراف که توسط صفحه‌خوان‌ها خوانده می‌شود. به [بخش دسترس‌پذیری](#دسترس‌پذیری) مراجعه کنید.                                                                                                                                                               |
+| `aria-description`          | string  | —                    | یک توصیف متنی طولانی‌تر و دقیق‌تر از گراف که توسط صفحه‌خوان‌ها خوانده می‌شود. نیازمند `aria-label` است. به [بخش دسترس‌پذیری](#دسترس‌پذیری) مراجعه کنید.                                                                                                                                |
+| `directed`                  | boolean | true                 | مشخص می‌کند که آیا یال‌ها در یک ماتریس مجاورت به صورت جهت‌دار در نظر گرفته شوند یا بدون جهت. در صورت تنظیم روی false، یال‌ها بدون جهت رندر می‌شوند. _اگر این مقدار روی false تنظیم شود، ماتریس مجاورت ورودی باید متقارن باشد._                                                                          |
+| `directory`                 | string  | `"."`                | پوشه‌ای که فایل منبع در آن قرار دارد. می‌تواند `"."` (پوشه سوال)، `"clientFilesCourse"` یا `"serverFilesCourse"` باشد.                                                                                                                                                       |
+| `engine`                    | string  | dot                  | موتور رندری که استفاده می‌شود؛ از `"circo"`، `"dot"`، `"fdp"`، `"neato"`، `"osage"` و `"twopi"` پشتیبانی می‌کند.                                                                                                                                                                               |
+| `log-warnings`              | boolean | true                 | مشخص می‌کند که آیا هشدارهایی که در حین رندر Graphviz رخ می‌دهند لاگ شوند یا خیر. برای متوقف کردن هشدارهای غیرمهلک روی `false` تنظیم کنید؛ خطاهای رندر همچنان گزارش می‌شوند.                                                                                                                                      |
+| `negative-weights`          | boolean | false                | مشخص می‌کند که آیا وزن‌های منفی در یک ماتریس مجاورت شناخته شوند یا خیر. در صورت تنظیم روی false، تمام وزن‌های حداکثر ۰ نادیده گرفته می‌شوند (به عنوان یک یال شمرده نمی‌شوند). در صورت تنظیم روی true، تمام وزن‌هایی که `None` نیستند شناخته می‌شوند.                                                                  |
+| `params-name`               | string  | —                    | نام پارامتر حاوی داده‌هایی که به عنوان ورودی استفاده می‌شوند. نوع داده مورد استفاده به ویژگی `params-type` بستگی دارد.                                                                                                                                                                     |
+| `params-name-labels`        | string  | —                    | هنگام استفاده از یک ماتریس مجاورت، پارامتری که شامل برچسب‌های هر گره است.                                                                                                                                                                                                 |
+| `params-type`               | string  | `"adjacency-matrix"` | کدام بک‌اند برای رندر کردن گراف از روی داده‌ها استفاده شود. به طور پیش‌فرض فقط `adjacency-matrix` و `networkx` وجود دارند، اما انواع سفارشی می‌توانند از طریق افزونه‌ها اضافه شوند.                                                                                                                     |
+| `source-file-name`          | string  | —                    | نام فایلی که محتوای گراف از آن بارگذاری می‌شود. در صورت ارائه، محتوای فایل به جای HTML درونی المان استفاده خواهد شد. برای گراف‌های پیچیده با کاراکترهای خاص مانند علامت‌های زاویه‌دار (علامت‌های بزرگ‌تر/کوچک‌تر) در گره‌های مبتنی بر رکورد مفید است.                                                             |
+| `weights`                   | boolean | —                    | هنگام استفاده از ماتریس مجاورت، مشخص می‌کند که آیا وزن یال‌ها نمایش داده شود یا خیر. به طور پیش‌فرض، وزن‌ها را به صورت خودکار برای ماتریس‌های احتمالاتی/تصادفی (stochastic) نمایش می‌دهد (زمانی که باینری `0`/`1` نیستند).                                                                                                             |
+| `weights-digits`            | integer | 2                    | هنگام استفاده از یک ماتریس مجاورت، تعداد ارقامی که برای وزن‌ها نمایش داده می‌شود.                                                                                                                                                                                                              |
+| `weights-presentation-type` | string  | `"f"`                | قالب نمایش عدد برای وزن‌ها هنگام استفاده از یک ماتریس مجاورت. اگر `weights-presentation-type` برابر `"sigfig"` باشد، هر عدد با استفاده از ماژول `to_precision` تا تعداد ارقام باارزش مشخص‌شده قالب‌بندی می‌شود. در غیر این صورت، هر عدد به صورت `{:.{digits}{presentation-type}}` قالب‌بندی می‌شود. |
 
-### Migrating from deprecated attributes
+### مهاجرت از ویژگی‌های منسوخ‌شده
 
-The following deprecated attribute is still supported for backward compatibility:
+ویژگی منسوخ‌شده زیر همچنان برای سازگاری با نسخه‌های پیشین پشتیبانی می‌شود:
 
-| Old syntax                    | New syntax             |
+| نحو قدیمی | نحو جدید |
 | ----------------------------- | ---------------------- |
 | `params-name-matrix="<name>"` | `params-name="<name>"` |
 
-## Details
+## جزئیات
 
-Note that using networkx for rendering, attributes from the input networkx graph are retained when creating a Graphviz DOT visualization. As a result, it is possible to set node and edge properties such as color, line weight, as part of the input graph and have these reflected in the rendering. These include global properties of the graph, such as the `rankdir` used in rendering. See the [Graphviz documentation on attributes](https://graphviz.org/doc/info/attrs.html) for more information on what attributes are supported. The currently used Graphviz version is 2.44.0.
+توجه داشته باشید که هنگام استفاده از networkx برای رندر، ویژگی‌های گراف ورودی networkx در هنگام ایجاد مصورسازی Graphviz DOT حفظ می‌شوند. در نتیجه، می‌توان ویژگی‌های گره و یال مانند رنگ، ضخامت خط را به عنوان بخشی از گراف ورودی تنظیم کرد و این موارد در رندر منعکس خواهند شد. این خصوصیات شامل ویژگی‌های سراسری گراف، مانند `rankdir` مورد استفاده در رندر نیز می‌شوند. برای اطلاعات بیشتر درباره ویژگی‌های پشتیبانی‌شده به [مستندات Graphviz در مورد ویژگی‌ها](https://graphviz.org/doc/info/attrs.html) مراجعه کنید. نسخه Graphviz که در حال حاضر استفاده می‌شود 2.44.0 است.
 
-The `source-file-name` attribute is particularly useful when working with static graphs that contain special characters like angle brackets (`<>`), which are used in [record-based nodes](https://graphviz.org/doc/info/shapes.html#record) but can interfere with HTML parsing. By placing the graph content in an external file, you can avoid the need to escape these characters.
+ویژگی `source-file-name` به‌ویژه زمانی مفید است که با گراف‌های ایستا که حاوی کاراکترهای خاص مانند علامت‌های زاویه‌دار (`<>`) هستند کار می‌کنید؛ این کاراکترها در [گره‌های مبتنی بر رکورد](https://graphviz.org/doc/info/shapes.html#record) استفاده می‌شوند اما می‌توانند در پردازش و پارس HTML تداخل ایجاد کنند. با قرار دادن محتوای گراف در یک فایل خارجی، می‌توانید از نیاز به اسکیپ کردن این کاراکترها جلوگیری کنید.
 
-## Accessibility
+## دسترس‌پذیری
 
-A `pl-graph` renders as an SVG. Graphviz adds a `<title>` to every node and edge, but those are hover tooltips, not a description of the graph as a whole, so a screen reader user gets no meaningful information by default. How you provide an accessible equivalent depends on how the graph is used.
+یک המان `pl-graph` به صورت SVG رندر می‌شود. گراف‌ویز به هر گره و یال یک `<title>` اضافه می‌کند، اما این موارد تولتیپ‌های شناور هنگام هاور هستند، نه توصیفی از کل گراف؛ بنابراین یک کاربر صفحه‌خوان به طور پیش‌فرض اطلاعات معناداری دریافت نمی‌کند. نحوه ارائه یک معادل دسترس‌پذیر به نحوه استفاده از گراف بستگی دارد.
 
-### Informational graphs
+### گراف‌های اطلاعاتی
 
-If the graph conveys information (rather than being the thing a student must interpret to answer), give it a text alternative with `aria-label`. When `aria-label` is set, the graph is exposed to assistive technologies as a single labeled image, which also hides Graphviz's per-node titles. Use `aria-description` for additional detail if needed, though the `aria-description` attribute has inconsistent screen reader support and requires `aria-label` to also be set.
+اگر گراف حامل اطلاعات است (به جای اینکه موضوعی باشد که دانشجو برای پاسخ دادن باید آن را تحلیل و تفسیر کند)، با ویژگی `aria-label` به آن یک متن جایگزین بدهید. وقتی `aria-label` تنظیم شده باشد، گراف به عنوان یک تصویر منفردِ برچسب‌دار به فناوری‌های کمکی معرفی می‌شود که این امر همچنین عناوین تک‌تک گره‌های Graphviz را پنهان می‌کند. در صورت نیاز از `aria-description` برای جزئیات بیشتر استفاده کنید، هرچند ویژگی `aria-description` پشتیبانی یکنواختی در نرم‌افزارهای صفحه‌خوان ندارد و مستلزم آن است که `aria-label` نیز تنظیم شده باشد.
 
-For a **static** graph, describe it directly:
+برای یک گراف **ایستا (static)**، آن را مستقیماً توصیف کنید:
 
 ```html title="question.html"
 <pl-graph aria-label="Directed graph with an edge from A to B and from B to C">
@@ -102,7 +102,7 @@ For a **static** graph, describe it directly:
 </pl-graph>
 ```
 
-For a **randomly generated** graph, a fixed string like "a random graph" tells a screen reader user nothing about what was actually drawn. Generate the description from the same data so it always matches the graph:
+برای یک گراف **به صورت تصادفی تولیدشده (randomly generated)**، یک رشته ثابت مانند "a random graph" هیچ اطلاعاتی درباره آنچه واقعاً ترسیم شده است به کاربر صفحه‌خوان نمی‌دهد. توصیف را از همان داده‌ها تولید کنید تا همیشه دقیقاً با گراف مطابقت داشته باشد:
 
 ```python title="server.py"
 import prairielearn as pl
@@ -124,9 +124,9 @@ def generate(data):
 <pl-graph params-type="networkx" params-name="graph" aria-label="{{ params.graph_alt }}"></pl-graph>
 ```
 
-### Presenting the same information in an accessible format
+### ارائه همان اطلاعات در یک قالب دسترس‌پذیر
 
-Packing a large graph into a single `aria-label` string produces a long, unstructured announcement that is hard to navigate. Often the better option is to also present the data in a natively accessible format that every student benefits from — for example an adjacency matrix rendered with [`pl-matrix-latex`](pl-matrix-latex.md), or an edge table:
+گنجاندن یک گراف بزرگ در یک رشته تکی `aria-label` باعث ایجاد یک متن طولانی و بدون ساختار می‌شود که پیمایش آن دشوار است. اغلب گزینه بهتر این است که داده‌ها را در یک قالب ذاتاً دسترس‌پذیر نیز ارائه دهید که همه دانشجویان از آن بهره‌مند شوند — به عنوان مثال یک ماتریس مجاورت رندرشده با [`pl-matrix-latex`](pl-matrix-latex.md)، یا یک جدول یال‌ها:
 
 ```html title="question.html"
 <pl-graph
@@ -156,40 +156,40 @@ Packing a large graph into a single `aria-label` string produces a long, unstruc
 </table>
 ```
 
-### Graphs that are the question
+### گراف‌هایی که خودِ سوال هستند
 
-If a student must read the graph to answer (for example, "give the adjacency matrix of the graph below"), a descriptive `aria-label` is **not** appropriate. It appears in the page source, so it would reveal the answer, and no text alternative can convey the graph in a form the student is expected to reason about. Such a question is not accessible to screen reader users as-is; provide an [alternative version of the question](../question/accessibility.md) instead.
+اگر دانشجو باید گراف را بخواند و تحلیل کند تا به سوال پاسخ دهد (برای مثال، «ماتریس مجاورت گراف زیر را بنویسید»)، یک `aria-label` توصیفی به هیچ وجه مناسب **نیست**. این متن در سورس صفحه ظاهر می‌شود، بنابراین پاسخ را لو می‌دهد، و هیچ متن جایگزینی نمی‌تواند گراف را در قالبی ارائه دهد که از دانشجو انتظار می‌رود درباره آن استدلال کند. چنین سوالی به این صورت برای کاربران صفحه‌خوان دسترس‌پذیر نیست؛ در عوض یک [نسخه جایگزین از سوال](../question/accessibility.md) ارائه دهید.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/graph]
 
-## Extension API
+## رابط برنامه‌نویسی افزونه (Extension API)
 
-Custom values for `params-type` can be added with [element extensions](../elementExtensions.md). Each custom type is defined as a function that takes as input the `element` and `data` values and returns processed DOT syntax as output.
+مقادیر سفارشی برای `params-type` را می‌توان با [افزونه‌های المان](../elementExtensions.md) اضافه کرد. هر نوع سفارشی به عنوان تابعی تعریف می‌شود که مقادیر `element` و `data` را به عنوان ورودی دریافت کرده و نحو DOT پردازش‌شده را به عنوان خروجی بازمی‌گرداند.
 
-A minimal type function can look something like:
+یک تابع نوع کمینه می‌تواند شبیه به این باشد:
 
 ```python
 def custom_type(element, data):
     return "graph { a -- b; }"
 ```
 
-In order to register these custom types, your extension should define the global `backends` dictionary. This will map a value of `params-type` to your function above:
+به منظور ثبت این انواع سفارشی، افزونه شما باید دیکشنری سراسری `backends` را تعریف کند. این دیکشنری یک مقدار از `params-type` را به تابع شما در بالا نگاشت می‌کند:
 
 ```python
 backends = {"my-custom-type": custom_type}
 ```
 
-This will automatically get picked up when the extension gets imported. If your extension needs extra attributes to be defined, you may optionally define the global `optional_attribs` array that contains a list of attributes that the element may use.
+این تنظیمات به طور خودکار هنگام ایمپورت شدن افزونه اعمال خواهند شد. اگر افزونه شما به ویژگی‌های اضافی نیاز دارد که باید تعریف شوند، می‌توانید به صورت اختیاری آرایه سراسری `optional_attribs` را تعریف کنید که شامل فهرستی از ویژگی‌هایی است که המان ممکن است استفاده کند.
 
-For a full implementation, check out the `edge-inc-matrix` extension in the exampleCourse.
+برای مشاهده یک پیاده‌سازی کامل، افزونه `edge-inc-matrix` را در exampleCourse بررسی کنید.
 
-## See also
+## همچنین ببینید
 
-- [External: the DOT language reference](https://graphviz.org/doc/info/lang.html)
-- [`pl-figure` for displaying static or dynamically generated graphics.](pl-figure.md)
-- [`pl-file-download` for allowing either static or dynamically generated files to be downloaded.](pl-file-download.md)
+- [مرجع خارجی: مستندات راهنمای زبان DOT](https://graphviz.org/doc/info/lang.html)
+- [`pl-figure` برای نمایش گرافیک‌های ایستا یا تولیدشده به صورت پویا.](pl-figure.md)
+- [`pl-file-download` برای امکان دانلود فایل‌های ایستا یا تولیدشده به صورت پویا.](pl-file-download.md)
 
 ---
 
