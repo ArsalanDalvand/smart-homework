@@ -1,36 +1,36 @@
-# Old v1/v2 Question Format
+# فرمت قدیمی سوالات v1/v2
 
-!!! warning "Deprecated"
+!!! warning "منسوخ شده (Deprecated)"
 
-    This page describes the old PrairieLearn question format, as used in v1 and v2. This question format will be supported indefinitely, but it is strongly recommended that all new questions be written in the [v3 format](question/overview.md).
+    این صفحه فرمت قدیمی سوالات پریری‌لرن را که در نسخه‌های v1 و v2 به کار می‌رفت شرح می‌دهد. این فرمت سوال تا مدت نامحدودی پشتیبانی خواهد شد، اما اکیداً توصیه می‌شود که تمام سوالات جدید در [فرمت v3](question/overview.md) نوشته شوند.
 
-## Partial credit
+## نمره بخشی (Partial credit)
 
-By default, all v1/v2 questions do not award partial credit. That is, a student either gets zero points or full points for the question. The question grading function (see below) can generate a fractional score in the range 0 to 1, but this is then rounded to 0 or 1 to give no points or full points. Scores below 0.5 are rounded down to 0, while scores equal to or above 0.5 are rounded up to 1. For example, if a question grading function returns 0.3 for a 10-point question, then this will result in zero points, while a grading score of 0.7 for the same question would give 10 points.
+به طور پیش‌فرض، تمامی سوالات v1/v2 نمره بخشی اعطا نمی‌کنند. یعنی دانشجو برای سوال یا صفر امتیاز دریافت می‌کند یا نمره کامل. تابع نمره‌دهی سوال (در ادامه را ببینید) می‌تواند نمره‌ای کسری در بازه 0 تا 1 تولید کند، اما این نمره سپس به 0 یا 1 گرد می‌شود تا هیچ امتیازی یا نمره کامل داده شود. نمرات زیر 0.5 به سمت پایین (0) گرد می‌شوند، در حالی که نمرات برابر یا بیشتر از 0.5 به سمت بالا (1) گرد می‌شوند. برای مثال، اگر تابع نمره‌دهی سوال برای یک سوال ۱۰ امتیازی مقدار 0.3 را برگرداند، این نتیجه منجر به صفر امتیاز خواهد شد، در حالی که نمره 0.7 برای همان سوال ۱۰ امتیاز خواهد داد.
 
-To give actual partial credit for a question, set `"partialCredit": true` in the `info.json` file for the question. This will make a score of 0.3 on a 10-point question award 3 points, for example.
+برای اعطای نمره بخشی واقعی در یک سوال، مقدار `"partialCredit": true` را در فایل `info.json` سوال تنظیم کنید. با این کار، برای نمونه نمره 0.3 در یک سوال ۱۰ امتیازی، ۳ امتیاز اعطا خواهد شد.
 
-## Question types for v1/v2 format
+## انواع سوال برای فرمت v1/v2
 
-Questions in PrairieLearn v1/v2 can have the following types.
+سوالات در نسخه‌های v1/v2 پریری‌لرن می‌توانند دارای انواع زیر باشند:
 
-| Question type       | Description                                                                                                                                                                        |
+| نوع سوال | توضیحات |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MultipleChoice`    | A multiple choice question (radio button). One correct answer and several incorrect answers are selected from lists of correct and incorrect answers, and the order is randomized. |
-| `MultipleTrueFalse` | A multiple choice question (radio button). One correct answer and several incorrect answers are selected from lists of correct and incorrect answers, and the order is randomized. |
-| `Checkbox`          | A multiple choice question (checkbox). Multiple correct and incorrect answers are selected from lists of correct and incorrect answers, and the order is randomized.               |
-| `File`              | A file is provided to the student for download, and they have to upload an edited file for grading.                                                                                |
-| `Calculation`       | A very general question type that allows server-side and client-side code to generate and grade questions.                                                                         |
+| `MultipleChoice` | یک سوال چندگزینه‌ای (دکمه‌های رادیویی). یک پاسخ صحیح و چند پاسخ نادرست از فهرست‌های پاسخ‌های درست و نادرست انتخاب می‌شوند و ترتیب آن‌ها تصادفی است. |
+| `MultipleTrueFalse` | یک سوال چندگزینه‌ای (دکمه‌های رادیویی). یک پاسخ صحیح و چند پاسخ نادرست از فهرست‌های پاسخ‌های درست و نادرست انتخاب می‌شوند و ترتیب آن‌ها تصادفی است. |
+| `Checkbox` | یک سوال چندگزینه‌ای (چک‌باکس). چندین پاسخ درست و نادرست از فهرست‌های پاسخ‌های درست و نادرست انتخاب می‌شوند و ترتیب آن‌ها تصادفی است. |
+| `File` | فایلی برای دانلود در اختیار دانشجو قرار می‌گیرد و او باید یک فایل ویرایش‌شده را برای نمره‌دهی آپلود کند. |
+| `Calculation` | یک نوع سوال بسیار جامع که به کدهای سمت سرور و سمت کلاینت اجازه می‌دهد سوالات را تولید و نمره‌دهی کنند. |
 
-See below for detailed information about each question type.
+برای اطلاعات تفصیلی درباره هر نوع سوال، به ادامه مطلب مراجعه کنید.
 
-## `MultipleChoice` question type
+## نوع سوال `MultipleChoice`
 
-- Example: [`fossilFuelsRadio`](https://github.com/PrairieLearn/PrairieLearn/tree/21be1db08978b6f8a8ca76c1e53681fe2ebe2fce/exampleCourse/questions/fossilFuelsRadio)
-- Required files: `info.json`
-- Options schema documentation: [`MultipleChoice` options](schemas/questionOptionsMultipleChoice.md)
+- نمونه: [`fossilFuelsRadio`](https://github.com/PrairieLearn/PrairieLearn/tree/21be1db08978b6f8a8ca76c1e53681fe2ebe2fce/exampleCourse/questions/fossilFuelsRadio)
+- فایل‌های مورد نیاز: `info.json`
+- مستندات شمای گزینه‌ها: [گزینه‌های `MultipleChoice`](schemas/questionOptionsMultipleChoice.md)
 
-A `MultipleChoice` question has an `info.json` that provides the question text, one or more correct answers, and one or more incorrect answers. One correct answer is randomly chosen, and enough incorrect answers to make `numberAnswers` total answers, which are then displayed to the student in a random order. For example:
+یک سوال `MultipleChoice` دارای یک فایل `info.json` است که متن سوال، یک یا چند پاسخ صحیح و یک یا چند پاسخ نادرست را مشخص می‌کند. یک پاسخ صحیح به صورت تصادفی انتخاب می‌شود، و به تعداد کافی پاسخ نادرست انتخاب می‌گردد تا در کل `numberAnswers` پاسخ حاصل شود، که سپس با ترتیبی تصادفی به دانشجو نمایش داده می‌شوند. برای مثال:
 
 ```json title="info.json"
 {
@@ -55,13 +55,13 @@ A `MultipleChoice` question has an `info.json` that provides the question text, 
 }
 ```
 
-## `MultipleTrueFalse` question type
+## نوع سوال `MultipleTrueFalse`
 
-- Example: [`fossilFuelsTrueFalse`](https://github.com/PrairieLearn/PrairieLearn/tree/21be1db08978b6f8a8ca76c1e53681fe2ebe2fce/exampleCourse/questions/fossilFuelsTrueFalse)
-- Required files: `info.json`
-- Options schema documentation: [`MultipleTrueFalse` options](schemas/questionOptionsMultipleTrueFalse.md)
+- نمونه: [`fossilFuelsTrueFalse`](https://github.com/PrairieLearn/PrairieLearn/tree/21be1db08978b6f8a8ca76c1e53681fe2ebe2fce/exampleCourse/questions/fossilFuelsTrueFalse)
+- فایل‌های مورد نیاز: `info.json`
+- مستندات شمای گزینه‌ها: [گزینه‌های `MultipleTrueFalse`](schemas/questionOptionsMultipleTrueFalse.md)
 
-A `MultipleTrueFalse` question has an `info.json` that provides the question text, zero or more true statements, and zero or more false statements. All the given statements are used, and are displayed to the students in a random order. For example:
+یک سوال `MultipleTrueFalse` دارای یک فایل `info.json` است که متن سوال، صفر یا چند گزاره درست و صفر یا چند گزاره نادرست را فراهم می‌کند. تمامی گزاره‌های داده‌شده استفاده می‌شوند و با ترتیبی تصادفی به دانشجویان نمایش داده خواهند شد. برای مثال:
 
 ```json title="info.json"
 {
@@ -86,13 +86,13 @@ A `MultipleTrueFalse` question has an `info.json` that provides the question tex
 }
 ```
 
-## `Checkbox` question type
+## نوع سوال `Checkbox`
 
-- Example: [`fossilFuelsCheckbox`](https://github.com/PrairieLearn/PrairieLearn/tree/21be1db08978b6f8a8ca76c1e53681fe2ebe2fce/exampleCourse/questions/fossilFuelsCheckbox)
-- Required files: `info.json`
-- Options schema documentation: [`Checkbox` options](schemas/questionOptionsCheckbox.md)
+- نمونه: [`fossilFuelsCheckbox`](https://github.com/PrairieLearn/PrairieLearn/tree/21be1db08978b6f8a8ca76c1e53681fe2ebe2fce/exampleCourse/questions/fossilFuelsCheckbox)
+- فایل‌های مورد نیاز: `info.json`
+- مستندات شمای گزینه‌ها: [گزینه‌های `Checkbox`](schemas/questionOptionsCheckbox.md)
 
-A `Checkbox` question has an `info.json` that provides the question text, one or more correct answers, and one or more incorrect answers. Several correct answers are randomly chosen (between `minCorrectAnswers` and `maxCorrectAnswers`, inclusive), and enough incorrect answers to make `numberAnswers` total answers, which are then displayed to the student in a random order. Depending on the values of `minCorrectAnswers` and `maxCorrectAnswers` it is possible to have all or none of the possible answers be correct. For example:
+یک سوال `Checkbox` دارای یک فایل `info.json` است که متن سوال، یک یا چند پاسخ صحیح و یک یا چند پاسخ نادرست را فراهم می‌کند. چندین پاسخ صحیح به طور تصادفی انتخاب می‌شوند (بین `minCorrectAnswers` و `maxCorrectAnswers`، شامل هر دو)، و به تعداد کافی پاسخ نادرست انتخاب می‌گردد تا در مجموع `numberAnswers` پاسخ فراهم شود، که سپس با ترتیبی تصادفی به دانشجو نمایش داده می‌شوند. بسته به مقادیر `minCorrectAnswers` و `maxCorrectAnswers`، این احتمال وجود دارد که تمام گزینه‌ها یا هیچ‌یک از آن‌ها صحیح نباشند. برای مثال:
 
 ```json title="info.json"
 {
@@ -119,13 +119,13 @@ A `Checkbox` question has an `info.json` that provides the question text, one or
 }
 ```
 
-## `File` question type
+## نوع سوال `File`
 
-- Example: [`fibonacciExternal`](https://github.com/PrairieLearn/PrairieLearn/tree/bb3fa6c4bc477172cc1e449161aa0e7981628ed8/exampleCourse/questions/fibonacciExternal)
-- Required files: `info.json`, `question.html`, `answer.html`
-- Options schema documentation: [`File` options](schemas/questionOptionsFile.md)
+- نمونه: [`fibonacciExternal`](https://github.com/PrairieLearn/PrairieLearn/tree/bb3fa6c4bc477172cc1e449161aa0e7981628ed8/exampleCourse/questions/fibonacciExternal)
+- فایل‌های مورد نیاز: `info.json`، `question.html`، `answer.html`
+- مستندات شمای گزینه‌ها: [گزینه‌های `File`](schemas/questionOptionsFile.md)
 
-A `File` question gives the student a file to download, and then requires an uploaded file for the answer. The downloaded file is specified in the `info.json` like:
+یک سوال `File` فایلی را برای دانلود به دانشجو می‌دهد، و سپس برای پاسخ نیازمند یک فایل آپلودشده است. فایل دانلودی در `info.json` به صورت زیر مشخص می‌شود:
 
 ```json title="info.json"
 {
@@ -140,25 +140,25 @@ A `File` question gives the student a file to download, and then requires an upl
 }
 ```
 
-Note that a file question can also utilize external grading! See the [External grading docs](externalGrading.md).
+توجه داشته باشید که یک سوال فایلی می‌تواند از نمره‌دهی خارجی نیز استفاده کند! به [مستندات نمره‌دهی خارجی](externalGrading.md) مراجعه فرمایید.
 
-## `Calculation` question type
+## نوع سوال `Calculation`
 
-- Example: [`addVectors`](https://github.com/PrairieLearn/PrairieLearn/blob/master/testCourse/questions/addVectors)
-- Required files: `info.json`, `client.js`, `server.js`
-- Options schema documentation: [`Calculation` options](schemas/questionOptionsCalculation.md)
+- نمونه: [`addVectors`](https://github.com/PrairieLearn/PrairieLearn/blob/master/testCourse/questions/addVectors)
+- فایل‌های مورد نیاز: `info.json`، `client.js`، `server.js`
+- مستندات شمای گزینه‌ها: [گزینه‌های `Calculation`](schemas/questionOptionsCalculation.md)
 
-A `Calculation` question is the most general type of question, allowing arbitrary code to generate and grade the question instance on the server, and arbitrary client code to interact with the student (e.g., for interactive drawing).
+یک سوال `Calculation` عمومی‌ترین نوع سوال است که اجازه می‌دهد کدهای دلخواه، نمونه سوال را روی سرور تولید و نمره‌دهی کنند، و کدهای دلخواه کلاینت با دانشجو تعامل داشته باشند (به عنوان مثال، برای رسم تعاملی).
 
-### `Calculation` question: `server.js`
+### سوال `Calculation`: فایل `server.js`
 
-`server.js` is the code that runs on the server (never seen directly by the client) which generates the question and grades the answer.
+فایل `server.js` کدی است که روی سرور اجرا می‌شود (و هرگز مستقیماً توسط کلاینت مشاهده نمی‌شود) که سوال را تولید کرده و به پاسخ نمره می‌دهد.
 
-It can randomly (or systematically) create the question variables. Those are stored in an JSON element returned by server.getData()
+این کد می‌تواند متغیرهای سوال را به صورت تصادفی (یا قاعده‌مند) ایجاد کند. این متغیرها در یک المان JSON که توسط `server.getData()` بازگردانده می‌شود ذخیره می‌گردند.
 
-It's a standard practice to define the answer when creating the question variables in the `server.getData()` function, but it's not required.
+تعریف پاسخ صحیح هنگام ایجاد متغیرهای سوال در تابع `server.getData()` یک شیوه مرسوم است، اما الزامی نیست.
 
-A function called `server.gradeAnswer()` can take in the parameters as well as the submittedAnswer and return the score and feedback.
+تابعی به نام `server.gradeAnswer()` می‌تواند پارامترها و همچنین `submittedAnswer` را دریافت کرده و نمره و بازخورد را برگرداند.
 
 ```javascript
 define(['PrairieRandom'], function (PrairieRandom) {
@@ -193,37 +193,37 @@ define(['PrairieRandom'], function (PrairieRandom) {
 });
 ```
 
-The three main objects associated with each question are:
+سه شیء اصلی مرتبط با هر سوال عبارتند از:
 
-| Object            | Description                                                                          |
+| شیء (Object) | توضیحات |
 | ----------------- | ------------------------------------------------------------------------------------ |
-| `params`          | The parameters specifying a particular question instance.                            |
-| `submittedAnswer` | Everything submitted by the student to answer a question.                            |
-| `trueAnswer`      | The correct answer to a question, shown to the student after the question is graded. |
+| `params` | پارامترهایی که یک نمونه سوال خاص را مشخص می‌کنند. |
+| `submittedAnswer` | هر آنچه که دانشجو برای پاسخ به یک سوال ارسال کرده است. |
+| `trueAnswer` | پاسخ صحیح سوال، که پس از نمره‌دهی به دانشجو نمایش داده می‌شود. |
 
-These are all JavaScript objects that are encoded as JSON for transport between the client and server.
+همه این‌ها اشیای جاوااسکریپت هستند که به صورت JSON برای انتقال میان کلاینت و سرور کدگذاری می‌شوند.
 
-### `Calculation` question: `client.js`
+### سوال `Calculation`: فایل `client.js`
 
-JavaScript presented to the client to display the question. Can be overloaded/expanded if specialized interfaces are used.
+کدهای جاوااسکریپتی که برای نمایش سوال به کلاینت تحویل داده می‌شوند. در صورت استفاده از رابط‌های کاربری تخصصی می‌توانند overload یا گسترش یابند.
 
-Different question types have different client-side javascript needs, so just copy it over from the default template for your question.
+انواع مختلف سوال نیازهای جاوااسکریپتی متفاوتی در سمت کلاینت دارند، بنابراین کافی است آن را از قالب پیش‌فرض برای سوال خود کپی نمایید.
 
-### `Calculation` question: `question.html`
+### سوال `Calculation`: فایل `question.html`
 
-`question.html` contains the HTML data presented to the student. It's the stuff inside the question box, including the problem and any input forms to answer it. A submit button (or other form setup) isn't needed.
+فایل `question.html` حاوی داده‌های HTML نمایش‌داده‌شده به دانشجو است. این موارد شامل محتویات داخل کادر سوال، از جمله صورت مسئله و هرگونه فرم ورودی برای پاسخ به آن است. به دکمه ارسال (یا سایر تنظیمات فرم) نیازی نیست.
 
-Standard HTML is accepted here, as is LaTeX math enclosed in dollar signs, e.g., `$e^{i\pi} + 1 = 0$`.
+کدهای استاندارد HTML در اینجا پذیرفته می‌شوند، و همچنین فرمول‌های ریاضی LaTeX محصور در علامت‌های دلار، مانند `$e^{i\pi} + 1 = 0$`.
 
-Parameters generated by the question server can be inserted with `{{params.a}}`, etc.
+پارامترهای تولیدشده توسط سرور سوال می‌توانند با `{{params.a}}` و غیره درج شوند.
 
-Best practice for writing a question is to divide it into three sections:
+بهترین شیوه برای نوشتن یک سوال، تقسیم آن به سه بخش است:
 
-1. Information about the problem, defining all variables, etc.
-2. A short and clear question asking for a very specific answer.
-3. The data entry fields.
+1. اطلاعات مربوط به مسئله، تعریف تمامی متغیرها و غیره.
+2. یک پرسش کوتاه و واضح که پاسخی کاملاً مشخص را درخواست می‌کند.
+3. فیلدهای ورود داده.
 
-For example:
+برای مثال:
 
 ```html
 <p>The length $c$ is defined by $c = {{params.a}}{\rm\ m} + {{params.b}}{\rm\ m}$.</p>
@@ -231,19 +231,19 @@ For example:
 <p>$c = $ <input data-instavalue="submittedAnswer.c" />$\rm\ m$</p>
 ```
 
-### `Calculation` question: `answer.html`
+### سوال `Calculation`: فایل `answer.html`
 
-The part in the box shown to the student after the question has been graded.
+بخشی در کادر سوال که پس از نمره‌دهی شدن به دانشجو نمایش داده می‌شود.
 
 ```html
 <p>$c = {{trueAnswer.c}}\rm\ m$.</p>
 ```
 
-## Accessing files from code via RequireJS
+## دسترسی به فایل‌ها از کد از طریق RequireJS
 
-These library files are separated into _client_ and _server_ libraries. Client libraries are accessible from both `client.js` and `server.js` in each question, while server libraries are only accessible from `server.js`. This means that any secret code that students should not be able to access can be put in a server library, while other non-sensitive code can go in client libraries. There is never a need to put a library file into both the client and server directories, because it can just go only into the client directory and be accessed directly from there by both `client.js` and `server.js`.
+این فایل‌های کتابخانه‌ای به کتابخانه‌های _کلاینت_ و _سرور_ تقسیم می‌شوند. کتابخانه‌های کلاینت هم از `client.js` و هم از `server.js` در هر سوال قابل دسترسی هستند، در حالی که کتابخانه‌های سرور فقط از `server.js` در دسترس می‌باشند. این به این معنی است که هر کد محرمانه‌ای که دانشجویان نباید بتوانند به آن دسترسی داشته باشند را می‌توان در یک کتابخانه سرور قرار داد، در حالی که سایر کدهای غیرحساس می‌توانند در کتابخانه‌های کلاینت قرار گیرند. هرگز نیازی به قرار دادن یک فایل کتابخانه در هر دو دایرکتوری کلاینت و سرور وجود ندارد، زیرا می‌تواند فقط در دایرکتوری کلاینت قرار گیرد و مستقیماً از آنجا توسط هر دو فایل `client.js` و `server.js` در دسترس باشد.
 
-The basic form of a `library.js` file is:
+شکل پایه‌ای یک فایل `library.js` به صورت زیر است:
 
 ```javascript
 define([<DEPENDENT-LIBRARIES-PATHS>], function(<DEPENDENT-LIBRARY-VARS>) {
@@ -254,26 +254,26 @@ define([<DEPENDENT-LIBRARIES-PATHS>], function(<DEPENDENT-LIBRARY-VARS>) {
         return arg1 + arg2;
     };
 
-    // more library functions go here
+    // سایر توابع کتابخانه در اینجا قرار می‌گیرند
 
     return library;
 });
 ```
 
-To use this `library.js` file inside a question's `client.js` or `server.js` file:
+برای استفاده از این فایل `library.js` در داخل فایل `client.js` یا `server.js` یک سوال:
 
 ```javascript
 define([<OTHER-LIBRARY-PATHS>, 'clientCode/library'], function(<OTHER-LIBRARY-VARS>, library) {
 
-    var sum = library.add(3, 5); // sets sum to 8
+    var sum = library.add(3, 5); // مقدار sum را برابر 8 قرار می‌دهد
 
 });
 ```
 
-## Deprecated access modes
+## حالت‌های دسترسی منسوخ‌شده
 
-To support old code, `clientFilesCourse` is also accessible as `clientFiles` and `clientCode`, while `serverFilesCourse` is accessible as `serverCode`.
+جهت پشتیبانی از کدهای قدیمی، دایرکتوری `clientFilesCourse` همچنین با نام‌های `clientFiles` و `clientCode` در دسترس است، در حالی که `serverFilesCourse` با نام `serverCode` قابل دسترسی است.
 
-## Library code and other files
+## کد کتابخانه و سایر فایل‌ها
 
-See [clientFiles and serverFiles](clientServerFiles.md) for information on accessing `clientFiles` and `serverFiles` directories from within question code.
+برای کسب اطلاعات درباره نحوه دسترسی به دایرکتوری‌های `clientFiles` و `serverFiles` از درون کد سوال، به [clientFiles و serverFiles](clientServerFiles.md) مراجعه فرمایید.

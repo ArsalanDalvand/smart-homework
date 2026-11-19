@@ -1,142 +1,142 @@
-# Installing and running for local course development
+# نصب و اجرا برای توسعه محلی درس
 
-This page describes the procedure to install and run your course locally within Docker. You can develop course content locally following the instructions below, or using the [in-browser tools](getting-started/index.md).
+این صفحه مراحل نصب و اجرای محلی درس شما را در بستر داکر (Docker) شرح می‌دهد. شما می‌توانید محتوای درس را با دنبال کردن دستورالعمل‌های زیر به صورت محلی توسعه دهید، یا از [ابزارهای درون مرورگر](getting-started/index.md) استفاده نمایید.
 
-## Why run PrairieLearn locally?
+## چرا پریری‌لرن را به صورت محلی اجرا کنیم؟
 
-PrairieLearn provides the ability to create and update questions with a browser interface. While this interface is suitable for simpler questions, it is not ideal for complex cases such as:
+پریری‌لرن امکان ایجاد و به‌روزرسانی سوالات را از طریق یک رابط مرورگر فراهم می‌کند. در حالی که این رابط برای سوالات ساده‌تر مناسب است، برای موارد پیچیده‌ای مانند موارد زیر ایده‌آل نیست:
 
-- Questions using [code autograding](externalGrading.md)
-- Questions using [workspaces](workspaces/index.md)
-- Questions that involve a significant number of [images, documents and other files](clientServerFiles.md)
-- Questions using [custom Python libraries](question/runtime.md#installing-libraries-in-your-course) in the generation and/or grading process
-- Custom [elements](devElements.md) or [element extensions](elementExtensions.md)
+- سوالاتی که از [نمره‌دهی خودکار کد](externalGrading.md) استفاده می‌کنند
+- سوالاتی که از [محیط‌های کاری (Workspaces)](workspaces/index.md) استفاده می‌کنند
+- سوالاتی که شامل تعداد قابل توجهی [تصویر، سند و فایل‌های دیگر](clientServerFiles.md) هستند
+- سوالاتی که از [کتابخانه‌های سفارشی پایتون](question/runtime.md#installing-libraries-in-your-course) در فرایند تولید و/یا نمره‌دهی استفاده می‌کنند
+- [المان‌های](devElements.md) سفارشی یا [افزونه‌های المان](elementExtensions.md)
 
-Using the course repository with a local installation simplifies the process of updating the course content. This workflow allows instructors to test changes in the question code or assessment configuration without affecting the student experience. It also supports collaboration and coordination in courses with multiple staff members using [Git workflows](https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows) and [pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
+استفاده از مخزن درس به همراه یک نصب محلی، فرایند به‌روزرسانی محتوای درس را ساده می‌کند. این گردش کار به مدرسان اجازه می‌دهد تغییرات در کد سوال یا پیکربندی آزمون را بدون تأثیر بر تجربه دانشجویان آزمایش کنند. همچنین از همکاری و هماهنگی در دوره‌هایی با چندین عضو کادر آموزشی با استفاده از [گردش‌کارهای Git](https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows) و [درخواست‌های پول (Pull Requests)](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) پشتیبانی می‌کند.
 
-## Installation instructions
+## دستورالعمل‌های نصب
 
-Regardless of which operating system you are using, you will need to install the appropriate version of [Docker Desktop](https://www.docker.com/products/docker-desktop/). For Windows users, you will also need to install [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install) and enable its integration with Docker Desktop. See the [Additional instructions for Windows users](#additional-instructions-for-windows-users) section below for more details.
+فارغ از اینکه از چه سیستم‌عاملی استفاده می‌کنید، باید نسخه مناسب [Docker Desktop](https://www.docker.com/products/docker-desktop/) را نصب کنید. برای کاربران ویندوز، همچنین لازم است [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install) را نصب کرده و یکپارچه‌سازی آن با Docker Desktop را فعال نمایید. برای جزئیات بیشتر به بخش [دستورالعمل‌های تکمیلی برای کاربران ویندوز](#additional-instructions-for-windows-users) در ادامه مراجعه کنید.
 
-## Cloning your course repository
+## کلون کردن مخزن درس
 
-If you are running PrairieLearn with the example course only, you may skip this section.
+اگر پریری‌لرن را تنها با درس نمونه اجرا می‌کنید، می‌توانید از این بخش صرف‌نظر کنید.
 
-When you request your course, you will typically receive a GitHub repository URL to your course's content. You may use [Git](https://git-scm.com/) to clone (make a local copy of) this course content in your own computer. Make note of the directory you are cloning your course to. If you are working with multiple courses, you will need to store each course in a separate directory. For Windows users, it is recommended to [store your course content inside the WSL 2 instance](#storing-your-course-content-in-wsl-2) for better performance.
+هنگامی که درس خود را درخواست می‌کنید، معمولاً یک نشانی مخزن گیت‌هاب حاوی محتوای درس خود دریافت خواهید کرد. می‌توانید از [Git](https://git-scm.com/) برای کلون کردن (تهیه یک نسخه محلی از) این محتوای درس روی کامپیوتر خود استفاده کنید. دایرکتوری‌ای را که درس را در آن کلون می‌کنید به خاطر بسپارید. اگر با چندین درس کار می‌کنید، باید هر درس را در یک دایرکتوری جداگانه ذخیره نمایید. برای کاربران ویندوز، توصیه می‌شود جهت عملکرد بهتر [محتوای درس خود را داخل محیط WSL 2 ذخیره کنید](#storing-your-course-content-in-wsl-2).
 
-## Running instructions
+## دستورالعمل‌های اجرا
 
-The following instructions must be executed in a terminal window. For MacOS and Linux, you can use the default terminal application. For Windows, [use a terminal connected to a WSL 2 instance](#opening-a-wsl-2-shell-on-windows).
+دستورالعمل‌های زیر باید در یک پنجره ترمینال اجرا شوند. برای macOS و لینوکس می‌توانید از برنامه ترمینال پیش‌فرض استفاده کنید. برای ویندوز، [از یک ترمینال متصل به یک نمونه WSL 2 استفاده کنید](#opening-a-wsl-2-shell-on-windows).
 
-To run PrairieLearn using the example course only, open a terminal window and type the command:
+برای اجرای پریری‌لرن تنها با استفاده از درس نمونه، یک پنجره ترمینال باز کرده و دستور زیر را تایپ کنید:
 
 ```sh
 docker run -it --rm -p 3000:3000 prairielearn/prairielearn
 ```
 
-To use your own course, use the `-v` flag to bind the Docker `/course` directory with your own course directory. For example, if your course is stored in `$HOME/pl-tam212`, the command is:
+برای استفاده از درس خودتان، از فلگ `-v` برای متصل کردن (bind) دایرکتوری `/course` در داکر به دایرکتوری درس خود استفاده کنید. به عنوان مثال، اگر درس شما در `$HOME/pl-tam212` ذخیره شده است، دستور به صورت زیر است:
 
 ```sh
 docker run -it --rm -p 3000:3000 -v $HOME/pl-tam212:/course prairielearn/prairielearn
 ```
 
-Make sure to replace the course path with your own course directory. To use multiple courses, add additional `-v` flags (e.g., `-v /path/to/course1:/course -v /path/to/course2:/course2`). You may use up to nine courses through this method, using the mount points: `/course`, `/course2`, `/course3`, ..., `/course9`.
+حتماً مسیر درس را با دایرکتوری درس خود جایگزین کنید. برای استفاده از چندین درس، فلگ‌های `-v` بیشتری اضافه نمایید (مانند `-v /path/to/course1:/course -v /path/to/course2:/course2`). با این روش می‌توانید با استفاده از نقاط اتصال `/course`، `/course2`، `/course3`، ...، `/course9` حداکثر تا نه درس را مورد استفاده قرار دهید.
 
-After running the command above, you should see a message that says:
+پس از اجرای دستور بالا، باید پیامی مشابه زیر را مشاهده کنید:
 
 ```console
 PrairieLearn server ready, press Control-C to quit
 ```
 
-Once that message shows up, open a web browser and connect to [http://localhost:3000/pl](http://localhost:3000/pl).
+به محض ظاهر شدن این پیام، یک مرورگر وب باز کرده و به [http://localhost:3000/pl](http://localhost:3000/pl) متصل شوید.
 
-When you are finished with PrairieLearn, type Control-C on the terminal where you ran the server to stop it.
+پس از پایان کار با پریری‌لرن، برای متوقف کردن سرور، کلیدهای Control-C را در ترمینالی که سرور را در آن اجرا کرده‌اید فشار دهید.
 
-### Support for external graders and workspaces
+### پشتیبانی از نمره‌دهنده‌های خارجی و محیط‌های کاری (Workspaces)
 
-There are a few extra steps needed to run PrairieLearn locally with support for external graders and workspaces.
+برای اجرای محلی پریری‌لرن با پشتیبانی از نمره‌دهنده‌های خارجی و محیط‌های کاری، چند مرحله اضافه لازم است.
 
-First, create an empty directory to use to share job data between containers. This directory can live anywhere, but needs to be created first and referenced in the Docker launch command. This directory only needs to be created once. If you are running Windows, the directory should be created inside the WSL 2 instance. You can create this directory using a command like:
+ابتدا، یک دایرکتوری خالی ایجاد کنید تا برای اشتراک‌گذاری داده‌های جاب (job) بین کانتینرها استفاده شود. این دایرکتوری می‌تواند در هر مکانی قرار داشته باشد، اما باید ابتدا ایجاد شده و در دستور راه‌اندازی داکر به آن ارجاع داده شود. این دایرکتوری فقط یک بار نیاز به ایجاد دارد. اگر از ویندوز استفاده می‌کنید، این دایرکتوری باید در داخل محیط WSL 2 ایجاد شود. می‌توانید با دستوری شبیه به زیر این دایرکتوری را ایجاد کنید:
 
 ```bash
 mkdir "$HOME/pl_ag_jobs"
 ```
 
-Now, we can run PrairieLearn with additional options to allow the external grading or workspaces features. For example, if your course directory is in `$HOME/pl-tam212` and the jobs directory created above is in `$HOME/pl_ag_jobs`, the new command is as follows:
+اکنون می‌توانیم پریری‌لرن را با گزینه‌های تکمیلی اجرا کنیم تا قابلیت‌های نمره‌دهی خارجی یا محیط‌های کاری فعال شوند. به عنوان مثال، اگر دایرکتوری درس شما در `$HOME/pl-tam212` قرار دارد و دایرکتوری جاب‌های ایجادشده در بالا در `$HOME/pl_ag_jobs` است، دستور جدید به صورت زیر خواهد بود:
 
 ```sh
 docker run -it --rm -p 3000:3000 \
-  -v "$HOME/pl-tam212:/course" `# Replace the path with your course directory` \
-  -v "$HOME/pl_ag_jobs:/jobs" `# Map the jobs directory into /jobs` \
+  -v "$HOME/pl-tam212:/course" `# مسیر را با دایرکتوری درس خود جایگزین کنید` \
+  -v "$HOME/pl_ag_jobs:/jobs" `# دایرکتوری jobs را به /jobs نگاشت کنید` \
   -e HOST_JOBS_DIR="$HOME/pl_ag_jobs" \
-  -v /var/run/docker.sock:/var/run/docker.sock `# Mount Docker into container so it can spawn others` \
-  --add-host=host.docker.internal:172.17.0.1 `# Ensure network connectivity` \
+  -v /var/run/docker.sock:/var/run/docker.sock `# داکر را در کانتینر مونت کنید تا بتواند کانتینرهای دیگر را بسازد` \
+  --add-host=host.docker.internal:172.17.0.1 `# اطمینان از اتصال شبکه` \
   prairielearn/prairielearn
 ```
 
-??? question "Why is this necessary?"
+??? question "چرا این کار لازم است؟"
 
-    In production, PrairieLearn runs external grading jobs and workspaces on a distributed system that can efficiently run many jobs in parallel. When developing questions locally, you won't have access to this infrastructure, but PrairieLearn allows you to still run external grading jobs and workspaces locally. To do this, it needs extra Docker command line arguments to provide two key capabilities:
+    در محیط عملیاتی (production)، پریری‌لرن کارهای نمره‌دهی خارجی و محیط‌های کاری را بر روی یک سیستم توزیع‌شده اجرا می‌کند که می‌تواند تعداد زیادی جاب را به طور کارآمد و موازی اجرا کند. هنگام توسعه سوالات به صورت محلی، شما به این زیرساخت دسترسی نخواهید داشت، اما پریری‌لرن به شما امکان می‌دهد کارهای نمره‌دهی خارجی و محیط‌های کاری را همچنان به طور محلی اجرا کنید. برای این کار، به آرگومان‌های خط فرمان داکر تکمیلی نیاز است تا دو قابلیت کلیدی فراهم شود:
 
-    - PrairieLearn needs a way of starting up Docker containers on the host machine from within another Docker container. This is achieved by mounting the Docker socket from the host into the Docker container running PrairieLearn; this allows it to run "sibling" containers.
-    - PrairieLearn needs to get job files from inside the Docker container running PrairieLearn to the host machine so that Docker can mount them to either `/grade` in the grading container or the home directory in the workspace container. This is achieved by mounting a directory on the host machine to `/jobs` in the PrairieLearn container, and setting an environment variable `HOST_JOBS_DIR` containing the absolute path of that directory on the host machine.
+    - پریری‌لرن به راهی برای راه‌اندازی کانتینرهای داکر روی ماشین میزبان (host) از درون یک کانتینر داکر دیگر نیاز دارد. این امر با متصل کردن (mount) سوکت داکر از ماشین میزبان به کانتینر داکر اجراکننده پریری‌لرن به دست می‌آید؛ این کار امکان اجرای کانتینرهای «همتا» (sibling) را به آن می‌دهد.
+    - پریری‌لرن باید فایل‌های جاب را از داخل کانتینر داکر اجراکننده پریری‌لرن به ماشین میزبان برساند تا داکر بتواند آن‌ها را در `/grade` داخل کانتینر نمره‌دهی یا دایرکتوری خانگی (home) داخل کانتینر محیط کاری مونت کند. این کار با مونت کردن یک دایرکتوری در ماشین میزبان به `/jobs` در کانتینر پریری‌لرن، و تنظیم متغیر محیطی `HOST_JOBS_DIR` حاوی مسیر مطلق آن دایرکتوری در ماشین میزبان حاصل می‌شود.
 
-### Development
+### توسعه هسته پریری‌لرن (Development)
 
-If you want to contribute improvements or features to PrairieLearn, you will need to start up PrairieLearn differently. See the [local installation](./dev-guide/installingLocal.md) documentation for more details.
+اگر می‌خواهید در ارائه بهبودها یا ویژگی‌های جدید به خود پریری‌لرن مشارکت کنید، باید پریری‌لرن را به روش دیگری راه‌اندازی کنید. برای اطلاعات بیشتر به مستندات [نصب محلی توسعه‌دهندگان](./dev-guide/installingLocal.md) مراجعه کنید.
 
-#### Troubleshooting the --add-host option and network timeouts
+#### عیب‌یابی گزینه --add-host و وقفه زمانی شبکه (Network Timeouts)
 
-If you are an advanced Docker user, or if your organization's network policies require it, then you might have previously adjusted the address pool used by Docker. If this conflicts with the Docker defaults, you might get a network timeout error when attempting to launch a workspace locally. In that case, you might need to adjust the IP address for the `--add-host=` option. You can find more technical details here: [PL issue #9805](https://github.com/PrairieLearn/PrairieLearn/issues/9805#issuecomment-2093299949), [`moby/moby` PR 29376](https://github.com/moby/moby/pull/29376), [`docker/docs` issue 8663](https://github.com/docker/docs/issues/8663).
+اگر کاربر پیشرفته داکر هستید یا سیاست‌های شبکه سازمان شما ایجاب می‌کند، ممکن است قبلاً محدوده آدرس (address pool) مورد استفاده داکر را تغییر داده باشید. اگر این مورد با پیش‌فرض‌های داکر تعارض داشته باشد، ممکن است هنگام تلاش برای راه‌اندازی یک محیط کاری به صورت محلی با خطای مهلت زمانی شبکه (network timeout) مواجه شوید. در این صورت، ممکن است نیاز باشد آدرس IP گزینه `--add-host=` را تغییر دهید. می‌توانید جزئیات فنی بیشتر را در اینجا بیابید: [مورد شماره ۹۸۰۵ پریری‌لرن](https://github.com/PrairieLearn/PrairieLearn/issues/9805#issuecomment-2093299949)، [PR 29376 در `moby/moby`](https://github.com/moby/moby/pull/29376)، [مورد شماره ۸۶۶۳ در `docker/docs`](https://github.com/docker/docs/issues/8663).
 
-If you are using macOS, then you may be able to remove the `--add-host` option entirely without any problems.
+اگر از macOS استفاده می‌کنید، ممکن است بتوانید گزینه `--add-host` را کاملاً و بدون هیچ مشکلی حذف کنید.
 
-## Upgrading your PrairieLearn Docker image
+## ارتقای ایمیج داکر PrairieLearn
 
-To obtain the latest version of PrairieLearn at any time, make sure PrairieLearn is not running (Ctrl-C it if needed) and then run:
+برای دریافت آخرین نسخه پریری‌لرن در هر زمان، مطمئن شوید پریری‌لرن در حال اجرا نیست (در صورت نیاز با فشار دادن Ctrl-C آن را متوقف کنید) و سپس دستور زیر را اجرا نمایید:
 
 ```sh
 docker pull prairielearn/prairielearn
 ```
 
-After this, run PrairieLearn using the same commands as above.
+پس از این کار، پریری‌لرن را با استفاده از همان دستورات قبلی اجرا کنید.
 
-## Running a specific version of PrairieLearn
+## اجرای یک نسخه خاص از PrairieLearn
 
-The commands above will always run the very latest version of PrairieLearn, which might be an unreleased development version. If you would like to run the version that is currently deployed, use the appropriate tag for the server you're using:
+دستورات بالا همیشه آخرین نسخه پریری‌لرن را اجرا می‌کنند که ممکن است یک نسخه در حال توسعه و منتشرنشده باشد. اگر مایلید نسخه‌ای را اجرا کنید که هم‌اکنون در محیط عملیاتی مستقر است، از تگ مناسب برای سروری که استفاده می‌کنید بهره بگیرید:
 
-- For courses running under <https://us.prairielearn.com/> use the tag `us-prod-live`;
-- For institutions with local installations of PrairieLearn, consult your local IT department.
+- برای درس‌هایی که تحت <https://us.prairielearn.com/> اجرا می‌شوند از تگ `us-prod-live` استفاده کنید؛
+- برای موسساتی که نصب‌های محلی اختصاصی از پریری‌لرن دارند، با بخش فناوری اطلاعات (IT) محلی خود مشورت نمایید.
 
 ```sh
 docker run -it --rm -p 3000:3000 --pull=always [other args] prairielearn/prairielearn:us-prod-live
 ```
 
-!!! tip
+!!! tip "نکته"
 
-    The command above uses the `--pull=always` option, which will update the local version of the image every time the Docker command is restarted. If you keep a long-running container locally, make sure to restart the container when updates in the production servers are announced in the [PrairieLearn GitHub Discussions page](https://github.com/PrairieLearn/PrairieLearn/discussions/categories/announcements).
+    دستور بالا از گزینه `--pull=always` استفاده می‌کند که باعث می‌شود در هر بار اجرای مجدد دستور داکر، نسخه محلی ایمیج به‌روزرسانی شود. اگر کانتینری را به صورت طولانی‌مدت به طور محلی در حال اجرا نگه می‌دارید، اطمینان حاصل کنید زمانی که به‌روزرسانی‌ها در سرورهای تولیدی در [صفحه بحث‌های گیت‌هاب PrairieLearn](https://github.com/PrairieLearn/PrairieLearn/discussions/categories/announcements) اعلام می‌شوند، کانتینر را بازنشانی (restart) کنید.
 
-Additional tags are available for older versions. The list of available versions is viewable on the [Docker Hub build page](https://hub.docker.com/r/prairielearn/prairielearn/builds/).
+تگ‌های اضافی برای نسخه‌های قدیمی‌تر نیز در دسترس هستند. فهرست نسخه‌های در دسترس در [صفحه بیلد Docker Hub](https://hub.docker.com/r/prairielearn/prairielearn/builds/) قابل مشاهده است.
 
-## Additional instructions for Windows users
+## دستورالعمل‌های تکمیلی برای کاربران ویندوز
 
-We do not currently support a Windows environment without WSL 2, due to extreme performance issues, limitations related to file permissions in job folders, as well as issues associated to file formats. While there are ways to run PrairieLearn in this environment, it may not provide the same experience that a student would see in a production environment, and as such it is discouraged and not documented.
+در حال حاضر ما از محیط ویندوز بدون WSL 2 پشتیبانی نمی‌کنیم، چرا که با افت شدید کارایی، محدودیت‌های مربوط به مجوزهای فایل در پوشه‌های جاب و همچنین مشکلات مرتبط با فرمت‌های فایل مواجه می‌شود. گرچه راه‌هایی برای اجرای پریری‌لرن در چنین محیطی وجود دارد، اما ممکن است تجربه‌ای مشابه آنچه دانشجو در محیط عملیاتی می‌بیند ارائه نکند و بنابراین استفاده از آن توصیه نشده و مستندسازی نشده است.
 
-If you are using Windows, use WSL 2 to run PrairieLearn. WSL 2 provides a Linux environment that runs alongside Windows, and makes better use of modern CPU virtualization features. All examples in this page assume that, if Windows is in use, commands are executed and files are stored within the WSL 2 environment.
+اگر از ویندوز استفاده می‌کنید، از WSL 2 برای اجرای پریری‌لرن استفاده کنید. WSL 2 یک محیط لینوکس را فراهم می‌کند که در کنار ویندوز اجرا می‌شود و استفاده بهتری از قابلیت‌های مجازی‌سازی CPUهای مدرن به عمل می‌آورد. تمام مثال‌های موجود در این صفحه فرض می‌کنند که در صورت استفاده از ویندوز، دستورات اجرا شده و فایل‌ها درون محیط WSL 2 ذخیره می‌شوند.
 
-Here are the instructions to install WSL 2 and enable its integration with Docker:
+در اینجا دستورالعمل‌های نصب WSL 2 و فعال‌سازی یکپارچه‌سازی آن با داکر آمده است:
 
-- Install WSL 2. For current instructions, [follow the Microsoft documentation](https://learn.microsoft.com/en-us/windows/wsl/install).
-- Enable the Docker Desktop WSL 2 backend. For current instructions, [follow the Docker documentation](https://docs.docker.com/desktop/windows/wsl/).
+- نصب WSL 2. برای دستورالعمل‌های به‌روز، [مستندات مایکروسافت را دنبال کنید](https://learn.microsoft.com/en-us/windows/wsl/install).
+- فعال‌سازی بک‌اند Docker Desktop WSL 2. برای دستورالعمل‌های جاری، [مستندات داکر را دنبال کنید](https://docs.docker.com/desktop/windows/wsl/).
 
-### Opening a WSL 2 shell on Windows
+### باز کردن شل (Shell) WSL 2 در ویندوز
 
-To run a WSL 2 shell, open the Windows Start menu, search for "WSL", and select the WSL 2 instance you installed. Alternatively, install the [Windows Terminal](https://aka.ms/terminal) application and select your WSL 2 instance from the dropdown menu.
+برای اجرای یک شل WSL 2، منوی Start ویندوز را باز کنید، عبارت "WSL" را جستجو کرده و نمونه WSL 2 نصب‌شده را انتخاب نمایید. متناوباً، برنامه [Windows Terminal](https://aka.ms/terminal) را نصب کرده و نمونه WSL 2 خود را از منوی کشویی انتخاب کنید.
 
-Note that PowerShell, the Command Prompt, Git Bash, Cygwin, MinGW and other similar environments are not supported and may not work properly. You can check if you are using a WSL shell by typing `echo $WSL_DISTRO_NAME` in the terminal. If you see the name of the Linux distribution you installed in [the previous step](#installation-instructions), you are using WSL. If you see nothing, or you see `$WSL_DISTRO_NAME`, you are not using WSL.
+توجه داشته باشید که PowerShell، Command Prompt، Git Bash، Cygwin، MinGW و سایر محیط‌های مشابه پشتیبانی نمی‌شوند و ممکن است به درستی کار نکنند. می‌توانید با تایپ عبارت `echo $WSL_DISTRO_NAME` در ترمینال بررسی کنید که آیا از یک شل WSL استفاده می‌کنید یا خیر. اگر نام توزیع لینوکسی را که در [مرحله قبل](#installation-instructions) نصب کرده‌اید مشاهده کردید، در حال استفاده از WSL هستید. اگر چیزی مشاهده نکردید یا عبارت `$WSL_DISTRO_NAME` را دیدید، از WSL استفاده نمی‌کنید.
 
-### Storing your course content in WSL 2
+### ذخیره محتوای درس در WSL 2
 
-While there are ways to store your course content in the Windows file system itself (e.g., in your Documents or Desktop folder, or elsewhere inside the `C:\` drive) and to translate those paths to WSL mounted paths (e.g., via `/mnt/c/...` paths), these are not recommended due to performance concerns.
+اگرچه راه‌هایی برای ذخیره محتوای درس در خود سیستم فایل ویندوز (مثلاً در پوشه Documents یا دسکتاپ، یا در جای دیگری از درایو `C:\`) و ترجمه آن مسیرها به مسیرهای متصل‌شده WSL (مثلاً از طریق مسیرهای `/mnt/c/...`) وجود دارد، اما این موارد به دلیل افت کارایی توصیه نمی‌شوند.
 
-If you are using Windows, store your course content inside the WSL 2 instance. This option typically provides the best performance when running PrairieLearn locally. You can clone the repository [using git commands](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) inside your WSL shell. Note that, in this case, you will need to either update your files using WSL tools and editors, or access the files using the Linux file systems. [Instructions to do so are listed here](https://learn.microsoft.com/en-us/windows/wsl/filesystems). In this case, keep track of the path used by your course inside WSL (e.g., `$HOME/pl-tam212`).
+اگر از ویندوز استفاده می‌کنید، محتوای درس خود را در داخل محیط WSL 2 ذخیره نمایید. این گزینه معمولاً بهترین کارایی را هنگام اجرای محلی پریری‌لرن ارائه می‌دهد. می‌توانید مخزن را [با استفاده از دستورات git](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) در داخل شل WSL خود کلون کنید. توجه داشته باشید که در این حالت، باید یا فایل‌های خود را با استفاده از ابزارها و ویرایشگرهای WSL به‌روزرسانی کنید، یا با استفاده از سیستم فایل لینوکس به فایل‌ها دسترسی پیدا کنید. [دستورالعمل‌های انجام این کار در اینجا فهرست شده است](https://learn.microsoft.com/en-us/windows/wsl/filesystems). در این حالت، مسیری را که در داخل WSL توسط درس شما استفاده می‌شود (مانند `$HOME/pl-tam212`) به خاطر داشته باشید.
