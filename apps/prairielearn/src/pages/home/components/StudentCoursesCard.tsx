@@ -2,6 +2,7 @@ import { Modal } from 'react-bootstrap';
 
 import { useModalState } from '@prairielearn/ui';
 
+import { uiStrings } from '../../../lib/branding.js';
 import type { StudentHomePageCourse } from '../home.types.js';
 
 export function StudentCoursesCard({
@@ -84,7 +85,7 @@ export function StudentCoursesCard({
                           {entry.course.short_name}: {entry.course.title},{' '}
                           {entry.course_instance.long_name}
                         </span>
-                        <span className="ms-2 badge bg-warning text-dark">Invitation</span>
+                        <span className="ms-2 badge bg-warning text-dark">{uiStrings.home.invitationBadge}</span>
                       </div>
                       <div className="d-flex gap-2">
                         <form method="POST">
@@ -101,7 +102,7 @@ export function StudentCoursesCard({
                             value={entry.course_instance.id}
                           />
                           <button type="submit" className="btn btn-primary btn-sm">
-                            Accept
+                            {uiStrings.home.acceptInvitation}
                           </button>
                         </form>
                         <button
@@ -114,7 +115,7 @@ export function StudentCoursesCard({
                             })
                           }
                         >
-                          Reject
+                          {uiStrings.home.rejectInvitation}
                         </button>
                       </div>
                     </div>
@@ -141,7 +142,7 @@ export function StudentCoursesCard({
                           })
                         }
                       >
-                        Remove
+                        {uiStrings.home.removeCourse}
                       </button>
                     </div>
                   </td>
@@ -157,19 +158,17 @@ export function StudentCoursesCard({
         backdrop="static"
         onHide={rejectInvitationModal.onHide}
         onExited={rejectInvitationModal.onExited}
+        style={{ fontFamily: 'var(--font-persian)' }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Reject invitation</Modal.Title>
+          <Modal.Title>{uiStrings.home.rejectModalTitle}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>
-            Are you sure you want to reject this invitation? If the course doesn't allow
-            self-enrollment, you will need to be reinvited by an instructor.
-          </p>
+          <p>{uiStrings.home.rejectModalDesc}</p>
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={rejectInvitationModal.hide}>
-            Cancel
+            {uiStrings.common.cancel}
           </button>
           <form method="POST">
             <input type="hidden" name="__csrf_token" value={csrfToken} />
@@ -185,7 +184,7 @@ export function StudentCoursesCard({
               value={rejectInvitationModal.data?.enrollmentId ?? ''}
             />
             <button type="submit" className="btn btn-danger">
-              Reject invitation
+              {uiStrings.home.rejectModalConfirm}
             </button>
           </form>
         </Modal.Footer>
@@ -196,23 +195,21 @@ export function StudentCoursesCard({
         backdrop="static"
         onHide={removeCourseModal.onHide}
         onExited={removeCourseModal.onExited}
+        style={{ fontFamily: 'var(--font-persian)' }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Remove course</Modal.Title>
+          <Modal.Title>{uiStrings.home.removeModalTitle}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Are you sure you want to remove this course from your PrairieLearn account?</p>
-          <p>
-            Removing courses here only affects what is visible to you on PrairieLearn. This does not
-            change your university course registration.
-          </p>
+          <p>{uiStrings.home.removeModalDesc}</p>
+          <p className="text-muted">{uiStrings.home.removeModalNotice}</p>
           {removeCourseModal.data?.invitationEnrollmentId !== undefined && (
-            <p>The course may appear again after your institution's enrollment data is updated.</p>
+            <p className="small text-info">{uiStrings.home.removeModalReappear}</p>
           )}
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={removeCourseModal.hide}>
-            Cancel
+            {uiStrings.common.cancel}
           </button>
           <form method="POST">
             <input type="hidden" name="__csrf_token" value={csrfToken} />
@@ -238,7 +235,7 @@ export function StudentCoursesCard({
               />
             )}
             <button type="submit" className="btn btn-danger">
-              Remove course
+              {uiStrings.home.removeModalConfirm}
             </button>
           </form>
         </Modal.Footer>

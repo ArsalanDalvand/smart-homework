@@ -39,7 +39,7 @@ export function AdministratorWorkspaces({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Workspaces',
+    pageTitle: 'محیط‌های کاری ابری',
     navContext: {
       type: 'administrator',
       page: 'admin',
@@ -60,21 +60,21 @@ export function AdministratorWorkspaces({
             }
           });
           toggleButton.dataset.state = state === 'collapsed' ? 'expanded' : 'collapsed';
-          toggleButton.textContent = state === 'collapsed' ? 'Collapse all' : 'Expand all';
+          toggleButton.textContent = state === 'collapsed' ? 'بستن همه' : 'گسترش همه';
         });
       </script>
     `,
     content: html`
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1>Workspace hosts</h1>
+          <h1 class="h4 mb-0">سرورها و میزبان‌های محیط کاری (Workspaces)</h1>
           <button
             type="button"
-            class="btn btn-light ms-auto"
+            class="btn btn-sm btn-light ms-auto"
             id="toggle-all-workspaces"
             data-state="collapsed"
           >
-            Expand all
+            گسترش همه
           </button>
         </div>
         <div class="list-group list-group-flush">

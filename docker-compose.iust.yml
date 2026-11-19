@@ -15,8 +15,10 @@ services:
       - HOST_JOBS_DIR=${HOME}/pl_ag_jobs
       - DOCKER_HOST=/var/run/docker.sock
       - DEV=true
-      - PL_ANNOUNCEMENT_COLOR=info
-      - PL_ANNOUNCEMENT_HTML=دانشگاه علم و صنعت ایران | سامانه سنجش و تصحیح خودکار مبانی برنامه‌نویسی پایتون - دانشکده مهندسی کامپیوتر
+      - PL_BRAND_NAME=${PL_BRAND_NAME:-سامانه جامع ارزیابی و یادگیری هوشمند دانشگاهی}
+      - PL_BRAND_SHORT_NAME=${PL_BRAND_SHORT_NAME:-سامانه یادگیری هوشمند}
+      - PL_ANNOUNCEMENT_COLOR=${PL_ANNOUNCEMENT_COLOR:-info}
+      - PL_ANNOUNCEMENT_HTML=${PL_ANNOUNCEMENT_HTML:-سامانه جامع آموزش، یادگیری و ارزیابی هوشمند دانشگاهی}
     extra_hosts:
       - 'host.docker.internal:172.17.0.1'
     restart: unless-stopped

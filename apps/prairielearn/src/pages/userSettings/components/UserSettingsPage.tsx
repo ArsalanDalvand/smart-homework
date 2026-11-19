@@ -53,25 +53,27 @@ export function UserSettingsPage({
   return (
     <QueryClientProviderDebug client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-        <h1 className="mb-4">Settings</h1>
+        <div style={{ fontFamily: 'var(--font-persian)' }}>
+          <h1 className="mb-4 h2">تنظیمات حساب کاربری</h1>
 
-        <UserProfileCard
-          user={user}
-          institution={institution}
-          authnProviderName={authnProviderName}
-          ipAddress={ipAddress}
-        />
+          <UserProfileCard
+            user={user}
+            institution={institution}
+            authnProviderName={authnProviderName}
+            ipAddress={ipAddress}
+          />
 
-        <UserSettingsCard initialEnableSingleKeyShortcuts={initialEnableSingleKeyShortcuts} />
+          <UserSettingsCard initialEnableSingleKeyShortcuts={initialEnableSingleKeyShortcuts} />
 
-        <PersonalAccessTokensCard
-          accessTokens={accessTokens}
-          newAccessTokens={newAccessTokens}
-          isExamMode={isExamMode}
-          csrfToken={csrfToken}
-        />
+          <PersonalAccessTokensCard
+            accessTokens={accessTokens}
+            newAccessTokens={newAccessTokens}
+            isExamMode={isExamMode}
+            csrfToken={csrfToken}
+          />
 
-        <BrowserConfigurationCard />
+          <BrowserConfigurationCard />
+        </div>
       </TRPCProvider>
     </QueryClientProviderDebug>
   );
@@ -93,43 +95,43 @@ function UserProfileCard({
   return (
     <div className="card mb-4">
       <div className="card-header bg-primary text-white d-flex align-items-center">
-        <h2>User profile</h2>
+        <h2 className="h5 mb-0">مشخصات و هویت کاربر</h2>
       </div>
       <div className="table-responsive">
         <table
           className="table table-sm two-column-description"
-          aria-label="User profile information"
+          aria-label="اطلاعات کاربری"
         >
           <tbody>
             <tr>
-              <th>UID</th>
-              <td>{user.uid}</td>
+              <th>شناسه کاربری (UID)</th>
+              <td dir="ltr" style={{ textAlign: 'right' }}>{user.uid}</td>
             </tr>
             <tr>
-              <th>Name</th>
-              <td>{user.name}</td>
+              <th>نام و نام خانوادگی</th>
+              <td>{user.name || '—'}</td>
             </tr>
             <tr>
-              <th>Unique Identifier (UIN)</th>
-              <td>{user.uin}</td>
+              <th>شماره دانشجویی / پرسنلی (UIN)</th>
+              <td>{user.uin || '—'}</td>
             </tr>
             <tr>
-              <th>Email</th>
-              <td>{user.email}</td>
+              <th>آدرس ایمیل</th>
+              <td dir="ltr" style={{ textAlign: 'right' }}>{user.email || '—'}</td>
             </tr>
             <tr>
-              <th>Institution</th>
+              <th>دانشکده / موسسه دانشگاهی</th>
               <td>
                 {institution.long_name} ({institution.short_name})
               </td>
             </tr>
             <tr>
-              <th>Authentication method</th>
+              <th>روش احراز هویت</th>
               <td>{authnProviderName}</td>
             </tr>
             <tr>
-              <th>IP address</th>
-              <td>{ipAddress ?? <em>Unknown</em>}</td>
+              <th>آدرس IP کاربر</th>
+              <td dir="ltr" style={{ textAlign: 'right' }}>{ipAddress ?? <em>نامشخص</em>}</td>
             </tr>
           </tbody>
         </table>
@@ -156,36 +158,35 @@ function PersonalAccessTokensCard({
     <>
       <div className="card mb-4">
         <div className="card-header bg-primary text-white d-flex align-items-center">
-          <h2>Personal access tokens</h2>
+          <h2 className="h5 mb-0">توکن‌های دسترسی شخصی (API Tokens)</h2>
           {!isExamMode && (
             <button
               type="button"
               className="btn btn-light btn-sm ms-auto"
               data-testid="generate-token-button"
-              aria-label="Generate access token"
+              aria-label="ایجاد توکن دسترسی"
               onClick={() => setShowGenerateModal(true)}
             >
-              <i className="fa fa-plus" aria-hidden="true" />
-              <span className="d-none d-sm-inline">Generate access token</span>
+              <i className="fa fa-plus me-1" aria-hidden="true" />
+              <span className="d-none d-sm-inline">ایجاد توکن جدید</span>
             </button>
           )}
         </div>
         {newAccessTokens.length > 0 && (
           <div className="card-body">
             <div className="alert alert-primary" role="alert">
-              New access token created! Be sure to copy it now, as you won't be able to see it
-              later.
+              توکن دسترسی جدید با موفقیت ایجاد شد! حتماً اکنون آن را کپی نمایید، زیرا پس از بستن این بخش مجدداً نمایش داده نخواهد شد.
             </div>
             {newAccessTokens.map((token) => (
-              <div key={token} className="alert alert-success mb-0" role="alert">
-                <span className="new-access-token">{token}</span>
+              <div key={token} className="alert alert-success mb-0 d-flex align-items-center justify-content-between" role="alert">
+                <span className="new-access-token font-monospace" dir="ltr">{token}</span>
                 <button
                   type="button"
                   className="ms-2 btn btn-sm btn-outline-success js-copy-button"
                   data-clipboard-text={token}
-                  aria-label="Copy token to clipboard"
+                  aria-label="کپی توکن"
                 >
-                  <i className="bi bi-clipboard" />
+                  <i className="bi bi-clipboard me-1" /> کپی
                 </button>
               </div>
             ))}
@@ -198,8 +199,8 @@ function PersonalAccessTokensCard({
             onDeleteToken={setTokenToDelete}
           />
         </ul>
-        <div className="card-footer small">
-          Access tokens can be used to access the PrairieLearn API. Be sure to keep them secure.
+        <div className="card-footer small text-muted">
+          از توکن‌های دسترسی می‌توان جهت فراخوانی API سامانه توسط اسکریپت‌های اساتید یا دستیاران آموزشی استفاده نمود. در حفظ و نگهداری آن کوشا باشید.
         </div>
       </div>
 
@@ -230,7 +231,7 @@ function TokenList({
   if (isExamMode) {
     return (
       <li className="list-group-item">
-        <span className="text-muted">Access tokens are not available in exam mode.</span>
+        <span className="text-muted">در حالت آزمون، توکن‌های دسترسی غیرفعال هستند.</span>
       </li>
     );
   }
@@ -238,7 +239,7 @@ function TokenList({
   if (accessTokens.length === 0) {
     return (
       <li className="list-group-item">
-        <span className="text-muted">You don't currently have any access tokens.</span>
+        <span className="text-muted">در حال حاضر توکن دسترسی فعالی ایجاد نکرده‌اید.</span>
       </li>
     );
   }
@@ -249,11 +250,11 @@ function TokenList({
         <li key={token.id} className="list-group-item d-flex align-items-center">
           <div className="d-flex flex-column me-3">
             <strong>{token.name}</strong>
-            <span className="text-muted">Created at {formatDate(token.created_at, 'UTC')}</span>
-            <span className="text-muted">
+            <span className="text-muted small">تاریخ ایجاد: {formatDate(token.created_at, 'Asia/Tehran')}</span>
+            <span className="text-muted small">
               {token.last_used_at !== null
-                ? `Last used at ${formatDate(token.last_used_at, 'UTC')}`
-                : 'Never used'}
+                ? `آخرین استفاده: ${formatDate(token.last_used_at, 'Asia/Tehran')}`
+                : 'تاکنون استفاده نشده'}
             </span>
           </div>
           <button
@@ -261,7 +262,7 @@ function TokenList({
             className="btn btn-outline-danger btn-sm ms-auto"
             onClick={() => onDeleteToken(token)}
           >
-            Delete
+            حذف توکن
           </button>
         </li>
       ))}
@@ -276,25 +277,23 @@ function BrowserConfigurationCard() {
   const handleResetMathJax = () => {
     localStorage.removeItem('MathJax-Menu-Settings');
     // oxlint-disable-next-line no-alert -- Matches original behavior for user feedback
-    alert('MathJax menu settings have been reset');
+    alert('تنظیمات فونت ریاضی MathJax بازنشانی شد.');
   };
 
   return (
     <div className="card mb-4">
       <div className="card-header bg-primary text-white d-flex">
-        <h2>Browser configuration</h2>
+        <h2 className="h5 mb-0">تنظیمات فرمول‌نویسی و رندر مرورگر</h2>
       </div>
       <div className="card-body">
         <p>
-          This section will let you reset browser settings related to technology inside
-          PrairieLearn.
+          این بخش به شما امکان می‌دهد تنظیمات رندر فرمول‌های ریاضی و کش محلی مرورگر را در صورت مشاهده بهم‌ریختگی بازنشانی نمایید.
         </p>
         <p>
-          If math formulas show up as code like <strong>{EXAMPLE_BROKEN_LATEX}</strong> resetting
-          the MathJax menu settings might help.
+          اگر فرمول‌های ریاضی به‌صورت کد خام مانند <span dir="ltr"><strong>{EXAMPLE_BROKEN_LATEX}</strong></span> نمایش داده می‌شوند، کلیک بر روی دکمه زیر مشکل را برطرف می‌کند.
         </p>
         <button type="button" className="btn btn-sm btn-primary" onClick={handleResetMathJax}>
-          Reset MathJax menu settings
+          بازنشانی تنظیمات فرمول‌های ریاضی (MathJax)
         </button>
       </div>
     </div>
@@ -326,7 +325,7 @@ function UserSettingsCard({
   return (
     <div className="card mb-4">
       <div className="card-header bg-primary text-white d-flex align-items-center">
-        <h2>User settings</h2>
+        <h2 className="h5 mb-0">ترجیحات کاربری و کلیدهای میانبر</h2>
       </div>
       <div className="card-body">
         <div className="form-check form-switch">
@@ -346,11 +345,10 @@ function UserSettingsCard({
             }}
           />
           <label className="form-check-label fw-semibold" htmlFor="enable-keyboard-shortcuts">
-            Enable single-key shortcuts
+            فعال‌سازی کلیدهای میانبر تک‌کلیدی
           </label>
           <div id="enable-keyboard-shortcuts-description" className="form-text mt-1">
-            Use single-character keyboard shortcuts where available, including manual grading.
-            Available shortcuts are shown next to supported controls.
+            امکان استفاده از میانبرهای کیبورد برای جابجایی سریع میان سوالات و ثبت نمرات تصحیح دستی.
           </div>
         </div>
 
@@ -371,7 +369,7 @@ function UserSettingsCard({
             {updateMutation.isPending && (
               <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
             )}
-            {updateMutation.isPending ? 'Saving…' : 'Save settings'}
+            {updateMutation.isPending ? 'در حال ذخیره‌سازی…' : 'ذخیره تنظیمات'}
           </button>
           <span
             className={clsx('small text-success', {
@@ -380,10 +378,10 @@ function UserSettingsCard({
             aria-hidden={!updateMutation.isSuccess || isDirty}
           >
             <i className="bi bi-check-circle-fill me-1" aria-hidden="true" />
-            Saved
+            تنظیمات با موفقیت ذخیره گردید.
           </span>
           <span className="visually-hidden" role="status" aria-live="polite">
-            {updateMutation.isSuccess && !isDirty ? 'Settings saved' : ''}
+            {updateMutation.isSuccess && !isDirty ? 'تنظیمات ذخیره شد' : ''}
           </span>
         </div>
       </div>

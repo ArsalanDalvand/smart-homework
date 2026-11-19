@@ -56,36 +56,36 @@ export function CourseRequestsTable({
 }) {
   const approveModal = useModalState<CourseRequestRow>();
 
-  const headerPrefix = showAll ? 'All' : 'Pending';
+  const headerPrefix = showAll ? 'تمامی' : 'در انتظار بررسی';
   return (
-    <div className="card mb-4">
+    <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white d-flex align-items-center">
-        <h1 className="h2 mb-0">{headerPrefix} course requests</h1>
+        <h1 className="h4 mb-0">درخواست‌های ایجاد درس جدید ({headerPrefix})</h1>
         {!showAll && (
           <a
             className="btn btn-sm btn-light ms-auto"
             href={getAdministratorCourseRequestsUrl({ showAll: true })}
           >
-            <i className="fa fa-search" aria-hidden="true" />
-            <span className="d-none d-sm-inline">View all</span>
+            <i className="fa fa-search me-1" aria-hidden="true" />
+            <span className="d-none d-sm-inline">مشاهده همه</span>
           </a>
         )}
       </div>
       <div className="table-responsive">
-        <table className="table table-sm" aria-label="Course requests">
+        <table className="table table-sm table-hover" aria-label="درخواست‌های ایجاد درس">
           <thead>
             <tr>
-              <th>Created At</th>
-              <th>Short Name / Title</th>
-              <th>Institution</th>
-              <th>Requester / contact email</th>
-              <th>PrairieLearn account (UID)</th>
-              <th>GitHub Username</th>
-              <th>Referral Source</th>
-              <th>Status</th>
-              {showAll && <th>Updated By</th>}
-              <th>Actions</th>
-              <th>Details</th>
+              <th>تاریخ ثبت</th>
+              <th>کد و عنوان درس</th>
+              <th>دانشکده</th>
+              <th>نام متقاضی و ایمیل</th>
+              <th>شناسه کاربری (UID)</th>
+              <th>نام کاربری گیت‌هاب</th>
+              <th>منبع آشنایی</th>
+              <th>وضعیت</th>
+              {showAll && <th>بررسی‌کننده</th>}
+              <th>عملیات</th>
+              <th>جزئیات</th>
             </tr>
           </thead>
           <tbody>
@@ -100,10 +100,9 @@ export function CourseRequestsTable({
           </tbody>
         </table>
       </div>
-      <div className="card-footer">
+      <div className="card-footer text-muted">
         <small>
-          Accepting a course request will automatically create a new GitHub repository and add the
-          course to the database.
+          تایید درخواست درس به طور خودکار مخزن درس را روی سرور پیکربندی کرده و دسترسی مالکیت را به استاد متقاضی اختصاص می‌دهد.
         </small>
       </div>
       <CourseRequestApproveModal
@@ -215,7 +214,7 @@ const CourseRequestTableRow = memo(
                   onToggle={setShowDenyPopover}
                 >
                   <button type="button" className="btn btn-sm btn-danger text-nowrap">
-                    <i className="fa fa-times" aria-hidden="true" /> Deny
+                    <i className="fa fa-times me-1" aria-hidden="true" /> رد درخواست
                   </button>
                 </OverlayTrigger>
                 <button
@@ -223,7 +222,7 @@ const CourseRequestTableRow = memo(
                   className="btn btn-sm btn-success text-nowrap"
                   onClick={() => onApprove(row)}
                 >
-                  <i className="fa fa-check" aria-hidden="true" /> Approve
+                  <i className="fa fa-check me-1" aria-hidden="true" /> تایید و ایجاد
                 </button>
               </div>
             )}
@@ -234,17 +233,17 @@ const CourseRequestTableRow = memo(
                 variant="secondary"
                 size="sm"
                 className="btn-xs"
-                aria-label={`Show details for ${row.short_name}`}
+                aria-label={`نمایش جزئیات ${row.short_name}`}
               >
-                Show details
+                جزئیات
               </Dropdown.Toggle>
               <Dropdown.Menu popperConfig={{ strategy: 'fixed' }} renderOnMount>
                 <Dropdown.Item as="button" onClick={() => setNoteOpen(!noteOpen)}>
-                  {noteOpen ? 'Close note' : 'Edit note'}
+                  {noteOpen ? 'بستن یادداشت' : 'یادداشت مدیر'}
                 </Dropdown.Item>
                 {row.jobs.length > 0 && (
                   <Dropdown.Item as="button" onClick={() => setJobsOpen(!jobsOpen)}>
-                    {jobsOpen ? 'Hide jobs' : 'Show jobs'}
+                    {jobsOpen ? 'مخفی‌سازی جاب‌ها' : 'مشاهده جاب‌های سیستمی'}
                   </Dropdown.Item>
                 )}
               </Dropdown.Menu>

@@ -6,6 +6,7 @@ import {
   compiledStylesheetTag,
   nodeModulesAssetPath,
 } from '../lib/assets.js';
+import { getEffectiveTitleSuffix } from '../lib/branding.js';
 import { config } from '../lib/config.js';
 import {
   type Assessment,
@@ -265,5 +266,6 @@ function getTitle({ resLocals, pageTitle, pageNote }: TitleOptions) {
   } else if (navPage != null && navPage !== 'error' && !displayedTitle) {
     navTrace.push(displayFriendlyPage(navPage));
   }
-  return `${config.devMode ? '[DEV] ' : ''}${navTrace.length > 0 ? navTrace.join(' — ') + ' | ' : ''}سامانه یادگیری و ارزیابی پایتون — دانشگاه علم و صنعت ایران`;
+  const brandSuffix = getEffectiveTitleSuffix(resLocals?.institution);
+  return `${config.devMode ? '[DEV] ' : ''}${navTrace.length > 0 ? navTrace.join(' — ') + ' | ' : ''}${brandSuffix}`;
 }

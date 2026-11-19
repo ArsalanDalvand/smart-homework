@@ -3,6 +3,7 @@ import { parseAsBoolean, useQueryState } from 'nuqs';
 import { NuqsAdapter } from '@prairielearn/ui';
 
 import { EnrollmentCodeForm } from '../../../components/EnrollmentCodeForm.js';
+import { uiStrings } from '../../../lib/branding.js';
 import type { StudentHomePageCourse } from '../home.types.js';
 
 import { EmptyStateCards } from './EmptyStateCards.js';
@@ -51,7 +52,7 @@ function HomeCardsInner({
         style="modal"
         show={showJoinModal}
         leadingContent={
-          <p>To join a course, enter the enrollment code provided by your instructor.</p>
+          <p>{uiStrings.home.enrollmentCodeHelp}</p>
         }
         showInstructorHelp={hasInstructorCourses}
         onHide={() => setShowJoinModal(false)}

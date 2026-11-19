@@ -37,16 +37,16 @@ export function AdministratorFeatures({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Features',
+    pageTitle: 'قابلیت‌ها و فلگ‌ها',
     navContext: {
       type: 'administrator',
       page: 'admin',
       subPage: 'features',
     },
     content: html`
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h1>Features</h1>
+          <h1 class="h4 mb-0">قابلیت‌ها و فلگ‌های سیستمی</h1>
         </div>
         ${
           features.length > 0
@@ -58,6 +58,7 @@ export function AdministratorFeatures({
                         <a
                           href="${resLocals.urlPrefix}/administrator/features/${feature}"
                           class="me-auto font-monospace"
+                          dir="ltr"
                         >
                           ${feature}
                         </a>
@@ -66,7 +67,7 @@ export function AdministratorFeatures({
                   })}
                 </div>
               `
-            : html`<div class="card-body text-center text-secondary">No features</div>`
+            : html`<div class="card-body text-center text-secondary">قابلیتی ثبت نشده است.</div>`
         }
       </div>
     `,

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { run } from '@prairielearn/run';
 
+import { uiStrings } from '../lib/branding.js';
 import { getSelfEnrollmentLinkUrl, getSelfEnrollmentLookupUrl } from '../lib/client/url.js';
 
 interface EnrollmentCodeFormData {
@@ -341,14 +342,12 @@ export function EnrollmentCodeForm({
           )}
         </div>
         <div className="small text-muted">
-          Don't have an enrollment code? Your instructor may have given you a link to your course or
-          asked you to access it from another learning management system.
+          {uiStrings.enrollment.noCodeHelp}
         </div>
         {showInstructorHelp && (
           <div className="small text-muted">
-            <b>Instructors: </b>
-            You can find both the enrollment code and a self-enrollment link on the settings page of
-            your course instance.
+            <b>اساتید محترم: </b>
+            {uiStrings.enrollment.instructorHelp}
           </div>
         )}
       </div>
@@ -357,7 +356,7 @@ export function EnrollmentCodeForm({
 
   const submitButton = (
     <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-      {isSubmitting ? 'Looking up code...' : 'Join course'}
+      {isSubmitting ? uiStrings.enrollment.lookingUpBtn : uiStrings.enrollment.joinBtn}
     </button>
   );
 
@@ -377,15 +376,16 @@ export function EnrollmentCodeForm({
       size="md"
       onHide={onHide}
       onExited={resetModalState}
+      style={{ fontFamily: 'var(--font-persian)' }}
     >
       <Modal.Header closeButton>
-        <Modal.Title>Join a course</Modal.Title>
+        <Modal.Title>{uiStrings.enrollment.modalTitle}</Modal.Title>
       </Modal.Header>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body>{formContent}</Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={onHide}>
-            Cancel
+            {uiStrings.common.cancel}
           </button>
           {submitButton}
         </Modal.Footer>

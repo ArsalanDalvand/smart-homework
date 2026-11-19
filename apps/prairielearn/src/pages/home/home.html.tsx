@@ -1,5 +1,6 @@
 import { Hydrate } from '@prairielearn/react/server';
 
+import { platformBranding, uiStrings } from '../../lib/branding.js';
 import { type StaffInstitution } from '../../lib/client/safe-db-types.js';
 import { type NewsItem } from '../../lib/db-types.js';
 
@@ -34,7 +35,7 @@ export function Home({
 }) {
   return (
     <div className="pt-4 mx-auto" style={{ maxWidth: 1000, fontFamily: 'var(--font-persian)' }}>
-      <h1 className="visually-hidden">سامانه یادگیری و ارزیابی دانشگاه علم و صنعت ایران</h1>
+      <h1 className="visually-hidden">{platformBranding.brandName}</h1>
       <DevModeCard isDevMode={isDevMode} />
       <AdminInstitutionsCard adminInstitutions={adminInstitutions} />
       <NewsAlert newsItems={unreadNewsItems} csrfToken={csrfToken} blogUrl={blogUrl} now={now} />
@@ -64,10 +65,10 @@ function DevModeCard({ isDevMode }: { isDevMode: boolean }) {
       </div>
       <div className="card-body">
         <p>
-          سامانه هم‌اکنون در <strong>حالت توسعه (<span dir="ltr">Dev Mode</span>)</strong> اجرا شده است. با تغییر فایل‌های <span dir="ltr">JSON</span> سوالات، تکالیف و تنظیمات درس در پوشه کدها، جهت اعمال سریع تغییرات بر روی دکمه <strong>«همگام‌سازی دیسک»</strong> در نوار بالا کلیک کنید.
+          سامانه هم‌اکنون در <strong>حالت توسعه (<span dir="ltr">Dev Mode</span>)</strong> اجرا شده است. با تغییر فایل‌های پیکربندی، سوالات و تنظیمات درس در پوشه کدها، جهت اعمال سریع تغییرات بر روی دکمه <strong>«همگام‌سازی دیسک»</strong> در نوار بالا کلیک کنید.
         </p>
         <p className="mb-0 text-muted">
-          تغییرات کدهای پایتون، فایل‌های فرانت‌اند و فایل‌های استاتیک، با رفرش صفحه به‌صورت آنی بارگذاری می‌شوند.
+          {uiStrings.home.devModeHint}
         </p>
       </div>
     </div>
@@ -112,7 +113,7 @@ function InstructorCoursesCard({ instructorCourses, urlPrefix }: InstructorCours
       <div className="card-header bg-primary text-white d-flex align-items-center">
         <h2>درس‌های تحت مدیریت (استاد / دستیار آموزشی)</h2>
         <a
-          href="https://github.com/ArsalanDalvand/PrairieLearn"
+          href={platformBranding.repoUrl}
           className="btn btn-light btn-sm ms-auto"
           target="_blank"
           rel="noopener noreferrer"

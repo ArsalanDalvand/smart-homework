@@ -38,27 +38,27 @@ export function AdministratorInstitutionsTable({
     <QueryClientProviderDebug client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
         <>
-          <div id="institutions" className="card mb-4">
+          <div id="institutions" className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
             <div className="card-header bg-primary text-white d-flex align-items-center">
-              <h1>Institutions</h1>
+              <h1 className="h4 mb-0">دانشکده‌ها و موسسات دانشگاه</h1>
               <button
                 type="button"
                 className="btn btn-sm btn-light ms-auto"
                 onClick={() => setShowModal(true)}
               >
-                <i className="fas fa-plus" />
-                <span className="d-none d-sm-inline">Add institution</span>
+                <i className="fas fa-plus me-1" />
+                <span className="d-none d-sm-inline">افزودن دانشکده جدید</span>
               </button>
             </div>
             <div className="table-responsive">
-              <table className="table table-sm table-hover table-striped" aria-label="Institutions">
+              <table className="table table-sm table-hover table-striped" aria-label="دانشکده‌ها و موسسات">
                 <thead>
                   <tr>
-                    <th>Short name</th>
-                    <th>Long name</th>
-                    <th>Timezone</th>
-                    <th>UID regexp</th>
-                    <th>Authn providers</th>
+                    <th>کد اختصاری</th>
+                    <th>نام کامل دانشکده / موسسه</th>
+                    <th>منطقه زمانی</th>
+                    <th>الگوی شناسه (UID Regexp)</th>
+                    <th>روش‌های احراز هویت</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -77,12 +77,12 @@ export function AdministratorInstitutionsTable({
                       <td>{institution.display_timezone}</td>
                       <td>
                         {institution.uid_regexp ? (
-                          <span className="font-monospace">{institution.uid_regexp}</span>
+                          <span className="font-monospace" dir="ltr">{institution.uid_regexp}</span>
                         ) : (
                           '—'
                         )}
                       </td>
-                      <td>{authn_providers.join(', ')}</td>
+                      <td>{authn_providers.join(', ') || 'پیش‌فرض داخلی'}</td>
                     </tr>
                   ))}
                 </tbody>

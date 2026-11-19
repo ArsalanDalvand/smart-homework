@@ -1,3 +1,5 @@
+import { platformBranding, uiStrings } from '../../../lib/branding.js';
+
 export function EmptyStateCards({
   urlPrefix,
   setShowJoinModal,
@@ -13,8 +15,8 @@ export function EmptyStateCards({
             <div className="mb-3">
               <i className="bi bi-person-badge text-primary" style={{ fontSize: '3rem' }} />
             </div>
-            <h3 className="card-title mb-3">دانشجویان</h3>
-            <p className="card-text mb-4">عضویت در درس مبانی برنامه‌نویسی و شروع حل تمرین‌ها و یادگیری پایتون.</p>
+            <h3 className="card-title mb-3">{uiStrings.emptyState.studentTitle}</h3>
+            <p className="card-text mb-4">{uiStrings.emptyState.studentDesc}</p>
             <div className="mt-auto">
               <button
                 type="button"
@@ -22,7 +24,7 @@ export function EmptyStateCards({
                 onClick={() => setShowJoinModal(true)}
               >
                 <i className="bi bi-plus-circle" />
-                عضویت در درس
+                {uiStrings.home.joinCourseBtn}
               </button>
             </div>
           </div>
@@ -34,8 +36,8 @@ export function EmptyStateCards({
             <div className="mb-3">
               <i className="bi bi-mortarboard text-primary" style={{ fontSize: '3rem' }} />
             </div>
-            <h3 className="card-title mb-3">اساتید و کادر آموزشی</h3>
-            <p className="card-text mb-4">طراحی سوالات تستی و پایتون، تعیین آزمون‌های تصحیح خودکار و مدیریت دانشجویان.</p>
+            <h3 className="card-title mb-3">{uiStrings.emptyState.instructorTitle}</h3>
+            <p className="card-text mb-4">{uiStrings.emptyState.instructorDesc}</p>
             <div className="mt-auto">
               <div className="d-flex flex-wrap gap-2">
                 <a
@@ -43,16 +45,16 @@ export function EmptyStateCards({
                   className="btn btn-primary flex-fill d-flex gap-2 justify-content-center"
                 >
                   <i className="bi bi-book" />
-                  درخواست ایجاد درس
+                  {uiStrings.nav.requestCourse}
                 </a>
                 <a
-                  href="https://github.com/ArsalanDalvand/PrairieLearn"
+                  href={platformBranding.repoUrl}
                   className="btn btn-outline-primary flex-fill d-flex gap-2 justify-content-center"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i className="fab fa-github" aria-hidden="true" />
-                  مخزن گیت‌هاب
+                  {uiStrings.home.githubRepoBtn}
                 </a>
               </div>
             </div>

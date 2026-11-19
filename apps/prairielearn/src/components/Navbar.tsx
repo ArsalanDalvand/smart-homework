@@ -3,6 +3,7 @@ import { type HtmlValue, html, unsafeHtml } from '@prairielearn/html';
 import { run } from '@prairielearn/run';
 
 import { assetPath } from '../lib/assets.js';
+import { getEffectiveBrandName, platformBranding, uiStrings } from '../lib/branding.js';
 import { config } from '../lib/config.js';
 import type { UntypedResLocals } from '../lib/res-locals.types.js';
 import type { Override } from '../middlewares/authzCourseOrInstance.js';
@@ -109,11 +110,11 @@ export function Navbar({
               `
             : ''
         }
-        <a class="navbar-brand d-flex align-items-center gap-2" href="/" aria-label="صفحه اصلی">
-          <img src="${assetPath('images/iust-logo.svg')}" alt="IUST" style="height: 30px; width: auto;" />
-          <span class="navbar-brand-label">دانشگاه علم و صنعت ایران</span>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/" aria-label="${uiStrings.nav.brandAria}">
+          <i class="fas fa-graduation-cap text-info fs-5" aria-hidden="true"></i>
+          <span class="navbar-brand-label">${getEffectiveBrandName(resLocals.institution)}</span>
           <span class="navbar-brand-hover-label">
-            صفحه اصلی <i class="fa fa-angle-left" aria-hidden="true"></i>
+            ${uiStrings.common.home} <i class="fa fa-angle-left" aria-hidden="true"></i>
           </span>
         </a>
         <div class="d-flex d-md-none align-items-center gap-2">
@@ -228,7 +229,7 @@ function EndExamControl({ resLocals }: { resLocals: UntypedResLocals }) {
       data-bs-toggle="modal"
       data-bs-target="#endExamModal"
     >
-      End exam
+      پایان آزمون
     </button>
     ${EndExamModal({ csrfToken: endExamCsrfToken })}
   `;
@@ -236,29 +237,27 @@ function EndExamControl({ resLocals }: { resLocals: UntypedResLocals }) {
 
 function EndExamModal({ csrfToken }: { csrfToken: string }) {
   return Modal({
-    title: 'End exam',
+    title: 'پایان و ثبت نهایی آزمون',
     id: 'endExamModal',
     formAction: '/pl/end-exam',
     formClass: 'js-end-exam-form',
     body: html`
       <p class="js-end-exam-confirm">
-        Are you sure you want to end your exam? Only do this after you have completed your entire
-        exam. This will close LockDown Browser.
+        آیا از پایان دادن به آزمون خود اطمینان دارید؟ لطفاً فقط در صورتی که تمام پاسخ‌های خود را بررسی و ذخیره کرده‌اید این گزینه را تایید فرمایید. با این کار، مرورگر آزمون بسته خواهد شد.
       </p>
       <div
         class="js-end-exam-loading d-none d-flex align-items-center text-muted"
         aria-live="polite"
       >
         <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-        Ending exam…
+        در حال ثبت و بستن آزمون…
       </div>
       <div class="js-end-exam-error alert alert-danger d-flex mb-0 d-none" role="alert">
         <i class="bi bi-exclamation-triangle-fill me-2 fs-5" aria-hidden="true"></i>
         <div>
-          <strong>We couldn't end your exam.</strong>
+          <strong>خطا در پایان دادن به آزمون.</strong>
           <div>
-            This can happen if PrairieTest is temporarily unavailable. Try again, or ask your
-            proctor to end the exam for you.
+            لطفاً مجدداً تلاش نمایید یا از مراقب آزمون خود بخواهید تا جلسه آزمون شما را به پایان برساند.
           </div>
         </div>
       </div>
@@ -266,7 +265,7 @@ function EndExamModal({ csrfToken }: { csrfToken: string }) {
     footer: html`
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <button type="button" class="btn btn-secondary js-end-exam-cancel" data-bs-dismiss="modal">
-        Cancel
+        انصراف
       </button>
       <button type="submit" class="btn btn-danger js-end-exam-submit">
         <span
@@ -274,7 +273,7 @@ function EndExamModal({ csrfToken }: { csrfToken: string }) {
           role="status"
           aria-hidden="true"
         ></span>
-        <span class="js-end-exam-submit-label">End exam</span>
+        <span class="js-end-exam-submit-label">پایان قطعی آزمون</span>
       </button>
     `,
   });
@@ -305,7 +304,7 @@ function ReportCheatingControl({
       data-bs-toggle="modal"
       data-bs-target="#reportCheatingModal"
     >
-      Report cheating
+      گزارش تخلف در آزمون
     </button>
     ${ReportCheatingModal({ csrfToken: reportCheatingCsrfToken })}
   `;
@@ -313,19 +312,17 @@ function ReportCheatingControl({
 
 function ReportCheatingModal({ csrfToken }: { csrfToken: string }) {
   return Modal({
-    title: 'Report cheating',
+    title: 'گزارش تخلف در جلسه آزمون',
     id: 'reportCheatingModal',
     formAction: '/pl/report-cheating',
     formClass: 'js-report-cheating-form',
     body: html`
       <div class="js-report-cheating-fields">
         <p>
-          If you see someone breaking exam rules (for example, using a phone or unauthorized
-          materials), describe what you saw below. Your report goes only to exam staff; other
-          students will not see it.
+          در صورتی که نقض قوانین آزمون (مانند استفاده از تلفن همراه، برگه تقلب یا سایر موارد غیرمجاز) را مشاهده کرده‌اید، جزئیات آن را در کادر زیر بنویسید. این گزارش کاملاً محرمانه بوده و تنها برای کادر آموزشی و مراقبان آزمون ارسال خواهد شد.
         </p>
         <div class="mb-0">
-          <label class="form-label" for="report-cheating-text">What did you see?</label>
+          <label class="form-label" for="report-cheating-text">شرح تخلف مشاهده شده:</label>
           <textarea
             class="form-control"
             id="report-cheating-text"
@@ -347,7 +344,7 @@ function ReportCheatingModal({ csrfToken }: { csrfToken: string }) {
       ></div>
       <div class="text-muted d-none js-report-cheating-loading" aria-live="polite">
         <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-        Submitting report…
+        در حال ارسال گزارش…
       </div>
     `,
     footer: html`
@@ -357,10 +354,10 @@ function ReportCheatingModal({ csrfToken }: { csrfToken: string }) {
         class="btn btn-secondary js-report-cheating-cancel"
         data-bs-dismiss="modal"
       >
-        Cancel
+        انصراف
       </button>
       <button type="submit" class="btn btn-primary js-report-cheating-submit">
-        <span class="js-report-cheating-submit-label">Submit report</span>
+        <span class="js-report-cheating-submit-label">ارسال گزارش محرمانه</span>
       </button>
     `,
   });
@@ -587,9 +584,9 @@ function ViewTypeMenu({ resLocals }: { resLocals: UntypedResLocals }) {
     }
   }
 
-  let headingAuthnViewTypeMenu = 'View type';
+  let headingAuthnViewTypeMenu = 'حالت نمایش';
   if (authz_data.authn_user.uid !== authz_data.user.uid) {
-    headingAuthnViewTypeMenu = 'View as';
+    headingAuthnViewTypeMenu = 'مشاهده به‌عنوان';
     if (authz_data.authn_user.name) {
       headingAuthnViewTypeMenu += ` ${authz_data.authn_user.name} (${authz_data.authn_user.uid})`;
     } else {
@@ -619,7 +616,7 @@ function ViewTypeMenu({ resLocals }: { resLocals: UntypedResLocals }) {
   let headingViewTypeMenu = '';
   let viewTypeMenuChecked = '';
   if (authz_data.authn_user.uid !== authz_data.user.uid) {
-    headingViewTypeMenu = 'View as';
+    headingViewTypeMenu = 'مشاهده به‌عنوان';
     if (authz_data.user.name) {
       headingViewTypeMenu += ` ${authz_data.user.name} (${authz_data.user.uid})`;
     } else {
@@ -648,8 +645,8 @@ function ViewTypeMenu({ resLocals }: { resLocals: UntypedResLocals }) {
       authz_data?.overrides?.length > 0 && authnViewTypeMenuChecked === 'instructor'
         ? html`
             <a class="dropdown-item" href="${instructorLink}" id="navbar-reset-view">
-              Reset to default staff view
-              <span class="badge text-bg-success">staff</span>
+              بازنشانی به نمای پیش‌فرض کادر آموزشی
+              <span class="badge text-bg-success">استاد</span>
             </a>
 
             <div class="dropdown-divider"></div>
@@ -668,10 +665,10 @@ function ViewTypeMenu({ resLocals }: { resLocals: UntypedResLocals }) {
       <span class="ps-3">
         ${
           authz_data?.overrides?.length > 0 && authnViewTypeMenuChecked === 'instructor'
-            ? 'Modified staff'
-            : 'Staff'
+            ? 'نمای سفارشی‌شده کادر آموزشی'
+            : 'نمای کادر آموزشی'
         }
-        view <span class="badge text-bg-success">staff</span>
+        <span class="badge text-bg-success ms-1">استاد</span>
       </span>
     </a>
 
@@ -681,7 +678,7 @@ function ViewTypeMenu({ resLocals }: { resLocals: UntypedResLocals }) {
       id="navbar-user-view-authn-student"
     >
       <span class="${authnViewTypeMenuChecked !== 'student' ? 'invisible' : ''}">&check;</span>
-      <span class="ps-3">Student view <span class="badge text-bg-warning">student</span></span>
+      <span class="ps-3">نمای دانشجو <span class="badge text-bg-warning ms-1">دانشجو</span></span>
     </a>
 
     <a
@@ -693,8 +690,8 @@ function ViewTypeMenu({ resLocals }: { resLocals: UntypedResLocals }) {
         &check;
       </span>
       <span class="ps-3">
-        Student view without access restrictions
-        <span class="badge text-bg-warning">student</span>
+        نمای دانشجو بدون محدودیت‌های دسترسی
+        <span class="badge text-bg-warning ms-1">دانشجو</span>
       </span>
     </a>
 
@@ -715,7 +712,7 @@ function ViewTypeMenu({ resLocals }: { resLocals: UntypedResLocals }) {
                       <span class="${viewTypeMenuChecked !== 'instructor' ? 'invisible' : ''}">
                         &check;
                       </span>
-                      <span class="ps-3">Staff view</span>
+                      <span class="ps-3">نمای کادر آموزشی</span>
                     </a>
                   `
                 : ''
@@ -723,14 +720,14 @@ function ViewTypeMenu({ resLocals }: { resLocals: UntypedResLocals }) {
 
             <a class="dropdown-item" href="${studentLink}" id="navbar-user-view-student">
               <span class="${viewTypeMenuChecked !== 'student' ? 'invisible' : ''}"> &check; </span>
-              <span class="ps-3">Student view</span>
+              <span class="ps-3">نمای دانشجو</span>
             </a>
 
             <a class="dropdown-item" href="${studentLink}" id="navbar-user-view-student-no-rules">
               <span class="${viewTypeMenuChecked !== 'student-no-rules' ? 'invisible' : ''}">
                 &check;
               </span>
-              <span class="ps-3">Student view without access restrictions</span>
+              <span class="ps-3">نمای دانشجو بدون محدودیت‌های دسترسی</span>
             </a>
           `
         : ''
@@ -782,22 +779,22 @@ function AuthnOverrides({
   }
 
   return html`
-    <h6 class="dropdown-header">Effective user</h6>
+    <h6 class="dropdown-header">کاربر مجازی (تست دسترسی‌ها)</h6>
 
     <form class="dropdown-item-text d-flex flex-nowrap js-effective-uid-form">
       <input
         id="effective-uid"
         type="email"
-        placeholder="student@example.com"
+        placeholder="student@iust.ac.ir"
         class="form-control form-control-sm me-2 flex-grow-1 js-effective-uid-input"
-        aria-label="UID"
+        aria-label="شناسه کاربری (UID)"
       />
       <button
         type="submit"
         class="btn btn-primary btn-sm text-nowrap js-effective-uid-button"
         disabled
       >
-        Change UID
+        تغییر کاربر
       </button>
     </form>
 
@@ -823,7 +820,7 @@ function AuthnOverrides({
                             data-override-cookie="${override.cookie}"
                           >
                             <i class="fas fa-times me-1"></i>
-                            Remove
+                            حذف
                           </button>
                         </div>
                       </div>
@@ -836,7 +833,7 @@ function AuthnOverrides({
         : ''
     }
 
-    <a class="dropdown-item" href="${effectiveUserUrl}">Customize&hellip;</a>
+    <a class="dropdown-item" href="${effectiveUserUrl}">تنظیمات پیشرفته هویت و نقش&hellip;</a>
 
     <div class="dropdown-divider"></div>
   `;

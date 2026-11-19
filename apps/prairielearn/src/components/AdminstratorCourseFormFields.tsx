@@ -57,7 +57,7 @@ export function useInstitutionPrefix(
 function AutoFilledHint({ source }: { source: string }) {
   return (
     <div className="form-text text-primary">
-      <i className="bi bi-stars" aria-hidden="true" /> Auto-filled from {source}
+      <i className="bi bi-stars" aria-hidden="true" /> تکمیل خودکار از {source}
     </div>
   );
 }
@@ -175,10 +175,10 @@ export function AdministratorCourseFormFields({
   ]);
 
   return (
-    <div className="row g-3 mb-3">
+    <div className="row g-3 mb-3" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormInstitution">
-          Institution
+          دانشکده / موسسه
         </label>
         <select
           id="courseFormInstitution"
@@ -186,7 +186,7 @@ export function AdministratorCourseFormFields({
           aria-invalid={errors.institution_id ? true : undefined}
           aria-errormessage={errors.institution_id ? 'courseFormInstitution-error' : undefined}
           {...register('institution_id', {
-            required: 'Select an institution',
+            required: 'دانشکده یا موسسه را انتخاب کنید',
             onChange: (e) => {
               const selected = institutions.find((i) => i.id === e.target.value);
               if (selected) {
@@ -197,7 +197,7 @@ export function AdministratorCourseFormFields({
           })}
         >
           <option value="" disabled>
-            Select an institution...
+            انتخاب دانشکده یا موسسه...
           </option>
           {institutions.map((i) => (
             <option key={i.id} value={i.id}>
@@ -210,34 +210,21 @@ export function AdministratorCourseFormFields({
             {errors.institution_id.message}
           </div>
         )}
-        {institutionAutoFilled && <AutoFilledHint source="requesting user's account" />}
-        <div aria-live="polite" aria-atomic="true">
-          {isDefaultInstitution && (
-            <div className="form-text text-warning">
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" /> The "Default"
-              institution is typically not intended for new courses.
-            </div>
-          )}
-          {prefixState.status === 'error' && (
-            <div className="form-text text-danger">
-              Failed to load institution prefix. Repository name will not be auto-filled.
-            </div>
-          )}
-        </div>
+        {institutionAutoFilled && <AutoFilledHint source="حساب کاربری متقاضی" />}
       </div>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormTimezone">
-          Timezone
+          منطقه زمانی
         </label>
         <select
           className={clsx('form-select', errors.display_timezone && 'is-invalid')}
           id="courseFormTimezone"
           aria-invalid={errors.display_timezone ? true : undefined}
           aria-errormessage={errors.display_timezone ? 'courseFormTimezone-error' : undefined}
-          {...register('display_timezone', { required: 'Select a timezone' })}
+          {...register('display_timezone', { required: 'منطقه زمانی را انتخاب کنید' })}
         >
           <option value="" disabled>
-            Select a timezone...
+            انتخاب منطقه زمانی...
           </option>
           {availableTimezones.map((tz) => (
             <option key={tz.name} value={tz.name}>
@@ -250,24 +237,24 @@ export function AdministratorCourseFormFields({
             {errors.display_timezone.message}
           </div>
         )}
-        {timezoneAutoFilled && <AutoFilledHint source="selected institution" />}
+        {timezoneAutoFilled && <AutoFilledHint source="دانشکده انتخاب‌شده" />}
       </div>
 
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormTitle">
-          Title
+          عنوان کامل درس
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.title && 'is-invalid')}
           id="courseFormTitle"
-          placeholder="Template course title"
+          placeholder="مثال: مبانی برنامه‌نویسی پایتون یا ریاضی عمومی ۱"
           aria-invalid={errors.title ? true : undefined}
           aria-errormessage={errors.title ? 'courseFormTitle-error' : undefined}
           maxLength={75}
           {...register('title', {
-            required: 'Enter a title',
-            maxLength: { value: 75, message: 'Title must be at most 75 characters' },
+            required: 'عنوان درس را وارد نمایید',
+            maxLength: { value: 75, message: 'عنوان درس حداکثر می‌تواند ۷۵ کاراکتر باشد' },
           })}
         />
         {errors.title && (
@@ -278,117 +265,69 @@ export function AdministratorCourseFormFields({
       </div>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormShortName">
-          Short name
+          کد یا نام اختصاری درس
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.short_name && 'is-invalid')}
           id="courseFormShortName"
-          placeholder="XC 101"
+          placeholder="مثال: CE 101 یا MATH 101 یا EE 200"
+          dir="ltr"
           aria-invalid={errors.short_name ? true : undefined}
           aria-errormessage={errors.short_name ? 'courseFormShortName-error' : undefined}
-          {...register('short_name', { required: 'Enter a short name' })}
+          {...register('short_name', { required: 'کد اختصاری درس را وارد نمایید' })}
         />
         {errors.short_name && (
           <div id="courseFormShortName-error" className="invalid-feedback">
             {errors.short_name.message}
           </div>
         )}
-        <div aria-live="polite" aria-atomic="true">
-          {shortName && !/^[A-Z]+ [A-Z0-9]+$/.test(shortName) && (
-            <div className="form-text text-warning">
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" /> The course rubric and
-              number should be a series of upper case letters, followed by a space, followed by a
-              series of numbers and/or letters.
-            </div>
-          )}
-        </div>
       </div>
 
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormRepositoryName">
-          Repository name
+          نام مخزن گیت (Repository)
         </label>
         <div className="d-flex gap-2">
           <input
             type="text"
             className={clsx('form-control', errors.repository_short_name && 'is-invalid')}
             id="courseFormRepositoryName"
-            placeholder="pl-XXX"
+            placeholder="pl-iust-course"
+            dir="ltr"
             aria-invalid={errors.repository_short_name ? true : undefined}
             aria-errormessage={
               errors.repository_short_name ? 'courseFormRepositoryName-error' : undefined
             }
             {...register('repository_short_name', {
-              required: repositoryRequired && 'Enter a repository name',
+              required: repositoryRequired && 'نام مخزن گیت را وارد نمایید',
             })}
           />
-          {prefixState.status === 'resolved' && !prefixState.prefix && aiSecretsConfigured && (
-            <OverlayTrigger
-              trigger={['hover', 'focus']}
-              placement="top"
-              tooltip={{
-                body: 'Use AI to suggest a repository name prefix based on the institution',
-                props: { id: 'suggest-prefix-tooltip' },
-              }}
-            >
-              <button
-                type="button"
-                className="btn btn-outline-primary flex-shrink-0"
-                aria-label="Suggest repository name prefix"
-                disabled={
-                  suggestPrefixQuery.isFetching || !shortName.trim() || !institutionLongName
-                }
-                aria-busy={suggestPrefixQuery.isFetching}
-                onClick={() => suggestPrefixQuery.refetch()}
-              >
-                {suggestPrefixQuery.isFetching ? (
-                  <i className="fa fa-spinner fa-spin" aria-hidden="true" />
-                ) : (
-                  <i className="bi bi-stars" aria-hidden="true" />
-                )}
-              </button>
-            </OverlayTrigger>
-          )}
         </div>
         {errors.repository_short_name && (
           <div id="courseFormRepositoryName-error" className="invalid-feedback d-block">
             {errors.repository_short_name.message}
           </div>
         )}
-        {repoAutoFilled && <AutoFilledHint source="selected institution" />}
-        <div aria-live="polite" aria-atomic="true">
-          {!repoFormatValid && (
-            <div className="form-text text-warning">
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" /> Repository name should
-              follow the format <code>pl-&#123;institution&#125;-&#123;course&#125;</code> (e.g.{' '}
-              <code>pl-uiuc-cs101</code>).
-            </div>
-          )}
-          {!repoMatchesShortName && (
-            <div className="form-text text-warning">
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" /> Repository name is out
-              of sync with the short name. Expected <code>{expectedRepoShortName}</code>.
-            </div>
-          )}
-        </div>
+        {repoAutoFilled && <AutoFilledHint source="دانشکده انتخاب‌شده" />}
       </div>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormPath">
-          Path
+          مسیر فایل‌های درس روی سرور (Path)
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.path && 'is-invalid')}
           id="courseFormPath"
-          placeholder="/data1/courses/pl-XXX"
+          placeholder="/PrairieLearn/courses/pl-XXX"
+          dir="ltr"
           aria-invalid={errors.path ? true : undefined}
           aria-errormessage={errors.path ? 'courseFormPath-error' : undefined}
           {...register('path', {
-            required: 'Enter a path',
+            required: 'مسیر ذخیره‌سازی را وارد نمایید',
             validate: (value) => {
               if (coursesRoot && !value.startsWith(`${coursesRoot}/`)) {
-                return `Path must be within ${coursesRoot}/`;
+                return `مسیر باید داخل ${coursesRoot}/ باشد`;
               }
               return true;
             },
@@ -399,19 +338,7 @@ export function AdministratorCourseFormFields({
             {errors.path.message}
           </div>
         )}
-        {pathAutoFilled && <AutoFilledHint source="selected institution" />}
-        <div aria-live="polite" aria-atomic="true">
-          {showPathMismatchWarning && (
-            <div className="form-text text-warning">
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" /> Path and repository
-              name are out of sync. Expected path to be{' '}
-              <code>
-                {coursesRoot}/{repositoryShortName}
-              </code>
-              .
-            </div>
-          )}
-        </div>
+        {pathAutoFilled && <AutoFilledHint source="دانشکده انتخاب‌شده" />}
       </div>
 
       {(suggestPrefixQuery.isError || suggestPrefixQuery.data) && (

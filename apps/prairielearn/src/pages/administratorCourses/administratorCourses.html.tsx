@@ -100,17 +100,17 @@ function CoursesCard({
   const [showAddCourseModal, setShowAddCourseModal] = useState(false);
 
   return (
-    <div id="courses" className="card mb-4">
+    <div id="courses" className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white d-flex align-items-center">
-        <h2>Courses</h2>
+        <h2>مدیریت درس‌ها و دوره‌ها</h2>
         <button
           type="button"
           className="btn btn-sm btn-light ms-auto"
-          aria-label="Add course"
+          aria-label="افزودن درس جدید"
           onClick={() => setShowAddCourseModal(true)}
         >
-          <i className="fa fa-plus" aria-hidden="true" />
-          <span className="d-none d-sm-inline">Add course</span>
+          <i className="fa fa-plus me-1" aria-hidden="true" />
+          <span className="d-none d-sm-inline">افزودن درس جدید</span>
         </button>
         <CourseInsertModal
           institutions={institutions}
@@ -123,17 +123,17 @@ function CoursesCard({
         />
       </div>
       <div className="table-responsive">
-        <table className="table table-sm table-hover table-striped" aria-label="Courses">
+        <table className="table table-sm table-hover table-striped" aria-label="فهرست درس‌ها">
           <thead>
             <tr>
-              <th>Institution</th>
-              <th>Short name</th>
-              <th>Title</th>
-              <th>Timezone</th>
-              <th>Path</th>
-              <th>Repository</th>
-              <th>Branch</th>
-              <th>Actions</th>
+              <th>دانشکده / موسسه</th>
+              <th>کد درس</th>
+              <th>عنوان کامل درس</th>
+              <th>منطقه زمانی</th>
+              <th>مسیر فایل‌ها</th>
+              <th>مخزن گیت</th>
+              <th>شاخه</th>
+              <th className="text-end">عملیات</th>
             </tr>
           </thead>
           <tbody>
@@ -143,13 +143,11 @@ function CoursesCard({
           </tbody>
         </table>
       </div>
-      <div className="card-footer">
+      <div className="card-footer text-muted">
         <small>
-          When a course is synced, if the <strong>path</strong> does not exist on disk then a{' '}
-          <code>git clone</code> is performed from the <strong>repository</strong>, otherwise a{' '}
-          <code>git pull</code> is run in the <strong>path</strong> directory. The{' '}
-          <strong>short name</strong> and <strong>title</strong> are updated from the JSON
-          configuration file in the repository during the sync.
+          هنگام همگام‌سازی درس، در صورتی که <strong>مسیر فایل‌ها</strong> بر روی دیسک سرور موجود نباشد، دستور{' '}
+          <code>git clone</code> از <strong>مخزن</strong> اجرا می‌شود، در غیر این صورت دستور{' '}
+          <code>git pull</code> اعمال می‌گردد. همچنین <strong>کد درس</strong> و <strong>عنوان</strong> درس از روی فایل تنظیمات JSON در مخزن به‌روزرسانی می‌شوند.
         </small>
       </div>
     </div>
@@ -177,12 +175,12 @@ const CourseRow = memo(({ row }: { row: CourseWithInstitution }) => {
       <CourseUpdateColumn row={row} columnName="path" label="path" />
       <CourseUpdateColumn row={row} columnName="repository" label="repository" required={false} />
       <CourseUpdateColumn row={row} columnName="branch" label="branch" />
-      <td className="align-middle">
+      <td className="align-middle text-end">
         <OverlayTrigger
           trigger="click"
           placement="auto"
           popover={{
-            header: `Confirm deletion of ${row.course.short_name}`,
+            header: `تایید حذف درس ${row.course.short_name}`,
             body: (
               <CourseDeleteForm
                 id={`courseDeleteButton${row.course.id}`}
@@ -196,7 +194,7 @@ const CourseRow = memo(({ row }: { row: CourseWithInstitution }) => {
           onToggle={setShowDeletePopover}
         >
           <button type="button" className="btn btn-sm btn-danger text-nowrap">
-            <i className="fa fa-times" aria-hidden="true" /> Delete course
+            <i className="fa fa-times me-1" aria-hidden="true" /> حذف درس
           </button>
         </OverlayTrigger>
       </td>
@@ -237,21 +235,22 @@ function CourseDeleteForm({
   };
 
   return (
-    <form name="course-delete-form" onSubmit={handleSubmit(onSubmit)}>
+    <form name="course-delete-form" onSubmit={handleSubmit(onSubmit)} style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="mb-3">
         <label className="form-label" htmlFor={`inputConfirm${id}`}>
-          Type "{row.course.short_name}" to confirm:
+          جهت تایید، عبارت «{row.course.short_name}» را وارد کنید:
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.short_name && 'is-invalid')}
           id={`inputConfirm${id}`}
+          dir="ltr"
           aria-invalid={errors.short_name ? true : undefined}
           aria-errormessage={errors.short_name ? `inputConfirm${id}-error` : undefined}
           {...register('short_name', {
             validate: (value) =>
               value === row.course.short_name ||
-              `Type "${row.course.short_name}" exactly to confirm deletion.`,
+              `جهت تایید حذف، عبارت «${row.course.short_name}» را دقیقاً وارد کنید.`,
           })}
         />
         {errors.short_name && (
@@ -266,11 +265,11 @@ function CourseDeleteForm({
         </Alert>
       )}
       <div className="d-flex justify-content-end gap-2">
-        <button type="button" className="btn btn-secondary gap-2" onClick={onCancel}>
-          Cancel
+        <button type="button" className="btn btn-sm btn-secondary gap-2" onClick={onCancel}>
+          انصراف
         </button>
-        <button type="submit" className="btn btn-danger" disabled={mutation.isPending}>
-          Delete course
+        <button type="submit" className="btn btn-sm btn-danger" disabled={mutation.isPending}>
+          حذف نهایی درس
         </button>
       </div>
     </form>
@@ -343,11 +342,12 @@ function CourseInsertModal({
       size="lg"
       onHide={onCancel}
       onEntering={() => methods.reset()}
+      style={{ fontFamily: 'var(--font-persian)' }}
     >
       <FormProvider {...methods}>
         <form name="add-course-form" onSubmit={handleSubmit(onSubmit)}>
           <Modal.Header closeButton>
-            <Modal.Title>Add course</Modal.Title>
+            <Modal.Title>تعریف و ایجاد درس جدید</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <AdministratorCourseFormFields
@@ -360,15 +360,16 @@ function CourseInsertModal({
             />
             <div className="mb-3">
               <label className="form-label" htmlFor="courseAddInputBranch">
-                Branch
+                شاخه گیت (Branch)
               </label>
               <input
                 type="text"
                 className={clsx('form-control', errors.branch && 'is-invalid')}
                 id="courseAddInputBranch"
+                dir="ltr"
                 aria-invalid={errors.branch ? true : undefined}
                 aria-errormessage={errors.branch ? 'courseAddInputBranch-error' : undefined}
-                {...register('branch', { required: 'Enter a branch' })}
+                {...register('branch', { required: 'نام شاخه گیت را وارد کنید' })}
               />
               {errors.branch && (
                 <div id="courseAddInputBranch-error" className="invalid-feedback">
@@ -384,14 +385,14 @@ function CourseInsertModal({
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="btn btn-secondary" onClick={onCancel}>
-              Cancel
+              انصراف
             </button>
             <button
               type="submit"
               className="btn btn-primary"
               disabled={isSubmitting || mutation.isPending || prefixState.status === 'loading'}
             >
-              Add course
+              ثبت و ایجاد درس
             </button>
           </Modal.Footer>
         </form>

@@ -5,6 +5,7 @@ import { run } from '@prairielearn/run';
 
 import { HeadContents } from '../../components/HeadContents.js';
 import { assetPath } from '../../lib/assets.js';
+import { getEffectiveBrandName, platformBranding, uiStrings } from '../../lib/branding.js';
 import { config } from '../../lib/config.js';
 import type { AuthnProvider } from '../../lib/db-types.js';
 import { isEnterprise } from '../../lib/license.js';
@@ -147,15 +148,19 @@ function LoginPageContainer({
                 >
                   <img
                     src="${assetPath('images/iust-logo.svg')}"
-                    alt="دانشگاه علم و صنعت ایران"
-                    style="height: 85px; width: auto; margin-bottom: 10px;"
+                    alt="${getEffectiveBrandName(resLocals?.institution)}"
+                    style="height: 75px; width: auto; margin-bottom: 12px;"
                   />
-                  <span style="font-weight: 800; font-size: 1.3rem; color: #0f2b48;">دانشگاه علم و صنعت ایران</span>
-                  <span style="font-size: 0.85rem; color: #64748b; font-weight: 500;">سامانه آموزش و ارزیابی پایتون &bull; مبانی برنامه‌نویسی</span>
+                  <span style="font-weight: 800; font-size: 1.25rem; color: #0f2b48;">
+                    ${getEffectiveBrandName(resLocals?.institution)}
+                  </span>
+                  <span style="font-size: 0.85rem; color: #64748b; font-weight: 500; margin-top: 4px;">
+                    ${platformBranding.brandSubtitle}
+                  </span>
                 </a>
               </h1>
-              <h2 class="text-center subheader mb-4" style="font-size: 1rem; color: #475569;">
-                ورود به سامانه ${service ? `جهت دسترسی به ${service}` : ''}
+              <h2 class="text-center subheader mb-4" style="font-size: 0.95rem; color: #475569;">
+                ${service ? `ورود به سامانه جهت دسترسی به ${service}` : uiStrings.auth.loginSubtitle}
               </h2>
               ${children}
             </div>
@@ -436,15 +441,15 @@ function DevModeLogin({ csrfToken }: { csrfToken: string }) {
   return html`
     <form method="POST" dir="rtl" class="text-end">
       <div class="mb-3">
-        <label class="form-label fw-bold" for="dev_uid">شناسه کاربری (ایمیل یا نام کاربری)</label>
-        <input type="email" class="form-control text-start" id="dev_uid" name="uid" dir="ltr" placeholder="student@iust.ac.ir" required />
+        <label class="form-label fw-bold" for="dev_uid">${uiStrings.auth.uidLabel}</label>
+        <input type="text" class="form-control text-start" id="dev_uid" name="uid" dir="ltr" placeholder="${uiStrings.auth.uidPlaceholder}" required />
       </div>
       <div class="mb-3">
-        <label class="form-label fw-bold" for="dev_name">نام و نام خانوادگی دانشجو / استاد</label>
-        <input type="text" class="form-control" id="dev_name" name="name" placeholder="مثال: علی محمدی" required />
+        <label class="form-label fw-bold" for="dev_name">${uiStrings.auth.nameLabel}</label>
+        <input type="text" class="form-control" id="dev_name" name="name" placeholder="${uiStrings.auth.namePlaceholder}" required />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="dev_uin">شماره دانشجویی (اختیاری)</label>
+        <label class="form-label" for="dev_uin">شماره دانشجویی / پرسنلی (اختیاری)</label>
         <input
           type="text"
           class="form-control text-start"
@@ -455,7 +460,7 @@ function DevModeLogin({ csrfToken }: { csrfToken: string }) {
           aria-describedby="dev_uin_help"
         />
         <small id="dev_uin_help" class="form-text text-muted">
-          اختیاری؛ برای تطابق با سامانه آموزش گلستان دانشگاه
+          اختیاری؛ برای تطابق با سامانه آموزش دانشگاه
         </small>
       </div>
       <div class="mb-3">

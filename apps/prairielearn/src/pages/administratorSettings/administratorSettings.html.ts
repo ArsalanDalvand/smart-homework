@@ -49,49 +49,50 @@ export function AdministratorSettings({
       </script>
     `,
     content: html`
-      <h1 class="visually-hidden">Administrator Settings</h1>
+      <h1 class="visually-hidden">تنظیمات سرور و کش سامانه</h1>
       <!-- Chunk generation -->
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h2>Chunk generation</h2>
+          <h2 class="h5 mb-0">تولید بسته‌ها و چانک‌های استاتیک</h2>
         </div>
         <div class="card-body">
           <form name="generate_chunks_form" method="POST">
             <input type="hidden" name="__action" value="generate_chunks" />
             <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
             <div class="mb-3">
-              <label class="form-label" for="generateChunksCourseIds">Course IDs:</label>
+              <label class="form-label" for="generateChunksCourseIds">شناسه درس‌ها (Course IDs):</label>
               <input
                 type="text"
                 class="form-control"
                 id="generateChunksCourseIds"
                 name="course_ids"
                 placeholder="1,2,3"
+                dir="ltr"
               />
             </div>
-            <button type="submit" class="btn btn-primary">Generate</button>
+            <button type="submit" class="btn btn-primary">تولید مجدد چانک‌ها</button>
           </form>
         </div>
       </div>
 
       <!-- Actions -->
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h2>Actions</h2>
+          <h2 class="h5 mb-0">عملیات مدیریت سیستم</h2>
         </div>
         <div class="card-body">
           <form name="invalidate-question-cache-form" method="POST">
             <input type="hidden" name="__action" value="invalidate_question_cache" />
             <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
             <button id="invalidate-render-cache" type="button" class="btn btn-danger">
-              Invalidate question render cache
+              پاک‌سازی حافظه کش رندر سوالات
             </button>
-            <div id="confirm-invalidate-cache-container" class="confirm-invalidate-cache d-none">
-              <button id="confirm-invalidate-render-cache" type="submit" class="btn btn-danger">
-                Confirm invalidate cache
+            <div id="confirm-invalidate-cache-container" class="confirm-invalidate-cache d-none mt-2">
+              <button id="confirm-invalidate-render-cache" type="submit" class="btn btn-danger me-2">
+                تایید پاک‌سازی کش
               </button>
               <button id="cancel-invalidate-render-cache" type="button" class="btn btn-secondary">
-                Cancel
+                انصراف
               </button>
             </div>
           </form>
@@ -102,7 +103,7 @@ export function AdministratorSettings({
                   <form method="POST" class="d-inline">
                     <input type="hidden" name="__action" value="sync_news_feed" />
                     <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
-                    <button type="submit" class="btn btn-primary">Sync news feed</button>
+                    <button type="submit" class="btn btn-primary">همگام‌سازی اخبار</button>
                   </form>
                 `
               : ''
