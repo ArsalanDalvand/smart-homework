@@ -199,7 +199,7 @@ function ExamQuestionCells({
         // Override the status badge for questions blocked by a lockpoint:
         // show "Locked" instead of the misleading "unanswered".
         row.question_access_mode === 'blocked_lockpoint'
-          ? html`<span class="badge text-bg-secondary">Locked</span>`
+          ? html`<span class="badge text-bg-secondary">قفل شده</span>`
           : ExamQuestionStatus({
               instance_question: row.instance_question,
               assessment_question: row.assessment_question,

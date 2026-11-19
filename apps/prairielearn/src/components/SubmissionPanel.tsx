@@ -132,10 +132,10 @@ export function SubmissionPanel({
                   }"
                 >
                   <div class="me-auto">
-                    Feedback from the Course Staff
+                    بازخورد و بررسی کادر آموزشی
                     ${
                       submissionCount > 1
-                        ? `(for submitted answer ${submission.submission_number})`
+                        ? `(برای پاسخ شماره ${submission.submission_number})`
                         : ''
                     }
                   </div>
@@ -228,15 +228,15 @@ export function SubmissionPanel({
             <div>
               <span class="me-2 d-flex align-items-center">
                 <h2 class="h6 fw-normal mb-0">
-                  Submitted answer ${submissionCount > 1 ? submission.submission_number : ''}
+                  پاسخ ثبت‌شده ${submissionCount > 1 ? `شماره ${submission.submission_number}` : ''}
                 </h2>
               </span>
             </div>
             <span class="small">
               ${
                 !submission.user_uid || questionContext === 'manual_grading'
-                  ? `Submitted at ${formattedDate} `
-                  : `${submission.user_uid} submitted at ${formattedDate}`
+                  ? `ثبت‌شده در تاریخ ${formattedDate} `
+                  : `توسط ${submission.user_uid} در ${formattedDate}`
               }
             </span>
           </div>

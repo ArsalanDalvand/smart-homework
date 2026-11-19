@@ -138,26 +138,24 @@ function LoginPageContainer({
       </head>
       <body class="d-flex flex-column">
         <main class="login-container-wrapper">
-          <div class="login-container">
+          <div class="login-container" style="font-family: var(--font-persian);">
             <div>
-              <h1 class="text-center">
+              <h1 class="text-center mb-3">
                 <a
-                  href="https://www.prairielearn.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                  class="text-body"
+                  href="/"
+                  class="text-decoration-none text-dark d-flex flex-column align-items-center justify-content-center"
                 >
                   <img
-                    src="${assetPath('images/prairielearn-logo-transparent.png')}"
-                    alt="PrairieLearn"
-                    width="2029"
-                    height="404"
-                    style="width: 320px; max-width: 100%; height: auto;"
+                    src="${assetPath('images/iust-logo.svg')}"
+                    alt="دانشگاه علم و صنعت ایران"
+                    style="height: 85px; width: auto; margin-bottom: 10px;"
                   />
+                  <span style="font-weight: 800; font-size: 1.3rem; color: #0f2b48;">دانشگاه علم و صنعت ایران</span>
+                  <span style="font-size: 0.85rem; color: #64748b; font-weight: 500;">سامانه آموزش و ارزیابی پایتون &bull; مبانی برنامه‌نویسی</span>
                 </a>
               </h1>
-              <h2 class="text-center subheader mb-5">
-                Sign in ${service ? `to continue to ${service}` : ''}
+              <h2 class="text-center subheader mb-4" style="font-size: 1rem; color: #475569;">
+                ورود به سامانه ${service ? `جهت دسترسی به ${service}` : ''}
               </h2>
               ${children}
             </div>
@@ -181,7 +179,7 @@ function GoogleLoginButton() {
   return html`
     <a class="btn btn-primary d-block position-relative" href="/pl/oauth2login">
       <img src="${assetPath('/images/google_logo.svg')}" class="social-icon" alt="" />
-      <span class="fw-bold">Sign in with Google</span>
+      <span class="fw-bold">ورود با حساب گوگل</span>
     </a>
   `;
 }
@@ -190,7 +188,7 @@ function MicrosoftLoginButton() {
   return html`
     <a class="btn btn-dark d-block position-relative" href="/pl/azure_login">
       <img src="${assetPath('/images/ms_logo.svg')}" class="social-icon" alt="" />
-      <span class="fw-bold">Sign in with Microsoft</span>
+      <span class="fw-bold">ورود با حساب مایکروسافت</span>
     </a>
   `;
 }
@@ -198,7 +196,7 @@ function MicrosoftLoginButton() {
 function SamlLoginButton({ institutionId }: { institutionId: string }) {
   return html`
     <a class="btn btn-primary d-block" href="${`/pl/auth/institution/${institutionId}/saml/login`}">
-      <span class="fw-bold">Sign in with institution single sign-on</span>
+      <span class="fw-bold">ورود یکپارچه دانشگاهی (SSO)</span>
     </a>
   `;
 }
@@ -234,14 +232,15 @@ export function AuthLogin({
       ${
         institutionAuthnProviders?.length
           ? html`
-              <div class="institution-header text-muted my-3">Institution sign-on</div>
+              <div class="institution-header text-muted my-3">ورود از طریق درگاه دانشگاه</div>
               <input
                 type="search"
                 id="js-institution-search"
-                class="form-control mb-2"
-                placeholder="Search for your institution"
-                aria-label="Search for your institution"
+                class="form-control mb-2 text-end"
+                placeholder="جستجوی نام دانشکده یا دانشگاه..."
+                aria-label="جستجوی نام دانشگاه"
                 autocomplete="off"
+                dir="rtl"
               />
               <div id="js-institution-list" class="d-flex flex-column gap-2">
                 ${institutionAuthnProviders.map(
@@ -256,8 +255,8 @@ export function AuthLogin({
                   `,
                 )}
               </div>
-              <div id="js-institution-no-results" class="text-muted d-none mt-2">
-                No matching institutions found
+              <div id="js-institution-no-results" class="text-muted d-none mt-2 text-center">
+                موردی یافت نشد
               </div>
               <script>
                 document.getElementById('js-institution-search').addEventListener('input', (e) => {
@@ -427,52 +426,53 @@ export function AuthLoginInstitution({
 function DevModeBypass() {
   return html`
     <a class="btn btn-success w-100" href="/pl/dev_login">
-      <span class="fw-bold">Dev Mode Bypass</span>
+      <span class="fw-bold"><i class="fas fa-bolt me-1"></i> ورود سریع مدیر سیستم (حالت توسعه)</span>
     </a>
-    <small class="text-muted">You will be authenticated as <code>${config.authUid}</code>.</small>
+    <small class="text-muted d-block text-center mt-1">احراز هویت سریع با شناسه <code>${config.authUid}</code></small>
   `;
 }
 
 function DevModeLogin({ csrfToken }: { csrfToken: string }) {
   return html`
-    <form method="POST">
+    <form method="POST" dir="rtl" class="text-end">
       <div class="mb-3">
-        <label class="form-label" for="dev_uid">UID</label>
-        <input type="email" class="form-control" id="dev_uid" name="uid" required />
+        <label class="form-label fw-bold" for="dev_uid">شناسه کاربری (ایمیل یا نام کاربری)</label>
+        <input type="email" class="form-control text-start" id="dev_uid" name="uid" dir="ltr" placeholder="student@iust.ac.ir" required />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="dev_name">Name</label>
-        <input type="text" class="form-control" id="dev_name" name="name" required />
+        <label class="form-label fw-bold" for="dev_name">نام و نام خانوادگی دانشجو / استاد</label>
+        <input type="text" class="form-control" id="dev_name" name="name" placeholder="مثال: علی محمدی" required />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="dev_uin">UIN</label>
+        <label class="form-label" for="dev_uin">شماره دانشجویی (اختیاری)</label>
         <input
           type="text"
-          class="form-control"
+          class="form-control text-start"
           id="dev_uin"
           name="uin"
+          dir="ltr"
+          placeholder="40123456"
           aria-describedby="dev_uin_help"
         />
         <small id="dev_uin_help" class="form-text text-muted">
-          Optional; will be set to <code>null</code> if not specified.
+          اختیاری؛ برای تطابق با سامانه آموزش گلستان دانشگاه
         </small>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="dev_email">Email</label>
+        <label class="form-label" for="dev_email">ایمیل دانشگاهی</label>
         <input
           type="email"
-          class="form-control"
+          class="form-control text-start"
           id="dev_email"
           name="email"
+          dir="ltr"
+          placeholder="student@iust.ac.ir"
           aria-describedby="dev_email_help"
         />
-        <small id="dev_email_help" class="form-text text-muted">
-          Optional; will be set to <code>null</code> if not specified.
-        </small>
       </div>
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <button type="submit" class="btn btn-primary d-block w-100" name="__action" value="dev_login">
-        <span class="fw-bold">Dev Mode Login</span>
+        <span class="fw-bold">ورود به سامانه</span>
       </button>
     </form>
   `;

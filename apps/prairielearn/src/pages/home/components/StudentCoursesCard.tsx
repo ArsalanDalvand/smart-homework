@@ -21,7 +21,7 @@ export function StudentCoursesCard({
   isDevMode: boolean;
   setShowJoinModal: (value: boolean) => void;
 }) {
-  const heading = hasInstructorCourses ? 'Courses with student access' : 'Courses';
+  const heading = hasInstructorCourses ? 'درس‌های من (دسترسی دانشجو)' : 'درس‌های من';
   const rejectInvitationModal = useModalState<{
     courseInstanceId: string;
     enrollmentId: string;
@@ -50,7 +50,7 @@ export function StudentCoursesCard({
             onClick={() => setShowJoinModal(true)}
           >
             <i className="bi bi-plus-circle me-sm-1" aria-hidden="true" />
-            <span className="d-none d-sm-inline">Add course</span>
+            <span className="d-none d-sm-inline">عضویت در درس</span>
           </button>
         )}
       </div>

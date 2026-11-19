@@ -277,14 +277,12 @@ export function StudentAssessmentInstance({
               })
                 ? html`
                     <div class="col-md-3 col-sm-12">
-                      Total points: ${formatPoints(resLocals.assessment_instance.max_points)}
+                      مجموع نمرات: ${formatPoints(resLocals.assessment_instance.max_points)}
                       ${
                         resLocals.assessment_instance.max_bonus_points
                           ? html`
                               <br />
-                              (${resLocals.assessment_instance.max_bonus_points} bonus
-                              ${resLocals.assessment_instance.max_bonus_points > 1 ? 'points' : 'point'}
-                              possible)
+                              (${resLocals.assessment_instance.max_bonus_points} نمره بونوس امتیازی)
                             `
                           : ''
                       }
@@ -300,17 +298,15 @@ export function StudentAssessmentInstance({
                   `
                 : html`
                     <div class="col-md-3 col-sm-6">
-                      Total points:
-                      ${formatPoints(resLocals.assessment_instance.points)}/${formatPoints(
+                      نمره کسب‌شده:
+                      ${formatPoints(resLocals.assessment_instance.points)} از ${formatPoints(
                         resLocals.assessment_instance.max_points,
                       )}
                       ${
                         resLocals.assessment_instance.max_bonus_points
                           ? html`
                               <br />
-                              (${resLocals.assessment_instance.max_bonus_points} bonus
-                              ${resLocals.assessment_instance.max_bonus_points > 1 ? 'points' : 'point'}
-                              possible)
+                              (${resLocals.assessment_instance.max_bonus_points} نمره بونوس)
                             `
                           : ''
                       }
@@ -353,7 +349,7 @@ export function StudentAssessmentInstance({
                         <div id="countdownProgress"></div>
                       </div>
                       <div class="col-md-10 col-sm-12 col-xs-12">
-                        Time remaining: <span id="countdownDisplay"></span>
+                        زمان باقی‌مانده: <span id="countdownDisplay" dir="ltr"></span>
                       </div>
                     </div>
                   </div>
@@ -480,9 +476,9 @@ function AssessmentStatus({
 }) {
   if (assessment_instance.open && authz_result.active) {
     return html`
-      Assessment is <strong>open</strong> and you can answer questions.
+      تکلیف هم‌اکنون <strong>فعال (باز)</strong> است و می‌توانید به سوالات پاسخ دهید.
       <br />
-      Available credit: ${authz_result.credit_date_string}
+      مهلت و اعتبار: ${authz_result.credit_date_string}
       ${
         assessment.modern_access_control
           ? StudentAccessTimelineSchedule({
@@ -496,7 +492,7 @@ function AssessmentStatus({
     `;
   }
 
-  return html`Assessment is <strong>closed</strong> and you cannot answer questions.`;
+  return html`مهلت این ارزیابی <strong>به پایان رسیده (بسته شده)</strong> و امکان ارسال پاسخ جدید وجود ندارد.`;
 }
 
 function RealTimeGradingInformationAlert({
@@ -516,20 +512,13 @@ function RealTimeGradingInformationAlert({
   if (allQuestionsDisabled && assessment_instance.open) {
     return html`
       <div class="alert alert-warning">
-        This assessment will only be graded after it is finished. You should save answers for all
-        questions and your exam will be graded later. You can use the
-        <span class="badge badge-outline text-bg-light">Finish assessment</span>
-        button below to finish and calculate your final grade.
+        این ارزیابی پس از پایان مهلت و ثبت نهایی تصحیح خواهد شد. پاسخ‌های خود را در هر سوال ذخیره نمایید.
       </div>
     `;
   } else if (someQuestionsDisabled && assessment_instance.open) {
     return html`
       <div class="alert alert-info">
-        Some questions in this assessment allow real-time grading while others will only be graded
-        after the assessment is finished. Check the individual question pages to see which grading
-        mode applies to each question. You can use the
-        <span class="badge badge-outline text-bg-light">Finish assessment</span>
-        button below to finish and calculate your final grade.
+        برخی از سوالات به صورت خودکار و بلادرنگ تصحیح می‌شوند و برخی دیگر پس از پایان مهلت تصحیح خواهند شد.
       </div>
     `;
   }
@@ -552,28 +541,28 @@ function InstanceQuestionTableHeader({
           ${
             resLocals.has_auto_grading_question && someQuestionsAllowRealTimeGrading
               ? html`
-                  <th class="text-center">Available points ${ExamQuestionHelpAvailablePoints()}</th>
-                  <th class="text-center">Awarded points ${ExamQuestionHelpAwardedPoints()}</th>
+                  <th class="text-center">نمره در دسترس ${ExamQuestionHelpAvailablePoints()}</th>
+                  <th class="text-center">نمره کسب‌شده ${ExamQuestionHelpAwardedPoints()}</th>
                 `
               : resLocals.has_auto_grading_question && resLocals.has_manual_grading_question
                 ? html`
-                    <th class="text-center">Auto-grading points</th>
-                    <th class="text-center">Manual grading points</th>
-                    <th class="text-center">Total points</th>
+                    <th class="text-center">نمره خودکار</th>
+                    <th class="text-center">نمره دستی</th>
+                    <th class="text-center">مجموع نمرات</th>
                   `
-                : html`<th class="text-center">Points</th>`
+                : html`<th class="text-center">نمره</th>`
           }
         `
       : html`
           ${
             resLocals.has_auto_grading_question
               ? html`
-                  <th class="text-center">Value</th>
-                  <th class="text-center">Variant history</th>
+                  <th class="text-center">ارزش سوال</th>
+                  <th class="text-center">تاریخچه تلاش‌ها</th>
                 `
               : ''
           }
-          <th class="text-center">Awarded points</th>
+          <th class="text-center">نمره کسب‌شده</th>
         `;
 
   return html`
@@ -586,11 +575,11 @@ function InstanceQuestionTableHeader({
               someQuestionsAllowRealTimeGrading
                 ? html`
                     <tr>
-                      <th rowspan="2">Question</th>
-                      <th rowspan="2">Status</th>
-                      <th class="text-center" colspan="2" scope="colgroup">Auto-grading</th>
-                      <th class="text-center" rowspan="2">Manual grading points</th>
-                      <th class="text-center" rowspan="2">Total points</th>
+                      <th rowspan="2">سوال</th>
+                      <th rowspan="2">وضعیت</th>
+                      <th class="text-center" colspan="2" scope="colgroup">تصحیح خودکار</th>
+                      <th class="text-center" rowspan="2">نمره دستی</th>
+                      <th class="text-center" rowspan="2">مجموع نمرات</th>
                     </tr>
                     <tr>
                       ${trailingColumns}
@@ -598,8 +587,8 @@ function InstanceQuestionTableHeader({
                   `
                 : html`
                     <tr>
-                      <th>Question</th>
-                      <th>Status</th>
+                      <th>سوال</th>
+                      <th>وضعیت</th>
                       ${trailingColumns}
                     </tr>
                   `
@@ -610,10 +599,10 @@ function InstanceQuestionTableHeader({
               resLocals.has_auto_grading_question && resLocals.has_manual_grading_question
                 ? html`
                     <tr>
-                      <th rowspan="2">Question</th>
-                      <th class="text-center" colspan="3" scope="colgroup">Auto-grading</th>
-                      <th class="text-center" rowspan="2">Manual grading points</th>
-                      <th class="text-center" rowspan="2">Total points</th>
+                      <th rowspan="2">سوال</th>
+                      <th class="text-center" colspan="3" scope="colgroup">تصحیح خودکار</th>
+                      <th class="text-center" rowspan="2">نمره دستی</th>
+                      <th class="text-center" rowspan="2">مجموع نمرات</th>
                     </tr>
                     <tr>
                       ${trailingColumns}
@@ -621,7 +610,7 @@ function InstanceQuestionTableHeader({
                   `
                 : html`
                     <tr>
-                      <th>Question</th>
+                      <th>سوال</th>
                       ${trailingColumns}
                     </tr>
                   `

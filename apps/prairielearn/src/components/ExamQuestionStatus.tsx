@@ -36,8 +36,18 @@ export function ExamQuestionStatus({
     !assessment_question.max_auto_points &&
     assessment_question.max_manual_points
   ) {
-    return html`<span class="badge text-bg-success">saved for manual grading</span>`;
+    return html`<span class="badge text-bg-success">ذخیره برای تصحیح دستی</span>`;
   }
+
+  const persianStatusText: Record<string, string> = {
+    unanswered: 'پاسخ داده نشده',
+    invalid: 'نامعتبر',
+    grading: 'در حال ارزیابی...',
+    saved: 'ذخیره شده',
+    complete: 'تکمیل شده',
+    correct: 'صحیح (۱۰۰٪)',
+    incorrect: 'نادرست',
+  };
 
   const badge_color: Record<NonNullable<InstanceQuestion['status']>, string> = {
     unanswered: 'warning',
@@ -55,12 +65,13 @@ export function ExamQuestionStatus({
       instance_question.status === 'saved' &&
       !assessment_question.allow_real_time_grading
     ) {
-      return { badgeText: 'saved for grading after finish', badgeColor: 'success' };
+      return { badgeText: 'ذخیره جهت تصحیح پس از پایان آزمون', badgeColor: 'success' };
     }
 
+    const rawStatus = instance_question.status ?? 'unanswered';
     return {
-      badgeText: instance_question.status,
-      badgeColor: badge_color[instance_question.status ?? 'unanswered'],
+      badgeText: persianStatusText[rawStatus] ?? rawStatus,
+      badgeColor: badge_color[rawStatus],
     };
   });
 

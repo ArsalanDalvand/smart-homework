@@ -58,26 +58,16 @@ function DevModeCard({ isDevMode }: { isDevMode: boolean }) {
   if (!isDevMode) return null;
 
   return (
-    <div className="card mb-4">
+    <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white">
-        <h2>Development Mode</h2>
+        <h2>حالت توسعه و مدیریت محتوا</h2>
       </div>
       <div className="card-body">
         <p>
-          PrairieLearn is running in Development Mode. Click the <strong>"Load from disk"</strong>{' '}
-          button above to load question and assessment definitions from JSON files on disk.
+          سامانه هم‌اکنون در <strong>حالت توسعه (Dev Mode)</strong> اجرا شده است. با تغییر فایل‌های JSON سوالات، تکالیف و تنظیمات درس در پوشه کدها، جهت اعمال سریع تغییرات بر روی دکمه <strong>«همگام‌سازی دیسک»</strong> در نوار بالا کلیک کنید.
         </p>
-        <p>
-          You need to click "Load from disk" every time that a JSON file is changed on disk. Changes
-          to other files (JS, HTML, etc) will be automatically loaded every time you navigate to a
-          different page or if you reload the current page in your web browser.
-        </p>
-        <p className="mb-0">
-          See the{' '}
-          <a href="https://docs.prairielearn.com" target="_blank" rel="noreferrer">
-            PrairieLearn documentation
-          </a>{' '}
-          for information on creating questions and assessments.
+        <p className="mb-0 text-muted">
+          تغییرات کدهای پایتون، فایل‌های فرانت‌اند و فایل‌های استاتیک بدون نیاز به همگام‌سازی مجدد، با رفرش صفحه به‌صورت آنی بارگذاری می‌شوند.
         </p>
       </div>
     </div>
@@ -118,17 +108,17 @@ function InstructorCoursesCard({ instructorCourses, urlPrefix }: InstructorCours
   if (instructorCourses.length === 0) return null;
 
   return (
-    <div className="card mb-4">
+    <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white d-flex align-items-center">
-        <h2>Courses with instructor access</h2>
+        <h2>درس‌های تحت مدیریت (استاد / دستیار آموزشی)</h2>
         <a
-          href="https://docs.prairielearn.com"
+          href="https://github.com/ArsalanDalvand/PrairieLearn"
           className="btn btn-light btn-sm ms-auto"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <i className="bi bi-journal-text me-sm-1" aria-hidden="true" />
-          <span className="d-none d-sm-inline">View docs</span>
+          <i className="fab fa-github me-sm-1" aria-hidden="true" />
+          <span className="d-none d-sm-inline">مخزن گیت‌هاب</span>
         </a>
       </div>
 

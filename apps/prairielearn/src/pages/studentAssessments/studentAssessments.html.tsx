@@ -66,25 +66,25 @@ export function StudentAssessments({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Assessments',
+    pageTitle: 'تکالیف و ارزیابی‌ها',
     navContext: {
       type: 'student',
       page: 'assessments',
     },
     content: html`
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h1>Assessments</h1>
+          <h1 class="h3 mb-0">تکالیف و ارزیابی‌ها</h1>
         </div>
 
         <div class="table-responsive">
-          <table class="table table-sm table-hover" aria-label="Assessments">
+          <table class="table table-sm table-hover" aria-label="ارزیابی‌ها">
             <thead>
               <tr>
-                <th style="width: 1%"><span class="visually-hidden">Label</span></th>
-                <th><span class="visually-hidden">Title</span></th>
-                <th class="text-center">Available credit</th>
-                <th class="text-center">Score</th>
+                <th style="width: 1%"><span class="visually-hidden">شناسه</span></th>
+                <th><span class="visually-hidden">عنوان</span></th>
+                <th class="text-center">مهلت تحویل و وضعیت اعتبار</th>
+                <th class="text-center">نمره</th>
               </tr>
             </thead>
             ${assessmentGroups.map(

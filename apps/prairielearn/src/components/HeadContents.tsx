@@ -53,6 +53,64 @@ export function HeadContents(titleOptions: TitleOptions) {
       href="${nodeModulesAssetPath('@fortawesome/fontawesome-free/css/all.min.css')}"
       rel="stylesheet"
     />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --iust-navy: #0f2b48;
+        --iust-navy-dark: #091a2c;
+        --iust-navy-light: #163c63;
+        --iust-teal: #0d9488;
+        --iust-teal-light: #14b8a6;
+        --iust-gold: #f59e0b;
+        --font-persian: 'Vazirmatn', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --font-code: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+      body {
+        font-family: var(--font-persian);
+        line-height: 1.6;
+        color: #1e293b;
+      }
+      h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .navbar, .btn, .nav-link, .dropdown-item, .card-header, th {
+        font-family: var(--font-persian);
+      }
+      .navbar-dark.bg-dark, .navbar-dark {
+        background-color: var(--iust-navy) !important;
+        border-bottom: 2px solid var(--iust-teal) !important;
+      }
+      .navbar-brand-label {
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .navbar-brand-hover-label {
+        font-family: var(--font-persian);
+      }
+      .btn-primary {
+        background-color: var(--iust-navy);
+        border-color: var(--iust-navy);
+      }
+      .btn-primary:hover, .btn-primary:focus {
+        background-color: var(--iust-navy-dark);
+        border-color: var(--iust-navy-dark);
+      }
+      .card-header.bg-primary {
+        background: linear-gradient(135deg, var(--iust-navy) 0%, var(--iust-navy-light) 100%) !important;
+        border-bottom: 2px solid var(--iust-teal) !important;
+      }
+      pre, code, kbd, samp, .ace_editor, .ace-monokai, .terminal, .katex, .katex-display, .math-display {
+        direction: ltr !important;
+        text-align: left !important;
+        font-family: var(--font-code) !important;
+        unicode-bidi: isolate;
+      }
+      .badge {
+        font-family: var(--font-persian);
+      }
+      .table th, .table td {
+        vertical-align: middle;
+      }
+    </style>
     ${compiledStylesheetTag('prairielearn-ui.css')} ${compiledScriptTag('application.ts')}
     ${compiledScriptTag('navbarClient.ts')}
   `;
@@ -135,5 +193,5 @@ function getTitle({ resLocals, pageTitle, pageNote }: TitleOptions) {
   } else if (navPage != null && navPage !== 'error' && !displayedTitle) {
     navTrace.push(displayFriendlyPage(navPage));
   }
-  return `${config.devMode ? '[DEV]' : ''} ${navTrace.length > 0 ? navTrace.join(' — ') + ' | ' : ''} PrairieLearn`;
+  return `${config.devMode ? '[DEV] ' : ''}${navTrace.length > 0 ? navTrace.join(' — ') + ' | ' : ''}سامانه یادگیری و ارزیابی پایتون — دانشگاه علم و صنعت ایران`;
 }

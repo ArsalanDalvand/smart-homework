@@ -272,6 +272,9 @@ export function PageLayout({
   /** The content of the page in the body after the main container. */
   postContent?: HtmlSafeString | HtmlSafeString[] | ReactNode;
 }) {
+  // The side navbar is only available if the user is on an course instructor page.
+  const sideNavEnabled = Boolean(resLocals.course && navContext.type === 'instructor');
+
   const resolvedOptions = {
     fullWidth: false,
     fullHeight: false,
@@ -282,7 +285,7 @@ export function PageLayout({
     dataAttributes: {},
     enableNavbar: true,
     hideNavbarSessionControls: false,
-    showFooter: false,
+    showFooter: !sideNavEnabled && options.showFooter !== false,
     showCourseAgentPanel: true,
     ...options,
   };
@@ -291,9 +294,6 @@ export function PageLayout({
   const preContentString = asHtmlSafe(preContent);
   const contentString = asHtmlSafe(content);
   const postContentString = asHtmlSafe(postContent);
-
-  // The side navbar is only available if the user is on an course instructor page.
-  const sideNavEnabled = resLocals.course && navContext.type === 'instructor';
 
   const sideNavExpanded =
     sideNavEnabled && (resolvedOptions.forcedInitialNavToggleState ?? resLocals.side_nav_expanded);

@@ -56,7 +56,7 @@ export function RowLabel({
       row.question_access_mode === 'blocked_lockpoint' && !hasStatusColumn
         ? html`
             <span class="badge bg-secondary ms-1" data-testid="locked-instance-question-row">
-              Locked
+              قفل شده
             </span>
           `
         : lockMessage != null

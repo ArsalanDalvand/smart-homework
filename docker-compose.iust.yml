@@ -8,6 +8,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME}/pl_ag_jobs:/jobs
       - ./courses/iust-bp:/course
+      - ./apps/prairielearn/src:/PrairieLearn/apps/prairielearn/src
+      - ./apps/prairielearn/public/images:/PrairieLearn/apps/prairielearn/public/images
       - pl_postgres_data:/var/postgres
     environment:
       - HOST_JOBS_DIR=${HOME}/pl_ag_jobs

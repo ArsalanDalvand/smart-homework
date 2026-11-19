@@ -660,7 +660,7 @@ export function QuestionFooterContent({
                       ${disableSaveButton ? 'disabled' : ''}
                       ${question.type === 'Freeform' ? html`name="__action" value="save"` : ''}
                     >
-                      ${showGradeButton ? 'Save only' : 'Save'}
+                      ${showGradeButton ? 'ذخیره پیش‌نویس' : 'ذخیره پاسخ'}
                     </button>
                   `
                 : ''
@@ -674,22 +674,22 @@ export function QuestionFooterContent({
                       ${disableGradeButton ? 'disabled' : ''}
                       ${question.type === 'Freeform' ? html`name="__action" value="grade"` : ''}
                     >
-                      Save &amp; Grade
+                      ارسال و تصحیح خودکار
                       ${
                         variantAttemptsTotal > 0
                           ? variantAttemptsLeft > 1
                             ? html`
                                 <small class="fst-italic ms-2">
-                                  ${variantAttemptsLeft} attempts left
+                                  (${variantAttemptsLeft} تلاش باقی‌مانده)
                                 </small>
                               `
                             : variantAttemptsLeft === 1 && variantAttemptsTotal > 1
-                              ? html`<small class="fst-italic ms-2">Last attempt</small>`
+                              ? html`<small class="fst-italic ms-2">(آخرین تلاش)</small>`
                               : variantAttemptsLeft === 1
-                                ? html`<small class="fst-italic ms-2">Single attempt</small>`
+                                ? html`<small class="fst-italic ms-2">(تک تلاش)</small>`
                                 : ''
                           : questionContext === 'student_homework'
-                            ? html`<small class="fst-italic ms-2">Unlimited attempts</small>`
+                            ? html`<small class="fst-italic ms-2">(تلاش نامحدود)</small>`
                             : ''
                       }
                     </button>
@@ -738,7 +738,7 @@ export function QuestionFooterContent({
                       href="${newVariantUrl}"
                       class="btn btn-primary disable-on-click ms-1 js-new-variant-button"
                     >
-                      New variant
+                      گونه جدید سوال
                     </a>
                   `
                 : showTryAgainButton
@@ -748,8 +748,8 @@ export function QuestionFooterContent({
                           instance_question_info.previous_variants?.some(
                             (variant: SimpleVariantWithScore) => variant.open,
                           )
-                            ? 'Go to latest variant'
-                            : 'Try a new variant'
+                            ? 'مشاهده آخرین تلاش'
+                            : 'تلاش با گونه جدید'
                         }
                       </a>
                     `

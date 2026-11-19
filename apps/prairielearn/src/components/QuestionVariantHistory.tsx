@@ -59,7 +59,7 @@ export function QuestionVariantHistory({
             variantId: variant.id,
           })}"
         >
-          ${variant.open ? 'Open' : `${Math.floor(variant.max_submission_score * 100)}%`}
+          ${variant.open ? 'فعال' : `${Math.floor(variant.max_submission_score * 100)}%`}
           ${
             currentVariantId != null && idsEqual(variant.id, currentVariantId)
               ? html`<span class="visually-hidden">(current)</span>`

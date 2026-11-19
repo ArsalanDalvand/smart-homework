@@ -39,9 +39,9 @@ export function QuestionScorePanel(
   const { instance_question_info, variant, assessment, authz_result, csrfToken } = props;
 
   return html`
-    <div class="card mb-4" id="question-score-panel">
+    <div class="card mb-4" id="question-score-panel" style="font-family: var(--font-persian);">
       <div class="card-header bg-secondary text-white">
-        <h2>Question ${instance_question_info.question_number}</h2>
+        <h2>سوال ${instance_question_info.question_number}</h2>
       </div>
       ${QuestionScorePanelContent(props)}
       ${
@@ -93,7 +93,7 @@ export function QuestionScorePanelContent({
           assessment.type === 'Exam'
             ? html`
                 <tr>
-                  <td>Status:</td>
+                  <td>وضعیت:</td>
                   <td>
                     ${ExamQuestionStatus({
                       instance_question,
@@ -109,30 +109,22 @@ export function QuestionScorePanelContent({
           assessment.type === 'Homework'
             ? html`
                 ${
-                  // This condition covers two cases:
-                  // - A purely manually-graded question
-                  // - A question with no points at all
-                  // In both cases, we opt not to display the value, since it
-                  // would not be possible to immediately earn any points with
-                  // the next submission.
                   assessment_question.max_auto_points
                     ? html`
                         <tr>
-                          <td>Value:</td>
+                          <td>ارزش سوال:</td>
                           <td>${QuestionValue({ instance_question, assessment_question })}</td>
                         </tr>
                       `
                     : ''
                 }
                 ${
-                  // Only show previous variants if the question allows multiple variants,
-                  // or there are multiple variants (i.e., they were allowed at some point)
                   !question.single_variant ||
                   (instance_question_info.previous_variants?.length ?? 0) > 1
                     ? html`
                         <tr>
                           <td colspan="2" class="text-wrap">
-                            All variants:
+                            تمام گونه‌ها و تلاش‌ها:
                             ${QuestionVariantHistory({
                               courseInstanceId: assessment.course_instance_id,
                               instanceQuestionId: instance_question.id,
@@ -148,7 +140,7 @@ export function QuestionScorePanelContent({
             : assessment_question.max_auto_points
               ? html`
                   <tr>
-                    <td>Available points:</td>
+                    <td>نمره در دسترس:</td>
                     <td>
                       ${ExamQuestionAvailablePoints({
                         open: !!assessment_instance.open && instance_question.open,
@@ -170,7 +162,7 @@ export function QuestionScorePanelContent({
           hasAutoAndManualPoints
             ? html`
                 <tr>
-                  <td>Auto-grading:</td>
+                  <td>تصحیح خودکار:</td>
                   <td>
                     ${InstanceQuestionPoints({
                       instance_question,
@@ -180,7 +172,7 @@ export function QuestionScorePanelContent({
                   </td>
                 </tr>
                 <tr>
-                  <td>Manual grading:</td>
+                  <td>تصحیح دستی:</td>
                   <td>
                     ${InstanceQuestionPoints({
                       instance_question,
@@ -193,7 +185,7 @@ export function QuestionScorePanelContent({
             : ''
         }
         <tr>
-          <td>Total points:</td>
+          <td>مجموع نمرات:</td>
           <td>
             ${InstanceQuestionPoints({
               instance_question,
@@ -210,8 +202,8 @@ export function QuestionScorePanelContent({
                     <small>
                       ${
                         !assessment_question.max_auto_points
-                          ? 'Manually-graded question'
-                          : 'Auto-graded question'
+                          ? 'سوال نیازمند تصحیح دستی'
+                          : 'سوال مجهز به تصحیح خودکار'
                       }
                     </small>
                   </td>

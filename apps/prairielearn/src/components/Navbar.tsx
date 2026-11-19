@@ -2,6 +2,7 @@ import { type FlashMessageType, flash } from '@prairielearn/flash';
 import { type HtmlValue, html, unsafeHtml } from '@prairielearn/html';
 import { run } from '@prairielearn/run';
 
+import { assetPath } from '../lib/assets.js';
 import { config } from '../lib/config.js';
 import type { UntypedResLocals } from '../lib/res-locals.types.js';
 import type { Override } from '../middlewares/authzCourseOrInstance.js';
@@ -108,10 +109,11 @@ export function Navbar({
               `
             : ''
         }
-        <a class="navbar-brand" href="/" aria-label="Homepage">
-          <span class="navbar-brand-label">PrairieLearn</span>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/" aria-label="صفحه اصلی">
+          <img src="${assetPath('images/iust-logo.svg')}" alt="IUST" style="height: 30px; width: auto;" />
+          <span class="navbar-brand-label">دانشگاه علم و صنعت ایران</span>
           <span class="navbar-brand-hover-label">
-            Go home <i class="fa fa-angle-right" aria-hidden="true"></i>
+            صفحه اصلی <i class="fa fa-angle-left" aria-hidden="true"></i>
           </span>
         </a>
         <div class="d-flex d-md-none align-items-center gap-2">
@@ -147,7 +149,7 @@ export function Navbar({
                       class="btn btn-success btn-sm mb-2 mb-md-0"
                       href="/pl/loadFromDisk"
                     >
-                      Load from disk
+                      همگام‌سازی دیسک
                     </a>
                   `
                 : ''
@@ -163,9 +165,9 @@ export function Navbar({
                       style="--bs-btn-color: var(--bs-navbar-color); --bs-btn-border-color: var(--bs-navbar-color)"
                       data-bs-toggle="modal tooltip"
                       data-bs-target="#supportModal"
-                      data-bs-title="Get help with PrairieLearn"
+                      data-bs-title="راهنمایی و پشتیبانی سامانه یادگیری"
                     >
-                      Get help
+                      راهنمایی
                     </button>
                   `
                 : ''
@@ -425,11 +427,11 @@ function UserDropdownMenu({
     (authz_data?.authn_has_course_permission_preview ||
       authz_data?.authn_has_course_instance_permission_view)
   ) {
-    displayedName = html`${displayedName} <span class="badge text-bg-warning">student</span>`;
+    displayedName = html`${displayedName} <span class="badge text-bg-warning">دانشجو</span>`;
   } else if (authz_data?.overrides?.length > 0) {
-    displayedName = html`${displayedName} <span class="badge text-bg-warning">modified</span>`;
+    displayedName = html`${displayedName} <span class="badge text-bg-warning">سفارشی‌شده</span>`;
   } else if (navbarType === 'instructor') {
-    displayedName = html`${displayedName} <span class="badge text-bg-success">staff</span>`;
+    displayedName = html`${displayedName} <span class="badge text-bg-success">کادر آموزشی</span>`;
   }
 
   return html`
@@ -462,8 +464,8 @@ function UserDropdownMenu({
                   <button type="button" class="dropdown-item" id="navbar-administrator-toggle">
                     ${
                       access_as_administrator
-                        ? 'Turn off administrator access'
-                        : 'Turn on administrator access'
+                        ? 'غیرفعال‌سازی دسترسی مدیر'
+                        : 'فعال‌سازی دسترسی مدیر'
                     }
                   </button>
 
@@ -476,9 +478,7 @@ function UserDropdownMenu({
             authz_data?.mode === 'Exam'
               ? html`
                   <div class="dropdown-item-text">
-                    Exam mode means you have a checked-in reservation on PrairieTest. Your
-                    interactions with PrairieLearn are limited to your checked-in exam for the
-                    duration of your reservation.
+                    حالت آزمون فعال است. دسترسی‌های شما به آزمون جاری محدود می‌باشد.
                   </div>
                   <div class="dropdown-divider"></div>
                 `
@@ -486,11 +486,11 @@ function UserDropdownMenu({
           }
           ${
             !authz_data || authz_data?.mode === 'Public'
-              ? html`<a class="dropdown-item" href="/pl/request_course">Course Requests</a>`
+              ? html`<a class="dropdown-item" href="/pl/request_course">درخواست ایجاد درس جدید</a>`
               : ''
           }
-          <a class="dropdown-item" href="/pl/settings">Settings</a>
-          <a class="dropdown-item" href="/pl/logout">Log out</a>
+          <a class="dropdown-item" href="/pl/settings">تنظیمات</a>
+          <a class="dropdown-item" href="/pl/logout">خروج از حساب</a>
         </div>
       </li>
     </ul>
@@ -887,14 +887,14 @@ function NavbarButtons({
   ) {
     return html`
       ${NavbarButton({
-        text: 'Home',
+        text: 'صفحه اصلی',
         href: '/',
         showArrow: false,
       })}
       ${
         resLocals.is_administrator
           ? NavbarButton({
-              text: 'Global Admin',
+              text: 'مدیریت سامانه',
               href: '/pl/administrator/admins',
               showArrow: false,
             })
@@ -903,16 +903,16 @@ function NavbarButtons({
     `;
   }
 
-  const allNavbarButtons = [{ text: 'Home', href: '/' }];
+  const allNavbarButtons = [{ text: 'صفحه اصلی', href: '/' }];
 
   if (resLocals.is_administrator) {
-    allNavbarButtons.push({ text: 'Global Admin', href: '/pl/administrator/admins' });
+    allNavbarButtons.push({ text: 'مدیریت سامانه', href: '/pl/administrator/admins' });
   }
 
   if (resLocals.institution) {
     if (resLocals.is_administrator) {
       allNavbarButtons.push(
-        { text: 'Institutions', href: '/pl/administrator/institutions' },
+        { text: 'دانشکده‌ها و موسسات', href: '/pl/administrator/institutions' },
         {
           text: resLocals.institution.short_name,
           href: `/pl/administrator/institution/${resLocals.institution.id}`,
@@ -930,12 +930,12 @@ function NavbarButtons({
     if (resLocals.institution) {
       if (resLocals.is_administrator) {
         allNavbarButtons.push({
-          text: 'Courses',
+          text: 'درس‌ها',
           href: `/pl/administrator/institution/${resLocals.institution.id}/courses`,
         });
       } else if (resLocals.is_institution_administrator) {
         allNavbarButtons.push({
-          text: 'Courses',
+          text: 'درس‌ها',
           href: `/pl/institution/${resLocals.institution.id}/admin/courses`,
         });
       }
@@ -975,10 +975,10 @@ function NavbarStudent({ resLocals, navPage }: { resLocals: UntypedResLocals; na
     </li>
 
     <li class="nav-item ${navPage === 'assessments' ? 'active' : ''}">
-      <a class="nav-link" href="${urlPrefix}/assessments">Assessments</a>
+      <a class="nav-link" href="${urlPrefix}/assessments">تکالیف و ارزیابی‌ها</a>
     </li>
     <li class="nav-item ${navPage === 'gradebook' ? 'active' : ''}">
-      <a class="nav-link" href="${urlPrefix}/gradebook">Gradebook</a>
+      <a class="nav-link" href="${urlPrefix}/gradebook">کارنامه و نمرات</a>
     </li>
 
     ${

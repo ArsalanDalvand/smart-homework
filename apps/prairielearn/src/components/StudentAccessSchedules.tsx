@@ -43,13 +43,13 @@ function CreditSchedule({ rows }: { rows: { credit: string; start: string; end: 
   if (rows.length === 0) return '';
 
   const content = html`
-    <div class="table-responsive">
-      <table class="table table-sm mb-0" aria-label="Credit schedule">
+    <div class="table-responsive" style="font-family: var(--font-persian);">
+      <table class="table table-sm mb-0" aria-label="جدول زمان‌بندی اعتبار">
         <thead>
           <tr>
-            <th scope="col">Credit</th>
-            <th scope="col">Start</th>
-            <th scope="col">End</th>
+            <th scope="col">درصد اعتبار</th>
+            <th scope="col">شروع</th>
+            <th scope="col">مهلت تحویل</th>
           </tr>
         </thead>
         <tbody>
@@ -74,12 +74,12 @@ function CreditSchedule({ rows }: { rows: { credit: string; start: string; end: 
       data-bs-toggle="popover"
       data-bs-container="body"
       data-bs-html="true"
-      data-bs-title="Credit schedule"
+      data-bs-title="جدول زمان‌بندی مهلت‌ها"
       data-bs-content="${escapeHtml(content)}"
       data-bs-custom-class="popover-wide"
       data-bs-placement="bottom"
     >
-      Credit schedule
+      <i class="far fa-calendar-alt me-1" aria-hidden="true"></i> زمان‌بندی تحویل
     </button>
   `;
 }

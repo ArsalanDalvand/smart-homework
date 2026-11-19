@@ -72,8 +72,8 @@ export function QuestionNavSideButton({
 }) {
   const { buttonId, buttonLabel } =
     whichButton === 'next'
-      ? { buttonId: 'question-nav-next', buttonLabel: 'Next question' }
-      : { buttonId: 'question-nav-prev', buttonLabel: 'Previous question' };
+      ? { buttonId: 'question-nav-next', buttonLabel: 'سوال بعدی' }
+      : { buttonId: 'question-nav-prev', buttonLabel: 'سوال قبلی' };
   let disabledExplanation: HtmlValue | null = null;
 
   if (instanceQuestionId != null) {
