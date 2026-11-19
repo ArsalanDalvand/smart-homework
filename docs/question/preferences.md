@@ -1,27 +1,27 @@
-# Question preferences
+# ترجیحات سوال (Question Preferences)
 
-Question preferences allow a single question to be customized for different assessments without duplicating the question. A question defines a **preferences schema** in its `info.json`, and each assessment can **override** the default values when including the question.
+ترجیحات سوال این امکان را فراهم می‌کنند که یک سوال منفرد برای ارزیابی‌های مختلف بدون نیاز به کپی کردن سوال سفارشی‌سازی شود. یک سوال یک **طرح‌واره ترجیحات (Preferences Schema)** را در فایل `info.json` خود تعریف می‌کند، و هر ارزیابی می‌تواند مقادیر پیش‌فرض را هنگام گنجاندن سوال **بازنویسی (Override)** کند.
 
-Preferences are available in both `server.py` (via `data["preferences"]`) and `question.html` (via `{{preferences.key}}`).
+ترجیحات هم در `server.py` (از طریق `data["preferences"]`) و هم در `question.html` (از طریق `{{preferences.key}}`) در دسترس هستند.
 
-## Defining preferences
+## تعریف ترجیحات
 
-Preferences can be managed through the **Question Settings** page or by editing `info.json` directly.
+ترجیحات را می‌توان از طریق صفحه **Question Settings** یا با ویرایش مستقیم فایل `info.json` مدیریت کرد.
 
-### Using the question settings page
+### استفاده از صفحه تنظیمات سوال
 
-On the question settings page, the **Preferences** section displays a table where you can add, edit, reorder, and remove preferences. Each preference has:
+در صفحه تنظیمات سوال، بخش **Preferences** جدولی را نمایش می‌دهد که می‌توانید در آن ترجیحات را اضافه، ویرایش، بازآرایی و حذف کنید. هر ترجیح دارای موارد زیر است:
 
-- **Name**: a unique identifier used to reference the preference in code (e.g., `show_hints`).
-- **Type**: `string`, `number`, or `boolean`.
-- **Default**: the value used when the assessment does not provide an override.
-- **Allowed values**: an optional set of allowed values. When set, the default and any assessment override must be one of these values. If left empty (shown as "Any"), any value matching the type is accepted.
+- **نام (Name)**: یک شناسه یکتا که برای ارجاع به ترجیح در کد استفاده می‌شود (مثلاً `show_hints`).
+- **نوع (Type)**: نوع داده، شامل `string`، `number`، یا `boolean`.
+- **پیش‌فرض (Default)**: مقداری که در صورت عدم ارائه مقدار بازنویسی توسط ارزیابی استفاده می‌شود.
+- **مقادیر مجاز (Allowed values)**: مجموعه‌ای اختیاری از مقادیر مجاز. هنگام تنظیم، مقدار پیش‌فرض و هرگونه مقدار بازنویسی ارزیابی باید یکی از این مقادیر باشند. اگر خالی بماند (به عنوان "Any" نمایش داده می‌شود)، هر مقداری که با نوع داده مطابقت داشته باشد پذیرفته می‌شود.
 
-Preferences can be reordered by dragging the handle on the left side of each row.
+ترجیحات را می‌توان با کشیدن دستگیره در سمت چپ هر سطر جابه‌جا و بازآرایی کرد.
 
-### Using JSON
+### استفاده از JSON
 
-Add a `preferences` object to your question's `info.json`. Each key defines a preference field with a `type`, a `default` value, and an optional `enum` of allowed values.
+یک شیء `preferences` به فایل `info.json` سوال خود اضافه کنید. هر کلید یک فیلد ترجیح را با یک `type`، یک مقدار `default`، و یک `enum` اختیاری از مقادیر مجاز تعریف می‌کند.
 
 ```json title="info.json"
 {
@@ -43,25 +43,25 @@ Add a `preferences` object to your question's `info.json`. Each key defines a pr
 }
 ```
 
-### Preference field properties
+### ویژگی‌های فیلد ترجیح
 
-| Property  | Type                                   | Description                                                                                                         |
-| --------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `type`    | `"string"`, `"number"`, or `"boolean"` | The data type of the preference value. (Required)                                                                   |
-| `default` | string, number, or boolean             | The default value used when the assessment does not provide an override. Must match the declared `type`. (Required) |
-| `enum`    | array of strings or numbers            | An optional list of allowed values. If provided, both the default and any assessment override must be in this list. |
+| ویژگی | نوع | توضیحات |
+| --- | --- | --- |
+| `type` | `"string"`, `"number"`, or `"boolean"` | نوع داده مقدار ترجیح. (اجباری) |
+| `default` | string, number, or boolean | مقدار پیش‌فرضی که در صورت عدم ارائه مقدار بازنویسی توسط ارزیابی استفاده می‌شود. باید با `type` اعلان‌شده مطابقت داشته باشد. (اجباری) |
+| `enum` | array of strings or numbers | یک فهرست اختیاری از مقادیر مجاز. در صورت ارائه، هم مقدار پیش‌فرض و هم هرگونه مقدار بازنویسی ارزیابی باید در این فهرست باشند. |
 
-## Overriding preferences in assessments
+## بازنویسی ترجیحات در ارزیابی‌ها
 
-Preference overrides can be set through the **Assessment Questions** editor or by editing `infoAssessment.json` directly.
+مقادیر بازنویسی ترجیحات را می‌توان از طریق ویرایشگر **Assessment Questions** یا با ویرایش مستقیم `infoAssessment.json` تنظیم کرد.
 
-### Using the assessment questions editor
+### استفاده از ویرایشگر سوالات ارزیابی
 
-In the assessment questions page, click **Edit** to enter edit mode, then expand a question that defines preferences. Each preference is shown with its current override value. Select a value from the dropdown or type one in to override the question default. To revert to the question default, clear the field or select the "Default" option.
+در صفحه سوالات ارزیابی، روی **Edit** کلیک کنید تا وارد حالت ویرایش شوید، سپس سوالی را که ترجیحات را تعریف می‌کند باز کنید. هر ترجیح با مقدار بازنویسی فعلی خود نشان داده می‌شود. مقداری را از منوی کشویی انتخاب کنید یا مقداری را برای بازنویسی پیش‌فرض سوال تایپ کنید. برای بازگشت به پیش‌فرض سوال، فیلد را پاک کنید یا گزینه "Default" را انتخاب نمایید.
 
-### Using JSON
+### استفاده از JSON
 
-In `infoAssessment.json`, add a `preferences` object to a question entry. Only the preferences you specify are overridden; the rest use their defaults.
+در `infoAssessment.json`، یک شیء `preferences` به ورودی سوال اضافه کنید. تنها ترجیحاتی که مشخص می‌کنید بازنویسی می‌شوند؛ مابقی از مقادیر پیش‌فرض خود استفاده می‌کنند.
 
 ```json title="infoAssessment.json"
 {
@@ -87,13 +87,13 @@ In `infoAssessment.json`, add a `preferences` object to a question entry. Only t
 }
 ```
 
-Overrides are validated against the question's preferences schema during sync. If you provide a value that doesn't match the declared `type` or isn't in the `enum` list, a sync error will be reported.
+مقادیر بازنویسی در حین همگام‌سازی (Sync) با طرح‌واره ترجیحات سوال اعتبارسنجی می‌شوند. اگر مقداری ارائه دهید که با `type` اعلان‌شده مطابقت نداشته باشد یا در فهرست `enum` نباشد، یک خطای همگام‌سازی گزارش می‌شود.
 
 !!! warning
 
-    Support for preferences with shared questions is not perfect; preferences are only validated at sync time against the shared question's preferences schema.
+    پشتیبانی از ترجیحات در سوالات به اشتراک‌گذاشته‌شده بی‌نقص نیست؛ ترجیحات تنها در زمان همگام‌سازی در برابر طرح‌واره ترجیحات سوال اشتراکی اعتبارسنجی می‌شوند.
 
-Preferences can also be set on individual alternatives within a question alternative pool:
+ترجیحات را می‌توان روی گزینه‌های جایگزین منفرد (Individual alternatives) در یک استخر جایگزین سوال نیز تنظیم کرد:
 
 ```json title="infoAssessment.json"
 {
@@ -111,17 +111,17 @@ Preferences can also be set on individual alternatives within a question alterna
 }
 ```
 
-## When preference values are saved
+## زمان ذخیره مقادیر ترجیحات
 
-Preferences are saved on each question variant when that variant is created, using the question's defaults merged with any assessment overrides. All later uses of that variant read the saved values, including `render()`, grading, and `question.html`. The relevant time is when the **question variant** is created, rather than when the assessment instance is created.
+ترجیحات روی هر گونه از سوال زمانی که آن گونه ایجاد می‌شود ذخیره می‌گردند، با استفاده از ادغام مقادیر پیش‌فرض سوال با هرگونه بازنویسی ارزیابی. تمام استفاده‌های بعدی از آن گونه، مقادیر ذخیره‌شده را می‌خوانند، از جمله `render()`، نمره‌دهی و `question.html`. زمان ملاک، زمانی است که **گونه سوال (Question variant)** ایجاد می‌شود، نه زمانی که نمونه ارزیابی (Assessment instance) ایجاد می‌گردد.
 
-Changing a default in `info.json` or an override in `infoAssessment.json` and syncing affects newly created variants only. Existing variants keep their saved preferences, even after students reload the page or an instructor regrades their submissions. For example, changing `show_hints` from `true` to `false` does not hide hints on variants that were created with `show_hints` set to `true`.
+تغییر دادن یک پیش‌فرض در `info.json` یا یک مقدار بازنویسی در `infoAssessment.json` و سپس همگام‌سازی، فقط بر گونه‌های جدید ایجادشده تأثیر می‌گذارد. گونه‌های موجود ترجیحات ذخیره‌شده خود را حفظ می‌کنند، حتی پس از آنکه دانشجویان صفحه را مجدداً بارگذاری کنند یا مدرس پاسخ‌های ارسالی آن‌ها را مجدداً نمره‌دهی کند. به عنوان مثال، تغییر `show_hints` از `true` به `false`، راهنماها را در گونه‌هایی که با مقدار `show_hints` برابر با `true` ایجاد شده‌اند پنهان نمی‌کند.
 
-If you add a new preference, existing variants will not contain that key. In Python code that may run on existing variants, use a suitable fallback, such as `data["preferences"].get("show_hints", True)`. This handles a missing key; it does not replace a value already saved on the variant.
+اگر یک ترجیح جدید اضافه کنید، گونه‌های موجود حاوی آن کلید نخواهند بود. در کد پایتون که ممکن است روی گونه‌های موجود اجرا شود، از یک مقدار جایگزین (Fallback) مناسب مانند `data["preferences"].get("show_hints", True)` استفاده کنید. این کار فقدان کلید را مدیریت می‌کند؛ اما مقداری را که قبلاً روی گونه ذخیره شده است جایگزین نمی‌کند.
 
-## Using preferences in `question.html`
+## استفاده از ترجیحات در `question.html`
 
-Preference values are available in Mustache templates under the `{{preferences.key}}` namespace, just like `{{params.key}}`:
+مقادیر ترجیحات در قالب‌های Mustache تحت فضای نام `{{preferences.key}}`، درست مانند `{{params.key}}` در دسترس هستند:
 
 <!-- prettier-ignore -->
 ```html title="question.html"
@@ -140,9 +140,9 @@ Preference values are available in Mustache templates under the `{{preferences.k
 <pl-number-input answers-name="force" label="$F = $"></pl-number-input>
 ```
 
-## Using preferences in `server.py`
+## استفاده از ترجیحات در `server.py`
 
-Preference values are available in the `data["preferences"]` dictionary. This dictionary is read-only and available in all `server.py` functions (`generate`, `prepare`, `render`, `parse`, `grade`, `file`, `test`).
+مقادیر ترجیحات در دیکشنری `data["preferences"]` در دسترس هستند. این دیکشنری فقط‌خواندنی است و در تمام توابع `server.py` (`generate`، `prepare`، `render`، `parse`، `grade`، `file`، `test`) در دسترس قرار دارد.
 
 ```python title="server.py"
 import random
@@ -156,11 +156,11 @@ def generate(data):
     data["correct_answers"]["force"] = m * g
 ```
 
-## Examples
+## مثال‌ها
 
-### Configuring units (SI vs imperial)
+### پیکربندی واحدها (SI در مقابل واحدهای امپریال)
 
-A question can support different unit systems by defining a preference:
+یک سوال می‌تواند با تعریف یک ترجیح، از سیستم‌های مختلف واحد پشتیبانی کند:
 
 ```json title="info.json"
 {
@@ -202,11 +202,11 @@ def generate(data):
     )
 ```
 
-Then one assessment can use `"preferences": { "unit_system": "SI" }` and another can use `"preferences": { "unit_system": "imperial" }`, reusing the same question.
+سپس یک ارزیابی می‌تواند از `"preferences": { "unit_system": "SI" }` و دیگری می‌تواند از `"preferences": { "unit_system": "imperial" }` استفاده کند، و همان سوال را مجدداً به کار بگیرد.
 
-### Adjusting difficulty
+### تنظیم سطح دشواری
 
-A boolean preference can control whether hints are shown:
+یک ترجیح بولی می‌تواند نمایش داده شدن راهنماها را کنترل کند:
 
 ```json title="info.json (preferences only)"
 {
@@ -228,15 +228,15 @@ A boolean preference can control whether hints are shown:
 {{/preferences.show_hints}}
 ```
 
-A practice homework could keep the default (`true`), while an exam assessment overrides it:
+یک تکلیف تمرینی می‌تواند مقدار پیش‌فرض (`true`) را حفظ کند، در حالی که یک ارزیابی آزمون آن را بازنویسی می‌کند:
 
 ```json
 { "id": "forces/fallingObject", "autoPoints": 5, "preferences": { "show_hints": false } }
 ```
 
-### Reusing a question across course instances with different contexts
+### استفاده مجدد از یک سوال در دوره‌های مختلف با زمینه‌های متفاوت
 
-A question about statistics can change the dataset context:
+یک سوال درباره آمار می‌تواند زمینه مجموعه داده را تغییر دهد:
 
 ```json title="info.json (preferences only)"
 {

@@ -1,51 +1,51 @@
-# AI question generation
+# تولید سوال با هوش مصنوعی (AI Question Generation)
 
-AI question generation helps instructors create PrairieLearn questions from a natural language prompt. It can write the question prompt, choose supported PrairieLearn elements, generate `server.py` code when randomization or computed answers are needed, and revise the question based on follow-up instructions.
+تولید سوال با هوش مصنوعی به مدرسان کمک می‌کند تا سوالات PrairieLearn را بر اساس یک پرامپت (درخواست) به زبان طبیعی ایجاد کنند. این ابزار می‌تواند متن صورت سوال را بنویسد، المان‌های پشتیبانی‌شده PrairieLearn را انتخاب کند، در صورت نیاز به تصادفی‌سازی یا پاسخ‌های محاسباتی کدهای `server.py` را تولید کند، و سوال را بر اساس دستورالعمل‌های پیگیری ویرایش و اصلاح نماید.
 
-!!! warning "Alpha preview feature"
+!!! warning "قابلیت پیش‌نمایش آلفا (Alpha preview)"
 
-    AI question generation is currently an alpha preview. Generated questions can contain mistakes, ambiguous wording, incorrect assumptions, grading issues, or unsupported element usage. Always review the generated `question.html` and `server.py`, preview several variants, and test submissions before using the question in an assessment.
+    تولید سوال با هوش مصنوعی در حال حاضر در مرحله پیش‌نمایش آلفا (Alpha Preview) قرار دارد. سوالات تولیدشده ممکن است حاوی اشتباهات، نگارش مبهم، فرضیات نادرست، مشکلات نمره‌دهی یا استفاده از المان‌های پشتیبانی‌نشده باشند. همیشه کدهای `question.html` و `server.py` تولیدشده را بررسی کنید، چندین گونه (Variant) را پیش‌نمایش نمایید و پاسخ‌های ارسالی را قبل از استفاده از سوال در یک ارزیابی آزمایش کنید.
 
-## Enabling AI question generation
+## فعال‌سازی تولید سوال با هوش مصنوعی
 
-AI question generation is currently opt-in at the course level. To enable it for a course:
+تولید سوال با هوش مصنوعی در حال حاضر در سطح درس اختیاری (Opt-in) است. برای فعال کردن آن در یک درس:
 
-1. Open the course as an instructor with editor permissions.
-2. Go to **Course settings**.
-3. Turn on **Enable AI question generation**.
-4. Save the course settings.
+1. درس را به عنوان یک مدرس با دسترسی ویرایشگر (Editor) باز کنید.
+2. به **Course settings** بروید.
+3. گزینه **Enable AI question generation** را روشن کنید.
+4. تنظیمات درس را ذخیره کنید.
 
-After enabling the feature, go to the course **Questions** page and choose **Add questions** → **Generate question with AI**. If the question list is empty, the same action is available as **Generate with AI** in the empty-state controls.
+پس از فعال‌سازی این قابلیت، به صفحه **Questions** درس رفته و گزینه **Add questions** ← **Generate question with AI** را انتخاب کنید. اگر فهرست سوالات خالی باشد، همین اقدام به عنوان **Generate with AI** در کنترل‌های حالت خالی در دسترس است.
 
-## Creating a question
+## ایجاد یک سوال
 
-The AI question generator starts by creating a draft question. Draft questions are not ready to use in assessments until they are finalized.
+ابزار تولید سوال با هوش مصنوعی با ایجاد یک پیش‌نویس سوال شروع می‌کند. سوالات پیش‌نویس تا زمانی که نهایی نشوند، برای استفاده در ارزیابی‌ها آماده نیستند.
 
-1. Describe the question you want. Include the topic, what should be randomized, what students should enter, and any constraints on answer format or grading.
-2. PrairieLearn opens the generated draft in an editor with a chat panel, preview, and file editors for `question.html` and `server.py`.
-3. Review the preview and the generated files. Ask the AI to revise the draft or manually edit the files.
-4. Generate new variants and submit test answers to check that rendering, randomization, parsing, grading, and feedback behave as expected.
-5. Click **Finalize question**, then enter the title and QID that should be used in the question bank.
+1. سوال مورد نظر خود را توصیف کنید. مبحث (Topic)، مواردی که باید تصادفی‌سازی شوند، آنچه دانشجویان باید وارد کنند، و هرگونه محدودیت در فرمت پاسخ یا نمره‌دهی را درج نمایید.
+2. سامانه PrairieLearn پیش‌نویس تولیدشده را در یک ویرایشگر به همراه یک پنل چت، پیش‌نمایش، و ویرایشگرهای فایل برای `question.html` و `server.py` باز می‌کند.
+3. پیش‌نمایش و فایل‌های تولیدشده را بررسی کنید. از هوش مصنوعی بخواهید پیش‌نویس را بازبینی کند یا فایل‌ها را به صورت دستی ویرایش نمایید.
+4. گونه‌های جدیدی ایجاد کنید و پاسخ‌های تستی ارسال نمایید تا بررسی کنید که رندر، تصادفی‌سازی، پارس کردن، نمره‌دهی و بازخورد مطابق انتظار رفتار می‌کنند.
+5. روی **Finalize question** کلیک کنید، سپس عنوان و QID که باید در بانک سوالات استفاده شود را وارد کنید.
 
-Finalizing makes the question available for normal use on assessments and redirects you to the regular question preview page.
+نهایی کردن (Finalize)، سوال را برای استفاده عادی در ارزیابی‌ها در دسترس قرار می‌دهد و شما را به صفحه پیش‌نمایش عادی سوال هدایت می‌کند.
 
-## Bias and fairness
+## تعصب و عدالت (Bias and fairness)
 
-When reviewing a draft, look for stereotypes or cultural assumptions unrelated to the intended learning objective. For example, a probability question might assume familiarity with the rules of an American sport. If you notice an issue, ask for a targeted revision or edit the draft directly.
+هنگام بررسی یک پیش‌نویس، به دنبال کلیشه‌ها یا مفروضات فرهنگی نامرتبط با هدف یادگیری مورد نظر باشید. به عنوان مثال، یک سوال احتمال ممکن است آشنایی با قوانین یک ورزش آمریکایی را مفروض بداند. اگر متوجه مشکلی شدید، درخواست بازبینی هدفمند بدهید یا پیش‌نویس را مستقیماً ویرایش کنید.
 
-## Supported question content
+## محتوای پشتیبانی‌شده سوال
 
-The generator can write ordinary HTML, LaTeX, supported PrairieLearn elements, and Python code in `server.py`. It can use `server.py` to generate random parameters in `data["params"]`, compute correct answers in `data["correct_answers"]`, and provide custom grading or feedback when appropriate.
+تولیدکننده می‌تواند HTML معمولی، LaTeX، المان‌های پشتیبانی‌شده PrairieLearn، و کدهای پایتون را در `server.py` بنویسد. این ابزار می‌تواند از `server.py` برای تولید پارامترهای تصادفی در `data["params"]`، محاسبه پاسخ‌های صحیح در `data["correct_answers"]`، و ارائه نمره‌دهی یا بازخورد سفارشی در صورت لزوم استفاده کند.
 
-Currently, AI question generation only supports a limited set of PrairieLearn elements.
+در حال حاضر، تولید سوال با هوش مصنوعی تنها از مجموعه محدودی از المان‌های PrairieLearn پشتیبانی می‌کند.
 
-Panel elements:
+المان‌های پنل (Panel elements):
 
 - [`pl-question-panel`](../elements/pl-question-panel.md)
 - [`pl-submission-panel`](../elements/pl-submission-panel.md)
 - [`pl-answer-panel`](../elements/pl-answer-panel.md)
 
-Input elements:
+المان‌های ورودی (Input elements):
 
 - [`pl-checkbox`](../elements/pl-checkbox.md)
 - [`pl-integer-input`](../elements/pl-integer-input.md)
@@ -55,22 +55,22 @@ Input elements:
 - [`pl-string-input`](../elements/pl-string-input.md)
 - [`pl-symbolic-input`](../elements/pl-symbolic-input.md)
 
-## What is not supported
+## مواردی که پشتیبانی نمی‌شوند
 
-AI question generation is currently limited to a focused authoring workflow:
+تولید سوال با هوش مصنوعی در حال حاضر محدود به یک جریان کاری نگارش متمرکز است:
 
-- It can only write `question.html` and `server.py`.
-- It cannot configure JSON-only settings such as tags, topics, and question preferences.
-- It cannot create or edit files outside the generated question's `question.html` and `server.py`, including images, datasets, `clientFilesQuestion/`, `serverFilesCourse/`, `tests/`, workspace files, external grader files, or other question-directory files.
-- It cannot use PrairieLearn elements outside the supported list above.
-- It cannot reliably build questions that depend on files it did not create. If a question needs an image, data file, starter code, workspace file, or external grader, add those files yourself and then edit the question manually.
+- تنها می‌تواند `question.html` و `server.py` را بنویسد.
+- نمی‌تواند تنظیمات صرفاً JSON مانند برچسب‌ها (Tags)، مباحث (Topics) و ترجیحات سوال را پیکربندی کند.
+- نمی‌تواند فایل‌های خارج از `question.html` و `server.py` سوال تولیدشده را ایجاد یا ویرایش کند، از جمله تصاویر، مجموعه‌های داده، `clientFilesQuestion/`، `serverFilesCourse/`، `tests/`، فایل‌های محیط کاری (Workspace)، فایل‌های نمره‌دهنده خارجی، یا سایر فایل‌های دایرکتوری سوال.
+- نمی‌تواند از المان‌های PrairieLearn خارج از فهرست پشتیبانی‌شده بالا استفاده کند.
+- نمی‌تواند به طور قابل اعتمادی سوالاتی را بسازد که به فایل‌هایی وابسته هستند که خودش ایجاد نکرده است. اگر سوالی به یک تصویر، فایل داده، کد اولیه، فایل محیط کاری، یا نمره‌دهنده خارجی نیاز دارد، آن فایل‌ها را خودتان اضافه کنید و سپس سوال را به صورت دستی ویرایش نمایید.
 
-Some unsupported tasks can still be done manually after finalizing the question. For example, you can use AI generation for a simple starting point, finalize the draft, and then add unsupported elements, extra files, JSON settings, external grading, or workspace configuration through the regular PrairieLearn authoring tools. These limitations will be lifted or reduced over time as AI question generation moves out of alpha preview.
+برخی از کارهای پشتیبانی‌نشده را همچنان می‌توان پس از نهایی کردن سوال به صورت دستی انجام داد. به عنوان مثال، می‌توانید از تولید با هوش مصنوعی برای یک نقطه شروع ساده استفاده کنید، پیش‌نویس را نهایی کنید، و سپس المان‌های پشتیبانی‌نشده، فایل‌های اضافی، تنظیمات JSON، نمره‌دهی خارجی، یا پیکربندی محیط کاری را از طریق ابزارهای نگارش عادی PrairieLearn اضافه نمایید. با خروج تولید سوال با هوش مصنوعی از حالت پیش‌نمایش آلفا، این محدودیت‌ها به مرور زمان برداشته شده یا کاهش خواهند یافت.
 
-## Prompting tips
+## نکاتی برای نوشتن پرامپت (Prompting tips)
 
-Good prompts are specific about the educational goal and the expected student response. For example, say whether students should enter an integer, a decimal with units, a symbolic expression, free text, or select one or more options.
+پرامپت‌های خوب در مورد هدف آموزشی و پاسخ مورد انتظار دانشجو دقیق و مشخص هستند. به عنوان مثال، بیان کنید که آیا دانشجویان باید یک عدد صحیح، یک عدد اعشاری همراه با واحد، یک عبارت نمادین، یک متن آزاد وارد کنند، یا یک یا چند گزینه را انتخاب نمایند.
 
-If the question should be randomized, describe the parameters and any ranges or constraints. If the answer needs special grading behavior, describe what should count as correct, what partial credit should be awarded, and what feedback students should receive.
+اگر سوال باید تصادفی‌سازی شود، پارامترها و هرگونه محدوده یا محدودیت را شرح دهید. اگر پاسخ به رفتار نمره‌دهی خاصی نیاز دارد، شرح دهید که چه چیزی باید درست تلقی شود، چه نمره بخشی‌ای باید اعطا شود، و دانشجویان چه بازخوردی باید دریافت کنند.
 
-When revising a draft, describe the desired outcome clearly, such as changing the randomization range, adding answer feedback, or making the wording more concise. After substantive revisions, preview and test the question again.
+هنگام بازبینی یک پیش‌نویس، نتیجه مطلوب را به وضوح توصیف کنید، مانند تغییر محدوده تصادفی‌سازی، افزودن بازخورد به پاسخ، یا مختصرتر کردن متن سوال. پس از بازبینی‌های اساسی، سوال را مجدداً پیش‌نمایش کرده و آزمایش کنید.
