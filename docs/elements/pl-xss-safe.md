@@ -1,36 +1,36 @@
-# `pl-xss-safe` element
+# المان `pl-xss-safe`
 
-Removes potentially dangerous scripts from HTML. This is recommended when parsing and displaying student-provided content. The element will remove some elements like scripts and triggers that may have been maliciously inserted by the student. Note that any code parsed by this element must be supported directly by the browser, i.e., it cannot include PrairieLearn elements or special tags.
+اسکریپت‌های بالقوه خطرناک را از HTML حذف می‌کند. استفاده از این المان هنگام تجزیه و نمایش محتوای ارائه‌شده توسط دانشجو توصیه می‌شود. این المان مواردی مانند تگ‌های اسکریپت و محرک‌ها (triggers) را که ممکن است به صورت مخرب توسط دانشجو درج شده باشند حذف می‌کند. توجه داشته باشید که هر کدی که توسط این المان پردازش می‌شود باید مستقیماً توسط مرورگر پشتیبانی شود؛ به این معنی که نمی‌تواند شامل المان‌های پریری‌لرن یا تگ‌های ویژه باشد.
 
-## Sample element
+## نمونه المان
 
 ```html title="question.html"
-<!-- Content coming from a submitted file (e.g., pl-file-editor, pl-file-upload) -->
+<!-- محتوای برگرفته از یک فایل ارسالی (مثلاً pl-file-editor یا pl-file-upload) -->
 <pl-xss-safe submitted-file-name="answer.html"></pl-xss-safe>
 
-<!-- Content coming from a regular element (e.g., pl-string-input) -->
+<!-- محتوای برگرفته از یک المان معمولی (مثلاً pl-string-input) -->
 <pl-xss-safe contents="{{submitted_answers.answer}}"></pl-xss-safe>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute             | Type   | Default | Description                                                                                                                                                   |
-| --------------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `contents`            | string | —       | Raw contents to be displayed.                                                                                                                                 |
-| `language`            | string | html    | Language of the provided code. The values "html" or "markdown" are currently supported.                                                                       |
-| `source-file-name`    | string | —       | Name of the source file with existing code to be used (instead of using the existing code between the element tags as illustrated in the above code snippet). |
-| `submitted-file-name` | string | —       | Name of the file submitted by the user to (typically using a `pl-file-editor` or `pl-file-upload` element) with the code to be used.                          |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `contents` | string | — | محتوای خام برای نمایش. |
+| `language` | string | html | زبان کد ارائه‌شده. در حال حاضر مقادیر "html" یا "markdown" پشتیبانی می‌شوند. |
+| `source-file-name` | string | — | نام فایل منبع حاوی کد مورد استفاده (به جای استفاده از کد موجود بین تگ‌های المان همان‌طور که در قطعه کد بالا نشان داده شده است). |
+| `submitted-file-name` | string | — | نام فایل ارسال‌شده توسط کاربر (معمولاً با استفاده از المان `pl-file-editor` یا `pl-file-upload`) حاوی کدی که باید استفاده شود. |
 
-Note that only one of the attributes `source-file-name`, `submitted-file-name` or `contents` may be provided in the same element.
+توجه داشته باشید که در یک المان یکسان، فقط یکی از ویژگی‌های `source-file-name`، `submitted-file-name` یا `contents` می‌تواند ارائه شود.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [demo/markdownEditorLivePreview]
 - [element/xssSafe]
 
-## See also
+## همچنین ببینید
 
-- [`pl-file-editor` to provide an in-browser code environment](pl-file-editor.md)
+- [`pl-file-editor` برای ارائه یک محیط کدنویسی درون مرورگر](pl-file-editor.md)
 
 [demo/markdowneditorlivepreview]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/markdownEditorLivePreview
 [element/xsssafe]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/element/xssSafe

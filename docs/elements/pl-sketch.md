@@ -1,17 +1,17 @@
-# `pl-sketch` element
+# المان `pl-sketch`
 
-Sketch curves and other mathematical objects (e.g., points, asymptotes, polygons) via freehand drawing or drag&drop. Drawings can be auto-graded using mathematical criteria. Some example criteria are:
+رسم منحنی‌ها و سایر اشیاء ریاضی (مانند نقاط، مجانب‌ها، چندضلعی‌ها) را از طریق ترسیم با دست آزاد (freehand) یا کشیدن و رها کردن (drag & drop) امکان‌پذیر می‌کند. ترسیم‌ها را می‌توان با استفاده از معیارهای ریاضی به صورت خودکار نمره‌دهی کرد. برخی از معیارهای نمونه عبارتند از:
 
-- Are the expected number of points or asymptotes marked at the right places?
-- Is a sketched function close to a reference function?
-- Is a sketched function always monotonically increasing?
-- Is the expected area of the canvas covered (by a polygon)?
+- آیا تعداد مورد انتظار نقاط یا مجانب‌ها در مکان‌های درست مشخص شده‌اند؟
+- آیا تابع رسم‌شده به تابع مرجع نزدیک است؟
+- آیا تابع رسم‌شده همواره به صورت یکنوا صعودی است؟
+- آیا مساحت مورد انتظار از بوم (توسط یک چندضلعی) پوشش داده شده است؟
 
-Note that this element is designed with a focus on mathematical curve sketches that can be auto-graded. For more versatile manually graded drawings, consider using [`pl-excalidraw`](../elements/pl-excalidraw.md). For auto-gradable drawings that do not include curves, consider using [`pl-drawing`](../pl-drawing/index.md).
+توجه داشته باشید که این المان با تمرکز بر رسم منحنی‌های ریاضی که قابل نمره‌دهی خودکار هستند طراحی شده است. برای ترسیم‌های چندمنظوره‌تر که به صورت دستی نمره‌دهی می‌شوند، استفاده از [`pl-excalidraw`](../elements/pl-excalidraw.md) را در نظر بگیرید. برای ترسیم‌های قابل نمره‌دهی خودکار که شامل منحنی نیستند، استفاده از [`pl-drawing`](../pl-drawing/index.md) را مد نظر قرار دهید.
 
-## Sample element
+## نمونه المان
 
-A minimal question with one drawing tool, one grading criterion, and a sample solution:
+یک سوال کمینه با یک ابزار ترسیم، یک معیار نمره‌دهی و یک راه‌حل نمونه:
 
 <!-- prettier-ignore -->
 ```html title="question.html"
@@ -22,11 +22,11 @@ A minimal question with one drawing tool, one grading criterion, and a sample so
   </pl-sketch>
 ```
 
-Note that the grading and solution elements reference the same tool. The `pl-sketch-grade` element is used for grading, while the `pl-sketch-solution` element is used to render the sample solution.
+توجه داشته باشید که المان‌های نمره‌دهی و راه‌حل به همان ابزار یکسان ارجاع می‌دهند. المان `pl-sketch-grade` برای نمره‌دهی استفاده می‌شود، در حالی که المان `pl-sketch-solution` برای رندر کردن راه‌حل نمونه به کار می‌رود.
 
-A more complete example combining multiple tools, initial drawings, and several grading criteria:
+یک مثال کامل‌تر که چندین ابزار، ترسیم‌های اولیه و چند معیار نمره‌دهی را ترکیب می‌کند:
 
-![Screenshot of the pl-sketch input](pl-sketch.png)
+![اسکرین‌شات از ورودی pl-sketch](pl-sketch.png)
 
 <!-- prettier-ignore -->
 ```html title="question.html"
@@ -46,64 +46,64 @@ A more complete example combining multiple tools, initial drawings, and several 
   </pl-sketch>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute          | Type    | Default  | Description                                                                                                                                                                                               |
-| ------------------ | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `answers-name`     | string  | -        | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.                                      |
-| `weight`           | integer | 1        | Weight to use when computing a weighted average score over elements.                                                                                                                                      |
-| `x-range`          | string  | `"-5,5"` | x-range of the canvas as a comma-separated pair of numbers. A 10-pixel-wide, ungraded margin is added around this range.                                                                                  |
-| `y-range`          | string  | `"-5,5"` | y-range of the canvas as a comma-separated pair of numbers. A 10-pixel-wide, ungraded margin is added around this range.                                                                                  |
-| `width`            | integer | 800      | Maximum display width of the canvas in pixels. Graphs shrink to fit their container if necessary.                                                                                                         |
-| `height`           | integer | 450      | Display height of the canvas in pixels at its configured width. Graphs shrink to fit their container if necessary, preserving the original aspect ratio.                                                  |
-| `read-only`        | boolean | false    | If set to `true`, the graph is not editable and the top toolbar is removed. This setting can be used in combination with `pl-sketch-initial` (see below) to render drawings as static question materials. |
-| `overlay-solution` | boolean | true     | If set to `true`, the sample solution (defined via `pl-sketch-solution` tags) is overlaid with student submissions once the question's answer is revealed to allow an easier comparison.                  |
-| `enforce-bounds`   | boolean | false    | If set to `true`, objects cannot be dragged past the edges of the canvas.                                                                                                                                 |
-| `allow-blank`      | boolean | false    | Allows the graph to be graded even if it is empty. If the initial canvas is not empty and is submitted without changes, it is not considered blank and always treated as a valid submission.              |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `answers-name` | string | - | نام متغیر برای ذخیره داده‌ها در آن. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد، یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود. |
+| `weight` | integer | 1 | وزن مورد استفاده هنگام محاسبه میانگین وزنی نمره بین المان‌ها. |
+| `x-range` | string | `"-5,5"` | محدوده محور x بوم به صورت جفت عددی جداشده با کاما. یک حاشیه نمره‌گذاری‌نشده به عرض ۱۰ پیکسل در اطراف این محدوده اضافه می‌شود. |
+| `y-range` | string | `"-5,5"` | محدوده محور y بوم به صورت جفت عددی جداشده با کاما. یک حاشیه نمره‌گذاری‌نشده به عرض ۱۰ پیکسل در اطراف این محدوده اضافه می‌شود. |
+| `width` | integer | 800 | حداکثر عرض نمایش بوم بر حسب پیکسل. نمودارها در صورت نیاز برای متناسب شدن با ظرف خود کوچک می‌شوند. |
+| `height` | integer | 450 | ارتفاع نمایش بوم بر حسب پیکسل در عرض پیکربندی‌شده. نمودارها در صورت نیاز کوچک می‌شوند و نسبت تصویر اصلی را حفظ می‌کنند. |
+| `read-only` | boolean | false | در صورت تنظیم روی `true`، نمودار قابل ویرایش نیست و نوار ابزار بالا حذف می‌شود. این تنظیم را می‌توان در ترکیب با `pl-sketch-initial` (زیر را ببینید) برای رندر کردن ترسیم‌ها به عنوان محتوای ایستا در سوال استفاده کرد. |
+| `overlay-solution` | boolean | true | در صورت تنظیم روی `true`، پس از آشکار شدن پاسخ سوال، راه‌حل نمونه (تعریف‌شده از طریق تگ‌های `pl-sketch-solution`) روی پاسخ‌های ارسالی دانشجو همپوشانی (overlay) می‌شود تا مقایسه آسان‌تر گردد. |
+| `enforce-bounds` | boolean | false | در صورت تنظیم روی `true`، اشیاء را نمی‌توان از لبه‌های بوم فراتر کشید. |
+| `allow-blank` | boolean | false | امکان نمره‌دهی به نمودار را حتی در صورت خالی بودن فراهم می‌کند. اگر بوم اولیه خالی نباشد و بدون تغییر ارسال شود، خالی در نظر گرفته نمی‌شود و همیشه به عنوان یک پاسخ ارسالی معتبر بررسی می‌شود. |
 
-The customizations above are general settings that apply to the entire sketching canvas. Note that some settings, such as grid lines and axis labels, are determined automatically and are not currently customizable.
+سفارشی‌سازی‌های بالا تنظیمات کلی هستند که بر کل بوم طراحی اعمال می‌شوند. توجه داشته باشید که برخی تنظیمات مانند خطوط شبکه (grid lines) و برچسب‌های محورها به طور خودکار تعیین می‌شوند و در حال حاضر قابل سفارشی‌سازی نیستند.
 
-To set up the element and to customize grading, four types of elements can be nested inside the main element:
+برای راه‌اندازی این المان و سفارشی‌سازی نمره‌دهی، چهار نوع المان را می‌توان درون المان اصلی تعبیه کرد:
 
-- `pl-sketch-tool` elements define drawing tools that are used to create sketches inside the canvas.
-- `pl-sketch-grade` elements define grading criteria for student submissions. Criteria typically refer to one or more specific drawing tools.
-- `pl-sketch-initial` elements define the initial state of the canvas, drawn with specific tools.
-- `pl-sketch-solution` elements define the sample solution that can be overlaid with student submissions once the answer is revealed.
+- المان‌های `pl-sketch-tool`: ابزارهای ترسیمی را تعریف می‌کنند که برای ایجاد طرح‌ها درون بوم استفاده می‌شوند.
+- المان‌های `pl-sketch-grade`: معیارهای نمره‌دهی را برای پاسخ‌های ارسالی دانشجو تعریف می‌کنند. این معیارها معمولاً به یک یا چند ابزار ترسیم مشخص ارجاع می‌دهند.
+- المان‌های `pl-sketch-initial`: وضعیت اولیه بوم را تعریف می‌کنند که با ابزارهای مشخصی رسم شده است.
+- المان‌های `pl-sketch-solution`: راه‌حل نمونه را تعریف می‌کنند که می‌تواند پس از آشکار شدن پاسخ، روی پاسخ‌های ارسالی دانشجو قرار گیرد.
 
-## Defining drawing tools with `pl-sketch-tool`
+## تعریف ابزارهای ترسیم با `pl-sketch-tool`
 
-Each drawing tool elements represents one kind of object that can be drawn onto the canvas. Each tool has a button in the element's toolbar (unless `read-only="true"` is set). Tools have a general type (e.g., line, point) that defines their drawing behavior and default settings. Multiple tools of the same type can be created and individually customized to, for example, allow students to sketch multiple functions in the same canvas, or mark different types of extrema of a function.
+هر المان ابزار ترسیم نشان‌دهنده یک نوع شیء است که می‌توان روی بوم رسم کرد. هر ابزار دارای یک دکمه در نوار ابزار المان است (مگر اینکه `read-only="true"` تنظیم شده باشد). ابزارها دارای یک نوع کلی (مانند خط، نقطه) هستند که رفتار ترسیم و تنظیمات پیش‌فرض آن‌ها را مشخص می‌کند. می‌توان چندین ابزار از یک نوع ایجاد کرد و هر کدام را به صورت جداگانه سفارشی‌سازی نمود؛ مثلاً برای اینکه به دانشجویان اجازه داده شود چندین تابع را در یک بوم رسم کنند، یا انواع مختلف نقاط اکسترمم یک تابع را علامت‌گذاری نمایند.
 
-Tools are rendered in order of definition. This means that, for example, points should be defined after lines to appear on top of them. We also recommend defining read-only tools before other tools so that they do not interfere with drag and drop interactions.
+ابزارها به ترتیب تعریف رندر می‌شوند. این بدان معناست که برای مثال، نقاط باید پس از خطوط تعریف شوند تا روی آن‌ها ظاهر گردند. همچنین توصیه می‌کنیم ابزارهای فقط‌خواندنی (read-only) را قبل از سایر ابزارها تعریف کنید تا با تعاملات کشیدن و رها کردن تداخل نداشته باشند.
 
-_Note that all attributes other than `type` and `id` are optional, but default values (other than `read-only` and `helper`, which are `false` by default) depend on the tool type. Each tool type's default settings are listed separately below._
+_توجه داشته باشید که تمام ویژگی‌ها به جز `type` و `id` اختیاری هستند، اما مقادیر پیش‌فرض (به جز `read-only` و `helper` که به طور پیش‌فرض `false` هستند) به نوع ابزار بستگی دارند. تنظیمات پیش‌فرض هر نوع ابزار به طور جداگانه در زیر فهرست شده است._
 
-| Parameter              | Type                                                                         | Available for tool types                                | Description                                                                                                                                                      |
-| ---------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`                 | string                                                                       | -                                                       | Type of the tool (see below)                                                                                                                                     |
-| `id`                   | string                                                                       | All                                                     | Unique name of the tool that is referenced in `pl-sketch-grade` and `pl-sketch-initial` elements.                                                                |
-| `label`                | string                                                                       | All                                                     | Label for the tool in the toolbar.                                                                                                                               |
-| `read-only`            | boolean                                                                      | All                                                     | If set to `true`, students cannot use this tool and it does not appear in the toolbar. It is only available when the initial state of the canvas is defined.     |
-| `limit`                | integer                                                                      | All                                                     | The maximum number of drawings that can be created with this tool. Note that the limit does not affect the number of possible segments for splines or polylines. |
-| `helper`               | boolean                                                                      | All                                                     | If set to `true`, the tool is displayed in a separate dropdown list of "helper" tools that are only meant to support students in the drawing process.            |
-| `group`                | string                                                                       | All                                                     | Label of a group that the tool belongs to. All tools assigned to the same group label will appear in the same dropdown in the toolbar.                           |
-| `color`                | string                                                                       | All                                                     | Drawing color for the tool.                                                                                                                                      |
-| `dash-style`           | string: `"solid"`, `"dashed"`, `"longdashed"`, `"dotted"`, or `"dashdotted"` | line, horizontal-line, vertical-line, polyline, polygon | Dash style of the drawn lines.                                                                                                                                   |
-| `direction-constraint` | string: `"none"`, `"horizontal"` or `"vertical"`                             | line                                                    | Constraint of the direction in which lines can be drawn.                                                                                                         |
-| `length-constraint`    | float                                                                        | line                                                    | If not `0`, the maximum length of drawn lines (in the internal coordinate system of the canvas.)                                                                 |
-| `arrowhead`            | integer                                                                      | line                                                    | If not `0`, the size (in pixels) of an arrowhead that is automatically inserted on the terminal end of the line.                                                 |
-| `size`                 | integer                                                                      | point                                                   | Diameter of drawn points (in pixels).                                                                                                                            |
-| `hollow`               | boolean                                                                      | point                                                   | Whether points are drawn hollow (`true`) or filled (`false`).                                                                                                    |
-| `fill-color`           | string                                                                       | polygon                                                 | Fill color for drawn polygons.                                                                                                                                   |
-| `opacity`              | float                                                                        | polygon                                                 | Fill opacity (between 0 to 1) of drawn polygons.                                                                                                                 |
+| پارامتر | نوع | در دسترس برای انواع ابزار | توضیحات |
+| --- | --- | --- | --- |
+| `type` | string | - | نوع ابزار (به زیر مراجعه کنید) |
+| `id` | string | همه | نام یکتای ابزار که در المان‌های `pl-sketch-grade` و `pl-sketch-initial` به آن ارجاع داده می‌شود. |
+| `label` | string | همه | برچسب ابزار در نوار ابزار. |
+| `read-only` | boolean | همه | در صورت تنظیم روی `true`، دانشجویان نمی‌توانند از این ابزار استفاده کنند و در نوار ابزار نمایش داده نمی‌شود. فقط زمانی که وضعیت اولیه بوم تعریف شده باشد در دسترس است. |
+| `limit` | integer | همه | حداکثر تعداد ترسیم‌هایی که می‌توان با این ابزار ایجاد کرد. توجه داشته باشید که این محدودیت بر تعداد قطعه‌های ممکن برای اسپلاین‌ها (splines) یا خطوط شکسته (polylines) تأثیری ندارد. |
+| `helper` | boolean | همه | در صورت تنظیم روی `true`، ابزار در یک لیست کشویی مجزا از ابزارهای "کمکی" نمایش داده می‌شود که صرفاً برای راهنمایی دانشجویان در فرآیند رسم در نظر گرفته شده‌اند. |
+| `group` | string | همه | برچسب گروهی که ابزار به آن تعلق دارد. تمام ابزارهای اختصاص‌داده‌شده به یک برچسب گروه، در یک منوی کشویی یکسان در نوار ابزار ظاهر می‌شوند. |
+| `color` | string | همه | رنگ ترسیم برای ابزار. |
+| `dash-style` | string: `"solid"`, `"dashed"`, `"longdashed"`, `"dotted"` یا `"dashdotted"` | line, horizontal-line, vertical-line, polyline, polygon | سبک خط‌چین خطوط رسم‌شده. |
+| `direction-constraint` | string: `"none"`, `"horizontal"` یا `"vertical"` | line | محدودیت جهت کشیدن خطوط. |
+| `length-constraint` | float | line | اگر `0` نباشد، حداکثر طول خطوط رسم‌شده (در دستگاه مختصات داخلی بوم). |
+| `arrowhead` | integer | line | اگر `0` نباشد، اندازه (بر حسب پیکسل) نوک فلشی که به طور خودکار در انتهای خط درج می‌شود. |
+| `size` | integer | point | قطر نقاط رسم‌شده (بر حسب پیکسل). |
+| `hollow` | boolean | point | مشخص می‌کند که نقاط توخالی رسم شوند (`true`) یا توپر (`false`). |
+| `fill-color` | string | polygon | رنگ پر کردن چندضلعی‌های رسم‌شده. |
+| `opacity` | float | polygon | میزان شفافیت/کدری پر کردن (بین 0 تا 1) چندضلعی‌های رسم‌شده. |
 
-The element supports the following tool types with the default settings listed below:
+این المان از انواع ابزارهای زیر با تنظیمات پیش‌فرض ذکرشده پشتیبانی می‌کند:
 
 ### **`free-draw`**
 
-Lines drawn in any shape using drag-and-release. Lines are slightly smoothed after drawing and can be moved and deleted, but not edited after drawing them.
+خطوطی با هر شکل دلخواه که با کشیدن و رها کردن موس کشیده می‌شوند. خطوط پس از ترسیم اندکی هموار (smooth) می‌شوند و می‌توان آن‌ها را جابجا یا حذف کرد، اما پس از ترسیم قابل ویرایش نیستند.
 
-**Defaults:**
+**پیش‌فرض‌ها:**
 
 ```html
 id="fd" label="Function f(x)" color="blue"
@@ -111,9 +111,9 @@ id="fd" label="Function f(x)" color="blue"
 
 ### **`point`**
 
-Points placed by clicking at a specific location in the canvas.
+نقاطی که با کلیک کردن در یک مکان خاص روی بوم قرار می‌گیرند.
 
-**Defaults:**
+**پیش‌فرض‌ها:**
 
 ```html
 id="pt" label="Point" color="black" size="15"
@@ -121,9 +121,9 @@ id="pt" label="Point" color="black" size="15"
 
 ### **`horizontal-line`**
 
-Horizontal lines that span the entire canvas (effectively marking a y-coordinate).
+خطوط افقی که کل بوم را در بر می‌گیرند (در واقع یک مختصات y را مشخص می‌کنند).
 
-**Defaults:**
+**پیش‌فرض‌ها:**
 
 ```html
 id="hl" label="Horizontal Line" color="dimgray" dash-style="dashdotted"
@@ -131,9 +131,9 @@ id="hl" label="Horizontal Line" color="dimgray" dash-style="dashdotted"
 
 ### **`vertical-line`**
 
-Vertical lines that span the entire canvas (effectively marking an x-coordinate).
+خطوط عمودی که کل بوم را در بر می‌گیرند (در واقع یک مختصات x را مشخص می‌کنند).
 
-**Defaults:**
+**پیش‌فرض‌ها:**
 
 ```html
 id="vl" label="Vertical Line" color="dimgray" dash-style="dashdotted"
@@ -141,9 +141,9 @@ id="vl" label="Vertical Line" color="dimgray" dash-style="dashdotted"
 
 ### **`line`**
 
-Straight lines that can be drawn between two points. Optional constraints can restrict length/direction and an optional arrowhead can distinguish the two endpoints.
+خطوط مستقیمی که می‌توان بین دو نقطه رسم کرد. محدودیت‌های اختیاری می‌توانند طول/جهت را محدود کنند و یک نوک فلش اختیاری می‌تواند دو نقطه انتهایی را از هم متمایز کند.
 
-**Defaults:**
+**پیش‌فرض‌ها:**
 
 ```html
 id="line" label="Line" color="red" dash-style="solid" length-constraint="0" arrowhead="0"
@@ -151,9 +151,9 @@ id="line" label="Line" color="red" dash-style="solid" length-constraint="0" arro
 
 ### **`polyline`**
 
-Complex lines, each consisting of straight line segments. Each segment extends the line by another connected point. Pressing "Enter" or switching tools finishes a line. Points can be moved after the line has been finished.
+خطوط پیچیده که هر کدام شامل قطعه‌خط‌های مستقیم هستند. هر قطعه با یک نقطه متصل دیگر خط را امتداد می‌دهد. فشردن کلید "Enter" یا تغییر ابزار، رسم خط را به پایان می‌رساند. نقاط را می‌توان پس از پایان خط جابجا کرد.
 
-**Defaults:**
+**پیش‌فرض‌ها:**
 
 ```html
 id="pline" label="Function f(x)" color="orange"
@@ -161,9 +161,9 @@ id="pline" label="Function f(x)" color="orange"
 
 ### **`spline`**
 
-Complex lines, each consisting of multiple line segments. Segments are curved to create a overall line. Each segment extends the line by another connected point. Pressing "Enter" or switching tools finishes a line. Points can be moved after the line has been finished.
+خطوط پیچیده که هر کدام از چندین قطعه‌خط تشکیل شده‌اند. قطعات منحنی می‌شوند تا یک خط هموار کلی ایجاد کنند. هر قطعه با یک نقطه متصل دیگر خط را امتداد می‌دهد. فشردن "Enter" یا تعویض ابزار، خط را کامل می‌کند. نقاط را می‌توان پس از پایان خط جابجا کرد.
 
-**Defaults:**
+**پیش‌فرض‌ها:**
 
 ```html
 id="sp" label="Function f(x)" color="purple"
@@ -171,221 +171,221 @@ id="sp" label="Function f(x)" color="purple"
 
 ### **`polygon`**
 
-Polygon shapes, each consisting of multiple line segments with connected endpoints. Each segment extends the line by another connected point, and the final connector of the endpoints is automatically inserted. The area of the polygon can be shaded. Pressing the "Enter" button or switching tools finishes a polygon. Points can be moved after the line has been finished.
+اشکال چندضلعی که هر کدام از چندین قطعه‌خط با نقاط انتهایی متصل تشکیل شده‌اند. هر قطعه با یک نقطه متصل دیگر خط را امتداد می‌دهد و قطعه رابط نهایی نقاط انتها به طور خودکار درج می‌شود. مساحت چندضلعی می‌تواند سایه‌دار (رنگ‌آمیزی) شود. فشردن دکمه "Enter" یا تغییر ابزار، رسم چندضلعی را کامل می‌کند. نقاط را می‌توان پس از پایان چندضلعی جابجا کرد.
 
-**Defaults:**
+**پیش‌فرض‌ها:**
 
 ```html
 id="pg" label="Polygon" color="mediumseagreen" fill-color="mediumseagreen" opacity="0.5"
 ```
 
-## Adding initial and solution drawings with `pl-sketch-initial` and `pl-sketch-solution`
+## افزودن ترسیم‌های اولیه و راه‌حل با `pl-sketch-initial` و `pl-sketch-solution`
 
-For both read-only elements and ones that can be edited by students, initial and solution drawings can be added to the canvas. Initial drawings are present when the question is initially rendered in the question panel, while solution drawings are present in the solution panel to show a possible sample solution. Note that the sample solution cannot be inferred from the grading criteria because the criteria might allow for a range of possible solutions.
+هم برای المان‌های فقط‌خواندنی و هم المان‌هایی که توسط دانشجو قابل ویرایش هستند، می‌توان ترسیم‌های اولیه و راه‌حل را به بوم اضافه کرد. ترسیم‌های اولیه زمانی وجود دارند که سوال در ابتدا در پنل سوال رندر می‌شود، در حالی که ترسیم‌های راه‌حل در پنل راه‌حل حضور دارند تا یک پاسخ نمونه ممکن را نمایش دهند. توجه داشته باشید که راه‌حل نمونه را نمی‌توان از روی معیارهای نمره‌دهی استنتاج کرد، زیرا ممکن است معیارها دامنه‌ای از پاسخ‌های ممکن را مجاز بدانند.
 
-Initial and solution drawings refer to a tool that determines their type and styling. For initial drawings, if the tool has `read-only="true"` set, it does not appear in the toolbar and the added objects are fixed (e.g., as a given function that needs to be annotated). Otherwise, objects can be edited by students just like their own drawings.
+ترسیم‌های اولیه و راه‌حل به یک ابزار ارجاع می‌دهند که نوع و استایل آن‌ها را تعیین می‌کند. برای ترسیم‌های اولیه، اگر ابزار دارای ویژگی `read-only="true"` باشد، در نوار ابزار ظاهر نمی‌شود و اشیاء اضافه‌شده ثابت هستند (مثلاً به عنوان یک تابع مفروض که نیاز به علامت‌گذاری دارد). در غیر این صورت، اشیاء می‌توانند درست مانند ترسیم‌های خود دانشجویان توسط آن‌ها ویرایش شوند.
 
-The following attributes apply to both initial and solution drawings:
+ویژگی‌های زیر برای هر دو ترسیم اولیه و راه‌حل اعمال می‌شوند:
 
-| Parameter     | Type   | Default | Description                                                                                                                                                                                                                                                           |
-| ------------- | ------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tool-id`     | string | -       | `id` of the tool(s) to be used for this drawing.                                                                                                                                                                                                                      |
-| `coordinates` | string | -       | Comma-separated list of coordinates (e.g., `-4.5`, `(1,2)`, or `(1,2),(3,4)`) to be used for the drawing. See below for details.                                                                                                                                      |
-| `function`    | string | -       | Symbolic function definition (see below) to be used to draw a `spline` or `free-draw` object. Only one of `coordinates` and `function` can be used.                                                                                                                   |
-| `x-range`     | string | `","`   | Interval for which the function definition should be plotted as a comma-separated pair of numbers, e.g. `"-3,1.5"`. Only applicable if `function` is used. Start and/or end of the range can be blank (e.g., `"-3,"` or `",-3"`) to extend to the edge of the canvas. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `tool-id` | string | - | شناسه `id` ابزار(هایی) که برای این ترسیم استفاده می‌شود. |
+| `coordinates` | string | - | لیست مختصات جداشده با کاما (مثلاً `-4.5`، `(1,2)` یا `(1,2),(3,4)`) برای استفاده در ترسیم. برای جزئیات به زیر مراجعه کنید. |
+| `function` | string | - | تعریف نمادین تابع (زیر را ببینید) که برای رسم یک شیء `spline` یا `free-draw` استفاده می‌شود. فقط یکی از `coordinates` یا `function` قابل استفاده است. |
+| `x-range` | string | `","` | بازه‌ای که تعریف تابع باید در آن رسم شود به صورت یک جفت عدد جداشده با کاما، مثلاً `"-3,1.5"`. فقط در صورتی کاربرد دارد که `function` استفاده شود. شروع و/یا پایان بازه می‌تواند خالی باشد (مثلاً `"-3,"` یا `",-3"`) تا به لبه بوم امتداد یابد. |
 
-Note that the expected number and interpretation of coordinates depends on the type of tool that is referenced. The `vertical-line` and `horizontal-line` tools only require a single coordinate (`x` or `y`). The `point` tool expects a comma-separated coordinate pair `(x,y)`, while `line` needs 2 pairs (`(x1,y1),(x2,y2)`), and complex line tools or `polygon` need 2 or more coordinate pairs that represent the points connected by the line. Multiple tags can reference the same tool to create independent drawings (e.g., multiple points or disconnected lines).
+توجه داشته باشید که تعداد مورد انتظار و تفسیر مختصات به نوع ابزاری که ارجاع داده شده بستگی دارد. ابزارهای `vertical-line` و `horizontal-line` فقط به یک مختصات منفرد (`x` یا `y`) نیاز دارند. ابزار `point` منتظر یک جفت مختصات جداشده با کاما `(x,y)` است، در حالی که `line` به ۲ جفت (`(x1,y1),(x2,y2)`) نیاز دارد، و ابزارهای خطوط پیچیده یا `polygon` به ۲ یا چند جفت مختصات نیاز دارند که نقاط متصل‌شده توسط خط را نشان دهند. تگ‌های متعدد می‌توانند به یک ابزار یکسان ارجاع دهند تا ترسیم‌های مستقلی ایجاد کنند (مثلاً چندین نقطه یا خطوط ناپیوسته).
 
-### Rendering symbolic functions with `pl-sketch-initial` and `pl-sketch-solution`
+### رندر کردن توابع نمادین با `pl-sketch-initial` و `pl-sketch-solution`
 
-In addition to drawing individual coordinates, `pl-sketch-initial` and `pl-sketch-solution` also support rendering a function based on a given symbolic definition. Functions can only be rendered using a `spline` or `free-draw` type tool, and are converted into a series of line fragments before being sent to the client, so the symbolic definition is not revealed to the student.
+علاوه بر رسم مختصات تکی، `pl-sketch-initial` و `pl-sketch-solution` از رندر کردن یک تابع بر اساس یک تعریف نمادین مشخص نیز پشتیبانی می‌کنند. توابع فقط با استفاده از ابزارهای نوع `spline` یا `free-draw` قابل رندر هستند و قبل از ارسال به سمت کلاینت به مجموعه‌ای از قطعات خط تبدیل می‌شوند، بنابراین تعریف نمادین برای دانشجو فاش نمی‌شود.
 
-For details on what types of symbolic expressions are supported, see the [Symbolic function definitions](#symbolic-function-definitions) section below. Note that functions are rendered as one continuous line, so for non-continuous functions, it might be necessary to split them into multiple continuous intervals to avoid visual artifacts. For example:
+برای جزئیات مربوط به اینکه چه نوع عبارات نمادینی پشتیبانی می‌شوند، بخش [تعاریف توابع نمادین](#تعاریف-توابع-نمادین) را در زیر ببینید. توجه داشته باشید که توابع به صورت یک خط پیوسته رندر می‌شوند؛ بنابراین برای توابع ناپیوسته، ممکن است لازم باشد آن‌ها را به چند بازه پیوسته تقسیم کنید تا از خطاهای بصری جلوگیری شود. به عنوان مثال:
 
 ```html
 <pl-sketch-initial tool-id="fd" function="1/x**3"></pl-sketch-initial>
 ```
 
-should be defined as:
+باید به صورت زیر تعریف شود:
 
 ```html
 <pl-sketch-initial tool-id="fd" function="1/x**3" x-range="-5,0"></pl-sketch-initial>
 <pl-sketch-initial tool-id="fd" function="1/x**3" x-range="0,5"></pl-sketch-initial>
 ```
 
-to avoid the left and right hand side of the vertical asymptote being connected.
+تا از اتصال بخش‌های چپ و راست مجانب عمودی جلوگیری به عمل آید.
 
-## Defining grading criteria with `pl-sketch-grade`
+## تعریف معیارهای نمره‌دهی با `pl-sketch-grade`
 
-Each grading criterion element represents one grading check that is used to determine the score for students' drawings. The partial score for the sketching element is computed as the weighted average of all grading criteria.
+هر المان معیار نمره‌دهی نشان‌دهنده یک بررسی ارزیابی است که برای تعیین نمره ترسیم‌های دانشجویان استفاده می‌شود. نمره بخشی المان ترسیم به عنوان میانگین وزنی تمام معیارهای نمره‌دهی محاسبه می‌شود.
 
-Similar to tools, each grading criterion has a general type (e.g., count, match) that represents the type of check performed during grading. Criteria can be customized to only check specific tools or ranges, and staged to require prerequisite checks to be passed before they are applied.
+مشابه ابزارها، هر معیار نمره‌دهی دارای یک نوع کلی (مانند count، match) است که نوع بررسی انجام‌شده در طول نمره‌دهی را نشان می‌دهد. معیارها را می‌توان طوری سفارشی‌سازی کرد که فقط ابزارها یا بازه‌های خاصی را بررسی کنند، و می‌توان آن‌ها را مرحله‌بندی کرد تا برای اعمال شدن، نیازمند قبولی در بررسی‌های پیش‌نیاز باشند.
 
-The following attributes can be used to customize any grading criterion, independent of type of check that is performed:
+ویژگی‌های زیر را می‌توان برای سفارشی‌سازی هر معیار نمره‌دهی، صرف‌نظر از نوع بررسی انجام‌شده، استفاده کرد:
 
-| Parameter   | Type               | Default                    | Description                                                                                                                                                                                                                       |
-| ----------- | ------------------ | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`      | string             | -                          | Type of check performed by the grading criterion (see below)                                                                                                                                                                      |
-| `tool-id`   | string             | -                          | One or more comma-separated `id`s of the tool(s) to be checked by this grading criterion.                                                                                                                                         |
-| `weight`    | integer            | 1                          | Weight of the grading criterion's result when computing the element's partial score.                                                                                                                                              |
-| `x-range`   | string             | `","` (entire canvas)      | Interval on the x-axis in which the criterion should be applied, as a comma-separated pair of numbers, e.g. `"-3,1.5"`. Start and/or end of the range can be blank (e.g., `"-3,"`or `",-3"`) to extend to the edge of the canvas. |
-| `feedback`  | string             | `""`                       | Message to be displayed to students if the grading check fails. If set to `""`, the feedback defaults to a generic message that is dependent on the grading criterion.                                                            |
-| `tolerance` | integer            | (depends on type of check) | Tolerance range in which student submissions can deviate from the criterion. For most checks, the tolerance is a maximum pixel distance, but exact definitions and defaults depend on the type of check performed.                |
-| `stage`     | integer (optional) | 0                          | Stage in which this criterion is applied (see below). Criteria with the default stage 0 are always applied, even if other criteria use custom stages.                                                                             |
-| `debug`     | boolean            | false                      | If set to `true`, the feedback will display additional quantitative details about why the grading criteria was not met. This can be useful for question testing/tuning.                                                           |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `type` | string | - | نوع بررسی انجام‌شده توسط معیار نمره‌دهی (زیر را ببینید) |
+| `tool-id` | string | - | یک یا چند شناسه `id` جداشده با کاما از ابزار(هایی) که باید توسط این معیار بررسی شوند. |
+| `weight` | integer | 1 | وزن نتیجه معیار نمره‌دهی هنگام محاسبه نمره بخشی المان. |
+| `x-range` | string | `","` (کل بوم) | بازه روی محور x که معیار باید در آن اعمال شود، به صورت جفت عددی جداشده با کاما، مثلاً `"-3,1.5"`. شروع و/یا پایان بازه می‌تواند خالی باشد (مثلاً `"-3,"` یا `",-3"`) تا به لبه بوم گسترش یابد. |
+| `feedback` | string | `""` | پیامی که در صورت عدم موفقیت در بررسی نمره‌دهی به دانشجویان نمایش داده می‌شود. اگر روی `""` تنظیم شود، بازخورد به یک پیام عمومی که به نوع معیار نمره‌دهی بستگی دارد تغییر می‌کند. |
+| `tolerance` | integer | (بسته به نوع بررسی) | محدوده تلرانس (میزان خطا) که پاسخ‌های ارسالی دانشجو می‌توانند نسبت به معیار انحراف داشته باشند. برای اکثر بررسی‌ها، تلرانس حداکثر فاصله بر حسب پیکسل است، اما تعاریف دقیق و مقادیر پیش‌فرض به نوع بررسی انجام‌شده بستگی دارد. |
+| `stage` | integer (اختیاری) | 0 | مرحله‌ای که این معیار در آن اعمال می‌شود (زیر را ببینید). معیارهای دارای مرحله پیش‌فرض 0 همیشه اعمال می‌شوند، حتی اگر معیارهای دیگر از مراحل سفارشی استفاده کنند. |
+| `debug` | boolean | false | در صورت تنظیم روی `true`، بازخورد جزئیات کمی بیشتری را در مورد اینکه چرا معیارهای نمره‌دهی برآورده نشده‌اند نمایش می‌دهد. این گزینه می‌تواند برای تست و تنظیم سوال مفید باشد. |
 
-### Supported grading types
+### انواع نمره‌دهی پشتیبانی‌شده
 
-Note that `free-draw`/`polyline`/`spline` drawings are treated as mathematical functions, so there can be at most one y-value for each x-coordinate. If there are multiple values drawn at the same x-coordinate, only the first one is considered for grading. Other tools, such as `polygon`, `point` and `line`, are not treated this way and the entire shape is considered for grading purposes.
+توجه داشته باشید که ترسیم‌های `free-draw`/`polyline`/`spline` به عنوان توابع ریاضی در نظر گرفته می‌شوند، بنابراین به ازای هر مختصات x حداکثر یک مقدار y می‌تواند وجود داشته باشد. اگر چندین مقدار در یک مختصات x یکسان کشیده شده باشد، فقط اولین مقدار برای نمره‌دهی در نظر گرفته می‌شود. سایر ابزارها مانند `polygon`، `point` و `line` به این شکل رفتار نمی‌کنند و کل شکل برای اهداف نمره‌دهی بررسی می‌شود.
 
 #### **`count`**
 
-Compares the total count of all objects drawn with the specified tool(s) to a reference value.
+تعداد کل تمام اشیاء رسم‌شده با ابزار(های) مشخص‌شده را با یک مقدار مرجع مقایسه می‌کند.
 
-**Supported tool types:** All
+**انواع ابزار پشتیبانی‌شده:** همه
 
-| Parameter   | Type    | Default   | Description                                                                                                                                                                                                                                              |
-| ----------- | ------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `count`     | integer | -         | Reference count used for the check.                                                                                                                                                                                                                      |
-| `mode`      | string  | `"exact"` | One of `"exact"`, `"at-least"`, or `"at-most"`.                                                                                                                                                                                                          |
-| `tolerance` | integer | 15        | Only applied if `x-range` is set; a pixel-based margin that is added/removed (depending on `mode`) for both ends of the x-range. For all modes, either the count within `x-range` or the count after applying the tolerance margins needs to be correct. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `count` | integer | - | تعداد مرجع مورد استفاده برای بررسی. |
+| `mode` | string | `"exact"` | یکی از مقادیر `"exact"` (دقیق)، `"at-least"` (حداقل)، یا `"at-most"` (حداکثر). |
+| `tolerance` | integer | 15 | فقط در صورتی اعمال می‌شود که `x-range` تنظیم شده باشد؛ یک حاشیه بر مبنای پیکسل که برای هر دو انتهای بازه x (بسته به `mode`) اضافه/کم می‌شود. برای تمام حالت‌ها، یا تعداد درون `x-range` یا تعداد پس از اعمال حاشیه‌های تلرانس باید صحیح باشد. |
 
 #### **`match`**
 
-Checks whether any objects drawn with the specified tools match (touch or intersect) a reference coordinate or point. This check does not support `x-range`.
+بررسی می‌کند که آیا اشیاء رسم‌شده با ابزارهای مشخص‌شده با یک مختصات یا نقطه مرجع مطابقت دارند (آن را لمس یا قطع می‌کنند) یا خیر. این بررسی از `x-range` پشتیبانی نمی‌کند.
 
-**Supported tool types:** All
+**انواع ابزار پشتیبانی‌شده:** همه
 
-| Parameter   | Type    | Default | Description                                                                                                   |
-| ----------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `x`         | float   | -       | Reference x-coordinate. At least one of `x` or `y` must be defined.                                           |
-| `y`         | float   | -       | Reference y-coordinate. At least one of `x` or `y` must be defined.                                           |
-| `tolerance` | integer | 15      | Allowed pixel distance between the reference and closest drawn point.                                         |
-| `endpoint`  | string  | -       | Only for the `line` tool type. Which endpoint (`"start"`, `"end"`, or `"either"`) should match the reference. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `x` | float | - | مختصات مرجع x. حداقل یکی از `x` یا `y` باید تعریف شود. |
+| `y` | float | - | مختصات مرجع y. حداقل یکی از `x` یا `y` باید تعریف شود. |
+| `tolerance` | integer | 15 | فاصله پیکسلی مجاز بین نقطه مرجع و نزدیک‌ترین نقطه رسم‌شده. |
+| `endpoint` | string | - | فقط برای ابزار نوع `line`. مشخص می‌کند کدام نقطه انتهایی (`"start"`، `"end"`، یا `"either"`) باید با مرجع مطابقت داشته باشد. |
 
 #### **`defined-in`**
 
-Checks whether all objects drawn with the specified tools combined cover the entire range of the reference x-interval.
+بررسی می‌کند که آیا تمام اشیاء رسم‌شده با ابزارهای مشخص‌شده در مجموع، کل محدوده بازه مرجع x را پوشش می‌دهند یا خیر.
 
-**Supported tool types:** All but `horizontal-line`, `vertical-line`, and `point`
+**انواع ابزار پشتیبانی‌شده:** همه به جز `horizontal-line`، `vertical-line` و `point`
 
-| Parameter   | Type    | Default | Description                                                                     |
-| ----------- | ------- | ------- | ------------------------------------------------------------------------------- |
-| `tolerance` | integer | 20      | Portion of the x-interval (in pixels) that a correct answer is allowed to skip. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `tolerance` | integer | 20 | بخشی از بازه x (بر حسب پیکسل) که یک پاسخ صحیح مجاز است از آن عبور کند و رسم نشود. |
 
 #### **`undefined-in`**
 
-Checks whether none of the objects drawn with the specified tools combined are present anywhere in the reference x-interval.
+بررسی می‌کند که آیا هیچ‌یک از اشیاء رسم‌شده با ابزارهای مشخص‌شده در هیچ کجای بازه مرجع x وجود نداشته باشند.
 
-**Supported tool types:** All but `horizontal-line`
+**انواع ابزار پشتیبانی‌شده:** همه به جز `horizontal-line`
 
-| Parameter   | Type    | Default | Description                                                                  |
-| ----------- | ------- | ------- | ---------------------------------------------------------------------------- |
-| `tolerance` | integer | 20      | Portion of x-interval (in pixels) that a correct answer is allowed to cover. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `tolerance` | integer | 20 | بخشی از بازه x (بر حسب پیکسل) که یک پاسخ صحیح مجاز است آن را پوشش دهد. |
 
 #### **`less-than`**
 
-Checks whether all objects drawn with the specified tools are always below a reference coordinate or function. Only `y` _or_ `function` can be set.
+بررسی می‌کند که آیا تمام اشیاء رسم‌شده با ابزارهای مشخص‌شده همیشه زیر یک مختصات یا تابع مرجع قرار دارند یا خیر. فقط یکی از `y` _یا_ `function` می‌تواند تنظیم شود.
 
-**Supported tool types:** All but `vertical-line`
+**انواع ابزار پشتیبانی‌شده:** همه به جز `vertical-line`
 
-| Parameter   | Type    | Default | Description                                                                                                                                                      |
-| ----------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `y`         | float   | -       | Reference y-coordinate.                                                                                                                                          |
-| `function`  | string  | -       | Reference function (see [Symbolic function definitions](#symbolic-function-definitions)).                                                                        |
-| `tolerance` | integer | 15      | Allowed pixel distance that drawn objects are allowed to reach above the reference.                                                                              |
-| `xy-flip`   | boolean | false   | If `true`, flip x-axis and y-axis (see below for details). When `true`, `less-than` should be interpreted as "left of" and refer to x-coordinates rather than y. |
-| `y-range`   | string  | -       | Replaces `x-range` when `xy-flip` is `true`.                                                                                                                     |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `y` | float | - | مختصات مرجع y. |
+| `function` | string | - | تابع مرجع (به [تعاریف توابع نمادین](#تعاریف-توابع-نمادین) مراجعه کنید). |
+| `tolerance` | integer | 15 | فاصله مجاز بر حسب پیکسل که اشیاء رسم‌شده اجازه دارند به بالای مرجع برسند. |
+| `xy-flip` | boolean | false | اگر `true` باشد، محور x و y معکوس می‌شوند (جزئیات در زیر). در صورت `true` بودن، `less-than` باید به صورت "سمت چپِ" تفسیر شود و به مختصات‌های x اشاره دارد تا y. |
+| `y-range` | string | - | زمانی که `xy-flip` برابر با `true` باشد جایگزین `x-range` می‌شود. |
 
 #### **`greater-than`**
 
-Checks whether all objects drawn with the specified tools are always above a reference coordinate or function. Only `y` _or_ `function` can be set.
+بررسی می‌کند که آیا تمام اشیاء رسم‌شده با ابزارهای مشخص‌شده همواره بالای یک مختصات یا تابع مرجع قرار دارند یا خیر. فقط یکی از `y` _یا_ `function` می‌تواند تنظیم شود.
 
-**Supported tool types:** All but `vertical-line`
+**انواع ابزار پشتیبانی‌شده:** همه به جز `vertical-line`
 
-| Parameter   | Type    | Default | Description                                                                                                                                                          |
-| ----------- | ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `y`         | float   | -       | Reference y-coordinate.                                                                                                                                              |
-| `function`  | string  | -       | Reference function (see [Symbolic function definitions](#symbolic-function-definitions)).                                                                            |
-| `tolerance` | integer | 15      | Allowed pixel distance that drawn objects are allowed to reach below the reference.                                                                                  |
-| `xy-flip`   | boolean | false   | If `true`, flip x-axis and y-axis (see below for details). When `true`, `greater-than` should be interpreted as "right of" and refer to x-coordinates rather than y. |
-| `y-range`   | string  | -       | Replaces `x-range` when `xy-flip` is `true`.                                                                                                                         |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `y` | float | - | مختصات مرجع y. |
+| `function` | string | - | تابع مرجع (به [تعاریف توابع نمادین](#تعاریف-توابع-نمادین) مراجعه کنید). |
+| `tolerance` | integer | 15 | فاصله مجاز بر حسب پیکسل که اشیاء رسم‌شده اجازه دارند به زیر مرجع برسند. |
+| `xy-flip` | boolean | false | اگر `true` باشد، محور x و y معکوس می‌شوند (جزئیات در زیر). در صورت `true` بودن، `greater-than` باید به صورت "سمت راستِ" تفسیر شود و به مختصات‌های x اشاره دارد تا y. |
+| `y-range` | string | - | زمانی که `xy-flip` برابر با `true` باشد جایگزین `x-range` می‌شود. |
 
 #### **`match-function`**
 
-Checks whether all objects drawn are close to a reference function.
+بررسی می‌کند که آیا تمام اشیاء رسم‌شده به یک تابع مرجع نزدیک هستند یا خیر.
 
-**Supported tool types:** `free-draw`, `point`, `polyline`, `spline`
+**انواع ابزار پشتیبانی‌شده:** `free-draw`, `point`, `polyline`, `spline`
 
-| Parameter         | Type    | Default | Description                                                                                                                    |
-| ----------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `function`        | string  | -       | Reference function (see [Symbolic function definitions](#symbolic-function-definitions)).                                      |
-| `allow-undefined` | boolean | false   | If `false`, the entire domain of the function (with some tolerance) must be covered with objects; otherwise, gaps are ignored. |
-| `tolerance`       | integer | 15      | Allowed pixel distance that drawn objects are allowed to deviate from the reference.                                           |
-| `xy-flip`         | boolean | false   | If `true`, flip x-axis and y-axis (see below for details).                                                                     |
-| `y-range`         | string  | -       | Replaces `x-range` when `xy-flip` is `true`.                                                                                   |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `function` | string | - | تابع مرجع (به [تعاریف توابع نمادین](#تعاریف-توابع-نمادین) مراجعه کنید). |
+| `allow-undefined` | boolean | false | اگر `false` باشد، کل دامنه تابع (با مقداری تلرانس) باید با اشیاء پوشش داده شود؛ در غیر این صورت، فاصله‌ها و شکاف‌ها نادیده گرفته می‌شوند. |
+| `tolerance` | integer | 15 | فاصله پیکسلی مجاز که اشیاء رسم‌شده اجازه دارند از مرجع انحراف داشته باشند. |
+| `xy-flip` | boolean | false | در صورت `true` بودن، محور x و y معکوس می‌شوند (جزئیات در زیر). |
+| `y-range` | string | - | زمانی که `xy-flip` برابر با `true` باشد جایگزین `x-range` می‌شود. |
 
 #### **`monot-increasing`**
 
-Checks whether the drawn function is monotonically increasing. This check is performed by dividing each graded object individually into 100 equally sized intervals and comparing their end points.
+بررسی می‌کند که آیا تابع رسم‌شده یکنوا صعودی است یا خیر. این بررسی با تقسیم هر شیء نمره‌گذاری‌شده به صورت جداگانه به ۱۰۰ بازه با اندازه مساوی و مقایسه نقاط انتهایی آن‌ها انجام می‌شود.
 
-**Supported tool types:** `free-draw`, `line`, `polyline`, `spline`
+**انواع ابزار پشتیبانی‌شده:** `free-draw`, `line`, `polyline`, `spline`
 
-| Parameter   | Type    | Default | Description                                                             |
-| ----------- | ------- | ------- | ----------------------------------------------------------------------- |
-| `tolerance` | integer | 5       | How many segments per object are allowed to be undefined or decreasing. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `tolerance` | integer | 5 | چه تعداد قطعه در هر شیء مجاز است تعریف‌نشده یا نزولی باشد. |
 
 #### **`monot-decreasing`**
 
-Checks whether the drawn function is monotonically decreasing. This check is performed by dividing each graded object individually into 100 equally sized intervals and comparing their end points.
+بررسی می‌کند که آیا تابع رسم‌شده یکنوا نزولی است یا خیر. این بررسی با تقسیم هر شیء نمره‌گذاری‌شده به طور جداگانه به ۱۰۰ بازه با اندازه مساوی و مقایسه نقاط انتهایی آن‌ها انجام می‌شود.
 
-**Supported tool types:** `free-draw`, `line`, `polyline`, `spline`
+**انواع ابزار پشتیبانی‌شده:** `free-draw`, `line`, `polyline`, `spline`
 
-| Parameter   | Type    | Default | Description                                                             |
-| ----------- | ------- | ------- | ----------------------------------------------------------------------- |
-| `tolerance` | integer | 5       | How many segments per object are allowed to be undefined or increasing. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `tolerance` | integer | 5 | چه تعداد قطعه در هر شیء مجاز است تعریف‌نشده یا صعودی باشد. |
 
 #### **`concave-up`**
 
-Checks whether the drawn function is concave and upward-facing. This check is performed by dividing each graded object individually into 100 equally sized intervals and checking the shape of each one. Note that `line` and `polyline` objects are not considered to be concave, so they always fail this criterion.
+بررسی می‌کند که آیا تابع رسم‌شده مقعر و رو به بالا (محدب) است یا خیر. این بررسی با تقسیم هر شیء نمره‌گذاری‌شده به طور جداگانه به ۱۰۰ بازه هم‌اندازه و بررسی شکل هر یک انجام می‌شود. توجه داشته باشید که اشیاء `line` و `polyline` مقعر در نظر گرفته نمی‌شوند، بنابراین همیشه در این معیار مردود می‌شوند.
 
-**Supported tool types:** `free-draw`, `line`, `polyline`, `spline`
+**انواع ابزار پشتیبانی‌شده:** `free-draw`, `line`, `polyline`, `spline`
 
-| Parameter   | Type    | Default | Description                                                                            |
-| ----------- | ------- | ------- | -------------------------------------------------------------------------------------- |
-| `tolerance` | integer | 10      | How many segments per object are allowed to be undefined or not concave/upward-facing. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `tolerance` | integer | 10 | چه تعداد قطعه در هر شیء مجاز است تعریف‌نشده یا غیرمقعر/رو به بالا نباشد. |
 
 #### **`concave-down`**
 
-Checks whether the drawn function is concave and downward-facing. This check is performed by dividing each graded object individually into 100 equally sized intervals and checking the shape of each one. Note that `line` and `polyline` objects are not considered to be concave, so they always fail this criterion.
+بررسی می‌کند که آیا تابع رسم‌شده مقعر و رو به پایین است یا خیر. این بررسی با تقسیم هر شیء نمره‌گذاری‌شده به طور جداگانه به ۱۰۰ بازه هم‌اندازه و بررسی شکل هر یک انجام می‌شود. توجه داشته باشید که اشیاء `line` و `polyline` مقعر در نظر گرفته نمی‌شوند، بنابراین همیشه در این معیار مردود می‌شوند.
 
-**Supported tool types:** `free-draw`, `line`, `polyline`, `spline`
+**انواع ابزار پشتیبانی‌شده:** `free-draw`, `line`, `polyline`, `spline`
 
-| Parameter   | Type    | Default | Description                                                                              |
-| ----------- | ------- | ------- | ---------------------------------------------------------------------------------------- |
-| `tolerance` | integer | 10      | How many segments per object are allowed to be undefined or not concave/downward-facing. |
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `tolerance` | integer | 10 | چه تعداد قطعه در هر شیء مجاز است تعریف‌نشده یا غیرمقعر/رو به پایین نباشد. |
 
-### Symbolic function definitions
+### تعاریف توابع نمادین
 
-Some grading checks above allow symbolic function definitions to be used as reference. These are provided as a string in the `function` attribute and must use Python expression syntax. They must use `x` as input variable name. Basic arithmetic operations (`+`, `-`, `*`, `/`, and `**` for exponentiation), parentheses, the constants `e` and `pi`, and the following Python function calls are supported: `abs`, `sign`, `sqrt`, `log`, `sin`, `cos`, `tan`, `sinh`, `cosh`, `tanh`, `asin`, `acos`, `atan`, `atan2`, `asinh`, `acosh`, and `atanh`. For example, one could write: `function="x**2 + 2*x - sin(pi*x)"`.
+برخی از بررسی‌های نمره‌دهی بالا اجازه می‌دهند تعاریف نمادین توابع به عنوان مرجع استفاده شوند. این موارد به عنوان یک رشته در ویژگی `function` ارائه می‌شوند و باید از سینتکس عبارات پایتون استفاده کنند. آن‌ها باید از `x` به عنوان نام متغیر ورودی استفاده نمایند. عملیات پایه حسابی (`+`, `-`, `*`, `/` و `**` برای توان)، پرانتزها، ثابت‌های `e` و `pi`، و توابع پایتون زیر پشتیبانی می‌شوند: `abs`, `sign`, `sqrt`, `log`, `sin`, `cos`, `tan`, `sinh`, `cosh`, `tanh`, `asin`, `acos`, `atan`, `atan2`, `asinh`, `acosh` و `atanh`. به عنوان مثال، می‌توان نوشت: `function="x**2 + 2*x - sin(pi*x)"`.
 
-If the `xy-flip` attribute is set to `true` for a grading criterion, the provided function `function` is treated as a curve `x = f(y)`. This special purpose flag can be useful for grading vertically defined curves, such as `x = y**2`, but should be used with caution as it also changes the semantics of the grading check it is set for. Most importantly, if `xy-flip` is `true`, `less-than` and `greater-than` should be interpreted as "left of" and "right of" respectively, and refer to x-coordinates rather than y-coordinates. The attribute `y-range` should be used instead of `x-range`, and the attribute `y` of the `less-than` and `greater-than` criteria is not supported. The `function` attribute should also be defined with respect to `y` as the input variable.
+اگر ویژگی `xy-flip` برای یک معیار نمره‌دهی روی `true` تنظیم شود، تابع ارائه‌شده در `function` به عنوان منحنی `x = f(y)` در نظر گرفته می‌شود. این پرچم با کاربرد خاص می‌تواند برای نمره‌دهی به منحنی‌های تعریف‌شده به صورت عمودی مانند `x = y**2` مفید باشد، اما باید با احتیاط استفاده شود زیرا معنای بررسی نمره‌دهی مربوطه را نیز تغییر می‌دهد. مهم‌تر از همه، اگر `xy-flip` برابر با `true` باشد، `less-than` و `greater-than` باید به ترتیب به صورت "سمت چپِ" و "سمت راستِ" تفسیر شوند و به مختصات‌های x اشاره دارند نه y. ویژگی `y-range` باید به جای `x-range` استفاده شود، و ویژگی `y` در معیارهای `less-than` و `greater-than` پشتیبانی نمی‌شود. ویژگی `function` نیز باید نسبت به `y` به عنوان متغیر ورودی تعریف شود.
 
-For example, a tag with attributes `xy-flip="true" type="less-than" function="y**2"` can be used test if the student's submitted drawing is left of the curve `x = y**2`. See the example course for more examples.
+به عنوان مثال، تگی با ویژگی‌های `xy-flip="true" type="less-than" function="y**2"` می‌تواند برای آزمایش اینکه آیا ترسیم ارسالی دانشجو در سمت چپ منحنی `x = y**2` قرار دارد یا خیر استفاده شود. برای مثال‌های بیشتر به دوره نمونه مراجعه کنید.
 
-### Optional grading stages
+### مراحل نمره‌دهی اختیاری
 
-By default, all grading criteria are treated as entirely independent. However, in some cases, it might be desirable that a grading criterion only awards points if a different criterion has already passed. For example, one might not want to award students points for _not_ defining a function in a certain range (checked via `undefined-in`) unless they have also defined it in the correct range (checked via `defined-in`). To enforce such dependencies, criteria can be assigned a numeric `stage` attribute.
+به طور پیش‌فرض، تمام معیارهای نمره‌دهی کاملاً مستقل در نظر گرفته می‌شوند. با این حال، در برخی موارد، ممکن است مطلوب باشد که یک معیار نمره‌دهی تنها در صورتی نمره اعطا کند که معیار دیگری قبلاً قبول شده باشد. به عنوان مثال، ممکن است کسی نخواهد به دانشجویان به خاطر _عدم_ تعریف یک تابع در یک محدوده خاص (بررسی‌شده از طریق `undefined-in`) نمره بدهد مگر اینکه آن‌ها تابع را در محدوده صحیح نیز تعریف کرده باشند (بررسی‌شده از طریق `defined-in`). برای اعمال چنین وابستگی‌هایی، می‌توان یک ویژگی عددی `stage` به معیارها اختصاص داد.
 
-If any grading criterion with a lower stage number than another criterion fails, the one with the higher stage number automatically fails as well. Any remaining criteria without an assigned stage are always checked and do not need to pass for any staged checks.
+اگر هر معیار نمره‌دهی با شماره مرحله پایین‌تر از معیار دیگر مردود شود، معیار با شماره مرحله بالاتر نیز به طور خودکار مردود خواهد شد. هر معیار باقی‌مانده بدون مرحله اختصاص‌داده‌شده همیشه بررسی می‌شود و نیازی به قبولی برای بررسی‌های مرحله‌بندی‌شده ندارد.
 
-Note that all criteria are still considered when determining achievable points, unless they are defined with `weight="0"`. For the previous example, the `defined-in` tag could be assigned `stage="1"` and `undefined-in` tag could be assigned `stage="2"`, so that students do not receive any points unless they define the function in the correct range.
+توجه داشته باشید که تمام معیارها همچنان هنگام تعیین نمرات قابل دستیابی در نظر گرفته می‌شوند، مگر اینکه با `weight="0"` تعریف شده باشند. برای مثال قبلی، تگ `defined-in` می‌تواند دارای `stage="1"` و تگ `undefined-in` می‌تواند دارای `stage="2"` باشد، به طوری که دانشجویان هیچ امتیازی دریافت نکنند مگر اینکه تابع را در محدوده صحیح تعریف کرده باشند.
 
-## Accessibility
+## دسترس‌پذیری
 
-`pl-sketch` currently has no viable keyboard controls or screen reader interaction. See [alternatives to drawing input](../question/accessibility.md#alternatives-to-drawing-input) for other ways students can answer.
+المان `pl-sketch` در حال حاضر هیچ کنترل کارآمدی از طریق صفحه‌کلید یا تعامل با صفحه‌خوان ندارد. برای راه‌های جایگزینی که دانشجویان می‌توانند پاسخ دهند، [جایگزین‌های ورودی ترسیمی](../question/accessibility.md#alternatives-to-drawing-input) را ببینید.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/sketch]
 

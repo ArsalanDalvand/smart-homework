@@ -1,31 +1,31 @@
-# `pl-workspace` element
+# المان `pl-workspace`
 
-Embeds a workspace launcher in the question that allows for code that needs a richer environment (multiple files, a terminal, an IDE, or a build/run loop). See the [workspace](../workspaces/index.md) documentation for full details of how to configure a workspace.
+یک راه‌انداز محیط کاری (workspace launcher) را در سوال تعبیه می‌کند که امکان اجرای کدهایی را که به محیط غنی‌تری نیاز دارند (چندین فایل، یک ترمینال، یک IDE یا چرخه ساخت/اجرا) فراهم می‌سازد. برای جزئیات کامل درباره نحوه پیکربندی محیط کاری، به مستندات [محیط کاری (Workspace)](../workspaces/index.md) مراجعه کنید.
 
-## Sample element
+## نمونه المان
 
 ```html title="question.html"
-<!-- embed a workspace launcher into the question -->
+<!-- تعبیه یک راه‌انداز محیط کاری در سوال -->
 <pl-workspace></pl-workspace>
 
-<!-- embed a workspace launcher into the question with custom labelling -->
+<!-- تعبیه یک راه‌انداز محیط کاری در سوال با برچسب سفارشی -->
 <pl-workspace label="Open IDE"></pl-workspace>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute | Type   | Default          | Description                                 |
-| --------- | ------ | ---------------- | ------------------------------------------- |
-| `label`   | string | "Open workspace" | The text displayed on the workspace button. |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `label` | string | "Open workspace" | متنی که روی دکمه محیط کاری نمایش داده می‌شود. |
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [demo/workspace/vscode-python]
 - [demo/workspace/rstudio]
 
-## See also
+## همچنین ببینید
 
-- [`pl-file-editor` to provide an in-browser code environment](pl-file-editor.md)
+- [`pl-file-editor` برای ارائه یک محیط کدنویسی درون مرورگر](pl-file-editor.md)
 
 [demo/workspace/vscode-python]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/workspace/vscode-python
 [demo/workspace/rstudio]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/workspace/rstudio

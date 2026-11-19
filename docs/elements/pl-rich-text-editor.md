@@ -1,57 +1,57 @@
-# `pl-rich-text-editor` element
+# المان `pl-rich-text-editor`
 
-Provides an in-browser rich text editor, aimed mostly at manual grading essay-type questions. This editor is based on the [Quill rich text editor](https://quilljs.com/).
+یک ویرایشگر متن قالب‌بندی‌شده (Rich Text Editor) درون مرورگر فراهم می‌کند که بیشتر با هدف نمره‌دهی دستی سوالات تشریحی (essay-type) طراحی شده است. این ویرایشگر بر پایه [ویرایشگر متن پیشرفته Quill](https://quilljs.com/) ساخته شده است.
 
-## Sample element
+## نمونه المان
 
-![Screenshot of the pl-rich-text-editor element](pl-rich-text-editor.png)
+![تصویر اسکرین‌شات از المان pl-rich-text-editor](pl-rich-text-editor.png)
 
 ```html title="question.html"
 <pl-rich-text-editor file-name="answer.html"> </pl-rich-text-editor>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute            | Type                                | Default              | description                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| -------------------- | ----------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allow-blank`        | boolean                             | false                | Whether an empty input box is allowed. By default, empty submissions will not be graded (invalid format).                                                                                                                                                                                                                                                                                                                                                 |
-| `clipboard-enabled`  | boolean                             | true                 | Whether the element supports cutting, copying and pasting the contents of the editor from the user interface. Note that the editor content is still available in the browser's developer tools, which would allow students to copy the content anyway. Also note that preventing operations like copying or pasting text may be detrimental to the student's experience, and as such should be avoided unless absolutely necessary.                       |
-| `counter`            | `"word"`, `"character"` or `"none"` | See description      | Whether a word or character count should be displayed at the bottom of the editor. If `min-word-count` or `max-word-count` are set, then `counter` defaults to `"word"` and cannot be set to `"none"` or `"character"`. Otherwise, it defaults to `"none"`.                                                                                                                                                                                               |
-| `directory`          | string                              | See description      | Directory where the source file with existing code is to be found. Only useful if `source-file-name` is used. If it contains one of the special names `"clientFilesCourse"` or `"serverFilesCourse"`, then the source file name is read from the course's special directories, otherwise the directory is expected to be in the question's own directory. If not provided, the source file name is expected to be found in the question's main directory. |
-| `file-name`          | string                              | `"answer.html"`      | The name of the output file; will be used to store the student's answer in the `_files` submitted answer. Must be unique if more than one `pl-rich-text-editor` element is included in a question.                                                                                                                                                                                                                                                        |
-| `format`             | `"html"` or `"markdown"`            | `"html"`             | Format used to interpret the specified source file or starting content. This option does not affect the output format.                                                                                                                                                                                                                                                                                                                                    |
-| `markdown-shortcuts` | boolean                             | true                 | Whether the editor accepts shortcuts based on Markdown format (e.g., typing `_word_` causes the word to become italic).                                                                                                                                                                                                                                                                                                                                   |
-| `max-word-count`     | integer                             | —                    | Maximum number of words in the submitted answer. Longer answers will be marked as invalid (not gradable).                                                                                                                                                                                                                                                                                                                                                 |
-| `min-word-count`     | integer                             | —                    | Minimum number of words in the submitted answer. Shorter answers will be marked as invalid (not gradable). Cannot be combined with `allow-blank` set to `"true"` when `min-word-count` is greater than 0.                                                                                                                                                                                                                                                 |
-| `placeholder`        | string                              | `"Your answer here"` | Text to be shown in the editor as a placeholder when there is no student input.                                                                                                                                                                                                                                                                                                                                                                           |
-| `quill-theme`        | string                              | `"snow"`             | Specifies a Quill editor theme; the most common themes are `"snow"` (which uses a default toolbar) or `"bubble"` (which hides the default toolbar, showing formatting options when text is selected). See [the Quill documentation](https://quilljs.com/docs/themes/) for more information about additional themes.                                                                                                                                       |
-| `source-file-name`   | string                              | —                    | Name of the source file with existing content to be displayed in the editor. The format of this file must match the format specified in the `format` attribute.                                                                                                                                                                                                                                                                                           |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا ورودی خالی مجاز است یا خیر. به طور پیش‌فرض، پاسخ‌های ارسالی خالی نمره‌دهی نمی‌شوند (فرمت نامعتبر). |
+| `clipboard-enabled` | boolean | true | مشخص می‌کند که آیا این المان از برش (cut)، کپی و جای‌گذاری (paste) محتوای ویرایشگر از طریق رابط کاربری پشتیبانی می‌کند یا خیر. توجه داشته باشید که محتوای ویرایشگر همچنان در ابزارهای توسعه‌دهنده مرورگر در دسترس است، که به دانشجویان اجازه می‌دهد به هر حال محتوا را کپی کنند. همچنین در نظر داشته باشید که جلوگیری از عملیاتی مانند کپی یا جای‌گذاری متن ممکن است به تجربه کاربری دانشجو آسیب برساند و بنابراین باید از آن اجتناب شود مگر در مواردی که کاملاً ضروری باشد. |
+| `counter` | `"word"`, `"character"` یا `"none"` | به توضیحات مراجعه کنید | مشخص می‌کند که آیا شمارنده کلمه یا کاراکتر در پایین ویرایشگر نمایش داده شود یا خیر. اگر `min-word-count` یا `max-word-count` تنظیم شده باشند، `counter` به طور پیش‌فرض روی `"word"` قرار می‌گیرد و نمی‌تواند به `"none"` یا `"character"` تنظیم شود. در غیر این صورت، مقدار پیش‌فرض آن `"none"` است. |
+| `directory` | string | به توضیحات مراجعه کنید | پوشه‌ای که فایل منبع حاوی کد یا محتوای اولیه در آن قرار دارد. فقط در صورتی کاربرد دارد که `source-file-name` استفاده شود. اگر شامل یکی از نام‌های ویژه `"clientFilesCourse"` یا `"serverFilesCourse"` باشد، نام فایل منبع از پوشه‌های ویژه درس خوانده می‌شود، در غیر این صورت انتظار می‌رود پوشه درون پوشه خود سوال باشد. در صورت عدم ارائه، انتظار می‌رود نام فایل منبع در پوشه اصلی سوال یافت شود. |
+| `file-name` | string | `"answer.html"` | نام فایل خروجی؛ برای ذخیره پاسخ دانشجو در بخش `_files` پاسخ ارسالی استفاده می‌شود. اگر بیش از یک المان `pl-rich-text-editor` در سوال وجود داشته باشد، این نام باید یکتا باشد. |
+| `format` | `"html"` یا `"markdown"` | `"html"` | فرمت مورد استفاده برای تفسیر فایل منبع مشخص‌شده یا محتوای اولیه. این گزینه بر فرمت خروجی تأثیری ندارد. |
+| `markdown-shortcuts` | boolean | true | مشخص می‌کند که آیا ویرایشگر کلیدهای میانبر مبتنی بر فرمت Markdown را بپذیرد یا خیر (مثلاً تایپ کردن `_word_` باعث کج‌شدن (ایتالیک) کلمه می‌شود). |
+| `max-word-count` | integer | — | حداکثر تعداد کلمات مجاز در پاسخ ارسالی. پاسخ‌های طولانی‌تر به عنوان نامعتبر (غیرقابل نمره‌دهی) علامت‌گذاری می‌شوند. |
+| `min-word-count` | integer | — | حداقل تعداد کلمات در پاسخ ارسالی. پاسخ‌های کوتاه‌تر به عنوان نامعتبر (غیرقابل نمره‌دهی) علامت‌گذاری می‌شوند. زمانی که `min-word-count` بزرگتر از 0 باشد، نمی‌توان آن را با مقدار `"true"` برای `allow-blank` ترکیب کرد. |
+| `placeholder` | string | `"Your answer here"` | متنی که هنگام خالی بودن ورودی دانشجو به عنوان متن جایگزین (placeholder) در ویرایشگر نمایش داده می‌شود. |
+| `quill-theme` | string | `"snow"` | تم ویرایشگر Quill را مشخص می‌کند؛ متداول‌ترین تم‌ها `"snow"` (که از نوار ابزار پیش‌فرض استفاده می‌کند) یا `"bubble"` (که نوار ابزار پیش‌فرض را پنهان کرده و هنگام انتخاب متن گزینه‌های قالب‌بندی را نمایش می‌دهد) هستند. برای اطلاعات بیشتر درباره تم‌های دیگر، به [مستندات Quill](https://quilljs.com/docs/themes/) مراجعه کنید. |
+| `source-file-name` | string | — | نام فایل منبع حاوی محتوای موجود که باید در ویرایشگر نمایش داده شود. فرمت این فایل باید با فرمت مشخص‌شده در ویژگی `format` مطابقت داشته باشد. |
 
-## Word count
+## شمارش کلمات
 
-The algorithm identifies words by splitting on whitespace, a convention that works well for most standard English texts. In contexts such as formulas, programming syntax, or languages without space-separated words, the resulting count may not correspond to meaningful linguistic units.
+الگوریتم کلمات را با جدا کردن بر اساس فاصله‌ها (whitespace) شناسایی می‌کند؛ قراردادی که برای اکثر متون استاندارد انگلیسی به خوبی کار می‌کند. در زمینه‌هایی مانند فرمول‌ها، سینتکس برنامه‌نویسی یا زبان‌هایی که کلمات آن‌ها با فاصله جدا نمی‌شوند، تعداد شمارش‌شده ممکن است با واحدهای زبانی معنادار مطابقت نداشته باشد.
 
-## Using more than one element in a question
+## استفاده از بیش از یک المان در یک سوال
 
-The `pl-rich-text-editor` element creates a file submission corresponding to the HTML content of the student answer. If the file name is not provided, the name `answer.html` is used. If more than one `pl-rich-text-editor` is included in a question, they must each contain a different file name; in that case, the file name must be explicitly provided, as the default name would clash between elements.
+المان `pl-rich-text-editor` یک فایل ارسالی متناظر با محتوای HTML پاسخ دانشجو ایجاد می‌کند. اگر نام فایل ارائه نشود، از نام `answer.html` استفاده می‌شود. اگر بیش از یک المان `pl-rich-text-editor` در یک سوال گنجانده شده باشد، هر یک از آن‌ها باید نام فایل متفاوتی داشته باشند؛ در این حالت، نام فایل باید صراحتاً ارائه شود، زیرا نام پیش‌فرض بین المان‌ها تداخل ایجاد می‌کند.
 
-## A note on accessibility
+## نکته‌ای در مورد دسترس‌پذیری (Accessibility)
 
-A common construct, typically inherited from questions imported from other tools, is to use a rich text editor with "structured" starting content, such as a table with empty cells or a set of headings for sub-problems. This is often done to encourage students to provide structured answers (e.g., filling out a table with specific information). However, this approach can lead to accessibility issues, as screen readers may have difficulty navigating and interpreting the structure of the content. It also allows students to ignore the structure altogether, which may confuse graders and lead to inconsistent answers.
+یک ساختار رایج که معمولاً از سوالات وارد شده از ابزارهای دیگر به ارث می‌رسد، استفاده از ویرایشگر متن قالب‌بندی‌شده با محتوای اولیه "ساختاریافته" است، مانند جدولی با سلول‌های خالی یا مجموعه‌ای از عنوان‌ها برای بخش‌های فرعی سوال. این کار اغلب برای تشویق دانشجویان به ارائه پاسخ‌های ساختاریافته انجام می‌شود (مثلاً پر کردن جدول با اطلاعات خاص). با این حال، این رویکرد می‌تواند منجر به مشکلات دسترس‌پذیری شود، زیرا صفحه‌خوان‌ها ممکن است در پیمایش و تفسیر ساختار محتوا با مشکل مواجه شوند. همچنین به دانشجویان اجازه می‌دهد تا ساختار را کاملاً نادیده بگیرند، که ممکن است مصححان را سردرگم کرده و به پاسخ‌های متناقض منجر شود.
 
-If you want to encourage structured answers, consider using separate input fields for each piece of information instead of relying on a rich text editor with complex formatting. This can help ensure that all students, including those using assistive technologies, can access and interact with the question effectively. For example, instead of including a table as the starting content of a rich text editor, you can create a table that contains separate elements for each cell, allowing students to fill in their answers without the need to navigate complex formatting. This also provides the additional benefit of allowing each cell to be based on the specific format (e.g., numeric, string, multi-line text) that best suits the expected answer, and allows for more precise grading and feedback. It also allows these values to be auto-graded when applicable, which is not possible when the answer is embedded in a rich text editor.
+اگر می‌خواهید پاسخ‌های ساختاریافته را تشویق کنید، به جای تکیه بر ویرایشگر متن غنی با قالب‌بندی پیچیده، از فیلدهای ورودی مجزا برای هر بخش از اطلاعات استفاده کنید. این کار می‌تواند اطمینان حاصل کند که همه دانشجویان، از جمله افرادی که از فناوری‌های کمکی استفاده می‌کنند، می‌توانند به طور مؤثر به سوال دسترسی داشته و با آن تعامل برقرار کنند. به عنوان مثال، به جای قرار دادن یک جدول به عنوان محتوای اولیه ویرایشگر، می‌توانید یک جدول ایجاد کنید که حاوی المان‌های مجزا برای هر سلول باشد و به دانشجویان اجازه دهد پاسخ‌های خود را بدون نیاز به پیمایش در قالب‌بندی‌های پیچیده وارد کنند. این کار مزیت دیگری نیز دارد: به هر سلول اجازه می‌دهد بر اساس فرمت خاصی (مانند عددی، متنی، متن چندخطی) که بهترین تناسب را با پاسخ مورد انتظار دارد ساخته شود و نمره‌دهی و بازخورد دقیق‌تری را فراهم کند. همچنین در صورت امکان، به این مقادیر اجازه می‌دهد به طور خودکار نمره‌دهی شوند؛ امری که هنگام تعبیه پاسخ در ویرایشگر متن غنی امکان‌پذیر نیست.
 
-Even if you expect students to provide rich-text answers, consider separating the question into multiple parts, each with its own input field, instead of asking students to provide a single answer with complex formatting. This can help students focus on each part of the question and provide more organized answers, while also simplifying the grading process and improving accessibility.
+حتی اگر انتظار دارید دانشجویان پاسخ‌های قالب‌بندی‌شده ارائه دهند، پیشنهاد می‌شود سوال را به چند بخش تقسیم کنید که هر کدام فیلد ورودی اختصاصی خود را داشته باشد، به جای اینکه از آن‌ها بخواهید یک پاسخ واحد با فرمت‌بندی پیچیده ارائه دهند. این امر می‌تواند به دانشجویان کمک کند تا روی هر بخش از سوال تمرکز کرده و پاسخ‌های سازمان‌یافته‌تری ارائه دهند، ضمن اینکه فرآیند نمره‌دهی را نیز ساده‌تر کرده و دسترس‌پذیری را ارتقا می‌بخشد.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/richTextEditor]
 
-## See also
+## همچنین ببینید
 
-- [`pl-file-editor` to edit unformatted text, such as code](pl-file-editor.md)
-- [`pl-file-upload` to receive files as a submission](pl-file-upload.md)
-- [`pl-string-input` for receiving a single string value](pl-string-input.md)
+- [`pl-file-editor` برای ویرایش متن قالب‌بندی‌نشده، مانند کد](pl-file-editor.md)
+- [`pl-file-upload` برای دریافت فایل‌ها به عنوان پاسخ ارسالی](pl-file-upload.md)
+- [`pl-string-input` برای دریافت یک مقدار رشته‌ای تکی](pl-string-input.md)
 
 ---
 

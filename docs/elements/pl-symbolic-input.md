@@ -1,10 +1,10 @@
-# `pl-symbolic-input` element
+# المان `pl-symbolic-input`
 
-Fill in the blank field that allows for mathematical symbol input.
+فیلد جای خالی برای وارد کردن نمادها و عبارات ریاضی.
 
-## Sample element
+## نمونه المان
 
-![Screenshot of the pl-symbolic-input element](pl-symbolic-input.png)
+![تصویر اسکرین‌شات از المان pl-symbolic-input](pl-symbolic-input.png)
 
 ```html title="question.html"
 <pl-symbolic-input answers-name="symbolic_math" variables="x, y" label="$z =$"></pl-symbolic-input>
@@ -27,111 +27,106 @@ def generate(data):
     data["correct_answers"]["symbolic_math"] = pl.to_json(z)
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute                       | Type                    | Default                 | Description                                                                                                                                                                                                                                                                                                                                     |
-| ------------------------------- | ----------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `additional-simplifications`    | string                  | -                       | Simplifications that should be applied during grading before using SymPy's built-in equality checker. Using this attribute can prevent rare cases of non-convergence during grading. See [the non-convergence section](#non-convergence-in-grading) for more details before using this attribute.                                               |
-| `allow-blank`                   | boolean                 | false                   | Whether an empty input box is allowed. By default, an empty input box will not be graded (invalid format).                                                                                                                                                                                                                                      |
-| `allow-complex`                 | boolean                 | false                   | Whether complex numbers (expressions with `i` or `j` as the imaginary unit) are allowed.                                                                                                                                                                                                                                                        |
-| `allow-sets`                    | boolean                 | false                   | Whether set and interval notation are allowed. [See below for more details](#set-notation).                                                                                                                                                                                                                                                     |
-| `allow-trig-functions`          | boolean                 | true                    | Whether trigonometric functions (`cos`, `atanh`, ...) are allowed.                                                                                                                                                                                                                                                                              |
-| `answers-name`                  | string                  | —                       | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question. If the correct answer is set in `server.py` as a complex object, you should use `import prairielearn as pl` and `data["correct_answers"][answers-name] = pl.to_json(ans)`. |
-| `aria-label`                    | string                  | —                       | An accessible label for the input.                                                                                                                                                                                                                                                                                                              |
-| `blank-value`                   | string                  | 0 (zero)                | Expression to be used as an answer if the answer is left blank. Only applied if `allow-blank` is `true`. Must be `""` (empty string) or follow the same format as an expected user input (e.g., same variables, etc.).                                                                                                                          |
-| `correct-answer`                | string                  | See description         | Correct answer for grading. Defaults to `data["correct_answers"][answers-name]`. A blank correct answer (`correct-answer=""`) is only valid when `allow-blank="true"` and `blank-value=""`.                                                                                                                                                     |
-| `custom-functions`              | string                  | —                       | A comma-delimited list of custom functions that can be used in the symbolic expression.                                                                                                                                                                                                                                                         |
-| `display`                       | `"block"` or `"inline"` | `"inline"`              | How to display the input field.                                                                                                                                                                                                                                                                                                                 |
-| `display-log-as-ln`             | boolean                 | `false`                 | Whether `ln` rather than `log` should be used when displaying submissions and correct answers. Both are considered equivalent and can be used by the student in their submitted answer.                                                                                                                                                         |
-| `display-simplified-expression` | boolean                 | `true`                  | Whether expressions submitted by students should be displayed in their simplified form. Setting `display-simplified-expression="false"` can prevent unintended simplifications that might confuse students. Note that, regardless of this setting, answers are always simplified for grading purposes.                                          |
-| `formula-editor`                | boolean                 | false                   | Whether the element should provide a visual formula editor for students (recommended when answers are long or contain nested mathematical expressions).                                                                                                                                                                                         |
-| `imaginary-unit-for-display`    | string                  | `"i"`                   | The imaginary unit that is used for display. It must be either `"i"` or `"j"`. Again, this is _only_ for display. Both `i` and `j` can be used by the student in their submitted answer, when `allow-complex="true"`.                                                                                                                           |
-| `initial-value`                 | string                  | —                       | Initial value to prefill the input box the first time it is rendered.                                                                                                                                                                                                                                                                           |
-| `label`                         | string                  | —                       | A prefix to display before the input box (e.g., `label="$F =$"`).                                                                                                                                                                                                                                                                               |
-| `placeholder`                   | string                  | `"symbolic expression"` | Hint displayed inside the input box describing the expected type of input.                                                                                                                                                                                                                                                                      |
-| `show-help-text`                | boolean                 | true                    | Show the question mark at the end of the input displaying required input parameters.                                                                                                                                                                                                                                                            |
-| `show-score`                    | boolean                 | true                    | Whether to show the score badge next to this element.                                                                                                                                                                                                                                                                                           |
-| `size`                          | integer                 | 35                      | Size of the input box.                                                                                                                                                                                                                                                                                                                          |
-| `suffix`                        | string                  | —                       | A suffix to display after the input box (e.g., `suffix="$\rm m/s^2$"`).                                                                                                                                                                                                                                                                         |
-| `variables`                     | string                  | —                       | A comma-delimited list of symbols that can be used in the symbolic expression.                                                                                                                                                                                                                                                                  |
-| `weight`                        | integer                 | 1                       | Weight to use when computing a weighted average score over elements.                                                                                                                                                                                                                                                                            |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `additional-simplifications` | string | - | ساده‌سازی‌هایی که باید در حین نمره‌دهی قبل از استفاده از بررسی‌کننده برابری داخلی SymPy اعمال شوند. استفاده از این ویژگی می‌تواند از موارد نادر عدم همگرایی در طول نمره‌دهی جلوگیری کند. قبل از استفاده از این ویژگی، بخش [عدم همگرایی در نمره‌دهی](#عدم-همگرایی-در-نمره‌دهی) را برای جزئیات بیشتر مطالعه کنید. |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا جعبه ورودی خالی مجاز است یا خیر. به طور پیش‌فرض، جعبه ورودی خالی نمره‌دهی نمی‌شود (فرمت نامعتبر). |
+| `allow-complex` | boolean | false | مشخص می‌کند که آیا اعداد مختلط (عبارات شامل `i` یا `j` به عنوان واحد موهومی) مجاز هستند یا خیر. |
+| `allow-sets` | boolean | false | مشخص می‌کند که آیا نمادگذاری مجموعه و بازه مجاز است یا خیر. [برای جزئیات بیشتر به زیر مراجعه کنید](#نمادگذاری-مجموعه). |
+| `allow-trig-functions` | boolean | true | مشخص می‌کند که آیا توابع مثلثاتی (`cos`, `atanh`, ...) مجاز هستند یا خیر. |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد، یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود. اگر پاسخ صحیح در `server.py` به عنوان یک شیء پیچیده تنظیم شده است، باید از `import prairielearn as pl` و `data["correct_answers"][answers-name] = pl.to_json(ans)` استفاده کنید. |
+| `aria-label` | string | — | یک برچسب دسترس‌پذیر برای ورودی. |
+| `blank-value` | string | 0 (zero) | عبارتی که در صورت خالی ماندن پاسخ به عنوان پاسخ استفاده می‌شود. فقط زمانی اعمال می‌شود که `allow-blank` برابر با `true` باشد. باید `""` (رشته خالی) باشد یا از همان فرمت ورودی مورد انتظار کاربر پیروی کند (مثلاً همان متغیرها و غیره). |
+| `correct-answer` | string | به توضیحات مراجعه کنید | پاسخ صحیح برای نمره‌دهی. به طور پیش‌فرض مقدار `data["correct_answers"][answers-name]` است. پاسخ صحیح خالی (`correct-answer=""`) فقط زمانی معتبر است که `allow-blank="true"` و `blank-value=""` باشند. |
+| `custom-functions` | string | — | فهرستی از توابع سفارشی جداشده با کاما که می‌توانند در عبارت نمادین استفاده شوند. |
+| `display` | `"block"` یا `"inline"` | `"inline"` | نحوه نمایش فیلد ورودی. |
+| `display-log-as-ln` | boolean | `false` | مشخص می‌کند که آیا هنگام نمایش پاسخ‌های ارسالی و پاسخ‌های صحیح به جای `log` از `ln` استفاده شود یا خیر. هر دو معادل در نظر گرفته می‌شوند و می‌توانند توسط دانشجو در پاسخ ارسالی استفاده شوند. |
+| `display-simplified-expression` | boolean | `true` | مشخص می‌کند که آیا عبارات ارسالی دانشجویان به شکل ساده‌شده نمایش داده شوند یا خیر. تنظیم `display-simplified-expression="false"` می‌تواند از ساده‌سازی‌های ناخواسته‌ای که ممکن است باعث سردرگمی دانشجویان شود جلوگیری کند. توجه داشته باشید که صرف‌نظر از این تنظیم، پاسخ‌ها همیشه برای اهداف نمره‌دهی ساده می‌شوند. |
+| `formula-editor` | boolean | false | مشخص می‌کند که آیا المان باید یک ویرایشگر بصری فرمول برای دانشجویان فراهم کند یا خیر (زمانی که پاسخ‌ها طولانی هستند یا شامل عبارات ریاضی تودرتو می‌باشند توصیه می‌شود). |
+| `imaginary-unit-for-display` | string | `"i"` | واحد موهومی که برای نمایش استفاده می‌شود. باید `"i"` یا `"j"` باشد. مجدداً تأکید می‌شود که این گزینه _صرفاً_ برای نمایش است. هر دو نماد `i` و `j` در صورت `allow-complex="true"` می‌توانند توسط دانشجو در پاسخ ارسالی استفاده شوند. |
+| `initial-value` | string | — | مقدار اولیه برای پر کردن پیش‌فرض جعبه ورودی در اولین باری که رندر می‌شود. |
+| `label` | string | — | پیشوندی که قبل از جعبه ورودی نمایش داده می‌شود (مثلاً `label="$F =$"`). |
+| `placeholder` | string | `"symbolic expression"` | متنی که درون جعبه ورودی برای توصیف نوع ورودی مورد انتظار نمایش داده می‌شود. |
+| `show-help-text` | boolean | true | نمایش علامت سوال در انتهای ورودی که پارامترهای ورودی مورد نیاز را نمایش می‌دهد. |
+| `show-score` | boolean | true | مشخص می‌کند که آیا نشان نمره در کنار این المان نمایش داده شود یا خیر. |
+| `size` | integer | 35 | اندازه جعبه ورودی. |
+| `suffix` | string | — | پسوندی که بعد از جعبه ورودی نمایش داده می‌شود (مثلاً `suffix="$\rm m/s^2$"`). |
+| `variables` | string | — | فهرستی از نمادهای جداشده با کاما که می‌توانند در عبارت نمادین استفاده شوند. |
+| `weight` | integer | 1 | وزن مورد استفاده هنگام محاسبه میانگین وزنی نمره بین المان‌ها. |
 
-## Details
+## جزئیات
 
-Correct answers are best created as `sympy` expressions and converted to json using `pl.to_json`. It is also possible to specify the correct answer simply as a string, e.g., `x + y + 1`.
+پاسخ‌های صحیح بهتر است به عنوان عبارات `sympy` ایجاد شوند و با استفاده از `pl.to_json` به JSON تبدیل شوند. همچنین می‌توان پاسخ صحیح را به سادگی به صورت یک رشته مشخص کرد، مثلاً `x + y + 1`.
 
-Variables with the same name as greek letters (e.g., `alpha`, `beta`, etc.) will be automatically converted to their LaTeX equivalents for display on the correct answer and submission panels.
+متغیرهایی با نام مشابه حروف یونانی (مانند `alpha`، `beta` و غیره) به طور خودکار به معادل‌های LaTeX خود برای نمایش در پنل پاسخ صحیح و پنل پاسخ ارسالی تبدیل می‌شوند.
 
-Do not include `i` or `j` in the list of `variables` if `allow-complex="true"`, and do not include any other reserved name in your list of `variables` (`e`, `pi`, `cos`, `sin`, etc.). The element code will check for (and disallow) conflicts between your list of `variables`, `custom-functions`, and reserved names.
+اگر `allow-complex="true"` باشد، `i` یا `j` را در لیست `variables` قرار ندهید، و هیچ نام رزروشده دیگری را در لیست `variables` خود قرار ندهید (`e`, `pi`, `cos`, `sin` و غیره). کد المان تداخل بین لیست `variables`، `custom-functions` و نام‌های رزروشده را بررسی کرده (و از آن جلوگیری می‌کند).
 
-Note that variables created with additional assumptions in a correct answer will have those assumptions respected when evaluating student answers.
-See example question for details.
+توجه داشته باشید که متغیرهایی که با مفروضات اضافی در پاسخ صحیح ایجاد شده‌اند، در هنگام ارزیابی پاسخ‌های دانشجو، آن مفروضات را رعایت خواهند کرد. برای جزئیات به سوال نمونه مراجعه کنید.
 
-### Set Notation
+### نمادگذاری مجموعه
 
-If `allow-sets="true"`, the following additional layer of syntax is enabled:
+اگر `allow-sets="true"` باشد، لایه سینتکس اضافی زیر فعال می‌شود:
 
-- Set literals with explicitly listed members (e.g. `{1, 2, 3}`, `{0, 2pi/3, 4pi/3}`, `{ {}, { {} } }`)
-- Interval set notation, including $\infty$ (e.g `(-sin(x), +sin(x))`, `(-infty, 5]`, `[2, oo]`)
-- Common set operators: union (`U`, `cup`, `+`, or `|`),
-  intersection (`cap` or `&`), and difference (`-`)
+- مجموعه‌های مقداری صریح با اعضای مشخص‌شده (مانند `{1, 2, 3}`, `{0, 2pi/3, 4pi/3}`, `{ {}, { {} } }`)
+- نمادگذاری بازه‌ای مجموعه‌ها، شامل $\infty$ (مانند `(-sin(x), +sin(x))`, `(-infty, 5]`, `[2, oo]`)
+- عملگرهای رایج مجموعه: اجتماع (`U`, `cup`, `+` یا `|`)، اشتراک (`cap` یا `&`) و تفاضل (`-`)
 
-Names listed in the `variables` attribute are scalar symbols, not named sets,
-even when `allow-sets="true"`; sets must be constructed with set notation.
+نام‌های ذکرشده در ویژگی `variables` نمادهای اسکالر هستند، نه مجموعه‌های نام‌گذاری‌شده، حتی زمانی که `allow-sets="true"` باشد؛ مجموعه‌ها باید با نمادگذاری مجموعه ساخته شوند.
 
-Tuples and coordinate points are not supported. A parenthesized pair such as
-`(a, b)` is always interpreted as an open interval. Use separate inputs for point
-coordinates.
+تاپل‌ها (Tuples) و نقاط مختصاتی پشتیبانی نمی‌شوند. یک جفت پرانتزدار مانند `(a, b)` همیشه به عنوان یک بازه باز تفسیر می‌شود. برای مختصات نقاط از ورودی‌های جداگانه استفاده کنید.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/symbolicInput]
 
-## See also
+## همچنین ببینید
 
-- [`pl-number-input` for numeric input](pl-number-input.md)
-- [`pl-integer-input` for integer input](pl-integer-input.md)
-- [`pl-string-input` for string input](pl-string-input.md)
+- [`pl-number-input` برای ورودی عددی](pl-number-input.md)
+- [`pl-integer-input` برای ورودی عدد صحیح](pl-integer-input.md)
+- [`pl-string-input` برای ورودی رشته‌ای](pl-string-input.md)
 
-### Non-convergence in grading
+### عدم همگرایی در نمره‌دهی
 
-In rare cases, the `pl-symbolic-input` question element can produce grading results that mark a student answer as "non-converging" during grading. In these cases, answers are marked as invalid, since it could not be determined if they are correct or incorrect.
+در موارد نادر، المان سوال `pl-symbolic-input` ممکن است نتایج نمره‌دهی تولید کند که پاسخ دانشجو را در حین نمره‌دهی به عنوان "عدم همگرایی" (non-converging) علامت‌گذاری نماید. در این موارد، پاسخ‌ها به عنوان نامعتبر علامت‌گذاری می‌شوند، زیرا تعیین درست یا نادرست بودن آن‌ها امکان‌پذیر نبوده است.
 
-#### Why grading might not converge
+#### چرا ممکن است نمره‌دهی همگرا نشود
 
-The `pl-symbolic-input` question element uses the Python library [SymPy](https://www.sympy.org) to represent and grade expressions. During grading, the correct answer and the student submission are parsed into SymPy expressions and then compared using the library's built-in equality checker.
+المان سوال `pl-symbolic-input` از کتابخانه پایتون [SymPy](https://www.sympy.org) برای نمایش و نمره‌دهی عبارات استفاده می‌کند. در طول نمره‌دهی، پاسخ صحیح و پاسخ ارسالی دانشجو به عبارات SymPy تجزیه شده و سپس با استفاده از بررسی‌کننده برابری داخلی کتابخانه مقایسه می‌شوند.
 
-Checking for equality is non-trivial as it accounts for a wide range of mathematical equivalences (e.g., `log(10*x)` is considered equal to `log(10)+log(x)`, or `(x+1)**2` is equal to `x**2+2*x+1`). To account for all possible combinations of equivalence rules, [SymPy applies simplifications heuristically](https://docs.sympy.org/latest/tutorials/intro-tutorial/simplification.html) and potentially repeatedly. Unfortunately this means that there is no bound on how long the equality checker might take to finish, and in rare cases it might even get stuck in a non-terminating simplification cycle.
+بررسی برابری امری غیربدیهی است زیرا طیف گسترده‌ای از معادل‌های ریاضی را در نظر می‌گیرد (مثلاً `log(10*x)` با `log(10)+log(x)` برابر دانسته می‌شود، یا `(x+1)**2` با `x**2+2*x+1` برابر است). برای پوشش دادن تمام ترکیبات ممکن از قوانین هم‌ارزی، [SymPy ساده‌سازی‌ها را به صورت ابتکاری (هیوریستیک)](https://docs.sympy.org/latest/tutorials/intro-tutorial/simplification.html) و احتمالاً به صورت مکرر اعمال می‌کند. متأسفانه این بدان معناست که هیچ محدودیتی برای مدت زمانی که ممکن است بررسی برابری طول بکشد وجود ندارد، و در موارد نادر حتی ممکن است در یک چرخه ساده‌سازی بی‌پایان گیر کند.
 
-PrairieLearn automatically terminates SymPy's equality check after a few seconds have passed. This check is applied in two cases. The element then marks student submission as invalid during grading if their submission caused a timeout. Note that both correct and incorrect answers can potentially trigger timeouts. Students are presented with an error message that tells them `Your answer did not converge, try a simpler expression.`. If desired, this behavior can be replaced with custom grading code in the [`server.py` file](../question/server.md#step-5-grade) of the question.
+پریری‌لرن پس از گذشت چند ثانیه به طور خودکار بررسی برابری SymPy را متوقف می‌کند. اگر پاسخ ارسالی دانشجو باعث وقفه زمانی (timeout) شود، المان در حین نمره‌دهی آن را به عنوان نامعتبر علامت‌گذاری می‌کند. توجه داشته باشید که هم پاسخ‌های درست و هم نادرست می‌توانند باعث ایجاد وقفه زمانی شوند. به دانشجویان یک پیام خطا نشان داده می‌شود که می‌گوید: `Your answer did not converge, try a simpler expression.` (پاسخ شما همگرا نشد، یک عبارت ساده‌تر را امتحان کنید). در صورت تمایل، می‌توان این رفتار را با کد سفارشی نمره‌دهی در [فایل `server.py`](../question/server.md#step-5-grade) سوال جایگزین کرد.
 
-#### Preventing non-convergence by adding `additional-simplifications`
+#### جلوگیری از عدم همگرایی با افزودن `additional-simplifications`
 
-Terminating SymPy's equality check is a last resort to ensure that the normal grading process (including custom question grading defined in `server.py`) can complete. When presented with a non-convergence error, students might misinterpret it as a sign that the question is faulty, although even small changes to their answer (e.g., manually expanding a term) might resolve the issue and it is very rare that correct answers trigger non-convergence errors.
+متوقف کردن بررسی برابری SymPy آخرین راه‌حل برای اطمینان از تکمیل فرآیند نمره‌دهی عادی (شامل نمره‌دهی سفارشی سوال تعریف‌شده در `server.py`) است. هنگامی که دانشجویان با خطای عدم همگرایی مواجه می‌شوند، ممکن است آن را به اشتباه نشانه‌ای از معیوب بودن سوال تلقی کنند، اگرچه حتی تغییرات کوچک در پاسخ آن‌ها (مثلاً بسط دادن دستی یک عبارت) ممکن است مشکل را حل کند و بسیار نادر است که پاسخ‌های صحیح باعث ایجاد خطای عدم همگرایی شوند.
 
-SymPy is less likely to experience issues if both the correct and submitted answer share the same structure. As an instructor, it therefore _might_ be possible to prevent timeouts by "guiding" SymPy's equality checking process. This can be achieved by providing SymPy with a list of simplification steps that it should execute before relying on its built-in heuristics. For example, the `trigsimp` simplification step can convert `sin(x)/cos(x)` into `tan(x)`, and `expand` can convert expressions like `(x+1)**2` into `x**2+2*x+1`.
+اگر هم پاسخ صحیح و هم پاسخ ارسالی ساختار یکسانی داشته باشند، احتمال بروز مشکل در SymPy کمتر است. بنابراین، به عنوان یک مدرس، _ممکن است_ بتوان با "هدایت" فرآیند بررسی برابری SymPy از وقفه‌های زمانی جلوگیری کرد. این امر را می‌توان با ارائه فهرستی از مراحل ساده‌سازی به SymPy محقق ساخت تا قبل از تکیه بر روش‌های ابتکاری داخلی خود آن‌ها را اجرا کند. به عنوان مثال، مرحله ساده‌سازی `trigsimp` می‌تواند `sin(x)/cos(x)` را به `tan(x)` تبدیل کند، و `expand` می‌تواند عباراتی مانند `(x+1)**2` را به `x**2+2*x+1` بسط دهد.
 
-!!! warning
+!!! warning "هشدار"
 
-    Applying `additional-simplifications` is not guaranteed to work around all timeout issues. The optimal simplification order for a specific question depends on the complexity and domain of the question (e.g., whether it uses trigonometric functions). If a question experiences non-convergence issues, it might be easier to change the expected answer rather than experimenting with this parameter.
+    اعمال `additional-simplifications` تضمین نمی‌کند که تمام مشکلات مربوط به وقفه زمانی برطرف شوند. ترتیب بهینه ساده‌سازی برای یک سوال خاص به پیچیدگی و دامنه سوال بستگی دارد (مثلاً اینکه آیا از توابع مثلثاتی استفاده می‌کند یا خیر). اگر سوالی با مشکلات عدم همگرایی مواجه است، تغییر پاسخ مورد انتظار ممکن است آسان‌تر از آزمایش با این پارامتر باشد.
 
-The table below lists the possible simplifications that can be provided to the attribute `additional-simplifications`, and are applied in the order they are listed:
+جدول زیر ساده‌سازی‌های ممکنی را که می‌توان برای ویژگی `additional-simplifications` مشخص کرد نشان می‌دهد که به همان ترتیبی که فهرست شده‌اند اعمال می‌شوند:
 
-| Simplification | Description                   | Example                          |
-| -------------- | ----------------------------- | -------------------------------- |
-| `expand`       | Expanding polynomials         | `(x + 1)**2` => `x**2 + 2*x + 1` |
-| `powsimp`      | Power simplifications         | `x**a*x**b` => `x**(a + b)`      |
-| `trigsimp`     | Trigonometric simplifications | `sin(x)/cos(x)` => `tan(x)`      |
-| `expand_log`   | Logarithmic simplifications   | `log(x*y)` => `log(x) + log(y)`  |
+| ساده‌سازی | توضیحات | مثال |
+| --- | --- | --- |
+| `expand` | بسط دادن چندجمله‌ای‌ها | `(x + 1)**2` => `x**2 + 2*x + 1` |
+| `powsimp` | ساده‌سازی توان‌ها | `x**a*x**b` => `x**(a + b)` |
+| `trigsimp` | ساده‌سازی‌های مثلثاتی | `sin(x)/cos(x)` => `tan(x)` |
+| `expand_log` | ساده‌سازی‌های لگاریتمی | `log(x*y)` => `log(x) + log(y)` |
 
-Some specific examples of successful uses of `additional-simplifications` are:
+چند مثال مشخص از استفاده موفقیت‌آمیز از `additional-simplifications` عبارتند از:
 
-- `(-8*x*sin(8*x)/cos(8*x) + log(cos(8*x)))*cos(8*x)**x` benefitted from `additional-simplifications="trigsimp"`.
-- `7**(x + 8)*log(7)` benefitted from `additional-simplifications="expand"`
+- `(-8*x*sin(8*x)/cos(8*x) + log(cos(8*x)))*cos(8*x)**x` با استفاده از `additional-simplifications="trigsimp"` بهبود یافت.
+- `7**(x + 8)*log(7)` با استفاده از `additional-simplifications="expand"` بهبود یافت.
 
-!!! note
+!!! note "یادداشت"
 
-    All of the simplifications above are already considered in SymPy's built-in heuristics, so listing them in `additional-simplifications` does not affect the display of expressions or the grading results _except_ in cases where a timeout occurs. Also note that simplifications are always applied to both the correct and the submitted answer, because the goal is to increase their similarity (e.g., both are fully expanded) rather than aiming for a specific form (e.g., expanding vs. factoring).
+    تمام ساده‌سازی‌های بالا قبلاً در روش‌های ابتکاری داخلی SymPy در نظر گرفته شده‌اند، بنابراین ذکر آن‌ها در `additional-simplifications` بر نحوه نمایش عبارات یا نتایج نمره‌دهی تأثیری ندارد _مگر_ در مواردی که وقفه زمانی (timeout) رخ می‌دهد. همچنین توجه داشته باشید که ساده‌سازی‌ها همیشه هم برای پاسخ صحیح و هم برای پاسخ ارسالی اعمال می‌شوند، زیرا هدف افزایش تشابه آن‌هاست (مثلاً هر دو کاملاً بسط داده شوند) به جای هدف‌گیری یک فرم خاص (مانند بسط دادن در مقابل فاکتورگیری).
 
 ---
 

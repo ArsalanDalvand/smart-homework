@@ -1,44 +1,39 @@
-# `pl-submission-panel` element
+# المان `pl-submission-panel`
 
-Customizes how information entered by a user is displayed before grading.
+نحوه نمایش اطلاعات واردشده توسط کاربر قبل از نمره‌دهی را سفارشی‌سازی می‌کند.
 
-## Sample element
+## نمونه المان
 
 ```html title="question.html"
-<pl-submission-panel>This content is only shown in the submission panel.</pl-submission-panel>
+<pl-submission-panel>این محتوا فقط در پنل پاسخ ارسالی نمایش داده می‌شود.</pl-submission-panel>
 ```
 
-## Details
+## جزئیات
 
-Generally, the contents of `question.html` will appear in
-the question panel, submission panel, and answer panel. To prevent
-content from being displayed in the question panel and
-answer panel (so, only in the submission panel), surround that content
-with the `<pl-submission-panel>` tags.
+به طور کلی، محتویات فایل `question.html` در پنل سوال (question panel)، پنل پاسخ ارسالی (submission panel) و پنل پاسخ صحیح (answer panel) نمایش داده می‌شوند. برای جلوگیری از نمایش محتوا در پنل سوال و پنل پاسخ صحیح (به طوری که فقط در پنل پاسخ ارسالی نمایش داده شود)، آن محتوا را درون تگ‌های `<pl-submission-panel>` قرار دهید.
 
-The submission panel is only shown after the student has submitted an
-answer. This answer may be correct, incorrect, or invalid.
+پنل پاسخ ارسالی تنها پس از ارسال پاسخ توسط دانشجو نمایش داده می‌شود. این پاسخ ممکن است درست، نادرست یا نامعتبر باشد.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [demo/custom/gradeFunction]
 - [demo/autograder/codeUpload]
 - [demo/autograder/codeEditor]
 
-## See also
+## همچنین ببینید
 
-- [`pl-question-panel` for displaying the question prompt.](pl-question-panel.md)
-- [`pl-answer-panel` for displaying the question's solution.](pl-answer-panel.md)
-- [`pl-hide-in-panel` to hide contents in one or more display panels.](pl-hide-in-panel.md)
-- [`pl-external-grader-results` for showing the results from an externally graded code question.](pl-external-grader-results.md)
+- [`pl-question-panel` برای نمایش صورت و دستورالعمل سوال.](pl-question-panel.md)
+- [`pl-answer-panel` برای نمایش راه‌حل و پاسخ صحیح سوال.](pl-answer-panel.md)
+- [`pl-hide-in-panel` برای مخفی کردن محتوا در یک یا چند پنل نمایش.](pl-hide-in-panel.md)
+- [`pl-external-grader-results` برای نمایش نتایج سوالات برنامه‌نویسی نمره‌دهی‌شده به صورت خارجی.](pl-external-grader-results.md)
 
 ---
 
-## Deprecated Elements
+## المان‌های منسوخ‌شده
 
-!!! note
+!!! note "یادداشت"
 
-    The following PrairieLearn Elements have been **deprecated**. These elements are still supported for backwards compatibility, but they should not be used in new questions.
+    المان‌های پریری‌لرن زیر **منسوخ (deprecated)** شده‌اند. این المان‌ها همچنان برای سازگاری با نسخه‌های قبلی پشتیبانی می‌شوند، اما نباید در سوالات جدید استفاده شوند.
 
 [demo/autograder/codeeditor]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/codeEditor
 [demo/autograder/codeupload]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/codeUpload

@@ -1,10 +1,10 @@
-# `pl-variable-output` element
+# المان `pl-variable-output`
 
-Displays a list of variables that are formatted for import into the supported programming languages and libraries (e.g. MATLAB, Mathematica, NumPy, R, or SymPy).
+فهرستی از متغیرها را نمایش می‌دهد که برای وارد کردن (import) به زبان‌ها و کتابخانه‌های برنامه‌نویسی پشتیبانی‌شده (مانند MATLAB، Mathematica، NumPy، R یا SymPy) قالب‌بندی شده‌اند.
 
-## Sample element
+## نمونه المان
 
-![Screenshot of the pl-variable-output element](pl-variable-output.png)
+![تصویر اسکرین‌شات از المان pl-variable-output](pl-variable-output.png)
 
 ```html title="question.html"
 <pl-variable-output digits="3">
@@ -15,8 +15,8 @@ Displays a list of variables that are formatted for import into the supported pr
 ```
 
 ```python title="server.py"
-import prairielearn as pl
 import numpy as np
+import prairielearn as pl
 
 
 def generate(data):
@@ -32,59 +32,59 @@ def generate(data):
     data["params"]["matrixD"] = pl.to_json(matrixD)
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-Attributes for `<pl-variable-output>`:
+ویژگی‌های تگ `<pl-variable-output>`:
 
-| Attribute          | Type                                                     | Default    | Description                                                          |
-| ------------------ | -------------------------------------------------------- | ---------- | -------------------------------------------------------------------- |
-| `default-tab`      | `"matlab"`, `"mathematica"`, `"numpy"`, `"r"`, `"sympy"` | `"matlab"` | Select the active tab.                                               |
-| `digits`           | integer                                                  | 2          | Number of digits to display after the decimal.                       |
-| `show-mathematica` | boolean                                                  | true       | Toggles the display of the Mathematica tab.                          |
-| `show-matlab`      | boolean                                                  | true       | Toggles the display of the Matlab tab (also compatible with Octave). |
-| `show-numpy`       | boolean                                                  | true       | Toggles the display of the NumPy tab.                                |
-| `show-r`           | boolean                                                  | true       | Toggles the display of the R tab.                                    |
-| `show-sympy`       | boolean                                                  | true       | Toggles the display of the SymPy tab.                                |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `default-tab` | `"matlab"`, `"mathematica"`, `"numpy"`, `"r"`, `"sympy"` | `"matlab"` | تب فعال را انتخاب می‌کند. |
+| `digits` | integer | 2 | تعداد ارقام قابل نمایش بعد از ممیز اعشار. |
+| `show-mathematica` | boolean | true | نمایش یا عدم نمایش تب Mathematica را تغییر می‌دهد. |
+| `show-matlab` | boolean | true | نمایش یا عدم نمایش تب Matlab را تغییر می‌دهد (همچنین با Octave سازگار است). |
+| `show-numpy` | boolean | true | نمایش یا عدم نمایش تب NumPy را تغییر می‌دهد. |
+| `show-r` | boolean | true | نمایش یا عدم نمایش تب R را تغییر می‌دهد. |
+| `show-sympy` | boolean | true | نمایش یا عدم نمایش تب SymPy را تغییر می‌دهد. |
 
-Attributes for `<pl-variable>` (one of these for each variable to display):
+ویژگی‌های تگ `<pl-variable>` (یکی از این تگ‌ها برای هر متغیری که قرار است نمایش داده شود):
 
-| Attribute     | Type    | Default | Description                                                                                                                                 |
-| ------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `comment`     | string  | —       | Comment to add after the displayed variable.                                                                                                |
-| `digits`      | integer | 2       | Number of digits to display after the decimal for the variable. Defaults to the `digits` value set on the enclosing `<pl-variable-output>`. |
-| `params-name` | string  | —       | Name of variable in `data["params"]` to display. Required.                                                                                  |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `comment` | string | — | کامنتی که بعد از متغیر نمایش داده شده اضافه می‌شود. |
+| `digits` | integer | 2 | تعداد ارقام قابل نمایش بعد از اعشار برای متغیر. به طور پیش‌فرض روی مقدار `digits` تنظیم‌شده در المان دربرگیرنده `<pl-variable-output>` قرار می‌گیرد. |
+| `params-name` | string | — | نام متغیر در `data["params"]` برای نمایش. الزامی است. |
 
-### Migrating from deprecated attributes
+### مهاجرت از ویژگی‌های منسوخ‌شده
 
-The following deprecated attributes and values are still supported for backward compatibility:
+ویژگی‌ها و مقادیر منسوخ‌شده زیر همچنان برای سازگاری با نسخه‌های قبلی پشتیبانی می‌شوند:
 
-| Old syntax             | New syntax            |
-| ---------------------- | --------------------- |
+| سینتکس قدیمی | سینتکس جدید |
+| --- | --- |
 | `default-tab="python"` | `default-tab="numpy"` |
-| `show-python="false"`  | `show-numpy="false"`  |
-| `show-python="true"`   | `show-numpy="true"`   |
+| `show-python="false"` | `show-numpy="false"` |
+| `show-python="true"` | `show-numpy="true"` |
 
-`pl-matrix-output` is a deprecated alias for `pl-variable-output`. It supports only the Matlab and NumPy tabs and always defaults to the Matlab tab. Use `pl-variable-output` instead.
+تگ `pl-matrix-output` یک نام مستعار منسوخ‌شده برای `pl-variable-output` است. این تگ فقط از تب‌های Matlab و NumPy پشتیبانی می‌کند و همیشه به طور پیش‌فرض تب Matlab را فعال می‌کند. به جای آن از `pl-variable-output` استفاده کنید.
 
-The legacy `<variable>` child tag is still accepted as a deprecated alias for `<pl-variable>`. Use `<pl-variable>` instead.
+تگ فرزند قدیمی `<variable>` همچنان به عنوان یک نام مستعار منسوخ‌شده برای `<pl-variable>` پذیرفته می‌شود. به جای آن از `<pl-variable>` استفاده کنید.
 
-## Details
+## جزئیات
 
-This element displays a list of variables inside `<pl-code>` tags that are formatted for import into either MATLAB, Mathematica, NumPy, R, or SymPy (the user can switch between them). Each variable must be either a scalar or a 2D numpy array (expressed as a list). Each variable will be prefixed by the text that appears between the `<pl-variable>` and `</pl-variable>` tags, followed by `=`. Below are samples of the format displayed under each language tab.
+این المان فهرستی از متغیرها را درون تگ‌های `<pl-code>` نمایش می‌دهد که برای وارد کردن به MATLAB، Mathematica، NumPy، R یا SymPy قالب‌بندی شده‌اند (کاربر می‌تواند بین آن‌ها جابجا شود). هر متغیر باید یک عدد اسکالر یا یک آرایه دوبعدی numpy (بیان‌شده به صورت لیست) باشد. هر متغیر با متنی که بین تگ‌های `<pl-variable>` و `</pl-variable>` قرار دارد شروع شده و پس از آن علامت `=` می‌آید. در زیر نمونه‌هایی از فرمت نمایش‌داده‌شده در تب هر زبان آورده شده است.
 
-**MATLAB format:**
+**فرمت MATLAB:**
 
 ```m
 A = [1.23; 4.56]; % matrix
 ```
 
-**Mathematica format:**
+**فرمت Mathematica:**
 
 ```mathematica
 A = [1.23; 4.56]; (* matrix *)
 ```
 
-**NumPy format:**
+**فرمت NumPy:**
 
 ```python
 import numpy as np
@@ -92,14 +92,14 @@ import numpy as np
 A = np.array([[1.23], [4.56]])  # matrix
 ```
 
-**R format:**
+**فرمت R:**
 
 ```r
 A = c(1.23, 4.56) # vector
 A = matrix(c(1.23, 4.56, 8.90, 1.23), nrow = 2, ncol = 2, byrow = TRUE) # matrix
 ```
 
-**SymPy format:**
+**فرمت SymPy:**
 
 ```python
 from sympy import *
@@ -107,20 +107,20 @@ from sympy import *
 A = Matrix([[1.23], [4.56]])  # matrix
 ```
 
-If a variable `v` is a complex object, you should use `import prairielearn as pl` and `data["params"][params-name] = pl.to_json(v)`.
+اگر متغیر `v` یک شیء پیچیده است، باید از `import prairielearn as pl` و `data["params"][params-name] = pl.to_json(v)` استفاده کنید.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/variableOutput]
 - [element/matrixComponentInput]
 - [demo/matrixComplexAlgebra]
 
-## See also
+## همچنین ببینید
 
-- [`pl-matrix-latex` for displaying the matrix using LaTeX commands.](pl-matrix-latex.md)
-- [`pl-matrix-component-input` for individual input boxes for each element in the matrix](pl-matrix-component-input.md)
-- [`pl-matrix-input` for input values formatted in a supported programming language.](pl-matrix-input.md)
-- [`pl-code` to display blocks of code with syntax highlighting](pl-code.md)
+- [`pl-matrix-latex` برای نمایش ماتریس با استفاده از دستورات LaTeX.](pl-matrix-latex.md)
+- [`pl-matrix-component-input` برای جعبه‌های ورودی مجزا برای هر درایه در ماتریس](pl-matrix-component-input.md)
+- [`pl-matrix-input` برای مقادیر ورودی قالب‌بندی‌شده در یک زبان برنامه‌نویسی پشتیبانی‌شده.](pl-matrix-input.md)
+- [`pl-code` برای نمایش بلوک‌های کد همراه با برجسته‌سازی نحوی (Syntax Highlighting)](pl-code.md)
 
 ---
 

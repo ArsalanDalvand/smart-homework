@@ -1,10 +1,10 @@
-# `pl-string-input` element
+# المان `pl-string-input`
 
-Fill in the blank field that allows for **string** value input.
+فیلد جای خالی برای وارد کردن مقادیر **رشته‌ای** (string).
 
-## Sample element
+## نمونه المان
 
-![Screenshot of the pl-string-input element](pl-string-input.png)
+![تصویر اسکرین‌شات از المان pl-string-input](pl-string-input.png)
 
 ```html title="question.html"
 <pl-string-input answers-name="string_value" label="Prairie"></pl-string-input>
@@ -17,47 +17,47 @@ def generate(data):
     data["correct_answers"]["string_value"] = "Learn"
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute                 | Type                    | Default         | Description                                                                                                                                                                                           |
-| ------------------------- | ----------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allow-blank`             | boolean                 | false           | Whether an empty input box is allowed. By default, empty input boxes will not be graded (invalid format).                                                                                             |
-| `answers-name`            | string                  | —               | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.                                  |
-| `aria-label`              | string                  | —               | An accessible label for the input.                                                                                                                                                                    |
-| `correct-answer`          | string                  | See description | Correct answer for grading. Defaults to `data["correct_answers"][answers-name]`.                                                                                                                      |
-| `correct-answer-format`   | `"exact"` or `"regex"`  | `"exact"`       | Whether `correct-answer` is compared as a literal string (`"exact"`) or interpreted as a regular expression (`"regex"`). See [Matching with regular expressions](#matching-with-regular-expressions). |
-| `display`                 | `"block"` or `"inline"` | `"inline"`      | How to display the input field. Default is `"block"` if `multiline` is enabled. Cannot be set to `"inline"` when `multiline="true"`.                                                                  |
-| `ignore-case`             | boolean                 | false           | Whether to ignore letter case when grading the answer (e.g. `hello` matches `HELLO`).                                                                                                                 |
-| `initial-value`           | string                  | —               | Initial value is added to the text box the first time it is rendered.                                                                                                                                 |
-| `label`                   | string                  | —               | A prefix to display before the input box (e.g., `label="$x =$"`).                                                                                                                                     |
-| `multiline`               | boolean                 | false           | Whether to allow for multiline input using a `textarea` display.                                                                                                                                      |
-| `normalize-to-ascii`      | boolean                 | false           | Whether non-English characters (accents, non-latin alphabets, fancy quotes) should be normalized to equivalent English characters before submitting the file for grading.                             |
-| `placeholder`             | string                  | —               | Hint displayed inside the input box describing the expected type of input.                                                                                                                            |
-| `remove-leading-trailing` | boolean                 | See description | Whether to remove leading and trailing blank spaces from the input string. Defaults to `true` if `multiline` is enabled, otherwise `false`.                                                           |
-| `remove-spaces`           | boolean                 | false           | Whether to remove blank spaces from the input string.                                                                                                                                                 |
-| `show-help-text`          | boolean                 | true            | Show the question mark at the end of the input displaying required input parameters.                                                                                                                  |
-| `show-score`              | boolean                 | true            | Whether to show the score badge next to this element.                                                                                                                                                 |
-| `size`                    | integer                 | 35              | Width of the input box.                                                                                                                                                                               |
-| `suffix`                  | string                  | —               | A suffix to display after the input box (e.g., `suffix="items"`).                                                                                                                                     |
-| `weight`                  | integer                 | 1               | Weight to use when computing a weighted average score over elements.                                                                                                                                  |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا جعبه ورودی خالی مجاز است یا خیر. به طور پیش‌فرض، جعبه‌های ورودی خالی نمره‌دهی نمی‌شوند (فرمت نامعتبر). |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد، یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود. |
+| `aria-label` | string | — | یک برچسب دسترس‌پذیر (accessible label) برای ورودی. |
+| `correct-answer` | string | به توضیحات مراجعه کنید | پاسخ صحیح برای نمره‌دهی. به طور پیش‌فرض مقدار `data["correct_answers"][answers-name]` است. |
+| `correct-answer-format` | `"exact"` یا `"regex"` | `"exact"` | مشخص می‌کند که آیا `correct-answer` به صورت یک رشته متنی عینی (`"exact"`) مقایسه شود یا به عنوان یک عبارت باقاعده (`"regex"`) تفسیر گردد. بخش [تطبیق با عبارات باقاعده](#تطبیق-با-عبارات-باقاعده) را ببینید. |
+| `display` | `"block"` یا `"inline"` | `"inline"` | نحوه نمایش فیلد ورودی. اگر `multiline` فعال باشد پیش‌فرض `"block"` است. زمانی که `multiline="true"` باشد نمی‌توان آن را روی `"inline"` تنظیم کرد. |
+| `ignore-case` | boolean | false | مشخص می‌کند که آیا حروف بزرگ و کوچک در زمان نمره‌دهی پاسخ نادیده گرفته شوند یا خیر (مثلاً `hello` با `HELLO` مطابقت دارد). |
+| `initial-value` | string | — | مقدار اولیه که اولین بار هنگام رندر شدن جعبه متن به آن اضافه می‌شود. |
+| `label` | string | — | پیشوندی که قبل از جعبه ورودی نمایش داده می‌شود (مثلاً `label="$x =$"`). |
+| `multiline` | boolean | false | مشخص می‌کند که آیا امکان ورودی چندخطی با استفاده از المان `textarea` وجود داشته باشد یا خیر. |
+| `normalize-to-ascii` | boolean | false | مشخص می‌کند که آیا کاراکترهای غیرانگلیسی (اعراب، الفباهای غیرلاتین، نقل‌قول‌های خاص) قبل از ارسال برای نمره‌دهی به کاراکترهای انگلیسی معادل تبدیل و نرمال‌سازی شوند یا خیر. |
+| `placeholder` | string | — | متنی که درون جعبه ورودی برای توصیف نوع ورودی مورد انتظار نمایش داده می‌شود. |
+| `remove-leading-trailing` | boolean | به توضیحات مراجعه کنید | مشخص می‌کند که آیا فاصله‌های خالی ابتدا و انتهای رشته ورودی حذف شوند یا خیر. اگر `multiline` فعال باشد به طور پیش‌فرض `true` است، در غیر این صورت `false`. |
+| `remove-spaces` | boolean | false | مشخص می‌کند که آیا تمام فاصله‌های خالی از رشته ورودی حذف شوند یا خیر. |
+| `show-help-text` | boolean | true | نمایش علامت سوال در انتهای فیلد ورودی که پارامترهای ورودی مورد نیاز را نمایش می‌دهد. |
+| `show-score` | boolean | true | مشخص می‌کند که آیا نشان نمره در کنار این المان نمایش داده شود یا خیر. |
+| `size` | integer | 35 | عرض جعبه ورودی. |
+| `suffix` | string | — | پسوندی که بعد از جعبه ورودی نمایش داده می‌شود (مثلاً `suffix="items"`). |
+| `weight` | integer | 1 | وزن مورد استفاده هنگام محاسبه میانگین وزنی نمره بین المان‌ها. |
 
-### Migrating from deprecated attributes
+### مهاجرت از ویژگی‌های منسوخ‌شده
 
-The following deprecated attribute is still supported for backward compatibility:
+ویژگی منسوخ‌شده زیر همچنان برای سازگاری با نسخه‌های قبلی پشتیبانی می‌شود:
 
-| Old syntax                 | New syntax         |
-| -------------------------- | ------------------ |
-| `escape-unicode="<value>"` | Omit the attribute |
+| سینتکس قدیمی | سینتکس جدید |
+| --- | --- |
+| `escape-unicode="<value>"` | ویژگی را حذف کنید |
 
-The `escape-unicode` attribute is ignored. Unicode escaping is always applied when needed for displayed submitted and correct answers.
+ویژگی `escape-unicode` نادیده گرفته می‌شود. فرار یونی‌کد (Unicode escaping) در صورت نیاز همواره برای نمایش پاسخ‌های ارسالی و پاسخ‌های صحیح اعمال می‌شود.
 
-## Matching with regular expressions
+## تطبیق با عبارات باقاعده
 
-By default, a submitted answer is graded by comparing it to `correct-answer` as a literal string. Setting `correct-answer-format="regex"` instead interprets `correct-answer` as a [Python regular expression](https://docs.python.org/3/library/re.html), which is useful when several different responses should all be accepted as correct.
+به طور پیش‌فرض، یک پاسخ ارسالی از طریق مقایسه با `correct-answer` به عنوان یک رشته عینی نمره‌دهی می‌شود. تنظیم `correct-answer-format="regex"` در عوض مقدار `correct-answer` را به عنوان یک [عبارت باقاعده پایتون (Regular Expression)](https://docs.python.org/3/library/re.html) تفسیر می‌کند که زمانی کاربرد دارد که چندین پاسخ مختلف همگی باید به عنوان پاسخ صحیح پذیرفته شوند.
 
-The pattern must match the whole submission, not just part of it: grading uses Python's `re.fullmatch()`, which is equivalent to surrounding the pattern with `^(` and `)$`. To match a substring, include `.*` in the pattern. Setting `ignore-case="true"` makes the match case-insensitive.
+الگو باید با کل پاسخ ارسالی مطابقت داشته باشد، نه فقط بخشی از آن: نمره‌دهی از `re.fullmatch()` در پایتون استفاده می‌کند که معادل احاطه کردن الگو با `^(` و `)$` است. برای تطبیق یک زیررشته، عبارت `.*` را در الگو بگنجانید. تنظیم `ignore-case="true"` تطبیق را نسبت به بزرگی و کوچکی حروف غیرحساس می‌کند.
 
-For example, this question accepts `N` or `nitrogen` in any combination of upper- and lowercase, and rejects anything else:
+به عنوان مثال، این سوال `N` یا `nitrogen` را با هر ترکیبی از حروف بزرگ و کوچک می‌پذیرد و هر پاسخ دیگری را رد می‌کند:
 
 ```html title="question.html"
 <pl-string-input
@@ -68,27 +68,27 @@ For example, this question accepts `N` or `nitrogen` in any combination of upper
 ></pl-string-input>
 ```
 
-Inline flags at the start of the pattern control matching behavior, such as `(?s)` so that `.` also matches newlines, or `(?x)` to ignore whitespace in the pattern and allow `#` comments. No Python `re` flags other than `re.IGNORECASE` (set by `ignore-case`) are available.
+فلگ‌های درون‌خطی در ابتدای الگو رفتار تطبیق را کنترل می‌کنند، مانند `(?s)` تا `.` با خطوط جدید نیز مطابقت پیدا کند، یا `(?x)` برای نادیده گرفتن فاصله‌ها در الگو و مجاز شمردن کامنت‌های `#`. هیچ فلگ دیگری از `re` در پایتون به جز `re.IGNORECASE` (که با `ignore-case` تنظیم می‌شود) در دسترس نیست.
 
-In the answer panel, the correct answer is shown as the regular expression it matches against. When `ignore-case` is set, the pattern is displayed with a leading `(?i)` flag so the case-insensitive matching is visible. Because a pattern is not always a friendly answer to show students, you can add a [`pl-answer-panel`](pl-answer-panel.md) element with a more readable description.
+در پنل پاسخ صحیح، پاسخ به صورت همان عبارت باقاعده‌ای که با آن تطبیق داده می‌شود نمایش داده می‌شود. هنگامی که `ignore-case` تنظیم شده باشد، الگو با یک فلگ ابتدایی `(?i)` نمایش داده می‌شود تا تطبیق بدون حساسیت به بزرگی و کوچکی حروف مشخص باشد. از آنجا که یک الگوی ریجکس همیشه پاسخی مناسب برای نمایش به دانشجویان نیست، می‌توانید یک المان [`pl-answer-panel`](pl-answer-panel.md) با توضیحات خواناتر اضافه کنید.
 
-If `correct-answer` is not a valid regular expression, the question fails to generate and reports an error to the question author.
+اگر `correct-answer` یک عبارت باقاعده معتبر نباشد، تولید سوال با شکست مواجه شده و خطایی به طراح سوال گزارش می‌شود.
 
-## Using multiline inputs
+## استفاده از ورودی‌های چندخطی
 
-Note that, in multiline inputs, it can be hard to distinguish between inputs with or without a terminating line break (i.e., an additional "Enter" at the end of the input). Because of that, you are strongly encouraged to leave the default setting of `remove-leading-trailing="true"` unchanged when using multiline inputs.
+توجه داشته باشید که در ورودی‌های چندخطی، تشخیص بین ورودی‌های دارای شکستگی خط انتهایی یا بدون آن (یعنی زدن دکمه "Enter" اضافی در انتهای ورودی) دشوار است. به همین دلیل، اکیداً توصیه می‌شود هنگام استفاده از ورودی‌های چندخطی، تنظیم پیش‌فرض `remove-leading-trailing="true"` را بدون تغییر باقی بگذارید.
 
-Additionally, multiline inputs will have any CR LF (`"\r\n"` in Python) line breaks normalized to a single LF (a single `"\n"` in Python). Note that this is different from the behavior of a standard `textarea` HTML element.
+علاوه بر این، در ورودی‌های چندخطی، هرگونه خط جدید CR LF (در پایتون `"\r\n"`) به یک LF واحد (یک `"\n"` در پایتون) نرمال‌سازی می‌شود. توجه داشته باشید که این رفتار با رفتار المان استاندارد HTML یعنی `textarea` متفاوت است.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/stringInput]
 
-## See also
+## همچنین ببینید
 
-- [`pl-symbolic-input` for mathematical expression input](pl-symbolic-input.md)
-- [`pl-integer-input` for integer input](pl-integer-input.md)
-- [`pl-number-input` for numeric input](pl-number-input.md)
+- [`pl-symbolic-input` برای ورودی عبارات ریاضی](pl-symbolic-input.md)
+- [`pl-integer-input` برای ورودی اعداد صحیح](pl-integer-input.md)
+- [`pl-number-input` برای ورودی عددی](pl-number-input.md)
 
 ---
 

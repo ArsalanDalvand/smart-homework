@@ -1,21 +1,21 @@
-# `pl-variable-score` element
+# المان `pl-variable-score`
 
-Display the partial score for a specific answer variable.
+نمره بخشی را برای یک متغیر پاسخ مشخص نمایش می‌دهد.
 
-!!! warning
+!!! warning "هشدار"
 
-    This element is **deprecated** and should not be used in new questions.
+    این المان **منسوخ (deprecated)** شده است و نباید در سوالات جدید استفاده شود.
 
-## Sample element
+## نمونه المان
 
 ```html title="question.html"
 <pl-variable-score answers-name="v_avg"></pl-variable-score>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                         |
-| -------------- | ------ | ------- | ----------------------------------- |
-| `answers-name` | string | —       | Variable name to display score for. |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `answers-name` | string | — | نام متغیر برای نمایش نمره آن. |
 
 ---
