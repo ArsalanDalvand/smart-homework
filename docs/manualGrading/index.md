@@ -1,15 +1,15 @@
-# Manual Grading
+# نمره‌دهی دستی
 
-Some questions may require manual grading, either fully (e.g., freeform essay-type questions) or partially (e.g., coding style, or "show your work" components). PrairieLearn currently supports two methods of manual grading:
+برخی از سوالات ممکن است به نمره‌دهی دستی نیاز داشته باشند، چه به‌صورت کامل (مثلاً سوالات تشریحی با پاسخ آزاد) یا جزئی (مثلاً سبک کدنویسی، یا بخش‌های «راه‌حل خود را نشان دهید»). در حال حاضر پِری‌لرن (PrairieLearn) از دو روش برای نمره‌دهی دستی پشتیبانی می‌کند:
 
-- Course staff may download a CSV file with student answers, perform any grading tasks offline, and upload a CSV file with question scores and optional per-question feedback.
-- An online web interface is available for grading individual instance questions.
+- کادر آموزشی درس می‌توانند یک فایل CSV حاوی پاسخ‌های دانشجویان را دانلود کنند، هرگونه وظایف نمره‌دهی را به‌صورت آفلاین انجام دهند و یک فایل CSV حاوی نمرات سوالات و بازخورد اختیاری برای هر سوال را بارگذاری نمایند.
+- یک رابط کاربری وب آنلاین برای نمره‌دهی تک‌تک سوالات دوره (Instance Questions) در دسترس است.
 
-Manually graded questions can also be graded with [AI grading](../aiGrading/index.md), which uses a large language model to apply your rubric to each submission.
+سوالات با نمره‌دهی دستی را می‌توان با [نمره‌دهی هوش مصنوعی](../aiGrading/index.md) نیز نمره‌دهی کرد؛ روشی که از یک مدل زبانی بزرگ برای اعمال ماتریس نمره‌دهی (Rubric) شما بر روی هر پاسخ ارسالی استفاده می‌کند.
 
-## Configuring a question for manual grading
+## پیکربندی یک سوال برای نمره‌دهی دستی
 
-For questions that require manual grading, the question can be set up for manual grading by using `manualPoints` in the [assessment configuration](../assessment/configuration.md#question-specification), like this:
+برای سوالاتی که به نمره‌دهی دستی نیاز دارند، می‌توان سوال را با استفاده از `manualPoints` در [پیکربندی ارزیابی](../assessment/configuration.md#question-specification) به این صورت برای نمره‌دهی دستی تنظیم کرد:
 
 ```json title="infoAssessment.json"
 {
@@ -20,9 +20,9 @@ For questions that require manual grading, the question can be set up for manual
 }
 ```
 
-Questions set to use only manual grading (i.e., with manual points but no auto points) allow students to "Save" answers, but they don't have a "Save & Grade" button. Instead, the student just saves answers as many times as they want, and all of their submitted answers are stored.
+سوالاتی که فقط برای نمره‌دهی دستی تنظیم شده‌اند (یعنی دارای نمرات دستی هستند اما نمره خودکار ندارند) به دانشجویان اجازه می‌دهند تا پاسخ‌ها را «ذخیره» (Save) کنند، اما دکمه «ذخیره و نمره‌دهی» (Save & Grade) ندارند. در عوض، دانشجو صرفاً هر چند بار که بخواهد پاسخ‌ها را ذخیره می‌کند و تمام پاسخ‌های ارسال‌شده او ذخیره می‌شوند.
 
-It is recommended to also mark manually-graded questions as `"singleVariant": true` so that students are only given a single random variant, even on Homework assessments. By default, manual grading is performed only for the last submission of the last variant, so having a single variant simplifies both the grading process and the student feedback. The `singleVariant` setting can be updated in the [`info.json` file](../question/overview.md#metadata-infojson) in the question, like this:
+توصیه می‌شود سوالات با نمره‌دهی دستی را با `"singleVariant": true` نیز مشخص کنید تا حتی در ارزیابی‌های تکالیف (Homework) نیز فقط یک واریانت تصادفی واحد به دانشجویان داده شود. به‌طور پیش‌فرض، نمره‌دهی دستی فقط برای آخرین پاسخ ارسالی از آخرین واریانت انجام می‌شود؛ بنابراین داشتن یک واریانت منفرد، هم فرآیند نمره‌دهی و هم ارائه بازخورد به دانشجو را ساده‌تر می‌کند. تنظیم `singleVariant` را می‌توان در [فایل `info.json`](../question/overview.md#metadata-infojson) در پوشه سوال به شکل زیر به‌روزرسانی کرد:
 
 ```json title="info.json"
 {
@@ -31,13 +31,13 @@ It is recommended to also mark manually-graded questions as `"singleVariant": tr
 }
 ```
 
-Any [elements](../elements/index.md) can be used in the [`question.html`](../question/overview.md#html-questionhtml) to write manually graded questions. All student input will be saved and available for manual grading, including `pl-string-input`, `pl-file-editor`, `pl-file-upload`, `pl-rich-text-editor`, etc.
+از هر یک از [المان‌ها](../elements/index.md) می‌توان در [`question.html`](../question/overview.md#html-questionhtml) برای نوشتن سوالات با نمره‌دهی دستی استفاده کرد. تمام ورودی‌های دانشجو ذخیره شده و برای نمره‌دهی دستی در دسترس خواهند بود، از جمله `pl-string-input`، `pl-file-editor`، `pl-file-upload`، `pl-rich-text-editor` و غیره.
 
-## Manual grading using file uploads
+## نمره‌دهی دستی با استفاده از بارگذاری فایل
 
-### Downloading the students' submitted answers
+### دانلود پاسخ‌های ارسالی دانشجویان
 
-After students have completed the assessment, download the submitted answers by going to the assessment page, then the "Downloads" tab, and selecting the `<assessment>_submissions_for_manual_grading.csv` file. This looks like:
+پس از اینکه دانشجویان ارزیابی را تکمیل کردند، با رفتن به صفحه ارزیابی، سپس برگه «Downloads» و انتخاب فایل `<assessment>_submissions_for_manual_grading.csv`، پاسخ‌های ارسالی را دانلود کنید. ساختار این فایل به شکل زیر است:
 
 ```csv
 uid,uin,qid,old_score_perc,old_feedback,old_auto_points,old_manual_points,submission_id,params,true_answer,submitted_answer,old_partial_scores,partial_scores,score_perc,feedback
@@ -46,13 +46,13 @@ student2@example.com,2,explainMax,0,,0,0,42984,{},{},{"ans": "gives the set of l
 student2@example.com,2,describeFibonacci,100,,10,0,42987,{},{},{"ans": "calculates the n-th Fibonacci number"},,,,
 ```
 
-For group assessments, the `uid` column is replaced with the `group_name` and `uid_list` columns, containing, respectively, the name of the group and a list of the user IDs of all group members.
+برای ارزیابی‌های گروهی، ستون `uid` با ستون‌های `group_name` و `uid_list` جایگزین می‌شود که به‌ترتیب شامل نام گروه و فهرستی از شناسه کاربری (User ID) تمام اعضای گروه هستند.
 
-This CSV file has three blank columns at the end, ready for the percentage score (0 to 100) and optional feedback and partial scores. The `submission_id` is an internal identifier that PrairieLearn uses to determine exactly which submitted answer is being graded. The `params` and `true_answer` columns show the question data. The `old_score_perc` column shows the score that the student currently has, while `old_auto_points` and `old_manual_points` show the auto-graded and manually graded points already submitted. If feedback was already provided in a previous upload, the `old_feedback` column will contain the feedback the student currently has.
+این فایل CSV دارای سه ستون خالی در انتها است که برای نمره درصدی (۰ تا ۱۰۰)، بازخورد اختیاری و نمرات بخشی آماده شده‌اند. شناسه `submission_id` یک شناسه داخلی است که پری‌لرن از آن برای تعیین دقیق پاسخ ارسالیِ در حال نمره‌دهی استفاده می‌کند. ستون‌های `params` و `true_answer` داده‌های سوال را نشان می‌دهند. ستون `old_score_perc` نمره‌ای را که دانشجو در حال حاضر دارد نشان می‌دهد، در حالی که `old_auto_points` و `old_manual_points` نمرات خودکار و دستی قبلاً ثبت‌شده را نشان می‌دهند. اگر در بارگذاری قبلی بازخوردی ارائه شده باشد، ستون `old_feedback` شامل بازخوردی خواهد بود که دانشجو در حال حاضر دارد.
 
-If the students uploaded files then you may also download `<assessment>_files_for_manual_grading.zip` from the "Downloads" tab. The scores and feedback should still be entered into the CSV file.
+اگر دانشجویان فایل‌هایی را بارگذاری کرده باشند، می‌توانید فایل `<assessment>_files_for_manual_grading.zip` را نیز از برگه «Downloads» دانلود کنید. نمرات و بازخوردها همچنان باید در فایل CSV وارد شوند.
 
-The `<assessment>_files_for_manual_grading.zip` file contains all files uploaded by the student for grading. For workspace questions, list any files that you want to include in this download file in the `"gradedFiles"` list in the question's [`info.json` file](../workspaces/index.md#infojson):
+فایل `<assessment>_files_for_manual_grading.zip` شامل تمام فایل‌های بارگذاری‌شده توسط دانشجو برای نمره‌دهی است. برای سوالات دارای محیط کاری (Workspace)، هر فایلی را که می‌خواهید در این فایل دانلودی گنجانده شود، در فهرست `"gradedFiles"` در [فایل `info.json`](../workspaces/index.md#infojson) سوال مشخص کنید:
 
 ```json title="info.json"
 {
@@ -62,26 +62,26 @@ The `<assessment>_files_for_manual_grading.zip` file contains all files uploaded
 }
 ```
 
-### Uploading the scores and feedback
+### بارگذاری نمرات و بازخورد
 
-After editing the percentage score and/or feedback for each submitted answer, upload the CSV file by going to the assessment page, then the "Students" tab, and selecting "Upload question scores" from the "Upload" menu. If you leave either `score_perc` or `feedback` (or both) blank for any student, then the corresponding entry will not be updated.
+پس از ویرایش نمره درصدی و/یا بازخورد برای هر پاسخ ارسالی، با رفتن به صفحه ارزیابی، سپس برگه «Students» و انتخاب «Upload question scores» از منوی «Upload»، فایل CSV را بارگذاری کنید. اگر برای هر دانشجو `score_perc` یا `feedback` (یا هر دو) را خالی بگذارید، مدخل مربوطه به‌روزرسانی نخواهد شد.
 
-The submission associated with each row in the CSV file is identified through one of the following methods (in order of precedence):
+پاسخ ارسالی مرتبط با هر ردیف در فایل CSV از طریق یکی از روش‌های زیر (به ترتیب اولویت) شناسایی می‌شود:
 
-1. If the row includes a `submission_id` column that is not left blank, this is used to identify the submission to be updated. In this case, the `uid`, `group_name` and `qid` columns, if they are provided, are used for verification only, and any mismatches are listed in the upload output as errors.
-2. If the `submission_id` column is left blank or not present, the submission is identified by matching the `uid` (or `group_name` for group assessments), `instance`, and `qid` columns. In this case, all of these columns must be provided.
+1. اگر ردیف شامل ستون `submission_id` باشد و خالی گذاشته نشده باشد، از آن برای شناسایی پاسخ ارسالی جهت به‌روزرسانی استفاده می‌شود. در این حالت، ستون‌های `uid`، `group_name` و `qid`، در صورت ارائه، صرفاً برای راستی‌آزمایی استفاده می‌شوند و هرگونه عدم تطابق به عنوان خطا در خروجی بارگذاری فهرست می‌شود.
+2. اگر ستون `submission_id` خالی باشد یا وجود نداشته باشد، پاسخ ارسالی با تطبیق ستون‌های `uid` (یا `group_name` برای ارزیابی‌های گروهی)، `instance` و `qid` شناسایی می‌شود. در این حالت، تمام این ستون‌ها باید ارائه شوند.
 
-Graders are encouraged to keep both the `submission_id` column for identification, as well as the `uid` (or `group_name`) and `qid` columns for verification, to avoid any ambiguity. Other columns not involved in the identification of the submission, such as `params`, `old_score_perc` or `submitted_answer`, will be ignored if present.
+برای جلوگیری از هرگونه ابهام، به مصححان توصیه می‌شود هم ستون `submission_id` را برای شناسایی و هم ستون‌های `uid` (یا `group_name`) و `qid` را برای راستی‌آزمایی نگه دارند. سایر ستون‌هایی که در شناسایی پاسخ ارسالی دخالتی ندارند، مانند `params`، `old_score_perc` یا `submitted_answer`، در صورت وجود نادیده گرفته خواهند شد.
 
-Each question will have its score and/or feedback updated and the total assessment score will be recalculated. All updates are done with `credit` of 100%, so students get exactly the scores as uploaded.
+نمره و/یا بازخورد هر سوال به‌روزرسانی شده و نمره کل ارزیابی مجدداً محاسبه خواهد شد. تمام به‌روزرسانی‌ها با اعتبار (`credit`) ۱۰۰٪ انجام می‌شوند، بنابراین دانشجویان دقیقاً همان نمرات بارگذاری‌شده را دریافت می‌کنند.
 
-If you prefer to use points rather than a percentage score, rename the `score_perc` column in the CSV file to `points`. Note that either of these options updates the question's points so that the full score of the question reflects the value of the column. For questions with separate auto and manual points, you may replace this column with columns named `manual_score_perc`, `auto_score_perc`, `manual_points`, and/or `auto_points`.
+اگر ترجیح می‌دهید به جای نمره درصدی از نمره امتیازی استفاده کنید، نام ستون `score_perc` را در فایل CSV به `points` تغییر دهید. توجه داشته باشید که هر یک از این گزینه‌ها امتیاز سوال را به‌گونه‌ای به‌روزرسانی می‌کند که نمره کامل سوال بازتاب‌دهنده مقدار آن ستون باشد. برای سوالاتی که امتیازات خودکار و دستی مجزا دارند، می‌توانید این ستون را با ستون‌هایی به نام‌های `manual_score_perc`، `auto_score_perc`، `manual_points` و/یا `auto_points` جایگزین کنید.
 
-If a `feedback` column is provided, it will be shown by default to the student above the submission panel, as seen in the image below. The feedback can use Markdown formatting.
+اگر ستون `feedback` ارائه شده باشد، مطابق تصویر زیر به‌طور پیش‌فرض در بالای پنل پاسخ ارسالی به دانشجو نمایش داده می‌شود. در بازخورد می‌توان از قالب‌بندی مارک‌داون (Markdown) استفاده کرد.
 
-![Feedback shown above student panel](manualGradingFeedback.png)
+![بازخورد نمایش‌داده‌شده بالای پنل دانشجو](manualGradingFeedback.png)
 
-You also have the option to set partial scores. These can be based on individual elements of the question (typically based on the `answers-name` attribute of the element), or any other setting you wish to use. Partial scores must be represented using a JSON object, with keys corresponding to individual elements. Each element key should be mapped to an object, and should ideally contain values for `score` (with a value between 0 and 1) and `weight` (which defaults to 1 if not present). For example, to assign grades to a question with elements `answer1` and `answer2`, use:
+شما همچنین این امکان را دارید که نمرات بخشی (Partial scores) را تنظیم کنید. این نمرات می‌توانند بر اساس المان‌های مجزای سوال (معمولاً بر اساس ویژگی `answers-name` المان) یا هر تنظیم دیگری که مد نظر شماست باشند. نمرات بخشی باید با استفاده از یک شیء JSON با کلیدهای متناظر با المان‌های منفرد نمایش داده شوند. هر کلید المان باید به یک شیء نگاشت شود و در حالت ایده‌آل باید شامل مقادیری برای `score` (با مقداری بین ۰ و ۱) و `weight` (که در صورت عدم وجود، به‌طور پیش‌فرض ۱ است) باشد. به عنوان مثال، برای تخصیص نمرات به سوالی با المان‌های `answer1` و `answer2`، از این ساختار استفاده کنید:
 
 ```json
 {
@@ -90,86 +90,86 @@ You also have the option to set partial scores. These can be based on individual
 }
 ```
 
-If the `partial_scores` column contains a valid value, and there is no value in `auto_score_perc` or `auto_points`, the auto-grading points will be computed based on the weighted average of the partial scores. For example, the score above will be computed as 80% (the weighted average between 70% with weight 2, and 100% with weight 1).
+اگر ستون `partial_scores` شامل یک مقدار معتبر باشد، و مقداری در `auto_score_perc` یا `auto_points` وجود نداشته باشد، امتیاز نمره‌دهی خودکار بر اساس میانگین وزنی نمرات بخشی محاسبه خواهد شد. به عنوان مثال، نمره بالا برابر با ۸۰٪ محاسبه می‌شود (میانگین وزنی بین ۷۰٪ با وزن ۲، و ۱۰۰٪ با وزن ۱).
 
-_WARNING_: note that some elements such as drawings or matrix elements may rely on elaborate partial score values with specific structures and objects. When updating partial scores, make sure you follow the same structure as the original partial scores to avoid any problems. Changing these values could lead to errors on rendering the question pages for these elements. You may find the original partial score structure in the `old_partial_scores` column.
+_هشدار_: توجه داشته باشید که برخی المان‌ها مانند المان‌های ترسیمی یا ماتریسی ممکن است به مقادیر نمره بخشی پیچیده‌ای با ساختارها و اشیاء خاص وابسته باشند. هنگام به‌روزرسانی نمرات بخشی، مطمئن شوید که از همان ساختار نمرات بخشی اولیه پیروی می‌کنید تا از هرگونه مشکلی جلوگیری شود. تغییر این مقادیر می‌تواند منجر به بروز خطا در رندر شدن صفحات سوال برای این المان‌ها گردد. می‌توانید ساختار اصلی نمره بخشی را در ستون `old_partial_scores` بیابید.
 
-## Manual grading using the Web user interface
+## نمره‌دهی دستی با استفاده از رابط کاربری وب
 
-The user interface for manual grading is built to encourage a workflow where all submissions for each individual question are graded together, instead of grading one full assessment instance at a time. This allows graders to focus on the specific issues associated to one question at a time, and provide more consistent grading across all assessments. Individual student submissions are tagged for manual grading if they have manual points assigned to them, or can be manually tagged by course staff. Once a submission is graded, the interface advances to the next submission for the same question.
+رابط کاربری نمره‌دهی دستی به گونه‌ای ساخته شده است که گردش کاری را ترویج دهد که در آن تمام پاسخ‌های ارسالی برای هر سوال منفرد با هم تصحیح شوند، به جای اینکه در هر نوبت یک ارزیابی کامل تصحیح شود. این به مصححان اجازه می‌دهد تا در هر زمان بر روی مسائل خاص مربوط به یک سوال تمرکز کنند و نمره‌دهی سازگارتری را در تمام ارزیابی‌ها ارائه دهند. پاسخ‌های ارسالی انفرادی دانشجویان در صورتی که امتیازات دستی به آن‌ها اختصاص یافته باشد، برای نمره‌دهی دستی برچسب‌گذاری می‌شوند، یا می‌توانند به‌صورت دستی توسط کادر آموزشی درس برچسب‌گذاری گردند. هنگامی که یک پاسخ ارسالی تصحیح شد، رابط کاربری به پاسخ ارسالی بعدی برای همان سوال پیش می‌رود.
 
-After students have completed their assessments, open the "Manual Grading" tab. This page will list all questions in this assessment, as well as the number of submissions that require grading. For questions that have at least one submission tagged for grading, the "Grade next submission" button will be shown, which will jump directly to one of the submissions that need to be graded. Alternatively, clicking on the question's title will open a list of all student answers for that question.
+پس از تکمیل ارزیابی‌ها توسط دانشجویان، برگه «Manual Grading» را باز کنید. این صفحه تمام سوالات موجود در این ارزیابی و همچنین تعداد پاسخ‌های ارسالی نیازمند نمره‌دهی را فهرست می‌کند. برای سوالاتی که حداقل یک پاسخ ارسالیِ برچسب‌خورده برای نمره‌دهی دارند، دکمه «Grade next submission» نشان داده خواهد شد که مستقیماً به یکی از پاسخ‌های ارسالی که باید نمره‌دهی شوند پرش می‌کند. متناوباً، با کلیک بر روی عنوان سوال، فهرستی از تمام پاسخ‌های دانشجویان برای آن سوال باز می‌شود.
 
-!!! info "Order of student submissions"
+!!! info "ترتیب پاسخ‌های ارسالی دانشجویان"
 
-    The order in which student submissions are listed for a question is purposely not based on any deterministic information about the student or the submission data. Rather, submissions are listed in a stable pseudo-random order (i.e., the same order is used if the page is reloaded). Similarly, when a grader submits a grade or skips a submission, the next submission to be graded is based on the same order. Different questions on the same assessment will list the same set of students in a different order.
+    ترتیب فهرست شدن پاسخ‌های ارسالی دانشجویان برای یک سوال، عمداً بر اساس هیچ اطلاعات قطعی و از پیش‌تعیین‌شده‌ای درباره دانشجو یا داده‌های پاسخ ارسالی نیست. در عوض، پاسخ‌های ارسالی با یک ترتیب شبه‌تصادفی پایدار (یعنی در صورت بارگذاری مجدد صفحه، همان ترتیب حفظ می‌شود) فهرست می‌شوند. به همین ترتیب، هنگامی که یک مصحح نمره‌ای را ثبت می‌کند یا از یک پاسخ ارسالی صرف‌نظر (Skip) می‌کند، پاسخ ارسالی بعدی که باید نمره‌دهی شود بر اساس همان ترتیب خواهد بود. سوالات مختلف در یک ارزیابی، همان مجموعه از دانشجویان را با ترتیبی متفاوت فهرست می‌کنند.
 
-    The main reason for this ordering is to ensure that any sequential bias or disparity that is associated to the order in which submissions are graded does not affect any specific student or group. Studies have shown that graders have a tendency to grade latter submissions more harshly or with less quality feedback. Graders may also unwittingly compare submissions with more recently seen answers instead of with a rubric or sample answer. More details:
+    دلیل اصلی این ترتیب‌بندی اطمینان از این است که هرگونه سوگیری متوالی یا ناعدالتی مرتبط با ترتیبی که در آن پاسخ‌ها تصحیح می‌شوند، بر دانشجو یا گروه خاصی تأثیر نگذارد. مطالعات نشان داده‌اند که مصححان تمایل دارند به پاسخ‌های ارسالی بعدی سخت‌گیرانه‌تر نمره دهند یا بازخورد باکیفیت کمتری ارائه دهند. همچنین ممکن است مصححان ناخودآگاه پاسخ‌های ارسالی را با پاسخ‌های دیده‌شده اخیر مقایسه کنند به جای آنکه با بارم‌بندی یا پاسخ نمونه بسنجند. جزئیات بیشتر:
 
     - Wang, Zhihan (Helen) and Pei, Jiaxin and Li, Jun, [*30 Million Canvas Grading Records Reveal Widespread Sequential Bias and System-Induced Surname Initial Disparity*](https://ssrn.com/abstract=4603146) (2023).
     - Goldbach, C., Sickmann, J., & Pitz, T. [*Sequential decision bias – evidence from grading exams*](https://doi.org/10.1080/00036846.2021.1976390). Applied Economics (2021), 54(32), 3727–3739.
 
-The list of student submissions for a question gives course staff the ability to tag individual student answers (or all answers for the question) to specific graders. This can be done by selecting the submissions to be tagged, then selecting the "Tag for grading" button and choosing the grader responsible for those submissions. Only staff members with [Editor permission for the course instance](../course/index.md#student-data-access-roles) are listed for tagging.
+فهرست پاسخ‌های ارسالی دانشجویان برای یک سوال به کادر آموزشی درس این امکان را می‌دهد که پاسخ‌های ارسالی انفرادی دانشجویان (یا تمام پاسخ‌ها برای آن سوال) را برای مصححان خاص برچسب‌گذاری (Tag) کنند. این کار با انتخاب پاسخ‌های ارسالی مورد نظر برای برچسب‌گذاری، سپس انتخاب دکمه «Tag for grading» و انتخاب مصحح مسئول آن پاسخ‌ها انجام می‌شود. فقط اعضای کادر آموزشی با [دسترسی ویرایشگر (Editor) برای دوره](../course/index.md#student-data-access-roles) برای برچسب‌گذاری فهرست می‌شوند.
 
-In the grading page for individual submissions, the grader can assign a specific set of manual points to the question, and provide feedback as needed (Markdown formatting is allowed). For questions with auto points, it is also possible to override the auto-grading points assigned to the question. Graders also have the option to use a percentage score instead of points. Once these values are set, the grader can select "Submit", which will update the score and open the next question to be graded.
+در صفحه نمره‌دهی برای پاسخ‌های ارسالی انفرادی، مصحح می‌تواند مجموعه مشخصی از امتیازات دستی را به سوال اختصاص دهد و در صورت نیاز بازخورد ارائه کند (قالب‌بندی Markdown مجاز است). برای سوالات دارای امتیاز خودکار، امکان بازنویسی (Override) امتیازات نمره‌دهی خودکار اختصاص‌یافته به سوال نیز وجود دارد. مصححان این گزینه را نیز دارند که به جای امتیاز، از نمره درصدی استفاده کنند. پس از تنظیم این مقادیر، مصحح می‌تواند دکمه «Submit» را انتخاب کند که نمره را به‌روزرسانی کرده و سوال بعدی را برای نمره‌دهی باز می‌کند.
 
-In some situations a grader may not feel confident to grade a particular submission. In such scenarios, the grader may Skip the question, or use the dropdown of the same button to assign this question to be reviewed by another grader (e.g., an instructor or lead TA).
+در برخی شرایط ممکن است مصحح برای نمره‌دهی به یک پاسخ ارسالی خاص احساس اطمینان نکند. در چنین شرایطی، مصحح می‌تواند از سوال صرف‌نظر (Skip) کند، یا با استفاده از منوی کشویی همان دکمه، این سوال را برای بازبینی توسط مصحح دیگری (مثلاً مدرس یا دستیار آموزشی ارشد) تعیین کند.
 
-By default, the grading page will show the question, correct answer and submissions with the same content as a student would see it. However, for questions with long descriptions, it is possible to hide some of this information by using the [`pl-hide-in-manual-grading` element](../elements/pl-hide-in-manual-grading.md). This allows the grader to focus on important parts of the question or answer. It is also possible to add information to the question, such as staff-only solutions or grading comments, using the [`pl-manual-grading-only` element](../elements/pl-manual-grading-only.md). Any information within this element will be shown to graders, but not to students.
+به‌طور پیش‌فرض، صفحه نمره‌دهی سوال، پاسخ صحیح و پاسخ‌های ارسالی را با همان محتوایی که دانشجو می‌بیند نمایش می‌دهد. با این حال، برای سوالاتی با توضیحات طولانی، می‌توان برخی از این اطلاعات را با استفاده از [المان `pl-hide-in-manual-grading`](../elements/pl-hide-in-manual-grading.md) پنهان کرد. این ویژگی به مصحح اجازه می‌دهد تا بر بخش‌های مهم سوال یا پاسخ تمرکز کند. همچنین می‌توان با استفاده از [المان `pl-manual-grading-only`](../elements/pl-manual-grading-only.md)، اطلاعاتی مانند راه‌حل‌های ویژه کادر آموزشی یا یادداشت‌های نمره‌دهی را به سوال اضافه کرد. هرگونه اطلاعات داخل این المان به مصححان نشان داده می‌شود، اما به دانشجویان نشان داده نخواهد شد.
 
-### Creating a rubric for manual grading
+### ایجاد بارم‌بندی (Rubric) برای نمره‌دهی دستی
 
-An instructor may set a structured rubric to make the manual grading process faster, more consistent and fairer. The rubric allows graders to select from a set of predetermined items with associated points and feedback instead of manually setting points and a feedback message.
+مدرس می‌تواند یک بارم‌بندی (ماتریس نمره‌دهی) ساختاریافته تنظیم کند تا فرآیند نمره‌دهی دستی سریع‌تر، سازگارتر و عادلانه‌تر شود. بارم‌بندی به مصححان اجازه می‌دهد به جای وارد کردن دستی امتیازات و پیام بازخورد، از میان مجموعه‌ای از آیتم‌های از پیش تعیین‌شده با امتیازات و بازخوردهای مرتبط انتخاب کنند.
 
-A rubric is composed of a set of rubric items. Each item is assigned a point value, either positive (credit), negative (penalty or deduction) or zero (feedback that does not affect the score). A grader can then select the rubric items that apply to a particular submission from the list of rubric items. The submission's score is then based on the sum of all the points for all items selected for the submission.
+یک ماتریس نمره‌دهی از مجموعه‌ای از آیتم‌های بارم‌بندی تشکیل شده است. به هر آیتم یک مقدار امتیازی اختصاص داده می‌شود: یا مثبت (امتیاز کسب‌شده / Credit)، یا منفی (جریمه یا کسر نمره / Deduction) یا صفر (بازخوردی که بر نمره تأثیر نمی‌گذارد). مصحح می‌تواند آیتم‌های بارم‌بندی مرتبط با یک پاسخ ارسالی خاص را از فهرست آیتم‌ها انتخاب کند. نمره پاسخ ارسالی بر اساس مجموع تمام امتیازات آیتم‌های انتخاب‌شده برای آن پاسخ محاسبه می‌شود.
 
-To create a rubric, open an individual question instance. On the grading panel, click on the "Rubric" button to open rubric settings.
+برای ایجاد یک بارم‌بندی، صفحه یک سوال را در ارزیابی باز کنید. در پنل نمره‌دهی، بر روی دکمه «Rubric» کلیک کنید تا تنظیمات بارم‌بندی باز شود.
 
-![Rubric button on grading panel](rubric_button.png)
+![دکمه بارم‌بندی در پنل نمره‌دهی](rubric_button.png)
 
-![Rubric settings dialog](rubric_settings.png)
+![کادر تنظیمات بارم‌بندی](rubric_settings.png)
 
-In questions that only have manual grading, the rubric assigns points to the question as a whole. In autograded questions and questions with a combination of manual and automated grading, the rubric may be set to be applied only to manual points or to total points. This setting causes the grading to be computed as follows:
+در سوالاتی که صرفاً نمره‌دهی دستی دارند، بارم‌بندی امتیازات را به کل سوال اختصاص می‌دهد. در سوالات نمره‌دهی خودکار و سوالاتی با ترکیبی از نمره‌دهی دستی و خودکار، بارم‌بندی را می‌توان طوری تنظیم کرد که فقط برای امتیازات دستی یا برای کل امتیازات اعمال شود. این تنظیم باعث می‌شود نمره‌دهی به شرح زیر محاسبه شود:
 
-- If "Apply rubric to manual points" is selected, the score obtained by the rubric grading is added to the points from the auto grader to result in the final score. This type of grading is often used for questions where the manual grading complements the auto grading, such as code style in programming questions, or explanations and rationales for specific calculations.
-- If "Apply rubric to total points" is selected, the auto grader component is ignored, and the rubric grading overrides the final score of the question as a whole. This setting is used when the auto grading method is unable to capture all possible correct answers, and manual grading is used to review cases that were not properly graded.
+- اگر گزینه «Apply rubric to manual points» (اعمال بارم‌بندی بر نمرات دستی) انتخاب شود، نمره حاصل از نمره‌دهی با بارم‌بندی به امتیازات حاصل از نمره‌دهی خودکار اضافه می‌شود تا نمره نهایی به دست آید. این نوع نمره‌دهی اغلب برای سوالاتی استفاده می‌شود که نمره‌دهی دستی مکمل نمره‌دهی خودکار است؛ مانند سبک کدنویسی در سوالات برنامه‌نویسی، یا توضیحات و استدلال‌ها برای محاسبات خاص.
+- اگر گزینه «Apply rubric to total points» (اعمال بارم‌بندی بر کل نمرات) انتخاب شود، بخش نمره‌دهی خودکار نادیده گرفته شده و نمره‌دهی بارم‌بندی جایگزین نمره نهایی کل سوال می‌شود. این تنظیم زمانی استفاده می‌شود که روش نمره‌دهی خودکار قادر به شناسایی همه پاسخ‌های صحیح ممکن نباشد، و نمره‌دهی دستی برای بازبینی مواردی که به درستی نمره‌دهی نشده‌اند استفاده گردد.
 
-Instructors may set the rubric to use positive or negative grading. In positive grading, submissions start at zero, and individual rubric items correspond to students "earning" points that add up to the final score. In negative grading, submissions start at the maximum score, and individual rubric items correspond to penalties or deductions that are subtracted from the score. Both options allow the creation of items with a `0` point value, which provides feedback that does not affect their score. Even within a positive or negative grading rubric, individual rubric items may have a combination of positive or negative point values to provide graders with additional flexibility.
+مدرسان می‌توانند بارم‌بندی را برای استفاده از نمره‌دهی مثبت یا منفی تنظیم کنند. در نمره‌دهی مثبت، پاسخ‌های ارسالی از صفر شروع می‌شوند و آیتم‌های مجزای بارم‌بندی متناظر با «کسب» امتیاز توسط دانشجویان هستند که به نمره نهایی اضافه می‌شوند. در نمره‌دهی منفی، پاسخ‌های ارسالی از حداکثر نمره شروع می‌شوند و آیتم‌های منفرد بارم‌بندی متناظر با جریمه‌ها یا کسوراتی هستند که از نمره کم می‌شوند. هر دو گزینه اجازه ایجاد آیتم‌هایی با مقدار امتیاز `0` را می‌دهند که بازخوردی بدون تأثیر بر نمره ارائه می‌دهد. حتی درون یک بارم‌بندی با نمره‌دهی مثبت یا منفی، آیتم‌های منفرد بارم‌بندی می‌توانند ترکیبی از مقادیر مثبت یا منفی باشند تا انعطاف‌پذیری بیشتری به مصححان ارائه دهند.
 
-By default, the score produced by the rubric is capped at the maximum points associated to the question, and penalties do not cause the points to get below zero. Optionally, this limit can be extended by assigning a minimum rubric score (typically to allow negative scores) and maximum extra credit to the rubric (to allow points above the maximum).
+به‌طور پیش‌فرض، نمره تولیدشده توسط بارم‌بندی به حداکثر امتیاز اختصاص‌یافته به سوال محدود می‌شود و جریمه‌ها باعث کاهش امتیاز به زیر صفر نمی‌شوند. در صورت تمایل، می‌توان این محدودیت را با اختصاص حداقل نمره بارم‌بندی (معمولاً برای مجاز دانستن نمرات منفی) و حداکثر نمره اضافی (Extra Credit) به بارم‌بندی (برای مجاز دانستن نمرات بالاتر از حداکثر) گسترش داد.
 
-At minimum, each rubric item consists of a point-value and a description. This description is shown to both graders and in feedback to students. It is also possible to add a more detailed explanation of the rubric item for students to get even more feedback. A grader note can be set that is visible to graders, but not to students, and can be used to provide instructions on scenarios when/how the rubric item should be used (or not).
+در کمترین حالت، هر آیتم بارم‌بندی شامل یک مقدار امتیازی و یک توصیف است. این توصیف هم به مصححان و هم در بازخورد به دانشجویان نمایش داده می‌شود. همچنین می‌توان توضیح دقیق‌تری از آیتم بارم‌بندی اضافه کرد تا دانشجویان بازخورد بیشتری دریافت کنند. می‌توان یک یادداشت مصحح (Grader note) تنظیم کرد که برای مصححان قابل مشاهده باشد، اما به دانشجویان نشان داده نشود، و می‌توان از آن برای ارائه دستورالعمل‌هایی درباره سناریوهای زمان و نحوه استفاده (یا عدم استفاده) از آیتم بارم‌بندی استفاده کرد.
 
-By default, all rubric items are set to be shown to students in all cases, with visual indicators showing which of the rubric items are applied to an individual student. The settings also allow graders to only show applied rubric items. This option may be useful in cases where specific penalties or credit/bonus points apply only to a small subset of students, which may be confusing for students that do not have the rubric item selected.
+به‌طور پیش‌فرض، تمام آیتم‌های بارم‌بندی طوری تنظیم شده‌اند که در همه موارد با نشانگرهای بصری که نشان می‌دهد کدام آیتم‌ها برای یک دانشجوی خاص اعمال شده‌اند به دانشجو نمایش داده شوند. تنظیمات همچنین به مصححان اجازه می‌دهد که فقط آیتم‌های اعمال‌شده را نشان دهند. این گزینه ممکن است در مواردی مفید باشد که جریمه‌های خاص یا نمرات تشویقی/امتیازی فقط برای زیرمجموعه کوچکی از دانشجویان اعمال می‌شود، که ممکن است برای دانشجویانی که آن آیتم برایشان انتخاب نشده گیج‌کننده باشد.
 
-The description, explanation, and grader note of a rubric item, as well as the grader guidelines for a rubric, may include mustache patterns that will be replaced in the grading interface and student feedback with appropriate values. These patterns are based on the parameters and correct answers set for the student's variant, or the student's submitted answer. A list of patterns that are available for a particular question is presented at the bottom of the rubric settings dialog for reference. For example, if a variant sets a value to `data["params"]["starting_index"]` in `generate`, a rubric item may include the pattern `{{params.starting_index}}` in the description, explanation or grader note. This pattern will be replaced with the value of the corresponding parameter for the student's specific variant, as seen in the screenshots below.
+توصیف، توضیح و یادداشت مصحح یک آیتم بارم‌بندی، و همچنین دستورالعمل‌های مصحح برای بارم‌بندی، می‌توانند شامل الگوهای موستاش (Mustache) باشند که در رابط نمره‌دهی و بازخورد دانشجو با مقادیر مناسب جایگزین می‌شوند. این الگوها بر اساس پارامترها و پاسخ‌های صحیح تنظیم‌شده برای واریانت دانشجو، یا پاسخ ارسالی دانشجو هستند. فهرستی از الگوهای موجود برای یک سوال خاص در پایین کادر گفتگوی تنظیمات بارم‌بندی برای ارجاع ارائه شده است. به عنوان مثال، اگر یک واریانت مقداری را برای `data["params"]["starting_index"]` در تابع `generate` تنظیم کند، یک آیتم بارم‌بندی می‌تواند شامل الگوی `{{params.starting_index}}` در توصیف، توضیح یا یادداشت مصحح باشد. این الگو مطابق تصاویر زیر با مقدار پارامتر مربوطه برای واریانت خاص دانشجو جایگزین خواهد شد.
 
-![Rubric items in settings](rubric_items_setting.png)
+![آیتم‌های بارم‌بندی در تنظیمات](rubric_items_setting.png)
 
-Graders will then see, in the grading panel, the rubric item description or explanation updated to reflect the appropriate value of the parameter for the student's variant.
+سپس مصححان در پنل نمره‌دهی مشاهده خواهند کرد که توصیف یا توضیح آیتم بارم‌بندی به‌روزرسانی شده تا مقدار مناسب پارامتر را برای واریانت دانشجو بازتاب دهد.
 
-![Rubric items in grading panel](grading_panel_with_rubrics.png)
+![آیتم‌های بارم‌بندی در پنل نمره‌دهی](grading_panel_with_rubrics.png)
 
-As students see their feedback, the rubric items will be updated accordingly for each student, so that students can see customized feedback that matches their variant.
+همان‌طور که دانشجویان بازخورد خود را مشاهده می‌کنند، آیتم‌های بارم‌بندی متناسب با هر دانشجو به‌روزرسانی خواهند شد تا دانشجویان بتوانند بازخورد سفارشی‌سازی‌شده منطبق با واریانت خود را ببینند.
 
-![Rubric items in student feedback](student_feedback_with_rubrics.png)
+![آیتم‌های بارم‌بندی در بازخورد دانشجو](student_feedback_with_rubrics.png)
 
-### Updating the rubric
+### به‌روزرسانی بارم‌بندی
 
-As grading progresses, new scenarios may be found by graders that require changes in the rubric, such as new types of penalties or credits or more specialized feedback. The rubric may be changed as required, even after grading is already underway. Changes in the rubric are presented to all graders in any submission that still requires grading.
+با پیشرفت نمره‌دهی، ممکن است مصححان با سناریوهای جدیدی مواجه شوند که نیازمند تغییراتی در بارم‌بندی است؛ مانند انواع جدیدی از جریمه‌ها یا امتیازات، یا بازخوردهای تخصصی‌تر. بارم‌بندی را می‌توان در صورت نیاز تغییر داد، حتی پس از آنکه نمره‌دهی آغاز شده باشد. تغییرات بارم‌بندی به تمام مصححان در هر پاسخ ارسالی که هنوز نیاز به نمره‌دهی دارد نمایش داده می‌شود.
 
-If the rubric is changed after some submissions have already been manually graded, the changes may affect the previously graded submissions, as follows:
+اگر بارم‌بندی پس از اینکه برخی از پاسخ‌های ارسالی قبلاً به‌صورت دستی تصحیح شده‌اند تغییر کند، این تغییرات ممکن است پاسخ‌های ارسالیِ قبلاً نمره‌دهی‌شده را به شرح زیر تحت تأثیر قرار دهند:
 
-- Adding new rubric items does not affect the score of existing submissions;
-- Changing the point value assigned to a rubric item will trigger a recalculation of the score for all submissions where that rubric item was applied, using the updated point value;
-- Changing the description or explanation of a rubric item will update the feedback shown to students, but will not trigger a score recalculation;
-- Deleting a rubric item will trigger a recalculation of the score without the deleted rubric item for all submissions where that rubric item was applied;
-- Changing the minimum score or maximum extra credit will cause all existing rubric gradings to be recalculated.
+- افزودن آیتم‌های جدید بارم‌بندی بر نمره پاسخ‌های ارسالی موجود تأثیری ندارد؛
+- تغییر مقدار امتیاز اختصاص‌یافته به یک آیتم بارم‌بندی، باعث محاسبه مجدد نمره برای تمام پاسخ‌های ارسالی که آن آیتم بر روی آن‌ها اعمال شده بود (با استفاده از مقدار امتیاز به‌روزشده) خواهد شد؛
+- تغییر توصیف یا توضیح یک آیتم بارم‌بندی، بازخورد نمایش‌داده‌شده به دانشجویان را به‌روزرسانی می‌کند، اما باعث محاسبه مجدد نمره نخواهد شد؛
+- حذف یک آیتم بارم‌بندی، محاسبه مجدد نمره را بدون آن آیتم حذف‌شده برای تمام پاسخ‌های ارسالی که آن آیتم بر روی آن‌ها اعمال شده بود، آغاز می‌کند؛
+- تغییر حداقل نمره یا حداکثر نمره اضافی (Extra Credit) باعث می‌شود تمام نمره‌دهی‌های مبتنی بر بارم‌بندیِ موجود مجدداً محاسبه شوند.
 
-When updating rubric settings, a flag at the bottom of the settings dialog box gives graders the option of tagging all submissions for manual grading. This option may be used in cases where the changes are significant enough to warrant a review or "spot-check" of all previously graded questions, ensuring they take the new rubric into account.
+هنگام به‌روزرسانی تنظیمات بارم‌بندی، یک نشانگر در پایین کادر گفتگوی تنظیمات به مصححان این امکان را می‌دهد که تمام پاسخ‌های ارسالی را برای نمره‌دهی دستی برچسب‌گذاری کنند. از این گزینه می‌توان در مواردی استفاده کرد که تغییرات آن‌قدر قابل توجه هستند که بازبینی یا بررسی موردی تمام سوالات قبلاً نمره‌دهی‌شده را توجیه می‌کنند، تا اطمینان حاصل شود که بارم‌بندی جدید لحاظ شده است.
 
-### Grading a submission using a rubric
+### نمره‌دهی یک پاسخ ارسالی با استفاده از بارم‌بندی
 
-To manually grade a submission using a rubric, a grader must select the items that apply to a particular submission and press Submit. Additionally, each rubric item (or each of the first 10 items, in long rubrics) is assigned a keyboard shortcut corresponding to a digit; pressing that digit on the keyboard causes that item to be selected (or cleared, if it is selected).
+برای نمره‌دهی دستی یک پاسخ ارسالی با استفاده از بارم‌بندی، مصحح باید آیتم‌هایی را که برای یک پاسخ ارسالی خاص صدق می‌کنند انتخاب کرده و دکمه Submit را فشار دهد. علاوه بر این، به هر آیتم بارم‌بندی (یا به هر یک از ۱۰ آیتم اول در بارم‌بندی‌های طولانی) یک میانبر صفحه‌کلید متناظر با یک رقم اختصاص داده می‌شود؛ فشردن آن رقم روی صفحه‌کلید باعث انتخاب آن آیتم (یا در صورت انتخاب بودن، لغو انتخاب آن) می‌شود.
 
-Graders have the flexibility to apply a grading adjustment (positive or negative) on top of the rubric item. This may be used where instructors need to make judgment calls for unconventional submissions that don't apply to specific rubric items. This option is discouraged in cases where the issue is found in multiple submissions, as additional rubric items provide more flexibility in providing feedback and adjusting grades.
+مصححان این انعطاف‌پذیری را دارند که یک تعدیل نمره‌دهی (مثبت یا منفی) را علاوه بر آیتم‌های بارم‌بندی اعمال کنند. این مورد ممکن است در شرایطی استفاده شود که مدرسان برای پاسخ‌های ارسالی غیرمتعارف که مشمول آیتم‌های بارم‌بندی خاصی نمی‌شوند، نیاز به قضاوت موردی دارند. در مواردی که این مسئله در چندین پاسخ ارسالی یافت می‌شود، استفاده از این گزینه توصیه نمی‌شود، زیرا افزودن آیتم‌های بارم‌بندی بیشتر انعطاف‌پذیری بهتری را در ارائه بازخورد و تنظیم نمرات فراهم می‌آورد.
