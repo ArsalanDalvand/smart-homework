@@ -1,67 +1,68 @@
-# Workspaces
+# محیط‌های کاری (Workspaces)
 
-Workspaces allow students to work in persistent remote containers via in-browser frontends such as VS Code and JupyterLab. The remote containers are configured by instructors to provide custom, uniform environments per question. Workspace questions are integrated with the standard PrairieLearn autograding pipeline.
+محیط‌های کاری (Workspaces) به دانشجویان این امکان را می‌دهند که در کانتینرهای ریموت و پایدار از طریق فرانت‌اندهای درون مرورگر مانند VS Code و JupyterLab کار کنند. این کانتینرهای ریموت توسط مدرسان پیکربندی می‌شوند تا محیط‌های سفارشی و یکنواختی را برای هر سوال فراهم آورند. سوالات مبتنی بر محیط کاری با خط لوله (pipeline) استاندارد نمره‌دهی خودکار PrairieLearn یکپارچه شده‌اند.
 
-## Directory structure
+## ساختار دایرکتوری
 
 ```text
 questions
 |
-+-- my_ungraded_workspace     # for an ungraded workspace question
-|   +-- info.json             # metadata for my_ungraded_workspace
-|   +-- question.html         # HTML template for my_ungraded_workspace
-|   +-- server.py             # secret server-side code for my_ungraded_workspace (optional)
++-- my_ungraded_workspace     # برای یک سوال محیط کاری بدون نمره
+|   +-- info.json             # متادیتا برای my_ungraded_workspace
+|   +-- question.html         # قالب HTML برای my_ungraded_workspace
+|   +-- server.py             # کد محرمانه سمت سرور برای my_ungraded_workspace (اختیاری)
 |   |
-|   +-- clientFilesQuestion   # files accessible to the client web browser (optional)
+|   +-- clientFilesQuestion   # فایل‌های قابل دسترس برای مرورگر وب کلاینت (اختیاری)
 |   |   `-- fig1.png
 |   |
-|   `-- workspace             # copied into the student's workspace container home dir (optional)
+|   `-- workspace             # کپی‌شده در دایرکتوری home کانتینر محیط کاری دانشجو (اختیاری)
 |       +-- .bashrc
 |       +-- starter_code.h
 |       `-- starter_code.c
 |
-`-- my_autograded_workspace   # for an externally graded workspace question
-    +-- info.json             # metadata for my_autograded_workspace
-    +-- question.html         # HTML template for my_autograded_workspace
-    +-- server.py             # secret server-side code for my_autograded_workspace (optional)
+`-- my_autograded_workspace   # برای یک سوال محیط کاری با نمره‌دهی خارجی
+    +-- info.json             # متادیتا برای my_autograded_workspace
+    +-- question.html         # قالب HTML برای my_autograded_workspace
+    +-- server.py             # کد محرمانه سمت سرور برای my_autograded_workspace (اختیاری)
     |
-    +-- clientFilesQuestion   # files accessible to the client web browser (optional)
+    +-- clientFilesQuestion   # فایل‌های قابل دسترس برای مرورگر وب کلاینت (اختیاری)
     |   `-- fig1.png
     |
-    +-- tests                 # external grading files (see other doc)
+    +-- tests                 # فایل‌های نمره‌دهی خارجی (سایر مستندات را ببینید)
     |   +-- correct_answer.c
     |   `-- test_run.py
     |
-    `-- workspace             # copied into the student's workspace container home dir (optional)
+    `-- workspace             # کپی‌شده در دایرکتوری home کانتینر محیط کاری دانشجو (اختیاری)
         +-- .bashrc
         +-- starter_code.h
         `-- starter_code.c
 ```
 
-## Setting up
+<a id="setting-up"></a>
+## راه‌اندازی
 
 ### `info.json`
 
-The question's `info.json` should set the `singleVariant` and `workspaceOptions` properties:
+فایل `info.json` سوال باید ویژگی‌های `singleVariant` و `workspaceOptions` را تنظیم کند:
 
-- `"singleVariant": true` will prevent student workspaces from resetting due to new variants being generated
-  - Note that new variants will still be generated in `Staff view`
-- `workspaceOptions` contains the following properties:
-  - `image`: Public Docker image serving the IDE and containing the desired compilers, debuggers, etc. Supported registries are Docker Hub (`docker.io`), GHCR (`ghcr.io`), Quay (`quay.io`), GitLab (`registry.gitlab.com`), and Amazon ECR Public (`public.ecr.aws`). For example, `docker.io/org/image:tag` for Docker Hub or `ghcr.io/org/image:tag` for GHCR. The Docker Hub shorthand `org/image:tag` is also supported. Custom registry domains and explicit ports are not supported. See [Supported registries](../dockerImages.md#supported-registries) for details.
-  - `gradedFiles` (optional, default none): list of file paths (relative to the `home` path) that will be copied out of the workspace container when saving a submission. These files can then be used for grading (either auto-grading or manual grading), previewed in the submission panel, and included in instructor submission downloads. Files can be in subdirectories, but the files must be explicitly listed (e.g. `dir/file.txt`) or use wildcards (e.g., `dir/*`). If a file is in a subdirectory, the relative path to the file will be reconstructed inside the autograder. Wildcards are allowed (e.g., you can specify `dir/*.c`) and will match any files in the workspace that match them. Paths with wildcards are considered optional. The following wildcards are supported:
-    - `*` matches everything except path separators and hidden files (names starting with `.`).
-    - `**` can be used to identify files in all subdirectories of the workspace (e.g., `**/*.py` will copy the files with `.py` extension in the home directory and in all its subdirectories).
-    - `?` matches any single character except path separators.
-    - `[seq]` matches any character in `seq`.
-  - `args` (optional, default none): command line arguments to pass to the Docker image. It may be a string (e.g., `"--auth none"`) or an array of strings (e.g., `["--auth", "none"]`).
-  - `enableNetworking` (optional, default false): whether the workspace should be allowed to connect to the public internet. This is disabled by default to make secure, isolated execution the default behavior. This restriction is not enforced when running PrairieLearn in local development mode. It is strongly recommended to use the default (no networking) for exam questions, because network access can be used to enable cheating. Only enable networking for homework questions, and only if it is strictly required, for example for downloading data from the internet.
-  - `environment` (optional, default `{}`): environment variables to set inside the workspace container. Set variables using `{"VAR": "value", ...}`, and unset variables using `{"VAR": null}` (no quotes around `null`). By default, PrairieLearn includes the following environment variables in all workspaces:
-    - `WORKSPACE_BASE_URL`: the base URL for the workspace container, which can be used to construct URLs for API requests to the workspace container.
-    - `WORKSPACE_NETWORKING_DISABLED`: set when the workspace has networking disabled. This can be used to conditionally enable or disable features in the workspace based on its ability to access the internet.
+- `"singleVariant": true` مانع از ریست شدن محیط‌های کاری دانشجویان به دلیل تولید واریانت‌های جدید می‌شود.
+  - توجه داشته باشید که واریانت‌های جدید همچنان در «نمای کادر آموزشی» (`Staff view`) تولید خواهند شد.
+- `workspaceOptions` شامل ویژگی‌های زیر است:
+  - `image`: ایمیج عمومی داکر که IDE را ارائه می‌دهد و شامل کامپایلرها، دیباگرها و غیره مورد نیاز است. رجیستری‌های پشتیبانی‌شده عبارتند از Docker Hub (`docker.io`)، GHCR (`ghcr.io`)، Quay (`quay.io`)، GitLab (`registry.gitlab.com`) و Amazon ECR Public (`public.ecr.aws`). به عنوان مثال، `docker.io/org/image:tag` برای Docker Hub یا `ghcr.io/org/image:tag` برای GHCR. قالب خلاصه Docker Hub یعنی `org/image:tag` نیز پشتیبانی می‌شود. دامنه‌های رجیستری سفارشی و پورت‌های صریح پشتیبانی نمی‌شوند. برای جزئیات به [رجیستری‌های پشتیبانی‌شده](../dockerImages.md#supported-registries) مراجعه کنید.
+  - `gradedFiles` (اختیاری، پیش‌فرض خالی/none): فهرستی از مسیرهای فایل (نسبت به مسیر `home`) که هنگام ذخیره یک پاسخ ارسالی (submission) از کانتینر محیط کاری به بیرون کپی می‌شوند. این فایل‌ها سپس می‌توانند برای نمره‌دهی (چه نمره‌دهی خودکار یا نمره‌دهی دستی) استفاده شوند، در پنل پاسخ ارسالی پیش‌نمایش داده شوند و در دانلودهای پاسخ ارسالی مدرس گنجانده شوند. فایل‌ها می‌توانند در زیردایرکتوری‌ها باشند، اما فایل‌ها باید صریحاً فهرست شوند (مثلاً `dir/file.txt`) یا از وایلدکارت‌ها (wildcards) استفاده کنند (مثلاً `dir/*`). اگر فایلی در یک زیردایرکتوری باشد، مسیر نسبی فایل در داخل نمره‌دهنده خودکار بازسازی خواهد شد. وایلدکارت‌ها مجاز هستند (مثلاً می‌توانید `dir/*.c` را مشخص کنید) و با هر فایلی در محیط کاری که با آنها مطابقت داشته باشد همخوانی خواهند داشت. مسیرهای دارای وایلدکارت اختیاری در نظر گرفته می‌شوند. وایلدکارت‌های زیر پشتیبانی می‌شوند:
+    - `*` با همه‌چیز به جز جداکننده‌های مسیر و فایل‌های مخفی (نام‌هایی که با `.` شروع می‌شوند) مطابقت دارد.
+    - `**` می‌تواند برای شناسایی فایل‌ها در تمام زیردایرکتوری‌های محیط کاری استفاده شود (مثلاً `**/*.py` فایل‌های با پسوند `.py` را در دایرکتوری home و تمام زیردایرکتوری‌های آن کپی می‌کند).
+    - `?` با هر تک کاراکتری به جز جداکننده‌های مسیر مطابقت دارد.
+    - `[seq]` با هر کاراکتری در `seq` مطابقت دارد.
+  - `args` (اختیاری، پیش‌فرض خالی/none): آرگومان‌های خط فرمان برای ارسال به ایمیج داکر. این مقدار می‌تواند یک رشته (مثلاً `"--auth none"`) یا آرایه‌ای از رشته‌ها (مثلاً `["--auth", "none"]`) باشد.
+  - `enableNetworking` (اختیاری، پیش‌فرض false): تعیین می‌کند که آیا محیط کاری مجاز به اتصال به اینترنت عمومی است یا خیر. این گزینه به طور پیش‌فرض غیرفعال است تا اجرای امن و ایزوله رفتار پیش‌فرض باشد. این محدودیت هنگام اجرای PrairieLearn در حالت توسعه محلی اعمال نمی‌شود. اکیداً توصیه می‌شود برای سوالات آزمون از حالت پیش‌فرض (بدون شبکه) استفاده شود، زیرا دسترسی به شبکه می‌تواند امکان تقلب را فراهم کند. دسترسی به شبکه را تنها برای سوالات تکالیف و فقط در صورت لزوم قطعی، برای مثال جهت دانلود داده‌ها از اینترنت، فعال کنید.
+  - `environment` (اختیاری، پیش‌فرض `{}`): متغیرهای محیطی که باید درون کانتینر محیط کاری تنظیم شوند. متغیرها را با استفاده از `{"VAR": "value", ...}` تنظیم کنید، و با استفاده از `{"VAR": null}` متغیرها را لغو مقداردهی (unset) نمایید (بدون علامت نقل‌قول در اطراف `null`). به طور پیش‌فرض، PrairieLearn متغیرهای محیطی زیر را در تمام محیط‌های کاری قرار می‌دهد:
+    - `WORKSPACE_BASE_URL`: آدرس URL پایه برای کانتینر محیط کاری، که می‌تواند برای ساخت URLها جهت درخواست‌های API به کانتینر محیط کاری استفاده شود.
+    - `WORKSPACE_NETWORKING_DISABLED`: زمانی تنظیم می‌شود که دسترسی به شبکه برای محیط کاری غیرفعال باشد. این متغیر می‌تواند برای فعال‌سازی یا غیرفعال‌سازی شرطی قابلیت‌ها در محیط کاری بر اساس توانایی دسترسی آن به اینترنت استفاده شود.
 
-The `home`, `port` and `rewriteUrl` properties are supplied by Docker image labels in the [maintained workspace images](#maintained-workspace-images). When using these images, omit these properties from `info.json` and leave the home directory and port fields blank in the question settings. To configure or override these properties for a custom image, see [Custom workspace images](#custom-workspace-images).
+ویژگی‌های `home`، `port` و `rewriteUrl` توسط لیبل‌های ایمیج داکر در [ایمیج‌های محیط کاری نگهداری‌شده](#maintained-workspace-images) تأمین می‌شوند. هنگام استفاده از این ایمیج‌ها، این ویژگی‌ها را از `info.json` حذف کنید و فیلدهای دایرکتوری home و پورت را در تنظیمات سوال خالی بگذارید. برای پیکربندی یا بازنویسی (override) این ویژگی‌ها برای یک ایمیج سفارشی، به [ایمیج‌های سفارشی محیط کاری](#custom-workspace-images) مراجعه کنید.
 
-For an ungraded workspace, a full `info.json` file should look something like:
+برای یک محیط کاری بدون نمره، یک فایل کامل `info.json` چیزی شبیه به این خواهد بود:
 
 ```json title="info.json"
 {
@@ -75,7 +76,7 @@ For an ungraded workspace, a full `info.json` file should look something like:
 }
 ```
 
-For an externally graded workspace, a full `info.json` file should look something like:
+برای یک محیط کاری با نمره‌دهی خارجی، یک فایل کامل `info.json` چیزی شبیه به این خواهد بود:
 
 ```json title="info.json"
 {
@@ -98,9 +99,9 @@ For an externally graded workspace, a full `info.json` file should look somethin
 
 ### `question.html`
 
-The `Open workspace` button should be included in all workspace questions by using the [`pl-workspace`](../elements/pl-workspace.md) element.
+دکمه `Open workspace` (باز کردن محیط کاری) باید با استفاده از المان [`pl-workspace`](../elements/pl-workspace.md) در تمام سوالات محیط کاری گنجانده شود.
 
-For an ungraded workspace, a minimal `question.html` should look something like:
+برای یک محیط کاری بدون نمره، یک فایل حداقلی `question.html` باید شبیه به این باشد:
 
 ```html
 <pl-question-panel>
@@ -109,9 +110,9 @@ For an ungraded workspace, a minimal `question.html` should look something like:
 </pl-question-panel>
 ```
 
-For an externally graded workspace, the workspace submission panel `<pl-submission-panel>` should include the file preview element `<pl-file-preview>`. This will enable students not only to preview submitted files but also to receive file submission error messages.
+برای یک محیط کاری با نمره‌دهی خارجی، پنل ارسال پاسخ محیط کاری `<pl-submission-panel>` باید المان پیش‌نمایش فایل `<pl-file-preview>` را شامل شود. این به دانشجویان امکان می‌دهد نه تنها فایل‌های ارسال‌شده را پیش‌نمایش کنند، بلکه پیام‌های خطای ارسال فایل را نیز دریافت نمایند.
 
-A minimal `question.html` for an externally graded workspace should look something like:
+یک `question.html` حداقلی برای یک محیط کاری با نمره‌دهی خارجی باید شبیه به این باشد:
 
 ```html
 <pl-question-panel>
@@ -126,11 +127,12 @@ A minimal `question.html` for an externally graded workspace should look somethi
 </pl-submission-panel>
 ```
 
-## Creating files in the workspace home directory
+<a id="creating-files-in-the-workspace-home-directory"></a>
+## ایجاد فایل‌ها در دایرکتوری home محیط کاری
 
-Workspace questions can optionally include a `workspace/` subdirectory within the regular [PrairieLearn question directory structure](../question/overview.md#directory-structure). If this `workspace/` subdirectory exists, its contents will be copied into the home directory of the student's workspace container, as specified by the corresponding workspace image.
+سوالات محیط کاری می‌توانند به صورت اختیاری شامل یک زیردایرکتوری `workspace/` در داخل [ساختار دایرکتوری سوال PrairieLearn](../question/overview.md#directory-structure) باشند. اگر این زیردایرکتوری `workspace/` وجود داشته باشد، محتویات آن در دایرکتوری home کانتینر محیط کاری دانشجو، همان‌طور که توسط ایمیج محیط کاری مربوطه مشخص شده است، کپی خواهد شد.
 
-Questions using workspaces can also be randomized, i.e., include files that contain random and dynamic content. This may be done in two ways: using Mustache-based template files or using [the `server.py` file in the question directory](../question/overview.md#custom-generation-and-grading-serverpy). For template files, a workspace question can optionally include a `workspaceTemplates/` subdirectory within the regular question directory structure. The contents will be copied into the home directory of the student's workspace container, as with the `workspace/` directory. However, files within this directory may include Mustache tags (e.g., `{{params.value}}`), which will be replaced with the equivalent values set by `server.py`. File names may optionally include the `.mustache` extension, and the file will be renamed before being presented to the student. Files in `workspaceTemplates/` will preserve their execute permissions (e.g., if you `chmod +x script.sh` in your course repository, it will remain executable in the workspace). For example, if `server.py` sets `data["params"]["starting_value"]` to `17`, then if the file `main.py.mustache` inside `workspaceTemplates` has the following content:
+سوالاتی که از محیط‌های کاری استفاده می‌کنند همچنین می‌توانند تصادفی‌سازی شوند، یعنی شامل فایل‌هایی باشند که محتوای تصادفی و پویا دارند. این کار می‌تواند به دو روش انجام شود: استفاده از فایل‌های قالب مبتنی بر Mustache یا استفاده از [فایل `server.py` در دایرکتوری سوال](../question/overview.md#custom-generation-and-grading-serverpy). برای فایل‌های قالب، یک سوال محیط کاری می‌تواند به صورت اختیاری شامل یک زیردایرکتوری `workspaceTemplates/` در داخل ساختار دایرکتوری معمول سوال باشد. محتویات آن درست مانند دایرکتوری `workspace/` در دایرکتوری home کانتینر محیط کاری دانشجو کپی خواهد شد. با این حال، فایل‌های داخل این دایرکتوری می‌توانند شامل تگ‌های Mustache (مانند `{{params.value}}`) باشند که با مقادیر معادل تنظیم‌شده توسط `server.py` جایگزین خواهند شد. نام فایل‌ها می‌تواند به صورت اختیاری شامل پسوند `.mustache` باشد، و فایل قبل از ارائه به دانشجو تغییر نام داده خواهد شد. فایل‌های موجود در `workspaceTemplates/` مجوزهای اجرای خود را حفظ خواهند کرد (مثلاً اگر در مخزن درس خود `chmod +x script.sh` را اجرا کنید، در محیط کاری نیز قابل اجرا باقی می‌ماند). برای مثال، اگر `server.py` مقدار `data["params"]["starting_value"]` را روی `17` تنظیم کند، در صورتی که فایل `main.py.mustache` داخل `workspaceTemplates` محتوای زیر را داشته باشد:
 
 ```txt
 # ...
@@ -138,7 +140,7 @@ starting_value = {{params.starting_value}}
 # ...
 ```
 
-Then a file with name `main.py` will be presented to the student, with the rendered content:
+سپس فایلی با نام `main.py` با محتوای رندرشده زیر به دانشجو ارائه خواهد شد:
 
 ```py
 # ...
@@ -146,16 +148,16 @@ starting_value = 17
 # ...
 ```
 
-For more fine-tuned randomized files, the `_workspace_files` parameter can also be set in `server.py`, containing an array of potentially dynamic files to be created in the workspace home directory. Each element of the array must include a `name` property, containing the file name (which can include a path with directories), and one of the following:
+برای فایل‌های تصادفی دقیق‌تر و سفارشی‌تر، پارامتر `_workspace_files` نیز می‌تواند در `server.py` تنظیم شود، که شامل آرایه‌ای از فایل‌های بالقوه پویا برای ایجاد در دایرکتوری home محیط کاری است. هر المان از این آرایه باید شامل یک ویژگی `name`، حاوی نام فایل (که می‌تواند شامل مسیر با دایرکتوری‌ها باشد)، و یکی از موارد زیر باشد:
 
-- a `contents` property, containing the contents of the file.
-- a `questionFile` or `serverFilesCourseFile` property, pointing to an existing file in the question directory or the course's `serverFilesCourse` directory, respectively.
+- یک ویژگی `contents`، حاوی محتویات فایل.
+- یک ویژگی `questionFile` یا `serverFilesCourseFile`، که به ترتیب به یک فایل موجود در دایرکتوری سوال یا دایرکتوری `serverFilesCourse` درس اشاره می‌کند.
 
-Additionally, each element may optionally include:
+علاوه بر این، هر المان می‌تواند به صورت اختیاری شامل موارد زیر باشد:
 
-- a `mode` property to set file permissions. Must be either `0o755` (for executable files) or `0o644` (for non-executable files).
+- یک ویژگی `mode` برای تنظیم مجوزهای فایل. باید یا `0o755` (برای فایل‌های اجرایی) یا `0o644` (برای فایل‌های غیر اجرایی) باشد.
 
-For example:
+برای مثال:
 
 ```py
 def generate(data):
@@ -198,100 +200,102 @@ def generate(data):
     ]
 ```
 
-By default, `contents` is expected to be a string in UTF-8 format. To provide binary content, the value must be encoded using base64 or hex, as shown in the example above. In this case, the `encoding` property must also be provided. Exactly one of `questionFile`, `serverFilesCourseFile` or `contents` must be provided. If an empty file is expected, `contents` may be set to `None` or an empty string.
+به طور پیش‌فرض، انتظار می‌رود `contents` یک رشته در قالب UTF-8 باشد. برای ارائه محتوای باینری، مقدار باید با استفاده از base64 یا hex انکود شود، همان‌طور که در مثال بالا نشان داده شده است. در این حالت، ویژگی `encoding` نیز باید ارائه شود. دقیقاً یکی از ویژگی‌های `questionFile`، `serverFilesCourseFile` یا `contents` باید ارائه شود. اگر فایلی خالی مد نظر است، `contents` می‌تواند برابر با `None` یا یک رشته خالی تنظیم شود.
 
-If a file name appears in multiple locations, the following precedence takes effect:
+اگر نام یک فایل در چندین مکان ظاهر شود، اولویت‌های زیر اعمال می‌شود:
 
-- Dynamic content from `_workspace_files` has the highest precedence;
+- محتوای پویا از `_workspace_files` بالاترین اولویت را دارد؛
 
-- Files in the `workspaceTemplates/` directory are considered next;
+- فایل‌های موجود در دایرکتوری `workspaceTemplates/` در اولویت بعدی بررسی می‌شوند؛
 
-- Files in the `workspace/` directory are considered last.
+- فایل‌های موجود در دایرکتوری `workspace/` در کمترین اولویت قرار دارند.
 
-## Maintained workspace images
+<a id="maintained-workspace-images"></a>
+## ایمیج‌های نگهداری‌شده محیط کاری
 
-PrairieLearn provides and maintains the following workspace images:
+سامانه PrairieLearn ایمیج‌های محیط کاری زیر را ارائه داده و نگهداری می‌کند:
 
-- [`prairielearn/workspace-jupyterlab-base`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/jupyterlab-base/): JupyterLab without any additions (used to build the Python and R workspaces below)
-- [`prairielearn/workspace-jupyterlab-python`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/jupyterlab-python/): JupyterLab with Python 3.13
-- [`prairielearn/workspace-jupyterlab-r`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/jupyterlab-r/): JupyterLab with R 4.5
-- [`prairielearn/workspace-rstudio`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/rstudio/): RStudio with R version 4.5
-- [`prairielearn/workspace-vscode-base`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/vscode-base/): Basic VS Code without any additions (used to build the C/C++ and Python workspaces below)
-- [`prairielearn/workspace-vscode-cpp`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/vscode-cpp/): VS Code with C/C++ (using `gcc` and `g++`)
-- [`prairielearn/workspace-vscode-java`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/vscode-java/): VS Code with Java 21
-- [`prairielearn/workspace-vscode-python`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/vscode-python/): VS Code with Python 3.13
-- [`prairielearn/workspace-xtermjs`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/xtermjs/): Terminal emulator based on xterm.js
+- [`prairielearn/workspace-jupyterlab-base`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/jupyterlab-base/): محیط JupyterLab بدون هیچ افزونه‌ای (برای ساخت محیط‌های کاری Python و R زیر استفاده می‌شود)
+- [`prairielearn/workspace-jupyterlab-python`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/jupyterlab-python/): محیط JupyterLab به همراه Python 3.13
+- [`prairielearn/workspace-jupyterlab-r`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/jupyterlab-r/): محیط JupyterLab به همراه R 4.5
+- [`prairielearn/workspace-rstudio`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/rstudio/): محیط RStudio به همراه R نسخه 4.5
+- [`prairielearn/workspace-vscode-base`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/vscode-base/): محیط پایه VS Code بدون افزونه‌های اضافی (برای ساخت محیط‌های کاری C/C++ و Python در زیر استفاده می‌شود)
+- [`prairielearn/workspace-vscode-cpp`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/vscode-cpp/): محیط VS Code به همراه C/C++ (با استفاده از `gcc` و `g++`)
+- [`prairielearn/workspace-vscode-java`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/vscode-java/): محیط VS Code به همراه Java 21
+- [`prairielearn/workspace-vscode-python`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/vscode-python/): محیط VS Code به همراه Python 3.13
+- [`prairielearn/workspace-xtermjs`](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/xtermjs/): شبیه‌ساز ترمینال مبتنی بر xterm.js
 
-## Custom workspace images
+<a id="custom-workspace-images"></a>
+## ایمیج‌های سفارشی محیط کاری
 
-You can [build custom workspace images](../dockerImages.md#custom-variations-of-maintained-images) if you need to install specific dependencies for use by students that are not present in the default version of the images above. If you want to use a specific browser-based editor not supported above, you may also create and build your own custom workspace image.
+اگر نیاز به نصب وابستگی‌های خاصی برای استفاده دانشجویان دارید که در نسخه پیش‌فرض ایمیج‌های بالا وجود ندارد، می‌توانید [ایمیج‌های سفارشی محیط کاری بسازید](../dockerImages.md#custom-variations-of-maintained-images). همچنین اگر می‌خواهید از یک ویرایشگر خاص مبتنی بر مرورگر استفاده کنید که در بالا پشتیبانی نشده است، می‌توانید ایمیج سفارشی محیط کاری خود را ایجاد کرده و بسازید.
 
-If you are creating a workspace image that is not derived from one of the maintained images above, you must ensure that it responds to regular HTTP request on an exposed port, and that it is configured to run as a user with UID 1001. The workspace image must run in a headless mode, i.e., without any GUI. You are strongly encouraged to include the following [Dockerfile labels](https://docs.docker.com/reference/dockerfile/#label) in your image.
+اگر در حال ایجاد یک ایمیج محیط کاری هستید که از یکی از ایمیج‌های نگهداری‌شده بالا مشتق نشده است، باید اطمینان حاصل کنید که به درخواست‌های معمول HTTP روی یک پورت اکسپوزشده (exposed port) پاسخ می‌دهد، و به گونه‌ای پیکربندی شده است که به عنوان کاربری با شناسه UID 1001 اجرا شود. ایمیج محیط کاری باید در حالت headless، یعنی بدون هیچ رابط کاربری گرافیکی (GUI)، اجرا شود. اکیداً توصیه می‌شود [لیبل‌های داکرفایل (Dockerfile labels)](https://docs.docker.com/reference/dockerfile/#label) زیر را در ایمیج خود بگنجانید:
 
-- `com.prairielearn.workspace.port`: the exposed port number used by the workspace app inside the Docker image. It must respond to HTTP requests.
-- `com.prairielearn.workspace.rewrite-url`: whether to rewrite URLs such that the workspace container will see all requests as originating from `/` ("true") or from `/pl/workspace/<workspace_id>/container/` ("false").
-- `com.prairielearn.workspace.home`: the home directory inside the Docker image. This will be the base directory for [initial workspace files](#creating-files-in-the-workspace-home-directory), as well as for any graded files copied out of the workspace container when saving a submission.
+- `com.prairielearn.workspace.port`: شماره پورت اکسپوزشده مورد استفاده برنامه محیط کاری در داخل ایمیج داکر. این پورت باید به درخواست‌های HTTP پاسخ دهد.
+- `com.prairielearn.workspace.rewrite-url`: تعیین می‌کند که آیا آدرس‌های URL به گونه‌ای بازنویسی شوند که کانتینر محیط کاری تمام درخواست‌ها را به عنوان درخواست‌های شروع‌شده از `/` ببیند ("true") یا از `/pl/workspace/<workspace_id>/container/` ببیند ("false").
+- `com.prairielearn.workspace.home`: دایرکتوری home درون ایمیج داکر. این دایرکتوری به عنوان دایرکتوری پایه برای [فایل‌های اولیه محیط کاری](#creating-files-in-the-workspace-home-directory) و همچنین هر فایل نمره‌دهی‌شده‌ای که هنگام ذخیره ارسال پاسخ از کانتینر محیط کاری به بیرون کپی می‌شود، خواهد بود.
 
-If you are unable to use these labels, or if they must be overridden in specific questions, you may use the corresponding settings at the question level in `info.json`, under `workspaceOptions` (see [Setting up](#setting-up)).
+اگر نمی‌توانید از این لیبل‌ها استفاده کنید، یا اگر باید در سوالات خاصی بازنویسی (override) شوند، می‌توانید از تنظیمات متناظر در سطح سوال در فایل `info.json`، ذیل `workspaceOptions` استفاده نمایید (به بخش [راه‌اندازی](#setting-up) مراجعه کنید).
 
-- `port`: overrides the `com.prairielearn.workspace.port` label in the image.
-- `home`: overrides the `com.prairielearn.workspace.home` label in the image. This can't be used to switch the running user or their home directory.
-- `rewriteUrl`: overrides the `com.prairielearn.workspace.rewrite-url` label in the image.
+- `port`: لیبل `com.prairielearn.workspace.port` را در ایمیج بازنویسی می‌کند.
+- `home`: لیبل `com.prairielearn.workspace.home` را در ایمیج بازنویسی می‌کند. این گزینه نمی‌تواند برای تغییر کاربر در حال اجرا یا دایرکتوری home او استفاده شود.
+- `rewriteUrl`: لیبل `com.prairielearn.workspace.rewrite-url` را در ایمیج بازنویسی می‌کند.
 
-If you're using your own editor, you must ensure that it frequently autosaves any work and persists it to disk at the home directory specified above. We make every effort to ensure reliable execution of workspaces, but an occasional hardware failure or other issue may result in the unexpected termination of a workspace. Students will be able to quickly reboot their workspace to start it on a new underlying host, but their work may be lost if it isn't frequently and automatically saved by your workspace code.
+اگر از ویرایشگر خود استفاده می‌کنید، باید اطمینان حاصل کنید که به طور مکرر کارها را به صورت خودکار ذخیره (autosave) کرده و در دیسک در دایرکتوری home مشخص‌شده در بالا ذخیره و ثبت می‌کند. ما تمام تلاش خود را برای اطمینان از اجرای قابل اعتماد محیط‌های کاری به کار می‌بندیم، اما خرابی‌های سخت‌افزاری گاه‌به‌گاه یا سایر مشکلات ممکن است منجر به خاتمه غیرمنتظره یک محیط کاری شود. دانشجویان قادر خواهند بود به سرعت محیط کاری خود را مجدداً راه‌اندازی (reboot) کنند تا روی یک هاست زیربنایی جدید اجرا شود، اما در صورتی که کار آنها به طور مداوم و خودکار توسط کد محیط کاری شما ذخیره نشده باشد، ممکن است از دست برود.
 
-## Running locally (on Docker)
+## اجرای محلی (روی Docker)
 
-In order to run workspaces in a local Docker environment, the `docker` command must include options that support the creation of local "sibling" containers. Detailed instructions on how to run Docker can be found in the [installation instructions](../installing.md#support-for-external-graders-and-workspaces).
+برای اجرای محیط‌های کاری در یک محیط محلی Docker، دستور `docker` باید شامل گزینه‌هایی باشد که از ایجاد کانتینرهای محلی «همتا» (sibling containers) پشتیبانی کند. دستورالعمل‌های دقیق در مورد نحوه اجرای داکر را می‌توانید در [دستورالعمل‌های نصب](../installing.md#support-for-external-graders-and-workspaces) بیابید.
 
-## Developing with workspaces (in Docker)
+## توسعه با محیط‌های کاری (در Docker)
 
-For development, run the Docker container as described in [Installing with local source code](../dev-guide/installingLocal.md) but also add the workspace-specific arguments described above to the Docker command line. Inside the container, run:
+برای توسعه، کانتینر داکر را مطابق آنچه در [نصب با کد منبع محلی](../dev-guide/installingLocal.md) توضیح داده شده اجرا کنید، اما آرگومان‌های اختصاصی محیط کاری را که در بالا شرح داده شد نیز به خط فرمان داکر اضافه نمایید. درون کانتینر، دستور زیر را اجرا کنید:
 
 ```sh
 make dev-all
 ```
 
-Alternatively, you can run `make dev-workspace-host` and `make dev` independently.
+همچنین، می‌توانید `make dev-workspace-host` و `make dev` را به طور مستقل اجرا کنید.
 
-## Permissions in production
+## مجوزها در محیط پروداکشن (Production)
 
-When running a workspace container locally the user/group is the default setting for docker, which is typically root. In production, workspaces are run with user:group set to 1001:1001. If the workspace relies on root permissions (e.g., uses a port number below 1024) then it may work locally and fail in production. To test a workspace locally, run it like this:
+هنگام اجرای کانتینر محیط کاری به صورت محلی، کاربر/گروه (user/group) همان تنظیمات پیش‌فرض داکر است که معمولاً root است. در محیط پروداکشن، محیط‌های کاری با تنظیم user:group روی 1001:1001 اجرا می‌شوند. اگر محیط کاری به مجوزهای root وابسته باشد (مثلاً از شماره پورت زیر 1024 استفاده کند)، ممکن است به صورت محلی کار کند اما در پروداکشن با شکست مواجه شود. برای آزمایش یک محیط کاری به صورت محلی، آن را به این صورت اجرا کنید:
 
 ```sh
 docker run -it --rm -p HOST_PORT:CLIENT_PORT --user 1001:1001 IMAGE_NAME
 ```
 
-For example, the [example JupyterLab workspace](https://us.prairielearn.com/pl/course/108/question/9045312/preview) using the [JupyterLab image](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/jupyterlab-python) uses port 8080 and so can be run successfully like this:
+به عنوان مثال، [محیط کاری نمونه JupyterLab](https://us.prairielearn.com/pl/course/108/question/9045312/preview) با استفاده از [ایمیج JupyterLab](https://github.com/PrairieLearn/PrairieLearn/tree/master/workspaces/jupyterlab-python) از پورت 8080 استفاده می‌کند و بنابراین می‌توان آن را با موفقیت به این صورت اجرا کرد:
 
 ```sh
 docker run -it --rm -p 8080:8080 --user 1001:1001 prairielearn/workspace-jupyterlab-python
 ```
 
-## What to tell students
+## چه مواردی را به دانشجویان بگوییم
 
-Instructors are strongly encouraged to allow students to get exposed to the PrairieLearn workspace environment, as well as specific workspaces to be used in a course, before any formal quizzes or exams. In particular, some workspaces may behave in ways that students need to be aware of. Instructors should provide students with instructions on:
+اکیداً به مدرسان توصیه می‌شود که قبل از هر کوئیز یا آزمون رسمی، به دانشجویان فرصت آشنایی با محیط کاری PrairieLearn و همچنین محیط‌های کاری خاصی که در درس استفاده خواهد شد را بدهند. به ویژه، برخی از محیط‌های کاری ممکن است به شیوه‌هایی رفتار کنند که دانشجویان باید از آنها آگاه باشند. مدرسان باید به دانشجویان دستورالعمل‌هایی درباره موارد زیر ارائه دهند:
 
-- How to save their work and submit. Students should understand the difference between saving files inside the workspace environment and saving/submitting it on PrairieLearn itself. In particular, it should be clear to students that files saved inside the workspace are not automatically graded.
+- **نحوه ذخیره کار و ارسال پاسخ**: دانشجویان باید تفاوت بین ذخیره فایل‌ها در داخل محیط کاری و ذخیره/ارسال آن در خود PrairieLearn را درک کنند. به ویژه، باید برای دانشجویان مشخص باشد که فایل‌های ذخیره‌شده در داخل محیط کاری به طور خودکار نمره‌دهی نمی‌شوند.
 
-- Workspace-specific instructions. Different workspace environments may include different instructions for saving files, compiling, testing, and otherwise using the environment, as well as different directory structures that may be relevant in some contexts. Additionally, some workspaces may require additional actions in specific cases. For example, in Jupyter workspaces, students may need to know how to interrupt or restart the kernel.
+- **دستورالعمل‌های خاص هر محیط کاری**: محیط‌های کاری مختلف ممکن است دستورالعمل‌های متفاوتی برای ذخیره فایل‌ها، کامپایل، آزمایش و سایر استفاده‌ها از محیط و همچنین ساختارهای دایرکتوری متفاوتی داشته باشند که ممکن است در برخی زمینه‌ها مرتبط باشند. علاوه بر این، برخی از محیط‌های کاری ممکن است در شرایط خاص نیاز به اقدامات اضافی داشته باشند. برای مثال در محیط‌های کاری Jupyter، دانشجویان ممکن است نیاز داشته باشند بدانند چگونه کرنل (kernel) را متوقف (interrupt) یا راه‌اندازی مجدد (restart) کنند.
 
-- Expectations about workspace start times. In the worst case, a workspace may take several minutes as new machines are started and as images are pulled. This may be especially important in timed assessments, where the workspace starting time may affect the student's ability to complete their work.
+- **انتظارات در مورد زمان شروع محیط کاری**: در بدترین حالت، راه‌اندازی یک محیط کاری ممکن است چند دقیقه طول بکشد زیرا ماشین‌های جدید راه‌اندازی می‌شوند و ایمیج‌ها پول (pull) می‌شوند. این امر ممکن است به ویژه در آزمون‌های زمان‌دار که زمان راه‌اندازی محیط کاری ممکن است بر توانایی دانشجو برای تکمیل کارش تأثیر بگذارد، اهمیت زیادی داشته باشد.
 
-If a student saved files in their workspace but did not submit them in PrairieLearn, course staff can [submit an answer on the student's behalf](../faq.md#how-do-i-submit-an-answer-on-behalf-of-a-student).
+اگر دانشجویی فایلی را در محیط کاری خود ذخیره کرده باشد اما آن را در PrairieLearn ارسال نکرده باشد، کادر آموزشی درس می‌توانند [از طرف دانشجو یک پاسخ ارسال کنند](../faq.md#how-do-i-submit-an-answer-on-behalf-of-a-student).
 
-## Troubleshooting workspace loading
+## عیب‌یابی بارگذاری محیط کاری
 
-A variety of issues can prevent a workspace from loading, including antivirus software, browser extensions, and network issues. If a workspace fails to load, the following steps may help you resolve the issue or provide more information to the PrairieLearn team:
+مشکلات متعددی می‌توانند مانع از بارگذاری یک محیط کاری شوند، از جمله نرم‌افزارهای آنتی‌ویروس، اکستنشن‌های مرورگر و مسائل مربوط به شبکه. اگر محیط کاری بارگذاری نشد، مراحل زیر ممکن است به شما در حل مشکل یا ارائه اطلاعات بیشتر به تیم PrairieLearn کمک کند:
 
-- **Wait**: Wait for the loading progress indicator to reach 100%. This may take a few minutes if the workspace image is being pulled to a specific host for the first time. Even once a workspace's state changes to running, slow networks may result in a blank page for some time as the workspace's client-side assets load.
-- **Reboot:** If the workspace still hasn't loaded after a few minutes, try rebooting the workspace by clicking the "Reboot" button in the top nav bar. As above, give the workspace several minutes to load.
-- **Try another browser**: Some browser extensions may interfere with workspace loading. If you have another browser installed, try loading the workspace in that browser. Also consider trying a private/incognito window, which will disable most extensions.
-- **Check the browser developer tools console tab**: Open the browser's developer tools and navigate to the "Console" tab. This may contain error messages that can help diagnose the issue.
-  - On Chrome or Edge, you can open the developer tools by opening the three-dots menu in the top right corner, selecting "More tools", and then "Developer tools".
-  - On Safari, you have to turn on the developer tools first. In the menu bar, click "Safari" ⇾ "Settings" ⇾ "Advanced" and check "Show features for web developers". You can then open the developer tools by selecting "Develop" ⇾ "Show Web Inspector".
-  - On Firefox, you can open the developer tools by opening the Firefox menu in the top right corner, selecting "More tools", and then "Web Developer Tools".
-- **Check the browser developer tools network tab**: Using the steps above, open the developer tools and navigate to the "Network" tab. This tab will show all network requests made by the browser, including those made by the workspace. Look for requests that are taking a long time or failing. You may need to reload the page to see all requests. If you want to provide the PrairieLearn team with more information, you can save the network log to a HAR file and send it. _Note: The HAR file may contain sensitive information, so be careful when sharing it. Only share it with individuals that you trust._
-  - On Chrome or Edge, click the downward-facing arrow on the Network tab menu bar (it has a tooltip with the text "Export HAR..." when you hover over it) and save the HAR file.
-  - On Safari, click the "Export" button in the top right corner and save the HAR file.
-  - On Firefox, click the settings gear in the Network tab and select "Save all as HAR".
+- **صبر کنید**: صبر کنید تا نشانگر پیشرفت بارگذاری به ۱۰۰٪ برسد. اگر ایمیج محیط کاری برای اولین بار روی یک هاست خاص پول (pull) می‌شود، این کار ممکن است چند دقیقه طول بکشد. حتی زمانی که وضعیت محیط کاری به running (در حال اجرا) تغییر می‌کند، شبکه‌های کند ممکن است باعث شوند تا زمان بارگذاری دارایی‌های سمت کلاینت (client-side assets) محیط کاری، صفحه برای مدتی سفید/خالی بماند.
+- **راه‌اندازی مجدد (Reboot)**: اگر محیط کاری پس از چند دقیقه همچنان بارگذاری نشد، سعی کنید با کلیک روی دکمه "Reboot" در نوار ناوبری بالا، محیط کاری را ریبوت کنید. مانند مورد قبل، چند دقیقه به محیط کاری فرصت دهید تا بارگذاری شود.
+- **یک مرورگر دیگر را امتحان کنید**: برخی از اکستنشن‌های مرورگر ممکن است با بارگذاری محیط کاری تتالي یا تداخل داشته باشند. اگر مرورگر دیگری نصب دارید، بارگذاری محیط کاری را در آن مرورگر امتحان کنید. همچنین استفاده از یک پنجره خصوصی/ناشناس (private/incognito window) را در نظر بگیرید، که اکثر افزونه‌ها را غیرفعال می‌کند.
+- **بررسی تب کنسول ابزارهای توسعه‌دهنده مرورگر**: ابزارهای توسعه‌دهنده (developer tools) مرورگر را باز کنید و به تب "Console" بروید. این بخش ممکن است حاوی پیام‌های خطایی باشد که به تشخیص مشکل کمک می‌کند.
+  - در Chrome یا Edge، می‌توانید با باز کردن منوی سه‌نقطه در گوشه بالا سمت راست، انتخاب "More tools" و سپس "Developer tools"، ابزارهای توسعه‌دهنده را باز کنید.
+  - در Safari، ابتدا باید ابزارهای توسعه‌دهنده را فعال کنید. در نوار منو، روی "Safari" ⇾ "Settings" ⇾ "Advanced" کلیک کرده و گزینه "Show features for web developers" را علامت بزنید. سپس می‌توانید با انتخاب "Develop" ⇾ "Show Web Inspector" ابزارهای توسعه‌دهنده را باز کنید.
+  - در Firefox، می‌توانید با باز کردن منوی Firefox در گوشه بالا سمت راست، انتخاب "More tools" و سپس "Web Developer Tools"، ابزارهای توسعه‌دهنده را باز کنید.
+- **بررسی تب شبکه (Network) ابزارهای توسعه‌دهنده مرورگر**: با استفاده از مراحل بالا، ابزارهای توسعه‌دهنده را باز کرده و به تب "Network" بروید. این تب تمام درخواست‌های شبکه ارسال‌شده توسط مرورگر، از جمله درخواست‌های مربوط به محیط کاری را نشان می‌دهد. به دنبال درخواست‌هایی بگردید که زمان زیادی طول می‌کشند یا با شکست مواجه می‌شوند. ممکن است برای مشاهده تمام درخواست‌ها نیاز به بارگذاری مجدد (reload) صفحه داشته باشید. اگر می‌خواهید اطلاعات بیشتری به تیم PrairieLearn ارائه دهید، می‌توانید لاگ شبکه را در یک فایل HAR ذخیره کرده و ارسال نمایید. _نکته: فایل HAR ممکن است حاوی اطلاعات حساس باشد، بنابراین هنگام به اشتراک‌گذاری آن دقت کنید. آن را فقط با افرادی که به آنها اعتماد دارید به اشتراک بگذارید._
+  - در Chrome یا Edge، روی فلش رو به پایین در نوار منوی تب Network کلیک کنید (هنگامی که ماوس را روی آن نگه می‌دارید یک tooltip با متن "Export HAR..." نمایش می‌دهد) و فایل HAR را ذخیره کنید.
+  - در Safari، روی دکمه "Export" در گوشه بالا سمت راست کلیک کرده و فایل HAR را ذخیره کنید.
+  - در Firefox، روی چرخ‌دنده تنظیمات در تب Network کلیک کرده و "Save all as HAR" را انتخاب کنید.

@@ -1,8 +1,8 @@
-# Assessments
+# ارزیابی‌ها (Assessments)
 
-Assessments are a collection of questions that are administered to students. They can be used to create homeworks and exams.
+ارزیابی‌ها مجموعه‌ای از سوالات هستند که به دانشجویان ارائه می‌شوند. از آن‌ها می‌توان برای ایجاد تکالیف و آزمون‌ها استفاده کرد.
 
-Each assessment is a single directory in the `assessments` folder or any subfolder. Assessments may be nested in subdirectories of the `assessments` folder. The assessment directory must contain a single file called `infoAssessment.json` that describes the assessment and looks like:
+هر ارزیابی یک دایرکتوری مجزا در پوشه `assessments` یا هر یک از زیرپوشه‌های آن است. ارزیابی‌ها می‌توانند در زیردایرکتوری‌های پوشه `assessments` به‌صورت تو در تو قرار گیرند. دایرکتوری ارزیابی باید شامل یک فایل منفرد به نام `infoAssessment.json` باشد که ارزیابی را توصیف می‌کند و به شکل زیر است:
 
 ```json title="infoAssessment.json"
 {
@@ -18,9 +18,9 @@ Each assessment is a single directory in the `assessments` folder or any subfold
 }
 ```
 
-The assessment ID is the full path relative to `assessments`.
+شناسه ارزیابی (Assessment ID) همان مسیر کامل نسبت به پوشه `assessments` است.
 
-Creating an assessment is done in two separate parts:
+ایجاد یک ارزیابی در دو بخش مجزا انجام می‌شود:
 
-1. [Configuring the questions, scoring, and other assessment-specific settings](configuration.md)
-2. [Configuring access control for the assessment (due dates, credit, etc.)](accessControl.md)
+1. [پیکربندی سوالات، نمره‌دهی و سایر تنظیمات اختصاصی ارزیابی](configuration.md)
+2. [پیکربندی کنترل دسترسی ارزیابی (مهلت‌های تحویل، نمره و غیره)](accessControl.md)

@@ -1,29 +1,29 @@
-# Regrading broken questions
+# نمره‌دهی مجدد سوالات دارای اشکال
 
-Despite all our best efforts, sometimes we put a broken question onto an exam. The recommended procedure for dealing with this situation is:
+علی‌رغم تمام تلاش‌های ما، گاهی ممکن است یک سوال دارای اشکال وارد آزمون شود. فرآیند توصیه‌شده برای مدیریت این وضعیت به صورت زیر است:
 
-1. If the error is detected when just a few students have taken the exam, either correct the question, remove it from the exam, or replace it with a new question. Either regrade the broken question with maximum points (see below) or adjust the scores of affected students [by hand](../manualGrading/index.md), perhaps with some correction factor for the added challenge they faced by encountering a broken question.
+1. اگر خطا زمانی شناسایی شود که تنها تعداد اندکی از دانشجویان آزمون را گذرانده‌اند، یا سوال را اصلاح کنید، یا آن را از آزمون حذف کنید و یا با یک سوال جدید جایگزین نمایید. سپس یا سوال دارای اشکال را با حداکثر نمره مجدداً نمره‌دهی کنید (به بخش زیر مراجعه کنید) یا نمرات دانشجویان تحت‌تأثیر را [به‌صورت دستی](../manualGrading/index.md) تنظیم نمایید؛ شاید حتی با در نظر گرفتن یک ضریب تصحیح به خاطر چالش مضاعفی که دانشجویان به دلیل مواجهه با سوال دارای اشکال تجربه کرده‌اند.
 
-2. If many students have taken the exam with the broken question then do not attempt to fix it but rather let the exam complete with all students experiencing the same issue. Then afterward regrade the exam with all students being awarded maximum points for the broken question, as described below.
+2. اگر تعداد زیادی از دانشجویان آزمون را با سوال دارای اشکال گذرانده‌اند، تلاشی برای رفع آن نکنید بلکه اجازه دهید آزمون تمام شود تا همه دانشجویان شرایط یکسانی را تجربه کنند. سپس همان‌طور که در ادامه توضیح داده شده است، آزمون را مجدداً نمره‌دهی کرده و به همه دانشجویان حداکثر نمره سوال دارای اشکال را اختصاص دهید.
 
-## Regrading limitations
+## محدودیت‌های نمره‌دهی مجدد
 
-PrairieLearn does not currently support recomputing scores for individual submissions. This means that, if the issue is related to updates in how a score is computed, then there is no automatic process to update scores of students that already completed the assessment. This includes, but is not limited to:
+در حال حاضر PrairieLearn از محاسبه مجدد نمرات برای پاسخ‌های ارسالی منفرد (Submissions) پشتیبانی نمی‌کند. این بدان معناست که اگر مشکل مربوط به به‌روزرسانی در نحوه محاسبه نمره باشد، هیچ فرآیند خودکاری برای به‌روزرسانی نمرات دانشجویانی که قبلاً ارزیابی را تکمیل کرده‌اند وجود ندارد. این موارد شامل (اما نه محدود به) موارد زیر است:
 
-- Changes in the computation of correct answers.
-- Changes in the `grade()` or `parse()` functions.
-- Changes in the external grader tests.
-- Changes in weights of individual elements.
-- Changes in element attributes that affect grading, such as `partial-credit` for `pl-checkbox` or `grading-method` for `pl-order-blocks`.
-- Changes in the points for a question, alternative group or zone.
-- Changes in the points or bonus points for an assessment.
-- Adding, removing or replacing questions in an assessment with type Exam.
+- تغییرات در محاسبه پاسخ‌های صحیح.
+- تغییرات در توابع `grade()` یا `parse()`.
+- تغییرات در آزمون‌های سیستم نمره‌دهی خارجی (External Grader).
+- تغییرات در ضرایب وزنی المان‌های مجزا.
+- تغییرات در خصوصیات المان که بر نمره‌دهی تأثیر می‌گذارند، مانند `partial-credit` برای `pl-checkbox` یا `grading-method` برای `pl-order-blocks`.
+- تغییرات در نمرات یک سوال، گروه گزینه‌های جایگزین (Alternative Group) یا ناحیه (Zone).
+- تغییرات در نمرات اصلی یا نمرات تشویقی یک ارزیابی.
+- افزودن، حذف یا جایگزینی سوالات در ارزیابی از نوع آزمون (Exam).
 
-If, however, the issue is related to a broken question where all students should be awarded maximum points, then there is an automatic process to regrade the assessment and award maximum points for the broken question.
+با این حال، اگر مسئله مربوط به یک سوال دارای اشکال باشد که در آن باید به همه دانشجویان حداکثر نمره اختصاص داده شود، یک فرآیند خودکار برای نمره‌دهی مجدد ارزیابی و اعطای حداکثر نمره برای آن سوال وجود دارد.
 
-## Regrading by setting `forceMaxPoints` for a question
+## نمره‌دهی مجدد با تنظیم `forceMaxPoints` برای یک سوال
 
-To award some or all students maximum points for a question during a regrade, edit the `infoAssessment.json` file and set `"forceMaxPoints": true` for any broken questions. For example:
+برای اختصاص دادن حداکثر نمره یک سوال به برخی یا همه دانشجویان در حین نمره‌دهی مجدد، فایل `infoAssessment.json` را ویرایش کرده و برای هر سوال دارای اشکال مقدار `"forceMaxPoints": true` را قرار دهید. به عنوان مثال:
 
 ```json title="infoAssessment.json" hl_lines="6 18"
 {
@@ -51,15 +51,15 @@ To award some or all students maximum points for a question during a regrade, ed
 }
 ```
 
-In the example above, the questions `anEasyQ` and `SecondAltQ` will award maximum points to any student who has these questions and is regraded.
+در مثال بالا، سوالات `anEasyQ` و `SecondAltQ` به هر دانشجویی که این سوالات را داشته باشد و مجدداً نمره‌دهی شود، حداکثر نمره را اختصاص می‌دهند.
 
-After updating the `infoAssessment.json` file, go to the instructor page for the assessment and open the Students tab. With no instances selected, choose **Actions → Regrade** to regrade every assessment instance. To regrade a single assessment instance for just one student, select that student's instance first, then choose **Actions → Regrade**.
+پس از به‌روزرسانی فایل `infoAssessment.json`، به صفحه مدرس ارزیابی رفته و تب **Students** را باز کنید. در حالی که هیچ نمونه‌ای انتخاب نشده است، گزینه **Actions → Regrade** را انتخاب کنید تا تمامی نمونه‌های ارزیابی (Assessment Instances) مجدداً نمره‌دهی شوند. برای نمره‌دهی مجدد یک نمونه ارزیابی منفرد تنها برای یک دانشجو، ابتدا نمونه آن دانشجو را انتخاب کرده و سپس **Actions → Regrade** را برگزینید.
 
-**The `forceMaxPoints` setting only affects assessment instances that are explicitly regraded.** Students who take the exam later are not affected by `forceMaxPoints` while submitting answers. Also, while regrading an assessment instance as the student is still working on it is possible, it may be confusing to the student if they see their points suddenly change during an exam, for example. As such, it is generally recommended to wait until the exam is over before regrading with `forceMaxPoints` to avoid confusion for students.
+**تنظیم `forceMaxPoints` تنها بر نمونه‌های ارزیابی‌ای تأثیر می‌گذارد که صراحتاً مجدداً نمره‌دهی شوند.** دانشجویانی که بعداً در آزمون شرکت می‌کنند، در هنگام ارسال پاسخ‌های خود تحت تأثیر `forceMaxPoints` قرار نمی‌گیرند. همچنین، اگرچه نمره‌دهی مجدد یک نمونه ارزیابی در حین کار دانشجو روی آن امکان‌پذیر است، اما اگر دانشجو برای مثال ببیند که نمراتش ناگهان در طول آزمون تغییر می‌کند، ممکن است سردرگم شود. از این رو، معمولاً توصیه می‌شود برای جلوگیری از سردرگمی دانشجویان، تا پایان آزمون صبر کنید و سپس نمره‌دهی مجدد با `forceMaxPoints` را انجام دهید.
 
-### Handling questions with alternatives
+### مدیریت سوالات دارای گزینه‌های جایگزین (Alternatives)
 
-For questions that all students get on their assessment the above system is straightforward. For questions with alternatives, instructors are encouraged to consider how to handle the regrading in a fair manner. For example, consider the case when `SecondAltQ` is broken in the assessment above. In the above example, we only awarded maximum points to those students who received `SecondAltQ`, while students with `FirstAltQ` did not receive automatic maximum points. However, it may be fairer to give maximum points to all students irrespective of which alternative they received, as follows:
+برای سوالاتی که همه دانشجویان در ارزیابی خود دریافت می‌کنند، سیستم فوق بسیار سرراست است. برای سوالات دارای گزینه‌های جایگزین، به مدرسان توصیه می‌شود نحوه نمره‌دهی مجدد را به شیوه‌ای عادلانه مد نظر قرار دهند. به عنوان مثال، حالتی را در نظر بگیرید که `SecondAltQ` در ارزیابی بالا دارای اشکال باشد. در مثال بالا، ما حداکثر نمره را تنها به دانشجویانی دادیم که `SecondAltQ` را دریافت کرده بودند، در حالی که دانشجویان دارای `FirstAltQ` حداکثر نمره خودکار دریافت نکردند. با این وجود، ممکن است منصفانه‌تر باشد که فارغ از اینکه دانشجو کدام گزینه جایگزین را دریافت کرده است، به همه دانشجویان حداکثر نمره داده شود، به شکل زیر:
 
 ```json title="infoAssessment.json" hl_lines="8"
 {
@@ -78,12 +78,12 @@ For questions that all students get on their assessment the above system is stra
 }
 ```
 
-## Regrading questions using score uploads
+## نمره‌دهی مجدد سوالات با استفاده از بارگذاری نمرات
 
-If the issue is related to updates in the grading process, it is possible to update the grades by [uploading a new score for each submission](../manualGrading/index.md#uploading-the-scores-and-feedback). In such cases, a typical process involves:
+اگر مسئله به به‌روزرسانی فرآیند نمره‌دهی مربوط باشد، می‌توان نمرات را از طریق [بارگذاری نمره جدید برای هر پاسخ ارسالی](../manualGrading/index.md#uploading-the-scores-and-feedback) به‌روزرسانی کرد. در چنین مواردی، فرآیند معمول شامل مراحل زیر است:
 
-- [Downloading the students' current scores and submitted answers](../manualGrading/index.md#downloading-the-students-submitted-answers).
-- Calculating the new scores based on the updated grading process. Depending on the scenario, this may involve using spreadsheet formulas or, in more complex cases, writing a script to compute the new scores.
-- [Uploading the new scores for each submission](../manualGrading/index.md#uploading-the-scores-and-feedback).
+- [دانلود نمرات فعلی دانشجویان و پاسخ‌های ارسال‌شده](../manualGrading/index.md#downloading-the-students-submitted-answers).
+- محاسبه نمرات جدید بر اساس فرآیند نمره‌دهی به‌روزرسانی‌شده. بسته به سناریو، این کار ممکن است شامل استفاده از فرمول‌های صفحات گسترده یا در موارد پیچیده‌تر، نوشتن یک اسکریپت برای محاسبه نمرات جدید باشد.
+- [بارگذاری نمرات جدید برای هر پاسخ ارسالی](../manualGrading/index.md#uploading-the-scores-and-feedback).
 
-A suggested template for a Python script that can be used to update scores is available in the [PrairieLearn GitHub repository](https://github.com/PrairieLearn/PrairieLearn/blob/master/contrib/regrading_sample.py). This script provides a starting point for reading the downloaded CSV file, but you must implement the logic to compute the new scores based on the updated grading process. The script also includes placeholders for updating feedback and partial scores based on existing information, such as previously executed tests, params, and correct answers. Portions that must be implemented are marked with `TODO` comments, though depending on the logic required for the regrading, you may need to make more extensive changes to the script.
+یک قالب پیشنهادی برای اسکریپت پایتون که می‌تواند برای به‌روزرسانی نمرات استفاده شود در [مخزن گیت‌هاب PrairieLearn](https://github.com/PrairieLearn/PrairieLearn/blob/master/contrib/regrading_sample.py) در دسترس است. این اسکریپت یک نقطه شروع برای خواندن فایل CSV دانلود شده فراهم می‌کند، اما شما باید منطق محاسبه نمرات جدید را بر اساس فرآیند نمره‌دهی به‌روزرسانی‌شده پیاده‌سازی کنید. این اسکریپت همچنین شامل جای‌نگهدارنده‌هایی برای به‌روزرسانی بازخورد و نمرات بخشی بر اساس اطلاعات موجود، مانند آزمون‌های قبلاً اجرا شده، پارامترها و پاسخ‌های صحیح است. بخش‌هایی که باید پیاده‌سازی شوند با کامنت‌های `TODO` مشخص شده‌اند، هرچند بسته به منطق مورد نیاز برای نمره‌دهی مجدد، ممکن است نیاز به اعمال تغییرات گسترده‌تری در اسکریپت داشته باشید.
