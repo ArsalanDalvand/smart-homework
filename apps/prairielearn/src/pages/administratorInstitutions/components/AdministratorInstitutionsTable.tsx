@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { QueryClientProviderDebug } from '@prairielearn/trpc/react';
 import type { Timezone } from '@prairielearn/utils/timezone';
 
+import { uiStrings } from '../../../lib/branding.js';
 import type { AdminInstitution, StaffAuthnProvider } from '../../../lib/client/safe-db-types.js';
 import { createAdministratorTrpcClient } from '../../../trpc/administrator/client.js';
 import { TRPCProvider } from '../../../trpc/administrator/context.js';
@@ -40,25 +41,25 @@ export function AdministratorInstitutionsTable({
         <>
           <div id="institutions" className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
             <div className="card-header bg-primary text-white d-flex align-items-center">
-              <h1 className="h4 mb-0">موسسات، سازمان‌ها و مراکز آموزشی</h1>
+              <h1 className="h4 mb-0">{uiStrings.adminInstitutions.pageTitle}</h1>
               <button
                 type="button"
                 className="btn btn-sm btn-light ms-auto"
                 onClick={() => setShowModal(true)}
               >
                 <i className="fas fa-plus me-1" />
-                <span className="d-none d-sm-inline">افزودن موسسه یا مرکز جدید</span>
+                <span className="d-none d-sm-inline">{uiStrings.adminInstitutions.addBtn}</span>
               </button>
             </div>
             <div className="table-responsive">
-              <table className="table table-sm table-hover table-striped" aria-label="موسسات و سازمان‌های آموزشی">
+              <table className="table table-sm table-hover table-striped" aria-label={uiStrings.adminInstitutions.tableAria}>
                 <thead>
                   <tr>
-                    <th>کد اختصاری</th>
-                    <th>نام کامل موسسه / مرکز آموزشی</th>
-                    <th>منطقه زمانی</th>
-                    <th>الگوی شناسه (UID Regexp)</th>
-                    <th>روش‌های احراز هویت</th>
+                    <th>${uiStrings.adminInstitutions.colShortName}</th>
+                    <th>${uiStrings.adminInstitutions.colLongName}</th>
+                    <th>${uiStrings.adminInstitutions.colTimezone}</th>
+                    <th>${uiStrings.adminInstitutions.colUidRegexp}</th>
+                    <th>${uiStrings.adminInstitutions.colAuthnProviders}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -82,7 +83,7 @@ export function AdministratorInstitutionsTable({
                           '—'
                         )}
                       </td>
-                      <td>{authn_providers.join(', ') || 'پیش‌فرض داخلی'}</td>
+                      <td>{authn_providers.join(', ') || uiStrings.adminInstitutions.defaultAuthn}</td>
                     </tr>
                   ))}
                 </tbody>

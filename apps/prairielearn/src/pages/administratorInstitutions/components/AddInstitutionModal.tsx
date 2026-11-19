@@ -9,6 +9,7 @@ import { AppErrorAlert } from '@prairielearn/trpc/react';
 import { OverlayTrigger } from '@prairielearn/ui';
 import { type Timezone, formatTimezone } from '@prairielearn/utils/timezone';
 
+import { uiStrings } from '../../../lib/branding.js';
 import type { StaffAuthnProvider } from '../../../lib/client/safe-db-types.js';
 import { UidRegexpSchema } from '../../../lib/uid-regexp.js';
 import { useTRPC } from '../../../trpc/administrator/context.js';
@@ -91,24 +92,24 @@ export function AddInstitutionModal({
   return (
     <Modal show={show} onHide={onClose} style={{ fontFamily: 'var(--font-persian)' }}>
       <Modal.Header closeButton>
-        <Modal.Title>تعریف موسسه، سازمان یا واحد آموزشی جدید</Modal.Title>
+        <Modal.Title>{uiStrings.adminInstitutions.modalTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form id="add-institution-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <label className="form-label" htmlFor="short_name">
-              کد اختصاری موسسه / مرکز
+              {uiStrings.adminInstitutions.shortNameLabel}
             </label>
             <input
               type="text"
               className={clsx('form-control', errors.short_name && 'is-invalid')}
               id="short_name"
-              placeholder="مثال: AI"
+              placeholder={uiStrings.adminInstitutions.shortNamePlaceholder}
               dir="ltr"
               aria-describedby="short_name_help"
               aria-invalid={errors.short_name ? true : undefined}
               aria-errormessage={errors.short_name ? 'short_name-error' : undefined}
-              {...register('short_name', { required: 'کد اختصاری را وارد نمایید' })}
+              {...register('short_name', { required: uiStrings.adminInstitutions.shortNameRequired })}
             />
             {errors.short_name && (
               <div id="short_name-error" className="invalid-feedback">
@@ -116,22 +117,22 @@ export function AddInstitutionModal({
               </div>
             )}
             <small id="short_name_help" className="form-text text-muted">
-              نام اختصاری موسسه، مرکز یا سازمان (مانند ACADEMY, AI, ORG, TECH).
+              {uiStrings.adminInstitutions.shortNameHelp}
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="long_name">
-              نام کامل موسسه / مرکز آموزشی
+              {uiStrings.adminInstitutions.longNameLabel}
             </label>
             <input
               type="text"
               className={clsx('form-control', errors.long_name && 'is-invalid')}
               id="long_name"
-              placeholder="مثال: آکادمی هوش مصنوعی یا مرکز آموزش‌های تخصصی"
+              placeholder={uiStrings.adminInstitutions.longNamePlaceholder}
               aria-describedby="long_name_help"
               aria-invalid={errors.long_name ? true : undefined}
               aria-errormessage={errors.long_name ? 'long_name-error' : undefined}
-              {...register('long_name', { required: 'نام کامل را وارد نمایید' })}
+              {...register('long_name', { required: uiStrings.adminInstitutions.longNameRequired })}
             />
             {errors.long_name && (
               <div id="long_name-error" className="invalid-feedback">
@@ -139,12 +140,12 @@ export function AddInstitutionModal({
               </div>
             )}
             <small id="long_name_help" className="form-text text-muted">
-              نام رسمی و کامل موسسه، سازمان یا مرکز آموزشی.
+              {uiStrings.adminInstitutions.longNameHelp}
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="display_timezone">
-              منطقه زمانی
+              {uiStrings.adminInstitutions.timezoneLabel}
             </label>
             <div className="d-flex gap-2 align-items-center">
               <select
@@ -173,13 +174,13 @@ export function AddInstitutionModal({
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="uid_regexp">
-              الگوی شناسه (UID Regexp)
+              {uiStrings.adminInstitutions.uidRegexpLabel}
             </label>
             <input
               type="text"
               className={clsx('form-control', errors.uid_regexp && 'is-invalid')}
               id="uid_regexp"
-              placeholder="@iust\.ac\.ir$"
+              placeholder={uiStrings.adminInstitutions.uidRegexpPlaceholder}
               dir="ltr"
               aria-describedby="uid_regexp_help"
               aria-invalid={errors.uid_regexp ? true : undefined}
@@ -197,7 +198,7 @@ export function AddInstitutionModal({
               </div>
             )}
             <small id="uid_regexp_help" className="form-text text-muted">
-              الگوی اعتبارسنجی ایمیل سازمانی، به صورت <code dir="ltr">@.*\.org$</code> یا دامنه ایمیل سازمان.
+              {uiStrings.adminInstitutions.uidRegexpHelp}
             </small>
           </div>
           <AppErrorAlert
@@ -209,7 +210,7 @@ export function AddInstitutionModal({
       </Modal.Body>
       <Modal.Footer>
         <button type="button" className="btn btn-secondary" onClick={onClose}>
-          انصراف
+          {uiStrings.common.cancel}
         </button>
         <button
           type="submit"
@@ -217,7 +218,7 @@ export function AddInstitutionModal({
           form="add-institution-form"
           disabled={isSubmitting || mutation.isPending}
         >
-          ثبت و ایجاد موسسه
+          {uiStrings.adminInstitutions.submitBtn}
         </button>
       </Modal.Footer>
     </Modal>

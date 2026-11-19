@@ -26,7 +26,7 @@ export function AdministratorAdmins({
     content: html`
       <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1 class="h4 mb-0">مدیران کل سامانه</h1>
+          <h1 class="h4 mb-0">${uiStrings.adminAdmins.pageTitle}</h1>
           <button
             type="button"
             class="btn btn-sm btn-light ms-auto"
@@ -34,7 +34,7 @@ export function AdministratorAdmins({
             data-bs-container="body"
             data-bs-html="true"
             data-bs-placement="auto"
-            data-bs-title="افزودن مدیر جدید سامانه"
+            data-bs-title="${uiStrings.adminAdmins.popoverTitle}"
             data-bs-content="${escapeHtml(
               AdministratorInsertForm({
                 csrfToken: resLocals.__csrf_token,
@@ -43,17 +43,17 @@ export function AdministratorAdmins({
             data-testid="administrator-insert-button"
           >
             <i class="fa fa-user-plus" aria-hidden="true"></i>
-            <span class="d-none d-sm-inline ms-1">افزودن مدیر</span>
+            <span class="d-none d-sm-inline ms-1">${uiStrings.adminAdmins.addBtn}</span>
           </button>
         </div>
 
         <div class="table-responsive">
-          <table class="table table-sm table-hover table-striped" aria-label="مدیران سامانه">
+          <table class="table table-sm table-hover table-striped" aria-label="${uiStrings.adminAdmins.pageTitle}">
             <thead>
               <tr>
-                <th>شناسه کاربری (UID / ایمیل)</th>
-                <th>نام و نام خانوادگی</th>
-                <th class="text-end">عملیات</th>
+                <th>${uiStrings.adminAdmins.colUid}</th>
+                <th>${uiStrings.adminAdmins.colName}</th>
+                <th class="text-end">${uiStrings.adminAdmins.colActions}</th>
               </tr>
             </thead>
 
@@ -71,7 +71,7 @@ export function AdministratorAdmins({
                         data-bs-container="body"
                         data-bs-html="true"
                         data-bs-placement="auto"
-                        data-bs-title="حذف دسترسی مدیریت"
+                        data-bs-title="${uiStrings.adminAdmins.removeBtn}"
                         data-bs-content="${escapeHtml(
                           AdministratorDeleteForm({
                             csrfToken: resLocals.__csrf_token,
@@ -80,7 +80,7 @@ export function AdministratorAdmins({
                           }),
                         )}"
                       >
-                        <i class="fa fa-times" aria-hidden="true"></i> حذف دسترسی
+                        <i class="fa fa-times" aria-hidden="true"></i> ${uiStrings.adminAdmins.removeBtn}
                       </button>
                     </td>
                   </tr>
@@ -106,19 +106,19 @@ function AdministratorInsertForm({ csrfToken }: { csrfToken: string }) {
       <input type="hidden" name="__action" value="administrators_insert_by_user_uid" />
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <div class="mb-3">
-        <label class="form-label" for="administratorInsertFormUid">شناسه کاربری (UID / ایمیل سازمانی):</label>
+        <label class="form-label" for="administratorInsertFormUid">${uiStrings.adminAdmins.colUid}:</label>
         <input
           type="text"
           class="form-control"
           id="administratorInsertFormUid"
           name="uid"
-          placeholder="username@iust.ac.ir"
+          placeholder="${uiStrings.adminAdmins.uidPlaceholder}"
           dir="ltr"
         />
       </div>
       <div class="text-end d-flex justify-content-end gap-2">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="popover">انصراف</button>
-        <button type="submit" class="btn btn-sm btn-primary">افزودن مدیر</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="popover">${uiStrings.common.cancel}</button>
+        <button type="submit" class="btn btn-sm btn-primary">${uiStrings.adminAdmins.submitBtn}</button>
       </div>
     </form>
   `;
@@ -138,10 +138,10 @@ function AdministratorDeleteForm({
       <input type="hidden" name="__action" value="administrators_delete_by_user_id" />
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <input type="hidden" name="user_id" value="${userId}" />
-      <div class="mb-3"><strong>شناسه:</strong> <span dir="ltr">${uid}</span></div>
+      <div class="mb-3"><strong>${uiStrings.common.uid}:</strong> <span dir="ltr">${uid}</span></div>
       <div class="text-end d-flex justify-content-end gap-2">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="popover">انصراف</button>
-        <button type="submit" class="btn btn-sm btn-danger">حذف قطعی دسترسی</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="popover">${uiStrings.common.cancel}</button>
+        <button type="submit" class="btn btn-sm btn-danger">${uiStrings.adminAdmins.removeBtn}</button>
       </div>
     </form>
   `;

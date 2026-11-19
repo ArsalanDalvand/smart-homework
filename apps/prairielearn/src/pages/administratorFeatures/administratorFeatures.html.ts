@@ -5,6 +5,7 @@ import { html } from '@prairielearn/html';
 
 import { Modal } from '../../components/Modal.js';
 import { PageLayout } from '../../components/PageLayout.js';
+import { uiStrings } from '../../lib/branding.js';
 import { type Course, type CourseInstance, type Institution } from '../../lib/db-types.js';
 import type { FeatureName } from '../../lib/features/index.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
@@ -116,7 +117,7 @@ export function AdministratorFeature({
             data-bs-toggle="modal"
             data-bs-target="#add-feature-grant-modal"
           >
-            اعطای دسترسی به قابلیت
+            ${uiStrings.adminFeatures.modalTitle}
           </button>
         </div>
         ${
@@ -148,7 +149,7 @@ export function AdministratorFeature({
               `
             : html`
                 <div class="card-body text-center text-secondary">
-                  هیچ دسترسی اختصاصی برای این قابلیت ثبت نشده است.
+                  ${uiStrings.adminFeatures.noGrants}
                 </div>
               `
         }
@@ -247,18 +248,18 @@ function FeatureGrant({
           <input type="hidden" name="__action" value="update_feature_grant_enabled" />
           <select
             class="form-select form-select-sm"
-            aria-label="فعال یا غیرفعال‌سازی قابلیت"
+            aria-label="${uiStrings.adminFeatures.statusAria}"
             name="feature_grant_enabled"
           >
-            <option value="enabled" ${featureGrant.enabled ? 'selected' : ''}>✅ فعال</option>
-            <option value="disabled" ${featureGrant.enabled ? '' : 'selected'}>❌ غیرفعال</option>
+            <option value="enabled" ${featureGrant.enabled ? 'selected' : ''}>${uiStrings.adminFeatures.statusEnabled}</option>
+            <option value="disabled" ${featureGrant.enabled ? '' : 'selected'}>${uiStrings.adminFeatures.statusDisabled}</option>
           </select>
         </form>
 
         <form
           method="POST"
           hx-boost="true"
-          hx-confirm="آیا از لغو این دسترسی اطمینان دارید؟"
+          hx-confirm="${uiStrings.adminFeatures.revokeConfirm}"
           hx-ext="morphdom-swap"
           hx-swap="morphdom"
         >
@@ -270,7 +271,7 @@ function FeatureGrant({
             value="revoke_feature_grant"
             class="btn btn-sm btn-outline-danger"
           >
-            لغو دسترسی
+            ${uiStrings.adminFeatures.revokeBtn}
           </button>
         </form>
       </div>
@@ -292,30 +293,30 @@ interface FeatureGrantModalProps {
 
 function AddFeatureGrantModal(props: FeatureGrantModalProps) {
   return Modal({
-    title: 'اعطای دسترسی به قابلیت',
+    title: uiStrings.adminFeatures.modalTitle,
     id: 'add-feature-grant-modal',
     body: html`
       <div style="font-family: var(--font-persian);" dir="rtl">
         ${AddFeatureGrantModalBody(props)}
         <div class="mt-3">
-          <label class="form-label" for="feature-grant-user">کاربر مشخص (اختیاری)</label>
+          <label class="form-label" for="feature-grant-user">${uiStrings.adminFeatures.userLabel}</label>
           <input
             type="text"
             class="form-control text-start"
             id="feature-grant-user"
             name="user_uid"
             dir="ltr"
-            placeholder="user@example.com"
+            placeholder="${uiStrings.adminFeatures.userPlaceholder}"
           />
-          <div class="form-text">در صورت خالی بودن، برای تمام کاربران در محدوده انتخابی اعمال می‌گردد.</div>
+          <div class="form-text">${uiStrings.adminFeatures.userHelp}</div>
         </div>
       </div>
     `,
     footer: html`
       <input type="hidden" name="__csrf_token" value="${props.csrfToken}" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">${uiStrings.adminFeatures.cancelBtn}</button>
       <button type="submit" name="__action" value="add_feature_grant" class="btn btn-primary">
-        ثبت و اعطای قابلیت
+        ${uiStrings.adminFeatures.submitBtn}
       </button>
     `,
   });
@@ -354,7 +355,7 @@ export function AddFeatureGrantModalBody({
           value="true"
           ${enabled ? 'checked' : ''}
         />
-        <label class="form-check-label" for="feature-grant-enabled">فعال‌سازی قابلیت</label>
+        <label class="form-check-label" for="feature-grant-enabled">${uiStrings.adminFeatures.enableFeature}</label>
       </div>
       <div class="form-check">
         <input
@@ -365,9 +366,9 @@ export function AddFeatureGrantModalBody({
           value="false"
           ${enabled ? '' : 'checked'}
         />
-        <label class="form-check-label" for="feature-grant-disabled">غیرفعال‌سازی قابلیت</label>
+        <label class="form-check-label" for="feature-grant-disabled">${uiStrings.adminFeatures.disableFeature}</label>
         <div class="small text-muted mt-1">
-          فعال یا غیرفعال کردن یک قابلیت، تنظیمات کلی سطوح بالاتر (مانند موسسه یا دوره) را بازنویسی می‌کند.
+          ${uiStrings.adminFeatures.overrideNotice}
         </div>
       </div>
 
@@ -375,11 +376,11 @@ export function AddFeatureGrantModalBody({
 
       <div class="mb-3">
         <label class="form-label" for="feature-grant-institution">
-          موسسه / مرکز آموزشی
+          ${uiStrings.adminFeatures.institutionLabel}
           <div class="spinner-border spinner-border-sm" role="status" data-loading></div>
         </label>
         <select class="form-select" id="feature-grant-institution" name="institution_id">
-          <option value="">تمامی موسسات و مراکز</option>
+          <option value="">${uiStrings.adminFeatures.allInstitutions}</option>
           ${institutions.map((institution) => {
             return html`
               <option
@@ -395,7 +396,7 @@ export function AddFeatureGrantModalBody({
 
       <div class="mb-3">
         <label class="form-label" for="feature-grant-course">
-          درس یا دوره
+          ${uiStrings.adminFeatures.courseLabel}
           <div class="spinner-border spinner-border-sm" role="status" data-loading></div>
         </label>
         <select
@@ -404,7 +405,7 @@ export function AddFeatureGrantModalBody({
           name="course_id"
           ${!institution_id ? 'disabled' : ''}
         >
-          <option value="">تمامی درس‌های این موسسه</option>
+          <option value="">${uiStrings.adminFeatures.allCourses}</option>
           ${(courses ?? []).map((course) => {
             return html`
               <option value="${course.id}" ${course.id === course_id ? 'selected' : ''}>
@@ -417,7 +418,7 @@ export function AddFeatureGrantModalBody({
 
       <div class="mb-3">
         <label class="form-label" for="feature-grant-course-instance">
-          دوره / ترم تحصیلی
+          ${uiStrings.adminFeatures.instanceLabel}
           <div class="spinner-border spinner-border-sm" role="status" data-loading></div>
         </label>
         <select
@@ -426,7 +427,7 @@ export function AddFeatureGrantModalBody({
           name="course_instance_id"
           ${!course_id ? 'disabled' : ''}
         >
-          <option value="">تمامی دوره‌های این درس</option>
+          <option value="">${uiStrings.adminFeatures.allInstances}</option>
           ${(course_instances ?? []).map((course_instance) => {
             return html`
               <option

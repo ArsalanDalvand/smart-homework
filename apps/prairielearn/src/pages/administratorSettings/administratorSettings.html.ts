@@ -2,6 +2,7 @@ import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 
 import { PageLayout } from '../../components/PageLayout.js';
+import { uiStrings } from '../../lib/branding.js';
 import { config } from '../../lib/config.js';
 import { type NewsItem } from '../../lib/db-types.js';
 import { isEnterprise } from '../../lib/license.js';
@@ -21,7 +22,7 @@ export function AdministratorSettings({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Administrator Settings',
+    pageTitle: uiStrings.adminSettings.pageTitle,
     navContext: {
       type: 'administrator',
       page: 'admin',
@@ -49,18 +50,18 @@ export function AdministratorSettings({
       </script>
     `,
     content: html`
-      <h1 class="visually-hidden">تنظیمات سرور و کش سامانه</h1>
+      <h1 class="visually-hidden">${uiStrings.adminSettings.pageTitle}</h1>
       <!-- Chunk generation -->
       <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h2 class="h5 mb-0">تولید بسته‌ها و چانک‌های استاتیک</h2>
+          <h2 class="h5 mb-0">${uiStrings.adminSettings.chunksTitle}</h2>
         </div>
         <div class="card-body">
           <form name="generate_chunks_form" method="POST">
             <input type="hidden" name="__action" value="generate_chunks" />
             <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
             <div class="mb-3">
-              <label class="form-label" for="generateChunksCourseIds">شناسه درس‌ها (Course IDs):</label>
+              <label class="form-label" for="generateChunksCourseIds">${uiStrings.adminSettings.chunksLabel}</label>
               <input
                 type="text"
                 class="form-control"
@@ -70,7 +71,7 @@ export function AdministratorSettings({
                 dir="ltr"
               />
             </div>
-            <button type="submit" class="btn btn-primary">تولید مجدد چانک‌ها</button>
+            <button type="submit" class="btn btn-primary">${uiStrings.adminSettings.chunksBtn}</button>
           </form>
         </div>
       </div>
@@ -78,21 +79,21 @@ export function AdministratorSettings({
       <!-- Actions -->
       <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h2 class="h5 mb-0">عملیات مدیریت سیستم</h2>
+          <h2 class="h5 mb-0">${uiStrings.adminSettings.opsTitle}</h2>
         </div>
         <div class="card-body">
           <form name="invalidate-question-cache-form" method="POST">
             <input type="hidden" name="__action" value="invalidate_question_cache" />
             <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
             <button id="invalidate-render-cache" type="button" class="btn btn-danger">
-              پاک‌سازی حافظه کش رندر سوالات
+              ${uiStrings.adminSettings.clearRenderCacheBtn}
             </button>
             <div id="confirm-invalidate-cache-container" class="confirm-invalidate-cache d-none mt-2">
               <button id="confirm-invalidate-render-cache" type="submit" class="btn btn-danger me-2">
-                تایید پاک‌سازی کش
+                ${uiStrings.common.approve}
               </button>
               <button id="cancel-invalidate-render-cache" type="button" class="btn btn-secondary">
-                انصراف
+                ${uiStrings.common.cancel}
               </button>
             </div>
           </form>
@@ -116,16 +117,16 @@ export function AdministratorSettings({
           ? html`
               <div class="card mb-4" style="font-family: var(--font-persian);">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
-                  <h2 class="h5 mb-0">اخبار و اطلاعیه‌های سیستم</h2>
+                  <h2 class="h5 mb-0">${uiStrings.adminSettings.newsTitle}</h2>
                 </div>
                 <div class="table-responsive">
-                  <table class="table table-sm table-hover table-striped" aria-label="اخبار سیستم">
+                  <table class="table table-sm table-hover table-striped" aria-label="${uiStrings.adminSettings.newsTitle}">
                     <thead>
                       <tr>
-                        <th>عنوان</th>
-                        <th>تاریخ انتشار</th>
-                        <th>وضعیت</th>
-                        <th>عملیات</th>
+                        <th>${uiStrings.adminSettings.newsColTitle}</th>
+                        <th>${uiStrings.adminSettings.newsColDate}</th>
+                        <th>${uiStrings.adminSettings.newsColStatus}</th>
+                        <th>${uiStrings.adminSettings.newsColActions}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -141,10 +142,10 @@ export function AdministratorSettings({
                             <td class="align-middle">
                               ${
                                 item.managed_by === 'admin' && item.hidden_at != null
-                                  ? html`<span class="badge bg-secondary">پنهان توسط مدیر</span>`
+                                  ? html`<span class="badge bg-secondary">${uiStrings.adminSettings.newsHidden}</span>`
                                   : item.managed_by === 'sync' && item.hidden_at != null
-                                    ? html`<span class="badge bg-secondary">پنهان توسط سیستم</span>`
-                                    : html`<span class="badge bg-success">نمایان</span>`
+                                    ? html`<span class="badge bg-secondary">${uiStrings.adminSettings.newsHidden}</span>`
+                                    : html`<span class="badge bg-success">${uiStrings.adminSettings.newsVisible}</span>`
                               }
                             </td>
                             <td class="align-middle">
@@ -168,7 +169,7 @@ export function AdministratorSettings({
                                           value="${item.id}"
                                         />
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
-                                          پنهان‌سازی
+                                          ${uiStrings.adminSettings.newsHideBtn}
                                         </button>
                                       </form>
                                     `
@@ -193,7 +194,7 @@ export function AdministratorSettings({
                                           type="submit"
                                           class="btn btn-sm btn-outline-secondary"
                                         >
-                                          نمایش مجدد
+                                          ${uiStrings.adminSettings.newsShowBtn}
                                         </button>
                                       </form>
                                     `
@@ -214,13 +215,13 @@ export function AdministratorSettings({
           ? html`
               <div class="card mb-4" style="font-family: var(--font-persian);">
                 <div class="card-header bg-primary text-white">
-                  <h2 class="h5 mb-0">مدل‌های زبانی هوش مصنوعی (LLM)</h2>
+                  <h2 class="h5 mb-0">${uiStrings.adminSettings.llmBenchmarkTitle}</h2>
                 </div>
                 <div class="card-body">
                   <form method="POST">
                     <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
                     <button class="btn btn-primary" name="__action" value="sync_context_documents">
-                      همگام‌سازی مجدد مستندات کانتکست
+                      ${uiStrings.adminSettings.syncDocsBtn}
                     </button>
 
                     ${
@@ -228,14 +229,14 @@ export function AdministratorSettings({
                         ? html`
                             <hr />
                             <p class="text-muted">
-                              آزمون هوش مصنوعی با تولید سوالات نمونه از پرامپت‌ها و سنجش کیفیت آن‌ها توسط مدل زبانی و مقایسه با استانداردهای مرجع انجام می‌پذیرد.
+                              ${uiStrings.adminSettings.llmBenchmarkDesc}
                             </p>
                             <button
                               class="btn btn-primary"
                               name="__action"
                               value="benchmark_question_generation"
                             >
-                              آزمون و ارزیابی کیفیت تولید هوشمند سوال
+                              ${uiStrings.adminSettings.llmBenchmarkBtn}
                             </button>
                           `
                         : ''
@@ -249,11 +250,11 @@ export function AdministratorSettings({
 
       <div class="card mb-4" style="font-family: var(--font-persian);" dir="rtl">
         <div class="card-header bg-primary text-white">
-          <h2 class="h5 mb-0">محیط آزمون استایل‌ها و رنگ‌های سیستم</h2>
+          <h2 class="h5 mb-0">${uiStrings.adminSettings.playgroundTitle}</h2>
         </div>
         <div class="card-body">
           <p class="text-muted">
-            این بخش جهت بررسی استایل‌های فوکوس، تضاد رنگی و انطباق با استانداردهای دسترسی‌پذیری رابط کاربری طراحی شده است.
+            ${uiStrings.adminSettings.playgroundDesc}
           </p>
           <div class="mb-4" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <button type="button" class="btn btn-primary">اصلی (Primary)</button>
@@ -279,7 +280,7 @@ export function AdministratorSettings({
           <div class="mb-4 p-4 bg-dark rounded">
             <button type="button" class="btn btn-outline-light">روشن روی تیره (Light)</button>
           </div>
-          <h3>نشان‌های رنگی سفارشی</h3>
+          <h3>${uiStrings.adminSettings.badgesTitle}</h3>
           <div class="mb-4 d-flex flex-wrap gap-2">
             <span class="badge color-red1">قرمز ۱</span>
             <span class="badge color-red2">قرمز ۲</span>
@@ -378,15 +379,15 @@ export function AdministratorSettings({
             <button type="button" class="btn btn-badge color-gray2">خاکستری ۲</button>
             <button type="button" class="btn btn-badge color-gray3">خاکستری ۳</button>
           </div>
-          <h3>دکمه‌های شفاف (Ghost Button)</h3>
+          <h3>${uiStrings.adminSettings.ghostButtonTitle}</h3>
           <p class="text-muted">
-            این سبک دکمه برای مواردی کاربرد دارد که وزن بصری کمتری نسبت به دکمه‌های معمولی مدنظر است، مانند تریگرهای پاپ‌اور و منوها.
+            ${uiStrings.adminSettings.ghostButtonDesc}
           </p>
           <div>
-            <button type="button" class="btn btn-xs btn-ghost">بسیار کوچک</button>
-            <button type="button" class="btn btn-sm btn-ghost">کوچک</button>
-            <button type="button" class="btn btn-ghost">پیش‌فرض</button>
-            <button type="button" class="btn btn-lg btn-ghost">بزرگ</button>
+            <button type="button" class="btn btn-xs btn-ghost">${uiStrings.adminSettings.ghostExtraSmall}</button>
+            <button type="button" class="btn btn-sm btn-ghost">${uiStrings.adminSettings.ghostSmall}</button>
+            <button type="button" class="btn btn-ghost">${uiStrings.adminSettings.ghostDefault}</button>
+            <button type="button" class="btn btn-lg btn-ghost">${uiStrings.adminSettings.ghostLarge}</button>
           </div>
         </div>
       </div>

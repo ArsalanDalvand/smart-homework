@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import { OverlayTrigger } from '@prairielearn/ui';
 import { type Timezone, formatTimezone } from '@prairielearn/utils/timezone';
 
+import { uiStrings } from '../lib/branding.js';
 import type { AdminInstitution } from '../lib/client/safe-db-types.js';
 import { useTRPC } from '../trpc/administrator/context.js';
 
@@ -178,7 +179,7 @@ export function AdministratorCourseFormFields({
     <div className="row g-3 mb-3" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormInstitution">
-          موسسه / مرکز آموزشی
+          ${uiStrings.adminCourses.institutionLabel}
         </label>
         <select
           id="courseFormInstitution"
@@ -186,7 +187,7 @@ export function AdministratorCourseFormFields({
           aria-invalid={errors.institution_id ? true : undefined}
           aria-errormessage={errors.institution_id ? 'courseFormInstitution-error' : undefined}
           {...register('institution_id', {
-            required: 'موسسه یا مرکز آموزشی را انتخاب کنید',
+            required: uiStrings.adminCourses.institutionRequired,
             onChange: (e) => {
               const selected = institutions.find((i) => i.id === e.target.value);
               if (selected) {
@@ -197,7 +198,7 @@ export function AdministratorCourseFormFields({
           })}
         >
           <option value="" disabled>
-            انتخاب موسسه یا مرکز...
+            ${uiStrings.adminCourses.institutionSelectPlaceholder}
           </option>
           {institutions.map((i) => (
             <option key={i.id} value={i.id}>
@@ -221,7 +222,7 @@ export function AdministratorCourseFormFields({
           id="courseFormTimezone"
           aria-invalid={errors.display_timezone ? true : undefined}
           aria-errormessage={errors.display_timezone ? 'courseFormTimezone-error' : undefined}
-          {...register('display_timezone', { required: 'منطقه زمانی را انتخاب کنید' })}
+          {...register('display_timezone', { required: uiStrings.adminCourses.timezoneRequired })}
         >
           <option value="" disabled>
             انتخاب منطقه زمانی...
@@ -237,23 +238,23 @@ export function AdministratorCourseFormFields({
             {errors.display_timezone.message}
           </div>
         )}
-        {timezoneAutoFilled && <AutoFilledHint source="موسسه انتخاب‌شده" />}
+        {timezoneAutoFilled && <AutoFilledHint source={uiStrings.adminCourses.institutionAutoFill} />}
       </div>
 
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormTitle">
-          عنوان کامل درس یا دوره
+          ${uiStrings.adminCourses.titleLabel}
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.title && 'is-invalid')}
           id="courseFormTitle"
-          placeholder="مثال: مبانی برنامه‌نویسی پایتون یا ریاضیات"
+          placeholder="${uiStrings.adminCourses.titlePlaceholder}"
           aria-invalid={errors.title ? true : undefined}
           aria-errormessage={errors.title ? 'courseFormTitle-error' : undefined}
           maxLength={75}
           {...register('title', {
-            required: 'عنوان درس را وارد نمایید',
+            required: uiStrings.adminCourses.titleRequired,
             maxLength: { value: 75, message: 'عنوان درس حداکثر می‌تواند ۷۵ کاراکتر باشد' },
           })}
         />
@@ -265,17 +266,17 @@ export function AdministratorCourseFormFields({
       </div>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormShortName">
-          کد یا نام اختصاری دوره
+          ${uiStrings.adminCourses.shortNameLabel}
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.short_name && 'is-invalid')}
           id="courseFormShortName"
-          placeholder="CS 101"
+          placeholder="${uiStrings.adminCourses.shortNamePlaceholder}"
           dir="ltr"
           aria-invalid={errors.short_name ? true : undefined}
           aria-errormessage={errors.short_name ? 'courseFormShortName-error' : undefined}
-          {...register('short_name', { required: 'کد اختصاری درس را وارد نمایید' })}
+          {...register('short_name', { required: uiStrings.adminCourses.shortNameRequired })}
         />
         {errors.short_name && (
           <div id="courseFormShortName-error" className="invalid-feedback">
@@ -286,21 +287,21 @@ export function AdministratorCourseFormFields({
 
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormRepositoryName">
-          نام مخزن گیت (Repository)
+          ${uiStrings.adminCourses.repoLabel}
         </label>
         <div className="d-flex gap-2">
           <input
             type="text"
             className={clsx('form-control', errors.repository_short_name && 'is-invalid')}
             id="courseFormRepositoryName"
-            placeholder="pl-course"
+            placeholder="${uiStrings.adminCourses.repoPlaceholder}"
             dir="ltr"
             aria-invalid={errors.repository_short_name ? true : undefined}
             aria-errormessage={
               errors.repository_short_name ? 'courseFormRepositoryName-error' : undefined
             }
             {...register('repository_short_name', {
-              required: repositoryRequired && 'نام مخزن گیت را وارد نمایید',
+              required: repositoryRequired && uiStrings.adminCourses.repoRequired,
             })}
           />
         </div>
@@ -309,7 +310,7 @@ export function AdministratorCourseFormFields({
             {errors.repository_short_name.message}
           </div>
         )}
-        {repoAutoFilled && <AutoFilledHint source="دانشکده انتخاب‌شده" />}
+        {repoAutoFilled && <AutoFilledHint source={uiStrings.adminCourses.institutionAutoFill} />}
       </div>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormPath">

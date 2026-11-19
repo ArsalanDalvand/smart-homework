@@ -195,7 +195,7 @@ function GoogleLoginButton() {
   return html`
     <a class="btn btn-primary d-block position-relative" href="/pl/oauth2login">
       <img src="${assetPath('/images/google_logo.svg')}" class="social-icon" alt="" />
-      <span class="fw-bold">ورود با حساب گوگل</span>
+      <span class="fw-bold">${uiStrings.auth.loginWithGoogle}</span>
     </a>
   `;
 }
@@ -204,7 +204,7 @@ function MicrosoftLoginButton() {
   return html`
     <a class="btn btn-dark d-block position-relative" href="/pl/azure_login">
       <img src="${assetPath('/images/ms_logo.svg')}" class="social-icon" alt="" />
-      <span class="fw-bold">ورود با حساب مایکروسافت</span>
+      <span class="fw-bold">${uiStrings.auth.loginWithMicrosoft}</span>
     </a>
   `;
 }
@@ -212,7 +212,7 @@ function MicrosoftLoginButton() {
 function SamlLoginButton({ institutionId }: { institutionId: string }) {
   return html`
     <a class="btn btn-primary d-block" href="${`/pl/auth/institution/${institutionId}/saml/login`}">
-      <span class="fw-bold">ورود یکپارچه سازمانی / دانشگاهی (SSO)</span>
+      <span class="fw-bold">${uiStrings.auth.loginWithSso}</span>
     </a>
   `;
 }
@@ -248,13 +248,13 @@ export function AuthLogin({
       ${
         institutionAuthnProviders?.length
           ? html`
-              <div class="institution-header text-muted my-3">ورود از طریق درگاه سازمانی یا دانشگاهی</div>
+              <div class="institution-header text-muted my-3">${uiStrings.auth.institutionHeader}</div>
               <input
                 type="search"
                 id="js-institution-search"
                 class="form-control mb-2 text-end"
-                placeholder="جستجوی نام موسسه یا دانشگاه..."
-                aria-label="جستجوی نام موسسه یا سازمان"
+                placeholder="${uiStrings.auth.institutionPlaceholder}"
+                aria-label="${uiStrings.auth.institutionAria}"
                 autocomplete="off"
                 dir="rtl"
               />
@@ -412,7 +412,7 @@ export function AuthLoginInstitution({
               ${
                 hasNonDefaultProviders
                   ? html`<small class="text-muted text-center d-block mb-2"
-                      >Preferred method</small
+                      >${uiStrings.auth.preferredMethod}</small
                     >`
                   : ''
               }
@@ -420,7 +420,7 @@ export function AuthLoginInstitution({
               ${
                 hasNonDefaultProviders
                   ? html`
-                      <small class="text-muted text-center d-block mt-4 mb-2">Other methods</small>
+                      <small class="text-muted text-center d-block mt-4 mb-2">${uiStrings.auth.otherMethods}</small>
                     `
                   : ''
               }
@@ -442,9 +442,9 @@ export function AuthLoginInstitution({
 function DevModeBypass() {
   return html`
     <a class="btn btn-success w-100" href="/pl/dev_login">
-      <span class="fw-bold"><i class="fas fa-bolt me-1"></i> ورود سریع مدیر سیستم (حالت توسعه)</span>
+      <span class="fw-bold"><i class="fas fa-bolt me-1"></i> ${uiStrings.auth.devBypassBtn}</span>
     </a>
-    <small class="text-muted d-block text-center mt-1">احراز هویت سریع با شناسه <code>${config.authUid}</code></small>
+    <small class="text-muted d-block text-center mt-1">${uiStrings.auth.devBypassHint} <code>${config.authUid}</code></small>
   `;
 }
 
@@ -460,35 +460,35 @@ function DevModeLogin({ csrfToken }: { csrfToken: string }) {
         <input type="text" class="form-control" id="dev_name" name="name" placeholder="${uiStrings.auth.namePlaceholder}" required />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="dev_uin">شماره دانشجویی / پرسنلی (اختیاری)</label>
+        <label class="form-label" for="dev_uin">${uiStrings.auth.uinLabel}</label>
         <input
           type="text"
           class="form-control text-start"
           id="dev_uin"
           name="uin"
           dir="ltr"
-          placeholder="40123456"
+          placeholder="${uiStrings.auth.uinPlaceholder}"
           aria-describedby="dev_uin_help"
         />
         <small id="dev_uin_help" class="form-text text-muted">
-          اختیاری؛ شماره پرسنلی، دانشجویی یا شناسه فراگیر
+          ${uiStrings.auth.uinHelp}
         </small>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="dev_email">آدرس ایمیل سازمانی / کاربری</label>
+        <label class="form-label" for="dev_email">${uiStrings.auth.emailLabel}</label>
         <input
           type="email"
           class="form-control text-start"
           id="dev_email"
           name="email"
           dir="ltr"
-          placeholder="user@example.com"
+          placeholder="${uiStrings.auth.emailPlaceholder}"
           aria-describedby="dev_email_help"
         />
       </div>
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <button type="submit" class="btn btn-primary d-block w-100" name="__action" value="dev_login">
-        <span class="fw-bold">ورود به سامانه</span>
+        <span class="fw-bold">${uiStrings.auth.devLoginBtn}</span>
       </button>
     </form>
   `;

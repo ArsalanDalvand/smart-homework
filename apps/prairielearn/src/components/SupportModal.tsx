@@ -8,42 +8,42 @@ import { Modal } from './Modal.js';
 export function SupportModal() {
   return Modal({
     id: 'supportModal',
-    title: `راهنمایی و پشتیبانی ${platformBranding.brandShortName}`,
+    title: `${uiStrings.support.title} ${platformBranding.brandShortName}`,
     size: 'modal-lg',
     form: false,
     body: html`
       <div style="font-family: var(--font-persian);">
         <p class="text-muted">
-          فراگیران، اساتید، مدرسان و کاربران گرامی، جهت دریافت راهنمایی یا رفع اشکال از مسیرهای زیر استفاده فرمایید:
+          ${uiStrings.support.intro}
         </p>
         <div class="row row-cols-1 row-cols-md-2 g-3">
           ${SupportOptionCard({
-            title: 'راهنمای جامع تدریس و طراحی دوره',
-            description: 'مستندات آموزشی نحوه طراحی سوالات، تکالیف، آزمون‌ها و تصحیح خودکار برای مدرسان و طراحان دوره.',
+            title: uiStrings.support.docsTitle,
+            description: uiStrings.support.docsDesc,
             href: platformBranding.docsUrl,
-            action: 'مشاهده مستندات راهنما',
+            action: uiStrings.support.docsAction,
             icon: 'bi-book',
           })}
           ${SupportOptionCard({
-            title: 'مخزن سامانه در گیت‌هاب',
-            description: 'دسترسی به سورس‌کد سامانه ارزیابی هوشمند، گزارش باگ‌ها و مشارکت در توسعه قابلیت‌های پلتفرم.',
+            title: uiStrings.support.repoTitle,
+            description: uiStrings.support.repoDesc,
             href: platformBranding.repoUrl,
-            action: 'مشاهده ریپازیتوری',
+            action: uiStrings.support.repoAction,
             icon: 'bi-github',
           })}
           ${SupportOptionCard({
-            title: 'پشتیبانی فنی و ارتباط با مدیران',
-            description: 'ارتباط با تیم پشتیبانی جهت راه‌اندازی دوره جدید، دسترسی‌ها و رفع اشکالات احتمالی سامانه.',
+            title: uiStrings.support.contactTitle,
+            description: uiStrings.support.contactDesc,
             href: `mailto:${platformBranding.supportEmail}`,
-            action: 'ارسال ایمیل به پشتیبانی',
+            action: uiStrings.support.contactAction,
             icon: 'bi-envelope',
             newTab: false,
           })}
           ${SupportOptionCard({
             title: platformBranding.portalName,
-            description: 'دسترسی به تقویم آموزشی، سامانه‌های یکپارچه و اطلاع‌رسانی دوره‌های آموزشی.',
+            description: uiStrings.support.portalDesc,
             href: platformBranding.portalUrl,
-            action: 'ورود به پرتال اطلاع‌رسانی',
+            action: uiStrings.support.portalAction,
             icon: 'bi-globe',
           })}
         </div>

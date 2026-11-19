@@ -61,15 +61,11 @@ function DevModeCard({ isDevMode }: { isDevMode: boolean }) {
   return (
     <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white">
-        <h2>حالت توسعه و مدیریت محتوا</h2>
+        <h2>{uiStrings.home.devModeTitle}</h2>
       </div>
       <div className="card-body">
-        <p>
-          سامانه هم‌اکنون در <strong>حالت توسعه (<span dir="ltr">Dev Mode</span>)</strong> اجرا شده است. با تغییر فایل‌های پیکربندی، سوالات و تنظیمات درس در پوشه کدها، جهت اعمال سریع تغییرات بر روی دکمه <strong>«همگام‌سازی دیسک»</strong> در نوار بالا کلیک کنید.
-        </p>
-        <p className="mb-0 text-muted">
-          {uiStrings.home.devModeHint}
-        </p>
+        <p>{uiStrings.home.devModeNotice}</p>
+        <p className="mb-0 text-muted">{uiStrings.home.devModeHint}</p>
       </div>
     </div>
   );
@@ -85,7 +81,7 @@ function AdminInstitutionsCard({ adminInstitutions }: AdminInstitutionsCardProps
   return (
     <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white">
-        <h2>دانشکده‌ها و موسسات تحت مدیریت</h2>
+        <h2>{uiStrings.home.adminInstitutionsTitle}</h2>
       </div>
       <ul className="list-group list-group-flush">
         {adminInstitutions.map((institution) => (
@@ -111,7 +107,7 @@ function InstructorCoursesCard({ instructorCourses, urlPrefix }: InstructorCours
   return (
     <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white d-flex align-items-center">
-        <h2>درس‌های تحت مدیریت (استاد / دستیار آموزشی)</h2>
+        <h2>{uiStrings.home.instructorCoursesTitle}</h2>
         <a
           href={platformBranding.repoUrl}
           className="btn btn-light btn-sm ms-auto"
@@ -119,14 +115,14 @@ function InstructorCoursesCard({ instructorCourses, urlPrefix }: InstructorCours
           rel="noopener noreferrer"
         >
           <i className="fab fa-github me-sm-1" aria-hidden="true" />
-          <span className="d-none d-sm-inline">مخزن گیت‌هاب</span>
+          <span className="d-none d-sm-inline">{uiStrings.home.githubRepoBtn}</span>
         </a>
       </div>
 
       <div className="table-responsive">
         <table
           className="table table-sm table-hover table-striped"
-          aria-label="Courses with instructor access"
+          aria-label={uiStrings.home.instructorCoursesTitle}
         >
           <tbody>
             {instructorCourses.map((course) => (
@@ -147,7 +143,7 @@ function InstructorCoursesCard({ instructorCourses, urlPrefix }: InstructorCours
                   />
                   {course.course_instances.some((ci) => ci.expired) && (
                     <details>
-                      <summary className="text-muted small">ترم‌های گذشته</summary>
+                      <summary className="text-muted small">{uiStrings.home.pastTerms}</summary>
                       <CourseInstanceList
                         courseInstances={course.course_instances.filter((ci) => ci.expired)}
                         urlPrefix={urlPrefix}

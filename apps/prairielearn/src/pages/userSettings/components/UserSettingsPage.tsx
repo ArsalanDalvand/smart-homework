@@ -6,6 +6,7 @@ import { formatDate } from '@prairielearn/formatter';
 import { getAppError } from '@prairielearn/trpc/client';
 import { AppErrorAlert, QueryClientProviderDebug } from '@prairielearn/trpc/react';
 
+import { uiStrings } from '../../../lib/branding.js';
 import type { UserAccessToken } from '../../../lib/client/safe-db-types.js';
 import { createUserTrpcClient } from '../../../trpc/user/client.js';
 import { TRPCProvider, useTRPC } from '../../../trpc/user/context.js';
@@ -104,34 +105,34 @@ function UserProfileCard({
         >
           <tbody>
             <tr>
-              <th>شناسه کاربری (UID)</th>
+              <th>{uiStrings.common.uid}</th>
               <td dir="ltr" style={{ textAlign: 'right' }}>{user.uid}</td>
             </tr>
             <tr>
-              <th>نام و نام خانوادگی</th>
+              <th>{uiStrings.common.name}</th>
               <td>{user.name || '—'}</td>
             </tr>
             <tr>
-              <th>شماره دانشجویی / پرسنلی (UIN)</th>
+              <th>{uiStrings.userSettings.uin}</th>
               <td>{user.uin || '—'}</td>
             </tr>
             <tr>
-              <th>آدرس ایمیل</th>
+              <th>{uiStrings.common.email}</th>
               <td dir="ltr" style={{ textAlign: 'right' }}>{user.email || '—'}</td>
             </tr>
             <tr>
-              <th>موسسه / مرکز آموزشی</th>
+              <th>{uiStrings.common.institution}</th>
               <td>
                 {institution.long_name} ({institution.short_name})
               </td>
             </tr>
             <tr>
-              <th>روش احراز هویت</th>
+              <th>{uiStrings.userSettings.authMethod}</th>
               <td>{authnProviderName}</td>
             </tr>
             <tr>
-              <th>آدرس IP کاربر</th>
-              <td dir="ltr" style={{ textAlign: 'right' }}>{ipAddress ?? <em>نامشخص</em>}</td>
+              <th>{uiStrings.userSettings.ipAddress}</th>
+              <td dir="ltr" style={{ textAlign: 'right' }}>{ipAddress ?? <em>{uiStrings.common.unknown}</em>}</td>
             </tr>
           </tbody>
         </table>

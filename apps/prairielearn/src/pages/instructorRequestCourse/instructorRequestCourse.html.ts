@@ -5,6 +5,7 @@ import { assertNever } from '@prairielearn/utils';
 import { Modal } from '../../components/Modal.js';
 import { PageLayout } from '../../components/PageLayout.js';
 import { compiledScriptTag } from '../../lib/assets.js';
+import { uiStrings } from '../../lib/branding.js';
 import { type CourseRequest } from '../../lib/db-types.js';
 import {
   GITHUB_USERNAME_MAX_LENGTH,
@@ -28,7 +29,7 @@ export function RequestCourse({
   resLocals: ResLocalsForPage<'plain'>;
 }) {
   return PageLayout({
-    pageTitle: 'درخواست ایجاد درس جدید',
+    pageTitle: uiStrings.courseRequest.title,
     resLocals,
     navContext: {
       type: 'plain',
@@ -37,7 +38,7 @@ export function RequestCourse({
     headContent: compiledScriptTag('instructorRequestCourseClient.ts'),
     content: html`
       <div class="mx-auto" style="max-width: 1000px; font-family: var(--font-persian);">
-        <h1 class="h2 mb-3">درخواست ایجاد درس یا دوره آموزشی جدید</h1>
+        <h1 class="h2 mb-3">${uiStrings.courseRequest.title}</h1>
         ${CourseRequestsCard({ rows })} ${EncodedData(lti13Info, 'course-request-lti13-info')}
         ${Modal({
           id: 'fill-course-request-lti13-modal',
@@ -159,15 +160,15 @@ function CourseNewRequestForm({
   return html`
     <form class="question-form" name="course-request" method="POST">
       <p class="text-muted">
-        این فرم برای مدرسان، اساتید و طراحان آموزشی جهت راه‌اندازی و تعریف درس یا دوره جدید در سامانه ارزیابی هوشمند است. فراگیران و دانشجویان گرامی <strong>نباید</strong> این فرم را پر کنند و جهت شرکت در آزمون‌ها یا حل تمرین، باید از طریق کد دوره که توسط مدرس ارائه می‌شود عضو شوند.
+        ${uiStrings.courseRequest.infoDesc}
       </p>
 
       ${InstitutionMessageCard({ institutionMessageHtml, institutionName })}
       ${institutionMessageHtml ? '' : html`<hr class="my-3" />`}
-      <h2 class="h5 mb-3">اطلاعات متقاضی (مدرس / طراح)</h2>
+      <h2 class="h5 mb-3">${uiStrings.courseRequest.aboutYou}</h2>
       <div class="row">
         <div class="mb-3 col-md-6">
-          <label class="form-label" for="cr-firstname">نام</label>
+          <label class="form-label" for="cr-firstname">${uiStrings.courseRequest.firstName}</label>
           <input
             type="text"
             class="form-control"
@@ -178,7 +179,7 @@ function CourseNewRequestForm({
           />
         </div>
         <div class="mb-3 col-md-6">
-          <label class="form-label" for="cr-lastname">نام خانوادگی</label>
+          <label class="form-label" for="cr-lastname">${uiStrings.courseRequest.lastName}</label>
           <input
             type="text"
             class="form-control"
@@ -194,7 +195,7 @@ function CourseNewRequestForm({
           ? html`
               <div class="row">
                 <div class="mb-3 col-md-6">
-                  <label class="form-label" for="cr-institution">موسسه، سازمان یا واحد آموزشی</label>
+                  <label class="form-label" for="cr-institution">${uiStrings.courseRequest.institution}</label>
                   <input
                     type="text"
                     class="form-control"
@@ -205,11 +206,11 @@ function CourseNewRequestForm({
                     required
                   />
                   <small class="form-text text-muted">
-                    نام موسسه، سازمان یا واحد آموزشی برگزارکننده.
+                    ${uiStrings.courseRequest.institutionDesc}
                   </small>
                 </div>
                 <div class="mb-3 col-md-6">
-                  <label class="form-label" for="cr-email">ایمیل رسمی / سازمانی</label>
+                  <label class="form-label" for="cr-email">${uiStrings.courseRequest.email}</label>
                   <input
                     type="email"
                     class="form-control text-start"
@@ -223,7 +224,7 @@ function CourseNewRequestForm({
                     required
                   />
                   <small class="form-text text-muted">
-                    لطفاً از ایمیل معتبر و رسمی سازمانی خود استفاده فرمایید.
+                    ${uiStrings.courseRequest.emailDesc}
                   </small>
                   <div
                     class="d-none alert alert-warning mt-2 mb-0"
@@ -267,22 +268,22 @@ function CourseNewRequestForm({
             `
       }
       <hr class="my-3" />
-      <h2 class="h5 mb-3">مشخصات درس یا دوره پیشنهادی</h2>
+      <h2 class="h5 mb-3">${uiStrings.courseRequest.aboutCourse}</h2>
       <div class="mb-3">
-        <label class="form-label" for="cr-shortname">کد یا نام اختصاری دوره (Course Rubric and Number)</label>
+        <label class="form-label" for="cr-shortname">${uiStrings.courseRequest.shortName}</label>
         <input
           type="text"
           class="form-control"
           name="cr-shortname"
           id="cr-shortname"
           aria-invalid="false"
-          placeholder="CS 101"
+          placeholder="${uiStrings.courseRequest.shortNamePlaceholder}"
           dir="ltr"
           pattern="[a-zA-Z]+ [a-zA-Z0-9]+"
           required
         />
         <small class="form-text text-muted">
-          ساختار استاندارد: حروف بزرگ لاتین به همراه فاصله و شماره دوره (مانند CS 101 یا MATH 240).
+          ${uiStrings.courseRequest.shortNameDesc}
         </small>
         <div class="d-none alert alert-danger mt-2 mb-0" id="cr-shortname-owned" role="alert">
           شما در حال حاضر دسترسی به درسی با این کد را دارید. اگر می‌خواهید دوره جدیدی ارائه دهید، نیازی به ثبت درخواست دوره جدید نیست.
@@ -292,24 +293,24 @@ function CourseNewRequestForm({
         </div>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="cr-title">عنوان کامل و رسمی درس یا دوره</label>
+        <label class="form-label" for="cr-title">${uiStrings.courseRequest.courseTitle}</label>
         <input
           type="text"
           class="form-control"
           name="cr-title"
           id="cr-title"
           aria-invalid="false"
-          placeholder="مثال: مبانی برنامه‌نویسی پایتون، ریاضیات یا طراحی سیستم"
+          placeholder="${uiStrings.courseRequest.courseTitlePlaceholder}"
           minlength="1"
           maxlength="75"
           required
         />
         <small class="form-text text-muted">
-          عنوان کامل دوره یا درس آموزشی.
+          ${uiStrings.courseRequest.courseTitleDesc}
         </small>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="cr-ghuser">نام کاربری گیت‌هاب (اختیاری جهت همگام‌سازی سوالات)</label>
+        <label class="form-label" for="cr-ghuser">${uiStrings.courseRequest.githubUser}</label>
         <input
           type="text"
           class="form-control"
@@ -323,14 +324,14 @@ function CourseNewRequestForm({
           aria-describedby="cr-ghuser-help"
         />
         <small class="form-text text-muted" id="cr-ghuser-help">
-          در صورت ارائه نام کاربری گیت‌هاب، دسترسی به مخزن سوالات و کدهای درس برای شما فعال خواهد شد تا بتوانید در سیستم شخصی خود نیز سوالات را طراحی و همگام‌سازی نمایید.
+          ${uiStrings.courseRequest.githubUserDesc}
         </small>
       </div>
       <hr class="my-3" />
-      <h2 class="h5 mb-3">اطلاعات تکمیلی درخواست</h2>
+      <h2 class="h5 mb-3">${uiStrings.courseRequest.aboutRequest}</h2>
       <div class="mb-3">
         <label class="form-label" id="cr-referral-source-label" for="cr-referral-source">
-          نحوه آشنایی با سامانه ارزیابی هوشمند
+          ${uiStrings.courseRequest.referralSource}
         </label>
         <select
           class="form-select"
@@ -339,13 +340,13 @@ function CourseNewRequestForm({
           aria-labelledby="cr-referral-source-label"
           required
         >
-          <option value="" disabled selected>انتخاب نمایید...</option>
-          <option value="I've used PrairieLearn before">قبلاً در سایر دوره‌ها یا مراکز آموزشی استفاده کرده‌ام</option>
-          <option value="Word of mouth">توصیه سایر مدرسان، همکاران یا اساتید</option>
-          <option value="Web search">معرفی در اینترنت و موتورهای جستجو</option>
-          <option value="Conference or workshop">کارگاه‌ها، وبینارها و رویدادهای آموزشی</option>
-          <option value="Publication">مقالات و پژوهش‌های آموزش نوین و ارزیابی</option>
-          <option value="other">سایر موارد...</option>
+          <option value="" disabled selected>${uiStrings.courseRequest.referralPlaceholder}</option>
+          <option value="I've used PrairieLearn before">${uiStrings.courseRequest.referralUsedBefore}</option>
+          <option value="Word of mouth">${uiStrings.courseRequest.referralWordOfMouth}</option>
+          <option value="Web search">${uiStrings.courseRequest.referralWebSearch}</option>
+          <option value="Conference or workshop">${uiStrings.courseRequest.referralWorkshop}</option>
+          <option value="Publication">${uiStrings.courseRequest.referralPublication}</option>
+          <option value="other">${uiStrings.courseRequest.referralOther}</option>
         </select>
         <input
           type="text"
@@ -357,46 +358,46 @@ function CourseNewRequestForm({
         />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="role-instructor">نقش شما در این دوره</label>
+        <label class="form-label" for="role-instructor">${uiStrings.courseRequest.roleLabel}</label>
         <ul class="list-group">
           <li class="list-group-item">
             <input type="radio" id="role-instructor" name="cr-role" value="instructor" />
             <label for="role-instructor" class="mb-0 form-check-label ms-2">
-              مدرس / استاد اصلی دوره (Instructor)
+              ${uiStrings.courseRequest.roleInstructor}
             </label>
           </li>
           <li class="list-group-item">
             <input type="radio" id="role-ta" name="cr-role" value="ta" />
             <label for="role-ta" class="mb-0 form-check-label ms-2">
-              دستیار آموزشی یا همکار تدریس (TA)
+              ${uiStrings.courseRequest.roleTa}
             </label>
           </li>
           <li class="list-group-item">
             <input type="radio" id="role-admin" name="cr-role" value="admin" />
             <label for="role-admin" class="mb-0 form-check-label ms-2">
-              مدیر آموزش یا کارشناس مرکز
+              ${uiStrings.courseRequest.roleAdmin}
             </label>
           </li>
           <li class="list-group-item">
             <input type="radio" id="role-student" name="cr-role" value="student" />
-            <label for="role-student" class="mb-0 form-check-label ms-2">دانشجو / فراگیر</label>
+            <label for="role-student" class="mb-0 form-check-label ms-2">${uiStrings.courseRequest.roleStudent}</label>
           </li>
         </ul>
         <div
           class="d-none role-comment role-comment-ta role-comment-admin alert alert-warning mt-3 mb-0"
           role="alert"
         >
-          <strong>درخواست ایجاد دوره جدید باید توسط مدرس اصلی دوره تایید گردد.</strong> لطفاً از مدرس دوره بخواهید این فرم را ثبت نماید.
+          <strong>${uiStrings.courseRequest.roleTaNotice}</strong>
         </div>
         <div
           class="d-none role-comment role-comment-student alert alert-warning mt-3 mb-0"
           role="alert"
         >
-          <strong>این فرم مختص مدرسان و برگزارکنندگان است.</strong> لطفاً جهت دسترسی به آزمون‌ها و محتوا، از مدرس دوره کد ورود را دریافت فرمایید.
+          <strong>${uiStrings.courseRequest.roleStudentNotice}</strong>
         </div>
       </div>
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-      <button class="btn btn-primary" type="submit" disabled>ثبت نهایی درخواست دوره</button>
+      <button class="btn btn-primary" type="submit" disabled>${uiStrings.courseRequest.submitBtn}</button>
     </form>
   `;
 }

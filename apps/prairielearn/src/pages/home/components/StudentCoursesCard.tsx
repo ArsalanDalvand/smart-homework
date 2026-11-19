@@ -22,7 +22,9 @@ export function StudentCoursesCard({
   isDevMode: boolean;
   setShowJoinModal: (value: boolean) => void;
 }) {
-  const heading = hasInstructorCourses ? 'درس‌های من (دسترسی دانشجو)' : 'درس‌های من';
+  const heading = hasInstructorCourses
+    ? uiStrings.home.studentCoursesTitle
+    : uiStrings.home.studentCoursesTitleSimple;
   const rejectInvitationModal = useModalState<{
     courseInstanceId: string;
     enrollmentId: string;
@@ -51,7 +53,7 @@ export function StudentCoursesCard({
             onClick={() => setShowJoinModal(true)}
           >
             <i className="bi bi-plus-circle me-sm-1" aria-hidden="true" />
-            <span className="d-none d-sm-inline">عضویت در درس</span>
+            <span className="d-none d-sm-inline">{uiStrings.home.joinCourseBtn}</span>
           </button>
         )}
       </div>
@@ -59,17 +61,16 @@ export function StudentCoursesCard({
       {studentCourses.length === 0 ? (
         hasInstructorCourses ? (
           <div className="card-body text-secondary">
-            در حال حاضر درسی با نقش دانشجو برای شما ثبت نشده است. درس‌های تحت مدیریت آموزشی شما در جدول بالا قرار دارند.
-            {canAddCourses && ' جهت عضویت در درس‌های دیگر با نقش دانشجو، بر روی دکمه «عضویت در درس» کلیک نمایید.'}
+            {uiStrings.home.noStudentCoursesWithInstructor}
+            {canAddCourses && ` ${uiStrings.home.joinCourseHint}`}
           </div>
         ) : isDevMode ? (
           <div className="card-body text-secondary">
-            هیچ درسی بارگذاری نشده است. بر روی دکمه <strong>«همگام‌سازی دیسک»</strong> در نوار بالا کلیک کنید.
+            {uiStrings.home.noCoursesDevMode}
           </div>
         ) : (
           <div className="card-body text-secondary">
-            درسی یافت نشد.
-            {canAddCourses && ' جهت افزودن درس، بر روی دکمه «عضویت در درس» کلیک کنید.'}
+            {uiStrings.home.noCoursesGeneral}
           </div>
         )
       ) : (
