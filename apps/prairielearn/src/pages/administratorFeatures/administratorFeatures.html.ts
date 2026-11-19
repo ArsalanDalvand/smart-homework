@@ -108,7 +108,7 @@ export function AdministratorFeature({
       </style>
     `,
     content: html`
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
           <span class="font-monospace">${feature}</span>
           <button
@@ -116,7 +116,7 @@ export function AdministratorFeature({
             data-bs-toggle="modal"
             data-bs-target="#add-feature-grant-modal"
           >
-            Grant feature
+            اعطای دسترسی به قابلیت
           </button>
         </div>
         ${
@@ -132,8 +132,7 @@ export function AdministratorFeature({
                                 featureInConfig ? 'fa-check text-success' : 'fa-times text-danger'
                               }"
                             ></i>
-                            Feature ${featureInConfig ? 'enabled' : 'disabled'} in configuration
-                            file
+                            این قابلیت در فایل پیکربندی سرور ${featureInConfig ? 'فعال' : 'غیرفعال'} است.
                           </div>
                         `
                       : ''
@@ -149,7 +148,7 @@ export function AdministratorFeature({
               `
             : html`
                 <div class="card-body text-center text-secondary">
-                  There are no grants for this feature
+                  هیچ دسترسی اختصاصی برای این قابلیت ثبت نشده است.
                 </div>
               `
         }
@@ -179,7 +178,7 @@ function FeatureGrantBreadcrumbs({ featureGrant }: { featureGrant: FeatureGrantR
         isGlobal
           ? html`<li class="list-inline-item inline-flex">
               <i class="fa-solid fa-globe me-1"></i>
-              Global
+              سراسری (Global)
             </li>`
           : null
       }
@@ -248,18 +247,18 @@ function FeatureGrant({
           <input type="hidden" name="__action" value="update_feature_grant_enabled" />
           <select
             class="form-select form-select-sm"
-            aria-label="Enable or disable feature"
+            aria-label="فعال یا غیرفعال‌سازی قابلیت"
             name="feature_grant_enabled"
           >
-            <option value="enabled" ${featureGrant.enabled ? 'selected' : ''}>✅ Enabled</option>
-            <option value="disabled" ${featureGrant.enabled ? '' : 'selected'}>❌ Disabled</option>
+            <option value="enabled" ${featureGrant.enabled ? 'selected' : ''}>✅ فعال</option>
+            <option value="disabled" ${featureGrant.enabled ? '' : 'selected'}>❌ غیرفعال</option>
           </select>
         </form>
 
         <form
           method="POST"
           hx-boost="true"
-          hx-confirm="Are you sure you want to revoke this feature grant?"
+          hx-confirm="آیا از لغو این دسترسی اطمینان دارید؟"
           hx-ext="morphdom-swap"
           hx-swap="morphdom"
         >
@@ -271,7 +270,7 @@ function FeatureGrant({
             value="revoke_feature_grant"
             class="btn btn-sm btn-outline-danger"
           >
-            Revoke
+            لغو دسترسی
           </button>
         </form>
       </div>
@@ -293,30 +292,30 @@ interface FeatureGrantModalProps {
 
 function AddFeatureGrantModal(props: FeatureGrantModalProps) {
   return Modal({
-    title: 'Grant feature',
+    title: 'اعطای دسترسی به قابلیت',
     id: 'add-feature-grant-modal',
-    // The user UID input is deliberately outside of `AddFeatureGrantModalBody`.
-    // We don't want changes to the user to trigger a reload of the modal body,
-    // nor do we want to include it when sending back the updated body HTML.
     body: html`
-      ${AddFeatureGrantModalBody(props)}
-      <div>
-        <label class="form-label" for="feature-grant-user">User</label>
-        <input
-          type="text"
-          class="form-control"
-          id="feature-grant-user"
-          name="user_uid"
-          placeholder="student@example.com"
-        />
-        <div class="form-text">Leave blank to grant to all users in the given context.</div>
+      <div style="font-family: var(--font-persian);" dir="rtl">
+        ${AddFeatureGrantModalBody(props)}
+        <div class="mt-3">
+          <label class="form-label" for="feature-grant-user">کاربر مشخص (اختیاری)</label>
+          <input
+            type="text"
+            class="form-control text-start"
+            id="feature-grant-user"
+            name="user_uid"
+            dir="ltr"
+            placeholder="user@example.com"
+          />
+          <div class="form-text">در صورت خالی بودن، برای تمام کاربران در محدوده انتخابی اعمال می‌گردد.</div>
+        </div>
       </div>
     `,
     footer: html`
       <input type="hidden" name="__csrf_token" value="${props.csrfToken}" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
       <button type="submit" name="__action" value="add_feature_grant" class="btn btn-primary">
-        Grant feature
+        ثبت و اعطای قابلیت
       </button>
     `,
   });
@@ -343,6 +342,8 @@ export function AddFeatureGrantModalBody({
       hx-swap="morphdom"
       data-loading-disable
       data-loading-delay="200"
+      style="font-family: var(--font-persian);"
+      dir="rtl"
     >
       <div class="form-check">
         <input
@@ -353,7 +354,7 @@ export function AddFeatureGrantModalBody({
           value="true"
           ${enabled ? 'checked' : ''}
         />
-        <label class="form-check-label" for="feature-grant-enabled">Enable feature</label>
+        <label class="form-check-label" for="feature-grant-enabled">فعال‌سازی قابلیت</label>
       </div>
       <div class="form-check">
         <input
@@ -364,10 +365,9 @@ export function AddFeatureGrantModalBody({
           value="false"
           ${enabled ? '' : 'checked'}
         />
-        <label class="form-check-label" for="feature-grant-disabled">Disable feature</label>
-        <div class="small text-muted">
-          Enabling or disabling a feature overrides any settings from a parent institution, course,
-          and so on.
+        <label class="form-check-label" for="feature-grant-disabled">غیرفعال‌سازی قابلیت</label>
+        <div class="small text-muted mt-1">
+          فعال یا غیرفعال کردن یک قابلیت، تنظیمات کلی سطوح بالاتر (مانند موسسه یا دوره) را بازنویسی می‌کند.
         </div>
       </div>
 
@@ -375,11 +375,11 @@ export function AddFeatureGrantModalBody({
 
       <div class="mb-3">
         <label class="form-label" for="feature-grant-institution">
-          Institution
+          موسسه / مرکز آموزشی
           <div class="spinner-border spinner-border-sm" role="status" data-loading></div>
         </label>
         <select class="form-select" id="feature-grant-institution" name="institution_id">
-          <option value="">All institutions</option>
+          <option value="">تمامی موسسات و مراکز</option>
           ${institutions.map((institution) => {
             return html`
               <option
@@ -395,7 +395,7 @@ export function AddFeatureGrantModalBody({
 
       <div class="mb-3">
         <label class="form-label" for="feature-grant-course">
-          Course
+          درس یا دوره
           <div class="spinner-border spinner-border-sm" role="status" data-loading></div>
         </label>
         <select
@@ -404,7 +404,7 @@ export function AddFeatureGrantModalBody({
           name="course_id"
           ${!institution_id ? 'disabled' : ''}
         >
-          <option value="">All courses in this institution</option>
+          <option value="">تمامی درس‌های این موسسه</option>
           ${(courses ?? []).map((course) => {
             return html`
               <option value="${course.id}" ${course.id === course_id ? 'selected' : ''}>
@@ -417,7 +417,7 @@ export function AddFeatureGrantModalBody({
 
       <div class="mb-3">
         <label class="form-label" for="feature-grant-course-instance">
-          Course instance
+          دوره / ترم تحصیلی
           <div class="spinner-border spinner-border-sm" role="status" data-loading></div>
         </label>
         <select
@@ -426,7 +426,7 @@ export function AddFeatureGrantModalBody({
           name="course_instance_id"
           ${!course_id ? 'disabled' : ''}
         >
-          <option value="">All courses instances in this course</option>
+          <option value="">تمامی دوره‌های این درس</option>
           ${(course_instances ?? []).map((course_instance) => {
             return html`
               <option

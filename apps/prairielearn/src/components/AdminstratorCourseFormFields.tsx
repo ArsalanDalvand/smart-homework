@@ -178,7 +178,7 @@ export function AdministratorCourseFormFields({
     <div className="row g-3 mb-3" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormInstitution">
-          دانشکده / موسسه
+          موسسه / مرکز آموزشی
         </label>
         <select
           id="courseFormInstitution"
@@ -186,7 +186,7 @@ export function AdministratorCourseFormFields({
           aria-invalid={errors.institution_id ? true : undefined}
           aria-errormessage={errors.institution_id ? 'courseFormInstitution-error' : undefined}
           {...register('institution_id', {
-            required: 'دانشکده یا موسسه را انتخاب کنید',
+            required: 'موسسه یا مرکز آموزشی را انتخاب کنید',
             onChange: (e) => {
               const selected = institutions.find((i) => i.id === e.target.value);
               if (selected) {
@@ -197,7 +197,7 @@ export function AdministratorCourseFormFields({
           })}
         >
           <option value="" disabled>
-            انتخاب دانشکده یا موسسه...
+            انتخاب موسسه یا مرکز...
           </option>
           {institutions.map((i) => (
             <option key={i.id} value={i.id}>
@@ -237,18 +237,18 @@ export function AdministratorCourseFormFields({
             {errors.display_timezone.message}
           </div>
         )}
-        {timezoneAutoFilled && <AutoFilledHint source="دانشکده انتخاب‌شده" />}
+        {timezoneAutoFilled && <AutoFilledHint source="موسسه انتخاب‌شده" />}
       </div>
 
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormTitle">
-          عنوان کامل درس
+          عنوان کامل درس یا دوره
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.title && 'is-invalid')}
           id="courseFormTitle"
-          placeholder="مثال: مبانی برنامه‌نویسی پایتون یا ریاضی عمومی ۱"
+          placeholder="مثال: مبانی برنامه‌نویسی پایتون یا ریاضیات"
           aria-invalid={errors.title ? true : undefined}
           aria-errormessage={errors.title ? 'courseFormTitle-error' : undefined}
           maxLength={75}
@@ -265,13 +265,13 @@ export function AdministratorCourseFormFields({
       </div>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormShortName">
-          کد یا نام اختصاری درس
+          کد یا نام اختصاری دوره
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.short_name && 'is-invalid')}
           id="courseFormShortName"
-          placeholder="مثال: CE 101 یا MATH 101 یا EE 200"
+          placeholder="CS 101"
           dir="ltr"
           aria-invalid={errors.short_name ? true : undefined}
           aria-errormessage={errors.short_name ? 'courseFormShortName-error' : undefined}
@@ -293,7 +293,7 @@ export function AdministratorCourseFormFields({
             type="text"
             className={clsx('form-control', errors.repository_short_name && 'is-invalid')}
             id="courseFormRepositoryName"
-            placeholder="pl-iust-course"
+            placeholder="pl-course"
             dir="ltr"
             aria-invalid={errors.repository_short_name ? true : undefined}
             aria-errormessage={

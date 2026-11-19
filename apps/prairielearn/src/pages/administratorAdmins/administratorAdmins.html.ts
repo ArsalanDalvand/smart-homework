@@ -26,7 +26,7 @@ export function AdministratorAdmins({
     content: html`
       <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1 class="h4 mb-0">مدیران کل سامانه دانشگاه</h1>
+          <h1 class="h4 mb-0">مدیران کل سامانه</h1>
           <button
             type="button"
             class="btn btn-sm btn-light ms-auto"

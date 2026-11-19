@@ -146,11 +146,22 @@ function LoginPageContainer({
                   href="/"
                   class="text-decoration-none text-dark d-flex flex-column align-items-center justify-content-center"
                 >
-                  <img
-                    src="${assetPath('images/iust-logo.svg')}"
-                    alt="${getEffectiveBrandName(resLocals?.institution)}"
-                    style="height: 75px; width: auto; margin-bottom: 12px;"
-                  />
+                  ${
+                    platformBranding.logoUrl
+                      ? html`<img
+                          src="${platformBranding.logoUrl}"
+                          alt="${getEffectiveBrandName(resLocals?.institution)}"
+                          style="height: 70px; width: auto; margin-bottom: 12px;"
+                        />`
+                      : html`
+                          <div
+                            class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle shadow-sm mb-3"
+                            style="width: 68px; height: 68px;"
+                          >
+                            <i class="fas fa-graduation-cap fs-2"></i>
+                          </div>
+                        `
+                  }
                   <span style="font-weight: 800; font-size: 1.25rem; color: #0f2b48;">
                     ${getEffectiveBrandName(resLocals?.institution)}
                   </span>
@@ -201,7 +212,7 @@ function MicrosoftLoginButton() {
 function SamlLoginButton({ institutionId }: { institutionId: string }) {
   return html`
     <a class="btn btn-primary d-block" href="${`/pl/auth/institution/${institutionId}/saml/login`}">
-      <span class="fw-bold">ورود یکپارچه دانشگاهی (SSO)</span>
+      <span class="fw-bold">ورود یکپارچه سازمانی / دانشگاهی (SSO)</span>
     </a>
   `;
 }
@@ -237,13 +248,13 @@ export function AuthLogin({
       ${
         institutionAuthnProviders?.length
           ? html`
-              <div class="institution-header text-muted my-3">ورود از طریق درگاه دانشگاه</div>
+              <div class="institution-header text-muted my-3">ورود از طریق درگاه سازمانی یا دانشگاهی</div>
               <input
                 type="search"
                 id="js-institution-search"
                 class="form-control mb-2 text-end"
-                placeholder="جستجوی نام دانشکده یا دانشگاه..."
-                aria-label="جستجوی نام دانشگاه"
+                placeholder="جستجوی نام موسسه یا دانشگاه..."
+                aria-label="جستجوی نام موسسه یا سازمان"
                 autocomplete="off"
                 dir="rtl"
               />
@@ -460,18 +471,18 @@ function DevModeLogin({ csrfToken }: { csrfToken: string }) {
           aria-describedby="dev_uin_help"
         />
         <small id="dev_uin_help" class="form-text text-muted">
-          اختیاری؛ برای تطابق با سامانه آموزش دانشگاه
+          اختیاری؛ شماره پرسنلی، دانشجویی یا شناسه فراگیر
         </small>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="dev_email">ایمیل دانشگاهی</label>
+        <label class="form-label" for="dev_email">آدرس ایمیل سازمانی / کاربری</label>
         <input
           type="email"
           class="form-control text-start"
           id="dev_email"
           name="email"
           dir="ltr"
-          placeholder="student@iust.ac.ir"
+          placeholder="user@example.com"
           aria-describedby="dev_email_help"
         />
       </div>

@@ -120,7 +120,7 @@ function UserProfileCard({
               <td dir="ltr" style={{ textAlign: 'right' }}>{user.email || '—'}</td>
             </tr>
             <tr>
-              <th>دانشکده / موسسه دانشگاهی</th>
+              <th>موسسه / مرکز آموزشی</th>
               <td>
                 {institution.long_name} ({institution.short_name})
               </td>

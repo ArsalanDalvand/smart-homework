@@ -1,10 +1,15 @@
 /**
  * Centralized Branding and Localization Configuration
  * 
- * Allows full customization of university identity, logos, titles,
+ * Allows full customization of platform identity, logos, titles,
  * and support links across the entire platform via environment variables
  * or per-institution settings without any hardcoded strings.
+ * 
+ * Safe for execution in both Node.js (SSR) and Browser (Hydrated React) environments.
  */
+
+const env: Record<string, string | undefined> =
+  typeof process !== 'undefined' && process && process.env ? process.env : {};
 
 export interface InstitutionBrandContext {
   id?: string | number | null;
@@ -14,24 +19,24 @@ export interface InstitutionBrandContext {
 
 export const platformBranding = {
   // Brand Names & Slogans
-  brandName: process.env.PL_BRAND_NAME || 'سامانه جامع ارزیابی و یادگیری هوشمند دانشگاهی',
-  brandShortName: process.env.PL_BRAND_SHORT_NAME || 'سامانه یادگیری هوشمند',
-  brandTitle: process.env.PL_BRAND_TITLE || 'سامانه جامع یادگیری، آموزش و آزمون‌های هوشمند',
+  brandName: env.PL_BRAND_NAME || 'سامانه جامع ارزیابی و یادگیری هوشمند',
+  brandShortName: env.PL_BRAND_SHORT_NAME || 'سامانه یادگیری هوشمند',
+  brandTitle: env.PL_BRAND_TITLE || 'سامانه جامع یادگیری، آموزش و آزمون‌های هوشمند',
   brandSubtitle:
-    process.env.PL_BRAND_SUBTITLE ||
-    'پلتفرم یکپارچه سنجش تحصیلی، آزمون‌های آنلاین و تصحیح خودکار ویژه دانشگاه‌ها و اساتید',
-  logoUrl: process.env.PL_LOGO_URL || '/images/iust-logo.svg',
+    env.PL_BRAND_SUBTITLE ||
+    'پلتفرم جامع سنجش مهارتی، آزمون‌های برخط و تصحیح خودکار',
+  logoUrl: env.PL_LOGO_URL || '',
 
   // Contact & Links
-  portalName: process.env.PL_PORTAL_NAME || 'پرتال دانشگاهی و سامانه‌های آموزش',
-  portalUrl: process.env.PL_PORTAL_URL || 'https://www.iust.ac.ir',
-  repoUrl: process.env.PL_REPO_URL || 'https://github.com/ArsalanDalvand/PrairieLearn',
-  supportEmail: process.env.PL_SUPPORT_EMAIL || 'support@prairielearn.ir',
-  docsUrl: process.env.PL_DOCS_URL || 'https://docs.prairielearn.com',
+  portalName: env.PL_PORTAL_NAME || 'پرتال و پایگاه اطلاع‌رسانی',
+  portalUrl: env.PL_PORTAL_URL || 'https://github.com/ArsalanDalvand/PrairieLearn',
+  repoUrl: env.PL_REPO_URL || 'https://github.com/ArsalanDalvand/PrairieLearn',
+  supportEmail: env.PL_SUPPORT_EMAIL || 'support@prairielearn.ir',
+  docsUrl: env.PL_DOCS_URL || 'https://docs.prairielearn.com',
 
   // Copyright & Meta
-  copyrightYear: process.env.PL_COPYRIGHT_YEAR || '۱۴۰۵',
-  copyrightText: process.env.PL_COPYRIGHT_TEXT || 'تمامی حقوق محفوظ است',
+  copyrightYear: env.PL_COPYRIGHT_YEAR || '۱۴۰۵',
+  copyrightText: env.PL_COPYRIGHT_TEXT || 'تمامی حقوق محفوظ است',
   defaultLocale: 'fa',
   direction: 'rtl',
   fontFamily: 'var(--font-persian)',
@@ -39,8 +44,8 @@ export const platformBranding = {
 
 /**
  * Returns the effective brand name for the given institutional context.
- * If viewing within a specific institution (e.g., IUST, University of Tehran),
- * its official name is returned; otherwise, the general platform brand is used.
+ * If viewing within a specific institution/organization, its official name is returned;
+ * otherwise, the general platform brand is used.
  */
 export function getEffectiveBrandName(institution?: InstitutionBrandContext | null): string {
   if (institution?.long_name && institution.short_name !== 'Default') {
@@ -86,7 +91,7 @@ export const uiStrings = {
     name: 'نام و نام خانوادگی',
     uid: 'شناسه کاربری (UID)',
     email: 'آدرس ایمیل',
-    institution: 'دانشکده / موسسه',
+    institution: 'موسسه / مرکز آموزشی',
     timezone: 'منطقه زمانی',
     created: 'تاریخ ایجاد',
     updated: 'تاریخ به‌روزرسانی',
@@ -103,17 +108,17 @@ export const uiStrings = {
     brandAria: 'صفحه اصلی سامانه',
     switchRole: 'حالت نمایش',
     viewAs: 'مشاهده به‌عنوان',
-    staffView: 'نمای کادر آموزشی',
+    staffView: 'نمای کادر آموزشی و مدرسان',
     customStaffView: 'نمای سفارشی‌شده کادر آموزشی',
-    studentView: 'نمای دانشجو',
-    studentNoRulesView: 'نمای دانشجو (بدون محدودیت دسترسی)',
-    resetStaffView: 'بازنشانی به نمای پیش‌فرض استاد',
+    studentView: 'نمای فراگیر / دانشجو',
+    studentNoRulesView: 'نمای فراگیر (بدون محدودیت دسترسی)',
+    resetStaffView: 'بازنشانی به نمای پیش‌فرض مدرس',
     effectiveUser: 'کاربر مجازی (تست دسترسی‌ها)',
     changeUid: 'تغییر کاربر',
     customizeOverrides: 'تنظیمات پیشرفته هویت و نقش…',
     adminAccessToggleOn: 'فعال‌سازی دسترسی مدیر',
     adminAccessToggleOff: 'غیرفعال‌سازی دسترسی مدیر',
-    requestCourse: 'درخواست ایجاد درس جدید',
+    requestCourse: 'درخواست ایجاد درس یا دوره',
     examModeNotice: 'حالت آزمون فعال است. دسترسی‌های شما به آزمون جاری محدود می‌باشد.',
   },
   home: {
@@ -122,61 +127,61 @@ export const uiStrings = {
       'سامانه هم‌اکنون در حالت توسعه (Dev Mode) اجرا شده است. با تغییر فایل‌های پیکربندی و سوالات درس در پوشه کدها، جهت اعمال سریع تغییرات بر روی دکمه «همگام‌سازی دیسک» در نوار بالا کلیک کنید.',
     devModeHint:
       'تغییرات کدهای سرور، فایل‌های فرانت‌اند و فایل‌های استاتیک، با رفرش صفحه به‌صورت آنی بارگذاری می‌شوند.',
-    adminInstitutionsTitle: 'دانشکده‌ها و موسسات تحت مدیریت',
-    instructorCoursesTitle: 'درس‌های تحت مدیریت (استاد / دستیار آموزشی)',
-    studentCoursesTitle: 'درس‌های من (دسترسی دانشجو)',
+    adminInstitutionsTitle: 'موسسات و سازمان‌های تحت مدیریت',
+    instructorCoursesTitle: 'درس‌ها و دوره‌های تحت مدیریت (مدرس / دستیار)',
+    studentCoursesTitle: 'درس‌ها و دوره‌های من (دسترسی فراگیر)',
     studentCoursesTitleSimple: 'درس‌های من',
     githubRepoBtn: 'مخزن گیت‌هاب',
     joinCourseBtn: 'عضویت در درس',
     noStudentCoursesWithInstructor:
-      'در حال حاضر درسی با نقش دانشجو برای شما ثبت نشده است. درس‌های تحت مدیریت آموزشی شما در جدول بالا قرار دارند.',
-    joinCourseHint: 'جهت عضویت در درس‌های دیگر با نقش دانشجو، بر روی دکمه «عضویت در درس» کلیک نمایید.',
+      'در حال حاضر دوره‌ای با نقش فراگیر برای شما ثبت نشده است. دوره‌های تحت مدیریت شما در جدول بالا قرار دارند.',
+    joinCourseHint: 'جهت عضویت در دوره‌های دیگر با نقش فراگیر، بر روی دکمه «عضویت در درس» کلیک نمایید.',
     noCoursesDevMode:
-      'هیچ درسی بارگذاری نشده است. بر روی دکمه «همگام‌سازی دیسک» در نوار بالا کلیک کنید.',
-    noCoursesGeneral: 'درسی یافت نشد. جهت افزودن درس، بر روی دکمه «عضویت در درس» کلیک کنید.',
+      'هیچ دوره‌ای بارگذاری نشده است. بر روی دکمه «همگام‌سازی دیسک» در نوار بالا کلیک کنید.',
+    noCoursesGeneral: 'دوره‌ای یافت نشد. جهت افزودن دوره، بر روی دکمه «عضویت در درس» کلیک کنید.',
     invitationBadge: 'دعوت‌نامه',
     acceptInvitation: 'پذیرش',
     rejectInvitation: 'رد دعوت',
     removeCourse: 'حذف',
-    pastTerms: 'ترم‌های گذشته',
-    rejectModalTitle: 'رد دعوت‌نامه درس',
+    pastTerms: 'دوره‌های گذشته',
+    rejectModalTitle: 'رد دعوت‌نامه دوره',
     rejectModalDesc:
-      'آیا از رد کردن این دعوت‌نامه اطمینان دارید؟ در صورتی که درس ثبت‌نام خودکار نداشته باشد، برای عضویت مجدد باید توسط استاد دعوت شوید.',
+      'آیا از رد کردن این دعوت‌نامه اطمینان دارید؟ در صورتی که دوره ثبت‌نام خودکار نداشته باشد، برای عضویت مجدد باید توسط مدرس دعوت شوید.',
     rejectModalConfirm: 'رد دعوت‌نامه',
-    removeModalTitle: 'حذف درس از داشبورد',
-    removeModalDesc: 'آیا از حذف این درس از فهرست درس‌های خود اطمینان دارید؟',
+    removeModalTitle: 'حذف دوره از داشبورد',
+    removeModalDesc: 'آیا از حذف این دوره از فهرست دوره‌های خود اطمینان دارید؟',
     removeModalNotice:
-      'حذف درس از این بخش صرفاً نمایش آن در داشبورد سامانه را پنهان می‌کند و تأثیری بر انتخاب واحد رسمی دانشگاهی شما نخواهد داشت.',
-    removeModalReappear: 'ممکن است پس از به‌روزرسانی اطلاعات ثبت‌نامی دانشکده، این درس مجدداً ظاهر شود.',
+      'حذف دوره از این بخش صرفاً نمایش آن در داشبورد سامانه را پنهان می‌کند و تأثیری بر سوابق آموزشی یا ثبت‌نام شما نخواهد داشت.',
+    removeModalReappear: 'ممکن است پس از به‌روزرسانی اطلاعات ثبت‌نامی موسسه، این دوره مجدداً ظاهر شود.',
     removeModalConfirm: 'حذف از داشبورد',
-    enrollmentCodeHelp: 'جهت عضویت در درس، کد ثبت‌نامی که توسط استاد درس ارائه شده است را وارد نمایید.',
+    enrollmentCodeHelp: 'جهت عضویت در دوره، کد ثبت‌نامی که توسط مدرس یا برگزارکننده ارائه شده است را وارد نمایید.',
   },
   auth: {
     loginTitle: 'ورود به سامانه',
-    loginSubtitle: 'جهت دسترسی به آزمون‌ها و دوره‌های آموزشی',
+    loginSubtitle: 'جهت دسترسی به دوره‌ها، آزمون‌ها و محتوای آموزشی',
     loginWithGoogle: 'ورود با حساب گوگل',
     loginWithMicrosoft: 'ورود با حساب مایکروسافت',
-    loginWithSso: 'ورود یکپارچه دانشگاهی (SSO)',
-    devLoginTitle: 'ورود آزمایشی و توسعه (Dev Mode)',
-    uidLabel: 'شناسه کاربری (UID):',
+    loginWithSso: 'ورود یکپارچه سازمانی (SSO)',
+    devLoginTitle: 'ورود سریع در محیط توسعه (Dev Mode)',
+    uidLabel: 'شناسه کاربری (UID / ایمیل):',
     nameLabel: 'نام و نام خانوادگی:',
-    uidPlaceholder: 'student@university.ac.ir یا شناسه کاربری',
+    uidPlaceholder: 'user@example.com یا نام کاربری',
     namePlaceholder: 'علی محمدی',
-    devLoginBtn: 'ورود مستقیم به سامانه',
+    devLoginBtn: 'ورود به سامانه',
   },
   emptyState: {
-    studentTitle: 'دانشجویان',
-    studentDesc: 'عضویت در درس‌ها و دوره‌های آموزشی، شرکت در آزمون‌های برخط و حل تمرین‌ها.',
-    instructorTitle: 'اساتید و کادر آموزشی',
-    instructorDesc: 'طراحی و بارگذاری بانک سوالات، برگزاری آزمون‌های هوشمند، تصحیح خودکار و مدیریت نمرات دانشجویان.',
+    studentTitle: 'فراگیران و دانشجویان',
+    studentDesc: 'عضویت در دوره‌ها و درس‌های آموزشی، شرکت در آزمون‌های برخط و حل تمرین‌ها.',
+    instructorTitle: 'مدرسان، اساتید و طراحان دوره',
+    instructorDesc: 'طراحی و بارگذاری بانک سوالات، برگزاری آزمون‌های هوشمند، تصحیح خودکار و مدیریت فراگیران.',
   },
   enrollment: {
-    modalTitle: 'عضویت در درس',
+    modalTitle: 'عضویت در درس یا دوره',
     noCodeHelp:
-      'کد ثبت‌نام ندارید؟ ممکن است استاد درس لینک مستقیم عضویت را در اختیار شما قرار داده یا از طریق سامانه مدیریت یادگیری اقدام نموده باشد.',
+      'کد ثبت‌نام ندارید؟ ممکن است مدرس دوره لینک مستقیم عضویت را در اختیار شما قرار داده یا از طریق سامانه مدیریت یادگیری اقدام نموده باشد.',
     instructorHelp:
-      'اساتید محترم: کد ثبت‌نام و لینک مستقیم عضویت دانشجویان در صفحه تنظیمات هر دوره در دسترس است.',
-    joinBtn: 'عضویت در درس',
+      'مدرسان و طراحان محترم: کد ثبت‌نام و لینک مستقیم عضویت در صفحه تنظیمات هر دوره در دسترس است.',
+    joinBtn: 'عضویت در دوره',
     lookingUpBtn: 'در حال بررسی کد…',
   },
   exam: {
@@ -198,48 +203,48 @@ export const uiStrings = {
     reportCheatingLoading: 'در حال ارسال گزارش…',
   },
   admin: {
-    adminsTitle: 'مدیران کل سامانه دانشگاه',
+    adminsTitle: 'مدیران سامانه',
     addAdminBtn: 'افزودن مدیر جدید',
     addAdminTitle: 'افزودن مدیر جدید سامانه',
     adminsDesc:
-      'مدیران سامانه دسترسی کامل به تمامی دانشکده‌ها، درس‌ها، سوالات و دوره‌ها دارند و می‌توانند مدیران دیگر را اضافه یا حذف نمایند.',
+      'مدیران سامانه دسترسی کامل به تمامی بخش‌ها، درس‌ها، سوالات و دوره‌ها دارند و می‌توانند مدیران دیگر را اضافه یا حذف نمایند.',
     coursesTitle: 'مدیریت درس‌ها و دوره‌ها',
     addCourseBtn: 'افزودن درس جدید',
     coursesDesc:
       'هنگام همگام‌سازی درس، در صورتی که مسیر فایل‌ها بر روی دیسک سرور موجود نباشد، دستور git clone از مخزن اجرا می‌شود، در غیر این صورت دستور git pull اعمال می‌گردد. همچنین کد و عنوان درس از روی فایل تنظیمات JSON در مخزن به‌روزرسانی می‌شوند.',
-    institutionsTitle: 'دانشکده‌ها و موسسات دانشگاه',
-    addInstitutionBtn: 'افزودن دانشکده جدید',
+    institutionsTitle: 'موسسات و سازمان‌های همکار',
+    addInstitutionBtn: 'افزودن موسسه / مرکز جدید',
     requestsTitle: 'درخواست‌های ایجاد درس جدید',
     workspacesTitle: 'سرورها و میزبان‌های محیط کاری (Workspaces)',
     featuresTitle: 'قابلیت‌ها و فلگ‌های سیستمی',
     settingsTitle: 'تنظیمات سرور و کش سامانه',
   },
   courseRequest: {
-    title: 'درخواست ایجاد درس جدید در سامانه دانشگاه',
+    title: 'درخواست ایجاد درس یا دوره آموزشی جدید',
     infoDesc:
-      'این فرم برای اساتید و طراحان آموزشی دانشکده‌های مختلف جهت راه‌اندازی و تعریف درس جدید در سامانه ارزیابی هوشمند است. دانشجویان گرامی نباید این فرم را پر کنند و جهت شرکت در آزمون‌ها یا حل تمرین، باید از طریق کد درس که توسط استاد ارائه می‌شود عضو شوند.',
-    aboutYou: 'اطلاعات متقاضی (استاد / طراح)',
-    aboutCourse: 'مشخصات درس پیشنهادی',
+      'این فرم برای مدرسان، اساتید و طراحان آموزشی جهت راه‌اندازی و تعریف درس یا دوره جدید در سامانه ارزیابی هوشمند است. فراگیران و دانشجویان گرامی نباید این فرم را پر کنند و جهت شرکت در آزمون‌ها یا حل تمرین، باید از طریق کد دوره که توسط مدرس ارائه می‌شود عضو شوند.',
+    aboutYou: 'اطلاعات متقاضی (مدرس / طراح)',
+    aboutCourse: 'مشخصات درس یا دوره پیشنهادی',
     aboutRequest: 'اطلاعات تکمیلی درخواست',
-    shortName: 'کد یا نام اختصاری درس (Course Rubric and Number)',
-    shortNameDesc: 'ساختار استاندارد: حروف بزرگ لاتین به همراه فاصله و شماره درس (مانند MATH 101 یا CE 240).',
-    courseTitle: 'عنوان کامل و رسمی درس',
-    courseTitleDesc: 'عنوان رسمی درس طبق چارت مصوب دانشگاه.',
+    shortName: 'کد یا نام اختصاری دوره (مانند CS 101 یا MATH 101)',
+    shortNameDesc: 'ساختار استاندارد: حروف بزرگ لاتین به همراه فاصله و شماره دوره.',
+    courseTitle: 'عنوان کامل و رسمی درس / دوره',
+    courseTitleDesc: 'عنوان کامل دوره یا درس آموزشی.',
     githubUser: 'نام کاربری گیت‌هاب (اختیاری جهت همگام‌سازی سوالات)',
     githubUserDesc:
       'در صورت ارائه نام کاربری گیت‌هاب، دسترسی به مخزن سوالات و کدهای درس برای شما فعال خواهد شد تا بتوانید در سیستم شخصی خود نیز سوالات را طراحی و همگام‌سازی نمایید.',
     referralSource: 'نحوه آشنایی با سامانه ارزیابی هوشمند',
-    roleLabel: 'نقش شما در این درس',
-    roleInstructor: 'استاد رسمی درس (Official Course Instructor)',
-    roleTa: 'دستیار آموزشی یا سرپرست حل تمرین (TA)',
-    roleAdmin: 'مدیر آموزش یا کارشناس دانشکده',
-    roleStudent: 'دانشجو',
-    submitBtn: 'ثبت نهایی درخواست درس',
+    roleLabel: 'نقش شما در این دوره',
+    roleInstructor: 'مدرس / استاد رسمی دوره (Instructor)',
+    roleTa: 'دستیار آموزشی یا همکار تدریس (TA)',
+    roleAdmin: 'مدیر آموزش یا کارشناس مرکز',
+    roleStudent: 'دانشجو / فراگیر',
+    submitBtn: 'ثبت نهایی درخواست دوره',
   },
   userSettings: {
     title: 'تنظیمات حساب کاربری',
     profileTitle: 'مشخصات و هویت کاربر',
-    uin: 'شماره دانشجویی / پرسنلی (UIN)',
+    uin: 'شماره پرسنلی / دانشجویی (UIN)',
     authMethod: 'روش احراز هویت',
     ipAddress: 'آدرس IP جاری',
     tokensTitle: 'توکن‌های دسترسی شخصی (API Tokens)',

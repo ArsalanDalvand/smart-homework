@@ -40,22 +40,22 @@ export function AdministratorInstitutionsTable({
         <>
           <div id="institutions" className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
             <div className="card-header bg-primary text-white d-flex align-items-center">
-              <h1 className="h4 mb-0">دانشکده‌ها و موسسات دانشگاه</h1>
+              <h1 className="h4 mb-0">موسسات، سازمان‌ها و مراکز آموزشی</h1>
               <button
                 type="button"
                 className="btn btn-sm btn-light ms-auto"
                 onClick={() => setShowModal(true)}
               >
                 <i className="fas fa-plus me-1" />
-                <span className="d-none d-sm-inline">افزودن دانشکده جدید</span>
+                <span className="d-none d-sm-inline">افزودن موسسه یا مرکز جدید</span>
               </button>
             </div>
             <div className="table-responsive">
-              <table className="table table-sm table-hover table-striped" aria-label="دانشکده‌ها و موسسات">
+              <table className="table table-sm table-hover table-striped" aria-label="موسسات و سازمان‌های آموزشی">
                 <thead>
                   <tr>
                     <th>کد اختصاری</th>
-                    <th>نام کامل دانشکده / موسسه</th>
+                    <th>نام کامل موسسه / مرکز آموزشی</th>
                     <th>منطقه زمانی</th>
                     <th>الگوی شناسه (UID Regexp)</th>
                     <th>روش‌های احراز هویت</th>

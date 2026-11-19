@@ -346,7 +346,6 @@ export function EnrollmentCodeForm({
         </div>
         {showInstructorHelp && (
           <div className="small text-muted">
-            <b>اساتید محترم: </b>
             {uiStrings.enrollment.instructorHelp}
           </div>
         )}

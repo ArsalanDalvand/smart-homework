@@ -91,19 +91,19 @@ export function AddInstitutionModal({
   return (
     <Modal show={show} onHide={onClose} style={{ fontFamily: 'var(--font-persian)' }}>
       <Modal.Header closeButton>
-        <Modal.Title>تعریف دانشکده یا واحد آموزشی جدید</Modal.Title>
+        <Modal.Title>تعریف موسسه، سازمان یا واحد آموزشی جدید</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form id="add-institution-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <label className="form-label" htmlFor="short_name">
-              کد اختصاری دانشکده
+              کد اختصاری موسسه / مرکز
             </label>
             <input
               type="text"
               className={clsx('form-control', errors.short_name && 'is-invalid')}
               id="short_name"
-              placeholder="مثال: CE"
+              placeholder="مثال: AI"
               dir="ltr"
               aria-describedby="short_name_help"
               aria-invalid={errors.short_name ? true : undefined}
@@ -116,18 +116,18 @@ export function AddInstitutionModal({
               </div>
             )}
             <small id="short_name_help" className="form-text text-muted">
-              نام اختصاری دانشکده یا موسسه (مانند CE, EE, MATH, MECH, UT, SUT).
+              نام اختصاری موسسه، مرکز یا سازمان (مانند ACADEMY, AI, ORG, TECH).
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="long_name">
-              نام کامل دانشکده / موسسه
+              نام کامل موسسه / مرکز آموزشی
             </label>
             <input
               type="text"
               className={clsx('form-control', errors.long_name && 'is-invalid')}
               id="long_name"
-              placeholder="مثال: دانشکده مهندسی کامپیوتر یا دانشگاه تهران"
+              placeholder="مثال: آکادمی هوش مصنوعی یا مرکز آموزش‌های تخصصی"
               aria-describedby="long_name_help"
               aria-invalid={errors.long_name ? true : undefined}
               aria-errormessage={errors.long_name ? 'long_name-error' : undefined}
@@ -139,7 +139,7 @@ export function AddInstitutionModal({
               </div>
             )}
             <small id="long_name_help" className="form-text text-muted">
-              نام رسمی و کامل دانشکده یا دانشگاه طبق مصوبه آموزشی.
+              نام رسمی و کامل موسسه، سازمان یا مرکز آموزشی.
             </small>
           </div>
           <div className="mb-3">
@@ -197,7 +197,7 @@ export function AddInstitutionModal({
               </div>
             )}
             <small id="uid_regexp_help" className="form-text text-muted">
-              الگوی اعتبارسنجی ایمیل سازمانی، به صورت <code dir="ltr">@.*\.ac\.ir$</code> یا دامنه ایمیل دانشگاه.
+              الگوی اعتبارسنجی ایمیل سازمانی، به صورت <code dir="ltr">@.*\.org$</code> یا دامنه ایمیل سازمان.
             </small>
           </div>
           <AppErrorAlert
@@ -217,7 +217,7 @@ export function AddInstitutionModal({
           form="add-institution-form"
           disabled={isSubmitting || mutation.isPending}
         >
-          ثبت و ایجاد دانشکده
+          ثبت و ایجاد موسسه
         </button>
       </Modal.Footer>
     </Modal>

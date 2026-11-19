@@ -114,18 +114,18 @@ export function AdministratorSettings({
       ${
         newsItems.length > 0
           ? html`
-              <div class="card mb-4">
+              <div class="card mb-4" style="font-family: var(--font-persian);">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
-                  <h2>News items</h2>
+                  <h2 class="h5 mb-0">اخبار و اطلاعیه‌های سیستم</h2>
                 </div>
                 <div class="table-responsive">
-                  <table class="table table-sm table-hover table-striped" aria-label="News items">
+                  <table class="table table-sm table-hover table-striped" aria-label="اخبار سیستم">
                     <thead>
                       <tr>
-                        <th>Title</th>
-                        <th>Published</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>عنوان</th>
+                        <th>تاریخ انتشار</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -141,10 +141,10 @@ export function AdministratorSettings({
                             <td class="align-middle">
                               ${
                                 item.managed_by === 'admin' && item.hidden_at != null
-                                  ? html`<span class="badge bg-secondary">Hidden by admin</span>`
+                                  ? html`<span class="badge bg-secondary">پنهان توسط مدیر</span>`
                                   : item.managed_by === 'sync' && item.hidden_at != null
-                                    ? html`<span class="badge bg-secondary">Hidden by sync</span>`
-                                    : html`<span class="badge bg-success">Visible</span>`
+                                    ? html`<span class="badge bg-secondary">پنهان توسط سیستم</span>`
+                                    : html`<span class="badge bg-success">نمایان</span>`
                               }
                             </td>
                             <td class="align-middle">
@@ -168,7 +168,7 @@ export function AdministratorSettings({
                                           value="${item.id}"
                                         />
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
-                                          Hide
+                                          پنهان‌سازی
                                         </button>
                                       </form>
                                     `
@@ -193,7 +193,7 @@ export function AdministratorSettings({
                                           type="submit"
                                           class="btn btn-sm btn-outline-secondary"
                                         >
-                                          Unhide
+                                          نمایش مجدد
                                         </button>
                                       </form>
                                     `
@@ -212,30 +212,30 @@ export function AdministratorSettings({
       ${
         showAiSettings
           ? html`
-              <div class="card mb-4">
-                <div class="card-header bg-primary text-white">LLM</div>
+              <div class="card mb-4" style="font-family: var(--font-persian);">
+                <div class="card-header bg-primary text-white">
+                  <h2 class="h5 mb-0">مدل‌های زبانی هوش مصنوعی (LLM)</h2>
+                </div>
                 <div class="card-body">
                   <form method="POST">
                     <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
                     <button class="btn btn-primary" name="__action" value="sync_context_documents">
-                      Resync context documents
+                      همگام‌سازی مجدد مستندات کانتکست
                     </button>
 
                     ${
                       config.devMode
                         ? html`
                             <hr />
-                            <p>
-                              Benchmarking the AI will generate questions from a set of sample
-                              prompts and ask an LLM to evaluate their quality, including comparing
-                              them to gold standard implementations.
+                            <p class="text-muted">
+                              آزمون هوش مصنوعی با تولید سوالات نمونه از پرامپت‌ها و سنجش کیفیت آن‌ها توسط مدل زبانی و مقایسه با استانداردهای مرجع انجام می‌پذیرد.
                             </p>
                             <button
                               class="btn btn-primary"
                               name="__action"
                               value="benchmark_question_generation"
                             >
-                              Benchmark question generation
+                              آزمون و ارزیابی کیفیت تولید هوشمند سوال
                             </button>
                           `
                         : ''
@@ -247,148 +247,146 @@ export function AdministratorSettings({
           : ''
       }
 
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);" dir="rtl">
         <div class="card-header bg-primary text-white">
-          <h2>Bootstrap playground</h2>
+          <h2 class="h5 mb-0">محیط آزمون استایل‌ها و رنگ‌های سیستم</h2>
         </div>
         <div class="card-body">
-          <p>
-            This serves as a testing ground for custom focus styles that are meant to comply with
-            stricter accessibility requirements.
+          <p class="text-muted">
+            این بخش جهت بررسی استایل‌های فوکوس، تضاد رنگی و انطباق با استانداردهای دسترسی‌پذیری رابط کاربری طراحی شده است.
           </p>
           <div class="mb-4" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <button type="button" class="btn btn-primary">Primary</button>
-            <button type="button" class="btn btn-secondary">Secondary</button>
-            <button type="button" class="btn btn-success">Success</button>
-            <button type="button" class="btn btn-danger">Danger</button>
-            <button type="button" class="btn btn-warning">Warning</button>
-            <button type="button" class="btn btn-info">Info</button>
-            <button type="button" class="btn btn-light">Light</button>
-            <button type="button" class="btn btn-med-light">Medium Light</button>
-            <button type="button" class="btn btn-dark">Dark</button>
-            <button type="button" class="btn btn-link">Link</button>
+            <button type="button" class="btn btn-primary">اصلی (Primary)</button>
+            <button type="button" class="btn btn-secondary">ثانویه (Secondary)</button>
+            <button type="button" class="btn btn-success">موفقیت (Success)</button>
+            <button type="button" class="btn btn-danger">خطر (Danger)</button>
+            <button type="button" class="btn btn-warning">هشدار (Warning)</button>
+            <button type="button" class="btn btn-info">اطلاعات (Info)</button>
+            <button type="button" class="btn btn-light">روشن (Light)</button>
+            <button type="button" class="btn btn-med-light">روشن میانه</button>
+            <button type="button" class="btn btn-dark">تیره (Dark)</button>
+            <button type="button" class="btn btn-link">پیوند (Link)</button>
           </div>
           <div class="mb-4" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <button type="button" class="btn btn-outline-primary">Primary</button>
-            <button type="button" class="btn btn-outline-secondary">Secondary</button>
-            <button type="button" class="btn btn-outline-success">Success</button>
-            <button type="button" class="btn btn-outline-danger">Danger</button>
-            <button type="button" class="btn btn-outline-warning">Warning</button>
-            <button type="button" class="btn btn-outline-info">Info</button>
-            <button type="button" class="btn btn-outline-dark">Dark</button>
+            <button type="button" class="btn btn-outline-primary">اصلی (Outline)</button>
+            <button type="button" class="btn btn-outline-secondary">ثانویه (Outline)</button>
+            <button type="button" class="btn btn-outline-success">موفقیت (Outline)</button>
+            <button type="button" class="btn btn-outline-danger">خطر (Outline)</button>
+            <button type="button" class="btn btn-outline-warning">هشدار (Outline)</button>
+            <button type="button" class="btn btn-outline-info">اطلاعات (Outline)</button>
+            <button type="button" class="btn btn-outline-dark">تیره (Outline)</button>
           </div>
-          <div class="mb-4 p-4 bg-dark">
-            <button type="button" class="btn btn-outline-light">Light</button>
+          <div class="mb-4 p-4 bg-dark rounded">
+            <button type="button" class="btn btn-outline-light">روشن روی تیره (Light)</button>
           </div>
-          <h3>Custom color badges</h3>
+          <h3>نشان‌های رنگی سفارشی</h3>
           <div class="mb-4 d-flex flex-wrap gap-2">
-            <span class="badge color-red1">Red 1</span>
-            <span class="badge color-red2">Red 2</span>
-            <span class="badge color-red3">Red 3</span>
-            <span class="badge color-pink1">Pink 1</span>
-            <span class="badge color-pink2">Pink 2</span>
-            <span class="badge color-pink3">Pink 3</span>
-            <span class="badge color-purple1">Purple 1</span>
-            <span class="badge color-purple2">Purple 2</span>
-            <span class="badge color-purple3">Purple 3</span>
-            <span class="badge color-blue1">Blue 1</span>
-            <span class="badge color-blue2">Blue 2</span>
-            <span class="badge color-blue3">Blue 3</span>
-            <span class="badge color-turquoise1">Turquoise 1</span>
-            <span class="badge color-turquoise2">Turquoise 2</span>
-            <span class="badge color-turquoise3">Turquoise 3</span>
-            <span class="badge color-green1">Green 1</span>
-            <span class="badge color-green2">Green 2</span>
-            <span class="badge color-green3">Green 3</span>
-            <span class="badge color-yellow1">Yellow 1</span>
-            <span class="badge color-yellow2">Yellow 2</span>
-            <span class="badge color-yellow3">Yellow 3</span>
-            <span class="badge color-orange1">Orange 1</span>
-            <span class="badge color-orange2">Orange 2</span>
-            <span class="badge color-orange3">Orange 3</span>
-            <span class="badge color-brown1">Brown 1</span>
-            <span class="badge color-brown2">Brown 2</span>
-            <span class="badge color-brown3">Brown 3</span>
-            <span class="badge color-gray1">Gray 1</span>
-            <span class="badge color-gray2">Gray 2</span>
-            <span class="badge color-gray3">Gray 3</span>
+            <span class="badge color-red1">قرمز ۱</span>
+            <span class="badge color-red2">قرمز ۲</span>
+            <span class="badge color-red3">قرمز ۳</span>
+            <span class="badge color-pink1">صورتی ۱</span>
+            <span class="badge color-pink2">صورتی ۲</span>
+            <span class="badge color-pink3">صورتی ۳</span>
+            <span class="badge color-purple1">بنفش ۱</span>
+            <span class="badge color-purple2">بنفش ۲</span>
+            <span class="badge color-purple3">بنفش ۳</span>
+            <span class="badge color-blue1">آبی ۱</span>
+            <span class="badge color-blue2">آبی ۲</span>
+            <span class="badge color-blue3">آبی ۳</span>
+            <span class="badge color-turquoise1">فیروزه‌ای ۱</span>
+            <span class="badge color-turquoise2">فیروزه‌ای ۲</span>
+            <span class="badge color-turquoise3">فیروزه‌ای ۳</span>
+            <span class="badge color-green1">سبز ۱</span>
+            <span class="badge color-green2">سبز ۲</span>
+            <span class="badge color-green3">سبز ۳</span>
+            <span class="badge color-yellow1">زرد ۱</span>
+            <span class="badge color-yellow2">زرد ۲</span>
+            <span class="badge color-yellow3">زرد ۳</span>
+            <span class="badge color-orange1">نارنجی ۱</span>
+            <span class="badge color-orange2">نارنجی ۲</span>
+            <span class="badge color-orange3">نارنجی ۳</span>
+            <span class="badge color-brown1">قهوه‌ای ۱</span>
+            <span class="badge color-brown2">قهوه‌ای ۲</span>
+            <span class="badge color-brown3">قهوه‌ای ۳</span>
+            <span class="badge color-gray1">خاکستری ۱</span>
+            <span class="badge color-gray2">خاکستری ۲</span>
+            <span class="badge color-gray3">خاکستری ۳</span>
           </div>
-          <h3>Custom color badge pills</h3>
+          <h3>نشان‌های کپسولی رنگی</h3>
           <div class="mb-4 d-flex flex-wrap gap-2">
-            <span class="badge rounded-pill color-red1">Red 1</span>
-            <span class="badge rounded-pill color-red2">Red 2</span>
-            <span class="badge rounded-pill color-red3">Red 3</span>
-            <span class="badge rounded-pill color-pink1">Pink 1</span>
-            <span class="badge rounded-pill color-pink2">Pink 2</span>
-            <span class="badge rounded-pill color-pink3">Pink 3</span>
-            <span class="badge rounded-pill color-purple1">Purple 1</span>
-            <span class="badge rounded-pill color-purple2">Purple 2</span>
-            <span class="badge rounded-pill color-purple3">Purple 3</span>
-            <span class="badge rounded-pill color-blue1">Blue 1</span>
-            <span class="badge rounded-pill color-blue2">Blue 2</span>
-            <span class="badge rounded-pill color-blue3">Blue 3</span>
-            <span class="badge rounded-pill color-turquoise1">Turquoise 1</span>
-            <span class="badge rounded-pill color-turquoise2">Turquoise 2</span>
-            <span class="badge rounded-pill color-turquoise3">Turquoise 3</span>
-            <span class="badge rounded-pill color-green1">Green 1</span>
-            <span class="badge rounded-pill color-green2">Green 2</span>
-            <span class="badge rounded-pill color-green3">Green 3</span>
-            <span class="badge rounded-pill color-yellow1">Yellow 1</span>
-            <span class="badge rounded-pill color-yellow2">Yellow 2</span>
-            <span class="badge rounded-pill color-yellow3">Yellow 3</span>
-            <span class="badge rounded-pill color-orange1">Orange 1</span>
-            <span class="badge rounded-pill color-orange2">Orange 2</span>
-            <span class="badge rounded-pill color-orange3">Orange 3</span>
-            <span class="badge rounded-pill color-brown1">Brown 1</span>
-            <span class="badge rounded-pill color-brown2">Brown 2</span>
-            <span class="badge rounded-pill color-brown3">Brown 3</span>
-            <span class="badge rounded-pill color-gray1">Gray 1</span>
-            <span class="badge rounded-pill color-gray2">Gray 2</span>
-            <span class="badge rounded-pill color-gray3">Gray 3</span>
+            <span class="badge rounded-pill color-red1">قرمز ۱</span>
+            <span class="badge rounded-pill color-red2">قرمز ۲</span>
+            <span class="badge rounded-pill color-red3">قرمز ۳</span>
+            <span class="badge rounded-pill color-pink1">صورتی ۱</span>
+            <span class="badge rounded-pill color-pink2">صورتی ۲</span>
+            <span class="badge rounded-pill color-pink3">صورتی ۳</span>
+            <span class="badge rounded-pill color-purple1">بنفش ۱</span>
+            <span class="badge rounded-pill color-purple2">بنفش ۲</span>
+            <span class="badge rounded-pill color-purple3">بنفش ۳</span>
+            <span class="badge rounded-pill color-blue1">آبی ۱</span>
+            <span class="badge rounded-pill color-blue2">آبی ۲</span>
+            <span class="badge rounded-pill color-blue3">آبی ۳</span>
+            <span class="badge rounded-pill color-turquoise1">فیروزه‌ای ۱</span>
+            <span class="badge rounded-pill color-turquoise2">فیروزه‌ای ۲</span>
+            <span class="badge rounded-pill color-turquoise3">فیروزه‌ای ۳</span>
+            <span class="badge rounded-pill color-green1">سبز ۱</span>
+            <span class="badge rounded-pill color-green2">سبز ۲</span>
+            <span class="badge rounded-pill color-green3">سبز ۳</span>
+            <span class="badge rounded-pill color-yellow1">زرد ۱</span>
+            <span class="badge rounded-pill color-yellow2">زرد ۲</span>
+            <span class="badge rounded-pill color-yellow3">زرد ۳</span>
+            <span class="badge rounded-pill color-orange1">نارنجی ۱</span>
+            <span class="badge rounded-pill color-orange2">نارنجی ۲</span>
+            <span class="badge rounded-pill color-orange3">نارنجی ۳</span>
+            <span class="badge rounded-pill color-brown1">قهوه‌ای ۱</span>
+            <span class="badge rounded-pill color-brown2">قهوه‌ای ۲</span>
+            <span class="badge rounded-pill color-brown3">قهوه‌ای ۳</span>
+            <span class="badge rounded-pill color-gray1">خاکستری ۱</span>
+            <span class="badge rounded-pill color-gray2">خاکستری ۲</span>
+            <span class="badge rounded-pill color-gray3">خاکستری ۳</span>
           </div>
-          <h3>Clickable color badges</h3>
+          <h3>نشان‌های دکمه‌ای قابل کلیک</h3>
           <div class="mb-4 d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-badge color-red1">Red 1</button>
-            <button type="button" class="btn btn-badge color-red2">Red 2</button>
-            <button type="button" class="btn btn-badge color-red3">Red 3</button>
-            <button type="button" class="btn btn-badge color-pink1">Pink 1</button>
-            <button type="button" class="btn btn-badge color-pink2">Pink 2</button>
-            <button type="button" class="btn btn-badge color-pink3">Pink 3</button>
-            <button type="button" class="btn btn-badge color-purple1">Purple 1</button>
-            <button type="button" class="btn btn-badge color-purple2">Purple 2</button>
-            <button type="button" class="btn btn-badge color-purple3">Purple 3</button>
-            <button type="button" class="btn btn-badge color-blue1">Blue 1</button>
-            <button type="button" class="btn btn-badge color-blue2">Blue 2</button>
-            <button type="button" class="btn btn-badge color-blue3">Blue 3</button>
-            <button type="button" class="btn btn-badge color-turquoise1">Turquoise 1</button>
-            <button type="button" class="btn btn-badge color-turquoise2">Turquoise 2</button>
-            <button type="button" class="btn btn-badge color-turquoise3">Turquoise 3</button>
-            <button type="button" class="btn btn-badge color-green1">Green 1</button>
-            <button type="button" class="btn btn-badge color-green2">Green 2</button>
-            <button type="button" class="btn btn-badge color-green3">Green 3</button>
-            <button type="button" class="btn btn-badge color-yellow1">Yellow 1</button>
-            <button type="button" class="btn btn-badge color-yellow2">Yellow 2</button>
-            <button type="button" class="btn btn-badge color-yellow3">Yellow 3</button>
-            <button type="button" class="btn btn-badge color-orange1">Orange 1</button>
-            <button type="button" class="btn btn-badge color-orange2">Orange 2</button>
-            <button type="button" class="btn btn-badge color-orange3">Orange 3</button>
-            <button type="button" class="btn btn-badge color-brown1">Brown 1</button>
-            <button type="button" class="btn btn-badge color-brown2">Brown 2</button>
-            <button type="button" class="btn btn-badge color-brown3">Brown 3</button>
-            <button type="button" class="btn btn-badge color-gray1">Gray 1</button>
-            <button type="button" class="btn btn-badge color-gray2">Gray 2</button>
-            <button type="button" class="btn btn-badge color-gray3">Gray 3</button>
+            <button type="button" class="btn btn-badge color-red1">قرمز ۱</button>
+            <button type="button" class="btn btn-badge color-red2">قرمز ۲</button>
+            <button type="button" class="btn btn-badge color-red3">قرمز ۳</button>
+            <button type="button" class="btn btn-badge color-pink1">صورتی ۱</button>
+            <button type="button" class="btn btn-badge color-pink2">صورتی ۲</button>
+            <button type="button" class="btn btn-badge color-pink3">صورتی ۳</button>
+            <button type="button" class="btn btn-badge color-purple1">بنفش ۱</button>
+            <button type="button" class="btn btn-badge color-purple2">بنفش ۲</button>
+            <button type="button" class="btn btn-badge color-purple3">بنفش ۳</button>
+            <button type="button" class="btn btn-badge color-blue1">آبی ۱</button>
+            <button type="button" class="btn btn-badge color-blue2">آبی ۲</button>
+            <button type="button" class="btn btn-badge color-blue3">آبی ۳</button>
+            <button type="button" class="btn btn-badge color-turquoise1">فیروزه‌ای ۱</button>
+            <button type="button" class="btn btn-badge color-turquoise2">فیروزه‌ای ۲</button>
+            <button type="button" class="btn btn-badge color-turquoise3">فیروزه‌ای ۳</button>
+            <button type="button" class="btn btn-badge color-green1">سبز ۱</button>
+            <button type="button" class="btn btn-badge color-green2">سبز ۲</button>
+            <button type="button" class="btn btn-badge color-green3">سبز ۳</button>
+            <button type="button" class="btn btn-badge color-yellow1">زرد ۱</button>
+            <button type="button" class="btn btn-badge color-yellow2">زرد ۲</button>
+            <button type="button" class="btn btn-badge color-yellow3">زرد ۳</button>
+            <button type="button" class="btn btn-badge color-orange1">نارنجی ۱</button>
+            <button type="button" class="btn btn-badge color-orange2">نارنجی ۲</button>
+            <button type="button" class="btn btn-badge color-orange3">نارنجی ۳</button>
+            <button type="button" class="btn btn-badge color-brown1">قهوه‌ای ۱</button>
+            <button type="button" class="btn btn-badge color-brown2">قهوه‌ای ۲</button>
+            <button type="button" class="btn btn-badge color-brown3">قهوه‌ای ۳</button>
+            <button type="button" class="btn btn-badge color-gray1">خاکستری ۱</button>
+            <button type="button" class="btn btn-badge color-gray2">خاکستری ۲</button>
+            <button type="button" class="btn btn-badge color-gray3">خاکستری ۳</button>
           </div>
-          <h3>Ghost button</h3>
-          <p>
-            This is a custom button style that's meant to be used when we don't want the full visual
-            weight of a typical button. Useful for popover triggers.
+          <h3>دکمه‌های شفاف (Ghost Button)</h3>
+          <p class="text-muted">
+            این سبک دکمه برای مواردی کاربرد دارد که وزن بصری کمتری نسبت به دکمه‌های معمولی مدنظر است، مانند تریگرهای پاپ‌اور و منوها.
           </p>
           <div>
-            <button type="button" class="btn btn-xs btn-ghost">Extra small</button>
-            <button type="button" class="btn btn-sm btn-ghost">Small</button>
-            <button type="button" class="btn btn-ghost">Default</button>
-            <button type="button" class="btn btn-lg btn-ghost">Large</button>
+            <button type="button" class="btn btn-xs btn-ghost">بسیار کوچک</button>
+            <button type="button" class="btn btn-sm btn-ghost">کوچک</button>
+            <button type="button" class="btn btn-ghost">پیش‌فرض</button>
+            <button type="button" class="btn btn-lg btn-ghost">بزرگ</button>
           </div>
         </div>
       </div>

@@ -14,12 +14,12 @@ export function SupportModal() {
     body: html`
       <div style="font-family: var(--font-persian);">
         <p class="text-muted">
-          دانشجویان، اساتید و دستیاران گرامی دانشگاه‌ها، دانشکده‌ها و مراکز آموزشی، جهت دریافت راهنمایی یا رفع اشکال از مسیرهای زیر استفاده فرمایید:
+          فراگیران، اساتید، مدرسان و کاربران گرامی، جهت دریافت راهنمایی یا رفع اشکال از مسیرهای زیر استفاده فرمایید:
         </p>
         <div class="row row-cols-1 row-cols-md-2 g-3">
           ${SupportOptionCard({
-            title: 'راهنمای جامع تدریس و طراحی سوال',
-            description: 'مستندات آموزشی نحوه طراحی سوالات تستی و تشریحی، آزمون‌ها و تصحیح خودکار برای اساتید و دستیاران.',
+            title: 'راهنمای جامع تدریس و طراحی دوره',
+            description: 'مستندات آموزشی نحوه طراحی سوالات، تکالیف، آزمون‌ها و تصحیح خودکار برای مدرسان و طراحان دوره.',
             href: platformBranding.docsUrl,
             action: 'مشاهده مستندات راهنما',
             icon: 'bi-book',
@@ -33,7 +33,7 @@ export function SupportModal() {
           })}
           ${SupportOptionCard({
             title: 'پشتیبانی فنی و ارتباط با مدیران',
-            description: 'ارتباط با تیم فنی جهت ایجاد درس جدید، دسترسی‌های اساتید و گزارش اشکالات احتمالی سامانه.',
+            description: 'ارتباط با تیم پشتیبانی جهت راه‌اندازی دوره جدید، دسترسی‌ها و رفع اشکالات احتمالی سامانه.',
             href: `mailto:${platformBranding.supportEmail}`,
             action: 'ارسال ایمیل به پشتیبانی',
             icon: 'bi-envelope',
@@ -41,9 +41,9 @@ export function SupportModal() {
           })}
           ${SupportOptionCard({
             title: platformBranding.portalName,
-            description: 'دسترسی به تقویم آموزشی، سامانه مدیریت آموزش و ارتباط با اداره آموزش دانشکده‌ها.',
+            description: 'دسترسی به تقویم آموزشی، سامانه‌های یکپارچه و اطلاع‌رسانی دوره‌های آموزشی.',
             href: platformBranding.portalUrl,
-            action: 'ورود به پرتال دانشگاه',
+            action: 'ورود به پرتال اطلاع‌رسانی',
             icon: 'bi-globe',
           })}
         </div>
