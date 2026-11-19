@@ -1,35 +1,27 @@
-# Element developer guide
+# راهنمای توسعه‌دهنده المان (Element)
 
-See [`elements/`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/elements) for example elements.
+برای مشاهده نمونه المان‌ها به [`elements/`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/elements) مراجعه کنید.
 
-Element code uses the [`prairielearn` module](./python-reference/index.md) for common functionality like parsing attributes and computing scores.
+کد المان از [ماژول `prairielearn`](./python-reference/index.md) برای عملکردهای رایج مانند تجزیه ویژگی‌ها (attributes) و محاسبه نمرات استفاده می‌کند.
 
-!!! info
+!!! info "اطلاعات"
 
-    When deciding on the attributes used by your element, avoid using attribute names that are generally interpreted as boolean attributes in HTML elements. These attribute names may be incorrectly interpreted and their values converted to mean something different than your original intent. In particular, you should avoid these attributes: `checked`, `compact`, `declare`, `defer`, `disabled`, `ismap`, `multiple`, `nohref`, `noresize`, `noshade`, `nowrap`, `readonly`, `selected`.
+    هنگام تصمیم‌گیری درباره ویژگی‌های (attributes) مورد استفاده توسط المان خود، از به‌کارگیری نام‌هایی که معمولاً در المان‌های HTML به عنوان ویژگی‌های بولی (boolean) تفسیر می‌شوند، خودداری کنید. ممکن است این نام‌ها به اشتباه تفسیر شده و مقادیر آن‌ها به چیزی متفاوت از هدف اولیه شما تبدیل شوند. به ویژه باید از این ویژگی‌ها اجتناب کنید: `checked`، `compact`، `declare`، `defer`، `disabled`، `ismap`، `multiple`، `nohref`، `noresize`، `noshade`، `nowrap`، `readonly`، `selected`.
 
-    Additionally, you are encouraged to avoid attribute names that have special meaning in HTML (e.g., `onclick` or `style`), as they may be misinterpreted by IDEs.
+    علاوه بر این، توصیه می‌شود از نام‌هایی که در HTML معنای خاصی دارند (مانند `onclick` یا `style`) پرهیز کنید، چرا که ممکن است توسط محیط‌های توسعه (IDEها) به اشتباه تفسیر شوند.
 
-## Anatomy of an element
+## ساختار یک المان (Anatomy of an element)
 
-The system-wide elements available in the current build of the PrairieLearn server
-live in `[PrairieLearn directory]/elements` inside a folder corresponding to the element name.
-You can also have course-specific elements in a directory inside
-the root of your course repository, such as `[course directory]/elements`.
-See [`exampleCourse/elements`](https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/elements)
-for a real example of this.
+المان‌های سراسری سیستم که در ساخت فعلی سرور PrairieLearn در دسترس هستند، در مسیر `[PrairieLearn directory]/elements` درون پوشه‌ای متناظر با نام المان قرار دارند.
+شما همچنین می‌توانید المان‌های مخصوص دوره را در دایرکتوری درون ریشه مخزن دوره خود، مانند `[course directory]/elements`، داشته باشید.
+برای یک نمونه واقعی از این مورد، به [`exampleCourse/elements`](https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/elements) مراجعه کنید.
 
-By convention,
-all element files are named the same as the element they belong to. That directory
-should contain an `info.json` file that contains metadata about the element, including
-which file is the element controller and any dependencies of the element. See [the section on dependencies](#element-dependencies) for more information.
+طبق قرارداد،
+تمام فایل‌های المان هم‌نام با المانی هستند که به آن تعلق دارند. آن دایرکتوری باید حاوی یک فایل `info.json` باشد که شامل متاداده درباره المان است، از جمله اینکه کدام فایل کنترل‌کننده (controller) المان است و هرگونه وابستگی‌های المان را مشخص می‌کند. برای اطلاعات بیشتر، [بخش وابستگی‌ها](#element-dependencies) را مشاهده کنید.
 
-Each element should have a `.py` controller that contains the functions listed
-in the next section. This controller is responsible for rendering the element,
-parsing the student's submission, and optionally grading the submission.
+هر المان باید دارای یک کنترل‌کننده `.py` باشد که شامل توابع فهرست‌شده در بخش بعدی است. این کنترل‌کننده مسئول رندر کردن المان، تجزیه پاسخ ارسالی دانشجو و به صورت اختیاری نمره‌دهی به پاسخ ارسالی است.
 
-As a simple example, element `pl-my-element` would have the following file
-structure:
+به عنوان یک مثال ساده، المان `pl-my-element` ساختار فایلی زیر را خواهد داشت:
 
 ```text
 pl-my-element
@@ -40,7 +32,7 @@ pl-my-element
 `-- pl-my-element.css
 ```
 
-And an `info.json` with the following contents:
+و یک فایل `info.json` با محتوای زیر:
 
 ```json title="info.json"
 {
@@ -52,9 +44,9 @@ And an `info.json` with the following contents:
 }
 ```
 
-## Element functions
+## توابع المان
 
-Element functions have the following signatures. Type annotations are optional. See the [`data` dictionary](#data-dictionary) for the available fields and the function table below for which fields each function can modify.
+توابع المان دارای امضاهای (signatures) زیر هستند. حاشیه‌نویسی نوع‌ها (Type annotations) اختیاری است. برای مشاهده فیلدهای در دسترس به [دیکشنری `data`](#data-dictionary) و برای بررسی اینکه هر تابع کدام فیلدها را می‌تواند تغییر دهد، به جدول توابع در زیر مراجعه کنید.
 
 ```python
 import io
@@ -69,43 +61,43 @@ def file(element_html: bytes, data: dict) -> str | Buffer | io.IOBase | None: ..
 def test(element_html: bytes, data: dict) -> None: ...
 ```
 
-Functions with a `None` return type modify `data` in place and do not need a `return` statement. The `render()` function returns HTML as a string. The `file()` function returns dynamic file contents using the same [return types as question-level `file()`](question/server.md#serverpy-functions). Changes to `data` in `file()` are not persisted.
+توابعی که نوع بازگشتی آن‌ها `None` است، `data` را درجا (in-place) تغییر می‌دهند و نیازی به عبارت `return` ندارند. تابع `render()` کد HTML را به صورت رشته برمی‌گرداند. تابع `file()` محتوای پویا فایل را با استفاده از همان [انواع بازگشتی تابع `file()` در سطح سوال](question/server.md#serverpy-functions) برمی‌گرداند. تغییرات اعمال‌شده روی `data` در تابع `file()` ذخیره نمی‌شوند (persist نمی‌شوند).
 
-All element functions take `element_html` first and `data` second. This differs from the [question-level `render()` function](question/server.md#serverpy-functions), which takes `data` first and the rendered HTML second. The arguments are:
+تمام توابع المان ابتدا `element_html` و سپس `data` را به عنوان آرگومان دریافت می‌کنند. این با [تابع `render()` در سطح سوال](question/server.md#serverpy-functions) تفاوت دارد که ابتدا `data` و سپس HTML رندرشده را دریافت می‌کند. آرگومان‌ها عبارتند از:
 
-| Argument       | Type  | Description                                                     |
+| آرگومان | نوع | توضیحات |
 | -------------- | ----- | --------------------------------------------------------------- |
-| `element_html` | bytes | The template HTML for the element, serialized as bytes.         |
-| `data`         | dict  | Data for the question; permitted keys can be modified in place. |
+| `element_html` | bytes | کد قالب HTML برای المان، سریال‌سازی‌شده به صورت بایت‌ها. |
+| `data` | dict | داده‌های سوال؛ کلیدهای مجاز می‌توانند درجا تغییر داده شوند. |
 
-### `data` dictionary
+### دیکشنری `data`
 
-The `data` dictionary has the following possible keys (not all keys will be present in all element functions):
+دیکشنری `data` دارای کلیدهای احتمالی زیر است (همه کلیدها در تمام توابع المان حضور نخواهند داشت):
 
-| Key                             | Type    | Description                                                                                                                                                                  |
+| کلید | نوع | توضیحات |
 | ------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data["ai_grading"]`            | boolean | Whether the question is being rendered for AI grading.                                                                                                                       |
-| `data["correct_answer_shown"]`  | boolean | Whether the correct answer is currently visible (i.e., the answer panel is rendered; for use when rendering other panels)                                                    |
-| `data["correct_answers"]`       | dict    | The true answer (if any) for the variant.                                                                                                                                    |
-| `data["editable"]`              | boolean | Whether the question is currently in an editable state.                                                                                                                      |
-| `data["extensions"]`            | dict    | A list of extensions that are available to be loaded by this element. For more information see the [element extensions](./elementExtensions.md) documentation.               |
-| `data["feedback"]`              | dict    | Any feedback to the student on their submitted answer.                                                                                                                       |
-| `data["filename"]`              | string  | The requested filename, available in `file()`.                                                                                                                               |
-| `data["format_errors"]`         | dict    | Any errors encountered while parsing the student input.                                                                                                                      |
-| `data["gradable"]`              | boolean | Whether the submission can be graded. Automatically set to `false` if there are format errors.                                                                               |
-| `data["manual_grading"]`        | boolean | Whether manual-grading content should be shown. This is `true` in the manual grading view, and also for question and answer panels when rendered for AI grading.             |
-| `data["num_valid_submissions"]` | int     | The number of valid (not containing format errors) submissions by the student for the current variant.                                                                       |
-| `data["options"]`               | dict    | Any options associated with the question, such as to [access client files](./clientServerFiles.md#accessing-files-from-serverpy-question-code).                              |
-| `data["panel"]`                 | string  | Which panel is being rendered (`question`, `submission`, or `answer`).                                                                                                       |
-| `data["params"]`                | dict    | Parameters that describe the question variant.                                                                                                                               |
-| `data["preferences"]`           | dict    | Read-only [question preferences](question/preferences.md) saved when each variant is created. Values come from the question's defaults merged with any assessment overrides. |
-| `data["partial_scores"]`        | dict    | Partial scores for individual variables in the question.                                                                                                                     |
-| `data["raw_submitted_answers"]` | dict    | The answer submitted by the student before parsing.                                                                                                                          |
-| `data["score"]`                 | float   | The total final score for the question.                                                                                                                                      |
-| `data["submitted_answers"]`     | dict    | The answer submitted by the student (after parsing).                                                                                                                         |
-| `data["variant_seed"]`          | integer | The random seed for this question variant.                                                                                                                                   |
+| `data["ai_grading"]` | boolean | آیا سوال برای نمره‌دهی با هوش مصنوعی (AI grading) رندر می‌شود یا خیر. |
+| `data["correct_answer_shown"]` | boolean | آیا پاسخ صحیح در حال حاضر قابل مشاهده است یا خیر (یعنی پنل پاسخ رندر شده است؛ برای استفاده هنگام رندر کردن سایر پنل‌ها). |
+| `data["correct_answers"]` | dict | پاسخ واقعی و صحیح (در صورت وجود) برای این متغیر (variant). |
+| `data["editable"]` | boolean | آیا سوال در حال حاضر در وضعیت قابل ویرایش قرار دارد یا خیر. |
+| `data["extensions"]` | dict | فهرستی از افزونه‌ها (extensions) که برای بارگذاری توسط این المان در دسترس هستند. برای اطلاعات بیشتر، [مستندات افزونه‌های المان](./elementExtensions.md) را ببینید. |
+| `data["feedback"]` | dict | هرگونه بازخورد به دانشجو در مورد پاسخ ارسالی او. |
+| `data["filename"]` | string | نام فایل درخواستی، موجود در `file()`. |
+| `data["format_errors"]` | dict | هرگونه خطای رخ‌داده هنگام تجزیه (parse) ورودی دانشجو. |
+| `data["gradable"]` | boolean | آیا پاسخ ارسالی قابل نمره‌دهی است یا خیر. در صورت وجود خطاهای فرمت، به طور خودکار روی `false` تنظیم می‌شود. |
+| `data["manual_grading"]` | boolean | آیا محتوای نمره‌دهی دستی باید نمایش داده شود یا خیر. این مقدار در نمای نمره‌دهی دستی و همچنین برای پنل‌های سوال و پاسخ هنگامی که برای نمره‌دهی با هوش مصنوعی رندر می‌شوند، برابر با `true` است. |
+| `data["num_valid_submissions"]` | int | تعداد پاسخ‌های ارسالی معتبر (فاقد خطای فرمت) توسط دانشجو برای متغیر (variant) فعلی. |
+| `data["options"]` | dict | هرگونه تنظیمات و گزینه‌های مرتبط با سوال، مانند [دسترسی به فایل‌های کلاینت](./clientServerFiles.md#accessing-files-from-serverpy-question-code). |
+| `data["panel"]` | string | کدام پنل در حال حاضر رندر می‌شود (`question`، `submission` یا `answer`). |
+| `data["params"]` | dict | پارامترهایی که متغیر سوال را توصیف می‌کنند. |
+| `data["preferences"]` | dict | [ترجیحات سوال (preferences)](question/preferences.md) فقط-خواندنی که هنگام ایجاد هر متغیر ذخیره می‌شوند. مقادیر از پیش‌فرض‌های سوال ادغام‌شده با هرگونه بازنویسی در ارزیابی به دست می‌آیند. |
+| `data["partial_scores"]` | dict | نمرات بخشی (partial scores) برای متغیرهای مجزا در سوال. |
+| `data["raw_submitted_answers"]` | dict | پاسخ ارسال‌شده توسط دانشجو پیش از تجزیه (parse). |
+| `data["score"]` | float | نمره نهایی کل برای سوال. |
+| `data["submitted_answers"]` | dict | پاسخ ارسال‌شده توسط دانشجو (پس از تجزیه). |
+| `data["variant_seed"]` | integer | سید تصادفی (random seed) برای این متغیر سوال. |
 
-So that multiple elements can exist together in one question, the convention is that each element instance is associated with one or more **variables**. These variables are keys in the dictionaries for the data elements. For example, if there are variables `x` and `y` then we might have:
+برای اینکه چندین المان بتوانند در یک سوال در کنار هم وجود داشته باشند، قرارداد بر این است که هر نمونه المان با یک یا چند **متغیر (variables)** مرتبط باشد. این متغیرها کلیدهای موجود در دیکشنری‌های المان‌های داده هستند. برای مثال، اگر متغیرهای `x` و `y` وجود داشته باشند، ممکن است چنین مقادیری داشته باشیم:
 
 ```python
 data["correct_answers"]["x"] = 4
@@ -114,38 +106,38 @@ data["submitted_answers"]["x"] = 4
 data["submitted_answers"]["y"] = 12
 ```
 
-This structure, where dictionaries have variables as keys, is used for all dictionaries in `data`.
+این ساختار، که در آن دیکشنری‌ها متغیرها را به عنوان کلید در بر دارند، برای تمام دیکشنری‌ها در `data` استفاده می‌شود.
 
-### Function behavior
+### رفتار توابع
 
-The element functions are:
+توابع المان عبارتند از:
 
-| Function    | Return object                            | Modifiable `data` keys                                                                                   | Unmodifiable `data` keys                                                                                                                                                                                                                                                          | Description                                                                                                                                                                                                                                                                                                                                                                      |
+| تابع | شیء بازگشتی | کلیدهای قابل تغییر در `data` | کلیدهای غیرقابل تغییر در `data` | توضیحات |
 | ----------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `prepare()` | `None`                                   | `correct_answers`, `params`                                                                              | `extensions`, `options`, `preferences`, `variant_seed`                                                                                                                                                                                                                            | Validates and prepares initial data for the element. Is executed after the question's `generate()` function has executed, and has access to the data created by that function.                                                                                                                                                                                                   |
-| `render()`  | `str` (html)                             |                                                                                                          | `correct_answer_shown`, `correct_answers`, `editable`, `extensions`, `feedback`, `format_errors`, `manual_grading`, `num_valid_submissions`, `options`, `panel`, `params`, `partial_scores`, `preferences`, `raw_submitted_answers`, `score`, `submitted_answers`, `variant_seed` | Render the HTML for one panel and return it as a string.                                                                                                                                                                                                                                                                                                                         |
-| `parse()`   | `None`                                   | `correct_answers`, `feedback`, `format_errors`, `params`, `submitted_answers`                            | `extensions`, `options`, `preferences`, `raw_submitted_answers`, `variant_seed`                                                                                                                                                                                                   | Parse the `data["submitted_answers"][var]` data entered by the student, modifying this variable.                                                                                                                                                                                                                                                                                 |
-| `grade()`   | `None`                                   | `correct_answers`, `feedback`, `format_errors`, `params`, `partial_scores`, `score`, `submitted_answers` | `extensions`, `options`, `preferences`, `raw_submitted_answers`, `variant_seed`                                                                                                                                                                                                   | Grade `data["submitted_answers"][var]` to determine a score. Store the score and any feedback in `data["partial_scores"][var]["score"]` and `data["partial_scores"][var]["feedback"]` respectively. **Note:** Avoid modifying the `data["feedback"]` dictionary, as this is meant to be used by custom questions.                                                                |
-| `file()`    | string, bytes-like, file-like, or `None` |                                                                                                          | All keys                                                                                                                                                                                                                                                                          | Generate dynamic file contents for `data["filename"]`. Return `None` if this element does not provide the requested file.                                                                                                                                                                                                                                                        |
-| `test()`    | `None`                                   | `format_errors`, `partial_scores`, `raw_submitted_answers`, `score`                                      | `extensions`, `gradable`, `preferences`, `test_type`                                                                                                                                                                                                                              | Creates a test submission for this element, used when running tests from the "Settings" panel. Should set a value in `data["raw_submitted_answers"][var]` and expected score in `data["partial_scores"][var]` (or `data["format_errors"][var]` if `invalid`). The type of input to test is given in `data["test_type"]`, and can be one of `correct`, `incorrect`, or `invalid`. |
+| `prepare()` | `None` | `correct_answers`, `params` | `extensions`, `options`, `preferences`, `variant_seed` | داده‌های اولیه را برای المان اعتبارسنجی و آماده‌سازی می‌کند. پس از اجرای تابع `generate()` سوال اجرا می‌شود و به داده‌های ایجادشده توسط آن تابع دسترسی دارد. |
+| `render()` | `str` (html) | | `correct_answer_shown`, `correct_answers`, `editable`, `extensions`, `feedback`, `format_errors`, `manual_grading`, `num_valid_submissions`, `options`, `panel`, `params`, `partial_scores`, `preferences`, `raw_submitted_answers`, `score`, `submitted_answers`, `variant_seed` | کد HTML را برای یک پنل رندر کرده و آن را به صورت یک رشته برمی‌گرداند. |
+| `parse()` | `None` | `correct_answers`, `feedback`, `format_errors`, `params`, `submitted_answers` | `extensions`, `options`, `preferences`, `raw_submitted_answers`, `variant_seed` | داده‌های واردشده توسط دانشجو در `data["submitted_answers"][var]` را تجزیه کرده و این متغیر را تغییر می‌دهد. |
+| `grade()` | `None` | `correct_answers`, `feedback`, `format_errors`, `params`, `partial_scores`, `score`, `submitted_answers` | `extensions`, `options`, `preferences`, `raw_submitted_answers`, `variant_seed` | پاسخ `data["submitted_answers"][var]` را نمره‌دهی کرده تا نمره مشخص شود. نمره و هرگونه بازخورد را به ترتیب در `data["partial_scores"][var]["score"]` و `data["partial_scores"][var]["feedback"]` ذخیره می‌کند. **نکته:** از تغییر دادن دیکشنری `data["feedback"]` خودداری کنید، چرا که این دیکشنری برای استفاده در سوالات سفارشی در نظر گرفته شده است. |
+| `file()` | string، شیء شبیه بایت (bytes-like)، شیء فایل‌مانند (file-like) یا `None` | | تمام کلیدها | محتوای پویای فایل را برای `data["filename"]` تولید می‌کند. اگر این المان فایل درخواستی را ارائه ندهد، مقدار `None` برمی‌گرداند. |
+| `test()` | `None` | `format_errors`, `partial_scores`, `raw_submitted_answers`, `score` | `extensions`, `gradable`, `preferences`, `test_type` | یک پاسخ ارسالی آزمایشی برای این المان ایجاد می‌کند که هنگام اجرای آزمون‌ها از پنل «Settings» استفاده می‌شود. باید مقداری را در `data["raw_submitted_answers"][var]` و نمره مورد انتظار را در `data["partial_scores"][var]` (یا در صورت `invalid` بودن در `data["format_errors"][var]`) تنظیم کند. نوع ورودی مورد آزمایش در `data["test_type"]` مشخص می‌شود و می‌تواند یکی از مقادیر `correct`، `incorrect` یا `invalid` باشد. |
 
-!!! note
+!!! note "نکته"
 
-    Unlike question `server.py` files, element controllers do not have a `generate()` function. The question's `server.py` `generate()` function is responsible for generating random parameters and correct answers. Elements should use `prepare()` for any initialization that depends on those parameters.
+    برخلاف فایل‌های `server.py` سوال، کنترل‌کننده‌های المان فاقد تابع `generate()` هستند. تابع `generate()` در `server.py` سوال مسئول تولید پارامترهای تصادفی و پاسخ‌های صحیح است. المان‌ها باید از `prepare()` برای هرگونه مقداردهی اولیه‌ای که به این پارامترها وابسته است استفاده کنند.
 
-The above table describes the purpose of each function and the values in `data` that are allowed to be modified. Any permitted changes to the values in `data` will be persisted to the database. No function is allowed to add or delete keys in `data`.
+جدول بالا هدف هر تابع و مقادیری در `data` را که مجاز به تغییر هستند، شرح می‌دهد. هرگونه تغییر مجاز در مقادیر موجود در `data` در پایگاه داده پایدار (ذخیره) خواهد شد. هیچ تابعی مجاز به افزودن یا حذف کلیدها در `data` نیست.
 
-All functions above have equivalents in [question code](question/server.md) (i.e., the question's own `server.py` file). When the functions are declared in both the element and the question, the element function is always executed first for each element in the question, in the order the elements appear in the question, followed by the question function. For functions that modify `data`, this allows question code to override or modify the behavior of the element if necessary.
+تمام توابع بالا دارای معادل‌هایی در [کد سوال](question/server.md) (یعنی فایل `server.py` خود سوال) هستند. هنگامی که توابع هم در المان و هم در سوال تعریف شده باشند، تابع المان همواره ابتدا برای هر المان موجود در سوال (به ترتیبی که المان‌ها در سوال ظاهر شده‌اند) اجرا می‌شود و پس از آن تابع سوال اجرا می‌گردد. برای توابعی که `data` را تغییر می‌دهند، این ویژگی به کد سوال امکان می‌دهد در صورت نیاز، رفتار المان را بازنویسی یا اصلاح کند.
 
-## Element dependencies
+## وابستگی‌های المان (Element dependencies)
 
-It's likely that your element will depend on certain client-side assets, such as scripts or stylesheets. To keep clean separation of HTML, CSS, and JS, you can place those dependencies in other files. If you depend on libraries like `lodash` or `d3`, you can also link to node modules containing these libraries. PrairieLearn will compile a list of all dependencies needed by all elements on a page, deduplicate the dependencies, and ensure they are loaded on the page.
+احتمال زیادی دارد که المان شما به دارایی‌های خاصی در سمت کلاینت، مانند اسکریپت‌ها یا شیوه‌نامه‌ها (stylesheets) وابسته باشد. برای حفظ تفکیک تمیز بین HTML، CSS و JS، می‌توانید آن وابستگی‌ها را در فایل‌های دیگری قرار دهید. اگر به کتابخانه‌هایی مانند `lodash` یا `d3` وابسته هستید، می‌توانید به ماژول‌های نود (node modules) حاوی این کتابخانه‌ها نیز پیوند دهید. سامانه PrairieLearn فهرستی از تمام وابستگی‌های مورد نیاز توسط تمام المان‌های موجود در یک صفحه را گردآوری کرده، موارد تکراری را حذف می‌کند و اطمینان حاصل می‌کند که آن‌ها در صفحه بارگذاری شوند.
 
-!!! warning
+!!! warning "هشدار"
 
-    Files referenced from an element's `dependencies` or `dynamicDependencies` must be browser-loadable as standalone assets. They must be bundled or otherwise self-contained, and should not rely on additional `import`/`require` resolution from the browser runtime.
+    فایل‌های ارجاع داده‌شده از `dependencies` یا `dynamicDependencies` یک المان باید به صورت دارایی‌های مستقل در مرورگر قابل بارگذاری باشند. آن‌ها باید باندل‌شده یا به هر نحو خودکفا (self-contained) باشند و نباید به تفکیک نام (resolution) اضافی `import`/`require` از زمان اجرای مرورگر متکی باشند.
 
-Dependencies are listed in your element's `info.json`. You can configure them for your element as follows:
+وابستگی‌ها در فایل `info.json` المان شما فهرست می‌شوند. می‌توانید آن‌ها را به صورت زیر برای المان خود پیکربندی کنید:
 
 ```json title="info.json"
 {
@@ -159,20 +151,20 @@ Dependencies are listed in your element's `info.json`. You can configure them fo
 }
 ```
 
-The different types of dependency properties currently available are summarized in this table:
+انواع مختلف ویژگی‌های وابستگی که در حال حاضر در دسترس هستند در این جدول خلاصه شده‌اند:
 
-| Property                   | Description                                                                                                                                                                                                                     |
+| ویژگی | توضیحات |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nodeModulesStyles`        | The styles required by this element, relative to `[PrairieLearn directory]/node_modules`.                                                                                                                                       |
-| `nodeModulesScripts`       | The scripts required by this element, relative to `[PrairieLearn directory]/node_modules`.                                                                                                                                      |
-| `elementStyles`            | The styles required by this element relative to the element's directory, which is either `[PrairieLearn directory]/elements/this-element-name` or `[course directory]/elements/this-element-name`.                              |
-| `elementScripts`           | The scripts required by this element relative to the element's directory, which is either `[PrairieLearn directory]/elements/this-element-name` or `[course directory]/elements/this-element-name`.                             |
-| `clientFilesCourseStyles`  | The styles required by this element relative to `[course directory]/clientFilesCourse`. _(Note: This property is only available for elements hosted in a specific course's directory, not system-wide PrairieLearn elements.)_  |
-| `clientFilesCourseScripts` | The scripts required by this element relative to `[course directory]/clientFilesCourse`. _(Note: This property is only available for elements hosted in a specific course's directory, not system-wide PrairieLearn elements.)_ |
+| `nodeModulesStyles` | استایل‌های مورد نیاز این المان، به صورت نسبی نسبت به `[PrairieLearn directory]/node_modules`. |
+| `nodeModulesScripts` | اسکریپت‌های مورد نیاز این المان، به صورت نسبی نسبت به `[PrairieLearn directory]/node_modules`. |
+| `elementStyles` | استایل‌های مورد نیاز این المان نسبت به دایرکتوری خود المان، که یا `[PrairieLearn directory]/elements/this-element-name` است یا `[course directory]/elements/this-element-name`. |
+| `elementScripts` | اسکریپت‌های مورد نیاز این المان نسبت به دایرکتوری خود المان، که یا `[PrairieLearn directory]/elements/this-element-name` است یا `[course directory]/elements/this-element-name`. |
+| `clientFilesCourseStyles` | استایل‌های مورد نیاز این المان نسبت به `[course directory]/clientFilesCourse`. _(نکته: این ویژگی فقط برای المان‌های مستقر در دایرکتوری یک درس خاص در دسترس است، نه المان‌های سراسری سامانه PrairieLearn)._ |
+| `clientFilesCourseScripts` | اسکریپت‌های مورد نیاز این المان نسبت به `[course directory]/clientFilesCourse`. _(نکته: این ویژگی فقط برای المان‌های مستقر در دایرکتوری یک درس خاص در دسترس است، نه المان‌های سراسری سامانه PrairieLearn)._ |
 
-The `coreScripts` and `coreStyles` properties are used in legacy elements and questions, but are deprecated and should not be used in new objects. It lists scripts and styles required by this element, relative to `[PrairieLearn directory]/public/javascripts` and `[PrairieLearn directory]/public/stylesheets`, respectively. Scripts in `[PrairieLearn directory]/public/javascripts` are mainly used for compatibility with legacy elements and questions, while styles in `[PrairieLearn directory]/public/stylesheets` are reserved for [styles used by specific pages rather than individual elements](./dev-guide/guide.md#html-style).
+ویژگی‌های `coreScripts` و `coreStyles` در المان‌ها و سوالات قدیمی استفاده می‌شدند، اما منسوخ (deprecated) شده‌اند و نباید در اشیاء جدید استفاده شوند. این ویژگی‌ها اسکریپت‌ها و استایل‌های مورد نیاز این المان را به ترتیب نسبت به `[PrairieLearn directory]/public/javascripts` و `[PrairieLearn directory]/public/stylesheets` فهرست می‌کنند. اسکریپت‌های موجود در `[PrairieLearn directory]/public/javascripts` عمدتاً برای سازگاری با المان‌ها و سوالات قدیمی استفاده می‌شوند، در حالی که استایل‌های موجود در `[PrairieLearn directory]/public/stylesheets` برای [استایل‌های مورداستفاده در صفحات خاص رزرو شده‌اند تا المان‌های مجزا](./dev-guide/guide.md#html-style).
 
-In addition to static dependencies, elements can also declare dynamic dependencies, corresponding to scripts that are loaded only if they are deemed necessary. For example, if an element may use the `d3` library, but only in certain cases, it can declare a dependency on `d3`:
+علاوه بر وابستگی‌های ایستا، المان‌ها همچنین می‌توانند وابستگی‌های پویا (dynamic dependencies) را اعلام کنند که مربوط به اسکریپت‌هایی است که تنها در صورت لزوم بارگذاری می‌شوند. برای مثال، اگر یک المان ممکن است از کتابخانه `d3` استفاده کند، اما فقط در شرایط خاص، می‌تواند وابستگی به `d3` را اعلام نماید:
 
 ```json title="info.json"
 {
@@ -186,7 +178,7 @@ In addition to static dependencies, elements can also declare dynamic dependenci
 }
 ```
 
-Then, the element's own script (e.g., `pl-my-element.js`) can dynamically import the `d3` library only when considered necessary:
+سپس، اسکریپت خود المان (مانند `pl-my-element.js`) می‌تواند کتابخانه `d3` را فقط زمانی که لازم تشخیص داده شد به صورت پویا ایمپورت کند:
 
 ```javascript
 if (options.use_d3) {
@@ -196,38 +188,38 @@ if (options.use_d3) {
 }
 ```
 
-Dynamic dependencies are implemented using [import maps](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap), which allow the `import` call in the element script to refer to the module by the name defined in the `info.json` file instead of the full URL. This may also be used as an alternative to static dependencies for ESM modules, as it allows the module to be imported using ESM syntax.
+وابستگی‌های پویا با استفاده از [نگاشت‌های ایمپورت (import maps)](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) پیاده‌سازی می‌شوند، که به فراخوانی `import` در اسکریپت المان امکان می‌دهد به جای URL کامل، با نام تعریف‌شده در فایل `info.json` به ماژول ارجاع دهد. همچنین می‌توان از این ویژگی به عنوان جایگزینی برای وابستگی‌های ایستا برای ماژول‌های ESM استفاده کرد، چرا که اجازه می‌دهد ماژول با استفاده از نحو ESM ایمپورت شود.
 
-Dynamic dependencies may point to:
+وابستگی‌های پویا ممکن است به موارد زیر اشاره کنند:
 
-| Property                   | Description                                                                                                                                                                                                                     |
+| ویژگی | توضیحات |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nodeModulesScripts`       | The scripts required by this element, relative to `[PrairieLearn directory]/node_modules`.                                                                                                                                      |
-| `elementScripts`           | The scripts required by this element relative to the element's directory, which is either `[PrairieLearn directory]/elements/this-element-name` or `[course directory]/elements/this-element-name`.                             |
-| `clientFilesCourseScripts` | The scripts required by this element relative to `[course directory]/clientFilesCourse`. _(Note: This property is only available for elements hosted in a specific course's directory, not system-wide PrairieLearn elements.)_ |
+| `nodeModulesScripts` | اسکریپت‌های مورد نیاز این المان، به صورت نسبی نسبت به `[PrairieLearn directory]/node_modules`. |
+| `elementScripts` | اسکریپت‌های مورد نیاز این المان نسبت به دایرکتوری خود المان، که یا `[PrairieLearn directory]/elements/this-element-name` است یا `[course directory]/elements/this-element-name`. |
+| `clientFilesCourseScripts` | اسکریپت‌های مورد نیاز این المان نسبت به `[course directory]/clientFilesCourse`. _(نکته: این ویژگی فقط برای المان‌های مستقر در دایرکتوری یک درس خاص در دسترس است، نه المان‌های سراسری سامانه PrairieLearn)._ |
 
-Note that the key used in the dynamic dependencies will be shared among all elements available in a question. For example, if two elements in a question both declare a dynamic dependency on `d3`, then the `d3` library will only be loaded once, even if both elements use it. For this reason, it is important that the following convention is used when defining keys for dynamic dependencies:
+توجه داشته باشید که کلید استفاده‌شده در وابستگی‌های پویا بین تمام المان‌های موجود در یک سوال به اشتراک گذاشته خواهد شد. برای مثال، اگر دو المان در یک سوال هر دو وابستگی پویایی به `d3` اعلام کنند، کتابخانه `d3` تنها یک بار بارگذاری می‌شود، حتی اگر هر دو المان از آن استفاده کنند. به همین دلیل، مهم است که هنگام تعریف کلیدها برای وابستگی‌های پویا، قرارداد زیر رعایت شود:
 
-- For node modules: use the name of the module, as defined in the `package.json` file. This will allow multiple elements that use the same module to share the same dependency without loading the module twice. That said, for course elements, you should avoid using node module dependencies directly if possible, [as described below](#using-node-dependencies-in-element-code).
-- For element scripts: use the name of the element, followed by a slash, followed by the name of the script. For example, if the element is named `pl-my-element` and the script is named `my-element.js`, then the key should be `pl-my-element/my-element.js`.
-- For `clientFilesCourse` scripts: use any course-specific convention that does not clash with the naming above.
+- برای ماژول‌های نود (node modules): از نام ماژول همان‌طور که در فایل `package.json` تعریف شده است استفاده کنید. این کار به چندین المان که از یک ماژول استفاده می‌کنند اجازه می‌دهد بدون بارگذاری مجدد ماژول، همان وابستگی را به اشتراک بگذارند. با این وجود، برای المان‌های درس باید در صورت امکان از استفاده مستقیم از وابستگی‌های ماژول نود خودداری کنید، [همان‌طور که در زیر توضیح داده شده است](#using-node-dependencies-in-element-code).
+- برای اسکریپت‌های المان: از نام المان به همراه یک اسلش و به دنبال آن نام اسکریپت استفاده کنید. برای مثال اگر نام المان `pl-my-element` و نام اسکریپت `my-element.js` باشد، کلید باید `pl-my-element/my-element.js` باشد.
+- برای اسکریپت‌های `clientFilesCourse`: از هر قرارداد مخصوص درسی که با نام‌گذاری بالا تداخل نداشته باشد استفاده کنید.
 
-You can also find more detail about the types of dependencies in the schema references:
+همچنین می‌توانید جزئیات بیشتری درباره انواع وابستگی‌ها در مراجع شِما (schema) بیابید:
 
-- [System-wide elements](./schemas/infoElementCore.md)
-- [Course-specific elements](./schemas/infoElementCourse.md)
+- [المان‌های سراسری سیستم](./schemas/infoElementCore.md)
+- [المان‌های ویژه درس](./schemas/infoElementCourse.md)
 
-### Using node dependencies in element code
+### استفاده از وابستگی‌های نود در کد المان
 
-Note that the use of node modules (`nodeModulesScripts` and `nodeModulesStyles`) is only supported for dependencies that PrairieLearn itself depends on. These dependencies can be found in the `dependencies` section of the [`apps/prairielearn/package.json`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/package.json) file in the PrairieLearn repository.
+توجه داشته باشید که استفاده از ماژول‌های نود (`nodeModulesScripts` و `nodeModulesStyles`) تنها برای وابستگی‌هایی پشتیبانی می‌شود که خود سامانه PrairieLearn به آن‌ها وابسته است. این وابستگی‌ها را می‌توان در بخش `dependencies` از فایل [`apps/prairielearn/package.json`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/package.json) در مخزن PrairieLearn یافت.
 
-!!! warning
+!!! warning "هشدار"
 
-    While the use of node module dependencies in course elements is supported, it should be avoided if possible. In particular, note that node modules may be updated without warning, which in some cases may break your element. Also note that, although transitive dependencies (i.e., dependencies of dependencies) may work in some cases, they are not guaranteed to continue working in the future, as dependency updates or updates in the PrairieLearn configuration may change the availability of transitive dependencies.
+    اگرچه استفاده از وابستگی‌های ماژول‌های نود در المان‌های درس پشتیبانی می‌شود، اما در صورت امکان باید از آن اجتناب شود. به ویژه توجه داشته باشید که ماژول‌های نود ممکن است بدون هشدار به‌روزرسانی شوند که این امر در برخی موارد ممکن است عملکرد المان شما را مختل کند. همچنین توجه داشته باشید که اگرچه وابستگی‌های تعدی یا گذرا (transitive dependencies، یعنی وابستگی‌های یک وابستگی) ممکن است در برخی موارد کار کنند، تضمینی برای ادامه کار آن‌ها در آینده وجود ندارد، زیرا به‌روزرسانی وابستگی‌ها یا به‌روزرسانی‌ها در پیکربندی PrairieLearn ممکن است در دسترس بودن وابستگی‌های گذرا را تغییر دهد.
 
-    If your code relies on a node module, the recommended course of action is that you copy the module into your element directory or `clientFilesCourse` and link to that module from there instead. This way, you have control over when the module is updated, and you can ensure that updates do not break your element.
+    اگر کد شما به یک ماژول نود متکی است، اقدام پیشنهادی این است که ماژول را در دایرکتوری المان خود یا در `clientFilesCourse` کپی کرده و به جای آن، از آنجا به ماژول پیوند دهید. به این ترتیب، شما بر زمان به‌روزرسانی ماژول کنترل خواهید داشت و می‌توانید اطمینان حاصل کنید که به‌روزرسانی‌ها عملکرد المان شما را مختل نمی‌کنند.
 
-To copy a node module into your element directory, first obtain the appropriate bundle for the module (e.g., from the module's home page, from a CDN or by building it yourself), and then place it in your element directory. For example, if you want to use the `moment` library, you can obtain the bundle from the module web page (`https://momentjs.com/`) or a CDN (e.g., `https://cdn.jsdelivr.net/npm/moment@2.30.1/dist/moment.min.js`) and place it in your element directory as `moment.min.js`. Then, you can link to this file in your `info.json` as follows:
+برای کپی کردن یک ماژول نود در دایرکتوری المان خود، ابتدا باندل (bundle) مناسب ماژول را به دست آورید (مثلاً از صفحه اصلی ماژول، از یک CDN یا با بیلد کردن دستی آن) و سپس آن را در دایرکتوری المان خود قرار دهید. برای مثال، اگر می‌خواهید از کتابخانه `moment` استفاده کنید، می‌توانید باندل آن را از صفحه وب ماژول (`https://momentjs.com/`) یا یک CDN (مثلاً `https://cdn.jsdelivr.net/npm/moment@2.30.1/dist/moment.min.js`) دریافت کرده و آن را به عنوان `moment.min.js` در دایرکتوری المان خود قرار دهید. سپس می‌توانید در فایل `info.json` خود به صورت زیر به این فایل پیوند دهید:
 
 ```json title="info.json"
 {
@@ -238,7 +230,7 @@ To copy a node module into your element directory, first obtain the appropriate 
 }
 ```
 
-Alternatively, if you use a module that will be used by multiple elements, or by questions directly, then it may be better to place the module in `clientFilesCourse` instead of copying it into each element directory. In this case, you can link to the module from your `info.json` as follows:
+یا اگر از ماژولی استفاده می‌کنید که توسط چندین المان یا مستقیماً توسط سوالات استفاده خواهد شد، ممکن است بهتر باشد ماژول را در `clientFilesCourse` قرار دهید به جای اینکه آن را در تک‌تک دایرکتوری‌های المان‌ها کپی کنید. در این حالت، می‌توانید در فایل `info.json` خود به صورت زیر به ماژول پیوند دهید:
 
 ```json title="info.json"
 {
@@ -249,7 +241,7 @@ Alternatively, if you use a module that will be used by multiple elements, or by
 }
 ```
 
-For dynamic dependencies, the same recommendations apply. In that case, you are encouraged to use a key that is unlikely to clash with other dynamic dependencies, such as `pl-my-element/moment` for a `moment` dependency used by `pl-my-element`, or `course-specific-name/moment` for a `moment` dependency used by multiple elements in a course. In that case, make sure that your element script imports the module using the same key as defined in the `info.json` file, such as `import('pl-my-element/moment')` for an element script dependency. For example, if you copy the `moment` library into your element directory as `moment.min.js`, you can define a dynamic dependency on this file as follows:
+برای وابستگی‌های پویا نیز همین توصیه‌ها صدق می‌کند. در این حالت، توصیه می‌شود از کلیدی استفاده کنید که احتمال تداخل آن با سایر وابستگی‌های پویا کم باشد؛ مانند `pl-my-element/moment` برای وابستگی `moment` مورد استفاده توسط `pl-my-element`، یا `course-specific-name/moment` برای وابستگی `moment` مورداستفاده توسط چندین المان در یک درس. در این صورت، مطمئن شوید که اسکریپت المان شما ماژول را با استفاده از همان کلید تعریف‌شده در فایل `info.json` ایمپورت می‌کند، مانند `import('pl-my-element/moment')` برای وابستگی اسکریپت المان. برای مثال، اگر کتابخانه `moment` را به عنوان `moment.min.js` در دایرکتوری المان خود کپی کنید، می‌توانید یک وابستگی پویا روی این فایل را به صورت زیر تعریف نمایید:
 
 ```json title="info.json"
 {
@@ -263,6 +255,6 @@ For dynamic dependencies, the same recommendations apply. In that case, you are 
 }
 ```
 
-!!! note
+!!! note "نکته"
 
-    Note that, by using the methods above, you become responsible for ensuring that the module is up-to-date with latest changes and security updates. If you choose to copy a node module into your element directory, you may choose to include the version number in the file name (e.g., `moment-2.30.1.min.js`) to make it easier to keep track of which version you are using and to update it when necessary.
+    توجه داشته باشید که با استفاده از روش‌های بالا، شما مسئولیت اطمینان از به‌روز بودن ماژول با آخرین تغییرات و به‌روزرسانی‌های امنیتی را بر عهده می‌گیرید. اگر تصمیم گرفتید یک ماژول نود را در دایرکتوری المان خود کپی کنید، می‌توانید شماره نسخه را در نام فایل بگنجانید (مثلاً `moment-2.30.1.min.js`) تا پیگیری نسخه مورد استفاده و به‌روزرسانی آن در صورت لزوم آسان‌تر شود.
