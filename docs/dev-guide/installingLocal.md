@@ -1,8 +1,8 @@
-# Running in Docker for development
+# اجرا در Docker برای توسعه
 
-This page describes the procedure to run PrairieLearn within Docker, but using a locally-installed version of the PrairieLearn source code. This is the recommended way to do PrairieLearn development. This is tested and supported on macOS, Linux, and Windows. When using Windows, you are expected to perform the steps below inside a WSL 2 container, and to store all code and course files in the native WSL 2 filesystem (i.e., not inside the `/mnt` directory). Using the Windows filesystem or running the Docker container without WSL can result in performance issues and inconsistent functionality.
+این صفحه روش اجرای پِری‌لرن (PrairieLearn) درون Docker را با استفاده از نسخه محلی سورس‌کد پِری‌لرن شرح می‌دهد. این روش پیشنهادی برای توسعه پِری‌لرن است. این شیوه روی macOS، Linux و Windows تست شده و پشتیبانی می‌شود. در صورت استفاده از Windows، انتظار می‌رود مراحل زیر را درون یک کانتینر WSL 2 انجام دهید و تمام فایل‌های کد و درس را در فایل‌سیستم محلی (native) WSL 2 ذخیره کنید (یعنی خارج از دایرکتوری `/mnt`). استفاده از فایل‌سیستم Windows یا اجرای کانتینر Docker بدون WSL می‌تواند منجر به افت عملکرد و رفتارهای ناهماهنگ شود.
 
-!!! tip "Summary"
+!!! tip "خلاصه"
 
     ```sh
     git clone https://github.com/PrairieLearn/PrairieLearn.git
@@ -13,15 +13,15 @@ This page describes the procedure to run PrairieLearn within Docker, but using a
       /bin/bash -c "make deps && /PrairieLearn/scripts/init.sh"
     ```
 
-First install the Docker version of PrairieLearn as described in the [installation documentation](../installing.md).
+ابتدا نسخه Docker پِری‌لرن را همان‌طور که در [مستندات نصب](../installing.md) شرح داده شده است، نصب کنید.
 
-Then, clone PrairieLearn from the main repository:
+سپس، مخزن اصلی پِری‌لرن را کلون کنید:
 
 ```sh
 git clone https://github.com/PrairieLearn/PrairieLearn.git
 ```
 
-To run without spawning a shell in the container, run:
+برای اجرا بدون باز کردن یک شل (Shell) در کانتینر، دستور زیر را اجرا کنید:
 
 ```sh
 docker run -it --rm -p 3000:3000 \
@@ -30,8 +30,8 @@ docker run -it --rm -p 3000:3000 \
   /bin/bash -c "make deps && /PrairieLearn/scripts/init.sh"
 ```
 
-For most development, you will need access to a shell in the container to run tests, linting, etc.
-First, start a shell in the container with:
+برای اکثر کارهای توسعه، شما به دسترسی به یک شل درون کانتینر برای اجرای آزمون‌ها، لینترها و غیره نیاز خواهید داشت.
+ابتدا یک شل درون کانتینر با دستور زیر باز کنید:
 
 ```sh
 cd PrairieLearn
@@ -40,56 +40,56 @@ docker run -it --rm -p 3000:3000 \
   prairielearn/prairielearn /bin/bash
 ```
 
-This will launch a shell inside a Docker container running the PrairieLearn image, but using the current working directory for its code. If you'd rather run the command from somewhere other than the root of the repo, replace `.` with the path to the directory in `.:/PrairieLearn`.
+این دستور یک شل درون یک کانتینر Docker که در حال اجرای ایمیج پِری‌لرن است باز می‌کند، اما از دایرکتوری کاری فعلی برای کد استفاده می‌نماید. اگر ترجیح می‌دهید دستور را از جایی غیر از ریشه مخزن اجرا کنید، مقدار `.` را با مسیر آن دایرکتوری در `.:/PrairieLearn` جایگزین کنید.
 
-To run the PrairieLearn server in development mode, use:
+برای اجرای سرور پِری‌لرن در حالت توسعه، از دستورات زیر استفاده کنید:
 
 ```sh
 make deps
 make dev
 ```
 
-This will start the PrairieLearn server and automatically restart it when you make changes to the JavaScript code. To stop the server, press ++ctrl+c++. To exit the container after the server is stopped, press ++ctrl+d++.
+این کار سرور پِری‌لرن را راه‌اندازی می‌کند و با اعمال تغییرات در کدهای جاوااسکریپت، آن را به‌طور خودکار مجدداً راه‌اندازی خواهد کرد. برای متوقف کردن سرور، کلیدهای ++ctrl+c++ را فشار دهید. برای خروج از کانتینر پس از متوقف کردن سرور، کلیدهای ++ctrl+d++ را فشار دهید.
 
-To support workspaces in local development, use `make dev-all` or `make start-all` to run both PrairieLearn and a workspace server application. For these to work, you will need to modify your Docker invocation to support external graders and workspaces. More information is on the [instructor installation page](../installing.md/#support-for-external-graders-and-workspaces).
+برای پشتیبانی از محیط‌های کاری در توسعه محلی، از `make dev-all` یا `make start-all` استفاده کنید تا هر دو برنامه پِری‌لرن و سرور محیط کاری اجرا شوند. برای اینکه این موارد کار کنند، باید فراخوانی Docker خود را برای پشتیبانی از نمره‌دهنده‌های خارجی و محیط‌های کاری اصلاح کنید. اطلاعات بیشتر در [صفحه نصب مدرسان](../installing.md/#support-for-external-graders-and-workspaces) قرار دارد.
 
-## Development
+## توسعه
 
-More information on the common commands and actions you do during development can be found on the [development quickstart](./quickstart.md) page.
+اطلاعات بیشتر درباره دستورات و اقدامات رایج در طول توسعه را می‌توانید در صفحه [شروع سریع توسعه](./quickstart.md) بیابید.
 
-## Updating or building the Docker image
+## به‌روزرسانی یا بیلد کردن ایمیج Docker
 
-The commands above all run PrairieLearn using local source inside the `prairielearn/prairielearn` image. This image has Python packages and other supporting files already installed. This should be periodically updated with:
+تمام دستورات بالا پِری‌لرن را با استفاده از سورس محلی درون ایمیج `prairielearn/prairielearn` اجرا می‌کنند. این ایمیج از پیش دارای بسته‌های پایتون و سایر فایل‌های پشتیبان نصب‌شده است. این ایمیج باید به‌صورت دوره‌ای با دستور زیر به‌روزرسانی شود:
 
 ```sh
 docker pull prairielearn/prairielearn
 ```
 
-You can also build a local copy of this image and use it to make sure you have a version that corresponds exactly to your local source:
+همچنین می‌توانید یک نسخه محلی از این ایمیج بسازید و از آن استفاده کنید تا مطمئن شوید نسخه‌ای دارید که دقیقاً با سورس محلی شما مطابقت دارد:
 
 ```sh
 cd /path/to/PrairieLearn
 docker build -t prairielearn/prairielearn .
 ```
 
-## Connecting to an existing Docker container
+## اتصال به یک کانتینر Docker موجود
 
-The previous shells were launched in their own containers. If you want to open a shell in a Docker container that is _already running_, you can find the container's name and connect to it.
+شل‌های قبلی در کانتینرهای اختصاصی خود راه‌اندازی شدند. اگر می‌خواهید یک شل در یک کانتینر Docker که _از قبل در حال اجرا است_ باز کنید، می‌توانید نام کانتینر را پیدا کرده و به آن متصل شوید.
 
-- Find the name of your running PrairieLearn container by running
+- نام کانتینر پِری‌لرن در حال اجرای خود را با اجرای دستور زیر پیدا کنید:
 
   ```sh
   docker ps
   ```
 
-  which will output multiple columns of information about your running container(s). Look for the `prairielearn/prairielearn` image and copy its corresponding name. For example, the name of the PrairieLearn container in this `docker ps` output is `upbeat_roentgen`:
+  این دستور چندین ستون از اطلاعات مربوط به کانتینر(های) در حال اجرای شما را نمایش می‌دهد. به دنبال ایمیج `prairielearn/prairielearn` بگردید و نام متناظر با آن را کپی کنید. برای مثال، نام کانتینر پِری‌لرن در خروجی `docker ps` زیر برابر با `upbeat_roentgen` است:
 
   ```output
   CONTAINER ID  IMAGE                      COMMAND              CREATED      STATUS      PORTS                   NAMES
   e0f522f41ea4  prairielearn/prairielearn  "/bin/sh -c /Prai…"  2 hours ago  Up 2 hours  0.0.0.0:3000->3000/tcp  upbeat_roentgen
   ```
 
-- Open a shell in your PrairieLearn container by running
+- با اجرای دستور زیر، یک شل در کانتینر پِری‌لرن خود باز کنید:
 
   ```sh
   docker exec -it CONTAINER_NAME /bin/bash

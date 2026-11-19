@@ -1,7 +1,7 @@
-# Developer Guide
+# راهنمای توسعه‌دهندگان
 
-This section provides documentation for working with the PrairieLearn codebase.
+این بخش مستندات لازم برای کار با پایه‌کد (codebase) پِری‌لرن (PrairieLearn) را ارائه می‌دهد.
 
-If you are developing your own elements, we recommend running with [local source](installingLocal.md) in Docker. Then check out the [element development guide](../devElements.md).
+اگر در حال توسعه المان‌های (elements) اختصاصی خود هستید، توصیه می‌کنیم برنامه را با [سورس محلی](installingLocal.md) در Docker اجرا کنید. سپس [راهنمای توسعه المان‌ها](../devElements.md) را بررسی نمایید.
 
-If you need to run the test suite, we recommend running [natively](installingNative.md).
+اگر نیاز به اجرای مجموعه آزمون‌ها (test suite) دارید، توصیه می‌کنیم آن را به‌صورت [مستقیم/Native](installingNative.md) اجرا کنید.

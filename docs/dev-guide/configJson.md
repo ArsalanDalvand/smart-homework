@@ -1,14 +1,14 @@
-# Server Configuration
+# پیکربندی سرور
 
-Various properties of the PrairieLearn server can be configured with a `config.json` file. Configuration is loaded from multiple locations and merged together, with values from later files taking precedence over earlier ones:
+ویژگی‌های گوناگون سرور پِری‌لرن (PrairieLearn) را می‌توان با یک فایل `config.json` پیکربندی کرد. تنظیمات از چند مسیر بارگذاری و با یکدیگر ادغام می‌شوند، به‌طوری که مقادیر فایل‌های بعدی بر مقادیر فایل‌های قبلی اولویت دارند:
 
-1. `~/.config/prairielearn/config.json` (the user's home directory - not applicable when running in Docker)
-2. `./config.json` (the repository root directory)
-3. `./apps/*/config.json` (the application root directories)
+1. `~/.config/prairielearn/config.json` (دایرکتوری خانگی کاربر - هنگام اجرا در Docker کاربرد ندارد)
+2. `./config.json` (دایرکتوری ریشه مخزن)
+3. `./apps/*/config.json` (دایرکتوری‌های ریشه برنامه‌ها)
 
-For example, if `./config.json` sets `"courseDirs"` and `./apps/prairielearn/config.json` sets `"isEnterprise"`, the final configuration will include both values. If both files set the same property, the value from `./apps/prairielearn/config.json` will be used.
+برای مثال، اگر در `./config.json` مقدار `"courseDirs"` تنظیم شده باشد و در `./apps/prairielearn/config.json` مقدار `"isEnterprise"`، پیکربندی نهایی شامل هر دو مقدار خواهد بود. اگر هر دو فایل ویژگی یکسانی را تنظیم کرده باشند، مقدار موجود در `./apps/prairielearn/config.json` استفاده خواهد شد.
 
-The file is structured as a JSON dictionary with the following syntax:
+این فایل به‌صورت یک دیکشنری JSON با ساختار زیر تعریف می‌شود:
 
 ```json title="config.json"
 {
@@ -18,19 +18,19 @@ The file is structured as a JSON dictionary with the following syntax:
 }
 ```
 
-A full list of properties can be found in [`lib/config.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/config.ts).
+فهرست کامل ویژگی‌ها را می‌توانید در [`lib/config.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/config.ts) بیابید.
 
-Secrets that support application-managed rotation can be configured as an ordered, nonempty array while retaining scalar compatibility. See [Rotating application-managed keys](keyRotation.md) for supported properties and the required deployment sequence.
+کلیدهای محرمانه (Secrets) که از چرخش مدیریت‌شده توسط برنامه (application-managed rotation) پشتیبانی می‌کنند، می‌توانند به‌صورت یک آرایه مرتب و غیرخالی پیکربندی شوند و همزمان سازگاری اسکالر را نیز حفظ کنند. برای مشاهده ویژگی‌های پشتیبانی‌شده و توالی الزامی استقرار، به [چرخش کلیدهای مدیریت‌شده توسط برنامه](keyRotation.md) مراجعه کنید.
 
-## Instructor support links
+## لینک‌های پشتیبانی مدرسان
 
-The **Get help** dialog provides documentation and email support for course staff. Set `supportSlackUrl` to the Slack invitation URL and `supportOfficeHoursUrl` to the Zoom office-hours URL to include those options. Both require HTTPS and default to `null`, which hides the corresponding option. Keep invitation and meeting URLs in deployment configuration rather than public source files.
+کادر گفتگوی **دریافت راهنمایی (Get help)**، مستندات و پشتیبانی ایمیلی را برای کادر آموزشی درس فراهم می‌کند. برای افزودن این گزینه‌ها، `supportSlackUrl` را برابر با نشانی URL دعوت اسلک (Slack) و `supportOfficeHoursUrl` را برابر با نشانی URL ساعات اداری زوم (Zoom) تنظیم کنید. هر دو مورد نیاز به پروتکل HTTPS دارند و پیش‌فرض آن‌ها `null` است که باعث پنهان شدن گزینه مربوطه می‌شود. نشانی‌های دعوت و جلسات را به جای فایل‌های سورس عمومی، در پیکربندی محیط استقرار (Deployment) نگهداری کنید.
 
-Configure and deploy these links before removing the existing links from your public support site.
+پیش از حذف لینک‌های موجود از سایت پشتیبانی عمومی خود، این لینک‌ها را پیکربندی و مستقر نمایید.
 
-## Setting Course Directories
+## تنظیم دایرکتوری‌های درس
 
-The default course directories to be loaded by PrairieLearn can be overridden with the `"courseDirs"` setting. This setting takes a list of paths to load that are located _in the Docker container_.
+دایرکتوری‌های پیش‌فرض درس که توسط پِری‌لرن بارگذاری می‌شوند را می‌توان با تنظیم `"courseDirs"` بازنویسی (Override) کرد. این تنظیم فهرستی از مسیرها برای بارگذاری را دریافت می‌کند که _درون کانتینر Docker_ قرار دارند.
 
 ```json title="config.json"
 {
@@ -38,35 +38,38 @@ The default course directories to be loaded by PrairieLearn can be overridden wi
 }
 ```
 
-!!! note
+!!! note "نکته"
 
-    These directories are paths in the container, not on your local computer.
+    این دایرکتوری‌ها مسیرهایی درون کانتینر هستند، نه روی کامپیوتر محلی شما.
 
-To mount a directory on your computer so that it is accessible in the container, you can add the following to your Docker run command:
+برای مونت (Mount) کردن یک دایرکتوری از کامپیوتر خود به نحوی که درون کانتینر در دسترس باشد، می‌توانید آرگومان زیر را به دستور اجرای Docker اضافه کنید:
 
 ```sh
 -v /path/to/myCourse:/myCourse
 ```
 
-Then, the path will be accessible at `/myCourse` (note the beginning slash).
+سپس، این مسیر در `/myCourse` قابل دسترسی خواهد بود (به اسلش ابتدایی دقت کنید).
 
-## Setting up external image capture locally
+## راه‌اندازی محلی ثبت تصویر خارجی
 
-The [`pl-image-capture`](../elements/pl-image-capture.md) element lets users capture images of submitted work through an external device, such as a mobile device or tablet, or a local camera.
+المان [`pl-image-capture`](../elements/pl-image-capture.md) به کاربران اجازه می‌دهد تصاویری از کارهای ارسال‌شده را از طریق یک دستگاه خارجی، مانند گوشی همراه، تبلت یا دوربین محلی، ثبت کنند.
 
-To use external capture locally, you must set `serverCanonicalHost` in `config.json` to your local IPv4 address.
+برای استفاده از قابلیت ثبت خارجی به‌صورت محلی، باید `serverCanonicalHost` را در فایل `config.json` برابر با آدرس IPv4 محلی خود تنظیم نمایید.
 
-To retrieve your local IPv4 address, if you're on
+برای به دست آوردن آدرس IPv4 محلی خود:
 
-- macOS: in Terminal, run `ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`
+- در macOS: در ترمینال، دستور زیر را اجرا کنید:
+  `ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`
 
-- Linux: in your terminal, run `ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'`
+- در Linux: در ترمینال خود، دستور زیر را اجرا کنید:
+  `ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'`
 
-- Windows: in Command Prompt, run `ipconfig | findstr /C:"IPv4"`
+- در Windows: در Command Prompt، دستور زیر را اجرا کنید:
+  `ipconfig | findstr /C:"IPv4"`
 
-Copy the first address you see, and paste it into the `serverCanonicalHost` property of your `config.json` file.
+اولین آدرسی که مشاهده می‌کنید را کپی کرده و آن را در ویژگی `serverCanonicalHost` در فایل `config.json` خود قرار دهید.
 
-For example, if your IPv4 is `192.168.1.60` and PL is running on port `3000`, your file should read:
+برای مثال، اگر IPv4 شما `192.168.1.60` باشد و PL روی پورت `3000` اجرا شود، فایل شما باید به این صورت باشد:
 
 ```json title="config.json"
 {
@@ -74,15 +77,15 @@ For example, if your IPv4 is `192.168.1.60` and PL is running on port `3000`, yo
 }
 ```
 
-## Workspaces and external graders
+## محیط‌های کاری و نمره‌دهنده‌های خارجی
 
-### Running PrairieLearn natively
+### اجرای مستقیم پِری‌لرن (Native)
 
-!!! note
+!!! note "نکته"
 
-    This section applies to [native installations](installingNative.md), where PrairieLearn runs directly on your computer. If you start PrairieLearn with `docker run`, follow the [Docker instructions for workspaces and external graders](../installing.md#support-for-external-graders-and-workspaces) instead and leave the directory, hostname, and ownership settings below at their defaults.
+    این بخش مربوط به [نصب‌های مستقیم (Native)](installingNative.md) است، جایی که پِری‌لرن مستقیماً روی کامپیوتر شما اجرا می‌شود. اگر پِری‌لرن را با `docker run` اجرا می‌کنید، به‌جای این بخش، [دستورالعمل‌های Docker برای محیط‌های کاری و نمره‌دهنده‌های خارجی](../installing.md#support-for-external-graders-and-workspaces) را دنبال کنید و تنظیمات دایرکتوری، hostname و مالکیت (ownership) زیر را روی مقادیر پیش‌فرض آن‌ها رها نمایید.
 
-Set the directories used to store workspace files in your `config.json`:
+دایرکتوری‌های مورد استفاده برای ذخیره فایل‌های محیط کاری را در `config.json` خود تنظیم کنید:
 
 ```json title="config.json"
 {
@@ -91,9 +94,9 @@ Set the directories used to store workspace files in your `config.json`:
 }
 ```
 
-#### Running natively on macOS
+#### اجرای مستقیم روی macOS
 
-On macOS, you may also need to change `"workspaceDevContainerHostname"` to `"localhost"`.
+در macOS، ممکن است نیاز باشد مقدار `"workspaceDevContainerHostname"` را نیز به `"localhost"` تغییر دهید.
 
 ```json title="config.json"
 {
@@ -101,7 +104,7 @@ On macOS, you may also need to change `"workspaceDevContainerHostname"` to `"loc
 }
 ```
 
-Certain images detect if you are running as root and try to chown the workspace files to the user 1001 before stepping down to the user 1001 (`pl-gosu-helper.sh`). On macOS, this will fail because bind mounts cannot be chown'd (FUSE-based filesystems). To fix this, you can set `"workspaceJobsDirectoryOwnerUid"` and `"workspaceJobsDirectoryOwnerGid"` to 1001 in your `config.json`.
+برخی ایمیج‌ها بررسی می‌کنند که آیا برنامه با دسترسی root اجرا می‌شود یا خیر و تلاش می‌کنند قبل از تغییر به کاربر 1001، مالکیت (chown) فایل‌های محیط کاری را به کاربر 1001 تغییر دهند (`pl-gosu-helper.sh`). در macOS، این عملیات با شکست مواجه می‌شود زیرا فایل‌سیستم‌های bind mount قابل chown شدن نیستند (فایل‌سیستم‌های مبتنی بر FUSE). برای رفع این مشکل، می‌توانید مقادیر `"workspaceJobsDirectoryOwnerUid"` و `"workspaceJobsDirectoryOwnerGid"` را در `config.json` خود برابر با 1001 تنظیم کنید.
 
 ```json title="config.json"
 {
@@ -110,23 +113,23 @@ Certain images detect if you are running as root and try to chown the workspace 
 }
 ```
 
-Many containers can only run as UID 1001 or 0. Make sure you run as root locally!
+بسیاری از کانتینرها فقط با UID 1001 یا 0 قابل اجرا هستند. مطمئن شوید که به‌صورت محلی برنامه را با دسترسی root اجرا می‌کنید!
 
 ```sh
 sudo make dev-workspace-host
 sudo make dev
 ```
 
-If you don't run both of these commands, you will see errors like:
+اگر هر دوی این دستورات را اجرا نکنید، با خطاهایی مانند خطاهای زیر مواجه خواهید شد:
 
 ```text
 chown: changing ownership of '/home/coder/workspace': Permission denied
 chown: changing ownership of '/home/coder/workspace/fibonacci.py': Permission denied
 ```
 
-### Testing local Docker images
+### تست ایمیج‌های محلی Docker
 
-In both Docker and native installations, you can use locally built [Docker images](../dockerImages.md) by disabling image pulls in `config.json`:
+هم در روش Docker و هم در نصب مستقیم (Native)، می‌توانید با غیرفعال کردن دریافت خودکار ایمیج‌ها (image pull) در `config.json`، از [ایمیج‌های Docker](../dockerImages.md) که به‌صورت محلی ساخته شده‌اند استفاده کنید:
 
 ```json title="config.json"
 {
@@ -135,11 +138,11 @@ In both Docker and native installations, you can use locally built [Docker image
 }
 ```
 
-These options are independent and both default to `true`.
+این گزینه‌ها مستقل از یکدیگر هستند و مقدار پیش‌فرض هر دو `true` است.
 
-## Enterprise
+## نسخه سازمانی (Enterprise)
 
-Some features of PrairieLearn are only available in the Enterprise Edition. Note that you must adhere to the [PrairieLearn license](https://github.com/PrairieLearn/PrairieLearn/blob/master/LICENSE) when setting this option.
+برخی از ویژگی‌های پِری‌لرن فقط در نسخه تجاری/سازمانی (Enterprise Edition) در دسترس هستند. توجه داشته باشید که هنگام فعال‌سازی این گزینه، باید به [مجوز پِری‌لرن (PrairieLearn License)](https://github.com/PrairieLearn/PrairieLearn/blob/master/LICENSE) پایبند باشید.
 
 ```json title="config.json"
 {

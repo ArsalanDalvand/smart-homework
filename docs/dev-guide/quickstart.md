@@ -1,42 +1,42 @@
-# Development quickstart
+# شروع سریع توسعه
 
-This page describes how to run, test, and develop PrairieLearn. Ensure that you have already installed PrairieLearn either:
+این صفحه نحوه اجرا، تست و توسعه پِری‌لرن (PrairieLearn) را شرح می‌دهد. اطمینان حاصل کنید که پیش از این پِری‌لرن را به یکی از روش‌های زیر نصب کرده‌اید:
 
-- Natively, by following the [running natively](installingNative.md) guide
-- Via Docker, by following the [running via Docker](installingLocal.md) guide
+- به‌صورت محلی و مستقیم (Native)، با دنبال کردن راهنمای [اجرای مستقیم](installingNative.md)
+- از طریق Docker، با دنبال کردن راهنمای [اجرا از طریق Docker](installingLocal.md)
 
-## Development server
+## سرور توسعه
 
-Run the server in development mode to automatically restart when changes are detected:
+سرور را در حالت توسعه (Development mode) اجرا کنید تا با اعمال تغییرات در کد، به‌طور خودکار راه‌اندازی مجدد (Restart) شود:
 
 ```sh
 make dev
 ```
 
-In a web-browser go to [http://localhost:3000](http://localhost:3000).
+در مرورگر وب به نشانی [http://localhost:3000](http://localhost:3000) بروید.
 
-To stop the server, use ++ctrl+c++.
+برای متوقف کردن سرور، کلید‌های ترکیبی ++ctrl+c++ را فشار دهید.
 
-## Production build
+## بیلد پروداکشن (Production)
 
-You can also build and run using pre-compiled versions of the server code to more closely mimic what will happen in production environments. View the [running in production setup instructions](../running-in-production/setup.md) for more information.
+شما همچنین می‌توانید با استفاده از نسخه‌های از پیش کامپایل‌شده‌ی کد سرور، برنامه را بیلد و اجرا کنید تا رفتار محیط‌های عملیاتی (Production) را دقیق‌تر شبیه‌سازی نمایید. برای اطلاعات بیشتر، [دستورالعمل‌های راه‌اندازی در محیط پروداکشن](../running-in-production/setup.md) را مشاهده کنید.
 
 ```sh
 make build
 make start
 ```
 
-## Workspaces
+## محیط‌های کاری (Workspaces)
 
-If you need support for [workspaces](../workspaces/index.md), ensure Docker is installed and running, and then in a separate terminal run:
+اگر به پشتیبانی از [محیط‌های کاری (workspaces)](../workspaces/index.md) نیاز دارید، اطمینان حاصل کنید که Docker نصب و در حال اجرا است، و سپس در یک ترمینال جداگانه دستور زیر را اجرا کنید:
 
 ```sh
-sudo make dev-workspace-host # or sudo make start-workspace-host
-# Make sure to run PrairieLearn as root
+sudo make dev-workspace-host # یا sudo make start-workspace-host
+# اطمینان حاصل کنید که پِری‌لرن را با دسترسی root اجرا می‌کنید
 sudo make dev
 ```
 
-On a macOS native installation, you should set the following in your `config.json`:
+در نصب مستقیم روی macOS، باید مقادیر زیر را در فایل `config.json` خود تنظیم کنید:
 
 ```json title="config.json"
 {
@@ -46,50 +46,50 @@ On a macOS native installation, you should set the following in your `config.jso
 }
 ```
 
-More information can be found in the [config.json](configJson.md#running-natively-on-macos) documentation.
+اطلاعات بیشتر را می‌توانید در مستندات [config.json](configJson.md#running-natively-on-macos) بیابید.
 
-??? note "Troubleshooting workspaces"
+??? note "عیب‌یابی محیط‌های کاری (Workspaces)"
 
-    You can list the active hosts with:
+    می‌توانید هاست‌های فعال را با دستور زیر لیست کنید:
 
     ```sql
     SELECT * FROM workspace_hosts;
     ```
 
-    If you see no hosts, the workspace host is not running. If the `ready_at` column is an older date, the workspace host may also not be running.
+    اگر هیچ هاستی مشاهده نکردید، هاست محیط کاری در حال اجرا نیست. همچنین اگر ستون `ready_at` تاریخ قدیمی‌تری را نشان می‌دهد، ممکن است هاست محیط کاری در حال اجرا نباشد.
 
-    Since PrairieLearn manages the workspace files, you need to also run PrairieLearn as root.
+    از آنجا که پِری‌لرن فایل‌های محیط کاری را مدیریت می‌کند، شما باید پِری‌لرن را نیز با دسترسی root اجرا کنید.
 
-## Documentation
+## مستندات
 
-If you want to preview the documentation, run:
+اگر می‌خواهید پیش‌نمایش مستندات را مشاهده کنید، دستور زیر را اجرا نمایید:
 
 ```sh
 make dev-docs
 ```
 
-## Testing
+## آزمون‌ها (Testing)
 
-If you are contributing code to PrairieLearn, you must ensure that your changes work and pass our style guidelines. More information on debugging and testing can be found on the [developer guide](./guide.md). Information on contributing can be found on the [contribution guide](../contributing.md).
+اگر کدی را به پِری‌لرن اضافه یا ویرایش می‌کنید، باید اطمینان حاصل کنید که تغییرات شما به‌درستی کار می‌کنند و با راهنماهای سبک کدنویسی ما سازگار هستند. اطلاعات بیشتر درباره اشکال‌زدایی (Debugging) و تست را می‌توانید در [راهنمای توسعه‌دهندگان](./guide.md) بیابید. اطلاعات مربوط به نحوه مشارکت در پروژه در [راهنمای مشارکت](../contributing.md) قرار دارد.
 
-Run the test suite (Docker must be installed and running):
+مجموعه آزمون‌ها را اجرا کنید (Docker باید نصب و در حال اجرا باشد):
 
 ```sh
 make test-all
 ```
 
-Or, to run just a specific subset of tests:
+یا برای اجرای زیرمجموعه خاصی از آزمون‌ها:
 
 ```sh
-make test-js           # Javascript tests (both packages and applications)
-make test-prairielearn # PrairieLearn application tests
-make test-python       # Python tests
-make test-e2e          # E2E tests (run `make e2e-deps` first)
+make test-js           # آزمون‌های جاوااسکریپت (هم پکیج‌ها و هم برنامه‌ها)
+make test-prairielearn # آزمون‌های برنامه پِری‌لرن
+make test-python       # آزمون‌های پایتون
+make test-e2e          # آزمون‌های سرتاسری E2E (ابتدا make e2e-deps را اجرا کنید)
 ```
 
-### JavaScript tests
+### آزمون‌های جاوااسکریپت
 
-The main JavaScript test suite can take on the order of 10+ minutes to run, so you may only run specific test files as you develop. To run specific test files, you first need to run `make start-support` to start the database and other services, and then you can run specific test files.
+اجرای مجموعه آزمون‌های اصلی جاوااسکریپت ممکن است بیش از ۱۰ دقیقه طول بکشد، بنابراین در حین توسعه ممکن است فقط بخواهید فایل‌های آزمون خاصی را اجرا کنید. برای اجرای فایل‌های آزمون خاص، ابتدا باید دستور `make start-support` را برای راه‌اندازی دیتابیس و سایر سرویس‌ها اجرا کنید، و سپس فایل‌های آزمون مشخص را اجرا نمایید:
 
 ```sh
 make start-support
@@ -97,70 +97,70 @@ cd apps/prairielearn
 pnpm vitest src/tests/getHomepage.test.ts
 ```
 
-### Package tests
+### آزمون‌های پکیج‌ها
 
-To test a specific package, you can run `pnpm test` from the package's directory.
+برای تست یک پکیج خاص، می‌توانید دستور `pnpm test` را از داخل دایرکتوری آن پکیج اجرا کنید.
 
 ```sh
 cd packages/csv
 pnpm test
 ```
 
-## Linting
+## لینتینگ (Linting)
 
-All changes to PrairieLearn must pass our linters before they get merged.
+همه تغییرات اعمال‌شده در پِری‌لرن باید پیش از ادغام شدن (Merge)، بررسی‌های ابزارهای لینت (Linter) ما را با موفقیت پشت سر بگذارند.
 
 ```sh
 make lint
 ```
 
-Or, to lint only specific kind of files:
+یا برای لینت کردن انواع خاصی از فایل‌ها:
 
 ```sh
-make lint-js     # JavaScript only
-make lint-python # Python only
-make lint-all    # Additional linters
+make lint-js     # فقط جاوااسکریپت
+make lint-python # فقط پایتون
+make lint-all    # لینترهای اضافی
 ```
 
-## Formatting
+## قالب‌بندی (Formatting)
 
-You can format + autofix lint errors with:
+می‌توانید قالب‌بندی و رفع خودکار خطاهای لینت را با دستورات زیر انجام دهید:
 
 ```sh
 make fix-js
 make fix-python
 ```
 
-To format all changed files (staged + unstaged + untracked) compared to HEAD:
+برای قالب‌بندی همه فایل‌های تغییریافته (staged + unstaged + untracked) در مقایسه با HEAD:
 
 ```sh
 make format-changed
 ```
 
-This is faster than formatting the entire codebase since it only processes files you've modified.
+این روش سریع‌تر از قالب‌بندی کل پایه‌کد است زیرا تنها فایل‌هایی را پردازش می‌کند که ویرایش کرده‌اید.
 
-If you develop code with VSCode, running these shouldn't be necessary, as we provide a set of recommended extensions and configuration defaults that will format files on save.
+اگر کدها را در VSCode توسعه می‌دهید، اجرای این دستورات نباید ضروری باشد؛ چرا که ما مجموعه‌ای از اکستنشن‌های پیشنهادی و تنظیمات پیش‌فرض را ارائه داده‌ایم که فایل‌ها را هنگام ذخیره‌سازی به‌طور خودکار قالب‌بندی می‌کنند.
 
-## Updating dependencies
+## به‌روزرسانی وابستگی‌ها
 
-If you switch branches, pull new code, or edit Python dependencies, you will need to update the dependencies.
+اگر شاخه (branch) را تغییر دادید، کدهای جدید دریافت کردید (pull)، یا وابستگی‌های پایتون را ویرایش کردید، باید وابستگی‌ها را به‌روزرسانی نمایید:
 
 ```sh
 make deps
 ```
 
-## Working on packages
+## کار روی پکیج‌ها
 
-When working on something in the `packages/` directory, you'll need to rebuild the package before any changes will become visible to other packages or apps that use the package. You can build everything with `make build`, or you can run the `dev` script in a package to rebuild it automatically whenever there are changes.
+هنگام کار روی مواردی در دایرکتوری `packages/`، باید پکیج را مجدداً بیلد کنید تا تغییرات برای سایر پکیج‌ها یا برنامه‌هایی که از آن استفاده می‌کنند قابل مشاهده باشد. می‌توانید همه چیز را با `make build` بیلد کنید، یا اسکریپت `dev` را درون یک پکیج اجرا نمایید تا هر زمان که تغییری ایجاد شد، پکیج به‌صورت خودکار مجدداً بیلد شود.
 
 ```sh
-# From the root of the repository:
+# از ریشه مخزن (root):
 pnpm --filter @prairielearn/postgres dev
 
-# From a specific package directory, e.g. `packages/postgres`:
+# از دایرکتوری یک پکیج خاص، مثلاً `packages/postgres`:
 pnpm dev
 ```
 
-## More information
+## اطلاعات بیشتر
 
-Most information about development is found in the [developer guide](./guide.md). It outlines debugging and testing tips, best practices and style for coding, as well as details about various aspects of PrairieLearn (question rendering, databases schemas, etc.).
+بیشتر اطلاعات مربوط به توسعه در [راهنمای توسعه‌دهندگان](./guide.md) قرار دارد. این راهنما نکات مربوط به اشکال‌زدایی و آزمون، بهترین شیوه‌ها و سبک کدنویسی، و همچنین جزئیاتی در مورد بخش‌های مختلف پِری‌لرن (رندر کردن سوالات، طرح‌های دیتابیس و غیره) را تشریح می‌کند.

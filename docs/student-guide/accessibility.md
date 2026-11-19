@@ -1,14 +1,14 @@
-# Accessibility
+# دسترسی‌پذیری
 
-PrairieLearn is designed to be used by all students, including those that use screen readers or other assistive technologies. Wherever possible, PrairieLearn follows widely-accepted best practices for web accessibility that users may already be familiar with from other websites.
+پریری‌لرن (PrairieLearn) به گونه‌ای طراحی شده است که برای همه دانشجویان، از جمله افرادی که از صفحه‌خوان‌ها یا سایر فناوری‌های کمکی استفاده می‌کنند، قابل استفاده باشد. در هر کجای سامانه که ممکن بوده است، پریری‌لرن از بهترین شیوه‌های پذیرفته‌شده و رایج در زمینه دسترسی‌پذیری وب پیروی می‌کند که ممکن است کاربران از قبل با آن‌ها در وب‌سایت‌های دیگر آشنا باشند.
 
-## Math content
+## محتوای ریاضی
 
-Instructors can use MathJax to display content like mathematical equations, formulas, and other LaTeX content. MathJax has built in support for navigation with screen readers and the keyboard. For more information, please consult the [MathJax accessibility documentation](https://mathjax.github.io/MathJax-a11y/docs/#reader-guide).
+مدرسان می‌توانند از MathJax برای نمایش محتوایی مانند معادلات و فرمول‌های ریاضی و سایر محتواهای LaTeX استفاده کنند. MathJax دارای پشتیبانی داخلی برای پیمایش به کمک صفحه‌خوان‌ها و صفحه‌کلید است. برای کسب اطلاعات بیشتر، لطفاً به [مستندات دسترسی‌پذیری MathJax](https://mathjax.github.io/MathJax-a11y/docs/#reader-guide) مراجعه کنید.
 
-## Other content
+## سایر محتواها
 
-While PrairieLearn strives to be accessible to all users, there's always room for improvement, and either your instructor or the PrairieLearn team can work with you to address any issues:
+اگرچه پریری‌لرن تلاش می‌کند برای تمامی کاربران دسترسی‌پذیر باشد، همواره فضایی برای بهبود وجود دارد و مدرس شما یا تیم پریری‌لرن می‌توانند برای رفع هرگونه مشکل با شما همکاری کنند:
 
-- If you encounter any accessibility issues with course content like individual questions, you should contact your instructor, who may have to update the content or provide an alternative access method.
-- If you encounter any accessibility issues with the PrairieLearn platform itself, you can contact the PrairieLearn team at [hello@prairielearn.com](mailto:hello@prairielearn.com) or file an issue on our [GitHub repository](https://github.com/PrairieLearn/PrairieLearn/issues).
+- اگر در محتوای درس مانند تک‌تک سوالات با مشکلی در زمینه دسترسی‌پذیری مواجه شدید، باید با مدرس خود تماس بگیرید؛ چرا که ممکن است نیاز باشد مدرس محتوا را به‌روزرسانی کند یا روش دسترسی جایگزینی ارائه دهد.
+- اگر با هرگونه مشکل دسترسی‌پذیری در خود پلتفرم پریری‌لرن مواجه شدید، می‌توانید با تیم پریری‌لرن از طریق ایمیل [hello@prairielearn.com](mailto:hello@prairielearn.com) تماس بگیرید یا در [مخزن گیت‌هاب ما](https://github.com/PrairieLearn/PrairieLearn/issues) یک issue ثبت کنید.
