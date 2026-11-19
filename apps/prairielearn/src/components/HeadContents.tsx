@@ -40,7 +40,7 @@ export function HeadContents(titleOptions: TitleOptions) {
         : ''
     }
     <title>${getTitle(titleOptions)}</title>
-    <link href="${nodeModulesAssetPath('bootstrap/dist/css/bootstrap.min.css')}" rel="stylesheet" />
+    <link href="${nodeModulesAssetPath('bootstrap/dist/css/bootstrap.rtl.min.css')}" rel="stylesheet" />
     <link
       href="${nodeModulesAssetPath('bootstrap-icons/font/bootstrap-icons.css')}"
       rel="stylesheet"
@@ -59,7 +59,7 @@ export function HeadContents(titleOptions: TitleOptions) {
     <style>
       :root {
         --iust-navy: #0f2b48;
-        --iust-navy-dark: #091a2c;
+        --iust-navy-dark: #071524;
         --iust-navy-light: #163c63;
         --iust-teal: #0d9488;
         --iust-teal-light: #14b8a6;
@@ -67,21 +67,30 @@ export function HeadContents(titleOptions: TitleOptions) {
         --font-persian: 'Vazirmatn', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         --font-code: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       }
-      body {
+      html, body {
+        direction: rtl;
+        text-align: right;
         font-family: var(--font-persian);
-        line-height: 1.6;
+        line-height: 1.7;
         color: #1e293b;
+        background-color: #f8fafc;
       }
       h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .navbar, .btn, .nav-link, .dropdown-item, .card-header, th {
         font-family: var(--font-persian);
       }
       .navbar-dark.bg-dark, .navbar-dark {
         background-color: var(--iust-navy) !important;
-        border-bottom: 2px solid var(--iust-teal) !important;
+        border-bottom: 3px solid var(--iust-teal) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      }
+      .navbar-brand {
+        margin-right: 0 !important;
+        margin-left: 1.5rem !important;
       }
       .navbar-brand-label {
-        font-weight: 700;
-        letter-spacing: -0.01em;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        font-size: 1.15rem;
       }
       .navbar-brand-hover-label {
         font-family: var(--font-persian);
@@ -94,21 +103,84 @@ export function HeadContents(titleOptions: TitleOptions) {
         background-color: var(--iust-navy-dark);
         border-color: var(--iust-navy-dark);
       }
+      .card {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      }
       .card-header.bg-primary {
         background: linear-gradient(135deg, var(--iust-navy) 0%, var(--iust-navy-light) 100%) !important;
         border-bottom: 2px solid var(--iust-teal) !important;
       }
-      pre, code, kbd, samp, .ace_editor, .ace-monokai, .terminal, .katex, .katex-display, .math-display {
+      .card-header h1, .card-header h2, .card-header h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 0;
+      }
+      /* RTL Table & Grid */
+      .table {
+        text-align: right;
+      }
+      .table th, .table td {
+        vertical-align: middle;
+      }
+      .table-hover tbody tr:hover {
+        background-color: rgba(13, 148, 136, 0.04) !important;
+      }
+      table.two-column-description-no-header tr td:first-of-type {
+        text-align: right;
+        font-weight: 600;
+        color: #475569;
+        white-space: nowrap;
+      }
+      table.two-column-description-no-header tr td:last-of-type {
+        text-align: left;
+      }
+      /* Strict LTR isolation for code, math, and terminals */
+      pre, code, kbd, samp, .ace_editor, .ace-monokai, .terminal, .katex, .katex-display, .math-display, .font-monospace {
         direction: ltr !important;
         text-align: left !important;
         font-family: var(--font-code) !important;
         unicode-bidi: isolate;
       }
+      .ace_editor {
+        border-radius: 6px;
+        border: 1px solid #334155 !important;
+      }
+      /* LTR technical inputs */
+      input[type="email"], input[type="url"], input.js-effective-uid-input, #effective-uid {
+        direction: ltr !important;
+        text-align: left !important;
+      }
+      /* RTL Dropdown menu alignment */
+      .dropdown-menu {
+        text-align: right;
+      }
+      .dropdown-menu-end {
+        --bs-position: start;
+        right: auto !important;
+        left: 0 !important;
+      }
+      .dropdown-item i, .btn i {
+        margin-inline-end: 0.4rem;
+        margin-inline-start: 0;
+      }
+      /* Badges & Alerts */
       .badge {
         font-family: var(--font-persian);
+        font-weight: 600;
+        letter-spacing: 0;
       }
-      .table th, .table td {
-        vertical-align: middle;
+      .alert {
+        border-radius: 8px;
+        line-height: 1.8;
+      }
+      /* Footer */
+      footer.footer {
+        background-color: #ffffff !important;
+        border-top: 1px solid #e2e8f0 !important;
+        box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.02);
       }
     </style>
     ${compiledStylesheetTag('prairielearn-ui.css')} ${compiledScriptTag('application.ts')}

@@ -31,7 +31,7 @@ function LoginPageContainer({
 }) {
   return html`
     <!doctype html>
-    <html lang="en">
+    <html lang="fa" dir="rtl">
       <head>
         ${HeadContents({ resLocals })}
         <style>

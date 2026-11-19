@@ -1,25 +1,24 @@
 <div id="file-preview-{{uuid}}" data-submission-files-url="{{submission_files_url}}">
   {{#errors}}
-  <div class="alert alert-danger"><strong>Error:</strong> {{.}}</div>
+  <div class="alert alert-danger"><strong>خطا:</strong> {{.}}</div>
   {{/errors}}
   <div class="card mb-2">
-    <div class="card-header">Files</div>
+    <div class="card-header"><i class="fa fa-folder-open me-1"></i> فایل‌های ارسال‌شده</div>
     {{#has_files}}
     <div class="list-group list-group-flush">
       {{#files}}
       <div class="list-group-item js-file-preview-item" data-file="{{name}}">
         <div class="d-flex flex-row collapsed file-status-container">
-          <div class="flex-grow-1 me-2">
-            <i class="fas fa-check-circle" style="color: {{check_icon_color}}" aria-hidden="true"></i>
-            {{name}}
-            <p class="file-status">uploaded</p>
+          <div class="flex-grow-1 me-2" dir="ltr" style="text-align: right;">
+            <span class="badge bg-success-subtle text-success border border-success me-2">بارگذاری موفق</span>
+            <code class="fw-bold">{{name}}</code>
           </div>
           <div class="align-self-center gap-2 d-flex flex-wrap">
             <button type="button" class="btn btn-outline-secondary btn-sm file-preview-download">
-              Download
+              <i class="fa fa-download me-1"></i> دریافت فایل
             </button>
             <button type="button" class="btn btn-outline-secondary btn-sm collapsed" data-bs-toggle="collapse" data-bs-target="#file-preview-contents-{{uuid}}-{{index}}" aria-expanded="false" aria-controls="file-preview-contents-{{uuid}}-{{index}}">
-              <span class="me-2 js-toggle-show-preview-text">Show preview</span>
+              <span class="me-2 js-toggle-show-preview-text">پیش‌نمایش کد</span>
               <i class="file-preview-icon fas fa-angle-down"></i>
             </button>
           </div>

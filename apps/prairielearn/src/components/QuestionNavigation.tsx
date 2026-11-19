@@ -70,24 +70,19 @@ export function QuestionNavSideButton({
   advanceScorePerc?: number | null;
   userGroupRoles: string | null;
 }) {
-  const { buttonId, buttonLabel } =
+  const { buttonId, buttonContent } =
     whichButton === 'next'
-      ? { buttonId: 'question-nav-next', buttonLabel: 'سوال بعدی' }
-      : { buttonId: 'question-nav-prev', buttonLabel: 'سوال قبلی' };
+      ? { buttonId: 'question-nav-next', buttonContent: html`سوال بعدی <i class="fa fa-arrow-left ms-1"></i>` }
+      : { buttonId: 'question-nav-prev', buttonContent: html`<i class="fa fa-arrow-right me-1"></i> سوال قبلی` };
   let disabledExplanation: HtmlValue | null = null;
 
   if (instanceQuestionId != null) {
     if (groupRolePermissions?.can_view === false) {
-      disabledExplanation = html`Your current group role (${userGroupRoles}) restricts access to the
-      ${buttonLabel.toLowerCase()}.`;
+      disabledExplanation = html`دسترسی به این سوال برای نقش شما محدود است.`;
     } else if (nextQuestionAccessMode === 'blocked_sequence') {
-      disabledExplanation = html`You must score at least <b>${advanceScorePerc}%</b> on a submission
-        to this question in order to unlock the next. If you run out of attempts, the next question
-        will unlock automatically.`;
+      disabledExplanation = html`برای باز شدن سوال بعدی باید حداقل <b>${advanceScorePerc}%</b> نمره این سوال را کسب کنید.`;
     } else if (nextQuestionAccessMode === 'blocked_lockpoint') {
-      disabledExplanation = html`Cross the lockpoint on the
-        <a href="${urlPrefix}/assessment_instance/${assessmentInstanceId}/">assessment overview</a>
-        to proceed to the next question.`;
+      disabledExplanation = html`از بخش <a href="${urlPrefix}/assessment_instance/${assessmentInstanceId}/">نمای کلی ارزیابی</a> مرحله را رد کنید.`;
     }
   }
 
@@ -108,7 +103,7 @@ export function QuestionNavSideButton({
                 }"
                 disabled
               >
-                ${buttonLabel}
+                ${buttonContent}
                 ${
                   disabledExplanation != null
                     ? html`<i class="fas fa-lock ms-1" aria-hidden="true"></i>`
@@ -122,7 +117,7 @@ export function QuestionNavSideButton({
                 class="btn btn-primary"
                 href="${urlPrefix}/instance_question/${instanceQuestionId}/"
               >
-                ${buttonLabel}
+                ${buttonContent}
               </a>
             `
       }

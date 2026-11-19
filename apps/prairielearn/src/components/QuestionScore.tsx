@@ -226,20 +226,20 @@ function IssueReportingPanel({ variant, csrfToken }: { variant: Variant; csrfTok
       aria-expanded="false"
       aria-controls="issueCollapse"
     >
-      Report an error in this question <i class="far fa-caret-square-down"></i>
+      <i class="fa fa-bug me-1"></i> گزارش اشکال در سوال <i class="far fa-caret-square-down ms-1"></i>
     </button>
     <div class="collapse" id="issueCollapse">
       <form method="POST">
         <p class="small mt-3">
-          This form is only for reporting errors in the question itself. Do not use this form if you
-          just don't know how to answer the question.
+          این فرم صرفاً برای گزارش اشکالات احتمالی در صورت مسئله، متغیرها یا تست‌کیس‌ها است.
+          برای راهنمایی علمی یا اشکال در کد خود از کانال یا گروه حل تمرین استفاده نمایید.
         </p>
         <div class="mb-3">
           <textarea
             class="form-control"
             rows="5"
             name="description"
-            placeholder="Describe the error in this question"
+            placeholder="شرح دقیق اشکال مشاهده‌شده در این سوال..."
             required
           ></textarea>
         </div>
@@ -247,7 +247,7 @@ function IssueReportingPanel({ variant, csrfToken }: { variant: Variant; csrfTok
         <input type="hidden" name="__csrf_token" value="${csrfToken}" />
         <div class="mb-3 text-end">
           <button type="submit" class="btn btn-sm btn-warning" name="__action" value="report_issue">
-            Report error
+            ارسال گزارش اشکال
           </button>
         </div>
       </form>
@@ -304,7 +304,7 @@ export function InstanceQuestionPoints({
   }
 
   return html`
-    <span class="text-nowrap ${instance_question.used_for_grade === false ? 'text-muted' : ''}">
+    <span class="text-nowrap ${instance_question.used_for_grade === false ? 'text-muted' : ''}" dir="ltr">
       ${
         // If the question is unanswered show a dash instead of 0 points, unless
         // the question was manually graded or a regrading process forced the
@@ -314,12 +314,12 @@ export function InstanceQuestionPoints({
         instance_question.points === 0
           ? html`&mdash;`
           : pointsPending
-            ? html`<span class="badge text-bg-info">pending</span>`
+            ? html`<span class="badge text-bg-info">در حال تصحیح</span>`
             : !points && !maxPoints
               ? html`&mdash;`
               : html`<span data-testid="awarded-points">${formatPoints(points)}</span>`
       }
-      ${maxPoints ? html`<small>/<span class="text-muted">${maxPoints}</span></small>` : ''}
+      ${maxPoints ? html`<small> / <span class="text-muted">${maxPoints}</span></small>` : ''}
       ${
         instance_question.used_for_grade === false && component === 'total' && (points ?? 0) !== 0
           ? html`

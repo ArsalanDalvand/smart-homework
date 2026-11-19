@@ -81,10 +81,10 @@ export function StudentAssessments({
           <table class="table table-sm table-hover" aria-label="ارزیابی‌ها">
             <thead>
               <tr>
-                <th style="width: 1%"><span class="visually-hidden">شناسه</span></th>
-                <th><span class="visually-hidden">عنوان</span></th>
+                <th style="width: 5%">کد</th>
+                <th>عنوان ارزیابی</th>
                 <th class="text-center">مهلت تحویل و وضعیت اعتبار</th>
-                <th class="text-center">نمره</th>
+                <th class="text-center" style="width: 15%">نمره</th>
               </tr>
             </thead>
             ${assessmentGroups.map(
@@ -188,9 +188,10 @@ function AvailableCredit({ row }: { row: StudentAssessmentsRow }) {
   const creditDateString = authzResult.credit_date_string ?? 'None';
   if (creditDateString === 'None') return null;
   if (row.assessment_instance_open !== false) {
-    return html`${creditDateString}`;
+    const localizedCredit = creditDateString.replace('(Staff override)', '(دسترسی کادر آموزشی)');
+    return html`<span dir="rtl">${localizedCredit}</span>`;
   }
-  return html`Assessment closed.`;
+  return html`تکلیف به پایان رسیده است.`;
 }
 
 function AccessSchedule({

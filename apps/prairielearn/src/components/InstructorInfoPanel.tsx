@@ -71,7 +71,7 @@ export function InstructorInfoPanel({
   return html`
     <div class="card mb-3 border-warning">
       <div class="card-header bg-warning">
-        <h2>Staff information</h2>
+        <h2>اطلاعات کادر آموزشی</h2>
       </div>
       ${ListGroup([
         InstanceUserInfo({ instance_user, instance_group, instance_group_uid_list }),
@@ -95,7 +95,7 @@ export function InstructorInfoPanel({
           questionContext,
         }),
       ])}
-      <div class="card-footer small">This box is not visible to students.</div>
+      <div class="card-footer small text-muted">این بخش تنها برای اساتید و دستیاران آموزشی قابل مشاهده است.</div>
     </div>
   `;
 }
@@ -125,7 +125,7 @@ function InstanceUserInfo({
       <details>
         <summary>
           <h3 class="card-title ${instance_group != null ? 'h5' : 'd-inline-block h5 mb-0'}">
-            ${instance_group != null ? 'Group details' : 'Student details'}
+            ${instance_group != null ? 'مشخصات گروه' : 'مشخصات دانشجو'}
           </h3>
         </summary>
         ${
@@ -139,7 +139,7 @@ function InstanceUserInfo({
             : html`
                 <div class="d-flex flex-wrap mt-2">
                   <div class="pe-1">${instance_user?.name}</div>
-                  <div class="pe-1">${instance_user?.uid}</div>
+                  <div class="pe-1 text-muted" dir="ltr">(${instance_user?.uid})</div>
                 </div>
               `
         }
@@ -174,23 +174,17 @@ function QuestionInfo({
   }/question/${question.id}?variant_seed=${variant.variant_seed}`;
   const publicPreviewUrl = `/pl/public/course/${question.course_id}/question/${question.id}/preview`;
 
-  // We don't show the sharing name in the QID if the question is not shared
-  // publicly for importing, such as if only `share_source_publicly` is set.
-  //
-  // TODO: Remove the special-casing of the example course once its questions
-  // have been updated to use `share_source_publicly`. This special-casing
-  // predates the ability to share questions only for copying, not importing.
   const sharingQid =
     course.example_course || !question.share_publicly
       ? question.qid
       : `@${course.sharing_name}/${question.qid}`;
 
   return html`
-    <h3 class="card-title h5">Question</h3>
+    <h3 class="card-title h5">اطلاعات سوال</h3>
 
-    <div class="d-flex flex-wrap">
-      <div class="pe-1">QID:</div>
-      <div>
+    <div class="d-flex flex-wrap align-items-center">
+      <div class="pe-2">شناسه سوال (QID):</div>
+      <div dir="ltr">
         ${
           questionContext === 'public'
             ? html`<a href="${publicPreviewUrl}?variant_seed=${variant.variant_seed}">
@@ -204,31 +198,10 @@ function QuestionInfo({
     </div>
 
     ${
-      question_is_shared &&
-      course.sharing_name &&
-      questionContext !== 'public' &&
-      hasCoursePermissionPreview
-        ? html`
-            <div class="d-flex flex-wrap">
-              <div class="pe-1">Shared As:</div>
-              ${
-                question.share_publicly || question.share_source_publicly
-                  ? html`
-                      <div>
-                        <a href="${publicPreviewUrl}">${sharingQid}</a>
-                      </div>
-                    `
-                  : html`<div>${sharingQid}</div>`
-              }
-            </div>
-          `
-        : ''
-    }
-    ${
       question.title?.trim()
         ? html`
-            <div class="d-flex flex-wrap">
-              <div class="pe-1">Title:</div>
+            <div class="d-flex flex-wrap align-items-center mt-1">
+              <div class="pe-2">عنوان سوال:</div>
               <div>${question.title}</div>
             </div>
           `
@@ -248,7 +221,6 @@ function VariantInfo({
 }) {
   if (variant == null) return '';
 
-  // Some legacy queries still return the duration and date as a string, so parse them before formatting
   const duration =
     typeof variant.duration === 'string'
       ? IntervalSchema.parse(variant.duration)
@@ -257,25 +229,25 @@ function VariantInfo({
     typeof variant.date === 'string' ? DateFromISOString.parse(variant.date) : variant.date;
 
   return html`
-    <h3 class="card-title h5">Variant</h3>
+    <h3 class="card-title h5">گونه سوال</h3>
     ${
       questionContext !== 'public'
         ? html`
-            <div class="d-flex flex-wrap">
-              <div class="pe-1">Started at:</div>
-              <div>${date ? formatDate(date, timeZone) : '(unknown)'}</div>
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="pe-2">زمان شروع:</div>
+              <div dir="ltr">${date ? formatDate(date, timeZone) : '(نامشخص)'}</div>
             </div>
-            <div class="d-flex flex-wrap">
-              <div class="pe-1">Duration:</div>
-              <div>${formatInterval(duration)}</div>
+            <div class="d-flex flex-wrap align-items-center mt-1">
+              <div class="pe-2">مدت زمان:</div>
+              <div dir="ltr">${formatInterval(duration)}</div>
             </div>
           `
         : ''
     }
-    <div class="d-flex flex-wrap">
+    <div class="d-flex flex-wrap mt-2">
       <details class="pe-1">
-        <summary>Show/Hide answer</summary>
-        <pre class="mt-2 mb-0"><code>${JSON.stringify(variant.true_answer, null, 2)}</code></pre>
+        <summary>نمایش / عدم نمایش پاسخ مرجع</summary>
+        <pre class="mt-2 mb-0" dir="ltr"><code>${JSON.stringify(variant.true_answer, null, 2)}</code></pre>
       </details>
     </div>
   `;
@@ -294,7 +266,6 @@ function AssessmentInstanceInfo({
 
   const instructorUrlPrefix = `/pl/course_instance/${assessment.course_instance_id}/instructor`;
 
-  // Some legacy queries still return the duration and date as a string, so parse them before formatting
   const duration =
     typeof assessment_instance.duration === 'string'
       ? IntervalSchema.parse(assessment_instance.duration)
@@ -305,26 +276,28 @@ function AssessmentInstanceInfo({
       : assessment_instance.date;
 
   return html`
-    <h3 class="card-title h5">Assessment instance</h3>
-    <div class="d-flex flex-wrap">
-      <div class="pe-1">Assessment:</div>
-      <div>
+    <h3 class="card-title h5">نمونه تکلیف / آزمون</h3>
+    <div class="d-flex flex-wrap align-items-center">
+      <div class="pe-2">شناسه ارزیابی:</div>
+      <div dir="ltr">
         <a href="${instructorUrlPrefix}/assessment/${assessment.id}">${assessment.tid}</a>
       </div>
     </div>
 
-    <div class="d-flex flex-wrap">
-      <div class="pe-1">Started at:</div>
-      <div>${date ? formatDate(date, timeZone) : '(unknown)'}</div>
+    <div class="d-flex flex-wrap align-items-center mt-1">
+      <div class="pe-2">زمان شروع:</div>
+      <div dir="ltr">${date ? formatDate(date, timeZone) : '(نامشخص)'}</div>
     </div>
 
-    <div class="d-flex flex-wrap">
-      <div class="pe-1">Duration:</div>
-      <div>${formatInterval(duration)}</div>
+    <div class="d-flex flex-wrap align-items-center mt-1">
+      <div class="pe-2">مدت زمان:</div>
+      <div dir="ltr">${formatInterval(duration)}</div>
     </div>
 
-    <div class="pb-2">
-      <a href="${instructorUrlPrefix}/assessment_instance/${assessment_instance.id}">View log</a>
+    <div class="pt-2">
+      <a href="${instructorUrlPrefix}/assessment_instance/${assessment_instance.id}" class="btn btn-sm btn-outline-secondary">
+        <i class="fa fa-history me-1"></i> مشاهده لاگ ارزیابی
+      </a>
     </div>
   `;
 }
@@ -353,23 +326,23 @@ function ManualGradingInfo({
   const manualGradingUrl = `/pl/course_instance/${assessment.course_instance_id}/instructor/assessment/${assessment.id}/manual_grading/instance_question/${instance_question.id}`;
 
   return html`
-    <h3 class="card-title h5">Manual grading</h3>
+    <h3 class="card-title h5">تصحیح دستی</h3>
 
-    <div class="d-flex flex-wrap">
-      <div class="pe-1">Status:</div>
-      <div>${instance_question.requires_manual_grading ? 'Requires grading' : 'Graded'}</div>
+    <div class="d-flex flex-wrap align-items-center">
+      <div class="pe-2">وضعیت:</div>
+      <div>${instance_question.requires_manual_grading ? 'نیازمند تصحیح' : 'تصحیح‌شده'}</div>
     </div>
 
     ${
       instance_question.requires_manual_grading
         ? html`
-            <div class="d-flex flex-wrap">
-              <div class="pe-1">Assigned to:</div>
+            <div class="d-flex flex-wrap align-items-center mt-1">
+              <div class="pe-2">مصحح محول‌شده:</div>
               <div>
                 ${
                   assignedGrader?.name
                     ? `${assignedGrader.name} (${assignedGrader.uid})`
-                    : (assignedGrader?.uid ?? 'Unassigned')
+                    : (assignedGrader?.uid ?? 'تعیین‌نشده')
                 }
               </div>
             </div>
@@ -379,8 +352,8 @@ function ManualGradingInfo({
     ${
       lastGrader
         ? html`
-            <div class="d-flex flex-wrap">
-              <div class="pe-1">Graded by:</div>
+            <div class="d-flex flex-wrap align-items-center mt-1">
+              <div class="pe-2">تصحیح‌شده توسط:</div>
               <div>
                 ${lastGrader.name ? `${lastGrader.name} (${lastGrader.uid})` : lastGrader.uid}
               </div>
@@ -391,8 +364,10 @@ function ManualGradingInfo({
     ${
       questionContext !== 'manual_grading'
         ? html`
-            <div class="pb-2">
-              <a href="${manualGradingUrl}">Grade</a>
+            <div class="pt-2">
+              <a href="${manualGradingUrl}" class="btn btn-sm btn-outline-warning">
+                <i class="fa fa-pencil me-1"></i> ثبت نمره دستی
+              </a>
             </div>
           `
         : ''

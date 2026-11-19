@@ -57,20 +57,18 @@ export function StudentCoursesCard({
 
       {studentCourses.length === 0 ? (
         hasInstructorCourses ? (
-          <div className="card-body">
-            No courses found with student access. Courses with instructor access are found in the
-            list above.
-            {canAddCourses && ' Use the "Add course" button to add a course as a student.'}
+          <div className="card-body text-secondary">
+            در حال حاضر درسی با نقش دانشجو برای شما ثبت نشده است. درس‌های تحت مدیریت آموزشی شما در جدول بالا قرار دارند.
+            {canAddCourses && ' جهت عضویت در درس‌های دیگر با نقش دانشجو، بر روی دکمه «عضویت در درس» کلیک نمایید.'}
           </div>
         ) : isDevMode ? (
-          <div className="card-body">
-            No courses loaded. Click <strong>"Load from disk"</strong> above and then click{' '}
-            <strong>"PrairieLearn"</strong> in the top left corner to come back to this page.
+          <div className="card-body text-secondary">
+            هیچ درسی بارگذاری نشده است. بر روی دکمه <strong>«همگام‌سازی دیسک»</strong> در نوار بالا کلیک کنید.
           </div>
         ) : (
-          <div className="card-body">
-            No courses found.
-            {canAddCourses && ' Use the "Add course" button to add one.'}
+          <div className="card-body text-secondary">
+            درسی یافت نشد.
+            {canAddCourses && ' جهت افزودن درس، بر روی دکمه «عضویت در درس» کلیک کنید.'}
           </div>
         )
       ) : (

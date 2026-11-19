@@ -33,8 +33,8 @@ export function Home({
   now: Date;
 }) {
   return (
-    <div className="pt-5 mx-auto" style={{ maxWidth: 960 }}>
-      <h1 className="visually-hidden">PrairieLearn Homepage</h1>
+    <div className="pt-4 mx-auto" style={{ maxWidth: 1000, fontFamily: 'var(--font-persian)' }}>
+      <h1 className="visually-hidden">سامانه یادگیری و ارزیابی دانشگاه علم و صنعت ایران</h1>
       <DevModeCard isDevMode={isDevMode} />
       <AdminInstitutionsCard adminInstitutions={adminInstitutions} />
       <NewsAlert newsItems={unreadNewsItems} csrfToken={csrfToken} blogUrl={blogUrl} now={now} />
@@ -64,10 +64,10 @@ function DevModeCard({ isDevMode }: { isDevMode: boolean }) {
       </div>
       <div className="card-body">
         <p>
-          سامانه هم‌اکنون در <strong>حالت توسعه (Dev Mode)</strong> اجرا شده است. با تغییر فایل‌های JSON سوالات، تکالیف و تنظیمات درس در پوشه کدها، جهت اعمال سریع تغییرات بر روی دکمه <strong>«همگام‌سازی دیسک»</strong> در نوار بالا کلیک کنید.
+          سامانه هم‌اکنون در <strong>حالت توسعه (<span dir="ltr">Dev Mode</span>)</strong> اجرا شده است. با تغییر فایل‌های <span dir="ltr">JSON</span> سوالات، تکالیف و تنظیمات درس در پوشه کدها، جهت اعمال سریع تغییرات بر روی دکمه <strong>«همگام‌سازی دیسک»</strong> در نوار بالا کلیک کنید.
         </p>
         <p className="mb-0 text-muted">
-          تغییرات کدهای پایتون، فایل‌های فرانت‌اند و فایل‌های استاتیک بدون نیاز به همگام‌سازی مجدد، با رفرش صفحه به‌صورت آنی بارگذاری می‌شوند.
+          تغییرات کدهای پایتون، فایل‌های فرانت‌اند و فایل‌های استاتیک، با رفرش صفحه به‌صورت آنی بارگذاری می‌شوند.
         </p>
       </div>
     </div>
@@ -82,9 +82,9 @@ function AdminInstitutionsCard({ adminInstitutions }: AdminInstitutionsCardProps
   if (adminInstitutions.length === 0) return null;
 
   return (
-    <div className="card mb-4">
+    <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white">
-        <h2>Institutions with admin access</h2>
+        <h2>دانشکده‌ها و موسسات تحت مدیریت</h2>
       </div>
       <ul className="list-group list-group-flush">
         {adminInstitutions.map((institution) => (
@@ -146,7 +146,7 @@ function InstructorCoursesCard({ instructorCourses, urlPrefix }: InstructorCours
                   />
                   {course.course_instances.some((ci) => ci.expired) && (
                     <details>
-                      <summary className="text-muted small">Older instances</summary>
+                      <summary className="text-muted small">ترم‌های گذشته</summary>
                       <CourseInstanceList
                         courseInstances={course.course_instances.filter((ci) => ci.expired)}
                         urlPrefix={urlPrefix}

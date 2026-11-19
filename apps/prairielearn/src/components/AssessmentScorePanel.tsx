@@ -28,25 +28,25 @@ export function AssessmentScorePanel({
       <div class="card-body">
         <div class="d-flex justify-content-center">
           <a
-            class="btn btn-info"
+            class="btn btn-info text-white"
             href="${urlPrefix}/assessment_instance/${assessment_instance.id}/"
           >
-            Assessment overview
+            <i class="fa fa-th-list me-1"></i> نمای کلی تکلیف
           </a>
         </div>
       </div>
       <table class="table table-sm" aria-label="Assessment score">
         <tbody>
           <tr>
-            <td>Total points:</td>
+            <td>مجموع امتیازات:</td>
             <td>
-              ${formatPoints(assessment_instance.points)}/${formatPoints(
+              <span dir="ltr">${formatPoints(assessment_instance.points)} / ${formatPoints(
                 assessment_instance.max_points,
-              )}
+              )}</span>
             </td>
           </tr>
           <tr>
-            <td>Score:</td>
+            <td>درصد نمره:</td>
             <td class="align-middle">${ScorebarHtml(assessment_instance.score_perc)}</td>
           </tr>
         </tbody>

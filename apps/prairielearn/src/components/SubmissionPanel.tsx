@@ -370,24 +370,22 @@ function SubmissionStatusBadge({
     }
   }
 
-  const autoStatusPrefix = manualGradingBadge ? 'auto-grading: ' : '';
+  const autoStatusPrefix = manualGradingBadge ? 'تصحیح خودکار: ' : '';
 
   if (isAutograded({ question, assessment_question })) {
     if (submission.graded_at == null) {
       if (submission.grading_requested_at == null) {
         if (submission.gradable) {
           autoGradingBadge = html`
-            <span class="badge text-bg-info">${autoStatusPrefix} saved, not graded</span>
+            <span class="badge text-bg-info">${autoStatusPrefix} پیش‌نویس ذخیره‌شده (تصحیح‌نشده)</span>
           `;
         } else {
           autoGradingBadge = html`
-            <span class="badge text-bg-danger">${autoStatusPrefix} invalid, not gradable</span>
+            <span class="badge text-bg-danger">${autoStatusPrefix} نامعتبر (غیرقابل نمره‌دهی)</span>
           `;
         }
       } else if (question.grading_method === 'External') {
         if (submission.gradable) {
-          // The external grading status ("Grading requested", "in progress",
-          // "Graded!") is updated live over the socket; announce it.
           autoGradingBadge = html`
             <span class="badge text-bg-secondary" role="status">
               ${autoStatusPrefix}
@@ -396,45 +394,44 @@ function SubmissionStatusBadge({
           `;
         } else {
           autoGradingBadge = html`
-            <span class="badge text-bg-danger">${autoStatusPrefix} invalid, not gradable</span>
+            <span class="badge text-bg-danger">${autoStatusPrefix} نامعتبر (غیرقابل نمره‌دهی)</span>
           `;
         }
       } else {
         autoGradingBadge = html`
-          <span class="badge text-bg-secondary">${autoStatusPrefix} waiting for grading</span>
+          <span class="badge text-bg-secondary">${autoStatusPrefix} در صف تصحیح خودکار</span>
         `;
       }
     } else if (!submission.gradable) {
-      // If an error ocurred during grading, there will be a `graded_at` timestamp but the submission will be marked ungradable.
       autoGradingBadge = html`
-        <span class="badge text-bg-danger">${autoStatusPrefix} invalid, not gradable</span>
+        <span class="badge text-bg-danger">${autoStatusPrefix} نامعتبر (غیرقابل نمره‌دهی)</span>
       `;
     } else if (submission.score === 1) {
       if (submission.v2_score != null && submission.v2_score < 1) {
         autoGradingBadge = html`
-          <span class="badge text-bg-success">
+          <span class="badge text-bg-success" dir="ltr">
             ${autoStatusPrefix} 100% (rounded up from ${Math.floor(submission.v2_score * 100)}%)
           </span>
         `;
       } else {
         autoGradingBadge = html`
-          <span class="badge text-bg-success">${autoStatusPrefix} 100%</span>
+          <span class="badge text-bg-success" dir="ltr">${autoStatusPrefix} 100%</span>
         `;
       }
     } else if (submission.score != null && submission.score > 0) {
       autoGradingBadge = html`
-        <span class="badge text-bg-warning">
+        <span class="badge text-bg-warning" dir="ltr">
           ${autoStatusPrefix} ${Math.floor(submission.score * 100)}%
         </span>
       `;
     } else if (submission.v2_score != null && submission.v2_score >= 0.01) {
       autoGradingBadge = html`
-        <span class="badge text-bg-danger">
+        <span class="badge text-bg-danger" dir="ltr">
           ${autoStatusPrefix} 0% (rounded down from ${Math.floor(submission.v2_score * 100)}%)
         </span>
       `;
     } else {
-      autoGradingBadge = html`<span class="badge text-bg-danger">${autoStatusPrefix} 0%</span>`;
+      autoGradingBadge = html`<span class="badge text-bg-danger" dir="ltr">${autoStatusPrefix} 0%</span>`;
     }
   }
 

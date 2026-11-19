@@ -53,23 +53,23 @@ $(function () {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary close-settings-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save-settings-button">Save changes</button>
+                        <button type="button" class="btn btn-secondary close-settings-button" data-bs-dismiss="modal">بستن</button>
+                        <button type="button" class="btn btn-primary save-settings-button">ذخیره تنظیمات</button>
                     </div>
                 </div>
             </div>
         </div>
         {{#preview}}
-            <div class="card-footer">Preview</div>
+            <div class="card-footer">پیش‌نمایش</div>
             <div class="preview p-2 mathjax_process"></div>
         {{/preview}}
         {{#editable}}
         <div class="card-footer d-flex">
             <div class="ms-auto">
-                <button type="button" class="btn btn-outline-secondary btn-sm restore-original">Restore original file</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm restore-original"><i class="fa fa-undo me-1"></i> بازگردانی کد اولیه</button>
                 <div class="restore-original-confirm-container" style="display: none;">
-                    <button type="button" class="btn btn-success btn-sm restore-original-confirm">Confirm restore original</button>
-                    <button type="button" class="btn btn-secondary btn-sm restore-original-cancel">Cancel</button>
+                    <button type="button" class="btn btn-danger btn-sm restore-original-confirm">تایید بازگردانی کد اولیه</button>
+                    <button type="button" class="btn btn-secondary btn-sm restore-original-cancel">انصراف</button>
                 </div>
             </div>
         </div>

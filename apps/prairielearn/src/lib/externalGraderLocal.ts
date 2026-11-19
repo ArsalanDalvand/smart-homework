@@ -49,7 +49,13 @@ export class ExternalGraderLocal implements Grader {
       config.externalGradingMaximumTimeout,
     );
 
-    const docker = new Docker();
+    const docker = new Docker({
+      socketPath:
+        process.env.DOCKER_SOCKET ||
+        (process.env.DOCKER_HOST?.startsWith('unix://')
+          ? process.env.DOCKER_HOST.replace('unix://', '')
+          : '/var/run/docker.sock'),
+    });
 
     // Delay until emitter has been returned and listener attached.
     setTimeout(() => {

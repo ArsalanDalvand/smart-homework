@@ -366,7 +366,7 @@ export function PageLayout({
 
   return html`
     <!doctype html>
-    <html lang="en">
+    <html lang="fa" dir="rtl">
       <head>
         ${[
           HeadContents({

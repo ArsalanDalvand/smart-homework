@@ -30,12 +30,12 @@ export function PersonalNotesPanel({
   return html`
     <div class="card mb-4" id="attach-file-panel">
       <div class="card-header bg-secondary text-white d-flex align-items-center">
-        <i class="fas fa-paperclip"></i>
-        <h2>&nbsp;Personal Notes</h2>
+        <i class="fas fa-paperclip me-2"></i>
+        <h2>یادداشت‌های شخصی</h2>
       </div>
       ${
         fileList.length === 0
-          ? html`<div class="card-body"><i>No attached notes</i></div>`
+          ? html`<div class="card-body"><span class="text-muted small">یادداشتی پیوست نشده است.</span></div>`
           : html`
               <ul class="list-group list-group-flush">
                 ${fileList.map(
@@ -115,7 +115,7 @@ function AttachFileForm({ variantId, csrfToken }: { variantId?: string; csrfToke
         aria-expanded="false"
         aria-controls="attachFileCollapse"
       >
-        Attach a file <i class="far fa-caret-square-down"></i>
+        <i class="fa fa-paperclip me-1"></i> پیوست فایل <i class="far fa-caret-square-down ms-1"></i>
       </button>
       <div class="collapse" id="attachFileCollapse">
         <form
@@ -125,14 +125,13 @@ function AttachFileForm({ variantId, csrfToken }: { variantId?: string; csrfToke
           enctype="multipart/form-data"
         >
           <p class="small mt-3">
-            Attached files will be saved here for your reference. These files act as personal notes
-            and can be used for your own review purposes. They are not used for grading.
+            فایل‌های پیوست‌شده در این بخش به عنوان یادداشت شخصی ذخیره می‌شوند و نقشی در نمره‌دهی ندارند.
           </p>
           <div class="mb-3">
-            <label class="form-label" for="attachFileInput">Choose file</label>
+            <label class="form-label" for="attachFileInput">انتخاب فایل</label>
             <input type="file" name="file" class="form-control" id="attachFileInput" />
             <small class="form-text text-muted">
-              Max file size: ${filesize(config.fileUploadMaxBytes, { base: 10, round: 0 })}
+              حداکثر حجم مجاز: ${filesize(config.fileUploadMaxBytes, { base: 10, round: 0 })}
             </small>
           </div>
           <div class="mb-3">
@@ -143,7 +142,7 @@ function AttachFileForm({ variantId, csrfToken }: { variantId?: string; csrfToke
                 : ''
             }
             <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-            <button type="submit" class="btn btn-primary" disabled>Attach file</button>
+            <button type="submit" class="btn btn-primary" disabled>بارگذاری پیوست</button>
           </div>
         </form>
 
@@ -181,18 +180,17 @@ function UploadTextForm({
         aria-expanded="false"
         aria-controls="attachTextCollapse"
       >
-        Add text note <i class="far fa-caret-square-down"></i>
+        <i class="fa fa-sticky-note me-1"></i> افزودن یادداشت متنی <i class="far fa-caret-square-down ms-1"></i>
       </button>
       <div class="collapse" id="attachTextCollapse">
         <form method="POST" class="attach-text-form">
           <p class="small mt-3">
-            Attached personal notes will be saved here for your reference. These notes can be used
-            for your own review purposes. They are not used for grading.
+            یادداشت‌های متنی ذخیره‌شده صرفاً برای مرور و استفاده شخصی شماست و در نمره‌دهی تاثیری ندارد.
           </p>
           <input
             type="text"
             class="form-control"
-            aria-label="Text filename"
+            aria-label="نام فایل یادداشت"
             name="filename"
             value="${defaultFilename}"
           />
@@ -200,9 +198,9 @@ function UploadTextForm({
             <textarea
               class="form-control"
               rows="5"
-              aria-label="Text contents"
+              aria-label="محتوای یادداشت"
               name="contents"
-              placeholder="Type or paste text here"
+              placeholder="متن یادداشت یا نکات خود را اینجا تایپ کنید..."
             ></textarea>
           </div>
           ${
@@ -212,7 +210,7 @@ function UploadTextForm({
           }
           <input type="hidden" name="__csrf_token" value="${csrfToken}" />
           <button type="submit" class="btn btn-sm btn-primary" name="__action" value="attach_text">
-            Add note
+            ذخیره یادداشت
           </button>
         </form>
       </div>

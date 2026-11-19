@@ -861,7 +861,7 @@ function NavbarButton({
       showArrow
         ? html`<li class="nav-item d-none d-lg-block" aria-hidden="true">
             <span class="nav-link disabled px-0" style="color: var(--bs-nav-link-color);">
-              &rarr;
+              &larr;
             </span>
           </li>`
         : ''

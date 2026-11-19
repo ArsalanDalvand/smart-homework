@@ -118,7 +118,7 @@ export function QuestionContainer({
           ? html`
               <div class="card mb-3 grading-block${answerVisible ? '' : ' d-none'}">
                 <div class="card-header bg-secondary text-white">
-                  <h2>Correct answer</h2>
+                  <h2>پاسخ صحیح / نمونه</h2>
                 </div>
                 <div class="card-body overflow-x-auto answer-body">
                   ${answerVisible ? answerBody : ''}

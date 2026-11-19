@@ -299,9 +299,9 @@ export function StudentAssessmentInstance({
                 : html`
                     <div class="col-md-3 col-sm-6">
                       نمره کسب‌شده:
-                      ${formatPoints(resLocals.assessment_instance.points)} از ${formatPoints(
+                      <span dir="ltr"><strong>${formatPoints(resLocals.assessment_instance.points)}</strong> / ${formatPoints(
                         resLocals.assessment_instance.max_points,
-                      )}
+                      )}</span>
                       ${
                         resLocals.assessment_instance.max_bonus_points
                           ? html`
@@ -475,10 +475,11 @@ function AssessmentStatus({
   authz_result: AssessmentInstanceAuthzResult;
 }) {
   if (assessment_instance.open && authz_result.active) {
+    const localizedCredit = (authz_result.credit_date_string ?? '').replace('(Staff override)', '(دسترسی کادر آموزشی)');
     return html`
       تکلیف هم‌اکنون <strong>فعال (باز)</strong> است و می‌توانید به سوالات پاسخ دهید.
       <br />
-      مهلت و اعتبار: ${authz_result.credit_date_string}
+      مهلت و اعتبار: <span dir="rtl">${localizedCredit}</span>
       ${
         assessment.modern_access_control
           ? StudentAccessTimelineSchedule({

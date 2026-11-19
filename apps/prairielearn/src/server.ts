@@ -55,6 +55,15 @@ import { getCheckedSignedTokenData } from '@prairielearn/signed-token';
 import { isMultipartRequest } from '@prairielearn/trpc/express';
 import { assertNever } from '@prairielearn/utils';
 
+// Sanitize DOCKER_HOST to prevent Dockerode port 80 ECONNREFUSED
+if (process.env.DOCKER_HOST && !process.env.DOCKER_HOST.includes('://')) {
+  if (process.env.DOCKER_HOST.startsWith('/')) {
+    process.env.DOCKER_HOST = `unix://${process.env.DOCKER_HOST}`;
+  } else {
+    delete process.env.DOCKER_HOST;
+  }
+}
+
 import * as cron from './cron/index.js';
 import * as assets from './lib/assets.js';
 import { makeAwsClientConfig } from './lib/aws.js';

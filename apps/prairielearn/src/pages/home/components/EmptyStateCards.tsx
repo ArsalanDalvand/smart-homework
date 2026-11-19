@@ -6,15 +6,15 @@ export function EmptyStateCards({
   setShowJoinModal: (value: boolean) => void;
 }) {
   return (
-    <div className="row">
+    <div className="row" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="col-lg-6 mb-4">
         <div className="card h-100">
           <div className="card-body text-center d-flex flex-column">
             <div className="mb-3">
               <i className="bi bi-person-badge text-primary" style={{ fontSize: '3rem' }} />
             </div>
-            <h3 className="card-title mb-3">Students</h3>
-            <p className="card-text mb-4">Add a course and start learning.</p>
+            <h3 className="card-title mb-3">دانشجویان</h3>
+            <p className="card-text mb-4">عضویت در درس مبانی برنامه‌نویسی و شروع حل تمرین‌ها و یادگیری پایتون.</p>
             <div className="mt-auto">
               <button
                 type="button"
@@ -22,7 +22,7 @@ export function EmptyStateCards({
                 onClick={() => setShowJoinModal(true)}
               >
                 <i className="bi bi-plus-circle" />
-                Add course
+                عضویت در درس
               </button>
             </div>
           </div>
@@ -34,8 +34,8 @@ export function EmptyStateCards({
             <div className="mb-3">
               <i className="bi bi-mortarboard text-primary" style={{ fontSize: '3rem' }} />
             </div>
-            <h3 className="card-title mb-3">Instructors</h3>
-            <p className="card-text mb-4">Create and manage courses for your students.</p>
+            <h3 className="card-title mb-3">اساتید و کادر آموزشی</h3>
+            <p className="card-text mb-4">طراحی سوالات تستی و پایتون، تعیین آزمون‌های تصحیح خودکار و مدیریت دانشجویان.</p>
             <div className="mt-auto">
               <div className="d-flex flex-wrap gap-2">
                 <a
@@ -43,16 +43,16 @@ export function EmptyStateCards({
                   className="btn btn-primary flex-fill d-flex gap-2 justify-content-center"
                 >
                   <i className="bi bi-book" />
-                  Request course
+                  درخواست ایجاد درس
                 </a>
                 <a
-                  href="https://docs.prairielearn.com"
+                  href="https://github.com/ArsalanDalvand/PrairieLearn"
                   className="btn btn-outline-primary flex-fill d-flex gap-2 justify-content-center"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="bi bi-journal-text" aria-hidden="true" />
-                  View docs
+                  <i className="fab fa-github" aria-hidden="true" />
+                  مخزن گیت‌هاب
                 </a>
               </div>
             </div>

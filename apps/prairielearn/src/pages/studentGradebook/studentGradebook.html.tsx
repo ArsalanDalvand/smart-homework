@@ -35,41 +35,37 @@ export function StudentGradebook({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Gradebook',
+    pageTitle: 'کارنامه و نمرات',
     navContext: {
       type: 'student',
       page: 'gradebook',
     },
     content: (
-      <div className="card mb-4">
+      <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
         <div className="card-header bg-primary text-white d-flex align-items-center">
-          <h1>Gradebook</h1>
+          <h1 className="h4 mb-0">کارنامه و نمرات دانشجو</h1>
           <a
             href={`/pl/course_instance/${resLocals.course_instance.id}/gradebook/${csvFilename}`}
             className="btn btn-light btn-sm ms-auto"
-            aria-label="Download gradebook CSV"
+            aria-label="دانلود کارنامه CSV"
           >
-            <i className="fas fa-download" aria-hidden="true" />
-            <span className="d-none d-sm-inline">Download</span>
+            <i className="fas fa-download me-1" aria-hidden="true" />
+            <span className="d-none d-sm-inline">دریافت کارنامه (CSV)</span>
           </a>
         </div>
 
         {rows.length === 0 ? (
           <div className="card-body">
-            <div className="text-muted">No gradebook entries found.</div>
+            <div className="text-muted">در حال حاضر موردی در کارنامه ثبت نشده است.</div>
           </div>
         ) : (
           <div className="table-responsive">
-            <table className="table table-sm table-hover" aria-label="Gradebook">
+            <table className="table table-sm table-hover" aria-label="کارنامه">
               <thead>
                 <tr>
-                  <th style={{ width: '1%' }}>
-                    <span className="visually-hidden">Label</span>
-                  </th>
-                  <th>
-                    <span className="visually-hidden">Title</span>
-                  </th>
-                  <th className="text-center">Score</th>
+                  <th style={{ width: '5%' }}>کد</th>
+                  <th>عنوان ارزیابی</th>
+                  <th className="text-center" style={{ width: '25%' }}>نمره نهایی</th>
                 </tr>
               </thead>
               {assessmentGroups.map((groupRows) => (
