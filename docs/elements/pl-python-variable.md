@@ -1,10 +1,10 @@
-# `pl-python-variable` element
+# المان `pl-python-variable`
 
-Displays the value of a Python variable. It uses options similar to the [pprint](https://docs.python.org/3/library/pprint.html) module to format output data, and can recursively print nested data structures. As such, some descriptions below are taken directly from this documentation.
+مقدار یک متغیر پایتون را نمایش می‌دهد. این المان از گزینه‌هایی مشابه ماژول [pprint](https://docs.python.org/3/library/pprint.html) برای قالب‌بندی داده‌های خروجی استفاده می‌کند و می‌تواند ساختارهای داده تودرتو را به صورت بازگشتی چاپ کند. از این رو، برخی از توضیحات زیر مستقیماً از مستندات آن برگرفته شده‌اند.
 
-## Sample elements
+## المان نمونه
 
-![Screenshot of the pl-python-variable element](pl-python-variable.png)
+![تصویر المان pl-python-variable](pl-python-variable.png)
 
 ```html title="question.html"
 <pl-python-variable params-name="variable"></pl-python-variable>
@@ -19,47 +19,49 @@ def generate(data):
     data["params"]["variable"] = pl.to_json(data_dictionary)
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute           | Type    | Default | Description                                                                                                                                                                                                                                                                                      |
-| ------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `compact-sequences` | boolean | false   | Impacts the way that long sequences (lists, tuples, sets, etc.) are formatted. If `compact-sequences` is false (the default) then each item of a sequence will be formatted on a separate line. If it is true, as many items as will fit within the width will be formatted on each output line. |
-| `copy-code-button`  | boolean | false   | Whether to include a button to copy the code displayed by this element.                                                                                                                                                                                                                          |
-| `depth`             | integer | —       | The number of nesting levels which may be printed; if the data structure being printed is too deep, the next contained level is replaced by ... By default, there is no constraint on the depth of the objects being formatted.                                                                  |
-| `indent`            | integer | 1       | Specifies the amount of indentation added for each nesting level when printing nested objects.                                                                                                                                                                                                   |
-| `no-highlight`      | boolean | false   | Disable syntax highlighting.                                                                                                                                                                                                                                                                     |
-| `params-name`       | string  | —       | The name of the key in `data["params"]` to get a value from.                                                                                                                                                                                                                                     |
-| `prefix`            | string  | (empty) | Any prefix to add before the output.                                                                                                                                                                                                                                                             |
-| `prefix-newline`    | boolean | false   | Add newline to the end of `prefix`.                                                                                                                                                                                                                                                              |
-| `show-line-numbers` | boolean | false   | Whether to show line numbers in code displayed by this element.                                                                                                                                                                                                                                  |
-| `sort-dicts`        | boolean | false   | If true, dictionaries will be formatted with their keys sorted, otherwise they will display in insertion order.                                                                                                                                                                                  |
-| `suffix`            | string  | (empty) | Any suffix to append to the output.                                                                                                                                                                                                                                                              |
-| `suffix-newline`    | boolean | false   | Add newline before the start of `suffix`.                                                                                                                                                                                                                                                        |
-| `width`             | integer | 80      | Specifies the desired maximum number of characters per line in the output. If a structure cannot be formatted within the width constraint, a best effort will be made.                                                                                                                           |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `compact-sequences` | boolean | false | بر نحوه قالب‌بندی توالی‌های طولانی (لیست‌ها، چندتایی‌ها، مجموعه‌ها و غیره) تأثیر می‌گذارد. اگر `compact-sequences` برابر با false (پیش‌فرض) باشد، هر آیتم از یک توالی در یک خط جداگانه قرار می‌گیرد. در صورت true بودن، هر تعداد آیتم که در عرض مشخص‌شده بگنجد در هر خط خروجی قالب‌بندی خواهد شد. |
+| `copy-code-button` | boolean | false | مشخص می‌کند که آیا دکمه‌ای برای کپی کردن کد نمایش‌داده‌شده توسط این المان تعبیه شود یا خیر. |
+| `depth` | integer | — | تعداد سطوح تودرتویی که می‌توانند چاپ شوند؛ اگر ساختار داده در حال چاپ بیش از حد عمیق باشد، سطح بعدی درون آن با ... جایگزین می‌شود. به طور پیش‌فرض، هیچ محدودیتی روی عمق اشیای قالب‌بندی‌شده وجود ندارد. |
+| `indent` | integer | 1 | مقدار تورفتگی اضافه‌شده برای هر سطح تودرتو هنگام چاپ اشیای تودرتو را مشخص می‌کند. |
+| `no-highlight` | boolean | false | غیرفعال کردن برجسته‌سازی نحو (syntax highlighting). |
+| `params-name` | string | — | نام کلید در `data["params"]` برای خواندن مقدار از آن. |
+| `prefix` | string | (خالی) | هرگونه پیشوندی که قبل از خروجی افزوده می‌شود. |
+| `prefix-newline` | boolean | false | افزودن یک خط جدید (انتقال به خط بعد) به انتهای `prefix`. |
+| `show-line-numbers` | boolean | false | مشخص می‌کند که آیا شماره خطوط در کد نمایش‌داده‌شده توسط این المان نشان داده شوند یا خیر. |
+| `sort-dicts` | boolean | false | در صورت true بودن، دیکشنری‌ها با کلیدهای مرتب‌شده قالب‌بندی می‌شوند، در غیر این صورت به ترتیب درج نمایش داده خواهند شد. |
+| `suffix` | string | (خالی) | هرگونه پسوندی که به انتهای خروجی الحاق می‌شود. |
+| `suffix-newline` | boolean | false | افزودن یک خط جدید قبل از شروع `suffix`. |
+| `width` | integer | 80 | حداکثر تعداد کاراکترهای دلخواه در هر خط از خروجی را تعیین می‌کند. اگر یک ساختار نتواند درون محدودیت عرض قالب‌بندی شود، بهترین تلاش ممکن انجام خواهد شد. |
 
-### Migrating from deprecated attributes
+### مهاجرت از ویژگی‌های منسوخ‌شده
 
-The following deprecated attributes are still supported for backward compatibility:
+ویژگی منسوخ‌شده زیر همچنان جهت سازگاری با نسخه‌های گذشته پشتیبانی می‌شود:
 
-| Old syntax          | New syntax                    |
-| ------------------- | ----------------------------- |
+| نحو قدیمی | نحو جدید |
+| --- | --- |
 | `compact="<value>"` | `compact-sequences="<value>"` |
 
-Printing Pandas DataFrames with this element is deprecated, along with the `text`, `show-header`, `show-index`, and `show-dimensions` attributes that controlled that display. Please use the new [`pl-dataframe`](pl-dataframe.md) element instead.
+چاپ DataFrames در پانداس (Pandas) با این المان منسوخ شده است، به همراه ویژگی‌های `text`، `show-header`، `show-index` و `show-dimensions` که آن نمایش را کنترل می‌کردند. لطفاً به جای آن از المان جدید [`pl-dataframe`](pl-dataframe.md) استفاده فرمایید.
 
-## Details
+## جزئیات
 
-The element supports displaying Python objects via `repr()`, with support for more complex display options similar to the built-in `pprint` library. **Objects to be displayed must be serializable to JSON.** For details about what objects can be serialized and how to do this with the provided `to_json` and `from_json` functions, see the [Question Writing documentation](../question/server.md#question-data-storage). To display objects that cannot be easily JSON serialized, please refer to the `pl-code` example question [element/code].
+این المان از نمایش اشیای پایتون از طریق `repr()` پشتیبانی می‌کند، به همراه پشتیبانی از گزینه‌های نمایش پیچیده‌تر مشابه کتابخانه داخلی `pprint`. **اشیایی که باید نمایش داده شوند حتماً باید قابلیت سریال‌سازی به JSON را داشته باشند.** برای جزئیات بیشتر درباره اینکه چه اشیایی می‌توانند سریال‌سازی شوند و نحوه انجام این کار با توابع ارائه‌شده `to_json` و `from_json`، به [مستندات نگارش سوال](../question/server.md#question-data-storage) مراجعه کنید. برای نمایش اشیایی که به راحتی قابل سریال‌سازی به JSON نیستند، لطفاً سوال نمونه `pl-code` در [element/code] را بررسی کنید.
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [element/pythonVariable]
 
-## See also
+## همچنین ببینید
 
-- [`pl-code` to display blocks of code with syntax highlighting](pl-code.md)
-- [`pl-variable-output` for displaying a matrix or element in code form.](pl-variable-output.md)
-- [`pl-dataframe` for displaying dataframes.](pl-dataframe.md)
+- [`pl-code` برای نمایش بلوک‌های کد با برجسته‌سازی نحو](pl-code.md)
+- [`pl-variable-output` برای نمایش ماتریس یا المان به صورت کد.](pl-variable-output.md)
+- [`pl-dataframe` برای نمایش دیتافریم‌ها.](pl-dataframe.md)
+
+---
 
 [element/code]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/element/code
 [element/pythonvariable]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/element/pythonVariable

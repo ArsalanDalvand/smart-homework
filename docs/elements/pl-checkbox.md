@@ -1,11 +1,10 @@
-# `pl-checkbox` element
+# المان `pl-checkbox`
 
-A `pl-checkbox` element displays a subset of the answers in a random order
-as checkboxes.
+المان `pl-checkbox` زیرمجموعه‌ای از پاسخ‌ها را با ترتیبی تصادفی به عنوان کادرهای انتخاب (Checkboxes) نمایش می‌دهد.
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-checkbox element](pl-checkbox.png)
+![تصویر صفحه از المان pl-checkbox](pl-checkbox.png)
 
 ```html title="question.html"
 <pl-checkbox answers-name="vpos" weight="1">
@@ -18,91 +17,90 @@ as checkboxes.
 </pl-checkbox>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute             | Type    | Default         | Description                                                                                                                                                                                                                                                                         |
-| --------------------- | ------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allow-blank`         | boolean | false           | Whether an empty submission is allowed. When `"false"` (default), empty submissions will not be graded (invalid format); when `"true"`, empty submissions will be graded.                                                                                                           |
-| `answers-name`        | string  | —               | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.                                                                                                                |
-| `detailed-help-text`  | boolean | false           | Display the minimum and maximum number of options that can be selected in a valid submission. See explanation below.                                                                                                                                                                |
-| `display`             | string  | `"block"`       | How to display answer choices: `"block"` (separate lines) or `"inline"` (single line).                                                                                                                                                                                              |
-| `hide-help-text`      | boolean | false           | Help text with hint regarding the selection of answers. Popover button describes the selected grading algorithm (`"off"`, `"coverage"`, `"each-answer"`, or `"net-correct"`).                                                                                                       |
-| `hide-letter-keys`    | boolean | false           | Hide the letter keys in the answer list, i.e., (a), (b), (c), etc.                                                                                                                                                                                                                  |
-| `hide-score-badge`    | boolean | false           | Hide badges next to selected answers.                                                                                                                                                                                                                                               |
-| `max-correct`         | integer | See description | The maximum number of correct answers to display. Defaults to displaying all correct answers.                                                                                                                                                                                       |
-| `max-select`          | integer | See description | The maximum number of answers that can be selected in any valid submission. Defaults to `max-correct` if that attribute is specified along with `detailed-help-text="true"`; otherwise, defaults to the number of displayed answers.                                                |
-| `min-correct`         | integer | See description | The minimum number of correct answers to display. Defaults to displaying all correct answers.                                                                                                                                                                                       |
-| `min-select`          | integer | See description | The minimum number of answers that must be selected in any valid submission. Defaults to `min-correct` if that attribute is specified along with `detailed-help-text="true"`; otherwise, defaults to 1. If `allow-blank="true"`, `min-select` is not enforced on empty submissions. |
-| `number-answers`      | integer | See description | The total number of answer choices to display. Defaults to displaying all answers.                                                                                                                                                                                                  |
-| `order`               | string  | `"random"`      | Order of answer choices: `"random"` (randomized) or `"fixed"` (as written).                                                                                                                                                                                                         |
-| `partial-credit`      | string  | `"off"`         | Grading method: `"off"` (all-or-nothing, default), `"net-correct"`, `"coverage"`, or `"each-answer"`.                                                                                                                                                                               |
-| `show-number-correct` | boolean | false           | Display the number of correct choices in the help text.                                                                                                                                                                                                                             |
-| `weight`              | integer | 1               | Weight to use when computing a weighted average score over elements.                                                                                                                                                                                                                |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا ارسال خالی مجاز است یا خیر. هنگامی که `"false"` است (پیش‌فرض)، پاسخ‌های ارسالی خالی نمره‌دهی نمی‌شوند (قالب نامعتبر)؛ هنگامی که `"true"` باشد، ارسال‌های خالی نمره‌دهی خواهند شد. |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید درون یک سوال یکتا باشد؛ یعنی هیچ مقداری برای این ویژگی نباید در یک سوال تکرار شود. |
+| `detailed-help-text` | boolean | false | نمایش حداقل و حداکثر تعداد گزینه‌هایی که می‌توانند در یک ارسال معتبر انتخاب شوند. توضیحات زیر را مشاهده کنید. |
+| `display` | string | `"block"` | نحوه نمایش گزینه‌های پاسخ: `"block"` (خطوط جداگانه) یا `"inline"` (در یک خط). |
+| `hide-help-text` | boolean | false | متن راهنما همراه با نکته‌ای درباره نحوه انتخاب پاسخ‌ها. دکمه Popover الگوریتم نمره‌دهی انتخاب‌شده را شرح می‌دهد (`"off"`، `"coverage"`، `"each-answer"` یا `"net-correct"`). |
+| `hide-letter-keys` | boolean | false | پنهان کردن کلیدهای حروفی در فهرست پاسخ‌ها، یعنی (الف)، (ب)، (ج) یا (a)، (b)، (c) و غیره. |
+| `hide-score-badge` | boolean | false | پنهان کردن نشان‌های نمره در کنار پاسخ‌های انتخاب‌شده. |
+| `max-correct` | integer | به توضیحات مراجعه کنید | حداکثر تعداد پاسخ‌های صحیح برای نمایش. پیش‌فرض نمایش تمام پاسخ‌های صحیح است. |
+| `max-select` | integer | به توضیحات مراجعه کنید | حداکثر تعداد پاسخ‌هایی که می‌توان در هر ارسال معتبر انتخاب کرد. اگر این ویژگی همراه با `detailed-help-text="true"` مشخص شده باشد، مقدار پیش‌فرض `max-correct` خواهد بود؛ در غیر این صورت، پیش‌فرض تعداد پاسخ‌های نمایش‌داده‌شده است. |
+| `min-correct` | integer | به توضیحات مراجعه کنید | حداقل تعداد پاسخ‌های صحیح برای نمایش. پیش‌فرض نمایش تمام پاسخ‌های صحیح است. |
+| `min-select` | integer | به توضیحات مراجعه کنید | حداقل تعداد پاسخ‌هایی که باید در هر ارسال معتبر انتخاب شوند. اگر این ویژگی همراه با `detailed-help-text="true"` مشخص شده باشد، مقدار پیش‌فرض `min-correct` خواهد بود؛ در غیر این صورت، پیش‌فرض 1 است. اگر `allow-blank="true"` باشد، `min-select` روی ارسال‌های خالی اعمال نمی‌شود. |
+| `number-answers` | integer | به توضیحات مراجعه کنید | تعداد کل گزینه‌های پاسخ برای نمایش. پیش‌فرض نمایش تمامی پاسخ‌ها است. |
+| `order` | string | `"random"` | ترتیب گزینه‌های پاسخ: `"random"` (تصادفی‌سازی‌شده) یا `"fixed"` (به همان ترتیبی که نوشته شده است). |
+| `partial-credit` | string | `"off"` | روش نمره‌دهی: `"off"` (همه یا هیچ، پیش‌فرض)، `"net-correct"`، `"coverage"` یا `"each-answer"`. |
+| `show-number-correct` | boolean | false | نمایش تعداد گزینه‌های صحیح در متن راهنما. |
+| `weight` | integer | 1 | ضریب وزنی مورد استفاده هنگام محاسبه میانگین وزنی نمره روی المان‌ها. |
 
-Inside the `pl-checkbox` element, each choice must be specified with
-a `pl-answer` that has attributes:
+درون المان `pl-checkbox`، هر گزینه باید با یک المان `pl-answer` مشخص شود که ویژگی‌های زیر را دارد:
 
-| Attribute  | Type    | Default | Description                                                                                                                                    |
-| ---------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `correct`  | boolean | false   | Is this a correct answer to the question?                                                                                                      |
-| `feedback` | string  | —       | Helper text (HTML) to be displayed to the student next to the option after question is graded if this option has been selected by the student. |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `correct` | boolean | false | آیا این گزینه یک پاسخ صحیح برای سوال است؟ |
+| `feedback` | string | — | متن کمکی (HTML) برای نمایش به دانشجو در کنار گزینه پس از نمره‌دهی سوال، در صورتی که این گزینه توسط دانشجو انتخاب شده باشد. |
 
-## Partial credit grading
+## نمره‌دهی با نمره بخشی (Partial credit)
 
-Four grading methods are available using the `partial-credit` attribute:
+چهار روش نمره‌دهی با استفاده از ویژگی `partial-credit` در دسترس است:
 
-- `"off"` (All-or-nothing, default): Students receive full credit only if they select all correct answers and no incorrect answers. Otherwise, they receive zero credit.
+- `"off"` (همه یا هیچ، پیش‌فرض): دانشجویان تنها در صورتی نمره کامل را دریافت می‌کنند که تمامی پاسخ‌های صحیح را انتخاب کرده و هیچ پاسخ نادرستی را انتخاب نکرده باشند. در غیر این صورت، نمره صفر دریافت می‌کنند.
 
-- `"net-correct"` (Net Correct): 1 point is added for each correct answer that is marked as correct and 1 point is subtracted for each incorrect answer that is marked as correct. The final score is the resulting summation of points divided by the total number of correct answers. The minimum final score is set to zero.
+- `"net-correct"` (صحیح خالص): ۱ امتیاز به ازای هر پاسخ صحیح انتخاب‌شده اضافه می‌شود و ۱ امتیاز به ازای هر پاسخ نادرست انتخاب‌شده کسر می‌گردد. نمره نهایی حاصل جمع امتیازات تقسیم بر تعداد کل پاسخ‌های صحیح است. حداقل نمره نهایی برابر صفر تعیین می‌شود.
 
-- `"coverage"` (Coverage): The final score is calculated by multiplying the **base score** (the proportion of correct answers that are chosen) with the **guessing factor** (the proportion of chosen answers that are correct). Specifically, if `t` is the number of correct answers chosen, `c` is the total number of correct answers, and `n` is the total number of answers chosen, then the final score is `(t / c) * (t / n)` (in the special case where `allow-blank="true"` and the submission is blank, the guessing factor is undefined, so score is set to zero instead). This grading scheme rewards submissions that include (i.e. "cover") all true options.
+- `"coverage"` (پوشش): نمره نهایی از حاصل‌ضرب **نمره پایه** (نسبت پاسخ‌های صحیح انتخاب‌شده) در **ضریب حدس** (نسبت پاسخ‌های انتخاب‌شده‌ای که صحیح هستند) محاسبه می‌شود. به طور دقیق، اگر `t` تعداد پاسخ‌های صحیح انتخاب‌شده، `c` تعداد کل پاسخ‌های صحیح و `n` تعداد کل پاسخ‌های انتخاب‌شده باشد، نمره نهایی برابر با `(t / c) * (t / n)` است (در حالت خاصی که `allow-blank="true"` باشد و پاسخ ارسالی خالی باشد، ضریب حدس تعریف‌نشده است؛ بنابراین نمره صفر لحاظ می‌شود). این شیوه نمره‌دهی به پاسخ‌هایی که شامل تمامی گزینه‌های درست باشند (یعنی آن‌ها را «پوشش» دهند) پاداش می‌دهد.
 
-- `"each-answer"` (Every Decision Counts): The checkbox answers are considered as a list of true/false answers. If `n` is the total number of answers, each answer is assigned `1/n` points. The total score is the summation of the points for every correct answer selected and every incorrect answer left unselected.
+- `"each-answer"` (هر تصمیم اهمیت دارد): پاسخ‌های چک‌باکس به صورت فهرستی از گزینه‌های درست/نادرست در نظر گرفته می‌شوند. اگر `n` تعداد کل گزینه‌ها باشد، به هر پاسخ `1/n` امتیاز اختصاص می‌یابد. نمره نهایی مجموع امتیازات حاصل از هر گزینه صحیح انتخاب‌شده و هر گزینه نادرست انتخاب‌نشده است.
 
-### Migrating from deprecated attributes
+### مهاجرت از ویژگی‌های منسوخ‌شده
 
-The following deprecated attributes are still supported for backward compatibility:
+ویژگی‌های منسوخ زیر همچنان به جهت سازگاری با نسخه‌های پیشین پشتیبانی می‌شوند:
 
-| Old syntax                                          | New syntax                                                                   |
-| --------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `partial-credit="false"`                            | `partial-credit="off"`                                                       |
-| `partial-credit="true"`                             | `partial-credit="net-correct"`                                               |
-| `partial-credit="true" partial-credit-method="PC"`  | `partial-credit="net-correct"`                                               |
-| `partial-credit="true" partial-credit-method="EDC"` | `partial-credit="each-answer"`                                               |
-| `partial-credit="true" partial-credit-method="COV"` | `partial-credit="coverage"`                                                  |
-| `inline="true"`                                     | `display="inline"`                                                           |
-| `fixed-order="true"`                                | `order="fixed"`                                                              |
-| `hide-answer-panel="true"`                          | Wrap the element in `<pl-hide-in-panel answer="true">...</pl-hide-in-panel>` |
+| نحو قدیمی | نحو جدید |
+| --- | --- |
+| `partial-credit="false"` | `partial-credit="off"` |
+| `partial-credit="true"` | `partial-credit="net-correct"` |
+| `partial-credit="true" partial-credit-method="PC"` | `partial-credit="net-correct"` |
+| `partial-credit="true" partial-credit-method="EDC"` | `partial-credit="each-answer"` |
+| `partial-credit="true" partial-credit-method="COV"` | `partial-credit="coverage"` |
+| `inline="true"` | `display="inline"` |
+| `fixed-order="true"` | `order="fixed"` |
+| `hide-answer-panel="true"` | المان را درون `<pl-hide-in-panel answer="true">...</pl-hide-in-panel>` قرار دهید |
 
-## Using the `detailed-help-text` attribute
+## استفاده از ویژگی `detailed-help-text`
 
-The `detailed-help-text` attribute can be used with `min-correct` and/or `max-correct` to help students select the correct options. If `min-select` is not specified, then setting `detailed-help-text="true"` ensures that the number of selected options in a valid submission is at least the value of `min-correct`. Similarly, if `max-select` is not specified, then setting `detailed-help-text="true"` ensures that the number of selected options in a valid submission is at most the value of `max-correct`. For example, if a checkbox question does not specify `min-select` or `max-select`, and specifies `min-correct="2"`, `max-correct="4"`, and `detailed-help-text="true"`, then all valid submissions must select between 2 and 4 options. Thus, we help students by preventing them from selecting, say, five options. Indeed, if five options are selected, then at least one selected option is incorrect since there are at most four correct options.
+ویژگی `detailed-help-text` می‌تواند همراه با `min-correct` و/یا `max-correct` به کار رود تا به دانشجویان در انتخاب گزینه‌های درست کمک کند. اگر `min-select` مشخص نشده باشد، تنظیم `detailed-help-text="true"` تضمین می‌کند که تعداد گزینه‌های انتخاب‌شده در یک ارسال معتبر حداقل به اندازه مقدار `min-correct` باشد. به طور مشابه، اگر `max-select` مشخص نشده باشد، تنظیم `detailed-help-text="true"` اطمینان می‌دهد که تعداد گزینه‌های انتخاب‌شده در یک ارسال معتبر حداکثر به اندازه مقدار `max-correct` باشد. برای مثال، اگر یک سوال چک‌باکس مقادیر `min-select` یا `max-select` را مشخص نکرده باشد، اما `min-correct="2"`، `max-correct="4"` و `detailed-help-text="true"` را مشخص کرده باشد، در این صورت تمامی ارسال‌های معتبر باید بین ۲ تا ۴ گزینه را انتخاب کنند. بدین ترتیب، با جلوگیری از انتخاب مثلاً پنج گزینه توسط دانشجو به او کمک می‌کنیم؛ زیرا اگر پنج گزینه انتخاب شود، حداقل یک گزینه انتخابی نادرست خواهد بود چون حداکثر چهار گزینه صحیح وجود دارد.
 
-Note that explicitly specifying `min-select` overrides the minimum number of options that must be selected, and similarly, explicitly specifying `max-select` overrides the maximum number of options that can be selected.
+توجه داشته باشید که تعیین صریح ویژگی `min-select` بر حداقل تعداد گزینه‌هایی که باید انتخاب شوند اولویت دارد و به طور مشابه، تعیین صریح ویژگی `max-select` بر حداکثر تعداد گزینه‌هایی که می‌توان انتخاب کرد اولویت خواهد داشت.
 
-## Restricting the number of options that can be selected
+## محدود کردن تعداد گزینه‌های قابل انتخاب
 
-The `min-select` and `max-select` attributes determine the minimum and maximum number of options that can be selected in a valid submission. The value of `min-select` is computed using the following steps:
+ویژگی‌های `min-select` و `max-select` حداقل و حداکثر تعداد گزینه‌هایی را که می‌توان در یک ارسال معتبر انتخاب نمود تعیین می‌کنند. مقدار `min-select` با استفاده از مراحل زیر محاسبه می‌شود:
 
-1. If the `min-select` attribute is explicitly set, then we use the specified value of `min-select`.
-2. If `min-select` is not specified, but `min-correct` is specified along with `detailed-help-text="true"`, then we use the specified value of `min-correct`.
-3. If steps 1 and 2 do not apply, then we use a default value of 1.
-4. If `allow-blank="true"` and the submission is blank, `min-select` is not enforced.
+1. اگر ویژگی `min-select` به صراحت تنظیم شده باشد، از مقدار تعیین‌شده `min-select` استفاده می‌شود.
+2. اگر `min-select` مشخص نشده باشد، اما `min-correct` همراه با `detailed-help-text="true"` تعیین شده باشد، از مقدار تعیین‌شده `min-correct` استفاده می‌شود.
+3. اگر مراحل ۱ و ۲ برقرار نباشند، از مقدار پیش‌فرض ۱ استفاده خواهد شد.
+4. اگر `allow-blank="true"` باشد و پاسخ ارسالی خالی بماند، `min-select` اعمال نمی‌شود.
 
-To compute `max-select`, we use a similar algorithm (note the different default value in step 3):
+برای محاسبه `max-select`، از الگوریتم مشابهی استفاده می‌شود (به تفاوت مقدار پیش‌فرض در مرحله ۳ دقت فرمایید):
 
-1. If the `max-select` attribute is explicitly set, then we use the specified value of `max-select`.
-2. If `max-select` is not specified, but `max-correct` is specified along with `detailed-help-text="true"`, then we use the specified value of `max-correct`.
-3. If steps 1 and 2 do not apply, then `max-select` defaults to the number of displayed checkbox options (i.e. students can select all displayed options by default).
+1. اگر ویژگی `max-select` به صراحت تنظیم شده باشد، از مقدار تعیین‌شده `max-select` استفاده می‌شود.
+2. اگر `max-select` مشخص نشده باشد، اما `max-correct` همراه با `detailed-help-text="true"` تعیین شده باشد، از مقدار تعیین‌شده `max-correct` استفاده می‌شود.
+3. اگر مراحل ۱ و ۲ برقرار نباشند، مقدار `max-select` به طور پیش‌فرض برابر با تعداد کل گزینه‌های نمایش‌داده‌شده چک‌باکس خواهد بود (یعنی دانشجویان به طور پیش‌فرض می‌توانند تمام گزینه‌های نمایش‌داده‌شده را انتخاب کنند).
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/checkbox]
 - [demo/randomCheckbox]
 
-## See also
+## همچنین ببینید
 
-- [`pl-multiple-choice` for allowing only **one** correct choice](pl-multiple-choice.md)
+- [`pl-multiple-choice` برای سوالاتی که تنها **یک** گزینه صحیح دارند](pl-multiple-choice.md)
 
 ---
 

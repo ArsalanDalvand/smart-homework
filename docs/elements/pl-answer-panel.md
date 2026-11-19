@@ -1,38 +1,33 @@
-# `pl-answer-panel` element
+# المان `pl-answer-panel`
 
-Provide information regarding the question answer after the student is unable
-to submit further answers for grading.
+ارائه اطلاعات در خصوص پاسخ سوال پس از آنکه دانشجو دیگر قادر به ارسال پاسخ‌های بیشتر برای نمره‌دهی نیست.
 
-## Sample element
+## المان نمونه
 
 ```html
-<pl-answer-panel>This content is only shown in the answer panel.</pl-answer-panel>
+<pl-answer-panel>این محتوا فقط در پانل پاسخ صحیح نمایش داده می‌شود.</pl-answer-panel>
 ```
 
-## Details
+## جزئیات
 
-Generally, the contents of `question.html` will appear in
-the question panel, submission panel, and answer panel. To prevent
-content from being displayed in the submission panel and
-question panel (so, only in the answer panel), surround that content
-with the `<pl-answer-panel>` tags.
+به طور کلی، محتویات `question.html` در پانل سوال، پانل پاسخ ارسالی و پانل پاسخ صحیح ظاهر می‌شوند. برای جلوگیری از نمایش محتوا در پانل پاسخ ارسالی و پانل سوال (به طوری که فقط در پانل پاسخ صحیح نشان داده شود)، آن محتوا را بین تگ‌های `<pl-answer-panel>` قرار دهید.
 
-Common reasons that trigger the display of the answer panel are:
+دلایل متداولی که موجب نمایش پانل پاسخ صحیح می‌شوند عبارتند از:
 
-- The question is fully correct.
-- There are no more submission attempts.
-- The time limit for the assessment has expired.
+- سوال کاملاً درست پاسخ داده شده باشد.
+- فرصت‌های ارسال پاسخ (تلاش‌ها) به پایان رسیده باشد.
+- محدودیت زمانی ارزیابی منقضی شده باشد.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [demo/custom/gradeFunction]
 
-## See also
+## همچنین ببینید
 
-- [`pl-question-panel` for displaying the question prompt.](pl-question-panel.md)
-- [`pl-submission-panel` for changing how a submitted answer is displayed.](pl-submission-panel.md)
-- [`pl-hide-in-panel` to hide contents in one or more display panels.](pl-hide-in-panel.md)
-- [`pl-external-grader-results` for showing the results from an externally graded code question.](pl-external-grader-results.md)
+- [`pl-question-panel` برای نمایش صورت سوال.](pl-question-panel.md)
+- [`pl-submission-panel` برای تغییر نحوه نمایش پاسخ ارسال‌شده.](pl-submission-panel.md)
+- [`pl-hide-in-panel` برای پنهان کردن محتوا در یک یا چند پانل نمایش.](pl-hide-in-panel.md)
+- [`pl-external-grader-results` برای نمایش نتایج حاصل از سوالات برنامه‌نویسی با نمره‌دهی خارجی.](pl-external-grader-results.md)
 
 ---
 

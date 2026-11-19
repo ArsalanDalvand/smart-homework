@@ -1,25 +1,25 @@
-# `pl-external-grader-results` element
+# المان `pl-external-grader-results`
 
-Displays results from externally-graded questions.
+نمایش نتایج حاصل از سوالاتی که به صورت خارجی نمره‌دهی می‌شوند.
 
-## Sample element
+## المان نمونه
 
 ```html
 <pl-external-grader-results></pl-external-grader-results>
 ```
 
-## Details
+## جزئیات
 
-It expects results to follow [the reference schema for external grading results](../externalGrading.md#grading-results).
+این المان انتظار دارد که نتایج از [طرحواره مرجع برای نتایج نمره‌دهی خارجی](../externalGrading.md#grading-results) پیروی کنند.
 
-## Example Implementations
+## پیاده‌سازی‌های نمونه
 
 - [demo/autograder/codeUpload]
 - [demo/autograder/codeEditor]
 
-## See also
+## همچنین ببینید
 
-- [External Grading Reference Schema](../externalGrading.md#grading-results)
+- [طرحواره مرجع نمره‌دهی خارجی](../externalGrading.md#grading-results)
 
 ---
 

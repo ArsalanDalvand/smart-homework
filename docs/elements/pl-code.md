@@ -1,11 +1,10 @@
-# `pl-code` element
+# المان `pl-code`
 
-Display an embedded or file-based block of code with syntax highlighting and
-line callouts.
+نمایش یک بلوک کد تعبیه‌شده یا مبتنی بر فایل همراه با رنگ‌آمیزی ساختار نحوی (Syntax highlighting) و هایلایت خطوط.
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-code input](pl-code.png)
+![تصویر صفحه از المان pl-code](pl-code.png)
 
 <!-- prettier-ignore -->
 ```html title="question.html"
@@ -15,51 +14,51 @@ def square(x):
 </pl-code>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute               | Type    | Default         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ----------------------- | ------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `copy-code-button`      | boolean | false           | Whether to include a button to copy the code displayed by this element.                                                                                                                                                                                                                                                                                                                                                                                   |
-| `directory`             | string  | See description | Directory where the source file with existing code is to be found. Only useful if `source-file-name` is used. If it contains one of the special names `"clientFilesCourse"` or `"serverFilesCourse"`, then the source file name is read from the course's special directories, otherwise the directory is expected to be in the question's own directory. If not provided, the source file name is expected to be found in the question's main directory. |
-| `highlight-lines`       | string  | —               | Apply a distinctive background highlight the specified lines of code. Accepts input like `4`, `1-3,5-10`, and `1,2-5,20`.                                                                                                                                                                                                                                                                                                                                 |
-| `highlight-lines-color` | string  | See description | Specifies the color of highlighted lines of code. If not set, the highlight color defined by the selected Pygments style is used, falling back to `"#b3d7ff"` if the style does not define one.                                                                                                                                                                                                                                                           |
-| `language`              | string  | —               | The programming language syntax highlighting to use. See below for options.                                                                                                                                                                                                                                                                                                                                                                               |
-| `normalize-whitespace`  | boolean | false           | Whether to strip trailing whitespace and remove extra indentation of the contents. Recommended for cases where the code is inline in the question file.                                                                                                                                                                                                                                                                                                   |
-| `prevent-select`        | boolean | false           | Applies methods to make the source code more difficult to copy, like preventing selection or right-clicking. Note that the source code is still accessible in the page source, which will always be visible to students. Also note that preventing operations like selecting or copying text may be detrimental to the student's experience, and as such should be avoided unless absolutely necessary.                                                   |
-| `show-line-numbers`     | boolean | false           | Whether to show line numbers in code displayed by this element.                                                                                                                                                                                                                                                                                                                                                                                           |
-| `source-file-name`      | string  | —               | Name of the source file with existing code to be displayed as a code block (instead of writing the existing code between the element tags as illustrated in the above code snippet).                                                                                                                                                                                                                                                                      |
-| `style-name`            | string  | `"xcode"`       | The name of the Pygments style to use. A sample of valid styles can be found in the [Pygments documentation](https://pygments.org/styles/).                                                                                                                                                                                                                                                                                                               |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `copy-code-button` | boolean | false | اضافه کردن دکمه‌ای برای کپی کردن کد نمایش‌داده‌شده توسط این المان. |
+| `directory` | string | به توضیحات مراجعه کنید | دایرکتوری محل قرارگیری فایل منبع حاوی کد موجود. تنها زمانی کاربرد دارد که `source-file-name` استفاده شود. اگر شامل یکی از نام‌های ویژه `"clientFilesCourse"` یا `"serverFilesCourse"` باشد، فایل منبع از دایرکتوری‌های ویژه درس خوانده می‌شود؛ در غیر این صورت انتظار می‌رود دایرکتوری در دایرکتوری اختصاصی خودِ سوال باشد. در صورت عدم تعیین، انتظار می‌رود نام فایل منبع در دایرکتوری اصلی سوال یافت شود. |
+| `highlight-lines` | string | — | اعمال هایلایت پس‌زمینه متمایز برای خطوط مشخص‌شده از کد. ورودی‌هایی مانند `4`، `1-3,5-10` و `1,2-5,20` را می‌پذیرد. |
+| `highlight-lines-color` | string | به توضیحات مراجعه کنید | تعیین رنگ خطوط هایلایت‌شده کد. در صورت عدم تنظیم، از رنگ هایلایت تعریف‌شده توسط استایل Pygments انتخابی استفاده می‌شود، و اگر در استایل مشخص نشده باشد، مقدار جایگزین `"#b3d7ff"` اعمال خواهد شد. |
+| `language` | string | — | رنگ‌آمیزی نحوی زبان برنامه‌نویسی مورد استفاده. گزینه‌ها را در ادامه ببینید. |
+| `normalize-whitespace` | boolean | false | مشخص می‌کند که آیا فاصله‌های خالی انتهای خطوط و دندانه‌گذاری‌های اضافی محتوا حذف شوند یا خیر. برای مواردی که کد به صورت درون‌خطی در فایل سوال قرار دارد توصیه می‌شود. |
+| `prevent-select` | boolean | false | اعمال روش‌هایی برای سخت‌تر کردن کپی کردن کد منبع، مانند جلوگیری از انتخاب متن یا کلیک راست. توجه داشته باشید که کد منبع همچنان در سورس صفحه قابل دسترسی است و همواره برای دانشجویان قابل مشاهده خواهد بود. همچنین توجه داشته باشید که جلوگیری از عملیاتی مانند انتخاب یا کپی متن ممکن است به تجربه کاربری دانشجو آسیب برساند و بنابراین تا زمانی که کاملاً ضروری نباشد باید از آن پرهیز کرد. |
+| `show-line-numbers` | boolean | false | نمایش شماره خطوط در کد نمایش‌داده‌شده توسط این المان. |
+| `source-file-name` | string | — | نام فایل منبع حاوی کدی که باید به صورت بلوک کد نمایش داده شود (به جای نوشتن کد موجود در میان تگ‌های المان به شکلی که در قطعه کد بالا نشان داده شده است). |
+| `style-name` | string | `"xcode"` | نام استایل Pygments مورد استفاده. نمونه‌هایی از استایل‌های معتبر را می‌توان در [مستندات Pygments](https://pygments.org/styles/) مشاهده کرد. |
 
-### Migrating from deprecated attributes
+### مهاجرت از ویژگی‌های منسوخ‌شده
 
-The following deprecated attributes are still supported for backward compatibility:
+ویژگی‌های منسوخ زیر همچنان به جهت سازگاری با نسخه‌های پیشین پشتیبانی می‌شوند:
 
-| Old syntax            | New syntax            |
-| --------------------- | --------------------- |
-| `style="<name>"`      | `style-name="<name>"` |
-| `no-highlight="true"` | Omit `language`       |
+| نحو قدیمی | نحو جدید |
+| --- | --- |
+| `style="<name>"` | `style-name="<name>"` |
+| `no-highlight="true"` | حذف `language` |
 
-Setting `no-highlight="true"` simply disables syntax highlighting, which is the behavior when the `language` attribute is omitted.
+تنظیم `no-highlight="true"` صرفاً رنگ‌آمیزی نحوی را غیرفعال می‌کند، که معادل رفتار ناشی از حذف ویژگی `language` است.
 
-## Details
+## جزئیات
 
-The `pl-code` element uses the _Pygments_ library for syntax highlighting. It supports any of the built-in supported languages found in the [Pygments documentation](https://pygments.org/languages/), as well as the custom [`ansi-color` custom language](https://github.com/chriskuehl/pygments-ansi-color) that can be used to display terminal output. If the language is not provided, no syntax highlighting is done.
+المان `pl-code` از کتابخانه _Pygments_ برای رنگ‌آمیزی ساختار نحوی استفاده می‌کند. این المان از هر یک از زبان‌های پشتیبانی‌شده داخلی موجود در [مستندات Pygments](https://pygments.org/languages/) و همچنین [زبان سفارشی `ansi-color`](https://github.com/chriskuehl/pygments-ansi-color) که می‌تواند برای نمایش خروجی ترمینال به کار رود پشتیبانی می‌نماید. اگر زبان تعیین نشود، هیچ رنگ‌آمیزی ساختار نحوی انجام نخواهد شد.
 
-### Common Pitfalls
+### دام‌های متداول
 
-The HTML specification disallows inserting special characters onto the page (i.e. `<`, `>`, `&`), and using these characters with inline code may break rendering. To fix this, either escape the characters (`&lt;`, `&gt;`, `&amp;`, more with [this escaping tool](https://www.freeformatter.com/html-entities.html)), or load code snippets from external files into `pl-code` with `source-file-name` attribute.
+استاندارد HTML درج نویسه‌های خاص روی صفحه (مانند `<`، `>`، `&`) را مجاز نمی‌داند و استفاده از این نویسه‌ها درون کد درون‌خطی ممکن است رندر صفحه را با مشکل مواجه کند. برای رفع این مسئله، می‌توانید نویسه‌ها را escape کنید (`&lt;`، `&gt;`، `&amp;`، موارد بیشتر با [این ابزار تبدیل کاراکتر](https://www.freeformatter.com/html-entities.html))، یا قطعه‌کدها را از فایل‌های خارجی با استفاده از ویژگی `source-file-name` درون `pl-code` بارگذاری نمایید.
 
-## Accessibility
+## دسترس‌پذیری
 
-The default `style-name` is `"xcode"` because its token colors meet WCAG AA contrast (4.5:1) against the default code background. Many Pygments styles contain token colors that do not; verify contrast if you override `style-name`.
+مقدار پیش‌فرض `style-name` برابر `"xcode"` است، زیرا رنگ‌های توکن آن کنتراست استاندارد WCAG AA (نسبت ۴.۵:۱) را در برابر پس‌زمینه پیش‌فرض کد تأمین می‌کنند. بسیاری از استایل‌های Pygments شامل رنگ‌های توکنی هستند که این شرایط را ندارند؛ در صورت تغییر `style-name` حتماً کنتراست را بررسی فرمایید.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/code]
 
-## See also
+## همچنین ببینید
 
-- [`pl-file-editor` to provide an in-browser code environment](pl-file-editor.md)
+- [`pl-file-editor` برای فراهم کردن محیط کدنویسی درون مرورگر](pl-file-editor.md)
 
 ---
 

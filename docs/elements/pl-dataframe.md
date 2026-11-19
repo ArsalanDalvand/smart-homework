@@ -1,16 +1,16 @@
-# `pl-dataframe` element
+# المان `pl-dataframe`
 
-Displays a formatted display of Pandas DataFrames, with various options for displaying types of columns and code for reproducing the DataFrame.
+نمایش قالب‌بندی‌شده‌ی دیتافریم‌های پانداس (Pandas DataFrames)، همراه با گزینه‌های گوناگون برای نمایش انواع ستون‌ها و کدی برای بازتولید دیتافریم.
 
-## Sample elements
+## المان‌های نمونه
 
 ```html title="question.html"
 <pl-dataframe params-name="df" show-index="false" show-dimensions="false" digits="4"></pl-dataframe>
 ```
 
 ```python title="server.py"
-import prairielearn as pl
 import pandas as pd
+import prairielearn as pl
 
 
 def generate(data):
@@ -18,38 +18,40 @@ def generate(data):
     data["params"]["df"] = pl.to_json(df.head(15))
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute               | Type                                                      | Default    | Description                                                                                                                                                                                                                                                                                                                                                             |
-| ----------------------- | --------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `digits`                | integer                                                   | —          | Number of digits to display for floating-point entries.                                                                                                                                                                                                                                                                                                                 |
-| `display-language`      | `"python"`, or `"r"`                                      | `"python"` | Language to use for displaying data types and indices.                                                                                                                                                                                                                                                                                                                  |
-| `display-variable-name` | string                                                    | `"df"`     | Variable name to display in code to recreate DataFrame.                                                                                                                                                                                                                                                                                                                 |
-| `params-name`           | string                                                    | —          | The name of the key in `data["params"]` to get a value from.                                                                                                                                                                                                                                                                                                            |
-| `presentation-type`     | `"e"`, `"E"`, `"f"`, `"F"`, `"g"`, `"G"`, `"n"`, or `"%"` | `"g"`      | Floating-point number display format. If `digits` is specified, formatted using `'{:.{digits}{presentation-type}}'`, otherwise `'{:{presentation-type}}'`. See [the Python documentation](https://docs.python.org/3/library/string.html#format-specification-mini-language) for more information on what each presentation type means for `float` and `Decimal` values. |
-| `show-dimensions`       | boolean                                                   | true       | Show a footer with the dimensions of a DataFrame.                                                                                                                                                                                                                                                                                                                       |
-| `show-dtype`            | boolean                                                   | false      | Show the data types contained in each column of the DataFrame at the bottom of each column. Types used correspond to the `display-language` parameter.                                                                                                                                                                                                                  |
-| `show-header`           | boolean                                                   | true       | Show the header row of a DataFrame.                                                                                                                                                                                                                                                                                                                                     |
-| `show-index`            | boolean                                                   | true       | Show the index column of a DataFrame. Will switch to 1-indexing if using the default index and `display-language` is "r".                                                                                                                                                                                                                                               |
-| `show-python`           | boolean                                                   | true       | Show code that can be used to recreate the DataFrame in Python in a separate tab.                                                                                                                                                                                                                                                                                       |
-| `width`                 | integer                                                   | 500        | Max characters per line for displaying Python code.                                                                                                                                                                                                                                                                                                                     |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `digits` | integer | — | تعداد ارقام نمایشی برای مقادیر ممیز شناور. |
+| `display-language` | `"python"`، یا `"r"` | `"python"` | زبان مورد استفاده برای نمایش انواع داده‌ها و اندیس‌ها. |
+| `display-variable-name` | string | `"df"` | نام متغیر نمایشی در کدی که دیتافریم را مجدداً ایجاد می‌کند. |
+| `params-name` | string | — | نام کلید در `data["params"]` برای دریافت مقدار. |
+| `presentation-type` | `"e"`، `"E"`، `"f"`، `"F"`، `"g"`، `"G"`، `"n"`، یا `"%"` | `"g"` | قالب نمایش اعداد ممیز شناور. اگر `digits` مشخص شده باشد، با استفاده از `'{:.{digits}{presentation-type}}'` قالب‌بندی می‌شود؛ در غیر این صورت با `'{:{presentation-type}}'`. برای اطلاعات بیشتر در خصوص معنای هر نوع نمایش برای مقادیر `float` و `Decimal`، به [مستندات پایتون](https://docs.python.org/3/library/string.html#format-specification-mini-language) مراجعه کنید. |
+| `show-dimensions` | boolean | true | نمایش پاورقی حاوی ابعاد دیتافریم. |
+| `show-dtype` | boolean | false | نمایش انواع داده‌های موجود در هر ستون دیتافریم در پایین همان ستون. انواع استفاده‌شده با پارامتر `display-language` مطابقت دارند. |
+| `show-header` | boolean | true | نمایش سطر سربرگ (Header) دیتافریم. |
+| `show-index` | boolean | true | نمایش ستون اندیس دیتافریم. در صورتی که از اندیس پیش‌فرض استفاده شود و `display-language` برابر "r" باشد، به اندیس‌گذاری بر مبنای ۱ تغییر می‌یابد. |
+| `show-python` | boolean | true | نمایش کدی که می‌توان با آن دیتافریم را در پایتون در یک تب جداگانه بازتولید کرد. |
+| `width` | integer | 500 | حداکثر تعداد نویسه‌ها در هر خط برای نمایش کد پایتون. |
 
-## Details
+## جزئیات
 
-When setting a parameter, use PrairieLearn's built in `pl.to_json()` on the DataFrame to display. Note that there are multiple serialization options for Pandas DataFrames. Encoding a DataFrame `df` by setting `pl.to_json(df, df_encoding_version=2)` allows for missing and date time values whereas `pl.to_json(df, df_encoding_version=1)` (default) does not. However, `df_encoding_version=1` has support for complex numbers, while `df_encoding_version=2` does not.
+هنگام تنظیم یک پارامتر، از تابع توکار `pl.to_json()` در PrairieLearn روی دیتافریم برای نمایش استفاده نمایید. توجه داشته باشید که چندین گزینه سریال‌سازی برای دیتافریم‌های Pandas وجود دارد. کدگذاری دیتافریم `df` با تنظیم `pl.to_json(df, df_encoding_version=2)` امکان استفاده از مقادیر گمشده و تاریخ/زمان را فراهم می‌کند، در حالی که `pl.to_json(df, df_encoding_version=1)` (پیش‌فرض) این قابلیت را ندارد. با این حال، `df_encoding_version=1` از اعداد مختلط پشتیبانی می‌کند، در حالی که `df_encoding_version=2` پشتیبانی نمی‌کند.
 
-Note that some Python types may not be serialized correctly in the code provided to reconstruct the DataFrame.
+توجه داشته باشید که برخی از انواع داده پایتون ممکن است در کد ارائه‌شده برای بازسازی دیتافریم به درستی سریال‌سازی نشوند.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/dataframe]
 - [demo/randomDataFrame]
 
-## See also
+## همچنین ببینید
 
-- [`pl-code` to display blocks of code with syntax highlighting](pl-code.md)
-- [`pl-variable-output` for displaying a matrix or element in code form.](pl-variable-output.md)
-- [`pl-python-variable` for displaying a formatted output of Python variables.](pl-python-variable.md)
+- [`pl-code` برای نمایش بلوک‌های کد همراه با رنگ‌آمیزی ساختار نحوی](pl-code.md)
+- [`pl-variable-output` برای نمایش یک ماتریس یا المان در قالب کد.](pl-variable-output.md)
+- [`pl-python-variable` برای نمایش خروجی قالب‌بندی‌شده متغیرهای پایتون.](pl-python-variable.md)
+
+---
 
 [demo/randomdataframe]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/randomDataFrame
 [element/dataframe]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/element/dataframe

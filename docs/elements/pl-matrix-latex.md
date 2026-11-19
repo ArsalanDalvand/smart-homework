@@ -1,10 +1,10 @@
-# `pl-matrix-latex` element
+# المان `pl-matrix-latex`
 
-Displays a scalar or 2D numpy array of numbers in LaTeX using mathjax.
+یک اسکالر یا یک آرایه دوبعدی numpy از اعداد را در LaTeX با استفاده از MathJax نمایش می‌دهد.
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-matrix-latex element](pl-matrix-latex.png)
+![تصویر المان pl-matrix-latex](pl-matrix-latex.png)
 
 ```html title="question.html"
 $$C = <pl-matrix-latex params-name="matrixC"></pl-matrix-latex>$$
@@ -24,37 +24,36 @@ def generate(data):
     data["params"]["matrixC"] = pl.to_json(mat)
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute           | Type    | Default | Description                                                                                                                                                                                                                        |
-| ------------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `digits`            | integer | 2       | Number of digits to display according to the choice of `presentation-type`                                                                                                                                                         |
-| `params-name`       | string  | —       | Name of variable in `data["params"]` to display.                                                                                                                                                                                   |
-| `presentation-type` | string  | `"f"`   | Number display format. If `presentation-type` is `"sigfig"`, each number is formatted using the `to_precision` module to `digits` significant figures. Otherwise, each number is formatted as `'{:.{digits}{presentation-type}}'`. |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `digits` | integer | 2 | تعداد ارقام جهت نمایش با توجه به انتخاب `presentation-type` |
+| `params-name` | string | — | نام متغیر در `data["params"]` جهت نمایش. |
+| `presentation-type` | string | `"f"` | قالب نمایش اعداد. اگر `presentation-type` برابر با `"sigfig"` باشد، هر عدد با استفاده از ماژول `to_precision` تا تعداد `digits` رقم با معنی قالب‌بندی می‌شود. در غیر این صورت، هر عدد به شکل `'{:.{digits}{presentation-type}}'` قالب‌بندی می‌شود. |
 
-## Details
+## جزئیات
 
-Depending on whether `data["params"]` contains either a scalar or 2D numpy array of numbers,
-one of the following will be returned.
+بسته به اینکه `data["params"]` شامل یک اسکالر باشد یا یک آرایه دوبعدی numpy از اعداد، یکی از موارد زیر بازگردانده می‌شود:
 
-- **scalar**
-  - a string containing the scalar not wrapped in brackets.
-- **numpy 2D array**
-  - a string formatted using the `bmatrix` LaTeX style.
+- **اسکالر (scalar)**
+  - رشته‌ای حاوی مقدار اسکالر بدون قرار گرفتن درون براکت.
+- **آرایه ۲ بعدی numpy**
+  - رشته‌ای قالب‌بندی‌شده با استایل `bmatrix` در LaTeX.
 
-Sample LaTeX formatting:
+نمونه قالب‌بندی LaTeX:
 
 ```latex
 \begin{bmatrix} ... & ... \\ ... & ... \end{bmatrix}
 ```
 
-As an example, consider the need to display the following matrix operations:
+به عنوان مثال، نیاز به نمایش عملیات ماتریسی زیر را در نظر بگیرید:
 
 ```text
 x = [A][b] + [c]
 ```
 
-In this case, we would write:
+در این صورت، می‌نویسیم:
 
 ```html title="question.html"
 ${\bf x} = <pl-matrix-latex params-name="A" digits="1"></pl-matrix-latex>
@@ -62,16 +61,16 @@ ${\bf x} = <pl-matrix-latex params-name="A" digits="1"></pl-matrix-latex>
 + <pl-matrix-latex params-name="c" digits="1"></pl-matrix-latex>$
 ```
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [element/matrixLatex]
 - [demo/randomCheckbox]
 
-## See also
+## همچنین ببینید
 
-- [`pl-variable-output` for displaying the matrix in a supported programming language.](pl-variable-output.md)
-- [`pl-matrix-component-input` for individual input boxes for each element in the matrix](pl-matrix-component-input.md)
-- [`pl-matrix-input` for input values formatted in a supported programming language.](pl-matrix-input.md)
+- [`pl-variable-output` برای نمایش ماتریس در یک زبان برنامه‌نویسی پشتیبانی‌شده.](pl-variable-output.md)
+- [`pl-matrix-component-input` برای کادرهای ورودی مجزا به ازای هر درایه در ماتریس](pl-matrix-component-input.md)
+- [`pl-matrix-input` برای مقادیر ورودی با قالب یک زبان برنامه‌نویسی پشتیبانی‌شده.](pl-matrix-input.md)
 
 ---
 

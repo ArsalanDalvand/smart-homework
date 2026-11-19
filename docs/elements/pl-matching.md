@@ -1,10 +1,10 @@
-# `pl-matching` element
+# المان `pl-matching`
 
-Given a list of statements, select a matching option for each entry from a dropdown list.
+بر اساس فهرستی از گزاره‌ها (Statements)، برای هر ورودی یک گزینه متناظر را از یک لیست کشویی انتخاب کنید.
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-matching element](pl-matching.png)
+![تصویر المان pl-matching](pl-matching.png)
 
 ```html title="question.html"
 <pl-matching answers-name="string_value">
@@ -16,51 +16,51 @@ Given a list of statements, select a matching option for each entry from a dropd
 </pl-matching>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute             | Type                                                           | Default         | Description                                                                                                                                                                                                              |
-| --------------------- | -------------------------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `allow-blank`         | boolean                                                        | false           | Whether a blank submission is allowed. If this is set to true, a statement that selects the blank entry will be marked as incorrect instead of invalid.                                                                  |
-| `answers-name`        | string                                                         | —               | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.                                                     |
-| `blank`               | boolean                                                        | true            | Option to add blank dropdown entry as the default selection in each dropdown list.                                                                                                                                       |
-| `counter-type`        | `"decimal"`, `"lower-alpha"`, `"upper-alpha"` or `"full-text"` | `"lower-alpha"` | The type of counter to use when enumerating the options. If set to `"full-text"`, the column of options will be hidden, and the text of each option will be used in the statements' dropdown lists, instead of counters. |
-| `fixed-options-order` | boolean                                                        | false           | Whether to display the options in a fixed order; otherwise they are shuffled. See the details of `pl-option` below for more information on option ordering.                                                              |
-| `fixed-order`         | boolean                                                        | false           | Whether to display the statements in a fixed order; otherwise they are shuffled.                                                                                                                                         |
-| `hide-score-badge`    | boolean                                                        | false           | Whether to hide the correct/incorrect score badge next to each graded answer choice.                                                                                                                                     |
-| `none-of-the-above`   | boolean                                                        | false           | Whether to add a "None of the above" to the end of the options.                                                                                                                                                          |
-| `number-options`      | integer                                                        | See description | The number of options to display. Defaults to all options. The `none-of-the-above` option does not count towards this number.                                                                                            |
-| `number-statements`   | integer                                                        | See description | The number of statements to display. Defaults to all statements.                                                                                                                                                         |
-| `options-placement`   | `"right"` or `"bottom"`                                        | `"right"`       | The placement of options relative to the statements in order to make it visually cohesive. Especially useful when dealing with long statements or options.                                                               |
-| `partial-credit`      | boolean                                                        | true            | Whether to award proportional partial credit for each correctly matched statement. If false, the element awards full credit only when every statement is matched correctly.                                              |
-| `weight`              | integer                                                        | 1               | Weight to use when computing a weighted average score over elements.                                                                                                                                                     |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا ارسال پاسخ خالی مجاز است یا خیر. در صورت تنظیم روی `true`، گزاره‌ای که گزینه خالی را انتخاب کند، به جای نامعتبر (invalid)، به عنوان نادرست (incorrect) نمره‌دهی می‌شود. |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد؛ یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود. |
+| `blank` | boolean | true | گزینه‌ای برای افزودن یک گزینه خالی به عنوان انتخاب پیش‌فرض در هر منوی کشویی. |
+| `counter-type` | `"decimal"`, `"lower-alpha"`, `"upper-alpha"` یا `"full-text"` | `"lower-alpha"` | نوع شمارنده‌ای که برای شماره‌گذاری گزینه‌ها استفاده می‌شود. اگر روی `"full-text"` تنظیم شود، ستون گزینه‌ها پنهان شده و به جای شمارنده‌ها، متن هر گزینه مستقیماً درون لیست‌های کشویی گزاره‌ها قرار می‌گیرد. |
+| `fixed-options-order` | boolean | false | آیا گزینه‌ها با ترتیب ثابتی نمایش داده شوند یا خیر؛ در غیر این صورت بر هم زده می‌شوند (shuffle). برای اطلاعات بیشتر درباره ترتیب گزینه‌ها، جزئیات `pl-option` را در زیر ببینید. |
+| `fixed-order` | boolean | false | آیا گزاره‌ها با ترتیب ثابتی نمایش داده شوند یا خیر؛ در غیر این صورت بر هم زده می‌شوند (shuffle). |
+| `hide-score-badge` | boolean | false | آیا نشان نمره درست/نادرست در کنار هر گزینه پاسخ تصحیح‌شده پنهان شود یا خیر. |
+| `none-of-the-above` | boolean | false | آیا گزینه «هیچ‌کدام از موارد فوق» (None of the above) به انتهای گزینه‌ها افزوده شود یا خیر. |
+| `number-options` | integer | توضیحات را ببینید | تعداد گزینه‌هایی که باید نمایش داده شوند. پیش‌فرض نمایش تمام گزینه‌ها است. گزینه `none-of-the-above` در این تعداد شمرده نمی‌شود. |
+| `number-statements` | integer | توضیحات را ببینید | تعداد گزاره‌هایی که باید نمایش داده شوند. پیش‌فرض نمایش تمام گزاره‌ها است. |
+| `options-placement` | `"right"` یا `"bottom"` | `"right"` | محل قرارگیری گزینه‌ها نسبت به گزاره‌ها به منظور ایجاد هماهنگی بصری. به ویژه هنگام کار با گزاره‌ها یا گزینه‌های طولانی کاربرد دارد. |
+| `partial-credit` | boolean | true | آیا برای هر گزاره که به درستی تطبیق داده شده نمره بخشی متناسب تعلق گیرد یا خیر. در صورت `false` بودن، المان تنها زمانی نمره کامل اعطا می‌کند که تمام گزاره‌ها به درستی متناظر شده باشند. |
+| `weight` | integer | 1 | ضریب وزنی مورد استفاده هنگام محاسبه میانگین نمره وزن‌دار روی المان‌ها. |
 
-Inside the `pl-matching` element, a series of `pl-statement` and `pl-option` elements specify the questions the student must answer and the options to which they can be matched, respectively. Statements are displayed in the left column, and options in the right.
+در داخل المان `pl-matching`، مجموعه‌ای از المان‌های `pl-statement` و `pl-option` به ترتیب سوالاتی را که دانشجو باید پاسخ دهد و گزینه‌هایی را که می‌توان با آن‌ها مطابقت داد مشخص می‌کنند. گزاره‌ها در ستون سمت چپ و گزینه‌ها در ستون سمت راست نمایش داده می‌شوند.
 
-A total of `number-statements` statements will be randomly selected and displayed to the student. The corresponding matching options will be gathered; if `number-options` is larger than the number of options used by the selected statements, then random distractors will be selected from the remaining unused options. If the selected statements require more options than `number-options`, then `none-of-the-above` will automatically be set to true.
+در مجموع به تعداد `number-statements` گزاره به صورت تصادفی انتخاب و به دانشجو نشان داده می‌شود. گزینه‌های منطبق متناظر جمع‌آوری می‌شوند؛ اگر `number-options` بزرگتر از تعداد گزینه‌های استفاده شده توسط گزاره‌های انتخاب‌شده باشد، گزینه‌های انحرافی (distractors) تصادفی از میان گزینه‌های استفاده‌نشده باقی‌مانده انتخاب خواهند شد. اگر گزاره‌های انتخاب‌شده به گزینه‌های بیشتری نسبت به `number-options` نیاز داشته باشند، آنگاه `none-of-the-above` به طور خودکار روی `true` تنظیم می‌شود.
 
-The content of a `pl-statement` can be any HTML element, including other PrairieLearn elements. A `pl-statement` must be specified with these attributes:
+محتوای یک `pl-statement` می‌تواند هر المان HTML، از جمله سایر المان‌های PrairieLearn باشد. یک `pl-statement` باید با این ویژگی‌ها مشخص شود:
 
-| Attribute | Type   | Default | Description                                                                                                                                                                                                                                                         |
-| --------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `match`   | string | —       | Identifies the option as the correct response for this `pl-statement`. If `match` corresponds to the `name` of any `pl-option` element, the statement will be linked to that `pl-option`, otherwise a new option is implicitly created based on this `match` value. |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `match` | string | — | گزینه‌ای را به عنوان پاسخ صحیح برای این `pl-statement` مشخص می‌کند. اگر `match` با ویژگی `name` در هر المان `pl-option` مطابقت داشته باشد، گزاره به آن `pl-option` متصل می‌شود، در غیر این صورت یک گزینه جدید به صورت ضمنی بر اساس این مقدار `match` ایجاد می‌گردد. |
 
-The content of a `pl-option` can be any HTML element, including other PrairieLearn elements. `pl-option` elements are optional; options are created by default based on the `match` attribute of each `pl-statement`. Additional `pl-option` elements can be added to serve as distractors, or to render formatted HTML/PrairieLearn elements instead of plain text.
+محتوای یک `pl-option` می‌تواند هر المان HTML، از جمله سایر المان‌های PrairieLearn باشد. المان‌های `pl-option` اختیاری هستند؛ گزینه‌ها به طور پیش‌فرض بر اساس ویژگی `match` در هر `pl-statement` ساخته می‌شوند. المان‌های `pl-option` اضافی را می‌توان به عنوان گزینه‌های انحرافی یا برای رندر کردن المان‌های HTML/PrairieLearn قالب‌بندی‌شده به جای متن ساده اضافه کرد.
 
-When the `fixed-options-order` feature is used, options are shown in the following order:
+هنگام استفاده از قابلیت `fixed-options-order`، گزینه‌ها به ترتیب زیر نمایش داده می‌شوند:
 
-1. Any explicitly-defined `pl-option` elements are shown first, in the order they are declared.
-2. Any implicitly-defined options defined by a `pl-statement` `match` attribute are shown next, in the order they are declared.
+1. هر المان `pl-option` که صریحاً تعریف شده باشد ابتدا و به ترتیبی که تعریف شده نمایش داده می‌شود.
+2. هر گزینه ضمنی تعریف شده توسط ویژگی `match` در `pl-statement` در ادامه و به ترتیبی که تعریف شده نمایش داده می‌شود.
 
-!!! warning
+!!! warning "هشدار"
 
-    While it is possible to use implicit options from the `match` attribute of each `pl-statement` without defining any `pl-option` elements, it is recommended to define `pl-option` elements explicitly in the following cases:
+    در حالی که استفاده از گزینه‌های ضمنی حاصل از ویژگی `match` در هر `pl-statement` بدون تعریف هیچ المان `pl-option` امکان‌پذیر است، توصیه می‌شود در موارد زیر المان‌های `pl-option` را به صورت صریح تعریف کنید:
 
-    * To define distractor options that are not the correct answer to any statement (an option that is always incorrect, such as "New York City" in the example above).
-    * When the option text is longer than a few words, or requires formatting (e.g., mathematical expressions, code, images, etc.). In such cases, the `pl-option` name is used to identify the correct answer, while the content of the `pl-option` element is used to display the option text. The use of `counter-type="full-text"` is not recommended in this case.
-    * When using `fixed-options-order="true"` to ensure the order of options is exactly as intended.
-    * When the statements and options are generated dynamically in `server.py`, to ensure that the correct options are always available.
+    * برای تعریف گزینه‌های انحرافی که پاسخ صحیح هیچ گزاره‌ای نیستند (گزینه‌ای که همیشه نادرست است، مانند "New York City" در مثال بالا).
+    * زمانی که متن گزینه طولانی‌تر از چند کلمه است یا نیازمند قالب‌بندی است (مثلاً عبارات ریاضی، کد، تصاویر و غیره). در چنین مواردی، ویژگی `name` در `pl-option` برای شناسایی پاسخ صحیح استفاده می‌شود، در حالی که محتوای المان `pl-option` برای نمایش متن گزینه به کار می‌رود. استفاده از `counter-type="full-text"` در این حالت توصیه نمی‌شود.
+    * هنگام استفاده از `fixed-options-order="true"` برای اطمینان از اینکه ترتیب گزینه‌ها دقیقاً همان‌گونه است که مد نظر دارید.
+    * زمانی که گزاره‌ها و گزینه‌ها به صورت پویا در `server.py` تولید می‌شوند، تا اطمینان حاصل شود که گزینه‌های صحیح همیشه در دسترس هستند.
 
-    Explicit options may be defined as the example below. Note that the `name` attribute is used to link the option to a statement's `match` attribute.
+    گزینه‌های صریح را می‌توان مطابق مثال زیر تعریف کرد. توجه داشته باشید که از ویژگی `name` برای اتصال گزینه به ویژگی `match` در گزاره استفاده می‌شود.
 
     ```html
     <pl-matching answers-name="string_value">
@@ -73,13 +73,13 @@ When the `fixed-options-order` feature is used, options are shown in the followi
     </pl-matching>
     ```
 
-A `pl-option` must be specified with these attributes:
+یک `pl-option` باید با این ویژگی‌ها مشخص شود:
 
-| Attribute | Type   | Default         | Description                                                                                                                 |
-| --------- | ------ | --------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `name`    | string | See description | A key used to match this option as the correct response to a `pl-statement`. Defaults to the inner HTML of the `pl-option`. |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `name` | string | توضیحات را ببینید | کلیدی که برای تطبیق این گزینه به عنوان پاسخ صحیح با یک `pl-statement` استفاده می‌شود. مقدار پیش‌فرض آن برابر با HTML درونی (inner HTML) المان `pl-option` است. |
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [element/matching]
 

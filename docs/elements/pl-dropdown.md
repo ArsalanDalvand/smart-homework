@@ -1,17 +1,17 @@
-# `pl-dropdown` element
+# المان `pl-dropdown`
 
-!!! warning
+!!! warning "هشدار"
 
-    Instructors are strongly encouraged to avoid `pl-dropdown` in newer questions. For questions with a single dropdown, a better alternative is to use [`pl-multiple-choice`](pl-multiple-choice.md), setting the attribute `display="dropdown"`. Using the multiple choice element provides better support for formatted option text (including Math formulas), randomized selection and ordering of options (both correct options and distractors) and partial scores for distractors. For questions using multiple dropdowns with the same set of options, the [`pl-matching`](pl-matching.md) element provides a better user experience and interface.
+    به مدرسان اکیداً توصیه می‌شود که در سوالات جدید از `pl-dropdown` استفاده نکنند. برای سوالاتی با یک منوی کشویی، جایگزین بهتر استفاده از [`pl-multiple-choice`](pl-multiple-choice.md) با تنظیم ویژگی `display="dropdown"` است. استفاده از المان چندگزینه‌ای، پشتیبانی بهتری از متن گزینه‌های قالب‌بندی‌شده (شامل فرمول‌های ریاضی)، انتخاب تصادفی و ترتیب گزینه‌ها (هم گزینه‌های صحیح و هم گزینه‌های انحرافی) و نمرات جزئی برای گزینه‌های انحرافی ارائه می‌دهد. برای سوالاتی که از چندین منوی کشویی با مجموعه یکسانی از گزینه‌ها استفاده می‌کنند، المان [`pl-matching`](pl-matching.md) رابط و تجربه کاربری بهتری را فراهم می‌سازد.
 
-Select the correct answer from a drop-down **select** menu list of potential answers. The potential options are listed in the inner HTML of a `<pl-answer></pl-answer>` element (e.g. `<pl-answer>Possible Answer 1</pl-answer>`).
+انتخاب پاسخ صحیح از یک فهرست کشویی (**select**) از پاسخ‌های بالقوه. گزینه‌های ممکن درون HTML داخلی یک المان `<pl-answer></pl-answer>` قرار می‌گیرند (مانند `<pl-answer>پاسخ ممکن ۱</pl-answer>`).
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-dropdown element](pl-dropdown.png)
+![تصویر صفحه از المان pl-dropdown](pl-dropdown.png)
 
 ```html title="question.html"
-<p>Select the correct word in the following quotes:</p>
+<p>کلمه صحیح را در نقل‌قول‌های زیر انتخاب کنید:</p>
 The
 <pl-dropdown answers-name="aristotle" blank="true">
   {{#params.aristotle}}
@@ -43,18 +43,18 @@ def generate(data):
     ]
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                                          |
-| -------------- | ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allow-blank`  | boolean | false   | Whether an empty submission is allowed. By default, empty dropdowns will not be graded (invalid format). Cannot be set to `true` when `blank="false"`.               |
-| `answers-name` | string  | —       | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question. |
-| `aria-label`   | string  | —       | An accessible label for the input.                                                                                                                                   |
-| `blank`        | boolean | true    | Option to add blank dropdown entry as default selection in drop-down list. Cannot be set to `false` when `allow-blank="true"`.                                       |
-| `sort`         | string  | random  | Options are 'random', 'ascend', and 'descend', and 'fixed' for drop-down answers.                                                                                    |
-| `weight`       | integer | 1       | Weight to use when computing a weighted average score over elements.                                                                                                 |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا ارسال خالی مجاز است یا خیر. به طور پیش‌فرض، منوهای کشویی خالی نمره‌دهی نخواهند شد (قالب نامعتبر). وقتی `blank="false"` باشد نمی‌تواند روی `true` تنظیم شود. |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید درون یک سوال یکتا باشد؛ یعنی هیچ مقداری برای این ویژگی نباید در یک سوال تکرار شود. |
+| `aria-label` | string | — | برچسب دسترس‌پذیری برای ورودی. |
+| `blank` | boolean | true | گزینه افزودن یک ورودی کشویی خالی به عنوان انتخاب پیش‌فرض در فهرست منوی کشویی. وقتی `allow-blank="true"` باشد نمی‌تواند روی `false` تنظیم شود. |
+| `sort` | string | random | گزینه‌ها برای ترتیب پاسخ‌های کشویی عبارتند از 'random' (تصادفی)، 'ascend' (صعودی)، 'descend' (نزولی) و 'fixed' (ثابت). |
+| `weight` | integer | 1 | ضریب وزنی مورد استفاده هنگام محاسبه میانگین وزنی نمره روی المان‌ها. |
 
-## Example implementation
+## پیاده‌سازی‌های نمونه
 
 - [demo/overlayDropdown]
 - [element/dropdown]

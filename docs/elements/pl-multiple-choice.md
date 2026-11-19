@@ -1,14 +1,10 @@
-# `pl-multiple-choice` element
+# المان `pl-multiple-choice`
 
-A `pl-multiple-choice` element selects **one** correct answer and zero or more
-incorrect answers and displays them in a random order as radio buttons.
-Duplicate answer choices (string equivalents) are not permitted in the
-`pl-multiple-choice` element, and an exception will be raised upon question
-generation if two (or more) choices are identical.
+المان `pl-multiple-choice` **یک** پاسخ صحیح و صفر یا چند پاسخ نادرست را انتخاب کرده و آن‌ها را با ترتیبی تصادفی در قالب دکمه‌های رادیویی (radio buttons) نمایش می‌دهد. گزینه‌های پاسخ تکراری (معادل‌های رشته‌ای یکسان) در المان `pl-multiple-choice` مجاز نیستند و در صورتی که دو (یا چند) گزینه یکسان باشند، در حین تولید سوال یک استثنا (خطا) ایجاد خواهد شد.
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-multiple-choice element](pl-multiple-choice.png)
+![تصویر المان pl-multiple-choice](pl-multiple-choice.png)
 
 ```html title="question.html"
 <pl-multiple-choice answers-name="acc" weight="1">
@@ -18,90 +14,92 @@ generation if two (or more) choices are identical.
 </pl-multiple-choice>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute                    | Type                                                 | Default                     | Description                                                                                                                                                                                                 |
-| ---------------------------- | ---------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `all-of-the-above`           | `"false"`, `"random"`, `"correct"`, or `"incorrect"` | `"false"`                   | Add `"All of the above"` choice. See below for details.                                                                                                                                                     |
-| `all-of-the-above-feedback`  | string                                               | —                           | Helper text to be displayed to the student next to the `all-of-the-above` option after question is graded if this option has been selected by the student.                                                  |
-| `allow-blank`                | boolean                                              | false                       | Whether an empty submission is allowed. If `allow-blank` is set to `true`, a submission that does not select any option will be marked as incorrect instead of invalid.                                     |
-| `answers-name`               | string                                               | —                           | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.                                        |
-| `aria-label`                 | string                                               | `"Multiple choice options"` | An accessible label for the element.                                                                                                                                                                        |
-| `builtin-grading`            | boolean                                              | true                        | Whether the element performs its own grading. If `false`, any required grading must be performed explicitly through other means. See [Disabling built-in grading](#disabling-built-in-grading) for details. |
-| `display`                    | `"block"`, `"inline"`, or `"dropdown"`               | `"block"`                   | Display option for the input field. Block and inline display answer choices as radio buttons, while dropdown presents option as a dropdown.                                                                 |
-| `hide-letter-keys`           | boolean                                              | false                       | Hide the letter keys in the answer list, i.e., (a), (b), (c), etc.                                                                                                                                          |
-| `hide-score-badge`           | boolean                                              | false                       | Hide badges next to selected answers.                                                                                                                                                                       |
-| `none-of-the-above`          | `"false"`, `"random"`, `"correct"`, or `"incorrect"` | `"false"`                   | Add `"None of the above"` choice. See below for details.                                                                                                                                                    |
-| `none-of-the-above-feedback` | string                                               | —                           | Helper text to be displayed to the student next to the `none-of-the-above` option after question is graded if this option has been selected by the student.                                                 |
-| `number-answers`             | integer                                              | See description             | The total number of answer choices to display. Defaults to displaying one correct answer and all incorrect answers.                                                                                         |
-| `order`                      | `"random"`, `"ascend"`, `"descend"`, or `"fixed"`    | `"random"`                  | Order to display answer choices. Fixed order displays choices in the same order as the original source file.                                                                                                |
-| `placeholder`                | string                                               | `"Select an option"`        | String to be used as the placeholder text when `display` is set to `"dropdown"`. Will also accept an empty string as `placeholder=""`.                                                                      |
-| `size`                       | integer                                              | —                           | Manually set the size of the dropdown to a fixed width. The default behavior is to make the dropdown as wide as the widest option. Should only be used with `display` set to `"dropdown"`.                  |
-| `weight`                     | integer                                              | 1                           | Weight to use when computing a weighted average score over elements.                                                                                                                                        |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `all-of-the-above` | `"false"`, `"random"`, `"correct"` یا `"incorrect"` | `"false"` | افزودن گزینه «همه موارد فوق» (All of the above). برای جزئیات به بخش زیر مراجعه کنید. |
+| `all-of-the-above-feedback` | string | — | متن راهنمایی که پس از نمره‌دهی سوال، در صورت انتخاب این گزینه توسط دانشجو، در کنار گزینه `all-of-the-above` به دانشجو نمایش داده می‌شود. |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا ارسال پاسخ خالی مجاز است یا خیر. اگر `allow-blank` روی `true` تنظیم شود، پاسخی که در آن هیچ گزینه‌ای انتخاب نشده باشد به جای نامعتبر (invalid)، به عنوان نادرست (incorrect) علامت‌گذاری می‌شود. |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد؛ یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود. |
+| `aria-label` | string | `"Multiple choice options"` | یک برچسب دسترس‌پذیری برای المان. |
+| `builtin-grading` | boolean | true | آیا المان نمره‌دهی خود را به طور مستقل انجام می‌دهد یا خیر. اگر `false` باشد، هرگونه نمره‌دهی لازم باید صراحتاً از طریق روش‌های دیگر انجام شود. برای جزئیات بخش [غیرفعال کردن نمره‌دهی توکار](#غیرفعال-کردن-نمره‌دهی-توکار) را ببینید. |
+| `display` | `"block"`, `"inline"` یا `"dropdown"` | `"block"` | نحوه نمایش فیلد ورودی. مقادیر `block` و `inline` گزینه‌های پاسخ را به صورت دکمه‌های رادیویی نمایش می‌دهند، در حالی که `dropdown` گزینه‌ها را در قالب یک منوی کشویی ارائه می‌کند. |
+| `hide-letter-keys` | boolean | false | پنهان کردن حروف الفبا در فهرست پاسخ‌ها، به عنوان مثال (الف)، (ب)، (ج) یا (a)، (b)، (c). |
+| `hide-score-badge` | boolean | false | پنهان کردن نشان‌های نمره در کنار پاسخ‌های انتخاب‌شده. |
+| `none-of-the-above` | `"false"`, `"random"`, `"correct"` یا `"incorrect"` | `"false"` | افزودن گزینه «هیچ‌کدام از موارد فوق» (None of the above). برای جزئیات به بخش زیر مراجعه کنید. |
+| `none-of-the-above-feedback` | string | — | متن راهنمایی که پس از نمره‌دهی سوال، در صورت انتخاب این گزینه توسط دانشجو، در کنار گزینه `none-of-the-above` به دانشجو نمایش داده می‌شود. |
+| `number-answers` | integer | توضیحات را ببینید | تعداد کل گزینه‌های پاسخی که باید نمایش داده شوند. به طور پیش‌فرض یک پاسخ صحیح و تمام پاسخ‌های نادرست نمایش داده می‌شوند. |
+| `order` | `"random"`, `"ascend"`, `"descend"` یا `"fixed"` | `"random"` | ترتیب نمایش گزینه‌های پاسخ. ترتیب ثابت (`fixed`) گزینه‌ها را به همان ترتیبی که در فایل منبع اصلی نوشته شده‌اند نمایش می‌دهد. |
+| `placeholder` | string | `"Select an option"` | رشته‌ای که به عنوان متن جایگزین (placeholder) هنگام تنظیم `display` روی `"dropdown"` استفاده می‌شود. همچنین یک رشته خالی به عنوان `placeholder=""` نیز پذیرفته می‌شود. |
+| `size` | integer | — | تنظیم دستی اندازه منوی کشویی روی یک عرض ثابت. رفتار پیش‌فرض این است که عرض منوی کشویی به اندازه عریض‌ترین گزینه تنظیم می‌شود. فقط باید همراه با مقدار `"dropdown"` برای `display` استفاده شود. |
+| `weight` | integer | 1 | ضریب وزنی مورد استفاده هنگام محاسبه میانگین نمره وزن‌دار روی المان‌ها. |
 
-### Automatically added answer choices
+### گزینه‌های پاسخی که به صورت خودکار افزوده می‌شوند
 
-The attributes `none-of-the-above` and `all-of-the-above` can be set to one of these values:
+ویژگی‌های `none-of-the-above` و `all-of-the-above` می‌توانند با یکی از مقادیر زیر تنظیم شوند:
 
-- `"false"`: the corresponding choice will not be shown in the list of choices. This is the default.
-- `"random"`: the corresponding choice will always be shown, and will be randomly correct, with probability proportional to the total number of correct choices. In other words, if there are `N` possible correct choices in total, this choice will be correct with probability `1/N`.
-- `"correct"`: the corresponding choice will always be shown and will always be the correct answer.
-- `"incorrect"`: the corresponding choice will always be shown and will always be an incorrect answer (i.e., a distractor).
+- `"false"`: گزینه متناظر در لیست گزینه‌ها نشان داده نخواهد شد. این حالت پیش‌فرض است.
+- `"random"`: گزینه متناظر همیشه نشان داده می‌شود و به صورت تصادفی، با احتمالی متناسب با تعداد کل گزینه‌های صحیح، درست خواهد بود. به عبارت دیگر، اگر در مجموع `N` گزینه صحیح ممکن وجود داشته باشد، این گزینه با احتمال `1/N` درست خواهد بود.
+- `"correct"`: گزینه متناظر همیشه نشان داده می‌شود و همواره پاسخ صحیح خواهد بود.
+- `"incorrect"`: گزینه متناظر همیشه نشان داده می‌شود و همواره یک پاسخ نادرست (یعنی یک گزینه انحرافی) خواهد بود.
 
-When enabled, "All of the above" and "None of the above" are included in the `number-answers` limit. These choices are always displayed after the other choices, regardless of the `order` setting. If both choices are shown, "All of the above" is listed before "None of the above".
+در صورت فعال بودن، "همه موارد فوق" و "هیچ‌کدام از موارد فوق" در محدودیت `number-answers` شمرده می‌شوند. این گزینه‌ها صرف‌نظر از تنظیمات `order`، همیشه پس از سایر گزینه‌ها نمایش داده می‌شوند. اگر هر دو گزینه نمایش داده شوند، "همه موارد فوق" پیش از "هیچ‌کدام از موارد فوق" قرار می‌گیرد.
 
-### Disabling built-in grading
+### غیرفعال کردن نمره‌دهی توکار
 
-Setting `builtin-grading="false"` causes the element to display choices and collect submissions without awarding any points on its own. This is useful in scenarios such as:
+تنظیم `builtin-grading="false"` باعث می‌شود المان گزینه‌ها را نمایش دهد و پاسخ‌های ارسالی را جمع‌آوری کند، بدون آنکه خود به تنهایی امتیازی اعطا نماید. این ویژگی در سناریوهایی نظیر موارد زیر کاربرد دارد:
 
-- **Survey-style questions** where there is no single correct answer.
-- **Multi-element dependencies** where the correct answer depends on other elements and must be evaluated together.
-- **Complex or manual grading** where correctness requires logic beyond simple answer matching.
+- **سوالات نظرسنجی (Survey-style)** که در آن‌ها پاسخ صحیح یگانه‌ای وجود ندارد.
+- **وابستگی‌های چندالمانه** که در آن‌ها پاسخ صحیح به سایر المان‌ها بستگی دارد و باید به صورت یکپارچه ارزیابی شوند.
+- **نمره‌دهی دستی یا پیچیده** که در آن صحت پاسخ نیازمند منطقی فراتر از تطبیق پاسخ ساده است.
 
-When `builtin-grading="false"` is set:
+هنگامی که `builtin-grading="false"` تنظیم شود:
 
-- The element does **not** require any answer to have `correct="true"`.
-- The element does **not** produce a score. To grade submissions automatically, you must supply a [`grade()` function in `server.py`](../question/server.md#step-5-grade) or be evaluated by an [external grader](../externalGrading.md). Without one, the score will be based on other gradable elements in the question (or receive a score of zero if there are no other elements).
-- The **answer panel** will not display a correct answer, even if one is marked with `correct="true"`.
-- **Score badges** are not shown by default, since no score is produced by the element.
-- The `weight` and `hide-score-badge` attributes **cannot** be used alongside `builtin-grading="false"`. Similarly, `score` and `feedback` on individual `pl-answer` children are not permitted.
-- The `all-of-the-above` and `none-of-the-above` attributes are restricted to boolean `true`/`false` when `builtin-grading="false"`. Setting them to `true` shows the option without any correctness semantics (always displayed last, always included when `number-answers` limits display). Values like `"correct"`, `"incorrect"`, or `"random"` are not allowed.
+- المان الزام **نمی‌کند** که حتماً پاسخی دارای `correct="true"` باشد.
+- المان نمره‌ای تولید **نمی‌کند**. برای نمره‌دهی خودکار پاسخ‌های ارسالی، باید یک [تابع `grade()` در `server.py`](../question/server.md#step-5-grade) ارائه دهید یا پاسخ توسط یک [مصحح خارجی](../externalGrading.md) ارزیابی شود. بدون آن، نمره بر اساس سایر المان‌های نمره‌پذیر در سوال محاسبه می‌شود (یا در صورتی که المان دیگری وجود نداشته باشد، نمره صفر دریافت می‌کند).
+- در **پانل پاسخ**، پاسخ صحیح نمایش داده نخواهد شد، حتی اگر گزینه‌ای با `correct="true"` علامت‌گذاری شده باشد.
+- **نشان‌های نمره** به طور پیش‌فرض نمایش داده نمی‌شوند، زیرا هیچ نمره‌ای توسط این المان تولید نشده است.
+- ویژگی‌های `weight` و `hide-score-badge` را **نمی‌توان** در کنار `builtin-grading="false"` استفاده کرد. به همین ترتیب، `score` و `feedback` روی المان‌های فرزند `pl-answer` مجاز نیستند.
+- ویژگی‌های `all-of-the-above` و `none-of-the-above` هنگام فعال بودن `builtin-grading="false"` به مقادیر بولی `true`/`false` محدود می‌شوند. تنظیم آن‌ها روی `true` گزینه را بدون هیچ‌گونه مفهوم صحت نمایش می‌دهد (همیشه در انتها نمایش داده می‌شود و همیشه در صورت وجود محدودیت `number-answers` گنجانده می‌شود). مقادیری مانند `"correct"`، `"incorrect"` یا `"random"` مجاز نیستند.
 
-!!! note
+!!! note "یادداشت"
 
-    Even when built-in grading is disabled, the `correct="true"` attribute on a `pl-answer` still controls which single answer is selected when the element prepares its display. If there is truly no correct answer (e.g., a survey), you can omit `correct="true"` from all choices.
+    حتی هنگامی که نمره‌دهی توکار غیرفعال است، ویژگی `correct="true"` روی یک `pl-answer` همچنان کنترل می‌کند که در زمان آماده‌سازی نمایش المان کدام پاسخ منفرد انتخاب شود. اگر واقعاً هیچ پاسخ صحیحی وجود ندارد (مثلاً در یک نظرسنجی)، می‌توانید `correct="true"` را از تمام گزینه‌ها حذف کنید.
 
-## Answer choices
+## گزینه‌های پاسخ
 
-Inside the `pl-multiple-choice` element, each choice must be specified with a `pl-answer` child element.
+در داخل المان `pl-multiple-choice`، هر گزینه باید با یک المان فرزند `pl-answer` مشخص شود.
 
-| Attribute  | Type                          | Default         | Description                                                                                                                                    |
-| ---------- | ----------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `correct`  | boolean                       | false           | Is this a correct answer to the question?                                                                                                      |
-| `feedback` | string                        | —               | Helper text (HTML) to be displayed to the student next to the option after question is graded if this option has been selected by the student. |
-| `score`    | float in the range [0.0, 1.0] | See description | Score given to answer choice if selected by student. Defaults to 1.0 for correct answers and 0.0 for incorrect answers.                        |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `correct` | boolean | false | آیا این گزینه پاسخ صحیح سوال است؟ |
+| `feedback` | string | — | متن راهنما (HTML) که پس از نمره‌دهی سوال، در صورت انتخاب این گزینه توسط دانشجو، در کنار آن گزینه به دانشجو نمایش داده می‌شود. |
+| `score` | عدد اعشاری در بازه [0.0, 1.0] | توضیحات را ببینید | نمره‌ای که در صورت انتخاب این گزینه توسط دانشجو داده می‌شود. پیش‌فرض ۱.۰ برای پاسخ‌های صحیح و ۰.۰ برای پاسخ‌های نادرست است. |
 
-### Migrating from deprecated attributes
+### مهاجرت از ویژگی‌های منسوخ‌شده
 
-The following deprecated attributes are still supported for backward compatibility:
+ویژگی‌های منسوخ‌شده زیر همچنان برای سازگاری با نسخه‌های پیشین پشتیبانی می‌شوند:
 
-| Old syntax                 | New syntax                   |
-| -------------------------- | ---------------------------- |
-| `inline="true"`            | `display="inline"`           |
-| `fixed-order="true"`       | `order="fixed"`              |
-| `all-of-the-above="true"`  | `all-of-the-above="random"`  |
+| نحو قدیمی | نحو جدید |
+| --- | --- |
+| `inline="true"` | `display="inline"` |
+| `fixed-order="true"` | `order="fixed"` |
+| `all-of-the-above="true"` | `all-of-the-above="random"` |
 | `none-of-the-above="true"` | `none-of-the-above="random"` |
 
-Defining answer choices with external JSON files via the `external-json`, `external-json-correct-key`, and `external-json-incorrect-key` attributes is also deprecated. Define answer choices inline with `pl-answer` elements instead.
+تعریف گزینه‌های پاسخ از طریق فایل‌های خارجی JSON به کمک ویژگی‌های `external-json`، `external-json-correct-key` و `external-json-incorrect-key` نیز منسوخ شده است. به جای آن، گزینه‌های پاسخ را به صورت درون‌خطی با المان‌های `pl-answer` تعریف کنید.
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [element/multipleChoice]
 - [demo/randomMultipleChoice]
 
-## See also
+## همچنین ببینید
 
-- [`pl-checkbox` for allowing **one or more** choices](pl-checkbox.md)
+- [`pl-checkbox` برای امکان انتخاب **یک یا چند** گزینه](pl-checkbox.md)
+
+---
 
 [demo/randommultiplechoice]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/randomMultipleChoice
 [element/multiplechoice]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/element/multipleChoice

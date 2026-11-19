@@ -1,11 +1,10 @@
-# `pl-number-input` element
+# المان `pl-number-input`
 
-Fill in the blank field that allows for **numeric** value input within specific
-tolerances.
+یک فیلد جای خالی برای ورود مقادیر **عددی** در محدوده تلورانس‌های مشخص.
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-number-input element with relative tolerance](pl-number-input-rtol.png)
+![تصویر المان pl-number-input با تلورانس نسبی](pl-number-input-rtol.png)
 
 ```html title="question.html"
 <pl-number-input answers-name="ans_rtol" label="$x =$"> </pl-number-input>
@@ -26,7 +25,7 @@ def generate(data):
 
 ---
 
-![Screenshot of the pl-number-input element with sigfigs](pl-number-input-sigfig.png)
+![تصویر المان pl-number-input با ارقام با معنی](pl-number-input-sigfig.png)
 
 ```html title="question.html"
 <pl-number-input answers-name="ans_sig" comparison="sigfig" digits="2" label="$x =$">
@@ -46,44 +45,44 @@ def generate(data):
     data["correct_answers"]["ans_sig"] = round(x, 2)
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute             | Type                                  | Default         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| --------------------- | ------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allow-blank`         | boolean                               | false           | Whether an empty input box is allowed. By default, empty input boxes will not be graded (invalid format).                                                                                                                                                                                                                                                                                                                                                                                         |
-| `allow-complex`       | boolean                               | false           | Whether to allow complex numbers as answers. If the correct answer is set in `server.py` as a complex object, you should use `import prairielearn as pl` and `data["correct_answers"][answers-name] = pl.to_json(ans)`.                                                                                                                                                                                                                                                                           |
-| `allow-fractions`     | boolean                               | true            | Whether to allow answers expressed as a rational number of the format `a/b`.                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `answers-name`        | string                                | —               | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.                                                                                                                                                                                                                                                                                                                              |
-| `aria-label`          | string                                | —               | An accessible label for the input.                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `atol`                | number                                | 1e-8            | Absolute tolerance for `comparison="relabs"`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `blank-value`         | string                                | 0 (zero)        | Value to be used as an answer if element is left blank. Only applied if `allow-blank` is `true`. Must be `""` (empty string) or follow the same format as an expected user input (e.g., fractions if allowed, complex numbers if allowed, etc.).                                                                                                                                                                                                                                                  |
-| `comparison`          | `"relabs"`, `"sigfig"`, or `"decdig"` | `"relabs"`      | How to grade. `"relabs"` uses relative (`rtol`) and absolute (`atol`) tolerances. `"sigfig"` and `"decdig"` use `digits` significant or decimal digits.                                                                                                                                                                                                                                                                                                                                           |
-| `correct-answer`      | float or `""`                         | See description | Correct answer for grading. Defaults to `data["correct_answers"][answers-name]`. A blank correct answer (`correct-answer=""`) is only valid when `allow-blank="true"` and `blank-value=""`.                                                                                                                                                                                                                                                                                                       |
-| `custom-format`       | string                                | See description | Custom format to use when formatting the submitted or correct answer. By default, submitted answers are shown with the format `".12g"`, while the correct answer uses `".12g"` if the comparison method is `"relabs"`, or a custom format based on the number of digits if the comparison method is `"sigfig"` or `"decdig"`. A full description of the format can be found [on the Python documentation page](https://docs.python.org/3/library/string.html#format-specification-mini-language). |
-| `digits`              | integer                               | 2               | number of digits that must be correct for `comparison="sigfig"` or `comparison="decdig"`.                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `display`             | `"block"` or `"inline"`               | `"inline"`      | How to display the input field.                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `initial-value`       | string                                | —               | Initial value to prefill the input box the first time it is rendered.                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `label`               | string                                | —               | A prefix to display before the input box (e.g., `label="$F =$"`).                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `placeholder`         | string                                | See description | Custom placeholder text. By default, the placeholder text shown is the default comparison.                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `rtol`                | number                                | 1e-2            | Relative tolerance for `comparison="relabs"`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `show-correct-answer` | boolean                               | true            | Controls whether the correct reference answer is shown in the answer panel.                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `show-help-text`      | boolean                               | true            | Show the question mark at the end of the input displaying required input parameters.                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `show-placeholder`    | boolean                               | true            | Whether to show the generated placeholder text when `placeholder` is not set.                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `show-score`          | boolean                               | true            | Whether to show the score badge next to this element.                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `size`                | integer                               | 35              | Size of the input box.                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `suffix`              | string                                | —               | A suffix to display after the input box (e.g., `suffix="$\rm m/s^2$"`).                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `weight`              | integer                               | 1               | Weight to use when computing a weighted average score over elements.                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا کادر ورودی خالی مجاز است یا خیر. به طور پیش‌فرض، کادرهای ورودی خالی نمره‌دهی نخواهند شد (فرمت نامعتبر). |
+| `allow-complex` | boolean | false | مشخص می‌کند که آیا اعداد مختلط به عنوان پاسخ مجاز هستند یا خیر. اگر پاسخ صحیح در `server.py` به صورت یک شیء مختلط تعیین شده باشد، باید از `import prairielearn as pl` و `data["correct_answers"][answers-name] = pl.to_json(ans)` استفاده کنید. |
+| `allow-fractions` | boolean | true | مشخص می‌کند که آیا پاسخ‌ها می‌توانند به صورت یک عدد گویا با قالب `a/b` بیان شوند یا خیر. |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد؛ یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود. |
+| `aria-label` | string | — | یک برچسب دسترس‌پذیری برای ورودی. |
+| `atol` | number | 1e-8 | تلورانس مطلق برای `comparison="relabs"`. |
+| `blank-value` | string | 0 (zero) | مقداری که در صورت خالی ماندن المان، به عنوان پاسخ در نظر گرفته می‌شود. تنها زمانی اعمال می‌شود که `allow-blank` برابر `true` باشد. باید `""` (رشته خالی) باشد یا از همان فرمت مورد انتظار ورودی کاربر پیروی کند (مثلاً کسرها در صورت مجاز بودن، اعداد مختلط در صورت مجاز بودن و غیره). |
+| `comparison` | `"relabs"`, `"sigfig"` یا `"decdig"` | `"relabs"` | نحوه نمره‌دهی. `"relabs"` از تلورانس‌های نسبی (`rtol`) و مطلق (`atol`) استفاده می‌کند. `"sigfig"` و `"decdig"` از ارقام با معنی یا ارقام اعشار به تعداد `digits` استفاده می‌کنند. |
+| `correct-answer` | float یا `""` | توضیحات را ببینید | پاسخ صحیح برای نمره‌دهی. مقدار پیش‌فرض آن `data["correct_answers"][answers-name]` است. یک پاسخ صحیح خالی (`correct-answer=""`) تنها زمانی معتبر است که `allow-blank="true"` و `blank-value=""` باشند. |
+| `custom-format` | string | توضیحات را ببینید | قالب سفارشی مورد استفاده هنگام قالب‌بندی پاسخ ارسالی یا صحیح. به طور پیش‌فرض، پاسخ‌های ارسالی با فرمت `".12g"` نمایش داده می‌شوند، در حالی که پاسخ صحیح در صورت استفاده از روش مقایسه `"relabs"` از فرمت `".12g"`، یا در صورت استفاده از روش مقایسه `"sigfig"` یا `"decdig"` از یک قالب سفارشی بر اساس تعداد ارقام استفاده می‌کند. توضیحات کامل قالب را می‌توان در [صفحه مستندات پایتون](https://docs.python.org/3/library/string.html#format-specification-mini-language) یافت. |
+| `digits` | integer | 2 | تعداد ارقامی که برای `comparison="sigfig"` یا `comparison="decdig"` باید صحیح باشند. |
+| `display` | `"block"` یا `"inline"` | `"inline"` | نحوه نمایش فیلد ورودی. |
+| `initial-value` | string | — | مقدار اولیه برای پر کردن پیش‌فرض کادر ورودی در اولین باری که رندر می‌شود. |
+| `label` | string | — | یک پیشوند برای نمایش قبل از کادر ورودی (به عنوان مثال، `label="$F =$"`). |
+| `placeholder` | string | توضیحات را ببینید | متن جایگزین سفارشی (placeholder). به طور پیش‌فرض، متن جایگزین نمایش‌داده‌شده بیانگر روش مقایسه پیش‌فرض است. |
+| `rtol` | number | 1e-2 | تلورانس نسبی برای `comparison="relabs"`. |
+| `show-correct-answer` | boolean | true | کنترل می‌کند که آیا پاسخ مرجع صحیح در پانل پاسخ نمایش داده شود یا خیر. |
+| `show-help-text` | boolean | true | نمایش علامت سوال در انتهای ورودی که پارامترهای ورودی مورد نیاز را نشان می‌دهد. |
+| `show-placeholder` | boolean | true | آیا متن جایگزین تولیدشده در زمانی که `placeholder` مشخص نشده است نمایش داده شود یا خیر. |
+| `show-score` | boolean | true | آیا نشان نمره در کنار این المان نمایش داده شود یا خیر. |
+| `size` | integer | 35 | اندازه کادر ورودی. |
+| `suffix` | string | — | یک پسوند برای نمایش پس از کادر ورودی (به عنوان مثال، `suffix="$\rm m/s^2$"`). |
+| `weight` | integer | 1 | ضریب وزنی مورد استفاده هنگام محاسبه میانگین نمره وزن‌دار روی المان‌ها. |
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [element/numberInput]
 - [demo/calculation]
 
-## See also
+## همچنین ببینید
 
-- [`pl-integer-input` for integer input](pl-integer-input.md)
-- [`pl-symbolic-input` for mathematical expression input](pl-symbolic-input.md)
-- [`pl-string-input` for string input](pl-string-input.md)
+- [`pl-integer-input` برای ورودی اعداد صحیح](pl-integer-input.md)
+- [`pl-symbolic-input` برای ورودی عبارت ریاضی](pl-symbolic-input.md)
+- [`pl-string-input` برای ورودی رشته‌ای](pl-string-input.md)
 
 ---
 

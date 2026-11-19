@@ -1,8 +1,8 @@
-# `pl-card` element
+# المان `pl-card`
 
-Displays question content within a card-styled component. Optionally displays a header, footer, and/or image via tag attributes.
+نمایش محتوای سوال درون کامپوننتی با استایل کارت (Card). به صورت اختیاری سربرگ (Header)، پاورقی (Footer) و/یا تصویر را از طریق ویژگی‌های تگ نمایش می‌دهد.
 
-## Sample element
+## المان نمونه
 
 ```html title="question.html"
 <pl-card
@@ -11,29 +11,29 @@ Displays question content within a card-styled component. Optionally displays a 
   width="50%"
   img-bottom-src="https://via.placeholder.com/720x480"
 >
-  <pl-question-panel> This card is 50% width and has a bottom image. </pl-question-panel>
+  <pl-question-panel> این کارت دارای عرض ۵۰٪ و یک تصویر در پایین است. </pl-question-panel>
 </pl-card>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute        | Type                                   | Default  | Description                            |
-| ---------------- | -------------------------------------- | -------- | -------------------------------------- |
-| `footer`         | string                                 | —        | Contents of the card footer.           |
-| `header`         | string                                 | —        | Contents of the card header.           |
-| `img-bottom-alt` | string                                 | —        | Alternative text for the bottom image. |
-| `img-bottom-src` | string                                 | —        | Source URL for the bottom image.       |
-| `img-top-alt`    | string                                 | —        | Alternative text for the top image.    |
-| `img-top-src`    | string                                 | —        | Source URL for the top image.          |
-| `subtitle`       | string                                 | —        | Contents of the card subtitle.         |
-| `title`          | string                                 | —        | Contents of the card title.            |
-| `width`          | `"25%"`, `"50%"`, `"75%"`, or `"auto"` | `"auto"` | Width of the card.                     |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `footer` | string | — | محتویات پاورقی کارت. |
+| `header` | string | — | محتویات سربرگ کارت. |
+| `img-bottom-alt` | string | — | متن جایگزین برای تصویر پایین. |
+| `img-bottom-src` | string | — | نشانی اینترنتی (URL) منبع تصویر پایین. |
+| `img-top-alt` | string | — | متن جایگزین برای تصویر بالا. |
+| `img-top-src` | string | — | نشانی اینترنتی (URL) منبع تصویر بالا. |
+| `subtitle` | string | — | محتویات زیرعنوان کارت. |
+| `title` | string | — | محتویات عنوان کارت. |
+| `width` | `"25%"`، `"50%"`، `"75%"`، یا `"auto"` | `"auto"` | عرض کارت. |
 
-## Details
+## جزئیات
 
-The `pl-card` attributes mirror the options of [Bootstrap cards](https://getbootstrap.com/docs/5.3/components/card/). The `header` and `footer` tag attributes can include HTML tags alongside plaintext to allow for styling of their content.
+ویژگی‌های `pl-card` منعکس‌کننده گزینه‌های [کارت‌های بوت‌استرپ (Bootstrap cards)](https://getbootstrap.com/docs/5.3/components/card/) هستند. ویژگی‌های تگ `header` و `footer` می‌توانند علاوه بر متن ساده، شامل تگ‌های HTML نیز باشند تا امکان استایل‌دهی به محتوای آن‌ها فراهم شود.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/card]
 

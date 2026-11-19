@@ -1,69 +1,66 @@
-# `pl-big-o-input` element
+# المان `pl-big-o-input`
 
-Fill in the blank field that allows for asymptotic mathematical input (i.e. big O, big Theta, etc.).
-Gives automated feedback in the case of improper asymptotic input.
+فیلد جای خالی که امکان ورود عبارات ریاضی مجانبی (مانند O بزرگ، تتا بزرگ و غیره) را فراهم می‌کند. در صورت ورود فرمت نامناسب مجانبی، بازخورد خودکار ارائه می‌دهد.
 
 ```html title="question.html"
 <pl-big-o-input answers-name="ans" variables="n" correct-answer="n**2" size="10"></pl-big-o-input>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute        | Type                                                               | Default                   | Description                                                                                                                                                                       |
-| ---------------- | ------------------------------------------------------------------ | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allow-blank`    | boolean                                                            | false                     | Whether an empty input box is allowed. By default, empty input boxes will not be graded (invalid format).                                                                         |
-| `answers-name`   | string                                                             | —                         | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.              |
-| `aria-label`     | string                                                             | —                         | An accessible label for the input.                                                                                                                                                |
-| `blank-value`    | string                                                             | 1 (one)                   | Value to be used as an answer if element is left blank. Only applied if `allow-blank` is `true`. Must be `""` (empty string) or follow the same format as an expected user input. |
-| `correct-answer` | string                                                             | —                         | Correct answer for grading. A blank correct answer (`correct-answer=""`) is only valid when `allow-blank="true"` and `blank-value=""`.                                            |
-| `display`        | `"block"` or `"inline"`                                            | `"inline"`                | How to display the input field.                                                                                                                                                   |
-| `initial-value`  | string                                                             | —                         | Initial value to prefill the input box the first time it is rendered.                                                                                                             |
-| `placeholder`    | string                                                             | `"asymptotic expression"` | Hint displayed inside the input box describing the expected type of input.                                                                                                        |
-| `show-help-text` | boolean                                                            | true                      | Show the question mark at the end of the input displaying required input parameters.                                                                                              |
-| `show-score`     | boolean                                                            | true                      | Whether to show the score badge and feedback next to this element.                                                                                                                |
-| `size`           | integer                                                            | 35                        | Size of the input box.                                                                                                                                                            |
-| `type`           | `"big-o"`, `"theta"`, `"omega"`, `"little-o"`, or `"little-omega"` | `"big-o"`                 | Type of asymptotic answer required.                                                                                                                                               |
-| `variables`      | string                                                             | —                         | A comma-delimited list of symbols that can be used in the symbolic expression. Up to 7 variables are supported. If omitted, the variables are inferred from the `correct-answer`. |
-| `weight`         | integer                                                            | 1                         | Weight to use when computing a weighted average score over elements.                                                                                                              |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا کادر ورودی خالی مجاز است یا خیر. به طور پیش‌فرض، کادرهای ورودی خالی نمره‌دهی نخواهند شد (قالب نامعتبر). |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید درون یک سوال یکتا باشد؛ یعنی هیچ مقداری برای این ویژگی نباید در یک سوال تکرار شود. |
+| `aria-label` | string | — | برچسب دسترس‌پذیری برای ورودی. |
+| `blank-value` | string | 1 (یک) | مقداری که در صورت خالی ماندن المان به عنوان پاسخ استفاده می‌شود. فقط در صورتی اعمال می‌شود که `allow-blank` برابر `true` باشد. باید `""` (رشته خالی) باشد یا از همان قالب ورودی مورد انتظار کاربر پیروی کند. |
+| `correct-answer` | string | — | پاسخ صحیح برای نمره‌دهی. پاسخ صحیح خالی (`correct-answer=""`) تنها زمانی معتبر است که `allow-blank="true"` و `blank-value=""` باشند. |
+| `display` | `"block"` یا `"inline"` | `"inline"` | نحوه نمایش فیلد ورودی. |
+| `initial-value` | string | — | مقدار اولیه برای پر کردن پیش‌فرض کادر ورودی در اولین مرتبه رندر شدن. |
+| `placeholder` | string | `"asymptotic expression"` | راهنمای نمایش داده‌شده درون کادر ورودی که نوع ورودی مورد انتظار را شرح می‌دهد. |
+| `show-help-text` | boolean | true | نمایش علامت سوال در انتهای ورودی که پارامترهای ورودی مورد نیاز را نشان می‌دهد. |
+| `show-score` | boolean | true | مشخص می‌کند که آیا نشان نمره و بازخورد در کنار این المان نمایش داده شود یا خیر. |
+| `size` | integer | 35 | اندازه (طول) کادر ورودی. |
+| `type` | `"big-o"`، `"theta"`، `"omega"`، `"little-o"`، یا `"little-omega"` | `"big-o"` | نوع پاسخ مجانبی مورد نیاز. |
+| `variables` | string | — | فهرستی از نمادها جدا شده با ویرگول که می‌توانند در عبارت نمادین استفاده شوند. حداکثر تا ۷ متغیر پشتیبانی می‌شود. در صورت حذف، متغیرها از `correct-answer` استنتاج می‌شوند. |
+| `weight` | integer | 1 | وزن مورد استفاده در محاسبه میانگین وزنی نمره المان‌ها. |
 
-### Migrating from deprecated attributes
+### مهاجرت از ویژگی‌های منسوخ‌شده
 
-The following deprecated attribute is still supported for backward compatibility:
+ویژگی منسوخ زیر همچنان به جهت سازگاری با نسخه‌های پیشین پشتیبانی می‌شود:
 
-| Old syntax           | New syntax            |
-| -------------------- | --------------------- |
+| نحو قدیمی | نحو جدید |
+| --- | --- |
 | `variable="<value>"` | `variables="<value>"` |
 
-The `variable` attribute cannot be used together with `variables`.
+ویژگی `variable` نمی‌تواند همزمان با `variables` استفاده شود.
 
-## Details
+## جزئیات
 
-Correct answers must be specified as strings with Python syntax (e.g., `n**2`, `2**n`, `n * log(n)`), with
-the same syntax as [`pl-symbolic-input`](pl-symbolic-input.md). Up to 7 variables are supported.
+پاسخ‌های صحیح باید به صورت رشته‌هایی با نحو پایتون (مثلاً `n**2`، `2**n`، `n * log(n)`)، با همان ساختار نحوی المان [`pl-symbolic-input`](pl-symbolic-input.md) مشخص شوند. حداکثر تا ۷ متغیر پشتیبانی می‌شود.
 
-When the `variables` attribute is omitted, the element infers the variables from the free symbols of the
-`correct-answer` (e.g., `correct-answer="n**2"` infers `n`).
+هنگامی که ویژگی `variables` حذف شود، المان متغیرها را از نمادهای آزادِ مقدار `correct-answer` استنتاج می‌کند (مثلاً `correct-answer="n**2"` متغیر `n` را استنتاج می‌کند).
 
-### Multivariate Limitations
+### محدودیت‌های چندمتغیره
 
-The backend to evaluating Big-O statements and providing feedback takes the limit of the student's answer against the correct answer using Sympy. Sympy only supports single variable limits, so the best approximation is to evaluate all unidirectional limits in every nested order.
-This leads to a few limitations/behaviors that should be considered when using multiple variables:
+بخش بک‌اند برای ارزیابی عبارات O بزرگ و ارائه بازخورد، حد پاسخ دانشجو را نسبت به پاسخ صحیح با استفاده از کتابخانه Sympy محاسبه می‌کند. Sympy فقط از حد تک‌متغیره پشتیبانی می‌کند، بنابراین بهترین تقریب، ارزیابی تمام حدود یک‌طرفه در هر ترتیب تودرتو است.
+این موضوع منجر به چند محدودیت و رفتار خاص می‌شود که هنگام استفاده از چند متغیر باید مد نظر قرار گیرند:
 
-- Sympy views `x*y` and `y*x` as different expressions, thus students will not be told whether their expression is unsimplified (e.g. `n^(1+1)`).
-- Expressions with mixed lower-order terms which would evaluate to a constant when the limit is taken with equal growth rates will give the feedback that the student has included "lower-order terms" instead of the mathematically possible "additional constant factors" (e.g., `x^2+2xy+y^2` over `x^2+y^2`).
-- Some expressions (usually with nested exponentials & factorials) will have unsolvable limits with Sympy, and cannot give correct partial feedback. If you require such expressions it is recommended to use `pl-symbolic-input` instead, which will only check for equality.
-- Big-O expressions with many variables will be slower, and if multiple instances of 7-variable Big-O inputs exist, the question may timeout.
+- کتابخانه Sympy دو عبارت `x*y` و `y*x` را به عنوان عبارات متفاوتی در نظر می‌گیرد، بنابراین به دانشجویان اعلام نخواهد شد که آیا عبارت آن‌ها ساده‌نشده است یا خیر (مانند `n^(1+1)`).
+- عباراتی با جملات مرتبه پایین‌تر ترکیبی که در صورت محاسبه حد با نرخ‌های رشد برابر به یک مقدار ثابت تبدیل می‌شوند، این بازخورد را می‌دهند که دانشجو «جملات مرتبه پایین‌تر» را درج کرده است، به جای عبارت از نظر ریاضی ممکنِ «ضرایب ثابت اضافی» (به عنوان مثال، `x^2+2xy+y^2` نسبت به `x^2+y^2`).
+- برخی از عبارات (معمولاً دارای عبارات نمایی و فاکتوریل تودرتو) حدود غیرقابل حلی با Sympy خواهند داشت و نمی‌توانند بازخورد جزئی درستی ارائه دهند. اگر به چنین عباراتی نیاز دارید، توصیه می‌شود به جای آن از `pl-symbolic-input` استفاده کنید که صرفاً برابری را بررسی می‌کند.
+- عبارات O بزرگ با متغیرهای زیاد کندتر عمل می‌کنند و اگر چندین نمونه از ورودی‌های O بزرگ با ۷ متغیر وجود داشته باشند، ممکن است زمان اجرای سوال به پایان برسد (Timeout رخ دهد).
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/bigOInput]
 
-## See also
+## همچنین ببینید
 
-- [`pl-number-input` for numeric input](pl-number-input.md)
-- [`pl-integer-input` for integer input](pl-integer-input.md)
-- [`pl-string-input` for string input](pl-string-input.md)
-- [`pl-symbolic-input` for mathematical expression input](pl-symbolic-input.md)
+- [`pl-number-input` برای ورودی عددی](pl-number-input.md)
+- [`pl-integer-input` برای ورودی عدد صحیح](pl-integer-input.md)
+- [`pl-string-input` برای ورودی رشته‌ای](pl-string-input.md)
+- [`pl-symbolic-input` برای ورودی عبارات ریاضی](pl-symbolic-input.md)
 
 ---
 

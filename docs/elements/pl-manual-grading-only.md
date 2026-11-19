@@ -1,30 +1,30 @@
-# `pl-manual-grading-only` element
+# المان `pl-manual-grading-only`
 
-Hide the contents so that it is **only** displayed to graders in the manual grading page, or for AI grading.
+محتوا را پنهان می‌کند به طوری که **فقط** برای مصححان در صفحه نمره‌دهی دستی، یا برای نمره‌دهی با هوش مصنوعی (AI grading) نمایش داده شود.
 
-## Sample element
+## المان نمونه
 
 ```html title="question.html"
 <pl-manual-grading-only>
-  This text will be shown to graders, but not to students.
+  این متن به مصححان نمایش داده می‌شود، اما به دانشجویان نشان داده نخواهد شد.
 </pl-manual-grading-only>
 ```
 
-## Details
+## جزئیات
 
-This element is typically used to provide either staff graders or the AI grading process with additional information that may not be presented to students. Examples may include grading instructions, sample answers, acceptable values for individual results, random parameters used in the question generation, or pre-computed values calculated in explicit `parse` functions. It is the reverse of [the `pl-hide-in-manual-grading` element](pl-hide-in-manual-grading.md), which explicitly hides content during grading. Note that, for AI grading, the content is only shown in the question panel and the answer panel, not in the submission panel.
+این المان معمولاً برای ارائه اطلاعات اضافی به مصححان دوره آموزشی یا فرآیند نمره‌دهی هوش مصنوعی استفاده می‌شود؛ اطلاعاتی که نباید به دانشجویان نمایش داده شوند. نمونه‌های کاربردی شامل دستورالعمل‌های نمره‌دهی، نمونه پاسخ‌ها، مقادیر قابل‌قبول برای نتایج مجزا، پارامترهای تصادفی استفاده‌شده در تولید سوال، یا مقادیر از پیش محاسبه‌شده در توابع صریح `parse` است. این المان عملکرد معکوس [المان `pl-hide-in-manual-grading`](pl-hide-in-manual-grading.md) دارد که صراحتاً محتوا را هنگام نمره‌دهی پنهان می‌کند. توجه داشته باشید که در نمره‌دهی هوش مصنوعی، محتوا تنها در پانل سوال (question panel) و پانل پاسخ صحیح (answer panel) نمایش داده می‌شود، نه در پانل پاسخ ارسالی (submission panel).
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [demo/manualGrade/codeUpload]
 
-## See also
+## همچنین ببینید
 
-- [`pl-hide-in-manual-grading` to hide content during manual grading.](pl-hide-in-manual-grading.md)
-- [`pl-question-panel` for displaying the question prompt.](pl-question-panel.md)
-- [`pl-submission-panel` for changing how a submitted answer is displayed.](pl-submission-panel.md)
-- [`pl-answer-panel` for displaying the question's solution.](pl-answer-panel.md)
-- [`pl-hide-in-panel` to hide contents in one or more display panels.](pl-hide-in-panel.md)
+- [`pl-hide-in-manual-grading` برای پنهان کردن محتوا حین نمره‌دهی دستی.](pl-hide-in-manual-grading.md)
+- [`pl-question-panel` برای نمایش صورت سوال.](pl-question-panel.md)
+- [`pl-submission-panel` برای تغییر نحوه نمایش پاسخ ارسالی.](pl-submission-panel.md)
+- [`pl-answer-panel` برای نمایش راه‌حل و پاسخ سوال.](pl-answer-panel.md)
+- [`pl-hide-in-panel` برای پنهان کردن محتوا در یک یا چند پانل نمایش.](pl-hide-in-panel.md)
 
 ---
 

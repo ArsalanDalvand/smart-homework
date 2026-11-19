@@ -1,14 +1,12 @@
-# `pl-external-grader-variables` element
+# المان `pl-external-grader-variables`
 
-Displays variables that are given to the student, or expected for the student to define in externally-graded Python questions.
+نمایش متغیرهایی که در اختیار دانشجو قرار می‌گیرند یا انتظار می‌رود دانشجو آن‌ها را در سوالات پایتون با نمره‌دهی خارجی تعریف کند.
 
-**We advise against using this element for any question not using the `prairielearn/grader-python` Docker image**, as the way this element stores parameters is specifically for use with that autograder. If you want to display a table of variables for a question using a different autograder, consider using a standard HTML `<table>` instead.
+**ما استفاده از این المان را برای هر سوالی که از ایمیج داکر `prairielearn/grader-python` استفاده نمی‌کند توصیه نمی‌کنیم**، زیرا نحوه ذخیره پارامترها در این المان منحصراً برای استفاده با آن مصحح خودکار طراحی شده است. اگر می‌خواهید جدولی از متغیرها را برای سوالی که از مصحح خودکار دیگری استفاده می‌کند نمایش دهید، استفاده از تگ استاندارد `<table>` در HTML را به عنوان جایگزین در نظر بگیرید.
 
-The list of variables can be defined in `data["params"]` or the question HTML itself (but not both!). If defined in the
-question HTML itself, the variable information is added to `data["params"]` for use by the external grader. If no descriptions
-are present, this column is hidden in the table shown to the student.
+فهرست متغیرها می‌تواند در `data["params"]` یا در خودِ فایل HTML سوال تعریف شود (اما نه در هر دو!). در صورت تعریف در HTML سوال، اطلاعات متغیر به `data["params"]` اضافه می‌شود تا توسط مصحح خارجی استفاده گردد. در صورتی که هیچ توضیحی ارائه نشده باشد، این ستون در جدول نمایش‌داده‌شده به دانشجو پنهان می‌شود.
 
-If stored in `data["params"]`, the variables list has the following format:
+در صورت ذخیره در `data["params"]`، فهرست متغیرها قالب زیر را دارد:
 
 ```python
 data["params"]["names_for_user"] = [
@@ -20,9 +18,9 @@ data["params"]["names_from_user"] = [
 ]
 ```
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-external-grader-variables element](pl-external-grader-variables.png)
+![تصویر صفحه از المان pl-external-grader-variables](pl-external-grader-variables.png)
 
 ```html title="question.html"
 <p>The setup code gives the following variables:</p>
@@ -49,21 +47,21 @@ def generate(data):
     ]
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute     | Type    | Default | Description                                                                                                                                 |
-| ------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `empty`       | boolean | false   | Whether the entry for the given `params-name` should be set to empty. Will throw an error if variables are defined and this is set to true. |
-| `params-name` | string  | —       | Name of variable specification in `data["params"]` to display, the format for which is given above.                                         |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `empty` | boolean | false | مشخص می‌کند که آیا ورودی برای `params-name` مشخص‌شده باید خالی تنظیم شود یا خیر. اگر متغیرها تعریف شده باشند و این مقدار روی true تنظیم گردد، خطا ایجاد خواهد شد. |
+| `params-name` | string | — | نام مشخصات متغیر در `data["params"]` جهت نمایش، که قالب آن در بالا ارائه شده است. |
 
-The HTML inside the inner `pl-variable` tag is used as the description. If the tag is empty, no description is used for the given variable. The inner `pl-variable` tag has the following attributes:
+کد HTML درون تگ داخلی `pl-variable` به عنوان توضیحات استفاده می‌شود. اگر تگ خالی باشد، هیچ توضیحی برای متغیر مربوطه استفاده نخواهد شد. تگ داخلی `pl-variable` ویژگی‌های زیر را دارد:
 
-| Attribute | Type   | Default | Description                                             |
-| --------- | ------ | ------- | ------------------------------------------------------- |
-| `name`    | string | —       | Name of the given variable. Required for all variables. |
-| `type`    | string | —       | Type of the given variable. Required for all variables. |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `name` | string | — | نام متغیر مربوطه. برای تمام متغیرها الزامی است. |
+| `type` | string | — | نوع متغیر مربوطه. برای تمام متغیرها الزامی است. |
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [demo/autograder/codeEditor]
 - [demo/autograder/codeUpload]
@@ -72,6 +70,8 @@ The HTML inside the inner `pl-variable` tag is used as the description. If the t
 - [demo/autograder/python/pandas]
 - [demo/autograder/python/plots]
 - [demo/autograder/python/random]
+
+---
 
 [demo/autograder/codeeditor]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/codeEditor
 [demo/autograder/codeupload]: https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/codeUpload

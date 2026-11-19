@@ -1,12 +1,12 @@
-# `pl-prairiedraw-figure` element
+# المان `pl-prairiedraw-figure`
 
-Create and display a prairiedraw image.
+یک تصویر به کمک ابزار prairiedraw ایجاد کرده و نمایش می‌دهد.
 
-!!! warning
+!!! warning "هشدار"
 
-    This element is **deprecated** and should not be used in new questions.
+    این المان **منسوخ شده است** (deprecated) و نباید در سوالات جدید استفاده شود.
 
-## Sample element
+## المان نمونه
 
 ```html title="question.html"
 <pl-prairiedraw-figure
@@ -17,25 +17,27 @@ Create and display a prairiedraw image.
 ></pl-prairiedraw-figure>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute     | Type    | Default | Description                                                          |
-| ------------- | ------- | ------- | -------------------------------------------------------------------- |
-| `height`      | integer | 300     | Height of the drawing element.                                       |
-| `param-names` | string  | —       | Comma-separated list of parameters to make available to PrairieDraw. |
-| `script-name` | string  | —       | Name of PrairieDraw script.                                          |
-| `width`       | integer | 500     | Width of the drawing element.                                        |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `height` | integer | 300 | ارتفاع المان رسم. |
+| `param-names` | string | — | فهرستی از پارامترهای جداشده با ویرگول انگلیسی جهت ارسال به PrairieDraw. |
+| `script-name` | string | — | نام اسکریپت PrairieDraw. |
+| `width` | integer | 500 | عرض المان رسم. |
 
-## Details
+## جزئیات
 
-The provided `script-name` corresponds to a file located within the directory for the question. Parameter names are keys stored in `data["params"]` in `server.py` (i.e., those available for templating within `question.html`).
+مقدار ارائه‌شده در `script-name` متناظر با فایلی است که در پوشه همان سوال قرار دارد. نام‌های پارامترها کلیدهایی هستند که در `data["params"]` در `server.py` ذخیره شده‌اند (یعنی همان مقادیری که برای قالب‌سازی در `question.html` در دسترس هستند).
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [element/prairieDrawFigure]
 
-## See also
+## همچنین ببینید
 
-- [PrairieDraw graphics documentation](../PrairieDraw.md)
+- [مستندات گرافیکی PrairieDraw](../PrairieDraw.md)
+
+---
 
 [element/prairiedrawfigure]: https://github.com/PrairieLearn/PrairieLearn/tree/master/testCourse/questions/prairieDrawFigure

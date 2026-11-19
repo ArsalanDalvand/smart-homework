@@ -1,212 +1,212 @@
-# Elements for `question.html`
+# المان‌های `question.html`
 
-PrairieLearn [questions](../question/overview.md) are built from `pl-*` tags inside [`question.html`](../question/template.md) ("elements"). These elements define the behavior of the question: what the student sees, what they input, and how it is graded. This page lists every element grouped by what you're trying to do. If you don't find the element / behavior you are looking for, consider using a [custom grade function](../question/server.md#step-5-grade) (recommended) or [building a custom element](../devElements.md).
+[سوالات](../question/overview.md) PrairieLearn از تگ‌های `pl-*` در درون [`question.html`](../question/template.md) («المان‌ها») ساخته می‌شوند. این المان‌ها رفتار سوال را تعریف می‌کنند: آنچه دانشجو می‌بیند، آنچه وارد می‌کند و نحوه نمره‌دهی آن. این صفحه تمامی المان‌ها را بر اساس هدفی که دنبال می‌کنید دسته‌بندی کرده است. اگر المان یا رفتار مورد نظر خود را پیدا نکردید، استفاده از یک [تابع نمره‌دهی سفارشی](../question/server.md#step-5-grade) (توصیه‌شده) یا [ساخت یک المان سفارشی](../devElements.md) را مد نظر قرار دهید.
 
-!!! tip
+!!! tip "نکته"
 
-    Already know which element you want? Use the navigation menu on the side, or see the [alphabetical reference](#reference) below.
+    از قبل می‌دانید به چه المانی نیاز دارید؟ از منوی ناوبری کناری استفاده کنید، یا [مرجع الفبایی](#reference) زیر را بررسی نمایید.
 
-The elements you choose will depend on the type and complexity of your question. A simple question may consist of a question panel prompt (using [`pl-question-panel`](pl-question-panel.md)) followed by a single [submission element](#submission-elements). For more complex prompts, you may need to include [display elements](#display-elements) such as figures, code, and sectioning. To provide additional feedback to students and graders, [additional content can be displayed conditionally](#question-flow-and-feedback) in different panels and contexts.
+المان‌هایی که انتخاب می‌کنید به نوع و پیچیدگی سوال شما بستگی دارند. یک سوال ساده ممکن است شامل صورت سوال در پانل سوال (با استفاده از [`pl-question-panel`](pl-question-panel.md)) و به دنبال آن یک [المان ارسال پاسخ](#submission-elements) منفرد باشد. برای صورت‌سوال‌های پیچیده‌تر، ممکن است نیاز به گنجاندن [المان‌های نمایش](#display-elements) مانند شکل‌ها، کد و بخش‌بندی داشته باشید. برای ارائه بازخورد بیشتر به دانشجویان و مصححان، [محتوای اضافی می‌تواند به صورت مشروط](#question-flow-and-feedback) در پانل‌ها و زمینه‌های مختلف نمایش داده شود.
 
-## Submission elements
+## المان‌های ارسال پاسخ {: #submission-elements }
 
-Submission elements collect a response from the student. Within each subsection, elements are listed in roughly the order you should reach for them.
+المان‌های ارسال پاسخ (Submission elements)، پاسخ دانشجو را جمع‌آوری می‌کنند. در هر زیربخش، المان‌ها تقریباً به ترتیبی فهرست شده‌اند که بهتر است ابتدا به سراغ آن‌ها بروید.
 
-![Top-level decision flowchart for submission elements](./element-decision-master.d2){layout="elk" pad="0" scale="1"}
+![نمودار جریان تصمیم‌گیری سطح بالا برای المان‌های ارسال پاسخ](./element-decision-master.d2){layout="elk" pad="0" scale="1"}
 
-### Selection
+### انتخاب {: #selection }
 
-When students pick or arrange items from a fixed set.
+هنگامی که دانشجویان مواردی را از یک مجموعه ثابت انتخاب کرده یا مرتب می‌کنند.
 
-- [`pl-multiple-choice`](pl-multiple-choice.md): Select one option from a list (or a dropdown).
-- [`pl-checkbox`](pl-checkbox.md): Select multiple options from a list.
-- [`pl-matching`](pl-matching.md): Select a matching option for each entry in a group.
-- [`pl-order-blocks`](pl-order-blocks.md): Select and arrange given blocks of code or text.
+- [`pl-multiple-choice`](pl-multiple-choice.md): انتخاب یک گزینه از یک فهرست (یا یک منوی کشویی).
+- [`pl-checkbox`](pl-checkbox.md): انتخاب چند گزینه از یک فهرست.
+- [`pl-matching`](pl-matching.md): انتخاب گزینه متناظر برای هر مورد در یک گروه.
+- [`pl-order-blocks`](pl-order-blocks.md): انتخاب و مرتب‌سازی بلوک‌های داده‌شده از کد یا متن.
 
-??? note "Decision flowchart"
+??? note "نمودار جریان تصمیم‌گیری"
 
-    ![Decision flowchart for selection-style input elements](./element-decision-selection.d2){layout="elk" pad="0" scale="1"}
+    ![نمودار جریان تصمیم‌گیری برای المان‌های ورودی از نوع انتخابی](./element-decision-selection.d2){layout="elk" pad="0" scale="1"}
 
-### Numeric input
+### ورودی عددی {: #numeric-input }
 
-When the response is a number — integer, decimal, value with units, or a matrix.
+هنگامی که پاسخ یک عدد است — عدد صحیح، اعشاری، مقدار همراه با یکا (واحد)، یا یک ماتریس.
 
-- [`pl-number-input`](pl-number-input.md): Fill in a numerical value within a specific tolerance such as 3.14, -1.921, and so on.
-- [`pl-integer-input`](pl-integer-input.md): Fill in an integer value such as -71, 0, 5, 21, and so on.
-- [`pl-units-input`](pl-units-input.md): Fill in a number with units such as "1.5 m", "14 ms", "6.3 ft", and so on.
-- [`pl-matrix-component-input`](pl-matrix-component-input.md): Fill in a matrix using a grid with one input per cell.
-- [`pl-matrix-input`](pl-matrix-input.md): Supply a matrix in a supported programming language format.
+- [`pl-number-input`](pl-number-input.md): وارد کردن یک مقدار عددی در محدوده تلورانس مشخص مانند 3.14، -1.921 و غیره.
+- [`pl-integer-input`](pl-integer-input.md): وارد کردن یک مقدار عدد صحیح مانند -71، 0، 5، 21 و غیره.
+- [`pl-units-input`](pl-units-input.md): وارد کردن یک عدد همراه با یکا مانند "1.5 m"، "14 ms"، "6.3 ft" و غیره.
+- [`pl-matrix-component-input`](pl-matrix-component-input.md): وارد کردن یک ماتریس با استفاده از یک جدول مشبک با یک ورودی برای هر خانه.
+- [`pl-matrix-input`](pl-matrix-input.md): ارائه یک ماتریس در قالب یکی از زبان‌های برنامه‌نویسی پشتیبانی‌شده.
 
-??? note "Decision flowchart"
+??? note "نمودار جریان تصمیم‌گیری"
 
-    ![Decision flowchart for numeric input elements](./element-decision-number.d2){layout="elk" pad="0" scale="1"}
+    ![نمودار جریان تصمیم‌گیری برای المان‌های ورودی عددی](./element-decision-number.d2){layout="elk" pad="0" scale="1"}
 
-### Text & symbolic input
+### ورودی متنی و نمادین {: #text-symbolic-input }
 
-When the response is a string, an essay, or a math expression.
+هنگامی که پاسخ یک رشته متنی، یک مقاله/پاسخ تشریحی یا یک عبارت ریاضی است.
 
-- [`pl-string-input`](pl-string-input.md): Fill in a string value such as `"Illinois"`, `"GATTACA"`, `"computer"`, and so on.
-- [`pl-rich-text-editor`](pl-rich-text-editor.md): Provide an in-browser formattable text editor for open-ended responses and essays.
-- [`pl-file-editor`](pl-file-editor.md): Provide an in-browser editor for longer-form code or raw text (also listed under [Code and files](#code-and-files)).
-- [`pl-symbolic-input`](pl-symbolic-input.md): Fill in a symbolic expression such as `x^2`, `sin(z)`, `mc^2`, and so on.
-- [`pl-big-o-input`](pl-big-o-input.md): Fill in a symbolic value representing asymptotic complexity.
+- [`pl-string-input`](pl-string-input.md): وارد کردن یک مقدار رشته‌ای مانند `"Illinois"`، `"GATTACA"`، `"computer"` و غیره.
+- [`pl-rich-text-editor`](pl-rich-text-editor.md): ارائه یک ویرایشگر متن با قابلیت قالب‌بندی درون مرورگر برای پاسخ‌های تشریحی و مقاله‌ها.
+- [`pl-file-editor`](pl-file-editor.md): ارائه یک ویرایشگر درون مرورگر برای کدهای طولانی‌تر یا متن خام (همچنین در بخش [کد و فایل‌ها](#code-and-files) فهرست شده است).
+- [`pl-symbolic-input`](pl-symbolic-input.md): وارد کردن یک عبارت نمادین ریاضی مانند `x^2`، `sin(z)`، `mc^2` و غیره.
+- [`pl-big-o-input`](pl-big-o-input.md): وارد کردن یک مقدار نمادین که نشان‌دهنده پیچیدگی مجانبی (Asymptotic complexity) است.
 
-??? note "Decision flowchart"
+??? note "نمودار جریان تصمیم‌گیری"
 
-    ![Decision flowchart for text and symbolic input elements](./element-decision-text.d2){layout="elk" pad="0" scale="1"}
+    ![نمودار جریان تصمیم‌گیری برای المان‌های ورودی متنی و نمادین](./element-decision-text.d2){layout="elk" pad="0" scale="1"}
 
-### Drawings & images
+### ترسیم‌ها و تصاویر {: #drawings-images }
 
-When the response is a drawing, diagram, or photo of handwritten work.
+هنگامی که پاسخ یک نقاشی، نمودار یا عکس از کار دست‌نویس است.
 
-- [`pl-drawing`](../pl-drawing/index.md): Create an auto-gradable canvas from a pre-defined collection of graphic objects.
-- [`pl-image-capture`](pl-image-capture.md): Capture images of handwritten work from a local camera or external device such as a phone or tablet.
-- [`pl-excalidraw`](pl-excalidraw.md): Draw a vector diagram using [Excalidraw](https://github.com/excalidraw/excalidraw).
-- [`pl-sketch`](pl-sketch.md): Auto-gradable sketches of curves and other mathematical objects (e.g., points, asymptotes, polygons).
-- [`pl-file-upload`](pl-file-upload.md): Accept an image or document produced with an external tool (also listed under [Code and files](#code-and-files)).
+- [`pl-drawing`](../pl-drawing/index.md): ایجاد یک بوم (Canvas) با قابلیت نمره‌دهی خودکار از یک مجموعه اشیاء گرافیکی از پیش تعریف‌شده.
+- [`pl-image-capture`](pl-image-capture.md): ثبت تصاویر از کارهای دست‌نویس از طریق دوربین محلی یا یک دستگاه خارجی مانند گوشی هوشمند یا تبلت.
+- [`pl-excalidraw`](pl-excalidraw.md): رسم یک نمودار برداری با استفاده از [Excalidraw](https://github.com/excalidraw/excalidraw).
+- [`pl-sketch`](pl-sketch.md): اسکچ‌ها و طرح‌های قابل نمره‌دهی خودکار از منحنی‌ها و سایر اشیاء ریاضی (مانند نقاط، خطوط مجانب، چندضلعی‌ها).
+- [`pl-file-upload`](pl-file-upload.md): پذیرش تصویر یا سندی که با یک ابزار خارجی ایجاد شده است (همچنین در بخش [کد و فایل‌ها](#code-and-files) فهرست شده است).
 
-??? note "Decision flowchart"
+??? note "نمودار جریان تصمیم‌گیری"
 
-    ![Decision flowchart for drawing input elements](./element-decision-drawing.d2){layout="elk" pad="0" scale="1"}
+    ![نمودار جریان تصمیم‌گیری برای المان‌های ورودی ترسیمی](./element-decision-drawing.d2){layout="elk" pad="0" scale="1"}
 
-### Code and files
+### کد و فایل‌ها {: #code-and-files }
 
-When the response is code or a file, written in the browser or uploaded from disk.
+هنگامی که پاسخ کد یا فایل است؛ چه در مرورگر نوشته شود و چه از روی دیسک بارگذاری گردد.
 
-- [`pl-file-upload`](pl-file-upload.md): Provide a submission area to obtain a file with a specific naming scheme.
-- [`pl-file-editor`](pl-file-editor.md): Provide an in-browser code editor for writing and submitting code.
+- [`pl-file-upload`](pl-file-upload.md): فراهم کردن ناحیه ارسال برای دریافت فایلی با یک الگوی نام‌گذاری مشخص.
+- [`pl-file-editor`](pl-file-editor.md): ارائه یک ویرایشگر کد درون مرورگر برای نوشتن و ارسال کد.
 
-For code that needs a richer environment (multiple files, a terminal, an IDE, or a build/run loop), use a [workspace](../workspaces/index.md) with the [`pl-workspace`](pl-workspace.md) element to embed the workspace launcher in the question.
+برای کدهایی که به یک محیط غنی‌تر نیاز دارند (چندین فایل، ترمینال، یک IDE، یا چرخه بیلد و اجرا)، از یک [محیط کاری (Workspace)](../workspaces/index.md) به همراه المان [`pl-workspace`](pl-workspace.md) برای تعبیه اجراکننده محیط کاری در سوال استفاده کنید.
 
-??? note "Decision flowchart"
+??? note "نمودار جریان تصمیم‌گیری"
 
-    ![Decision flowchart for code and file input elements](./element-decision-code.d2){layout="elk" pad="0" scale="1"}
+    ![نمودار جریان تصمیم‌گیری برای المان‌های ورودی کد و فایل](./element-decision-code.d2){layout="elk" pad="0" scale="1"}
 
-## Display elements
+## المان‌های نمایش {: #display-elements }
 
-Display elements render content to students — figures, code, data, files, and layout wrappers — without capturing any submission.
+المان‌های نمایش، محتوا را به دانشجویان نشان می‌دهند — اشکال، کد، داده، فایل‌ها و پوسته‌های چیدمان — بدون اینکه پاسخی را ثبت کنند.
 
-### Media & figures
+### چندرسانه‌ای و اشکال {: #media-figures }
 
-For showing images, plots, graphs, or downloadable files alongside the question.
+برای نمایش تصاویر، نمودارها، گراف‌ها یا فایل‌های قابل دانلود در کنار سوال.
 
-- [`pl-figure`](pl-figure.md): Embed an image file in the question.
-- [`pl-file-download`](pl-file-download.md): Enable file downloads for data-centric questions.
-- [`pl-graph`](pl-graph.md): Display graphs using [GraphViz DOT notation](https://graphviz.org/doc/info/lang.html), an adjacency matrix, or a [`networkx`](https://networkx.org/) graph.
+- [`pl-figure`](pl-figure.md): تعبیه یک فایل تصویری در سوال.
+- [`pl-file-download`](pl-file-download.md): فعال‌سازی دانلود فایل برای سوالات داده‌محور.
+- [`pl-graph`](pl-graph.md): نمایش گراف‌ها با استفاده از [نماد DOT در GraphViz](https://graphviz.org/doc/info/lang.html)، یک ماتریس مجاورت، یا یک گراف [`networkx`](https://networkx.org/).
 
-### Code, data & variables
+### کد، داده و متغیرها {: #code-data-variables }
 
-For showing pre-formatted code snippets, data frames, matrices, or Python variable values.
+برای نمایش قطعه‌کدهای از پیش قالب‌بندی‌شده، دیتافریم‌ها، ماتریس‌ها یا مقادیر متغیرهای پایتون.
 
-- [`pl-code`](pl-code.md): Display code rendered with the appropriate syntax highlighting.
-- [`pl-python-variable`](pl-python-variable.md): Display formatted output of Python variables.
-- [`pl-dataframe`](pl-dataframe.md): Display DataFrames with various options.
-- [`pl-matrix-latex`](pl-matrix-latex.md): Display matrices using appropriate LaTeX commands for use in a mathematical expression.
-- [`pl-variable-output`](pl-variable-output.md): Display matrices in code form for supported programming languages.
-- [`pl-external-grader-variables`](pl-external-grader-variables.md): Display expected and given variables for [questions using the Python grader](../python-grader/index.md).
+- [`pl-code`](pl-code.md): نمایش کد با رنگ‌آمیزی ساختار نحوی (Syntax highlighting) مناسب.
+- [`pl-python-variable`](pl-python-variable.md): نمایش خروجی قالب‌بندی‌شده متغیرهای پایتون.
+- [`pl-dataframe`](pl-dataframe.md): نمایش دیتافریم‌ها با گزینه‌های متنوع.
+- [`pl-matrix-latex`](pl-matrix-latex.md): نمایش ماتریس‌ها با دستورات مناسب LaTeX جهت استفاده در عبارات ریاضی.
+- [`pl-variable-output`](pl-variable-output.md): نمایش ماتریس‌ها در قالب کد برای زبان‌های برنامه‌نویسی پشتیبانی‌شده.
+- [`pl-external-grader-variables`](pl-external-grader-variables.md): نمایش متغیرهای مورد انتظار و داده‌شده برای [سوالاتی که از مصحح پایتون استفاده می‌کنند](../python-grader/index.md).
 
-### Layout & content wrappers
+### چیدمان و پوشش‌دهنده‌های محتوا {: #layout-content-wrappers }
 
-For wrapping or templating content rather than rendering a specific data type.
+برای پوشش دادن یا قالب‌بندی محتوا به جای نمایش یک نوع داده خاص.
 
-- [`pl-card`](pl-card.md): Display content within a card-styled component.
-- [`pl-template`](pl-template.md): Display content from mustache templates.
-- [`pl-overlay`](pl-overlay.md): Layer elements on top of one another at specific positions — commonly used to place input fields over a [`pl-figure`](pl-figure.md) or [`pl-drawing`](../pl-drawing/index.md) for labeled-diagram questions.
-- [`pl-hidden-hints`](pl-hidden-hints.md): Reveal hints in the question prompt progressively as a student submits more on the current variant.
+- [`pl-card`](pl-card.md): نمایش محتوا درون یک کامپوننت با استایل کارت (Card).
+- [`pl-template`](pl-template.md): نمایش محتوا از الگوهای mustache.
+- [`pl-overlay`](pl-overlay.md): لایه‌بندی المان‌ها روی یکدیگر در موقعیت‌های مشخص — معمولاً برای قرار دادن فیلدهای ورودی روی [`pl-figure`](pl-figure.md) یا [`pl-drawing`](../pl-drawing/index.md) در سوالات دارای دیاگرام برچسب‌دار استفاده می‌شود.
+- [`pl-hidden-hints`](pl-hidden-hints.md): آشکارسازی تدریجی راهنمایی‌ها در صورت سوال با افزایش دفعات ارسال پاسخ دانشجو در گونه فعلی.
 
-## Question flow and feedback
+## جریان سوال و بازخورد {: #question-flow-and-feedback }
 
-These elements determine what students see at each stage of the question lifecycle — the question prompt, the submitted answer, and any feedback shown after grading.
+این المان‌ها مشخص می‌کنند که دانشجویان در هر مرحله از چرخه حیات سوال چه چیزی را مشاهده می‌کنند — صورت سوال، پاسخ ارسالی و هرگونه بازخورد نمایش داده‌شده پس از نمره‌دهی.
 
-### Standard question panels
+### پانل‌های استاندارد سوال {: #standard-question-panels }
 
-The three primary content panels shown to students throughout the question lifecycle.
+سه پانل محتوای اصلی که در طول چرخه حیات سوال به دانشجویان نمایش داده می‌شوند.
 
-- [`pl-question-panel`](pl-question-panel.md): Content to only show in the question panel. The actual question prompt should be placed here.
-- [`pl-submission-panel`](pl-submission-panel.md): Content to only show in the submission panel. Additional feedback should be placed here.
-- [`pl-answer-panel`](pl-answer-panel.md): Content to only show in the answer panel. Additional details about the correct answer should be placed here.
+- [`pl-question-panel`](pl-question-panel.md): محتوایی که فقط در پانل سوال نمایش داده می‌شود. صورت سوال واقعی باید در اینجا قرار گیرد.
+- [`pl-submission-panel`](pl-submission-panel.md): محتوایی که فقط در پانل پاسخ ارسالی نمایش داده می‌شود. بازخورد اضافی باید در اینجا قرار گیرد.
+- [`pl-answer-panel`](pl-answer-panel.md): محتوایی که فقط در پانل پاسخ صحیح نمایش داده می‌شود. جزئیات بیشتر در مورد پاسخ صحیح باید در اینجا قرار گیرد.
 
-??? note "What the panels look like"
+??? note "شکل ظاهری پانل‌ها"
 
-    ![Question panels](../question/panels.png)
+    ![پانل‌های سوال](../question/panels.png)
 
-### Conditional visibility
+### نمایش مشروط {: #conditional-visibility }
 
-For making content appear in only some panels, or only during specific grading workflows.
+برای نمایش محتوا تنها در برخی از پانل‌ها، یا صرفاً در جریان‌های کاری خاص نمره‌دهی.
 
-- [`pl-hide-in-panel`](pl-hide-in-panel.md): Hide content in one or more display panels.
-- [`pl-hide-in-manual-grading`](pl-hide-in-manual-grading.md): Hide content in the manual grading page.
-- [`pl-manual-grading-only`](pl-manual-grading-only.md): Show content only during manual grading.
+- [`pl-hide-in-panel`](pl-hide-in-panel.md): پنهان کردن محتوا در یک یا چند پانل نمایش.
+- [`pl-hide-in-manual-grading`](pl-hide-in-manual-grading.md): پنهان کردن محتوا در صفحه نمره‌دهی دستی.
+- [`pl-manual-grading-only`](pl-manual-grading-only.md): نمایش محتوا فقط در هنگام نمره‌دهی دستی.
 
-### Submission feedback
+### بازخورد پاسخ ارسالی {: #submission-feedback }
 
-For showing what the student submitted and the results that come back from grading.
+برای نمایش آنچه دانشجو ارسال کرده و نتایج حاصل از نمره‌دهی.
 
-- [`pl-file-preview`](pl-file-preview.md): Display a preview of submitted files.
-- [`pl-xss-safe`](pl-xss-safe.md): Sanitize student-provided HTML before displaying it back to the student or grader.
-- [`pl-external-grader-results`](pl-external-grader-results.md): Display results from questions that are externally graded.
+- [`pl-file-preview`](pl-file-preview.md): نمایش پیش‌نمایش فایل‌های ارسال‌شده.
+- [`pl-xss-safe`](pl-xss-safe.md): پاک‌سازی کدهای HTML ارائه‌شده توسط دانشجو قبل از نمایش مجدد آن به دانشجو یا مصحح.
+- [`pl-external-grader-results`](pl-external-grader-results.md): نمایش نتایج حاصل از سوالاتی که به صورت خارجی نمره‌دهی می‌شوند.
 
-## Reference
+## مرجع {: #reference }
 
-| Element                                                           | Type           | Purpose                                       |
-| ----------------------------------------------------------------- | -------------- | --------------------------------------------- |
-| [`pl-answer-panel`](pl-answer-panel.md)                           | Panel          | Show only in the answer panel.                |
-| [`pl-big-o-input`](pl-big-o-input.md)                             | Submission     | Asymptotic complexity expression.             |
-| [`pl-card`](pl-card.md)                                           | Display        | Card-styled content wrapper.                  |
-| [`pl-checkbox`](pl-checkbox.md)                                   | Submission     | Select multiple options from a list/dropdown. |
-| [`pl-code`](pl-code.md)                                           | Display        | Syntax-highlighted code.                      |
-| [`pl-dataframe`](pl-dataframe.md)                                 | Display        | Render a DataFrame.                           |
-| [`pl-drawing`](../pl-drawing/index.md)                            | Submission     | Auto-gradable graphical canvas.               |
-| [`pl-dropdown`](pl-dropdown.md)                                   | **Deprecated** | See [migration](#deprecated-elements).        |
-| [`pl-excalidraw`](pl-excalidraw.md)                               | Submission     | Draw a free-form diagram via Excalidraw.      |
-| [`pl-external-grader-results`](pl-external-grader-results.md)     | Panel          | External grader output.                       |
-| [`pl-external-grader-variables`](pl-external-grader-variables.md) | Display        | Expected/given vars for external grading.     |
-| [`pl-figure`](pl-figure.md)                                       | Display        | Display an image.                             |
-| [`pl-file-download`](pl-file-download.md)                         | Display        | Provide downloadable files.                   |
-| [`pl-file-editor`](pl-file-editor.md)                             | Submission     | In-browser code editor.                       |
-| [`pl-file-preview`](pl-file-preview.md)                           | Display        | Preview submitted files.                      |
-| [`pl-file-upload`](pl-file-upload.md)                             | Submission     | Upload files by name.                         |
-| [`pl-graph`](pl-graph.md)                                         | Display        | Render a graph (DOT, networkx, adjacency).    |
-| [`pl-hidden-hints`](pl-hidden-hints.md)                           | Panel          | Reveal hints progressively.                   |
-| [`pl-hide-in-manual-grading`](pl-hide-in-manual-grading.md)       | Panel          | Hide content during manual grading.           |
-| [`pl-hide-in-panel`](pl-hide-in-panel.md)                         | Panel          | Hide content in selected panels.              |
-| [`pl-image-capture`](pl-image-capture.md)                         | Submission     | Capture image from camera or device.          |
-| [`pl-integer-input`](pl-integer-input.md)                         | Submission     | Integer value.                                |
-| [`pl-manual-grading-only`](pl-manual-grading-only.md)             | Panel          | Show only during manual grading.              |
-| [`pl-matching`](pl-matching.md)                                   | Submission     | Match each entry to an option.                |
-| [`pl-matrix-component-input`](pl-matrix-component-input.md)       | Submission     | Matrix entered cell-by-cell.                  |
-| [`pl-matrix-input`](pl-matrix-input.md)                           | Submission     | Matrix in programming language syntax.        |
-| [`pl-matrix-latex`](pl-matrix-latex.md)                           | Display        | Matrix as LaTeX.                              |
-| [`pl-multiple-choice`](pl-multiple-choice.md)                     | Submission     | Select one option from a list.                |
-| [`pl-number-input`](pl-number-input.md)                           | Submission     | Numeric value with tolerance.                 |
-| [`pl-order-blocks`](pl-order-blocks.md)                           | Submission     | Arrange blocks of code or text.               |
-| [`pl-overlay`](pl-overlay.md)                                     | Display        | Layer elements at specified positions.        |
-| [`pl-prairiedraw-figure`](pl-prairiedraw-figure.md)               | **Deprecated** | See [migration](#deprecated-elements).        |
-| [`pl-python-variable`](pl-python-variable.md)                     | Display        | Format a Python variable.                     |
-| [`pl-question-panel`](pl-question-panel.md)                       | Panel          | Show only in the question panel.              |
-| [`pl-rich-text-editor`](pl-rich-text-editor.md)                   | Submission     | Formattable text editor for essays.           |
-| [`pl-sketch`](pl-sketch.md)                                       | Submission     | Sketch curves and math objects.               |
-| [`pl-string-input`](pl-string-input.md)                           | Submission     | String value.                                 |
-| [`pl-submission-panel`](pl-submission-panel.md)                   | Panel          | Show only in the submission panel.            |
-| [`pl-symbolic-input`](pl-symbolic-input.md)                       | Submission     | Symbolic math expression.                     |
-| [`pl-template`](pl-template.md)                                   | Display        | Render a mustache template.                   |
-| [`pl-units-input`](pl-units-input.md)                             | Submission     | Number with units.                            |
-| [`pl-variable-output`](pl-variable-output.md)                     | Display        | Matrix as code in supported languages.        |
-| [`pl-variable-score`](pl-variable-score.md)                       | **Deprecated** | See [migration](#deprecated-elements).        |
-| [`pl-workspace`](pl-workspace.md)                                 | Submission     | For code that needs a richer environment.     |
-| [`pl-xss-safe`](pl-xss-safe.md)                                   | Display        | Sanitize HTML content.                        |
+| المان | نوع | هدف |
+| --- | --- | --- |
+| [`pl-answer-panel`](pl-answer-panel.md) | پانل | فقط در پانل پاسخ صحیح نمایش داده شود. |
+| [`pl-big-o-input`](pl-big-o-input.md) | ارسال پاسخ | عبارت پیچیدگی مجانبی. |
+| [`pl-card`](pl-card.md) | نمایش | پوشش‌دهنده محتوا با استایل کارت. |
+| [`pl-checkbox`](pl-checkbox.md) | ارسال پاسخ | انتخاب چند گزینه از یک فهرست/کشویی. |
+| [`pl-code`](pl-code.md) | نمایش | کد با رنگ‌آمیزی ساختار نحوی. |
+| [`pl-dataframe`](pl-dataframe.md) | نمایش | رندر یک دیتافریم (DataFrame). |
+| [`pl-drawing`](../pl-drawing/index.md) | ارسال پاسخ | بوم گرافیکی قابل نمره‌دهی خودکار. |
+| [`pl-dropdown`](pl-dropdown.md) | **منسوخ‌شده** | بخش [مهاجرت](#deprecated-elements) را ببینید. |
+| [`pl-excalidraw`](pl-excalidraw.md) | ارسال پاسخ | رسم نمودار فرم آزاد با Excalidraw. |
+| [`pl-external-grader-results`](pl-external-grader-results.md) | پانل | خروجی مصحح خارجی. |
+| [`pl-external-grader-variables`](pl-external-grader-variables.md) | نمایش | متغیرهای مورد انتظار/داده‌شده برای نمره‌دهی خارجی. |
+| [`pl-figure`](pl-figure.md) | نمایش | نمایش یک تصویر. |
+| [`pl-file-download`](pl-file-download.md) | نمایش | ارائه فایل‌های قابل دانلود. |
+| [`pl-file-editor`](pl-file-editor.md) | ارسال پاسخ | ویرایشگر کد درون مرورگر. |
+| [`pl-file-preview`](pl-file-preview.md) | نمایش | پیش‌نمایش فایل‌های ارسال‌شده. |
+| [`pl-file-upload`](pl-file-upload.md) | ارسال پاسخ | بارگذاری فایل‌ها بر اساس نام. |
+| [`pl-graph`](pl-graph.md) | نمایش | رندر یک گراف (DOT، networkx، مجاورت). |
+| [`pl-hidden-hints`](pl-hidden-hints.md) | پانل | آشکارسازی تدریجی راهنمایی‌ها. |
+| [`pl-hide-in-manual-grading`](pl-hide-in-manual-grading.md) | پانل | پنهان کردن محتوا در هنگام نمره‌دهی دستی. |
+| [`pl-hide-in-panel`](pl-hide-in-panel.md) | پانل | پنهان کردن محتوا در پانل‌های انتخابی. |
+| [`pl-image-capture`](pl-image-capture.md) | ارسال پاسخ | ثبت تصویر از دوربین یا دستگاه. |
+| [`pl-integer-input`](pl-integer-input.md) | ارسال پاسخ | مقدار عدد صحیح. |
+| [`pl-manual-grading-only`](pl-manual-grading-only.md) | پانل | نمایش فقط در هنگام نمره‌دهی دستی. |
+| [`pl-matching`](pl-matching.md) | ارسال پاسخ | تطبیق هر مورد با یک گزینه. |
+| [`pl-matrix-component-input`](pl-matrix-component-input.md) | ارسال پاسخ | ماتریس وارد شده به صورت خانه به خانه. |
+| [`pl-matrix-input`](pl-matrix-input.md) | ارسال پاسخ | ماتریس با ساختار نحوی زبان‌های برنامه‌نویسی. |
+| [`pl-matrix-latex`](pl-matrix-latex.md) | نمایش | ماتریس به صورت LaTeX. |
+| [`pl-multiple-choice`](pl-multiple-choice.md) | ارسال پاسخ | انتخاب یک گزینه از یک فهرست. |
+| [`pl-number-input`](pl-number-input.md) | ارسال پاسخ | مقدار عددی همراه با تلورانس. |
+| [`pl-order-blocks`](pl-order-blocks.md) | ارسال پاسخ | مرتب‌سازی بلوک‌های کد یا متن. |
+| [`pl-overlay`](pl-overlay.md) | نمایش | لایه‌بندی المان‌ها در موقعیت‌های مشخص. |
+| [`pl-prairiedraw-figure`](pl-prairiedraw-figure.md) | **منسوخ‌شده** | بخش [مهاجرت](#deprecated-elements) را ببینید. |
+| [`pl-python-variable`](pl-python-variable.md) | نمایش | قالب‌بندی متغیر پایتون. |
+| [`pl-question-panel`](pl-question-panel.md) | پانل | نمایش فقط در پانل سوال. |
+| [`pl-rich-text-editor`](pl-rich-text-editor.md) | ارسال پاسخ | ویرایشگر متن با قابلیت قالب‌بندی برای پاسخ‌های تشریحی. |
+| [`pl-sketch`](pl-sketch.md) | ارسال پاسخ | اسکچ منحنی‌ها و اشیاء ریاضی. |
+| [`pl-string-input`](pl-string-input.md) | ارسال پاسخ | مقدار رشته‌ای. |
+| [`pl-submission-panel`](pl-submission-panel.md) | پانل | نمایش فقط در پانل پاسخ ارسالی. |
+| [`pl-symbolic-input`](pl-symbolic-input.md) | ارسال پاسخ | عبارت ریاضی نمادین. |
+| [`pl-template`](pl-template.md) | نمایش | رندر یک الگوی mustache. |
+| [`pl-units-input`](pl-units-input.md) | ارسال پاسخ | عدد همراه با یکا (واحد). |
+| [`pl-variable-output`](pl-variable-output.md) | نمایش | ماتریس به صورت کد در زبان‌های پشتیبانی‌شده. |
+| [`pl-variable-score`](pl-variable-score.md) | **منسوخ‌شده** | بخش [مهاجرت](#deprecated-elements) را ببینید. |
+| [`pl-workspace`](pl-workspace.md) | ارسال پاسخ | برای کدهایی که به محیطی غنی‌تر نیاز دارند. |
+| [`pl-xss-safe`](pl-xss-safe.md) | نمایش | پاک‌سازی محتوای HTML. |
 
-## Deprecated elements
+## المان‌های منسوخ‌شده {: #deprecated-elements }
 
-!!! warning
+!!! warning "هشدار"
 
-    The elements below are still supported for backwards compatibility but should not be used in new questions.
+    المان‌های زیر همچنان به جهت سازگاری با نسخه‌های پیشین پشتیبانی می‌شوند، اما نباید در سوالات جدید استفاده شوند.
 
-| Element                                             | Use instead                                                                                                                                                        |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`pl-dropdown`](pl-dropdown.md)                     | [`pl-multiple-choice`](pl-multiple-choice.md) with `display="dropdown"`, or [`pl-matching`](pl-matching.md) for multiple linked dropdowns sharing the same options |
-| [`pl-prairiedraw-figure`](pl-prairiedraw-figure.md) | [`pl-drawing`](../pl-drawing/index.md)                                                                                                                             |
-| [`pl-variable-score`](pl-variable-score.md)         | Not needed, all submission elements include score display options.                                                                                                 |
+| المان | استفاده از المان جایگزین |
+| --- | --- |
+| [`pl-dropdown`](pl-dropdown.md) | [`pl-multiple-choice`](pl-multiple-choice.md) با `display="dropdown"`، یا [`pl-matching`](pl-matching.md) برای چند منوی کشویی مرتبط که گزینه‌های مشترکی دارند |
+| [`pl-prairiedraw-figure`](pl-prairiedraw-figure.md) | [`pl-drawing`](../pl-drawing/index.md) |
+| [`pl-variable-score`](pl-variable-score.md) | نیازی نیست، تمامی المان‌های ارسال پاسخ شامل گزینه‌های نمایش نمره هستند. |
 
 <!-- markdownlint-disable-next-line MD033 -->
 <script>

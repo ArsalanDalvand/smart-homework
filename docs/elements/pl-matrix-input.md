@@ -1,12 +1,10 @@
-# `pl-matrix-input` element
+# المان `pl-matrix-input`
 
-A `pl-matrix-input` element displays an input field that accepts a matrix
-(i.e., a 2-D array) expressed in a supported programming language
-format (either MATLAB or Python's numpy).
+المان `pl-matrix-input` یک فیلد ورودی را نمایش می‌دهد که یک ماتریس (یعنی یک آرایه ۲ بعدی) را در قالب یکی از زبان‌های برنامه‌نویسی پشتیبانی‌شده (متلب MATLAB یا کتابخانه numpy در پایتون Python) دریافت می‌کند.
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-matrix-input element](pl-matrix-input.png)
+![تصویر المان pl-matrix-input](pl-matrix-input.png)
 
 ```html title="question.html"
 <pl-matrix-input answers-name="matrixB" label="$B=$"></pl-matrix-input>
@@ -25,54 +23,53 @@ def generate(data):
     data["correct_answers"]["matrixB"] = pl.to_json(matrixB)
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute        | Type                                  | Default    | Description                                                                                                                                                          |
-| ---------------- | ------------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allow-complex`  | boolean                               | false      | Whether to allow complex numbers as answers.                                                                                                                         |
-| `answers-name`   | string                                | —          | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question. |
-| `aria-label`     | string                                | —          | An accessible label for the input.                                                                                                                                   |
-| `atol`           | number                                | 1e-8       | Absolute tolerance for `comparison="relabs"`.                                                                                                                        |
-| `comparison`     | `"relabs"`, `"sigfig"`, or `"decdig"` | `"relabs"` | How to grade. `"relabs"` uses relative (`rtol`) and absolute (`atol`) tolerances. `"sigfig"` and `"decdig"` use `digits` significant or decimal digits.              |
-| `digits`         | integer                               | 2          | number of digits that must be correct for `comparison="sigfig"` or `comparison="decdig"`.                                                                            |
-| `initial-value`  | string                                | —          | Initial value to prefill the input box the first time it is rendered.                                                                                                |
-| `label`          | string                                | —          | A prefix to display before the input box (e.g., `label="$F =$"`).                                                                                                    |
-| `rtol`           | number                                | 1e-2       | Relative tolerance for `comparison="relabs"`.                                                                                                                        |
-| `show-help-text` | boolean                               | true       | Show the question mark at the end of the input displaying required input parameters.                                                                                 |
-| `weight`         | integer                               | 1          | Weight to use when computing a weighted average score over elements.                                                                                                 |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-complex` | boolean | false | مشخص می‌کند که آیا اعداد مختلط به عنوان پاسخ مجاز هستند یا خیر. |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد؛ یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود. |
+| `aria-label` | string | — | یک برچسب دسترس‌پذیری برای ورودی. |
+| `atol` | number | 1e-8 | تلورانس مطلق برای `comparison="relabs"`. |
+| `comparison` | `"relabs"`, `"sigfig"` یا `"decdig"` | `"relabs"` | نحوه نمره‌دهی. `"relabs"` از تلورانس‌های نسبی (`rtol`) و مطلق (`atol`) استفاده می‌کند. `"sigfig"` و `"decdig"` از ارقام با معنی یا ارقام اعشار به تعداد `digits` استفاده می‌کنند. |
+| `digits` | integer | 2 | تعداد ارقامی که برای `comparison="sigfig"` یا `comparison="decdig"` باید صحیح باشند. |
+| `initial-value` | string | — | مقدار اولیه برای پر کردن پیش‌فرض کادر ورودی در اولین باری که رندر می‌شود. |
+| `label` | string | — | یک پیشوند برای نمایش قبل از کادر ورودی (به عنوان مثال، `label="$F =$"`). |
+| `rtol` | number | 1e-2 | تلورانس نسبی برای `comparison="relabs"`. |
+| `show-help-text` | boolean | true | نمایش علامت سوال در انتهای ورودی که پارامترهای ورودی مورد نیاز را نشان می‌دهد. |
+| `weight` | integer | 1 | ضریب وزنی مورد استفاده هنگام محاسبه میانگین نمره وزن‌دار روی المان‌ها. |
 
-## Details
+## جزئیات
 
-`pl-matrix-input` parses a matrix entered in `MATLAB` or `Python` format.
-The following are valid input format options:
+المان `pl-matrix-input` یک ماتریس واردشده در فرمت `MATLAB` یا `Python` را تجزیه (parse) می‌کند. موارد زیر گزینه‌های قالب ورودی معتبر هستند:
 
-**MATLAB format:**
+**فرمت MATLAB:**
 
 ```m
 [1.23; 4.56]
 ```
 
-**Python format:**
+**فرمت Python:**
 
 ```python
 [[1.23], [4.56]]
 ```
 
-**Note:** A scalar will be accepted either as a matrix of size 1 x 1 (e.g., `[1.23]` or `[[1.23]]`) or just as a single number (e.g., `1.23`).
+**نکته:** یک کمیت اسکالر هم به صورت ماتریسی با ابعاد ۱ × ۱ (مانند `[1.23]` یا `[[1.23]]`) و هم به صورت یک عدد تنها (مانند `1.23`) پذیرفته می‌شود.
 
-In the answer panel, a `pl-matrix-input` element displays the correct answer, allowing the user to switch between matlab and python format.
+در پانل پاسخ (answer panel)، المان `pl-matrix-input` پاسخ درست را نمایش می‌دهد و به کاربر امکان می‌دهد بین فرمت MATLAB و Python جابجا شود.
 
-In the submission panel, a `pl-matrix-input` element displays either the submitted answer (in the same format that it was submitted, either MATLAB or Python), or a note that the submitted answer was invalid (with an explanation of why).
+در پانل پاسخ ارسالی (submission panel)، المان `pl-matrix-input` پاسخ ارسال‌شده را (با همان قالبی که ارسال شده بود، متلب یا پایتون) یا یادداشتی مبنی بر نامعتبر بودن پاسخ ارسالی (به همراه توضیح دلیل آن) نمایش می‌دهد.
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [demo/matrixComplexAlgebra]
 
-## See also
+## همچنین ببینید
 
-- [`pl-matrix-component-input` for individual input boxes for each element in the matrix](pl-matrix-component-input.md)
-- [`pl-number-input` for a single numeric input](pl-number-input.md)
-- [`pl-symbolic-input` for a mathematical expression input](pl-symbolic-input.md)
+- [`pl-matrix-component-input` برای کادرهای ورودی مجزا به ازای هر درایه در ماتریس](pl-matrix-component-input.md)
+- [`pl-number-input` برای ورودی یک عدد تکی](pl-number-input.md)
+- [`pl-symbolic-input` برای ورودی عبارت ریاضی](pl-symbolic-input.md)
 
 ---
 

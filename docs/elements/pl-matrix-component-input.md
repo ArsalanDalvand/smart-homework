@@ -1,12 +1,10 @@
-# `pl-matrix-component-input` element
+# المان `pl-matrix-component-input`
 
-A `pl-matrix-component-input` element displays a grid of input fields with
-the same shape of the variable stored in `answers-name`
-(only 2D arrays of real numbers can be stored in `answers-name`).
+المان `pl-matrix-component-input` شبکه‌ای از فیلدهای ورودی را با ابعادی هم‌اندازه با متغیر ذخیره‌شده در `answers-name` نمایش می‌دهد (تنها آرایه‌های دوبعدی از اعداد حقیقی می‌توانند در `answers-name` ذخیره شوند).
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-matrix-component-input element](pl-matrix-component-input.png)
+![تصویر المان pl-matrix-component-input](pl-matrix-component-input.png)
 
 ```html title="question.html"
 <pl-matrix-component-input answers-name="matrixA" label="$A=$"></pl-matrix-component-input>
@@ -26,40 +24,40 @@ def generate(data):
     data["correct_answers"]["matrixA"] = pl.to_json(mat)
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute              | Type                                  | Default                  | Description                                                                                                                                                                                                                    |
-| ---------------------- | ------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `allow-blank`          | boolean                               | false                    | Whether empty input boxes are allowed. By default, matrices with at least one empty input box will not be graded (invalid format).                                                                                             |
-| `allow-feedback`       | boolean                               | `"allow-partial-credit"` | Whether to allow feedback indicating which matrix components are incorrect. The default value of `allow-feedback` is the value of `"allow-partial-credit"`.                                                                    |
-| `allow-fractions`      | boolean                               | true                     | Whether to allow answers expressed as a rational number of the format `a/b`.                                                                                                                                                   |
-| `allow-partial-credit` | boolean                               | false                    | Whether to allow credit for each correct matrix component. By default, the variable is graded as correct only when all matrix components are correct.                                                                          |
-| `answers-name`         | string                                | —                        | Variable name to store data in. Note that this attribute has to be unique within a question, i.e., no value for this attribute should be repeated within a question.                                                           |
-| `aria-label`           | string                                | —                        | An accessible label for the input.                                                                                                                                                                                             |
-| `atol`                 | number                                | 1e-8                     | Absolute tolerance for `comparison="relabs"`.                                                                                                                                                                                  |
-| `blank-value`          | string                                | 0 (zero)                 | Value to be used as an answer for each individual component if the component is left blank. Only applied if `allow-blank` is `true`. Must follow the same format as an expected user input (e.g., fractions if allowed, etc.). |
-| `columns`              | integer                               | —                        | Number of columns in the matrix. Required (and must be at least 1) when no correct answer is provided in `data["correct_answers"]`; otherwise the size is inferred from the correct answer.                                    |
-| `comparison`           | `"relabs"`, `"sigfig"`, or `"decdig"` | `"relabs"`               | How to grade. `"relabs"` uses relative (`rtol`) and absolute (`atol`) tolerances. `"sigfig"` and `"decdig"` use `digits` significant or decimal digits.                                                                        |
-| `digits`               | integer                               | 2                        | number of digits that must be correct for `comparison="sigfig"` or `comparison="decdig"`.                                                                                                                                      |
-| `label`                | string                                | —                        | A prefix to display before the input box (e.g., `label="$F =$"`).                                                                                                                                                              |
-| `rows`                 | integer                               | —                        | Number of rows in the matrix. Required (and must be at least 1) when no correct answer is provided in `data["correct_answers"]`; otherwise the size is inferred from the correct answer.                                       |
-| `rtol`                 | number                                | 1e-2                     | Relative tolerance for `comparison="relabs"`.                                                                                                                                                                                  |
-| `suffix`               | string                                | —                        | A suffix to display after the input box (e.g., `suffix="$\rm m/s^2$"`).                                                                                                                                                        |
-| `weight`               | integer                               | 1                        | Weight to use when computing a weighted average score over elements.                                                                                                                                                           |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `allow-blank` | boolean | false | مشخص می‌کند که آیا فیلدهای ورودی خالی مجاز هستند یا خیر. به طور پیش‌فرض، ماتریس‌هایی با حداقل یک فیلد خالی نمره‌دهی نخواهند شد (فرمت نامعتبر). |
+| `allow-feedback` | boolean | `"allow-partial-credit"` | مشخص می‌کند که آیا بازخوردی مبنی بر اینکه کدام مؤلفه‌های ماتریس نادرست هستند مجاز باشد یا خیر. مقدار پیش‌فرض `allow-feedback` همان مقدار `"allow-partial-credit"` است. |
+| `allow-fractions` | boolean | true | مشخص می‌کند که آیا پاسخ‌ها می‌توانند به صورت یک عدد گویا با قالب `a/b` بیان شوند یا خیر. |
+| `allow-partial-credit` | boolean | false | مشخص می‌کند که آیا به هر مؤلفه صحیح ماتریس نمره تعلق گیرد یا خیر. به طور پیش‌فرض، متغیر تنها زمانی صحیح نمره‌دهی می‌شود که تمام مؤلفه‌های ماتریس درست باشند. |
+| `answers-name` | string | — | نام متغیر برای ذخیره داده‌ها. توجه داشته باشید که این ویژگی باید در یک سوال یکتا باشد؛ یعنی هیچ مقداری برای این ویژگی نباید درون یک سوال تکرار شود. |
+| `aria-label` | string | — | یک برچسب دسترس‌پذیری برای ورودی. |
+| `atol` | number | 1e-8 | تلورانس مطلق برای `comparison="relabs"`. |
+| `blank-value` | string | 0 (zero) | مقداری که در صورت خالی ماندن یک مؤلفه، به عنوان پاسخ آن در نظر گرفته می‌شود. تنها زمانی اعمال می‌شود که `allow-blank` برابر `true` باشد. باید از همان فرمت مورد انتظار ورودی کاربر پیروی کند (مثلاً کسرها در صورت مجاز بودن و غیره). |
+| `columns` | integer | — | تعداد ستون‌های ماتریس. در صورتی که پاسخ صحیحی در `data["correct_answers"]` ارائه نشده باشد، الزامی است (و باید حداقل ۱ باشد)؛ در غیر این صورت اندازه ماتریس از پاسخ صحیح استنباط می‌شود. |
+| `comparison` | `"relabs"`, `"sigfig"` یا `"decdig"` | `"relabs"` | نحوه نمره‌دهی. `"relabs"` از تلورانس‌های نسبی (`rtol`) و مطلق (`atol`) استفاده می‌کند. `"sigfig"` و `"decdig"` از ارقام با معنی (بااهمیت) یا ارقام اعشار به تعداد `digits` استفاده می‌کنند. |
+| `digits` | integer | 2 | تعداد ارقامی که برای `comparison="sigfig"` یا `comparison="decdig"` باید صحیح باشند. |
+| `label` | string | — | یک پیشوند برای نمایش قبل از کادر ورودی (مانند `label="$F =$"`). |
+| `rows` | integer | — | تعداد سطرهای ماتریس. در صورتی که پاسخ صحیحی در `data["correct_answers"]` ارائه نشده باشد، الزامی است (و باید حداقل ۱ باشد)؛ در غیر این صورت اندازه ماتریس از پاسخ صحیح استنباط می‌شود. |
+| `rtol` | number | 1e-2 | تلورانس نسبی برای `comparison="relabs"`. |
+| `suffix` | string | — | یک پسوند برای نمایش بعد از کادر ورودی (مانند `suffix="$\rm m/s^2$"`). |
+| `weight` | integer | 1 | ضریب وزنی مورد استفاده هنگام محاسبه میانگین نمره وزن‌دار روی المان‌ها. |
 
-## Details
+## جزئیات
 
-The question will only be graded when all matrix components are entered, unless the `allow-blank` attribute is enabled.
+سوال تنها زمانی نمره‌دهی می‌شود که تمام مؤلفه‌های ماتریس وارد شده باشند، مگر اینکه ویژگی `allow-blank` فعال شده باشد.
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [element/matrixComponentInput]
 
-## See also
+## همچنین ببینید
 
-- [`pl-matrix-input` for a matrix formatted in an implemented programming language](pl-matrix-input.md)
-- [`pl-number-input` for a single numeric input](pl-number-input.md)
-- [`pl-symbolic-input` for a mathematical expression input](pl-symbolic-input.md)
+- [`pl-matrix-input` برای ماتریس قالب‌بندی‌شده در زبان‌های برنامه‌نویسی پیاده‌سازی‌شده](pl-matrix-input.md)
+- [`pl-number-input` برای ورودی یک عدد تکی](pl-number-input.md)
+- [`pl-symbolic-input` برای ورودی عبارت ریاضی](pl-symbolic-input.md)
 
 ---
 

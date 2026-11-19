@@ -1,13 +1,13 @@
-# `pl-excalidraw` element
+# المان `pl-excalidraw`
 
-Draw a vector diagram using [excalidraw](https://github.com/excalidraw/excalidraw).
+رسم یک نمودار برداری با استفاده از [excalidraw](https://github.com/excalidraw/excalidraw).
 
-Note that only manual grading is supported. For auto-gradable drawings, consider using [`pl-drawing`](../pl-drawing/index.md) or [`pl-sketch`](pl-sketch.md).
+توجه داشته باشید که تنها نمره‌دهی دستی پشتیبانی می‌شود. برای ترسیم‌های دارای قابلیت نمره‌دهی خودکار، استفاده از [`pl-drawing`](../pl-drawing/index.md) یا [`pl-sketch`](pl-sketch.md) را در نظر بگیرید.
 
-![Screenshot of the pl-excalidraw element](pl-excalidraw.png)
+![تصویر صفحه از المان pl-excalidraw](pl-excalidraw.png)
 
 ```html title="question.html"
-<p>Draw something else, with a starter diagram</p>
+<p>مورد دیگری را با یک دیاگرام اولیه رسم کنید</p>
 
 <pl-excalidraw
   gradable="true"
@@ -19,24 +19,24 @@ Note that only manual grading is supported. For auto-gradable drawings, consider
 ></pl-excalidraw>
 ```
 
-## Customizations
+## سفارشی‌سازی‌ها
 
-| Attribute          | Type                                                                           | Default   | Description                                                                                                             |
-| ------------------ | ------------------------------------------------------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `answers-name`     | string                                                                         | —         | Unique name to identify the widget with. Drawing submissions are saved with this name. Required when `gradable` is set. |
-| `directory`        | `"serverFilesCourse"`, `"clientFilesCourse"`, `"clientFilesQuestion"` or `"."` | `"."`     | Directory where the `"source-file-name"` is loaded from. By default, it refers to the question directory `"."`.         |
-| `gradable`         | boolean                                                                        | "true"    | Whether a diagram accepts input from the user.                                                                          |
-| `height`           | string                                                                         | `"800px"` | Height of the widget, compatible with the [CSS height][css-height-mdn] specification.                                   |
-| `source-file-name` | string                                                                         | —         | Optional file to load as the starter diagram.                                                                           |
-| `width`            | string                                                                         | `"100%"`  | Width of the widget, compatible with the [CSS width][css-width-mdn] specification.                                      |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `answers-name` | string | — | نام یکتا برای شناسایی ویجت. پاسخ‌های ارسالی ترسیمی با این نام ذخیره می‌شوند. در صورت تنظیم `gradable` الزامی است. |
+| `directory` | `"serverFilesCourse"`، `"clientFilesCourse"`، `"clientFilesQuestion"` یا `"."` | `"."` | دایرکتوری محل بارگذاری `"source-file-name"`. به طور پیش‌فرض، به دایرکتوری سوال `"."` اشاره دارد. |
+| `gradable` | boolean | "true" | مشخص می‌کند که آیا دیاگرام ورودی از سمت کاربر را می‌پذیرد یا خیر. |
+| `height` | string | `"800px"` | ارتفاع ویجت، سازگار با مشخصات [height در CSS][css-height-mdn]. |
+| `source-file-name` | string | — | فایل اختیاری برای بارگذاری به عنوان دیاگرام اولیه. |
+| `width` | string | `"100%"` | عرض ویجت، سازگار با مشخصات [width در CSS][css-width-mdn]. |
 
-The `width` and `height` attributes are used as CSS property values. Unitless numbers such as `height="900"` are invalid; use `height="900px"` for pixels.
+ویژگی‌های `width` و `height` به عنوان مقادیر ویژگی‌های CSS استفاده می‌شوند. اعداد بدون یکا مانند `height="900"` نامعتبر هستند؛ برای پیکسل از `height="900px"` استفاده کنید.
 
-## Accessibility
+## دسترس‌پذیری
 
-`pl-excalidraw` is a canvas-based drawing tool and is not fully accessible. While the toolbar can be reached with the keyboard, shapes cannot be drawn using the keyboard alone, and the drawing surface is not exposed to screen readers. See [alternatives to drawing input](../question/accessibility.md#alternatives-to-drawing-input) for other ways students can answer.
+المان `pl-excalidraw` یک ابزار ترسیم مبتنی بر Canvas است و به طور کامل دسترس‌پذیر نیست. با وجود اینکه می‌توان با صفحه کلید به نوار ابزار دسترسی پیدا کرد، اما شکل‌ها را نمی‌توان صرفاً با صفحه کلید رسم کرد و بوم ترسیم برای صفحه‌خوان‌ها قابل خواندن نیست. جهت بررسی سایر روش‌هایی که دانشجویان می‌توانند پاسخ دهند، به [جایگزین‌های ورودی ترسیمی](../question/accessibility.md#alternatives-to-drawing-input) مراجعه فرمایید.
 
-## Example implementations
+## پیاده‌سازی‌های نمونه
 
 - [element/excalidraw]
 

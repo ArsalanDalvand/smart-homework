@@ -1,10 +1,10 @@
-# `pl-overlay` element
+# المان `pl-overlay`
 
-The overlay element allows existing PrairieLearn and HTML elements to be layered on top of one another in arbitrary positions. It is most commonly used to place input fields (such as [`pl-number-input`](pl-number-input.md)) on top of a [`pl-figure`](pl-figure.md) or [`pl-drawing`](../pl-drawing/index.md) so students can fill in labels at specific positions on a diagram.
+المان لایه‌بندی (overlay) به المان‌های موجود در PrairieLearn و HTML اجازه می‌دهد تا روی یکدیگر در موقعیت‌های دلخواه چیده شوند. بیشترین کاربرد آن قرار دادن فیلدهای ورودی (مانند [`pl-number-input`](pl-number-input.md)) بر روی یک تصویر [`pl-figure`](pl-figure.md) یا رسم فنی [`pl-drawing`](../pl-drawing/index.md) است تا دانشجویان بتوانند برچسب‌ها را در موقعیت‌های خاصی از یک دیاگرام پر کنند.
 
-## Sample element
+## المان نمونه
 
-![Screenshot of the pl-overlay element](pl-overlay.png)
+![تصویر المان pl-overlay](pl-overlay.png)
 
 ```html title="question.html"
 <pl-overlay width="400" height="400" clip="false">
@@ -28,38 +28,38 @@ The overlay element allows existing PrairieLearn and HTML elements to be layered
 </pl-overlay>
 ```
 
-## `pl-overlay` Customizations
+## سفارشی‌سازی‌های `pl-overlay`
 
-| Attribute | Type    | Default | Description                                                                                |
-| --------- | ------- | ------- | ------------------------------------------------------------------------------------------ |
-| `clip`    | boolean | true    | If true, children will be cut off when exceeding overlay boundaries.                       |
-| `height`  | float   | —       | The height of the overlay canvas in pixels. Required unless a `pl-background` is provided. |
-| `width`   | float   | —       | The width of the overlay canvas in pixels. Required unless a `pl-background` is provided.  |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `clip` | boolean | true | در صورت مقدار true، فرزندانی که از مرزهای لایه‌بندی تجاوز کنند بریده می‌شوند (cut off). |
+| `height` | float | — | ارتفاع بوم (canvas) لایه‌بندی به پیکسل. الزامی است مگر اینکه `pl-background` تعیین شده باشد. |
+| `width` | float | — | عرض بوم لایه‌بندی به پیکسل. الزامی است مگر اینکه `pl-background` تعیین شده باشد. |
 
-## `pl-location` Customizations
+## سفارشی‌سازی‌های `pl-location`
 
-| Attribute | Type   | Default    | Description                                                                                                                                  |
-| --------- | ------ | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bottom`  | float  | —          | The y coordinate of the child element (relative to the bottom of the overlay)                                                                |
-| `halign`  | string | `"center"` | Specifies the horizontal alignment of the contents. Can be one of `"left"`, `"center"`, `"middle"` (equivalent to `"center"`), or `"right"`. |
-| `left`    | float  | —          | The x coordinate of the child element (relative to the left of the overlay)                                                                  |
-| `right`   | float  | —          | The x coordinate of the child element (relative to the right of the overlay)                                                                 |
-| `top`     | float  | —          | The y coordinate of the child element (relative to the top of the overlay)                                                                   |
-| `valign`  | string | `"middle"` | Specifies the vertical alignment of the contents. Can be one of `"top"`, `"middle"`, `"center"` (equivalent to `"middle"`), or `"bottom"`.   |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `bottom` | float | — | مختصات y المان فرزند (نسبت به لبه پایینی لایه‌بندی) |
+| `halign` | string | `"center"` | تراز افقی محتویات را مشخص می‌کند. می‌تواند یکی از مقادیر `"left"`، `"center"`، `"middle"` (معادل `"center"`) یا `"right"` باشد. |
+| `left` | float | — | مختصات x المان فرزند (نسبت به لبه سمت چپ لایه‌بندی) |
+| `right` | float | — | مختصات x المان فرزند (نسبت به لبه سمت راست لایه‌بندی) |
+| `top` | float | — | مختصات y المان فرزند (نسبت به لبه بالایی لایه‌بندی) |
+| `valign` | string | `"middle"` | تراز عمودی محتویات را مشخص می‌کند. می‌تواند یکی از مقادیر `"top"`، `"middle"`، `"center"` (معادل `"middle"`) یا `"bottom"` باشد. |
 
-## `pl-background` Customizations
+## سفارشی‌سازی‌های `pl-background`
 
-The `pl-background` child tag does not have any extra attributes that need to be set. All relevant positioning and sizing information is obtained from the tag's contents.
+تگ فرزند `pl-background` هیچ ویژگی اضافی که نیاز به تنظیم داشته باشد ندارد. تمام اطلاعات مربوط به موقعیت و اندازه از محتویات درون این تگ به دست می‌آید.
 
-## Details
+## جزئیات
 
-An overlay is pre-defined as a "overlay area" with a static size. By default, elements that exceed these boundaries will get partially or totally cut off.
+یک لایه‌بندی از پیش به عنوان یک "ناحیه لایه‌بندی" با اندازه ثابت تعریف می‌شود. به طور پیش‌فرض، المان‌هایی که از این مرزها فراتر روند، تا حدی یا کاملاً بریده می‌شوند.
 
-A background can be specified by wrapping HTML in a `<pl-background>` tag. If the contents of `<pl-background>` don't have a fixed size (e.g. using `<pl-figure>`, which uses a responsive width), then you should explicitly specify at least a `width` on `<pl-overlay>` to ensure that children will be displayed at the expected location no matter how big the browser viewport is. However, if the contents of `<pl-background>` have a fixed size (e.g. using `<pl-drawing width="500">`), then manually specifying a `width`/`height` on `<pl-overlay>` is not necessary.
+یک پس‌زمینه را می‌توان با قرار دادن کدهای HTML در تگ `<pl-background>` مشخص کرد. اگر محتویات `<pl-background>` اندازه ثابتی ندارند (برای مثال با استفاده از `<pl-figure>` که از عرض واکنش‌گرا استفاده می‌کند)، باید حداقل ویژگی `width` را روی `<pl-overlay>` صراحتاً تعیین کنید تا مطمئن شوید که المان‌های فرزند صرف‌نظر از اندازه پنجره مرورگر در مکان مورد نظر نمایش داده می‌شوند. اما اگر محتویات `<pl-background>` اندازه مشخص و ثابتی دارند (مانند `<pl-drawing width="500">`)، تعیین دستی `width`/`height` بر روی `<pl-overlay>` لازم نیست.
 
-Floating child elements are wrapped with a `<pl-location>` tag that specifies the position relative to some defined edge of the overlay area using `left`, `right`, `top`, and `bottom`. Each `<pl-location>` must specify exactly one of `left` or `right` and exactly one of `top` or `bottom`. Anything inside the location tag will be displayed at that position. Children are layered in the order they are specified, with later child elements being displayed on top of those defined earlier.
+المان‌های فرزند شناور درون یک تگ `<pl-location>` احاطه می‌شوند که موقعیت آن‌ها را نسبت به یک لبه مشخص از ناحیه لایه‌بندی با استفاده از ویژگی‌های `left`، `right`، `top` و `bottom` تعیین می‌کند. هر `<pl-location>` باید دقیقاً یکی از مقادیر `left` یا `right` و دقیقاً یکی از مقادیر `top` یا `bottom` را مشخص کند. هر چیزی که درون تگ موقعیت قرار گیرد در آن مکان نمایش داده خواهد شد. فرزندان به ترتیبی که در کد آمده‌اند لایه‌بندی می‌شوند و المان‌های فرزند بعدی بر روی المان‌های تعریف‌شده قبلی نمایش داده می‌شوند.
 
-## Example implementations
+## نمونه‌های پیاده‌سازی
 
 - [element/overlay]
 
