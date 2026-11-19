@@ -1,61 +1,61 @@
-# Elements for drawing
+# المان‌های رسم (Drawing)
 
-A canvas for auto-gradeable drawings.
+بومی (canvas) برای رسم‌های دارای نمره‌دهی خودکار.
 
-Note that this element does not support freehand drawings of lines/curves. For more versatile manually graded drawings, consider using [`pl-excalidraw`](../elements/pl-excalidraw.md). For auto-gradable mathematical curve sketches, consider using [`pl-sketch`](../elements/pl-sketch.md).
+توجه داشته باشید که این المان از رسم با دست آزاد (freehand) خطوط/منحنی‌ها پشتیبانی نمی‌کند. برای رسم‌های چندمنظوره‌تر با نمره‌دهی دستی، استفاده از [`pl-excalidraw`](../elements/pl-excalidraw.md) را در نظر بگیرید. برای اسکچ‌های منحنی ریاضی با نمره‌دهی خودکار، استفاده از [`pl-sketch`](../elements/pl-sketch.md) را مد نظر قرار دهید.
 
-A `pl-drawing` canvas can be used in two modes. In a display-only canvas (`gradable="false"`, the default), it renders drawing objects authored in the question. In a gradable canvas (`gradable="true"`), students place objects on the canvas and PrairieLearn grades them against objects in `pl-drawing-answer`; objects in `pl-drawing-initial` are shown but not graded.
+بوم `pl-drawing` را می‌توان در دو حالت استفاده کرد. در یک بوم فقط-نمایشی (`gradable="false"`، حالت پیش‌فرض)، اشیاء رسم ایجادشده در سوال را رندر می‌کند. در یک بوم قابل نمره‌دهی (`gradable="true"`)، دانشجویان اشیاء را روی بوم قرار می‌دهند و PrairieLearn آن‌ها را با اشیاء موجود در `pl-drawing-answer` مقایسه و نمره‌دهی می‌کند؛ اشیاء موجود در `pl-drawing-initial` نمایش داده می‌شوند اما نمره‌دهی نمی‌شوند.
 
-## Elements for display-only canvases
+## المان‌های بوم‌های فقط-نمایشی
 
-### `pl-drawing` element
+### المان `pl-drawing`
 
-A `pl-drawing` element displays a canvas, which can be used to display initial drawing objects or expect drawing objects for grading.
+المان `pl-drawing` یک بوم (canvas) را نمایش می‌دهد که می‌توان از آن برای نمایش اشیاء رسم اولیه یا انتظار اشیاء رسم جهت نمره‌دهی استفاده کرد.
 
-The system of coordinates of the canvas is located at the top/left corner, as illustrated in the image below.
+دستگاه مختصات بوم در گوشه بالا/چپ قرار دارد، همان‌طور که در تصویر زیر نشان داده شده است.
 
-![Screenshot of the pl-origin-canvas element](pl-origin-canvas.png){ width=100% style="max-width: 600px" }
+![تصویر المان pl-origin-canvas](pl-origin-canvas.png){ width=100% style="max-width: 600px" }
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing answers-name="fbd"> </pl-drawing>
 ```
 
-![Screenshot of the pl-drawing element](./pl-drawing.png){ width=100% style="max-width: 600px" }
+![تصویر المان pl-drawing](./pl-drawing.png){ width=100% style="max-width: 600px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute                  | Type    | Default                             | Description                                                                                                                                                                                                                                         |
-| -------------------------- | ------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `gradable`                 | boolean | false                               | `gradable = true` expects objects to be placed in the canvas for grading, when `gradable = false` the canvas will be used for display-only figures.                                                                                                 |
-| `answers-name`             | string  | —                                   | Variable name to store student-input data in. This variable is required when `gradable = true`. The input data will be stored in `data[“submitted_answers”][answers-name]`.                                                                         |
-| `weight`                   | integer | 1                                   | Weight to use when computing a weighted average score over elements.                                                                                                                                                                                |
-| `width`                    | float   | 580                                 | Horizontal width of the canvas (in pixels).                                                                                                                                                                                                         |
-| `height`                   | float   | 320                                 | Vertical height of the canvas (in pixels).                                                                                                                                                                                                          |
-| `grid-size`                | integer | 20                                  | Size of the square grid for the canvas background (in pixels). If `grid-size = 0`, no grid is drawn and the canvas background is transparent.                                                                                                       |
-| `snap-to-grid`             | boolean | false                               | If true, objects placed in the canvas snap to the closest grid point. Otherwise, they can be placed outside the grid.                                                                                                                               |
-| `tol`                      | float   | `0.5*grid-size`                     | Tolerance to check the position of objects (in pixels). The error is calculated as the absolute difference between expected position and submitted one.                                                                                             |
-| `angle-tol`                | float   | 10                                  | Tolerance to check angles (in degrees). The error is calculated as the absolute difference between expected angle and submitted one.                                                                                                                |
-| `show-tolerance-hint`      | boolean | true                                | Show tolerance hint under the canvas. The default is `true` when `gradable = true`.                                                                                                                                                                 |
-| `tolerance-hint`           | string  | computed from `tol` and `angle-tol` | Hint explaining the tolerance used when grading objects. By default, it is generated from the position tolerance (`tol`) and angle tolerance (`angle-tol`), e.g. "The expected tolerance is 1/2 square grid for position and 10 degrees for angle." |
-| `disregard-extra-elements` | boolean | false                               | If true, extra elements are ignored if they match the same reference object. Otherwise, multiple matching elements will reduce the awarded points.                                                                                                  |
-| `allow-blank`              | boolean | false                               | Whether a submission with no user-placed elements is allowed. By default, submissions without user-placed elements will not be graded (invalid submission).                                                                                         |
-| `hide-answer-panel`        | boolean | true                                | If true, the correct answer is not displayed in the answer panel.                                                                                                                                                                                   |
-| `show-score`               | boolean | false                               | Whether to show the score badge in a header above this element's canvas. Defaults to `false` for backwards compatibility.                                                                                                                           |
-| `aria-label`               | string  | —                                   | Text that describes the diagram. See the [accessibility section](#accessibility)                                                                                                                                                                    |
-| `aria-description`         | string  | —                                   | Text that describes the diagram in detail. See the [accessibility section](#accessibility)                                                                                                                                                          |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| -------------------------- | ------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gradable`                 | boolean | false                               | اگر `gradable = true` باشد، انتظار می‌رود اشیائی برای نمره‌دهی روی بوم قرار گیرند؛ زمانی که `gradable = false` باشد بوم فقط برای شکل‌های نمایشی استفاده خواهد شد. |
+| `answers-name`             | string  | —                                   | نام متغیر برای ذخیره داده‌های ورودی دانشجو. این متغیر در صورت `gradable = true` بودن الزامی است. داده‌های ورودی در `data["submitted_answers"][answers-name]` ذخیره خواهند شد. |
+| `weight`                   | integer | 1                                   | ضریب وزنی مورد استفاده هنگام محاسبه میانگین وزنی نمره بین المان‌ها. |
+| `width`                    | float   | 580                                 | عرض افقی بوم (به پیکسل). |
+| `height`                   | float   | 320                                 | ارتفاع عمودی بوم (به پیکسل). |
+| `grid-size`                | integer | 20                                  | اندازه شبکه شطرنجی مربع برای پس‌زمینه بوم (به پیکسل). اگر `grid-size = 0` باشد، هیچ شبکه‌ای رسم نمی‌شود و پس‌زمینه بوم شفاف خواهد بود. |
+| `snap-to-grid`             | boolean | false                               | اگر true باشد، اشیایی که روی بوم قرار می‌گیرند به نزدیک‌ترین نقطه شبکه قفل (snap) می‌شوند. در غیر این صورت، می‌توان آن‌ها را خارج از شبکه قرار داد. |
+| `tol`                      | float   | `0.5*grid-size`                     | تلرانس بررسی موقعیت اشیاء (به پیکسل). خطا به عنوان قدر مطلق تفاضل بین موقعیت مورد انتظار و موقعیت ارسالی محاسبه می‌شود. |
+| `angle-tol`                | float   | 10                                  | تلرانس بررسی زاویه‌ها (به درجه). خطا به عنوان قدر مطلق تفاضل بین زاویه مورد انتظار و زاویه ارسالی محاسبه می‌شود. |
+| `show-tolerance-hint`      | boolean | true                                | نمایش راهنمای تلرانس در زیر بوم. پیش‌فرض در صورت `gradable = true` بودن، برابر با `true` است. |
+| `tolerance-hint`           | string  | محاسبه‌شده از `tol` و `angle-tol` | راهنمایی که تلرانس استفاده‌شده هنگام نمره‌دهی اشیاء را توضیح می‌دهد. به‌طور پیش‌فرض، از تلرانس موقعیت (`tol`) و تلرانس زاویه (`angle-tol`) ایجاد می‌شود، مثلاً: «تلرانس مورد انتظار ۱/۲ خانه شطرنجی برای موقعیت و ۱۰ درجه برای زاویه است.» |
+| `disregard-extra-elements` | boolean | false                               | اگر true باشد، در صورتی که المان‌های اضافی با همان شیء مرجع مطابقت داشته باشند نادیده گرفته می‌شوند. در غیر این صورت، المان‌های مطابقِ متعدد، نمره اعطاشده را کاهش می‌دهند. |
+| `allow-blank`              | boolean | false                               | این که آیا ارسال پاسخ بدون المان‌های قرار داده شده توسط کاربر مجاز است یا خیر. به‌طور پیش‌فرض، پاسخ‌های ارسالی بدون المان‌های قرار داده شده توسط کاربر نمره‌دهی نخواهند شد (ارسال نامعتبر). |
+| `hide-answer-panel`        | boolean | true                                | اگر true باشد، پاسخ صحیح در پنل پاسخ نمایش داده نمی‌شود. |
+| `show-score`               | boolean | false                               | این که آیا نشان نمره در یک هدر بالای بوم این المان نمایش داده شود یا خیر. برای سازگاری با نسخه‌های پیشین، پیش‌فرض `false` است. |
+| `aria-label`               | string  | —                                   | متنی که نمودار را توصیف می‌کند. بخش [دسترس‌پذیری](#accessibility) را ببینید. |
+| `aria-description`         | string  | —                                   | متنی که نمودار را با جزئیات توصیف می‌کند. بخش [دسترس‌پذیری](#accessibility) را ببینید. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/centroid]: Gradable drawing with `weight`, `allow-blank`, and `show-score`
-- [element/drawingGallery]: Image gallery with drawing objects
+- [demo/drawing/centroid]: رسم قابل نمره‌دهی با `weight`، `allow-blank` و `show-score`
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-### `pl-drawing-initial` element
+### المان `pl-drawing-initial`
 
-A `pl-drawing-initial` will group objects that will be displayed in the canvas defined by `pl-drawing`.
+المان `pl-drawing-initial` اشیائی را که در بوم تعریف‌شده توسط `pl-drawing` نمایش داده خواهند شد، گروه‌بندی می‌کند.
 
-For example, `pl-drawing-initial` can be used to create figures that are displayed as part of the question body:
+به‌عنوان مثال، `pl-drawing-initial` می‌تواند برای ایجاد شکل‌هایی که به عنوان بخشی از بدنه سوال نمایش داده می‌شوند، استفاده شود:
 
 ```html
 <pl-drawing grid-size="0">
@@ -65,17 +65,17 @@ For example, `pl-drawing-initial` can be used to create figures that are display
 </pl-drawing>
 ```
 
-![Screenshot of the pl-drawing-initial element](pl-I.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-drawing-initial](pl-I.png){ width=100% style="max-width: 300px" }
 
-For use in gradable canvases, see the `pl-drawing-initial` section under [Elements for gradable canvases](#elements-for-gradable-canvases).
+برای استفاده در بوم‌های قابل نمره‌دهی، بخش `pl-drawing-initial` را در زیر [المان‌های بوم‌های قابل نمره‌دهی](#elements-for-gradable-canvases) ببینید.
 
-## Elements for gradable canvases
+## المان‌های بوم‌های قابل نمره‌دهی
 
-### Gradable canvas example
+### نمونه بوم قابل نمره‌دهی
 
-The element `pl-drawing-answer` is required for gradable canvases, but there are other elements as well that can be helpful. The example below illustrates typical parts of a gradable canvas.
+المان `pl-drawing-answer` برای بوم‌های قابل نمره‌دهی الزامی است، اما المان‌های دیگری نیز وجود دارند که می‌توانند مفید باشند. مثال زیر بخش‌های معمول یک بوم قابل نمره‌دهی را نشان می‌دهد.
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing grid-size="20" gradable="true" answers-name="box" width="320">
@@ -105,27 +105,27 @@ The element `pl-drawing-answer` is required for gradable canvases, but there are
 </pl-drawing>
 ```
 
-![Screenshot of the pl-drawing-group element](pl-vector-grading-canvas-example.png){ width=100% style="max-width: 500px" }
+![تصویر المان pl-drawing-group](pl-vector-grading-canvas-example.png){ width=100% style="max-width: 500px" }
 
-### `pl-drawing-answer` element
+### المان `pl-drawing-answer`
 
-This element will wrap all the elements that will be graded (checked for correctness).
+این المان تمام المان‌هایی را که نمره‌دهی خواهند شد (از نظر درستی بررسی می‌شوند) در بر می‌گیرد.
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute        | Type    | Default | Description                                                                                                                                           |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | ---------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `draw-error-box` | boolean | false   | When `true`, the objects that are placed inside `pl-drawing-answer` will be displayed with their respective error bounding boxes in the answer panel. |
+| `draw-error-box` | boolean | false   | وقتی `true` باشد، اشیائی که درون `pl-drawing-answer` قرار می‌گیرند با جعبه‌های مرزی خطای مربوط به خود در پنل پاسخ نمایش داده می‌شوند. |
 
-Set this attribute on `pl-drawing-answer` to display error boxes for all graded objects in the answer panel. Object-level `draw-error-box` settings on supported objects inside `pl-drawing-answer` override this parent setting for that object.
+این مشخصه را روی `pl-drawing-answer` تنظیم کنید تا جعبه‌های خطا برای تمام اشیاء نمره‌گذاری‌شده در پنل پاسخ نمایش داده شوند. تنظیمات `draw-error-box` در سطح شیء روی اشیاء پشتیبانی‌شده درون `pl-drawing-answer`، این تنظیم والد را برای آن شیء بازنویسی (override) می‌کنند.
 
-In the example above, `pl-vector` is the only object that is graded. The corresponding answer panel is given as:
+در مثال بالا، `pl-vector` تنها شیئی است که نمره‌دهی می‌شود. پنل پاسخ متناظر به صورت زیر است:
 
-![Screenshot of the pl-drawing-answer element](pl-vector-correct-answer.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-drawing-answer](pl-vector-correct-answer.png){ width=100% style="max-width: 300px" }
 
-### `pl-drawing-initial` element
+### المان `pl-drawing-initial`
 
-This element wraps initial objects that should appear in a gradable canvas but should not be graded. Objects inside `pl-drawing-initial` are not graded, while objects inside `pl-drawing-answer` are graded. The objects from `pl-drawing-initial` and `pl-drawing-answer` are combined when showing the correct answer in the correct panel.
+این المان اشیاء اولیه‌ای را در بر می‌گیرد که باید در یک بوم قابل نمره‌دهی ظاهر شوند اما نباید نمره‌دهی شوند. اشیاء داخل `pl-drawing-initial` نمره‌دهی نمی‌شوند، در حالی که اشیاء داخل `pl-drawing-answer` نمره‌دهی می‌شوند. هنگام نمایش پاسخ صحیح در پنل پاسخ صحیح، اشیاء `pl-drawing-initial` و `pl-drawing-answer` با یکدیگر ترکیب می‌شوند.
 
 ```html
 <pl-drawing gradable="true" answers-name="add-objects">
@@ -138,18 +138,17 @@ This element wraps initial objects that should appear in a gradable canvas but s
 </pl-drawing>
 ```
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute        | Type    | Default | Description                                                                                                                                            |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | ---------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `draw-error-box` | boolean | false   | When `true`, the objects that are placed inside `pl-drawing-initial` will be displayed with their respective error bounding boxes in the answer panel. |
+| `draw-error-box` | boolean | false   | وقتی `true` باشد، اشیائی که درون `pl-drawing-initial` قرار می‌گیرند با جعبه‌های مرزی خطای مربوط به خود در پنل پاسخ نمایش داده می‌شوند. |
 
-The final version of a question should not have the attribute `draw-error-box`. However, this attribute can be helpful during the process of creating a question. Authors have the option of starting the gradable canvas including all the objects in `pl-drawing-initial` with
-`draw-error-box=true`, to see how the graded objects are placed in the canvas, and if the default tolerances are reasonable for the specific question, or if adjustments are needed. Once the question is completed, the objects that are expected to be graded can be removed from `pl-drawing-initial` and added to `pl-drawing-answer`. The author can decide if the students should see the error box when the correct answer is displayed. By default, `draw-error-box="false"`.
+نسخه نهایی یک سوال نباید مشخصه `draw-error-box` را داشته باشد. با این حال، این مشخصه می‌تواند در طول فرآیند ایجاد سوال مفید باشد. طراحان سوال این امکان را دارند که بوم قابل نمره‌دهی را با قرار دادن تمام اشیاء در `pl-drawing-initial` به همراه `draw-error-box=true` شروع کنند، تا ببینند اشیاء نمره‌گذاری‌شده چگونه روی بوم قرار می‌گیرند و آیا تلرانس‌های پیش‌فرض برای سوال خاص معقول هستند یا نیاز به تنظیمات دارند. پس از تکمیل سوال، اشیائی که انتظار می‌رود نمره‌دهی شوند را می‌توان از `pl-drawing-initial` حذف کرده و به `pl-drawing-answer` اضافه نمود. طراح سوال می‌تواند تصمیم بگیرد که آیا دانشجویان هنگام نمایش پاسخ صحیح باید جعبه خطا را ببینند یا خیر. به‌طور پیش‌فرض، `draw-error-box="false"` است.
 
-### `pl-controls` element
+### المان `pl-controls`
 
-The element `pl-controls` will add the buttons that allow students to place objects in the canvas. The element `pl-controls-group` can be used to group buttons that have similar properties, for example, graded and non-graded objects.
+المان `pl-controls` دکمه‌هایی را اضافه می‌کند که به دانشجویان اجازه می‌دهند اشیاء را روی بوم قرار دهند. المان `pl-controls-group` می‌تواند برای گروه‌بندی دکمه‌هایی با خصوصیات مشابه، به عنوان مثال اشیاء نمره‌دار و بدون نمره، استفاده شود.
 
 ```html
 <pl-controls>
@@ -162,60 +161,60 @@ The element `pl-controls` will add the buttons that allow students to place obje
 </pl-controls>
 ```
 
-The `pl-controls` element requires only one attribute, `type`, which corresponds with an element name defined above. When a user clicks on the control button, the element will be generated with all of its default values. To override any default, any attribute that can be set on the element to be created (that which is specified in `type`) can be added to `pl-controls` as an optional attribute. (See `demoDrawingCustomizedButtons` below for an example)
+المان `pl-controls` تنها به یک مشخصه نیاز دارد: `type`، که با نام یک المان تعریف‌شده در بالا مطابقت دارد. هنگامی که کاربر روی دکمه کنترلی کلیک می‌کند، المان با تمام مقادیر پیش‌فرض خود تولید خواهد شد. برای بازنویسی هر مقدار پیش‌فرض، هر مشخصه‌ای که بتوان روی المان در حال ایجاد (آنچه در `type` مشخص شده است) تنظیم کرد، می‌تواند به عنوان یک مشخصه اختیاری به `pl-controls` اضافه شود. (برای مثال به `demoDrawingCustomizedButtons` در زیر مراجعه کنید)
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-The example [demo/drawing/gradeVector] illustrates all the `pl-drawing-button`s that have grading routines implemented.
+مثال [demo/drawing/gradeVector] تمام `pl-drawing-button`هایی را نشان می‌دهد که روتین‌های نمره‌دهی برای آن‌ها پیاده‌سازی شده است.
 
-The example [demo/drawing/buttons] illustrates all the `pl-drawing-button`s that can create placeable objects.
+مثال [demo/drawing/buttons] تمام `pl-drawing-button`هایی را نشان می‌دهد که می‌توانند اشیاء قابل قرارگیری ایجاد کنند.
 
-The example [demo/drawing/customizedButtons] illustrates how custom objects can be generated via buttons.
+مثال [demo/drawing/customizedButtons] نشان می‌دهد که چگونه اشیاء سفارشی را می‌توان از طریق دکمه‌ها تولید کرد.
 
-![Screenshot of all the pl-drawing-button elements](pl-all-buttons.png){ width=100% style="max-width: 500px" }
+![تصویر تمام المان‌های pl-drawing-button](pl-all-buttons.png){ width=100% style="max-width: 500px" }
 
-### `pl-drawing-buttons` element
+### المان‌های `pl-drawing-buttons`
 
-#### Insert a point
+#### درج یک نقطه
 
 ```html
 <pl-drawing-button type="pl-point"></pl-drawing-button>
 ```
 
-This button adds a point to the canvas. The grading algorithm will check if the submitted point is within the error box. By default, the error box for `pl-point` is a square centered at the correct point, with side of length `tol = 0.5*grid-size`. The tolerance `tol` is an attribute of `pl-drawing` to make sure that all elements use the same tolerance.
+این دکمه یک نقطه را به بوم اضافه می‌کند. الگوریتم نمره‌دهی بررسی می‌کند که آیا نقطه ارسالی درون جعبه خطا قرار دارد یا خیر. به‌طور پیش‌فرض، جعبه خطا برای `pl-point` یک مربع به مرکز نقطه صحیح است که طول ضلع آن `tol = 0.5*grid-size` می‌باشد. تلرانس `tol` مشخصه‌ای از `pl-drawing` است تا اطمینان حاصل شود همه المان‌ها از تلرانس یکسانی استفاده می‌کنند.
 
-![Screenshot of the pl-drawing-button set to pl-point](pl-point-error-box.png){ width=100% style="max-width: 200px" }
+![تصویر pl-drawing-button تنظیم‌شده روی pl-point](pl-point-error-box.png){ width=100% style="max-width: 200px" }
 
-#### Insert a vector
+#### درج یک بردار
 
 ```html
 <pl-drawing-button type="pl-vector"></pl-drawing-button>
 ```
 
-This button adds a vector to the canvas. A vector is marked as correct when the position of the anchor point (tail of the vector) is within the error bounding box and the absolute error of the angle is less than `angle-tol`.
+این دکمه یک بردار را به بوم اضافه می‌کند. یک بردار زمانی درست علامت‌گذاری می‌شود که موقعیت نقطه لنگر (انتهای/دم بردار) درون جعبه مرزی خطا باشد و خطای مطلق زاویه کمتر از `angle-tol` باشد.
 
-By default, the error box for `pl-vector` is a rectangle aligned with direction of the vector. The width of the rectangle is `tol` and the height is `hb + hf`, as illustrated below. `hb = offset-backward + tol` and `hf = offset-forward + tol`. The attribute `offset-backward` is set to the length of the vector by default. The attribute `offset-forward` is set to zero by default. The tolerances `tol` and `angle-tol` are attributes of `pl-drawing` to make sure that all elements use the same tolerance.
+به‌طور پیش‌فرض، جعبه خطا برای `pl-vector` یک مستطیل هم‌راستا با جهت بردار است. عرض مستطیل `tol` و ارتفاع آن `hb + hf` است، همان‌طور که در تصویر زیر نشان داده شده است. `hb = offset-backward + tol` و `hf = offset-forward + tol`. مشخصه `offset-backward` به‌طور پیش‌فرض برابر با طول بردار تنظیم شده است. مشخصه `offset-forward` به‌طور پیش‌فرض صفر تنظیم شده است. تلرانس‌های `tol` و `angle-tol` مشخصه‌های `pl-drawing` هستند تا اطمینان حاصل شود که تمام المان‌ها از تلرانس یکسانی استفاده می‌کنند.
 
-![Screenshot showing an error box for a pl-vector element](pl-vector-error-box.png){ width=100% style="max-width: 300px" }
+![تصویر نشان‌دهنده جعبه خطا برای المان pl-vector](pl-vector-error-box.png){ width=100% style="max-width: 300px" }
 
-If the orientation of the vector is not important, so that vectors `p` and `-p` are both considered correct, the attribute `disregard-sense` should be set to `true`.
+اگر جهت‌گیری (سَمت) بردار اهمیتی نداشته باشد، به طوری که هر دو بردار `p` و `-p` درست در نظر گرفته شوند، مشخصه `disregard-sense` باید روی `true` تنظیم شود.
 
-If a vector is expected as a correct answer, but the author does not want to assign a grade to it, the attribute `optional-grading` can be set to `true`. In this case, the grading algorithm will not assign points to the vector, but will not penalize students either by considering it as extra objects.
+اگر یک بردار به عنوان پاسخ صحیح مورد انتظار باشد، اما طراح سوال نخواهد به آن نمره‌ای اختصاص دهد، مشخصه `optional-grading` را می‌توان روی `true` تنظیم کرد. در این حالت، الگوریتم نمره‌دهی امتیازی به بردار اختصاص نمی‌دهد، اما با شیء اضافی در نظر گرفتن آن نیز دانشجویان را جریمه نمی‌کند.
 
-#### Insert an arc vector
+#### درج یک بردار کمانی
 
 ```html
 <pl-drawing-button type="pl-arc-vector-CCW"></pl-drawing-button>
 <pl-drawing-button type="pl-arc-vector-CW"></pl-drawing-button>
 ```
 
-This button adds an arc vector to the canvas. The arc vector is marked as correct when the position of the anchor point (center of the arc vector) is within the error bounding box and the orientation is correct.
+این دکمه یک بردار کمانی را به بوم اضافه می‌کند. بردار کمانی زمانی به عنوان درست علامت‌گذاری می‌شود که موقعیت نقطه لنگر (مرکز بردار کمانی) درون جعبه مرزی خطا باشد و جهت‌گیری آن درست باشد.
 
-By default, the error box for `pl-arc-vector` is a square centered at the anchor point, with side of length `tol = 0.5*grid-size`. The tolerance `tol` is an attribute of `pl-drawing` to make sure that all elements use the same tolerance.
+به‌طور پیش‌فرض، جعبه خطا برای `pl-arc-vector` یک مربع با مرکزیت نقطه لنگر است که طول ضلع آن `tol = 0.5*grid-size` می‌باشد. تلرانس `tol` مشخصه‌ای از `pl-drawing` است تا اطمینان حاصل شود که تمام المان‌ها از تلرانس یکسانی استفاده می‌کنند.
 
-If the orientation of the arc vector is not important (both clockwise and counter-clockwise orientations are accepted), the attribute `disregard-sense` should be set to `true`.
+اگر جهت بردار کمانی اهمیتی نداشته باشد (هر دو جهت ساعت‌گرد و پادساعت‌گرد پذیرفته شوند)، مشخصه `disregard-sense` باید روی `true` تنظیم شود.
 
-#### Insert a distributed load
+#### درج یک بار گسترده
 
 ```html
 <pl-drawing-button type="pl-distributed-load" w1="20" anchor-is-tail="true"></pl-drawing-button>
@@ -223,35 +222,35 @@ If the orientation of the arc vector is not important (both clockwise and counte
 <pl-drawing-button type="pl-distributed-load"></pl-drawing-button>
 ```
 
-This button adds a distributed load to the canvas. A distributed load is marked as correct when the position of the anchor point (center of the baseline) is within the error bounding box, the absolute error of the angle is less than `angle-tol`, the absolute error of the range (interval) is less than `tol`, and the expected distribution is matched (if uniform, `w1 = w2` and for triangular load, `w1>w2` or `w2>w1` from submitted answer match the correct answer).
+این دکمه یک بار گسترده را به بوم اضافه می‌کند. بار گسترده زمانی به عنوان درست علامت‌گذاری می‌شود که موقعیت نقطه لنگر (مرکز خط مبنا) درون جعبه مرزی خطا باشد، خطای مطلق زاویه کمتر از `angle-tol` باشد، خطای مطلق دامنه (بازه) کمتر از `tol` باشد، و توزیع مورد انتظار تطابق داشته باشد (اگر یکنواخت باشد، `w1 = w2`، و برای بار مثلثی، `w1>w2` یا `w2>w1` از پاسخ ارسالی با پاسخ صحیح مطابقت داشته باشد).
 
-The error box for `pl-distributed-load` is defined in the same way as `pl-vector` but considering the anchor point as the center of the baseline. If the orientation of the distributed load is not important, the attribute `disregard-sense` should be set to `true`.
+جعبه خطا برای `pl-distributed-load` به همان روش `pl-vector` تعریف می‌شود با این تفاوت که نقطه لنگر به عنوان مرکز خط مبنا در نظر گرفته می‌شود. اگر جهت‌گیری بار گسترده اهمیتی نداشته باشد، مشخصه `disregard-sense` باید روی `true` تنظیم شود.
 
-For many questions, it will be necessary to fine-tune the error bounding box by setting the attributes `offset-forward` and `offset-backward`. Suitable values depend on the context of the question, for instance the dimension of the beam in the direction of the distributed load.
+برای بسیاری از سوالات، تنظیم دقیق جعبه مرزی خطا با تنظیم مشخصه‌های `offset-forward` و `offset-backward` ضروری خواهد بود. مقادیر مناسب به زمینه سوال بستگی دارد، برای مثال ابعاد تیر در جهت بار گسترده.
 
-#### Insert a "help" line
+#### درج یک خط «راهنما» (Help Line)
 
 ```html
 <pl-drawing-button type="help-line"></pl-drawing-button>
 ```
 
-This button will add a line to the canvas that is not graded, but can be used by students to facilitate the placement of other objects.
+این دکمه خطی را به بوم اضافه می‌کند که نمره‌دهی نمی‌شود، اما دانشجویان می‌توانند از آن برای تسهیل قرار دادن سایر اشیاء استفاده کنند.
 
-#### Delete any object previously placed in the canvas
+#### حذف هر شیئی که پیش‌تر روی بوم قرار گرفته است
 
 ```html
 <pl-drawing-button type="delete"></pl-drawing-button>
 ```
 
-This button deletes objects that were previously placed on the canvas.
+این دکمه اشیائی را که قبلاً روی بوم قرار داده شده‌اند حذف می‌کند.
 
-## Organizational and formatting elements
+## المان‌های سازمانی و قالب‌بندی
 
-### `pl-coordinates` element
+### المان `pl-coordinates`
 
-A `pl-coordinates` element adds a 2D system of coordinates.
+المان `pl-coordinates` یک دستگاه مختصات دوبعدی اضافه می‌کند.
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -261,39 +260,38 @@ A `pl-coordinates` element adds a 2D system of coordinates.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-coordinates element](pl-coordinates.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-coordinates](pl-coordinates.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute           | Type   | Default | Description                                                                                                                                                             |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | ------------------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                | float  | 40      | `x` position of the origin of the coordinate system w.r.t the origin of the canvas (top/left corner), i.e., the horizontal distance from the left border of the canvas. |
-| `y1`                | float  | 40      | `y` position of the origin of the coordinate system w.r.t the origin of the canvas (top/left corner), i.e., the vertical distance from the top border of the canvas.    |
-| `width`             | float  | 30      | Length of the arrow vector.                                                                                                                                             |
-| `angle`             | float  | 0       | Angle of the coordinate system. Angle is positive when clockwise orientation.                                                                                           |
-| `label`             | string | -       | Text to label the center of the coordinate system                                                                                                                       |
-| `offsetx`           | float  | -16     | Horizontal distance of `label` from the origin of the coordinate system.                                                                                                |
-| `offsety`           | float  | -10     | Vertical distance of `label` from the origin of the coordinate system.                                                                                                  |
-| `label-x`           | string | x       | Text to label the horizontal arrow vector (x-axis)                                                                                                                      |
-| `offsetx-label-x`   | float  | 0       | Horizontal distance of `label-x` from the tip of the horizontal arrow vector (x-axis).                                                                                  |
-| `offsety-label-x`   | float  | 0       | Vertical distance of `label-x` from the tip of the horizontal arrow vector (x-axis).                                                                                    |
-| `label-y`           | string | y       | Text to label the vertical arrow vector (y-axis)                                                                                                                        |
-| `offsetx-label-y`   | float  | -20     | Horizontal distance of `label-y` from the tip of the vertical arrow vector (y-axis).                                                                                    |
-| `offsety-label-y`   | float  | -10     | Vertical distance of `label-y` from the tip of the vertical arrow vector (y-axis).                                                                                      |
-| `color`             | string | black   | Set the color of the coordinate system ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) )            |
-| `stroke-width`      | float  | 2       | Set the width of the stroke.                                                                                                                                            |
-| `arrow-head-width`  | float  | 1       | Scale factor for the width of the arrow head.                                                                                                                           |
-| `arrow-head-length` | float  | 1       | Scale factor for the length of the arrow head.                                                                                                                          |
+| `x1`                | float  | 40      | موقعیت `x` مبدأ دستگاه مختصات نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1`                | float  | 40      | موقعیت `y` مبدأ دستگاه مختصات نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `width`             | float  | 30      | طول بردار پیکان. |
+| `angle`             | float  | 0       | زاویه دستگاه مختصات. زاویه در جهت ساعت‌گرد مثبت است. |
+| `label`             | string | -       | متن برای برچسب‌گذاری مرکز دستگاه مختصات. |
+| `offsetx`           | float  | -16     | فاصله افقی `label` از مبدأ دستگاه مختصات. |
+| `offsety`           | float  | -10     | فاصله عمودی `label` از مبدأ دستگاه مختصات. |
+| `label-x`           | string | x       | متن برای برچسب‌گذاری بردار پیکان افقی (محور x). |
+| `offsetx-label-x`   | float  | 0       | فاصله افقی `label-x` از نوک بردار پیکان افقی (محور x). |
+| `offsety-label-x`   | float  | 0       | فاصله عمودی `label-x` از نوک بردار پیکان افقی (محور x). |
+| `label-y`           | string | y       | متن برای برچسب‌گذاری بردار پیکان عمودی (محور y). |
+| `offsetx-label-y`   | float  | -20     | فاصله افقی `label-y` از نوک بردار پیکان عمودی (محور y). |
+| `offsety-label-y`   | float  | -10     | فاصله عمودی `label-y` از نوک بردار پیکان عمودی (محور y). |
+| `color`             | string | black   | تنظیم رنگ دستگاه مختصات ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width`      | float  | 2       | تنظیم ضخامت خط. |
+| `arrow-head-width`  | float  | 1       | ضریب مقیاس برای عرض نوک پیکان. |
+| `arrow-head-length` | float  | 1       | ضریب مقیاس برای طول نوک پیکان. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/inclinedPlane]: Example that uses a system of coordinates
+- [demo/drawing/inclinedPlane]: مثالی که از یک دستگاه مختصات استفاده می‌کند
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [element/drawingGallery]: Image gallery with drawing objects
+### المان `pl-text`
 
-### `pl-text` element
-
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200" grid-size="0">
@@ -304,27 +302,27 @@ A `pl-coordinates` element adds a 2D system of coordinates.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-text element](pl-text.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-text](pl-text.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute   | Type    | Default  | Description                                                                                                         |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | ----------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| `label`     | string  | " Text " | Text to be added.                                                                                                   |
-| `latex`     | boolean | true     | Adds the text in `label` using latex. Otherwise, uses Times New Romans.                                             |
-| `font-size` | float   | 16       | Font size.                                                                                                          |
-| `x1`        | float   | 40       | `x` position for the top-left corner of the text, i.e., the horizontal distance from the left border of the canvas. |
-| `y1`        | float   | 40       | `y` position for the top-left corner of the text, i.e., the vertical distance from the top border of the canvas     |
-| `offsetx`   | float   | 0        | Offset in x direction from `x1`                                                                                     |
-| `offsety`   | float   | 0        | Offset in y direction from `y1`                                                                                     |
+| `label`     | string  | " Text " | متنی که باید اضافه شود. |
+| `latex`     | boolean | true     | متن موجود در `label` را با استفاده از لاتک (LaTeX) اضافه می‌کند. در غیر این صورت، از قلم Times New Roman استفاده می‌کند. |
+| `font-size` | float   | 16       | اندازه قلم (فونت). |
+| `x1`        | float   | 40       | موقعیت `x` برای گوشه بالا-چپ متن، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1`        | float   | 40       | موقعیت `y` برای گوشه بالا-چپ متن، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `offsetx`   | float   | 0        | آفست در جهت x از `x1`. |
+| `offsety`   | float   | 0        | آفست در جهت y از `y1`. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-### `pl-dimensions` element
+### المان `pl-dimensions`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -366,39 +364,40 @@ A `pl-coordinates` element adds a 2D system of coordinates.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-dimensions element](pl-dimensions.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-dimensions](pl-dimensions.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute            | Type    | Default | Description                                                                                                                                                                                                                                           |
-| -------------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                 | float   | 40      | `x` position for the start point for the line, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                      |
-| `y1`                 | float   | 40      | `y` position for the start point for the line, i.e., the vertical distance from the top border of the canvas.                                                                                                                                         |
-| `width`              | float   | 30      | Width of the line.                                                                                                                                                                                                                                    |
-| `angle`              | float   | 0       | Angle of rotation around the start point of the line. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                        |
-| `x2`                 | float   | -       | `x` position for the end point for the line, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.   |
-| `y2`                 | float   | -       | `y` position for the end point for the line, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.      |
-| `dim-offset`         | float   | 0       | By default, the dimension is placed between points `(x1,y1)` and `(x2,y2)`. When `dim-offset` is different from zero, the dimension is translated parallel to the direction defined by `(x1,y1)` and `(x2,y2)`, with an offset distance `dim-offset`. |
-| `dim-offset-angle`   | float   | -       | When `dim-offset-angle` is defined, the dimension has the orientation defined by `dim-offset-angle` about the point `(x1,y1)`, and the `dim-offset` is the distance from `(x1,y1)`.                                                                   |
-| `start-support-line` | boolean | false   | When `true` it draws a dashed line connecting the reference point `(x1,y1)` and the point where the dimension line starts (which are different when `dim-offset` is not zero).                                                                        |
-| `end-support-line`   | boolean | false   | When `true` it draws a dashed line connecting the reference point `(x2,y2)` and the point where the dimension line finishes (which are different when `dim-offset` is not zero).                                                                      |
-| `label`              | string  | -       | Text to label the dimension.                                                                                                                                                                                                                          |
-| `offsetx`            | float   | 0       | Horizontal distance of `label` from the default label position, which is 10 px perpendicular to the center of the dimension line.                                                                                                                     |
-| `offsety`            | float   | 0       | Vertical distance of `label` from the default label position, which is 10 px perpendicular to the center of the dimension line.                                                                                                                       |
-| `stroke-color`       | string  | black   | Set the color of the line ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                      |
-| `stroke-width`       | float   | 1       | Set the width of the stroke.                                                                                                                                                                                                                          |
-| `draw-start-arrow`   | boolean | true    | Draw an arrow head at the start point of the line.                                                                                                                                                                                                    |
-| `draw-end-arrow`     | boolean | true    | Draw an arrow head at the end point of the line.                                                                                                                                                                                                      |
-| `arrow-head-width`   | float   | 1.5     | Scale factor for the width of the arrow head.                                                                                                                                                                                                         |
-| `arrow-head-length`  | float   | 1.5     | Scale factor for the length of the arrow head.                                                                                                                                                                                                        |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| -------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `x1`                 | float   | 40      | موقعیت `x` برای نقطه شروع خط، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`                 | float   | 40      | موقعیت `y` برای نقطه شروع خط، یعنی فاصله عمودی از لبه بالای بوم. |
+| `width`              | float   | 30      | عرض (طول) خط. |
+| `angle`              | float   | 0       | زاویه چرخش حول نقطه شروع خط. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `x2`                 | float   | -       | موقعیت `x` برای نقطه پایان خط، یعنی فاصله افقی از لبه چپ بوم. به‌طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` می‌شوند. |
+| `y2`                 | float   | -       | موقعیت `y` برای نقطه پایان خط، یعنی فاصله عمودی از لبه بالای بوم. به‌طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` می‌شوند. |
+| `dim-offset`         | float   | 0       | به‌طور پیش‌فرض، اندازه (بُعد) بین نقاط `(x1,y1)` و `(x2,y2)` قرار می‌گیرد. هنگامی که `dim-offset` غیرصفر باشد، اندازه به موازات جهت تعریف‌شده توسط `(x1,y1)` و `(x2,y2)` با فاصله آفست `dim-offset` انتقال می‌یابد. |
+| `dim-offset-angle`   | float   | -       | هنگامی که `dim-offset-angle` تعریف شود، اندازه دارای جهت‌گیری تعریف‌شده توسط `dim-offset-angle` حول نقطه `(x1,y1)` خواهد بود و `dim-offset` فاصله از `(x1,y1)` است. |
+| `start-support-line` | boolean | false   | وقتی `true` باشد، یک خط‌چین رسم می‌کند که نقطه مرجع `(x1,y1)` را به نقطه‌ای که خط اندازه از آنجا آغاز می‌شود متصل می‌کند (که در صورت غیرصفر بودن `dim-offset` با یکدیگر متفاوت هستند). |
+| `end-support-line`   | boolean | false   | وقتی `true` باشد، یک خط‌چین رسم می‌کند که نقطه مرجع `(x2,y2)` را به نقطه‌ای که خط اندازه به پایان می‌رسد متصل می‌کند (که در صورت غیرصفر بودن `dim-offset` با یکدیگر متفاوت هستند). |
+| `label`              | string  | -       | متن برای برچسب‌گذاری اندازه (بُعد). |
+| `offsetx`            | float   | 0       | فاصله افقی `label` از موقعیت پیش‌فرض برچسب، که ۱۰ پیکسل عمود بر مرکز خط اندازه است. |
+| `offsety`            | float   | 0       | فاصله عمودی `label` از موقعیت پیش‌فرض برچسب، که ۱۰ پیکسل عمود بر مرکز خط اندازه است. |
+| `stroke-color`       | string  | black   | تنظیم رنگ خط ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width`       | float   | 1       | تنظیم ضخامت خط. |
+| `draw-start-arrow`   | boolean | true    | رسم نوک پیکان در نقطه شروع خط. |
+| `draw-end-arrow`     | boolean | true    | رسم نوک پیکان در نقطه پایان خط. |
+| `arrow-head-width`   | float   | 1.5     | ضریب مقیاس برای عرض نوک پیکان. |
+| `arrow-head-length`  | float   | 1.5     | ضریب مقیاس برای طول نوک پیکان. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/liftingMechanism]: Example that includes dimensions
+- [demo/drawing/liftingMechanism]: مثالی شامل خطوط اندازه (ابعاد)
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [element/drawingGallery]: Image gallery with drawing objects
+### المان `pl-arc-dimensions`
 
-### `pl-arc-dimensions` element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -418,41 +417,39 @@ A `pl-coordinates` element adds a 2D system of coordinates.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-arc-dimensions element](pl-arc-dimensions.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-arc-dimensions](pl-arc-dimensions.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute            | Type    | Default | Description                                                                                                                                                                      |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------------- | ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                 | float   | 40      | `x` position for the center of the arc, i.e., the horizontal distance from the left border of the canvas.                                                                        |
-| `y1`                 | float   | 40      | `y` position for the center of the arc, i.e., the vertical distance from the top border of the canvas.                                                                           |
-| `radius`             | float   | 20      | Radius of the arc.                                                                                                                                                               |
-| `start-angle`        | float   | 0       | Start angle of the arc. Angles are measured from the horizontal axis and are positive clockwise.                                                                                 |
-| `end-angle`          | float   | 60      | End angle of the arc. Angles are measured from the horizontal axis and are positive clockwise. Arcs are formed from `start-angle` to `end-angle` going on clockwise orientation. |
-| `start-support-line` | boolean | false   | When `true` it draws a dashed line from the reference point `(x1,y1)` with width `1.5*radius` and orientation given by `start-angle`,                                            |
-| `end-support-line`   | boolean | false   | When `true` it draws a dashed line from the reference point `(x2,y2)` with width `1.5*radius` and orientation given by `end-angle`,                                              |
-| `draw-center`        | boolean | false   | Draw the center of the arc.                                                                                                                                                      |
-| `draw-start-arrow`   | boolean | false   | Draw an arrow head at the `start-angle`.                                                                                                                                         |
-| `draw-end-arrow`     | boolean | true    | Draw an arrow head at the `end-angle`.                                                                                                                                           |
-| `label`              | string  | -       | Text to label the arc angle.                                                                                                                                                     |
-| `offsetx`            | float   | 0       | Horizontal distance of `label` from the midpoint of the arc.                                                                                                                     |
-| `offsety`            | float   | 0       | Vertical distance of `label` from the midpoint of the arc.                                                                                                                       |
-| `stroke-color`       | string  | black   | Set the stroke color of the arc ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                           |
-| `stroke-width`       | float   | 1       | Set the width of the stroke.                                                                                                                                                     |
-| `arrow-head-width`   | float   | 1       | Scale factor for the width of the arrow head.                                                                                                                                    |
-| `arrow-head-length`  | float   | 1       | Scale factor for the length of the arrow head.                                                                                                                                   |
+| `x1`                 | float   | 40      | موقعیت `x` برای مرکز کمان، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`                 | float   | 40      | موقعیت `y` برای مرکز کمان، یعنی فاصله عمودی از لبه بالای بوم. |
+| `radius`             | float   | 20      | شعاع کمان. |
+| `start-angle`        | float   | 0       | زاویه شروع کمان. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `end-angle`          | float   | 60      | زاویه پایان کمان. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت ساعت‌گرد مثبت هستند. کمان‌ها از `start-angle` تا `end-angle` در جهت ساعت‌گرد تشکیل می‌شوند. |
+| `start-support-line` | boolean | false   | وقتی `true` باشد، یک خط‌چین از نقطه مرجع `(x1,y1)` با طول `1.5*radius` و جهت‌گیری ارائه‌شده توسط `start-angle` رسم می‌کند. |
+| `end-support-line`   | boolean | false   | وقتی `true` باشد، یک خط‌چین از نقطه مرجع `(x2,y2)` با طول `1.5*radius` و جهت‌گیری ارائه‌شده توسط `end-angle` رسم می‌کند. |
+| `draw-center`        | boolean | false   | رسم مرکز کمان. |
+| `draw-start-arrow`   | boolean | false   | رسم نوک پیکان در `start-angle`. |
+| `draw-end-arrow`     | boolean | true    | رسم نوک پیکان در `end-angle`. |
+| `label`              | string  | -       | متن برای برچسب‌گذاری زاویه کمان. |
+| `offsetx`            | float   | 0       | فاصله افقی `label` از نقطه میانی کمان. |
+| `offsety`            | float   | 0       | فاصله عمودی `label` از نقطه میانی کمان. |
+| `stroke-color`       | string  | black   | تنظیم رنگ خط کمان ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width`       | float   | 1       | تنظیم ضخامت خط. |
+| `arrow-head-width`   | float   | 1       | ضریب مقیاس برای عرض نوک پیکان. |
+| `arrow-head-length`  | float   | 1       | ضریب مقیاس برای طول نوک پیکان. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/liftingMechanism]: Example that includes arc dimensions
+- [demo/drawing/liftingMechanism]: مثالی شامل ابعاد کمانی
+- [demo/drawing/inclinedPlane]: مثالی شامل ابعاد کمانی
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [demo/drawing/inclinedPlane]: Example that includes arc dimensions
+### المان `pl-drawing-group`
 
-- [element/drawingGallery]: Image gallery with drawing objects
-
-### `pl-drawing-group` element
-
-The element `pl-drawing-group` combines several elements as a group, to allow groups of elements to be turned visible or not.
+المان `pl-drawing-group` چندین المان را به عنوان یک گروه ترکیب می‌کند، تا امکان نمایش یا پنهان کردن گروهی از المان‌ها فراهم شود.
 
 ```html
 <pl-drawing>
@@ -468,15 +465,15 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/simpleTutorial]: Example where the attribute `visible` is set in server.py
+- [demo/drawing/simpleTutorial]: مثالی که در آن مشخصه `visible` در server.py تنظیم می‌شود
 
-## Geometric shapes
+## اشکال هندسی
 
-### `pl-line` element
+### المان `pl-line`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -486,32 +483,31 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-line element](pl-line.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-line](pl-line.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                                                                                                                         |
-| -------------- | ------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float  | 40      | `x` position for the start point for the line, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                    |
-| `y1`           | float  | 40      | `y` position for the start point for the line, i.e., the vertical distance from the top border of the canvas.                                                                                                                                       |
-| `width`        | float  | 60      | Width of the line.                                                                                                                                                                                                                                  |
-| `angle`        | float  | 0       | Angle of rotation around the start point of the line. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                      |
-| `x2`           | float  | -       | `x` position for the end point for the line, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced. |
-| `y2`           | float  | -       | `y` position for the end point for the line, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.    |
-| `opacity`      | float  | 1       | Set the opacity of the line                                                                                                                                                                                                                         |
-| `stroke-color` | string | black   | Set the color of the line ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) )                                                                                                     |
-| `stroke-width` | float  | 2       | Set the width of the stroke.                                                                                                                                                                                                                        |
-| `dashed-size`  | float  | \_      | Creates a dashed line with equally spaced `dashed-size`px fills.                                                                                                                                                                                    |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| -------------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `x1`           | float  | 40      | موقعیت `x` برای نقطه شروع خط، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`           | float  | 40      | موقعیت `y` برای نقطه شروع خط، یعنی فاصله عمودی از لبه بالای بوم. |
+| `width`        | float  | 60      | عرض (طول) خط. |
+| `angle`        | float  | 0       | زاویه چرخش حول نقطه شروع خط. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `x2`           | float  | -       | موقعیت `x` برای نقطه پایان خط، یعنی فاصله افقی از لبه چپ بوم. به‌طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` می‌شوند. |
+| `y2`           | float  | -       | موقعیت `y` برای نقطه پایان خط، یعنی فاصله عمودی از لبه بالای بوم. به‌طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` می‌شوند. |
+| `opacity`      | float  | 1       | تنظیم میزان شفافیت (کدری) خط. |
+| `stroke-color` | string | black   | تنظیم رنگ خط ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width` | float  | 2       | تنظیم ضخامت خط. |
+| `dashed-size`  | float  | \_      | ایجاد یک خط خط‌چین با بخش‌های توپر به اندازه یکنواخت `dashed-size` پیکسل. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/liftingMechanism]: Example that uses lines
+- [demo/drawing/liftingMechanism]: مثالی که از خطوط استفاده می‌کند
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [element/drawingGallery]: Image gallery with drawing objects
+### المان `pl-controlled-line`
 
-### `pl-controlled-line` element
-
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -537,34 +533,32 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-controlled-line element](pl-controlled-line.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-controlled-line](pl-controlled-line.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute        | Type    | Default | Description                                                                                                                                                                                                                                                               |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | ---------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`             | float   | 20      | `x` position of one of the end points w.r.t the origin of the canvas (top/left corner), i.e., the horizontal distance from the left border of the canvas.                                                                                                                 |
-| `y1`             | float   | 40      | `y` position of one of the end points w.r.t the origin of the canvas (top/left corner), i.e., the vertical distance from the top border of the canvas.                                                                                                                    |
-| `x2`             | float   | 40      | `x` position of one of the end points w.r.t the origin of the canvas (top/left corner), i.e., the horizontal distance from the left border of the canvas.                                                                                                                 |
-| `y2`             | float   | 40      | `y` position of one of the end points w.r.t the origin of the canvas (top/left corner), i.e., the vertical distance from the top border of the canvas.                                                                                                                    |
-| `color`          | string  | red     | Set the color of the coordinate system ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) )                                                                                                              |
-| `stroke-width`   | float   | 4       | Set the width of the stroke.                                                                                                                                                                                                                                              |
-| `handle-radius`  | float   | 6       | Set the radius of the circle handles that define the end and control points.                                                                                                                                                                                              |
-| `draw-error-box` | boolean | -       | Draw the error bounding box, where the location of the end points and control point are accepted as correct.                                                                                                                                                              |
-| `offset-tol-x`   | float   | 0       | Tolerance offset in the horizontal direction. The error bounding box has horizontal dimension equals to `2*(tol + offset-tol-x)` where `tol` is defined as an attribute of `pl-drawing` (or the default is 1/2 grid). The end point is at the center of the bounding box. |
-| `offset-tol-y`   | float   | 0       | Tolerance offset in the vertical direction. The error bounding box has vertical dimension equals to `2*(tol + offset-tol-y)` where `tol` is defined as an attribute of `pl-drawing` (or the default is 1/2 grid). The end point is at the center of the bounding box.     |
+| `x1`             | float   | 20      | موقعیت `x` یکی از نقاط انتهایی نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`             | float   | 40      | موقعیت `y` یکی از نقاط انتهایی نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله عمودی از لبه بالای بوم. |
+| `x2`             | float   | 40      | موقعیت `x` یکی از نقاط انتهایی نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله افقی از لبه چپ بوم. |
+| `y2`             | float   | 40      | موقعیت `y` یکی از نقاط انتهایی نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله عمودی از لبه بالای بوم. |
+| `color`          | string  | red     | تنظیم رنگ دستگاه مختصات ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width`   | float   | 4       | تنظیم ضخامت خط. |
+| `handle-radius`  | float   | 6       | تنظیم شعاع دستگیره‌های دایره‌ای که نقاط انتهایی و کنترلی را مشخص می‌کنند. |
+| `draw-error-box` | boolean | -       | رسم جعبه مرزی خطا، جایی که مکان نقاط انتهایی و نقطه کنترلی به عنوان درست پذیرفته می‌شود. |
+| `offset-tol-x`   | float   | 0       | آفست تلرانس در جهت افقی. جعبه مرزی خطا دارای بُعد افقی برابر با `2*(tol + offset-tol-x)` است که `tol` به عنوان مشخصه‌ای از `pl-drawing` تعریف شده است (یا پیش‌فرض آن ۱/۲ شبکه است). نقطه انتهایی در مرکز جعبه مرزی قرار دارد. |
+| `offset-tol-y`   | float   | 0       | آفست تلرانس در جهت عمودی. جعبه مرزی خطا دارای بُعد عمودی برابر با `2*(tol + offset-tol-y)` است که `tol` به عنوان مشخصه‌ای از `pl-drawing` تعریف شده است (یا پیش‌فرض آن ۱/۲ شبکه است). نقطه انتهایی در مرکز جعبه مرزی قرار دارد. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/graphs]: Example that includes controlled lines for graph sketching
+- [demo/drawing/graphs]: مثالی شامل خطوط کنترل‌شده برای رسم نمودار
+- [demo/drawing/vMDiagrams]: مثالی شامل خطوط کنترل‌شده برای رسم نمودار
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [demo/drawing/vMDiagrams]: Example that includes controlled lines for graph sketching
+### المان `pl-arc`
 
-- [element/drawingGallery]: Image gallery with drawing objects
-
-### `pl-arc` element
-
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -583,29 +577,29 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-arc element](pl-arc.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-arc](pl-arc.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                                                      |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float  | 40      | `x` position for the center of the arc, i.e., the horizontal distance from the left border of the arc.                                                                           |
-| `y1`           | float  | 40      | `y` position for the center of the circle, i.e., the vertical distance from the top border of the canvas.                                                                        |
-| `radius`       | float  | 20      | Radius of the circle.                                                                                                                                                            |
-| `start-angle`  | float  | 0       | Start angle of the arc. Angles are measured from the horizontal axis and are positive clockwise.                                                                                 |
-| `end-angle`    | float  | 60      | End angle of the arc. Angles are measured from the horizontal axis and are positive clockwise. Arcs are formed from `start-angle` to `end-angle` going on clockwise orientation. |
-| `opacity`      | float  | 1       | Set the opacity of the arc.                                                                                                                                                      |
-| `stroke-color` | string | black   | Set the stroke color of the line ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                          |
-| `stroke-width` | float  | 2       | Set the width of the stroke.                                                                                                                                                     |
-| `dashed-size`  | float  | \_      | Creates a dashed line with equally spaced `dashed-size`px fills.                                                                                                                 |
+| `x1`           | float  | 40      | موقعیت `x` برای مرکز کمان، یعنی فاصله افقی از لبه چپ کمان. |
+| `y1`           | float  | 40      | موقعیت `y` برای مرکز دایره، یعنی فاصله عمودی از لبه بالای بوم. |
+| `radius`       | float  | 20      | شعاع دایره. |
+| `start-angle`  | float  | 0       | زاویه شروع کمان. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `end-angle`    | float  | 60      | زاویه پایان کمان. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت ساعت‌گرد مثبت هستند. کمان‌ها از `start-angle` تا `end-angle` در جهت ساعت‌گرد تشکیل می‌شوند. |
+| `opacity`      | float  | 1       | تنظیم میزان شفافیت (کدری) کمان. |
+| `stroke-color` | string | black   | تنظیم رنگ خط کمان ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width` | float  | 2       | تنظیم ضخامت خط. |
+| `dashed-size`  | float  | \_      | ایجاد یک خط خط‌چین با بخش‌های توپر به اندازه یکنواخت `dashed-size` پیکسل. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-### `pl-controlled-curved-line` element
+### المان `pl-controlled-curved-line`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -625,38 +619,36 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-controlled-curved-line element](pl-controlled-curved-line.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-controlled-curved-line](pl-controlled-curved-line.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute              | Type    | Default | Description                                                                                                                                                                                                                                                                                         |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | ---------------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                   | float   | 20      | `x` position of one of the end points w.r.t the origin of the canvas (top/left corner), i.e., the horizontal distance from the left border of the canvas.                                                                                                                                           |
-| `y1`                   | float   | 40      | `y` position of one of the end points w.r.t the origin of the canvas (top/left corner), i.e., the vertical distance from the top border of the canvas.                                                                                                                                              |
-| `x2`                   | float   | 60      | `x` position of one of the end points w.r.t the origin of the canvas (top/left corner), i.e., the horizontal distance from the left border of the canvas.                                                                                                                                           |
-| `y2`                   | float   | 40      | `y` position of one of the end points w.r.t the origin of the canvas (top/left corner), i.e., the vertical distance from the top border of the canvas.                                                                                                                                              |
-| `x3`                   | float   | 40      | `x` position of the control point for the quadratic curve (middle point) w.r.t the origin of the canvas (top/left corner), i.e., the horizontal distance from the left border of the canvas.                                                                                                        |
-| `y3`                   | float   | 60      | `y` position of the control point for the quadratic curve (middle point) w.r.t the origin of the canvas (top/left corner), i.e., the vertical distance from the top border of the canvas.                                                                                                           |
-| `color`                | string  | red     | Set the color of the coordinate system ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                                                       |
-| `stroke-width`         | float   | 4       | Set the width of the stroke.                                                                                                                                                                                                                                                                        |
-| `handle-radius`        | float   | 6       | Set the radius of the circle handles that define the end and control points.                                                                                                                                                                                                                        |
-| `draw-error-box`       | boolean | -       | Draw the error bounding box, where the location of the end points and control point are accepted as correct.                                                                                                                                                                                        |
-| `offset-tol-x`         | float   | 0       | Tolerance offset in the horizontal direction for the end points. The error bounding box has horizontal dimension equals to `2*(tol + offset-tol-x)` where `tol` is defined as an attribute of `pl-drawing` (or the default is 1/2 grid). The end point is at the center of the bounding box.        |
-| `offset-tol-y`         | float   | 0       | Tolerance offset in the vertical direction for the end points. The error bounding box has vertical dimension equals to `2*(tol + offset-tol-y)` where `tol` is defined as an attribute of `pl-drawing` (or the default is 1/2 grid). The end point is at the center of the bounding box.            |
-| `offset-control-tol-x` | float   | 0       | Tolerance offset in the horizontal direction for the control point. The error bounding box has horizontal dimension equals to `2*(tol + offset-tol-x)` where `tol` is defined as an attribute of `pl-drawing` (or the default is 1/2 grid). The control point is at the center of the bounding box. |
-| `offset-control-tol-y` | float   | 0       | Tolerance offset in the vertical direction for the control point. The error bounding box has vertical dimension equals to `2*(tol + offset-tol-y)` where `tol` is defined as an attribute of `pl-drawing` (or the default is 1/2 grid). The control point is at the center of the bounding box.     |
+| `x1`                   | float   | 20      | موقعیت `x` یکی از نقاط انتهایی نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`                   | float   | 40      | موقعیت `y` یکی از نقاط انتهایی نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله عمودی از لبه بالای بوم. |
+| `x2`                   | float   | 60      | موقعیت `x` یکی از نقاط انتهایی نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله افقی از لبه چپ بوم. |
+| `y2`                   | float   | 40      | موقعیت `y` یکی از نقاط انتهایی نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله عمودی از لبه بالای بوم. |
+| `x3`                   | float   | 40      | موقعیت `x` نقطه کنترلی برای منحنی درجه دوم (نقطه میانی) نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله افقی از لبه چپ بوم. |
+| `y3`                   | float   | 60      | موقعیت `y` نقطه کنترلی برای منحنی درجه دوم (نقطه میانی) نسبت به مبدأ بوم (گوشه بالا/چپ)، یعنی فاصله عمودی از لبه بالای بوم. |
+| `color`                | string  | red     | تنظیم رنگ منحنی ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width`         | float   | 4       | تنظیم ضخامت خط. |
+| `handle-radius`        | float   | 6       | تنظیم شعاع دستگیره‌های دایره‌ای که نقاط انتهایی و کنترلی را مشخص می‌کنند. |
+| `draw-error-box`       | boolean | -       | رسم جعبه مرزی خطا، جایی که مکان نقاط انتهایی و نقطه کنترلی به عنوان درست پذیرفته می‌شود. |
+| `offset-tol-x`         | float   | 0       | آفست تلرانس در جهت افقی برای نقاط انتهایی. جعبه مرزی خطا دارای بُعد افقی برابر با `2*(tol + offset-tol-x)` است که `tol` به عنوان مشخصه‌ای از `pl-drawing` تعریف شده است (یا پیش‌فرض آن ۱/۲ شبکه است). نقطه انتهایی در مرکز جعبه مرزی قرار دارد. |
+| `offset-tol-y`         | float   | 0       | آفست تلرانس در جهت عمودی برای نقاط انتهایی. جعبه مرزی خطا دارای بُعد عمودی برابر با `2*(tol + offset-tol-y)` است که `tol` به عنوان مشخصه‌ای از `pl-drawing` تعریف شده است (یا پیش‌فرض آن ۱/۲ شبکه است). نقطه انتهایی در مرکز جعبه مرزی قرار دارد. |
+| `offset-control-tol-x` | float   | 0       | آفست تلرانس در جهت افقی برای نقطه کنترلی. جعبه مرزی خطا دارای بُعد افقی برابر با `2*(tol + offset-tol-x)` است که `tol` به عنوان مشخصه‌ای از `pl-drawing` تعریف شده است (یا پیش‌فرض آن ۱/۲ شبکه است). نقطه کنترلی در مرکز جعبه مرزی قرار دارد. |
+| `offset-control-tol-y` | float   | 0       | آفست تلرانس در جهت عمودی برای نقطه کنترلی. جعبه مرزی خطا دارای بُعد عمودی برابر با `2*(tol + offset-tol-y)` است که `tol` به عنوان مشخصه‌ای از `pl-drawing` تعریف شده است (یا پیش‌فرض آن ۱/۲ شبکه است). نقطه کنترلی در مرکز جعبه مرزی قرار دارد. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/graphs]: Example that includes controlled curved lines for graph sketching
+- [demo/drawing/graphs]: مثالی شامل خطوط منحنی کنترل‌شده برای رسم نمودار
+- [demo/drawing/vMDiagrams]: مثالی شامل خطوط منحنی کنترل‌شده برای رسم نمودار
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [demo/drawing/vMDiagrams]: Example that includes controlled curved lines for graph sketching
+### المان `pl-point`
 
-- [element/drawingGallery]: Image gallery with drawing objects
-
-### `pl-point` element
-
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -667,31 +659,30 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-point element](pl-point.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-point](pl-point.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute        | Type    | Default | Description                                                                                                                                            |
-| ---------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `x1`             | float   | 20      | `x` position of the point, i.e., the horizontal distance from the left border of the canvas.                                                           |
-| `y1`             | float   | 20      | `y` position of the point, i.e., the vertical distance from the top border of the canvas.                                                              |
-| `radius`         | float   | 4       | Radius of the circle that defines the point.                                                                                                           |
-| `label`          | string  | -       | Text to label the point.                                                                                                                               |
-| `offsetx`        | float   | 5       | Horizontal distance of `label` from the point.                                                                                                         |
-| `offsety`        | float   | 5       | Vertical distance of `label` from the point.                                                                                                           |
-| `opacity`        | float   | 1       | Set the opacity of the point.                                                                                                                          |
-| `color`          | string  | black   | Set the fill color of the point ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `draw-error-box` | boolean | -       | Draw the error bounding box, where the location of the point is accepted as correct.                                                                   |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| ---------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `x1`             | float   | 20      | موقعیت `x` نقطه، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`             | float   | 20      | موقعیت `y` نقطه، یعنی فاصله عمودی از لبه بالای بوم. |
+| `radius`         | float   | 4       | شعاع دایره‌ای که نقطه را تعریف می‌کند. |
+| `label`          | string  | -       | متن برای برچسب‌گذاری نقطه. |
+| `offsetx`        | float   | 5       | فاصله افقی `label` از نقطه. |
+| `offsety`        | float   | 5       | فاصله عمودی `label` از نقطه. |
+| `opacity`        | float   | 1       | تنظیم میزان شفافیت (کدری) نقطه. |
+| `color`          | string  | black   | تنظیم رنگ پر کردن (fill) نقطه ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `draw-error-box` | boolean | -       | رسم جعبه مرزی خطا، جایی که مکان نقطه به عنوان درست پذیرفته می‌شود. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/pulley]: Example that includes a point in the canvas
+- [demo/drawing/pulley]: مثالی شامل یک نقطه در بوم
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [element/drawingGallery]: Image gallery with drawing objects
+### المان `pl-triangle`
 
-### `pl-triangle` element
-
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -701,32 +692,31 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-triangle element](pl-triangle.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-triangle](pl-triangle.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                               |
-| -------------- | ------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float  | 40      | `x` position for vertex 1, i.e., the horizontal distance from the left border of the canvas.                                                              |
-| `y1`           | float  | 40      | `y` position for vertex 1, i.e., the vertical distance from the top border of the canvas.                                                                 |
-| `x2`           | float  | 60      | `x` position for vertex 2, i.e., the horizontal distance from the left border of the canvas.                                                              |
-| `y2`           | float  | 40      | `y` position for vertex 2, i.e., the vertical distance from the top border of the canvas.                                                                 |
-| `x3`           | float  | 40      | `x` position for vertex 3, i.e., the horizontal distance from the left border of the canvas.                                                              |
-| `y3`           | float  | 20      | `y` position for vertex 3, i.e., the vertical distance from the top border of the canvas.                                                                 |
-| `opacity`      | float  | 1       | Set the opacity of the entire element (both line and fill).                                                                                               |
-| `color`        | string | red1    | Set the fill color of the triangle ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string | black   | Set the stroke color of the triangle.                                                                                                                     |
-| `stroke-width` | float  | 1       | Set the width of the stroke.                                                                                                                              |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| -------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `x1`           | float  | 40      | موقعیت `x` برای رأس ۱، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`           | float  | 40      | موقعیت `y` برای رأس ۱، یعنی فاصله عمودی از لبه بالای بوم. |
+| `x2`           | float  | 60      | موقعیت `x` برای رأس ۲، یعنی فاصله افقی از لبه چپ بوم. |
+| `y2`           | float  | 40      | موقعیت `y` برای رأس ۲، یعنی فاصله عمودی از لبه بالای بوم. |
+| `x3`           | float  | 40      | موقعیت `x` برای رأس ۳، یعنی فاصله افقی از لبه چپ بوم. |
+| `y3`           | float  | 20      | موقعیت `y` برای رأس ۳، یعنی فاصله عمودی از لبه بالای بوم. |
+| `opacity`      | float  | 1       | تنظیم میزان شفافیت کل المان (هم خط دور و هم پر کردن داخل). |
+| `color`        | string | red1    | تنظیم رنگ پر کردن مثلث ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-color` | string | black   | تنظیم رنگ خط دور (stroke) مثلث. |
+| `stroke-width` | float  | 1       | تنظیم ضخامت خط دور. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/pulley]: Example that includes a triangle
+- [demo/drawing/pulley]: مثالی شامل یک مثلث
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [element/drawingGallery]: Image gallery with drawing objects
+### المان `pl-rectangle`
 
-### `pl-rectangle` element
-
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -737,31 +727,30 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-rectangle element](pl-rectangle.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-rectangle](pl-rectangle.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                                |
-| -------------- | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float  | 40      | `x` position for the center of the rectangle, i.e., the horizontal distance from the left border of the canvas.                                            |
-| `y1`           | float  | 40      | `y` position for the center of the rectangle, i.e., the vertical distance from the top border of the canvas.                                               |
-| `height`       | float  | 40      | Height of the rectangle.                                                                                                                                   |
-| `width`        | float  | 30      | Width of the rectangle.                                                                                                                                    |
-| `angle`        | float  | 0       | Angle of rotation around the center of the rectangle. Angles are measured from the horizontal axis and are positive clockwise.                             |
-| `opacity`      | float  | 1       | Set the opacity of the entire element (both line and fill).                                                                                                |
-| `color`        | string | green1  | Set the fill color of the rectangle ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string | black   | Set the stroke color of the rectangle.                                                                                                                     |
-| `stroke-width` | float  | 1       | Set the width of the stroke.                                                                                                                               |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| -------------- | ------ | ------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `x1`           | float  | 40      | موقعیت `x` برای مرکز مستطیل، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`           | float  | 40      | موقعیت `y` برای مرکز مستطیل، یعنی فاصله عمودی از لبه بالای بوم. |
+| `height`       | float  | 40      | ارتفاع مستطیل. |
+| `width`        | float  | 30      | عرض مستطیل. |
+| `angle`        | float  | 0       | زاویه چرخش حول مرکز مستطیل. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `opacity`      | float  | 1       | تنظیم میزان شفافیت کل المان (هم خط دور و هم پر کردن داخل). |
+| `color`        | string | green1  | تنظیم رنگ پر کردن مستطیل ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-color` | string | black   | تنظیم رنگ خط دور (stroke) مستطیل. |
+| `stroke-width` | float  | 1       | تنظیم ضخامت خط دور. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/pulley]: Example that includes a rectangle
+- [demo/drawing/pulley]: مثالی شامل یک مستطیل
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [element/drawingGallery]: Image gallery with drawing objects
+### المان `pl-circle`
 
-### `pl-circle` element
-
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -772,32 +761,31 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-circle element](pl-circle.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-circle](pl-circle.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                             |
-| -------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float  | 40      | `x` position for the center of the circle, i.e., the horizontal distance from the left border of the canvas.                                            |
-| `y1`           | float  | 40      | `y` position for the center of the circle, i.e., the vertical distance from the top border of the canvas.                                               |
-| `radius`       | float  | 20      | Radius of the circle.                                                                                                                                   |
-| `opacity`      | float  | 1       | Set the opacity of the entire element (both line and fill).                                                                                             |
-| `color`        | string | grey    | Set the fill color of the circle ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string | black   | Set the stroke color of the circle.                                                                                                                     |
-| `stroke-width` | float  | 1       | Set the width of the stroke.                                                                                                                            |
-| `label`        | string | -       | Text to label the center of the circle.                                                                                                                 |
-| `offsetx`      | float  | 5       | Horizontal distance of `label` from the center of the circle.                                                                                           |
-| `offsety`      | float  | 5       | Vertical distance of `label` from the center of the circle.                                                                                             |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| -------------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `x1`           | float  | 40      | موقعیت `x` برای مرکز دایره، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1`           | float  | 40      | موقعیت `y` برای مرکز دایره، یعنی فاصله عمودی از لبه بالای بوم. |
+| `radius`       | float  | 20      | شعاع دایره. |
+| `opacity`      | float  | 1       | تنظیم میزان شفافیت کل المان (هم خط دور و هم پر کردن داخل). |
+| `color`        | string | grey    | تنظیم رنگ پر کردن دایره ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-color` | string | black   | تنظیم رنگ خط دور (stroke) دایره. |
+| `stroke-width` | float  | 1       | تنظیم ضخامت خط دور. |
+| `label`        | string | -       | متن برای برچسب‌گذاری مرکز دایره. |
+| `offsetx`      | float  | 5       | فاصله افقی `label` از مرکز دایره. |
+| `offsety`      | float  | 5       | فاصله عمودی `label` از مرکز دایره. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/liftingMechanism]: Example that uses circles
+- [demo/drawing/liftingMechanism]: مثالی که از دایره‌ها استفاده می‌کند
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-- [element/drawingGallery]: Image gallery with drawing objects
+### المان `pl-polygon`
 
-### `pl-polygon` element
-
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -807,35 +795,35 @@ The element `pl-drawing-group` combines several elements as a group, to allow gr
 </pl-drawing>
 ```
 
-![Screenshot of the pl-polygon element](pl-polygon.png){ width=100% style="max-width: 300px" }
+![تصویر المان pl-polygon](pl-polygon.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default                     | Description                                                                                                                                             |
-| -------------- | ------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `plist`        | string | a default 5-vertex pentagon | List of the vertices that form the polygon.                                                                                                             |
-| `opacity`      | float  | 1                           | Set the opacity of the entire element (both line and fill).                                                                                             |
-| `color`        | string | white                       | Set the fill color of the circle ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string | black                       | Set the stroke color of the circle.                                                                                                                     |
-| `stroke-width` | float  | 1                           | Set the width of the stroke.                                                                                                                            |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| -------------- | ------ | --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `plist`        | string | یک پنج‌ضلعی پیش‌فرض با ۵ رأس | فهرستی از رأس‌ها که چندضلعی را تشکیل می‌دهند. |
+| `opacity`      | float  | 1                           | تنظیم میزان شفافیت کل المان (هم خط دور و هم پر کردن داخل). |
+| `color`        | string | white                       | تنظیم رنگ پر کردن چندضلعی ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-color` | string | black                       | تنظیم رنگ خط دور چندضلعی. |
+| `stroke-width` | float  | 1                           | تنظیم ضخامت خط دور. |
 
-To draw a polygon with `n` vertices, each one with coordinates `(xi,yi)`, the string `plist` is given as a dictionary with the following format:
+برای رسم یک چندضلعی با `n` رأس، که هر یک دارای مختصات `(xi,yi)` هستند، رشته `plist` به صورت یک دیکشنری با فرمت زیر ارائه می‌شود:
 
 ```python
 plist = '[{"x": x1, "y": y1}, {"x": x2,"y": x2}, ... , {"x": xn,"y": yn}]'
 ```
 
-For an example that uses `server.py` to generate `plist` refer to QID: `Example-pl-drawing-beam-cross-section`
+برای مشاهده مثالی که از `server.py` جهت تولید `plist` استفاده می‌کند، به شناسه سوال (QID): `Example-pl-drawing-beam-cross-section` مراجعه کنید.
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصویر با اشیاء رسم
 
-## Vectors and loads
+## بردارها و بارها
 
-### `pl-vector` element
+### المان `pl-vector`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -855,45 +843,46 @@ For an example that uses `server.py` to generate `plist` refer to QID: `Example-
 </pl-drawing>
 ```
 
-![Screenshot of the pl-vector element](pl-vector.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-vector](pl-vector.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute           | Type    | Default | Description                                                                                                                                                                                                                                                                                                       |
-| ------------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                | float   | 30      | `x` position for the anchor point of the vector, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                                                                                |
-| `y1`                | float   | 10      | `y` position for the anchor point of the vector , i.e., the vertical distance from the top border of the canvas.                                                                                                                                                                                                  |
-| `anchor-is-tail`    | boolean | true    | the anchor point `(x1,y1)` is the tail of the vector.                                                                                                                                                                                                                                                             |
-| `width`             | float   | 60      | Length of the vector.                                                                                                                                                                                                                                                                                             |
-| `angle`             | float   | 0       | Angle of rotation around the starting point of the vector. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                                                                               |
-| `label`             | string  | -       | Text to label the vector.                                                                                                                                                                                                                                                                                         |
-| `offsetx`           | float   | 2       | Horizontal distance of `label` from the head of the vector.                                                                                                                                                                                                                                                       |
-| `offsety`           | float   | 2       | Vertical distance of `label` from the head of the vector.                                                                                                                                                                                                                                                         |
-| `color`             | string  | red3    | Set the color of the vector ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                                                                                |
-| `stroke-width`      | float   | 3       | Set the width of the stroke.                                                                                                                                                                                                                                                                                      |
-| `arrow-head-width`  | float   | 1       | Scale factor for the width of the arrow head.                                                                                                                                                                                                                                                                     |
-| `arrow-head-length` | float   | 1       | Scale factor for the length of the arrow head.                                                                                                                                                                                                                                                                    |
-| `disregard-sense`   | boolean | false   | When `disregard-sense=false` both the location of the anchor and the angle should match within the tolerance. When `disregard-sense=true`, the correctness of the vector only considers the position of the anchor point and direction (i.e. the vector in the opposite direction is also considered as correct). |
-| `draw-error-box`    | boolean | -       | Draw the error bounding box, where the location of the anchor point is accepted as correct.                                                                                                                                                                                                                       |
-| `offset-forward`    | float   | 0       | Length of the bounding box measured from the anchor point in the same orientation of the vector. The default is `width` when `disregard-sense=true`.                                                                                                                                                              |
-| `offset-backward`   | float   | width   | Length of the bounding box measured from the anchor point in the opposite orientation of the vector.                                                                                                                                                                                                              |
-| `optional-grading`  | boolean | false   | When `true`, the grading algorithm will not assign point values for the object, but it won't penalize either.                                                                                                                                                                                                     |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| ------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `x1` | float | 30 | موقعیت `x` برای نقطه لنگر (anchor point) بردار، یعنی فاصله افقی از لبه سمت چپ بوم (canvas). |
+| `y1` | float | 10 | موقعیت `y` برای نقطه لنگر بردار، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `anchor-is-tail` | boolean | true | نقطه لنگر `(x1,y1)` انتهای دم (ابتدای) بردار است. |
+| `width` | float | 60 | طول بردار. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع بردار. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `label` | string | - | متن برای برچسب‌گذاری بردار. |
+| `offsetx` | float | 2 | فاصله افقی `label` از نوک (سر) بردار. |
+| `offsety` | float | 2 | فاصله عمودی `label` از نوک (سر) بردار. |
+| `color` | string | red3 | تنظیم رنگ بردار ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-width` | float | 3 | تنظیم ضخامت خط رسم. |
+| `arrow-head-width` | float | 1 | ضریب مقیاس برای عرض سر پیکان. |
+| `arrow-head-length` | float | 1 | ضریب مقیاس برای طول سر پیکان. |
+| `disregard-sense` | boolean | false | هنگامی که `disregard-sense=false` باشد، هم موقعیت نقطه لنگر و هم زاویه باید در محدوده تلورانس مطابقت داشته باشند. هنگامی که `disregard-sense=true` باشد، درستی بردار تنها موقعیت نقطه لنگر و راستای آن را در نظر می‌گیرد (یعنی بردار در جهت مخالف نیز صحیح تلقی می‌شود). |
+| `draw-error-box` | boolean | - | رسم کادر خطای احاطه‌کننده (bounding box)، جایی که موقعیت نقطه لنگر به عنوان صحیح پذیرفته می‌شود. |
+| `offset-forward` | float | 0 | طول کادر احاطه‌کننده اندازه‌گیری‌شده از نقطه لنگر در جهت و سوی بردار. در صورت `disregard-sense=true` مقدار پیش‌فرض برابر با `width` است. |
+| `offset-backward` | float | width | طول کادر احاطه‌کننده اندازه‌گیری‌شده از نقطه لنگر در خلاف جهت و سوی بردار. |
+| `optional-grading` | boolean | false | هنگامی که `true` باشد، الگوریتم نمره‌دهی امتیازی به این شیء اختصاص نخواهد داد، اما نمره‌ای را نیز کسر نخواهد کرد (جریمه نخواهد کرد). |
 
-More information about the grading attributes in the Grading section below.
+اطلاعات بیشتر درباره مشخصه‌های نمره‌دهی در بخش نمره‌دهی (Grading) در ادامه آمده است.
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/simpleTutorial]: Tutorial example that includes arrows (vectors)
+- [demo/drawing/simpleTutorial]: مثال آموزشی شامل پیکان‌ها (بردارها)
 
-- [demo/drawing/liftingMechanism]: Example that includes arrows (vectors)
+- [demo/drawing/liftingMechanism]: مثالی شامل پیکان‌ها (بردارها)
 
-- [demo/drawing/inclinedPlane]: Example that includes arrows (vectors)
+- [demo/drawing/inclinedPlane]: مثالی شامل پیکان‌ها (بردارها)
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-double-headed-vector` element
 
-#### Sample element
+### المان `pl-double-headed-vector`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -909,43 +898,44 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-double-headed-vector element](pl-double-headed-vector.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-double-headed-vector](pl-double-headed-vector.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute           | Type    | Default | Description                                                                                                                                                                                                                                                                                                       |
-| ------------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                | float   | 30      | `x` position for the anchor point of the vector, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                                                                                |
-| `y1`                | float   | 10      | `y` position for the anchor point of the vector , i.e., the vertical distance from the top border of the canvas.                                                                                                                                                                                                  |
-| `anchor-is-tail`    | boolean | true    | the anchor point `(x1,y1)` is the tail of the vector.                                                                                                                                                                                                                                                             |
-| `width`             | float   | 60      | Length of the vector.                                                                                                                                                                                                                                                                                             |
-| `angle`             | float   | 0       | Angle of rotation around the starting point of the vector. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                                                                               |
-| `label`             | string  | -       | Text to label the vector.                                                                                                                                                                                                                                                                                         |
-| `offsetx`           | float   | 2       | Horizontal distance of `label` from the head of the vector.                                                                                                                                                                                                                                                       |
-| `offsety`           | float   | 2       | Vertical distance of `label` from the head of the vector.                                                                                                                                                                                                                                                         |
-| `color`             | string  | red3    | Set the color of the vector ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                                                                                |
-| `stroke-width`      | float   | 3       | Set the width of the stroke.                                                                                                                                                                                                                                                                                      |
-| `arrow-head-width`  | float   | 1       | Scale factor for the width of the arrow head.                                                                                                                                                                                                                                                                     |
-| `arrow-head-length` | float   | 1       | Scale factor for the length of the arrow head.                                                                                                                                                                                                                                                                    |
-| `disregard-sense`   | boolean | false   | When `disregard-sense=false` both the location of the anchor and the angle should match within the tolerance. When `disregard-sense=true`, the correctness of the vector only considers the position of the anchor point and direction (i.e. the vector in the opposite direction is also considered as correct). |
-| `draw-error-box`    | boolean | -       | Draw the error bounding box, where the location of the anchor point is accepted as correct.                                                                                                                                                                                                                       |
-| `offset-forward`    | float   | 0       | Length of the bounding box measured from the anchor point in the same orientation of the vector. The default is `width` when `disregard-sense=true`.                                                                                                                                                              |
-| `offset-backward`   | float   | width   | Length of the bounding box measured from the anchor point in the opposite orientation of the vector.                                                                                                                                                                                                              |
-| `optional-grading`  | boolean | false   | When `true`, the grading algorithm will not assign point values for the object, but it won't penalize either.                                                                                                                                                                                                     |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| ------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `x1` | float | 30 | موقعیت `x` برای نقطه لنگر بردار، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 10 | موقعیت `y` برای نقطه لنگر بردار، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `anchor-is-tail` | boolean | true | نقطه لنگر `(x1,y1)` انتهای دم بردار است. |
+| `width` | float | 60 | طول بردار. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع بردار. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `label` | string | - | متن برای برچسب‌گذاری بردار. |
+| `offsetx` | float | 2 | فاصله افقی `label` از نوک بردار. |
+| `offsety` | float | 2 | فاصله عمودی `label` از نوک بردار. |
+| `color` | string | red3 | تنظیم رنگ بردار ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-width` | float | 3 | تنظیم ضخامت خط رسم. |
+| `arrow-head-width` | float | 1 | ضریب مقیاس برای عرض سر پیکان. |
+| `arrow-head-length` | float | 1 | ضریب مقیاس برای طول سر پیکان. |
+| `disregard-sense` | boolean | false | هنگامی که `disregard-sense=false` باشد، هم موقعیت نقطه لنگر و هم زاویه باید در محدوده تلورانس مطابقت داشته باشند. هنگامی که `disregard-sense=true` باشد، درستی بردار تنها موقعیت نقطه لنگر و راستای آن را در نظر می‌گیرد (یعنی بردار در جهت مخالف نیز صحیح تلقی می‌شود). |
+| `draw-error-box` | boolean | - | رسم کادر خطای احاطه‌کننده، جایی که موقعیت نقطه لنگر به عنوان صحیح پذیرفته می‌شود. |
+| `offset-forward` | float | 0 | طول کادر احاطه‌کننده اندازه‌گیری‌شده از نقطه لنگر در جهت و سوی بردار. در صورت `disregard-sense=true` مقدار پیش‌فرض برابر با `width` است. |
+| `offset-backward` | float | width | طول کادر احاطه‌کننده اندازه‌گیری‌شده از نقطه لنگر در خلاف جهت و سوی بردار. |
+| `optional-grading` | boolean | false | هنگامی که `true` باشد، الگوریتم نمره‌دهی امتیازی به این شیء اختصاص نخواهد داد، اما نمره‌ای را نیز کسر نخواهد کرد. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/simpleTutorial]: Tutorial example that includes double arrows (vectors)
+- [demo/drawing/simpleTutorial]: مثال آموزشی شامل پیکان‌های دوسر (بردارها)
 
-- [demo/drawing/liftingMechanism]: Example that includes double arrows (vectors)
+- [demo/drawing/liftingMechanism]: مثالی شامل پیکان‌های دوسر (بردارها)
 
-- [demo/drawing/inclinedPlane]: Example that includes double arrows (vectors)
+- [demo/drawing/inclinedPlane]: مثالی شامل پیکان‌های دوسر (بردارها)
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-paired-vector` element
 
-#### Sample element
+### المان `pl-paired-vector`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -966,43 +956,43 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-paired-vector element](pl-paired-vector.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-paired-vector](pl-paired-vector.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute           | Type    | Default        | Description                                                                                                                                                                                                                                                                                                       |
-| ------------------- | ------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                | float   | 2 \* grid_size | `x` position for the anchor point of the first vector, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                                                                          |
-| `y1`                | float   | 1 \* grid_size | `y` position for the anchor point of the first vector , i.e., the vertical distance from the top border of the canvas.                                                                                                                                                                                            |
-| `x2`                | float   | 3 \* grid_size | `x` position for the anchor point of the second vector, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                                                                         |
-| `y2`                | float   | 2 \* grid_size | `y` position for the anchor point of the second vector , i.e., the vertical distance from the top border of the canvas.                                                                                                                                                                                           |
-| `anchor-is-tail`    | boolean | true           | The anchor points `(x1,y1)` and `(x2,y2)` are the tails of the vectors.                                                                                                                                                                                                                                           |
-| `width`             | float   | 60             | Length of the vectors.                                                                                                                                                                                                                                                                                            |
-| `angle1`            | float   | 0              | Angle of rotation around the starting point of the first vector. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                                                                         |
-| `angle2`            | float   | 0              | Angle of rotation around the starting point of the second vector. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                                                                        |
-| `label`             | string  | -              | Text to label the vectors.                                                                                                                                                                                                                                                                                        |
-| `offsetx`           | float   | 2              | Horizontal distance of `label` from the head of the vectors.                                                                                                                                                                                                                                                      |
-| `offsety`           | float   | 2              | Vertical distance of `label` from the head of the vectors.                                                                                                                                                                                                                                                        |
-| `color`             | string  | red3           | Set the color of the vectors ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                                                                               |
-| `stroke-width`      | float   | 3              | Set the width of the stroke.                                                                                                                                                                                                                                                                                      |
-| `arrow-head-width`  | float   | 1              | Scale factor for the width of the arrow head.                                                                                                                                                                                                                                                                     |
-| `arrow-head-length` | float   | 1              | Scale factor for the length of the arrow head.                                                                                                                                                                                                                                                                    |
-| `disregard-sense`   | boolean | true           | When `disregard-sense=true`, the correctness of the vector only considers the position of the anchor point and direction (i.e. the vector in the opposite direction is also considered as correct). When `disregard-sense=false` both the location of the anchor and the angle should match within the tolerance. |
-| `draw-error-box`    | boolean | -              | Draw the error bounding box, where the location of the anchor point is accepted as correct.                                                                                                                                                                                                                       |
-| `offset-forward`    | float   | width          | Length of the bounding box measured from the anchor point in the same orientation of the vector. The default is `width` when `disregard-sense=true` (the default for `pl-paired-vector`), and `0` when `disregard-sense=false`.                                                                                   |
-| `offset-backward`   | float   | width          | Length of the bounding box measured from the anchor point in the opposite orientation of the vector.                                                                                                                                                                                                              |
-| `optional-grading`  | boolean | false          | When `true`, the grading algorithm will not assign point values for the object, but it won't penalize either.                                                                                                                                                                                                     |
-| `weight`            | integer | 1              | Weight to use when computing a weighted average score over elements.                                                                                                                                                                                                                                              |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| ------------------- | ------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `x1` | float | 2 \* grid_size | موقعیت `x` برای نقطه لنگر بردار اول، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 1 \* grid_size | موقعیت `y` برای نقطه لنگر بردار اول، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x2` | float | 3 \* grid_size | موقعیت `x` برای نقطه لنگر بردار دوم، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y2` | float | 2 \* grid_size | موقعیت `y` برای نقطه لنگر بردار دوم، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `anchor-is-tail` | boolean | true | نقاط لنگر `(x1,y1)` و `(x2,y2)` انتهای دم (شروع) بردارها هستند. |
+| `width` | float | 60 | طول بردارها. |
+| `angle1` | float | 0 | زاویه دوران حول نقطه شروع بردار اول. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `angle2` | float | 0 | زاویه دوران حول نقطه شروع بردار دوم. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `label` | string | - | متن برای برچسب‌گذاری بردارها. |
+| `offsetx` | float | 2 | فاصله افقی `label` از نوک بردارها. |
+| `offsety` | float | 2 | فاصله عمودی `label` از نوک بردارها. |
+| `color` | string | red3 | تنظیم رنگ بردارها ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-width` | float | 3 | تنظیم ضخامت خط رسم. |
+| `arrow-head-width` | float | 1 | ضریب مقیاس برای عرض سر پیکان. |
+| `arrow-head-length` | float | 1 | ضریب مقیاس برای طول سر پیکان. |
+| `disregard-sense` | boolean | true | هنگامی که `disregard-sense=true` باشد، درستی بردار تنها موقعیت نقطه لنگر و راستای آن را در نظر می‌گیرد (یعنی بردار در جهت مخالف نیز صحیح تلقی می‌شود). هنگامی که `disregard-sense=false` باشد، هم موقعیت لنگر و هم زاویه باید در محدوده تلورانس مطابقت داشته باشند. |
+| `draw-error-box` | boolean | - | رسم کادر خطای احاطه‌کننده، جایی که موقعیت نقطه لنگر به عنوان صحیح پذیرفته می‌شود. |
+| `offset-forward` | float | width | طول کادر احاطه‌کننده اندازه‌گیری‌شده از نقطه لنگر در جهت و سوی بردار. در صورت `disregard-sense=true` (حالت پیش‌فرض برای `pl-paired-vector`) مقدار پیش‌فرض برابر با `width` است، و در صورت `disregard-sense=false` برابر با `0` است. |
+| `offset-backward` | float | width | طول کادر احاطه‌کننده اندازه‌گیری‌شده از نقطه لنگر در خلاف جهت و سوی بردار. |
+| `optional-grading` | boolean | false | در صورت `true` بودن، الگوریتم نمره‌دهی امتیازی به این شیء اختصاص نخواهد داد، اما نمره‌ای را نیز کسر نخواهد کرد. |
+| `weight` | integer | 1 | وزن مورد استفاده هنگام محاسبه نمره میانگین وزن‌دار روی المان‌ها. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/inclinedPlane-reaction]: FBD that includes a single paired vector
+- [demo/drawing/inclinedPlane-reaction]: نمودار جسم آزاد (FBD) شامل یک جفت‌بردار منفرد
 
-- [demo/drawing/frame-exploded]: Example that entire FBD of a structure and individual FBDs of the components
+- [demo/drawing/frame-exploded]: مثالی از کل نمودار جسم آزاد (FBD) یک سازه و نمودارهای جسم آزاد مجزای اجزا
 
-### `pl-arc-vector` element
+### المان `pl-arc-vector`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1012,41 +1002,42 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-arc-vector element](pl-arc-vector.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-arc-vector](pl-arc-vector.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute             | Type    | Default | Description                                                                                                                                                                             |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | --------------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                  | float   | 40      | `x` position for the center of the arc vector, i.e., the horizontal distance from the left border of the canvas.                                                                        |
-| `y1`                  | float   | 40      | `y` position for the center of the arc vector, i.e., the vertical distance from the top border of the canvas.                                                                           |
-| `radius`              | float   | 30      | Radius of the arc vector.                                                                                                                                                               |
-| `start-angle`         | float   | 0       | Start angle of the arc. Angles are measured from the horizontal axis and are positive clockwise.                                                                                        |
-| `end-angle`           | float   | 210     | End angle of the arc vector. Angles are measured from the horizontal axis and are positive clockwise. Arcs are formed from `start-angle` to `end-angle` going on clockwise orientation. |
-| `draw-center`         | boolean | true    | Draw the center of the arc vector.                                                                                                                                                      |
-| `clockwise-direction` | boolean | true    | Defines the orientation of the arc vector. Draw an arc vector in the clockwise direction by default.                                                                                    |
-| `label`               | string  | -       | Text to label the arc vector angle.                                                                                                                                                     |
-| `offsetx`             | float   | 0       | Horizontal distance of `label` from the midpoint of the arc vector.                                                                                                                     |
-| `offsety`             | float   | 0       | Vertical distance of `label` from the midpoint of the arc vector.                                                                                                                       |
-| `color`               | string  | purple  | Set the stroke color of the arc ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                  |
-| `stroke-width`        | float   | 3       | Set the width of the stroke.                                                                                                                                                            |
-| `arrow-head-width`    | float   | 1       | Scale factor for the width of the arrow head.                                                                                                                                           |
-| `arrow-head-length`   | float   | 1       | Scale factor for the length of the arrow head.                                                                                                                                          |
-| `disregard-sense`     | boolean | false   | When `disregard-sense=true`, the correctness of the arc vector only considers the position of the anchor point.                                                                         |
-| `draw-error-box`      | boolean | -       | Draw the error bounding box, where the location of the anchor point is accepted as correct.                                                                                             |
-| `optional-grading`    | boolean | false   | When `true`, the grading algorithm will not assign point values for the object, but it won't penalize either.                                                                           |
+| `x1` | float | 40 | موقعیت `x` برای مرکز بردار قوسی، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای مرکز بردار قوسی، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `radius` | float | 30 | شعاع بردار قوسی. |
+| `start-angle` | float | 0 | زاویه شروع قوس. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `end-angle` | float | 210 | زاویه پایان بردار قوسی. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. قوس‌ها از `start-angle` تا `end-angle` در جهت ساعت‌گرد تشکیل می‌شوند. |
+| `draw-center` | boolean | true | رسم نقطه مرکز بردار قوسی. |
+| `clockwise-direction` | boolean | true | جهت‌گیری بردار قوسی را تعیین می‌کند. به‌طور پیش‌فرض یک بردار قوسی در جهت ساعت‌گرد رسم می‌کند. |
+| `label` | string | - | متن برای برچسب‌گذاری زاویه بردار قوسی. |
+| `offsetx` | float | 0 | فاصله افقی `label` از نقطه میانی بردار قوسی. |
+| `offsety` | float | 0 | فاصله عمودی `label` از نقطه میانی بردار قوسی. |
+| `color` | string | purple | تنظیم رنگ خط رسم بردار قوسی ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-width` | float | 3 | تنظیم ضخامت خط رسم. |
+| `arrow-head-width` | float | 1 | ضریب مقیاس برای عرض سر پیکان. |
+| `arrow-head-length` | float | 1 | ضریب مقیاس برای طول سر پیکان. |
+| `disregard-sense` | boolean | false | هنگامی که `disregard-sense=true` باشد، درستی بردار قوسی تنها موقعیت نقطه لنگر را در نظر می‌گیرد. |
+| `draw-error-box` | boolean | - | رسم کادر خطای احاطه‌کننده، جایی که موقعیت نقطه لنگر به عنوان صحیح پذیرفته می‌شود. |
+| `optional-grading` | boolean | false | در صورت `true` بودن، الگوریتم نمره‌دهی امتیازی به این شیء اختصاص نخواهد داد، اما نمره‌ای را نیز کسر نخواهد کرد. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/simpleTutorial]: Tutorial example that includes arc vectors
+- [demo/drawing/simpleTutorial]: مثال آموزشی شامل بردارهای قوسی
 
-- [demo/drawing/collarRod]: Example that includes arc vectors
+- [demo/drawing/collarRod]: مثالی شامل بردارهای قوسی
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-distributed-load` element
 
-#### Sample element
+### المان `pl-distributed-load`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1075,47 +1066,48 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-distributed-load element](pl-distributed-load.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-distributed-load](pl-distributed-load.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute           | Type    | Default             | Description                                                                                                                                                                                                                                                                                                       |
-| ------------------- | ------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`                | float   | 30                  | `x` position for the center of the baseline, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                                                                                    |
-| `y1`                | float   | 10                  | `y` position for the center of the baseline, i.e., the vertical distance from the top border of the canvas.                                                                                                                                                                                                       |
-| `anchor-is-tail`    | boolean | true                | the anchor point `(x1,y1)` is the tail of the vector.                                                                                                                                                                                                                                                             |
-| `width`             | float   | 60                  | Range of the distributed load.                                                                                                                                                                                                                                                                                    |
-| `spacing`           | float   | 20                  | Spacing between the vectors.                                                                                                                                                                                                                                                                                      |
-| `w1`                | float   | 60                  | Height of the distributed load at the start of the range.                                                                                                                                                                                                                                                         |
-| `w2`                | float   | 60                  | Height of the distributed load at the end of the range.                                                                                                                                                                                                                                                           |
-| `angle`             | float   | 0                   | Angle of rotation around the center of the baseline, i.e., point `(x1,y1)`. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                                                              |
-| `label1`            | string  | -                   | Text to label the height of the vectors at the start of the range.                                                                                                                                                                                                                                                |
-| `offsetx1`          | float   | 2                   | Horizontal distance of `label1` from the vector at the start of the range.                                                                                                                                                                                                                                        |
-| `offsety1`          | float   | 2                   | Vertical distance of `label1` from the vector at the start of the range.                                                                                                                                                                                                                                          |
-| `label2`            | string  | -                   | Text to label the height of the vectors at the end of the range.                                                                                                                                                                                                                                                  |
-| `offsetx2`          | float   | 2                   | Horizontal distance of `label2` from the vector at the end of the range.                                                                                                                                                                                                                                          |
-| `offsety2`          | float   | 2                   | Vertical distance of `label2` from the vector at the end of the range.                                                                                                                                                                                                                                            |
-| `color`             | string  | red3                | Set the stroke color of the distributed load ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                                                               |
-| `stroke-width`      | float   | 3                   | Set the width of the stroke.                                                                                                                                                                                                                                                                                      |
-| `arrow-head-width`  | float   | 2                   | Scale factor for the width of the arrow head.                                                                                                                                                                                                                                                                     |
-| `arrow-head-length` | float   | 3                   | Scale factor for the length of the arrow head.                                                                                                                                                                                                                                                                    |
-| `disregard-sense`   | boolean | false               | When `disregard-sense=false` both the location of the anchor and the angle should match within the tolerance. When `disregard-sense=true`, the correctness of the vector only considers the position of the anchor point and direction (i.e. the vector in the opposite direction is also considered as correct). |
-| `draw-error-box`    | boolean | -                   | Draw the error bounding box, where the location of the anchor point is accepted as correct.                                                                                                                                                                                                                       |
-| `offset-forward`    | float   | 0                   | Length of the bounding box measured from the anchor point in the same orientation of the distributed load. The default is `max(w1, w2) * 1.1` when `disregard-sense=true`.                                                                                                                                        |
-| `offset-backward`   | float   | `max(w1, w2) * 1.1` | Length of the bounding box measured from the anchor point in the opposite orientation of the distributed load.                                                                                                                                                                                                    |
-| `optional-grading`  | boolean | false               | When `true`, the grading algorithm will not assign point values for the object, but it won't penalize either.                                                                                                                                                                                                     |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
+| ------------------- | ------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `x1` | float | 30 | موقعیت `x` برای مرکز خط مبنا (baseline)، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 10 | موقعیت `y` برای مرکز خط مبنا، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `anchor-is-tail` | boolean | true | نقطه لنگر `(x1,y1)` انتهای دم بردار است. |
+| `width` | float | 60 | دامنه (طول بازه) بار گسترده. |
+| `spacing` | float | 20 | فاصله بین بردارها. |
+| `w1` | float | 60 | ارتفاع بار گسترده در ابتدای بازه. |
+| `w2` | float | 60 | ارتفاع بار گسترده در انتهای بازه. |
+| `angle` | float | 0 | زاویه دوران حول مرکز خط مبنا، یعنی نقطه `(x1,y1)`. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `label1` | string | - | متن برای برچسب‌گذاری ارتفاع بردارها در ابتدای بازه. |
+| `offsetx1` | float | 2 | فاصله افقی `label1` از بردار در ابتدای بازه. |
+| `offsety1` | float | 2 | فاصله عمودی `label1` از بردار در ابتدای بازه. |
+| `label2` | string | - | متن برای برچسب‌گذاری ارتفاع بردارها در انتهای بازه. |
+| `offsetx2` | float | 2 | فاصله افقی `label2` از بردار در انتهای بازه. |
+| `offsety2` | float | 2 | فاصله عمودی `label2` از بردار در انتهای بازه. |
+| `color` | string | red3 | تنظیم رنگ خط رسم بار گسترده ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-width` | float | 3 | تنظیم ضخامت خط رسم. |
+| `arrow-head-width` | float | 2 | ضریب مقیاس برای عرض سر پیکان. |
+| `arrow-head-length` | float | 3 | ضریب مقیاس برای طول سر پیکان. |
+| `disregard-sense` | boolean | false | هنگامی که `disregard-sense=false` باشد، هم موقعیت نقطه لنگر و هم زاویه باید در محدوده تلورانس مطابقت داشته باشند. هنگامی که `disregard-sense=true` باشد، درستی بردار تنها موقعیت نقطه لنگر و راستای آن را در نظر می‌گیرد (یعنی بردار در جهت مخالف نیز صحیح تلقی می‌شود). |
+| `draw-error-box` | boolean | - | رسم کادر خطای احاطه‌کننده، جایی که موقعیت نقطه لنگر به عنوان صحیح پذیرفته می‌شود. |
+| `offset-forward` | float | 0 | طول کادر احاطه‌کننده اندازه‌گیری‌شده از نقطه لنگر در جهت و سوی بار گسترده. در صورت `disregard-sense=true` مقدار پیش‌فرض برابر با `max(w1, w2) * 1.1` است. |
+| `offset-backward` | float | `max(w1, w2) * 1.1` | طول کادر احاطه‌کننده اندازه‌گیری‌شده از نقطه لنگر در خلاف جهت و سوی بار گسترده. |
+| `optional-grading` | boolean | false | در صورت `true` بودن، الگوریتم نمره‌دهی امتیازی به این شیء اختصاص نخواهد داد، اما نمره‌ای را نیز کسر نخواهد کرد. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/simpleTutorial]: Tutorial example that includes distributed loads
+- [demo/drawing/simpleTutorial]: مثال آموزشی شامل بارهای گسترده
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-## Mechanics and structures
 
-### `pl-rod` element
+## مکانیک و سازه‌ها
 
-#### Sample element
+### المان `pl-rod`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1125,37 +1117,38 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-rod element](pl-rod.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-rod](pl-rod.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                          |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float   | 40      | `x` position for the first end of the rod, i.e., the horizontal distance from the left border of the canvas.                                         |
-| `y1`           | float   | 40      | `y` position for the first end of the rod, i.e., the vertical distance from the top border of the canvas.                                            |
-| `x2`           | float   | 80      | `x` position for the second end of the rod, i.e., the horizontal distance from the left border of the canvas.                                        |
-| `y2`           | float   | 20      | `y` position for the second end of the rod, i.e., the vertical distance from the top border of the canvas.                                           |
-| `width`        | float   | 20      | Thickness of the rod.                                                                                                                                |
-| `draw-pin`     | boolean | true    | Draw the pin location in both ends of the rod.                                                                                                       |
-| `label1`       | string  | -       | Text to label the first end of the rod.                                                                                                              |
-| `offsetx1`     | float   | 2       | Horizontal distance of `label1` from the first end of the rod.                                                                                       |
-| `offsety1`     | float   | 2       | Vertical distance of `label1` from the first end of the rod.                                                                                         |
-| `label2`       | string  | -       | Text to label the second end of the rod.                                                                                                             |
-| `offsetx2`     | float   | 2       | Horizontal distance of `label2` from the second end of the rod.                                                                                      |
-| `offsety2`     | float   | 2       | Vertical distance of `label2` from the second end of the rod.                                                                                        |
-| `color`        | string  | white   | Set the fill color of the rod ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string  | black   | Set the stroke color of the rod.                                                                                                                     |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                         |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای انتهای اول میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x2` | float | 80 | موقعیت `x` برای انتهای دوم میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y2` | float | 20 | موقعیت `y` برای انتهای دوم میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `width` | float | 20 | ضخامت میله. |
+| `draw-pin` | boolean | true | رسم موقعیت پین در هر دو انتهای میله. |
+| `label1` | string | - | متن برای برچسب‌گذاری انتهای اول میله. |
+| `offsetx1` | float | 2 | فاصله افقی `label1` از انتهای اول میله. |
+| `offsety1` | float | 2 | فاصله عمودی `label1` از انتهای اول میله. |
+| `label2` | string | - | متن برای برچسب‌گذاری انتهای دوم میله. |
+| `offsetx2` | float | 2 | فاصله افقی `label2` از انتهای دوم میله. |
+| `offsety2` | float | 2 | فاصله عمودی `label2` از انتهای دوم میله. |
+| `color` | string | white | تنظیم رنگ پرکردن میله ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-color` | string | black | تنظیم رنگ خط دور میله. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط دور میله. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/vMDiagrams]: Example that includes a rod
+- [demo/drawing/vMDiagrams]: مثالی شامل یک میله
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-3pointrod` element
 
-#### Sample element
+### المان `pl-3pointrod`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1165,42 +1158,43 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![A 3-point rod element in PrairieLearn](pl-3pointrod.png){ width=100% style="max-width: 300px" }
+![المان میله ۳ نقطه‌ای در PrairieLearn](pl-3pointrod.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                          |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float   | 40      | `x` position for the first end of the rod, i.e., the horizontal distance from the left border of the canvas.                                         |
-| `y1`           | float   | 100     | `y` position for the first end of the rod, i.e., the vertical distance from the top border of the canvas.                                            |
-| `x2`           | float   | 100     | `x` position of the center point of the rod, i.e., the horizontal distance from the left border of the canvas.                                       |
-| `y2`           | float   | 100     | `y` position of the center point of the rod, i.e., the vertical distance from the top border of the canvas.                                          |
-| `x3`           | float   | 100     | `x` position for the second end of the rod, i.e., the horizontal distance from the left border of the canvas.                                        |
-| `y3`           | float   | 140     | `y` position for the second end of the rod, i.e., the vertical distance from the top border of the canvas.                                           |
-| `width`        | float   | 20      | Thickness of the rod.                                                                                                                                |
-| `draw-pin`     | boolean | true    | Draw the pin location at all three points of the rod.                                                                                                |
-| `label1`       | string  | -       | Text to label the first end of the rod.                                                                                                              |
-| `offsetx1`     | float   | 0       | Horizontal distance of `label1` from the first end of the rod.                                                                                       |
-| `offsety1`     | float   | -20     | Vertical distance of `label1` from the first end of the rod.                                                                                         |
-| `label2`       | string  | -       | Text to label the middle point of the rod.                                                                                                           |
-| `offsetx2`     | float   | 0       | Horizontal distance of `label2` from the middle point of the rod.                                                                                    |
-| `offsety2`     | float   | -20     | Vertical distance of `label2` from the middle point of the rod.                                                                                      |
-| `label3`       | string  | -       | Text to label the second end of the rod.                                                                                                             |
-| `offsetx3`     | float   | 0       | Horizontal distance of `label3` from the second end of the rod.                                                                                      |
-| `offsety3`     | float   | -20     | Vertical distance of `label3` from the second end of the rod.                                                                                        |
-| `color`        | string  | white   | Set the fill color of the rod ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string  | black   | Set the stroke color of the rod.                                                                                                                     |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                         |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 100 | موقعیت `y` برای انتهای اول میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x2` | float | 100 | موقعیت `x` نقطه مرکزی میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y2` | float | 100 | موقعیت `y` نقطه مرکزی میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x3` | float | 100 | موقعیت `x` برای انتهای دوم میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y3` | float | 140 | موقعیت `y` برای انتهای دوم میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `width` | float | 20 | ضخامت میله. |
+| `draw-pin` | boolean | true | رسم موقعیت پین در هر سه نقطه میله. |
+| `label1` | string | - | متن برای برچسب‌گذاری انتهای اول میله. |
+| `offsetx1` | float | 0 | فاصله افقی `label1` از انتهای اول میله. |
+| `offsety1` | float | -20 | فاصله عمودی `label1` از انتهای اول میله. |
+| `label2` | string | - | متن برای برچسب‌گذاری نقطه میانی میله. |
+| `offsetx2` | float | 0 | فاصله افقی `label2` از نقطه میانی میله. |
+| `offsety2` | float | -20 | فاصله عمودی `label2` از نقطه میانی میله. |
+| `label3` | string | - | متن برای برچسب‌گذاری انتهای دوم میله. |
+| `offsetx3` | float | 0 | فاصله افقی `label3` از انتهای دوم میله. |
+| `offsety3` | float | -20 | فاصله عمودی `label3` از انتهای دوم میله. |
+| `color` | string | white | تنظیم رنگ پرکردن میله ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-color` | string | black | تنظیم رنگ خط دور میله. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط دور میله. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/inclinedPlane]: Example that includes a 3-point rod
+- [demo/drawing/inclinedPlane]: مثالی شامل یک میله ۳ نقطه‌ای
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-4pointrod` element
 
-#### Sample element
+### المان `pl-4pointrod`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1210,47 +1204,48 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-4pointrod element](pl-4pointrod.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-4pointrod](pl-4pointrod.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                          |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float   | 40      | `x` position for the first end of the rod, i.e., the horizontal distance from the left border of the canvas.                                         |
-| `y1`           | float   | 100     | `y` position for the first end of the rod, i.e., the vertical distance from the top border of the canvas.                                            |
-| `x2`           | float   | 100     | `x` position of the center point of the rod, i.e., the horizontal distance from the left border of the canvas.                                       |
-| `y2`           | float   | 100     | `y` position of the center point of the rod, i.e., the vertical distance from the top border of the canvas.                                          |
-| `x3`           | float   | 100     | `x` position for the second end of the rod, i.e., the horizontal distance from the left border of the canvas.                                        |
-| `y3`           | float   | 160     | `y` position for the second end of the rod, i.e., the vertical distance from the top border of the canvas.                                           |
-| `x4`           | float   | 140     | `x` position for the third end of the rod, i.e., the horizontal distance from the left border of the canvas.                                         |
-| `y4`           | float   | 60      | `y` position for the third end of the rod, i.e., the vertical distance from the top border of the canvas.                                            |
-| `width`        | float   | 20      | Thickness of the rod.                                                                                                                                |
-| `draw-pin`     | boolean | true    | Draw the pin location at all four points of the rod.                                                                                                 |
-| `label1`       | string  | -       | Text to label the first end of the rod.                                                                                                              |
-| `offsetx1`     | float   | 0       | Horizontal distance of `label1` from the first end of the rod.                                                                                       |
-| `offsety1`     | float   | -20     | Vertical distance of `label1` from the first end of the rod.                                                                                         |
-| `label2`       | string  | -       | Text to label the middle point of the rod.                                                                                                           |
-| `offsetx2`     | float   | 0       | Horizontal distance of `label2` from the middle point of the rod.                                                                                    |
-| `offsety2`     | float   | -20     | Vertical distance of `label2` from the middle point of the rod.                                                                                      |
-| `label3`       | string  | -       | Text to label the second end of the rod.                                                                                                             |
-| `offsetx3`     | float   | 0       | Horizontal distance of `label3` from the second end of the rod.                                                                                      |
-| `offsety3`     | float   | -20     | Vertical distance of `label3` from the second end of the rod.                                                                                        |
-| `label4`       | string  | -       | Text to label the third end of the rod.                                                                                                              |
-| `offsetx4`     | float   | 0       | Horizontal distance of `label4` from the third end of the rod.                                                                                       |
-| `offsety4`     | float   | -20     | Vertical distance of `label4` from the third end of the rod.                                                                                         |
-| `color`        | string  | white   | Set the fill color of the rod ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string  | black   | Set the stroke color of the rod.                                                                                                                     |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                         |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 100 | موقعیت `y` برای انتهای اول میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x2` | float | 100 | موقعیت `x` نقطه مرکزی میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y2` | float | 100 | موقعیت `y` نقطه مرکزی میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x3` | float | 100 | موقعیت `x` برای انتهای دوم میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y3` | float | 160 | موقعیت `y` برای انتهای دوم میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x4` | float | 140 | موقعیت `x` برای انتهای سوم میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y4` | float | 60 | موقعیت `y` برای انتهای سوم میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `width` | float | 20 | ضخامت میله. |
+| `draw-pin` | boolean | true | رسم موقعیت پین در هر چهار نقطه میله. |
+| `label1` | string | - | متن برای برچسب‌گذاری انتهای اول میله. |
+| `offsetx1` | float | 0 | فاصله افقی `label1` از انتهای اول میله. |
+| `offsety1` | float | -20 | فاصله عمودی `label1` از انتهای اول میله. |
+| `label2` | string | - | متن برای برچسب‌گذاری نقطه میانی میله. |
+| `offsetx2` | float | 0 | فاصله افقی `label2` از نقطه میانی میله. |
+| `offsety2` | float | -20 | فاصله عمودی `label2` از نقطه میانی میله. |
+| `label3` | string | - | متن برای برچسب‌گذاری انتهای دوم میله. |
+| `offsetx3` | float | 0 | فاصله افقی `label3` از انتهای دوم میله. |
+| `offsety3` | float | -20 | فاصله عمودی `label3` از انتهای دوم میله. |
+| `label4` | string | - | متن برای برچسب‌گذاری انتهای سوم میله. |
+| `offsetx4` | float | 0 | فاصله افقی `label4` از انتهای سوم میله. |
+| `offsety4` | float | -20 | فاصله عمودی `label4` از انتهای سوم میله. |
+| `color` | string | white | تنظیم رنگ پرکردن میله ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-color` | string | black | تنظیم رنگ خط دور میله. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط دور میله. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/liftingMechanism]: Example that uses 4-point rods
+- [demo/drawing/liftingMechanism]: مثالی که از میله‌های ۴ نقطه‌ای استفاده می‌کند
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-collar-rod` element
 
-#### Sample element
+### المان `pl-collar-rod`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1260,43 +1255,44 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-collar-rod element](pl-collar.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-collar-rod](pl-collar.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute          | Type    | Default    | Description                                                                                                                                          |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | ------------------ | ------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`               | float   | 40         | `x` position for the first end of the rod, i.e., the horizontal distance from the left border of the canvas.                                         |
-| `y1`               | float   | 40         | `y` position for the first end of the rod, i.e., the vertical distance from the top border of the canvas.                                            |
-| `x2`               | float   | 100        | `x` position for the second end of the rod, i.e., the horizontal distance from the left border of the canvas.                                        |
-| `y2`               | float   | 40         | `y` position for the second end of the rod, i.e., the vertical distance from the top border of the canvas.                                           |
-| `width`            | float   | 20         | Thickness of the rod.                                                                                                                                |
-| `draw-pin`         | boolean | true       | Draw the pin location in both ends of the rod.                                                                                                       |
-| `label1`           | string  | -          | Text to label the first end of the rod.                                                                                                              |
-| `offsetx1`         | float   | 2          | Horizontal distance of `label1` from the first end of the rod.                                                                                       |
-| `offsety1`         | float   | 2          | Vertical distance of `label1` from the first end of the rod.                                                                                         |
-| `label2`           | string  | -          | Text to label the second end of the rod.                                                                                                             |
-| `offsetx2`         | float   | 2          | Horizontal distance of `label2` from the second end of the rod.                                                                                      |
-| `offsety2`         | float   | 2          | Vertical distance of `label2` from the second end of the rod.                                                                                        |
-| `draw-collar-end1` | boolean | true       | Draw a collar end at `(x1,y1)`.                                                                                                                      |
-| `w1`               | float   | 1.5\*width | The width of the collar at end 1.                                                                                                                    |
-| `h1`               | float   | 2\*width   | The height of the collar at end 1.                                                                                                                   |
-| `draw-collar-end2` | boolean | false      | Draw a collar end at `(x2,y2)`.                                                                                                                      |
-| `w2`               | float   | 1.5\*width | The width of the collar at end 2.                                                                                                                    |
-| `h2`               | float   | 2\*width   | The height of the collar at end 2.                                                                                                                   |
-| `color`            | string  | white      | Set the fill color of the rod ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color`     | string  | black      | Set the stroke color of the rod.                                                                                                                     |
-| `stroke-width`     | float   | 2          | Set the width of the stroke.                                                                                                                         |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای انتهای اول میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x2` | float | 100 | موقعیت `x` برای انتهای دوم میله، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y2` | float | 40 | موقعیت `y` برای انتهای دوم میله، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `width` | float | 20 | ضخامت میله. |
+| `draw-pin` | boolean | true | رسم موقعیت پین در هر دو انتهای میله. |
+| `label1` | string | - | متن برای برچسب‌گذاری انتهای اول میله. |
+| `offsetx1` | float | 2 | فاصله افقی `label1` از انتهای اول میله. |
+| `offsety1` | float | 2 | فاصله عمودی `label1` از انتهای اول میله. |
+| `label2` | string | - | متن برای برچسب‌گذاری انتهای دوم میله. |
+| `offsetx2` | float | 2 | فاصله افقی `label2` از انتهای دوم میله. |
+| `offsety2` | float | 2 | فاصله عمودی `label2` از انتهای دوم میله. |
+| `draw-collar-end1` | boolean | true | رسم انتهای طوقه‌دار در `(x1,y1)`. |
+| `w1` | float | 1.5\*width | عرض طوقه در انتهای ۱. |
+| `h1` | float | 2\*width | ارتفاع طوقه در انتهای ۱. |
+| `draw-collar-end2` | boolean | false | رسم انتهای طوقه‌دار در `(x2,y2)`. |
+| `w2` | float | 1.5\*width | عرض طوقه در انتهای ۲. |
+| `h2` | float | 2\*width | ارتفاع طوقه در انتهای ۲. |
+| `color` | string | white | تنظیم رنگ پرکردن میله ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-color` | string | black | تنظیم رنگ خط دور میله. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط دور میله. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/collarRod]: Example that uses a collar rod
+- [demo/drawing/collarRod]: مثالی که از میله طوقه‌دار استفاده می‌کند
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-fixed-pin` element
 
-#### Sample element
+### المان `pl-fixed-pin`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1306,35 +1302,36 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-fixed-pin element](pl-fixed-pin.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-fixed-pin](pl-fixed-pin.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                                  |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `x1`           | float   | 20      | `x` position for the center of the pin, i.e., the horizontal distance from the left border of the canvas.                                                    |
-| `y1`           | float   | 20      | `y` position for the first end of the rod, i.e., the vertical distance from the top border of the canvas.                                                    |
-| `height`       | float   | 40      | Height of the pin support, measured from the top of the base (ground) to the center of the pin.                                                              |
-| `width`        | float   | 30      | Width of the pin support.                                                                                                                                    |
-| `angle`        | float   | 0       | Angle of rotation around the center of the pin. Angles are measured from the horizontal axis and are positive clockwise.                                     |
-| `draw-pin`     | boolean | true    | Draw the location of the pin.                                                                                                                                |
-| `draw-ground`  | boolean | true    | Draw the rectangular base/ground.                                                                                                                            |
-| `label`        | string  | -       | Text to label the pin support.                                                                                                                               |
-| `offsetx`      | float   | 2       | Horizontal distance of `label` from the center of the pin.                                                                                                   |
-| `offsety`      | float   | 2       | Vertical distance of `label` from the center of the pin.                                                                                                     |
-| `color`        | string  | brown1  | Set the fill color of the pin support ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string  | black   | Set the stroke color of the pin support.                                                                                                                     |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                                 |
+| `x1` | float | 20 | موقعیت `x` برای مرکز پین، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 20 | موقعیت `y` برای مرکز پین (انتهای اول میله)، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `height` | float | 40 | ارتفاع تکیه‌گاه پین، اندازه‌گیری‌شده از بالای پایه (زمین) تا مرکز پین. |
+| `width` | float | 30 | عرض تکیه‌گاه پین. |
+| `angle` | float | 0 | زاویه دوران حول مرکز پین. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `draw-pin` | boolean | true | رسم موقعیت پین. |
+| `draw-ground` | boolean | true | رسم پایه/زمین مستطیلی. |
+| `label` | string | - | متن برای برچسب‌گذاری تکیه‌گاه پین. |
+| `offsetx` | float | 2 | فاصله افقی `label` از مرکز پین. |
+| `offsety` | float | 2 | فاصله عمودی `label` از مرکز پین. |
+| `color` | string | brown1 | تنظیم رنگ پرکردن تکیه‌گاه پین ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-color` | string | black | تنظیم رنگ خط دور تکیه‌گاه پین. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط دور تکیه‌گاه پین. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/vMDiagrams]: Example that uses a fixed pin as boundary condition
+- [demo/drawing/vMDiagrams]: مثالی که از یک پین ثابت به عنوان شرط مرزی استفاده می‌کند
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-roller` element
 
-#### Sample element
+### المان `pl-roller`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1345,35 +1342,36 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-roller element](pl-roller.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-roller](pl-roller.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                                     |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float   | 20      | `x` position for the center of the pin, i.e., the horizontal distance from the left border of the canvas.                                                       |
-| `y1`           | float   | 20      | `y` position for the first end of the pin, i.e., the vertical distance from the top border of the canvas.                                                       |
-| `height`       | float   | 40      | Height of the roller support, measured from the top of the base (ground) to the center of the pin.                                                              |
-| `width`        | float   | 30      | Width of the roller support.                                                                                                                                    |
-| `angle`        | float   | 0       | Angle of rotation around the center of the pin. Angles are measured from the horizontal axis and are positive clockwise.                                        |
-| `draw-pin`     | boolean | true    | Draw the location of the pin.                                                                                                                                   |
-| `draw-ground`  | boolean | true    | Draw the rectangular base/ground.                                                                                                                               |
-| `label`        | string  | -       | Text to label the roller support.                                                                                                                               |
-| `offsetx`      | float   | 2       | Horizontal distance of `label` from the center of the pin.                                                                                                      |
-| `offsety`      | float   | 2       | Vertical distance of `label` from the center of the pin.                                                                                                        |
-| `color`        | string  | brown1  | Set the fill color of the roller support ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color` | string  | black   | Set the stroke color of the roller.                                                                                                                             |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                                    |
+| `x1` | float | 20 | موقعیت `x` برای مرکز پین، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 20 | موقعیت `y` برای مرکز پین (انتهای اول پین)، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `height` | float | 40 | ارتفاع تکیه‌گاه غلتکی، اندازه‌گیری‌شده از بالای پایه (زمین) تا مرکز پین. |
+| `width` | float | 30 | عرض تکیه‌گاه غلتکی. |
+| `angle` | float | 0 | زاویه دوران حول مرکز پین. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `draw-pin` | boolean | true | رسم موقعیت پین. |
+| `draw-ground` | boolean | true | رسم پایه/زمین مستطیلی. |
+| `label` | string | - | متن برای برچسب‌گذاری تکیه‌گاه غلتکی. |
+| `offsetx` | float | 2 | فاصله افقی `label` از مرکز پین. |
+| `offsety` | float | 2 | فاصله عمودی `label` از مرکز پین. |
+| `color` | string | brown1 | تنظیم رنگ پرکردن تکیه‌گاه غلتکی ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-color` | string | black | تنظیم رنگ خط دور غلتک. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط دور غلتک. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/vMDiagrams]: Example that uses a roller as boundary condition
+- [demo/drawing/vMDiagrams]: مثالی که از یک غلتک به عنوان شرط مرزی استفاده می‌کند
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-clamped` element
 
-#### Sample element
+### المان `pl-clamped`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1385,32 +1383,33 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![A clamped end element in PrairieLearn](pl-clamped.png){ width=100% style="max-width: 300px" }
+![المان تکیه‌گاه گیردار در PrairieLearn](pl-clamped.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                                                                      |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `x1`           | float  | 20      | `x` position for the clamped point, i.e., the horizontal distance from the left border of the canvas.                                                                                            |
-| `y1`           | float  | 20      | `y` position for the clamped point, i.e., the vertical distance from the top border of the canvas.                                                                                               |
-| `height`       | float  | 40      | Height of the clamped support (rectangle).                                                                                                                                                       |
-| `width`        | float  | 20      | Width of the clamped support (rectangle).                                                                                                                                                        |
-| `angle`        | float  | 0       | Angle of rotation around the clamped point. Angles are measured from the horizontal axis and are positive clockwise.                                                                             |
-| `label`        | string | -       | Text to label the clamped support.                                                                                                                                                               |
-| `offsetx`      | float  | 2       | Horizontal distance of `label` from the clamped point.                                                                                                                                           |
-| `offsety`      | float  | 2       | Vertical distance of `label` from the clamped point.                                                                                                                                             |
-| `color`        | string | black   | Fill color for the clamped support using a gradient from white to `color` ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-width` | float  | 2       | Set the width of the stroke.                                                                                                                                                                     |
+| `x1` | float | 20 | موقعیت `x` برای نقطه گیردار، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 20 | موقعیت `y` برای نقطه گیردار، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `height` | float | 40 | ارتفاع تکیه‌گاه گیردار (مستطیل). |
+| `width` | float | 20 | عرض تکیه‌گاه گیردار (مستطیل). |
+| `angle` | float | 0 | زاویه دوران حول نقطه گیردار. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `label` | string | - | متن برای برچسب‌گذاری تکیه‌گاه گیردار. |
+| `offsetx` | float | 2 | فاصله افقی `label` از نقطه گیردار. |
+| `offsety` | float | 2 | فاصله عمودی `label` از نقطه گیردار. |
+| `color` | string | black | رنگ پرکردن برای تکیه‌گاه گیردار با استفاده از یک گرادیان از سفید تا `color` ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط رسم. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/collarRod]: Example that uses a clamped end as boundary condition
+- [demo/drawing/collarRod]: مثالی که از یک انتهای گیردار به عنوان شرط مرزی استفاده می‌کند
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-spring` element
 
-#### Sample element
+### المان `pl-spring`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200" grid-size="20">
@@ -1422,31 +1421,32 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-spring element](pl-spring.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-spring](pl-spring.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                                                                                                                           |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float   | 20      | `x` position for the start point for the spring, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                    |
-| `y1`           | float   | 20      | `y` position for the start point for the spring, i.e., the vertical distance from the top border of the canvas.                                                                                                                                       |
-| `width`        | float   | 60      | Length of the spring.                                                                                                                                                                                                                                 |
-| `angle`        | float   | 0       | Angle of rotation around the start point of the spring. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                      |
-| `height`       | float   | 40      | Height of the spring.                                                                                                                                                                                                                                 |
-| `interval`     | float   | 10      | Interval between each angled line. This interval is recalculated if the spring width is too short.                                                                                                                                                    |
-| `x2`           | float   | -       | `x` position for the end point for the spring, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced. |
-| `y2`           | float   | -       | `y` position for the end point for the spring, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.    |
-| `stroke-color` | string  | black   | Set the color of the spring ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                    |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                                                                                                                          |
-| `draw-pin`     | boolean | false   | Draw points at the spring ends.                                                                                                                                                                                                                       |
+| `x1` | float | 20 | موقعیت `x` برای نقطه شروع فنر، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 20 | موقعیت `y` برای نقطه شروع فنر، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `width` | float | 60 | طول فنر. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع فنر. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `height` | float | 40 | ارتفاع فنر. |
+| `interval` | float | 10 | فاصله بین هر خط زاویه‌دار (دندانه). در صورتی که عرض فنر بیش از حد کوتاه باشد، این فاصله دوباره محاسبه می‌شود. |
+| `x2` | float | - | موقعیت `x` برای نقطه انتهایی فنر، یعنی فاصله افقی از لبه سمت چپ بوم. به‌طور پیش‌فرض، مقادیر `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، مقادیر `angle` و `width` جایگزین می‌شوند. |
+| `y2` | float | - | موقعیت `y` برای نقطه انتهایی فنر، یعنی فاصله عمودی از لبه بالایی بوم. به‌طور پیش‌فرض، مقادیر `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، مقادیر `angle` و `width` جایگزین می‌شوند. |
+| `stroke-color` | string | black | تنظیم رنگ فنر ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط رسم. |
+| `draw-pin` | boolean | false | رسم نقاط پین در دو انتهای فنر. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-coil` element
 
-#### Sample element
+### المان `pl-coil`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200" grid-size="20">
@@ -1458,30 +1458,31 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-coil element](pl-coil.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-coil](pl-coil.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                                                                                                                         |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | -------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float   | 20      | `x` position for the start point for the coil, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                    |
-| `y1`           | float   | 20      | `y` position for the start point for the coil, i.e., the vertical distance from the top border of the canvas.                                                                                                                                       |
-| `width`        | float   | 80      | Length of the coil.                                                                                                                                                                                                                                 |
-| `angle`        | float   | 0       | Angle of rotation around the start point of the coil. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                      |
-| `height`       | float   | 30      | Height of the coil.                                                                                                                                                                                                                                 |
-| `x2`           | float   | -       | `x` position for the end point for the coil, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced. |
-| `y2`           | float   | -       | `y` position for the end point for the coil, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.    |
-| `stroke-color` | string  | black   | Set the color of the coil ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                    |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                                                                                                                        |
-| `draw-pin`     | boolean | false   | Draw points at the coil ends.                                                                                                                                                                                                                       |
+| `x1` | float | 20 | موقعیت `x` برای نقطه شروع سیم‌پیچ، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 20 | موقعیت `y` برای نقطه شروع سیم‌پیچ، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `width` | float | 80 | طول سیم‌پیچ. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع سیم‌پیچ. زوایا از محور افقی اندازه‌گیری می‌شوند و در جهت ساعت‌گرد مثبت هستند. |
+| `height` | float | 30 | ارتفاع سیم‌پیچ. |
+| `x2` | float | - | موقعیت `x` برای نقطه انتهایی سیم‌پیچ، یعنی فاصله افقی از لبه سمت چپ بوم. به‌طور پیش‌فرض، مقادیر `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، مقادیر `angle` و `width` جایگزین می‌شوند. |
+| `y2` | float | - | موقعیت `y` برای نقطه انتهایی سیم‌پیچ، یعنی فاصله عمودی از لبه بالایی بوم. به‌طور پیش‌فرض، مقادیر `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، مقادیر `angle` و `width` جایگزین می‌شوند. |
+| `stroke-color` | string | black | تنظیم رنگ سیم‌پیچ ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط رسم. |
+| `draw-pin` | boolean | false | رسم نقاط پین در دو انتهای سیم‌پیچ. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-### `pl-pulley` element
 
-#### Sample element
+### المان `pl-pulley`
+
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200">
@@ -1492,38 +1493,38 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-pulley element](pl-pulley.png){ width=100% style="max-width: 300px" }
+![تصویر اسکرین‌شات از المان pl-pulley](pl-pulley.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute          | Type    | Default | Description                                                                                                                                             |
+| مشخصه | نوع | پیش‌فرض | توضیحات |
 | ------------------ | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`               | float   | 40      | `x` position for the center of the pulley, i.e., the horizontal distance from the left border of the canvas.                                            |
-| `y1`               | float   | 40      | `y` position for the center of the pulley, i.e., the vertical distance from the top border of the canvas.                                               |
-| `x2`               | float   | 10      | `x` position for the first point defining the end of the pulley line, i.e., the horizontal distance from the left border of the canvas.                 |
-| `y2`               | float   | 10      | `y` position for the first point defining the end of the pulley line, i.e., the vertical distance from the top border of the canvas.                    |
-| `x3`               | float   | 120     | `x` position for the second point defining the end of the pulley line, i.e., the horizontal distance from the left border of the canvas.                |
-| `y3`               | float   | 60      | `y` position for the second point defining the end of the pulley line, i.e., the vertical distance from the top border of the canvas.                   |
-| `alternative-path` | boolean | false   | Selects the other tangent points at the pulley that connects to the points `(x2,y2)` and `(x3,y3)`. By default, it draws the shortest path.             |
-| `radius`           | float   | 20      | Radius of the pulley.                                                                                                                                   |
-| `label`            | string  | -       | Text to label the pulley.                                                                                                                               |
-| `offsetx`          | float   | 2       | Horizontal distance of `label` from the center of the pulley.                                                                                           |
-| `offsety`          | float   | 2       | Vertical distance of `label` from the center of the pulley.                                                                                             |
-| `color`            | string  | gray    | Set the fill color of the pulley ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ). |
-| `stroke-color`     | string  | black   | Set the stroke color of the pulley.                                                                                                                     |
-| `stroke-width`     | float   | 2       | Set the width of the stroke.                                                                                                                            |
+| `x1` | float | 40 | موقعیت `x` برای مرکز قرقره، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای مرکز قرقره، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x2` | float | 10 | موقعیت `x` برای نقطه اول تعریف‌کننده انتهای خط قرقره، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y2` | float | 10 | موقعیت `y` برای نقطه اول تعریف‌کننده انتهای خط قرقره، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `x3` | float | 120 | موقعیت `x` برای نقطه دوم تعریف‌کننده انتهای خط قرقره، یعنی فاصله افقی از لبه سمت چپ بوم. |
+| `y3` | float | 60 | موقعیت `y` برای نقطه دوم تعریف‌کننده انتهای خط قرقره، یعنی فاصله عمودی از لبه بالایی بوم. |
+| `alternative-path` | boolean | false | نقاط مماس دیگر روی قرقره را که به نقاط `(x2,y2)` و `(x3,y3)` متصل می‌شوند انتخاب می‌کند. به‌طور پیش‌فرض کوتاه‌ترین مسیر را رسم می‌کند. |
+| `radius` | float | 20 | شعاع قرقره. |
+| `label` | string | - | متن برای برچسب‌گذاری قرقره. |
+| `offsetx` | float | 2 | فاصله افقی `label` از مرکز قرقره. |
+| `offsety` | float | 2 | فاصله عمودی `label` از مرکز قرقره. |
+| `color` | string | gray | تنظیم رنگ پرکردن قرقره ( [رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/) ). |
+| `stroke-color` | string | black | تنظیم رنگ خط دور قرقره. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط دور قرقره. |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/pulley]: Example that includes a pulley system
+- [demo/drawing/pulley]: مثالی شامل یک سیستم قرقره
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر همراه با اشیای ترسیمی
 
-## Circuit components
+## قطعات مدار
 
-### `pl-capacitor` element
+### المان `pl-capacitor`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200" grid-size="20">
@@ -1541,35 +1542,35 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-capacitor element](pl-capacitor.png){ width=100% style="max-width: 300px" }
+![اسکرین‌شات از المان pl-capacitor](pl-capacitor.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                                                                                                                              |
-| -------------- | ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float   | 40      | `x` position for the first end of the capacitor, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                       |
-| `y1`           | float   | 40      | `y` position for the first end of the capacitor, i.e., the vertical distance from the top border of the canvas.                                                                                                                                          |
-| `angle`        | float   | 0       | Angle of rotation around the start point of the capacitor. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                      |
-| `width`        | float   | 60      | Length of the capacitor                                                                                                                                                                                                                                  |
-| `x2`           | float   | -       | `x` position for the end point for the capacitor, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced. |
-| `y2`           | float   | -       | `y` position for the end point for the capacitor, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.    |
-| `height`       | float   | 15      | Length of the capacitor plates.                                                                                                                                                                                                                          |
-| `interval`     | float   | 10      | Distance between capacitor plates.                                                                                                                                                                                                                       |
-| `polarized`    | boolean | false   | Set if the capacitor is polarized or not, by adding the "+" symbol.                                                                                                                                                                                      |
-| `label`        | string  | -       | Text to label the capacitor.                                                                                                                                                                                                                             |
-| `font-size`    | float   | 16      | Label font size.                                                                                                                                                                                                                                         |
-| `offsetx`      | float   | 2       | Horizontal offset for the `label`.                                                                                                                                                                                                                       |
-| `offsety`      | float   | 2       | Vertical offset for the `label`.                                                                                                                                                                                                                         |
-| `stroke-color` | string  | black   | Set the stroke color of the rod.                                                                                                                                                                                                                         |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                                                                                                                             |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول خازن، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای انتهای اول خازن، یعنی فاصله عمودی از لبه بالای بوم. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع خازن. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت عقربه‌های ساعت مثبت هستند. |
+| `width` | float | 60 | طول خازن. |
+| `x2` | float | - | موقعیت `x` برای نقطه انتهای خازن، یعنی فاصله افقی از لبه چپ بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `y2` | float | - | موقعیت `y` برای نقطه انتهای خازن، یعنی فاصله عمودی از لبه بالای بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `height` | float | 15 | طول صفحات خازن. |
+| `interval` | float | 10 | فاصله بین صفحات خازن. |
+| `polarized` | boolean | false | تعیین می‌کند که آیا خازن با اضافه کردن علامت «+» قطبیده باشد یا خیر. |
+| `label` | string | - | متن برچسب خازن. |
+| `font-size` | float | 16 | اندازه قلم برچسب. |
+| `offsetx` | float | 2 | آفست افقی برای `label`. |
+| `offsety` | float | 2 | آفست عمودی برای `label`. |
+| `stroke-color` | string | black | تنظیم رنگ خط (stroke) المان. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط (stroke). |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر به همراه اشیاء ترسیمی
 
-### `pl-resistor` element
+### المان `pl-resistor`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200" grid-size="20">
@@ -1595,34 +1596,34 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-resistor element](pl-resistor.png){ width=100% style="max-width: 300px" }
+![اسکرین‌شات از المان pl-resistor](pl-resistor.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                                                                                                                             |
-| -------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float  | 40      | `x` position for the first end of the resistor, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                       |
-| `y1`           | float  | 40      | `y` position for the first end of the resistor, i.e., the vertical distance from the top border of the canvas.                                                                                                                                          |
-| `angle`        | float  | 0       | Angle of rotation around the start point of the resistor. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                      |
-| `width`        | float  | 60      | Length of the resistor                                                                                                                                                                                                                                  |
-| `x2`           | float  | -       | `x` position for the end point for the resistor, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced. |
-| `y2`           | float  | -       | `y` position for the end point for the resistor, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.    |
-| `height`       | float  | 10      | Height of the spring-like region of the resistor.                                                                                                                                                                                                       |
-| `interval`     | float  | 30      | Length of the spring-like region of the resistor.                                                                                                                                                                                                       |
-| `label`        | string | -       | Text to label the resistor.                                                                                                                                                                                                                             |
-| `font-size`    | float  | 16      | Label font size.                                                                                                                                                                                                                                        |
-| `offsetx`      | float  | 2       | Horizontal offset for the `label`.                                                                                                                                                                                                                      |
-| `offsety`      | float  | 2       | Vertical offset for the `label`.                                                                                                                                                                                                                        |
-| `stroke-color` | string | black   | Set the stroke color of the rod.                                                                                                                                                                                                                        |
-| `stroke-width` | float  | 2       | Set the width of the stroke.                                                                                                                                                                                                                            |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول مقاومت، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای انتهای اول مقاومت، یعنی فاصله عمودی از لبه بالای بوم. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع مقاومت. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت عقربه‌های ساعت مثبت هستند. |
+| `width` | float | 60 | طول مقاومت. |
+| `x2` | float | - | موقعیت `x` برای نقطه انتهای مقاومت، یعنی فاصله افقی از لبه چپ بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `y2` | float | - | موقعیت `y` برای نقطه انتهای مقاومت، یعنی فاصله عمودی از لبه بالای بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `height` | float | 10 | ارتفاع ناحیه زیگزاگی (فنر-مانند) مقاومت. |
+| `interval` | float | 30 | طول ناحیه زیگزاگی (فنر-مانند) مقاومت. |
+| `label` | string | - | متن برچسب مقاومت. |
+| `font-size` | float | 16 | اندازه قلم برچسب. |
+| `offsetx` | float | 2 | آفست افقی برای `label`. |
+| `offsety` | float | 2 | آفست عمودی برای `label`. |
+| `stroke-color` | string | black | تنظیم رنگ خط (stroke) مقاومت. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط (stroke). |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر به همراه اشیاء ترسیمی
 
-### `pl-battery` element
+### المان `pl-battery`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200" grid-size="20">
@@ -1633,34 +1634,34 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-battery element](pl-battery.png){ width=100% style="max-width: 300px" }
+![اسکرین‌شات از المان pl-battery](pl-battery.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                                                                                                                            |
-| -------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `x1`           | float  | 40      | `x` position for the first end of the battery, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                       |
-| `y1`           | float  | 40      | `y` position for the first end of the battery, i.e., the vertical distance from the top border of the canvas.                                                                                                                                          |
-| `angle`        | float  | 0       | Angle of rotation around the start point of the battery. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                      |
-| `width`        | float  | 60      | Length of the battery                                                                                                                                                                                                                                  |
-| `x2`           | float  | -       | `x` position for the end point for the battery, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced. |
-| `y2`           | float  | -       | `y` position for the end point for the battery, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.    |
-| `height`       | float  | 20      | Half the length of the longest battery plate.                                                                                                                                                                                                          |
-| `interval`     | float  | 5       | Distance between battery plates.                                                                                                                                                                                                                       |
-| `label`        | string | -       | Text to label the battery.                                                                                                                                                                                                                             |
-| `font-size`    | float  | 16      | Label font size.                                                                                                                                                                                                                                       |
-| `offsetx`      | float  | 2       | Horizontal offset for the `label`.                                                                                                                                                                                                                     |
-| `offsety`      | float  | 2       | Vertical offset for the `label`.                                                                                                                                                                                                                       |
-| `stroke-color` | string | black   | Set the stroke color of the rod.                                                                                                                                                                                                                       |
-| `stroke-width` | float  | 2       | Set the width of the stroke.                                                                                                                                                                                                                           |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول باتری، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای انتهای اول باتری، یعنی فاصله عمودی از لبه بالای بوم. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع باتری. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت عقربه‌های ساعت مثبت هستند. |
+| `width` | float | 60 | طول باتری. |
+| `x2` | float | - | موقعیت `x` برای نقطه انتهای باتری، یعنی فاصله افقی از لبه چپ بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `y2` | float | - | موقعیت `y` برای نقطه انتهای باتری، یعنی فاصله عمودی از لبه بالای بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `height` | float | 20 | نصف طول بلندترین صفحه باتری. |
+| `interval` | float | 5 | فاصله بین صفحات باتری. |
+| `label` | string | - | متن برچسب باتری. |
+| `font-size` | float | 16 | اندازه قلم برچسب. |
+| `offsetx` | float | 2 | آفست افقی برای `label`. |
+| `offsety` | float | 2 | آفست عمودی برای `label`. |
+| `stroke-color` | string | black | تنظیم رنگ خط (stroke) میله/خطوط باتری. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط (stroke). |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر به همراه اشیاء ترسیمی
 
-### `pl-switch` element
+### المان `pl-switch`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200" grid-size="20">
@@ -1681,35 +1682,35 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-switch element](pl-switch.png){ width=100% style="max-width: 300px" }
+![اسکرین‌شات از المان pl-switch](pl-switch.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type    | Default | Description                                                                                                                                                                                                                                           |
-| -------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float   | 40      | `x` position for the first end of the switch, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                       |
-| `y1`           | float   | 40      | `y` position for the first end of the switch, i.e., the vertical distance from the top border of the canvas.                                                                                                                                          |
-| `angle`        | float   | 0       | Angle of rotation around the start point of the switch. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                      |
-| `width`        | float   | 60      | Length of the switch                                                                                                                                                                                                                                  |
-| `x2`           | float   | -       | `x` position for the end point for the switch, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced. |
-| `y2`           | float   | -       | `y` position for the end point for the switch, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.    |
-| `switch-angle` | float   | 30      | Angle of switch opening.                                                                                                                                                                                                                              |
-| `interval`     | float   | 40      | Distance of the switch opening.                                                                                                                                                                                                                       |
-| `draw-pin`     | boolean | true    | Draw the pin location in both ends of the switch.                                                                                                                                                                                                     |
-| `label`        | string  | -       | Text to label the switch.                                                                                                                                                                                                                             |
-| `font-size`    | float   | 16      | Label font size.                                                                                                                                                                                                                                      |
-| `offsetx`      | float   | 2       | Horizontal offset for the `label`.                                                                                                                                                                                                                    |
-| `offsety`      | float   | 2       | Vertical offset for the `label`.                                                                                                                                                                                                                      |
-| `stroke-color` | string  | black   | Set the stroke color of the rod.                                                                                                                                                                                                                      |
-| `stroke-width` | float   | 2       | Set the width of the stroke.                                                                                                                                                                                                                          |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول کلید، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای انتهای اول کلید، یعنی فاصله عمودی از لبه بالای بوم. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع کلید. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت عقربه‌های ساعت مثبت هستند. |
+| `width` | float | 60 | طول کلید. |
+| `x2` | float | - | موقعیت `x` برای نقطه انتهای کلید، یعنی فاصله افقی از لبه چپ بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `y2` | float | - | موقعیت `y` برای نقطه انتهای کلید، یعنی فاصله عمودی از لبه بالای بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `switch-angle` | float | 30 | زاویه باز بودن کلید. |
+| `interval` | float | 40 | فاصله بازشدگی کلید. |
+| `draw-pin` | boolean | true | رسم محل پین در هر دو انتهای کلید. |
+| `label` | string | - | متن برچسب کلید. |
+| `font-size` | float | 16 | اندازه قلم برچسب. |
+| `offsetx` | float | 2 | آفست افقی برای `label`. |
+| `offsety` | float | 2 | آفست عمودی برای `label`. |
+| `stroke-color` | string | black | تنظیم رنگ خط (stroke) کلید. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط (stroke). |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر به همراه اشیاء ترسیمی
 
-### `pl-inductor` element
+### المان `pl-inductor`
 
-#### Sample element
+#### نمونه المان
 
 ```html
 <pl-drawing width="200" height="200" grid-size="20">
@@ -1729,34 +1730,34 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing>
 ```
 
-![Screenshot of the pl-inductor element](pl-inductor.png){ width=100% style="max-width: 300px" }
+![اسکرین‌شات از المان pl-inductor](pl-inductor.png){ width=100% style="max-width: 300px" }
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute      | Type   | Default | Description                                                                                                                                                                                                                                             |
-| -------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x1`           | float  | 40      | `x` position for the first end of the inductor, i.e., the horizontal distance from the left border of the canvas.                                                                                                                                       |
-| `y1`           | float  | 40      | `y` position for the first end of the inductor, i.e., the vertical distance from the top border of the canvas.                                                                                                                                          |
-| `angle`        | float  | 0       | Angle of rotation around the start point of the inductor. Angles are measured from the horizontal axis and are positive clockwise.                                                                                                                      |
-| `width`        | float  | 60      | Length of the inductor                                                                                                                                                                                                                                  |
-| `x2`           | float  | -       | `x` position for the end point for the inductor, i.e., the horizontal distance from the left border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced. |
-| `y2`           | float  | -       | `y` position for the end point for the inductor, i.e., the vertical distance from the top border of the canvas. By default, `(x2,y2)` are determined from `angle` and `width`. If `x2` and `y2` are provided, then `angle` and `width` are replaced.    |
-| `height`       | float  | 20      | Height of the spring-like region of the inductor.                                                                                                                                                                                                       |
-| `interval`     | float  | 40      | Length of the spring-like region of the inductor.                                                                                                                                                                                                       |
-| `label`        | string | -       | Text to label the inductor.                                                                                                                                                                                                                             |
-| `font-size`    | float  | 16      | Label font size.                                                                                                                                                                                                                                        |
-| `offsetx`      | float  | 2       | Horizontal offset for the `label`.                                                                                                                                                                                                                      |
-| `offsety`      | float  | 2       | Vertical offset for the `label`.                                                                                                                                                                                                                        |
-| `stroke-color` | string | black   | Set the stroke color of the rod.                                                                                                                                                                                                                        |
-| `stroke-width` | float  | 2       | Set the width of the stroke.                                                                                                                                                                                                                            |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `x1` | float | 40 | موقعیت `x` برای انتهای اول سلف، یعنی فاصله افقی از لبه چپ بوم. |
+| `y1` | float | 40 | موقعیت `y` برای انتهای اول سلف، یعنی فاصله عمودی از لبه بالای بوم. |
+| `angle` | float | 0 | زاویه دوران حول نقطه شروع سلف. زاویه‌ها از محور افقی سنجیده می‌شوند و در جهت عقربه‌های ساعت مثبت هستند. |
+| `width` | float | 60 | طول سلف. |
+| `x2` | float | - | موقعیت `x` برای نقطه انتهای سلف، یعنی فاصله افقی از لبه چپ بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `y2` | float | - | موقعیت `y` برای نقطه انتهای سلف، یعنی فاصله عمودی از لبه بالای بوم. به طور پیش‌فرض، `(x2,y2)` بر اساس `angle` و `width` تعیین می‌شوند. اگر `x2` و `y2` ارائه شوند، جایگزین `angle` و `width` خواهند شد. |
+| `height` | float | 20 | ارتفاع ناحیه حلقه‌ای (سیم‌پیچ) سلف. |
+| `interval` | float | 40 | طول ناحیه حلقه‌ای (سیم‌پیچ) سلف. |
+| `label` | string | - | متن برچسب سلف. |
+| `font-size` | float | 16 | اندازه قلم برچسب. |
+| `offsetx` | float | 2 | آفست افقی برای `label`. |
+| `offsety` | float | 2 | آفست عمودی برای `label`. |
+| `stroke-color` | string | black | تنظیم رنگ خط (stroke) سلف. |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط (stroke). |
 
-#### Example implementations
+#### پیاده‌سازی‌های نمونه
 
-- [element/drawingGallery]: Image gallery with drawing objects
+- [element/drawingGallery]: گالری تصاویر به همراه اشیاء ترسیمی
 
-## Elements for sketching plots
+## المان‌هایی برای رسم نمودار (Sketching plots)
 
-![Screenshot of the pl-graph element](pl-graph.png){ width=100% style="max-width: 300px" }
+![اسکرین‌شات از المان pl-graph](pl-graph.png){ width=100% style="max-width: 300px" }
 
 ```html
 <pl-drawing-initial>
@@ -1798,72 +1799,72 @@ More information about the grading attributes in the Grading section below.
 </pl-drawing-initial>
 ```
 
-### Example implementations
+### پیاده‌سازی‌های نمونه
 
-- [demo/drawing/graphs]: Example that highlights graph sketching
+- [demo/drawing/graphs]: مثالی که نحوه رسم نمودار را برجسته و نمایش می‌دهد
 
-### `pl-axes` element
+### المان `pl-axes`
 
-A `pl-axes` element adds two axes to define the coordinate plane for sketching plots.
+المان `pl-axes` دو محور را برای تعریف صفحه مختصات جهت رسم نمودارها اضافه می‌کند.
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute          | Type   | Default            | Description                                                                                                                                                                                                                                                                                                                                                                                  |
-| ------------------ | ------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `origin`           | string | '{"x": 0, "y": 0}' | Position of the origin of the coordinate system w.r.t the origin of the canvas (top/left corner). "x" is the horizontal distance from the left border of the canvas. "y" is the vertical distance from the top border of the canvas.                                                                                                                                                         |
-| `xneg`             | float  | 20                 | Length of the negative part of the x-axis.                                                                                                                                                                                                                                                                                                                                                   |
-| `yneg`             | float  | 160                | Length of the negative part of the y-axis.                                                                                                                                                                                                                                                                                                                                                   |
-| `xpos`             | float  | 400                | Length of the positive part of the x-axis.                                                                                                                                                                                                                                                                                                                                                   |
-| `ypos`             | float  | 160                | Length of the positive part of the y-axis.                                                                                                                                                                                                                                                                                                                                                   |
-| `label-x`          | string | 'x'                | Text to label the x-axis.                                                                                                                                                                                                                                                                                                                                                                    |
-| `offsetx-label-x`  | float  | 0                  | Horizontal offset distance of `label-x`.                                                                                                                                                                                                                                                                                                                                                     |
-| `offsety-label-x`  | float  | 0                  | Vertical offset distance of `label-x`.                                                                                                                                                                                                                                                                                                                                                       |
-| `label-y`          | string | 'y'                | Text to label the y-axis.                                                                                                                                                                                                                                                                                                                                                                    |
-| `offsetx-label-y`  | float  | -30                | Horizontal offset distance of `label-y`.                                                                                                                                                                                                                                                                                                                                                     |
-| `offsety-label-y`  | float  | -10                | Vertical offset distance of `label-y`.                                                                                                                                                                                                                                                                                                                                                       |
-| `supporting-lines` | string |                    | Add additional grid lines to help with the sketching. For example, '[{"x":80},{"y":40}]' adds a vertical line passing through position `x=80` with respect to `origin`, i.e., the origin of the coordinate system defined by the plot axes. It also adds a horizontal line passing through `y=40` with respect to `origin`.                                                                  |
-| `grid-label`       | string |                    | Add labels to specified grid points. For example, '[ {"axis": "x", "pos": 80, "lab": "4" } ]' adds the label `4` at position `x=80` with respect to `origin`. If additional adjustment of the position of the label is needed, this attribute can have two additional optional keys: `offsetx` and `offsety`, i.e., '[ {"axis": "x", "pos": 80, "lab": "4", "offsetx": 10, "offsety":20 } ]' |
-| `color`            | string | black              | Set the color of the coordinate system ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                                                                                                                                                |
-| `stroke-width`     | float  | 2                  | Set the width of the stroke.                                                                                                                                                                                                                                                                                                                                                                 |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `origin` | string | '{"x": 0, "y": 0}' | موقعیت مبدأ دستگاه مختصات نسبت به مبدأ بوم (گوشه بالا/چپ). مقدار "x" فاصله افقی از لبه چپ بوم است. مقدار "y" فاصله عمودی از لبه بالای بوم است. |
+| `xneg` | float | 20 | طول بخش منفی محور x. |
+| `yneg` | float | 160 | طول بخش منفی محور y. |
+| `xpos` | float | 400 | طول بخش مثبت محور x. |
+| `ypos` | float | 160 | طول بخش مثبت محور y. |
+| `label-x` | string | 'x' | متن برچسب محور x. |
+| `offsetx-label-x` | float | 0 | فاصله آفست افقی `label-x`. |
+| `offsety-label-x` | float | 0 | فاصله آفست عمودی `label-x`. |
+| `label-y` | string | 'y' | متن برچسب محور y. |
+| `offsetx-label-y` | float | -30 | فاصله آفست افقی `label-y`. |
+| `offsety-label-y` | float | -10 | فاصله آفست عمودی `label-y`. |
+| `supporting-lines` | string | | خطوط شبکه شطرنجی کمکی اضافه می‌کند تا به فرآیند رسم کمک کند. به عنوان مثال، `'[{"x":80},{"y":40}]'` یک خط عمودی اضافه می‌کند که از موقعیت `x=80` نسبت به `origin` (یعنی مبدأ دستگاه مختصات تعریف‌شده توسط محورهای پلات) عبور می‌کند. همچنین یک خط افقی اضافه می‌کند که از `y=40` نسبت به `origin` می‌گذرد. |
+| `grid-label` | string | | به نقاط مشخص‌شده در شبکه شطرنجی برچسب اضافه می‌کند. برای مثال، `'[ {"axis": "x", "pos": 80, "lab": "4" } ]'` برچسب `4` را در موقعیت `x=80` نسبت به `origin` اضافه می‌کند. اگر تنظیم بیشتری برای موقعیت برچسب نیاز باشد، این ویژگی می‌تواند دو کلید اختیاری اضافی داشته باشد: `offsetx` و `offsety`؛ مانند `'[ {"axis": "x", "pos": 80, "lab": "4", "offsetx": 10, "offsety":20 } ]'`. |
+| `color` | string | black | تنظیم رنگ دستگاه مختصات ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width` | float | 2 | تنظیم ضخامت خط (stroke). |
 
-### `pl-graph-line` element
+### المان `pl-graph-line`
 
-A `pl-graph-line` element adds straight or quadratic lines to plots. It wraps the elements `pl-controlled-line` and `pl-controlled-curved-line` so that the end and control points can be defined with respect to the origin of the plot, instead of the origin of the canvas. When only two points are given, it draws straight lines. If three points are given, it draws a quadratic curve. It also provides an option to create quadratic curves using the gradient information of the end points, instead of giving the position of the control point.
+المان `pl-graph-line` خطوط مستقیم یا درجه دوم (سهمی‌شکل) را به پلات‌ها اضافه می‌کند. این المان، المان‌های `pl-controlled-line` و `pl-controlled-curved-line` را درون خود دربرمی‌گیرد (wrap می‌کند) به طوری که نقاط انتهایی و کنترلی می‌توانند به جای مبدأ بوم، نسبت به مبدأ پلات تعریف شوند. هنگامی که فقط دو نقطه داده شود، خطوط مستقیم رسم می‌کند. اگر سه نقطه ارائه شود، یک منحنی درجه دوم رسم می‌نماید. همچنین گزینه‌ای را برای ایجاد منحنی‌های درجه دوم با استفاده از اطلاعات گرادیان (شیب/مشتق) نقاط انتهایی به جای تعیین موقعیت نقطه کنترلی فراهم می‌کند.
 
-#### Customizations
+#### سفارشی‌سازی‌ها
 
-| Attribute              | Type    | Default            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| ---------------------- | ------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `origin`               | string  | '{"x": 0, "y": 0}' | Position of the origin of the coordinate system w.r.t the origin of the canvas (top/left corner). "x" is the horizontal distance from the left border of the canvas. "y" is the vertical distance from the top border of the canvas.                                                                                                                                                                                                                                   |
-| `end-points`           | string  |                    | Provides the coordinates of the end points of the line w.r.t `origin`, i.e., the origin of the coordinate system defined by the plot axes. For example, a straight line is defined by two end points, given by `end-points='[{"x": 80, "y": -80}, {"x": 160, "y": -80}]'`. To plot a quadratic curve, the control point coordinates can be provided as the third element of the list, i.e., `end-points='[{"x": 0, "y": 0}, {"x": 80, "y": 80}, {"x": 40, "y": 80}]'`. |
-| `end-gradients`        | string  |                    | Provides the derivative of the line at the end points. This information is used to determine the position of the control point when plotting quadratic curves. Note that only one of the options can be used to plot quadratic curves: either provide `end-gradients` or the third point in the list `end-points`.                                                                                                                                                     |
-| `color`                | string  | red                | Set the color of the coordinate system ( [PL colors](../python-reference/prairielearn/colors.md) or [HTML colors](https://htmlcolorcodes.com/color-chart/) ).                                                                                                                                                                                                                                                                                                          |
-| `stroke-width`         | float   | 4                  | Set the width of the stroke.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `draw-error-box`       | boolean | -                  | Draw the error bounding box, where the location of the end points and control point are accepted as correct.                                                                                                                                                                                                                                                                                                                                                           |
-| `offset-tol-x`         | float   | 0                  | Half the length of the bounding box in the x-direction. The end point is at the center of the bounding box.                                                                                                                                                                                                                                                                                                                                                            |
-| `offset-tol-y`         | float   | 0                  | Half the length of the bounding box in the y-direction. The end point is at the center of the bounding box.                                                                                                                                                                                                                                                                                                                                                            |
-| `offset-control-tol-x` | float   | 0                  | Half the length of the bounding box in the x-direction. The control point is at the center of the bounding box.                                                                                                                                                                                                                                                                                                                                                        |
-| `offset-control-tol-y` | float   | 0                  | Half the length of the bounding box in the y-direction. The control point is at the center of the bounding box.                                                                                                                                                                                                                                                                                                                                                        |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `origin` | string | '{"x": 0, "y": 0}' | موقعیت مبدأ دستگاه مختصات نسبت به مبدأ بوم (گوشه بالا/چپ). مقدار "x" فاصله افقی از لبه چپ بوم است. مقدار "y" فاصله عمودی از لبه بالای بوم است. |
+| `end-points` | string | | مختصات نقاط انتهایی خط را نسبت به `origin` (یعنی مبدأ دستگاه مختصات تعریف‌شده توسط محورهای پلات) مشخص می‌کند. برای مثال، یک خط مستقیم با دو نقطه انتهایی تعریف می‌شود: `end-points='[{"x": 80, "y": -80}, {"x": 160, "y": -80}]'`. برای رسم یک منحنی درجه دوم، مختصات نقطه کنترلی را می‌توان به عنوان المان سوم لیست ارائه داد: `end-points='[{"x": 0, "y": 0}, {"x": 80, "y": 80}, {"x": 40, "y": 80}]'`. |
+| `end-gradients` | string | | مشتق خط را در نقاط انتهایی مشخص می‌کند. این اطلاعات برای تعیین موقعیت نقطه کنترلی هنگام رسم منحنی‌های درجه دوم به کار می‌رود. توجه داشته باشید که تنها یکی از گزینه‌ها را می‌توان برای رسم منحنی‌های درجه دوم استفاده کرد: یا ارائه `end-gradients` یا مشخص کردن نقطه سوم در لیست `end-points`. |
+| `color` | string | red | تنظیم رنگ دستگاه مختصات ([رنگ‌های PL](../python-reference/prairielearn/colors.md) یا [رنگ‌های HTML](https://htmlcolorcodes.com/color-chart/)). |
+| `stroke-width` | float | 4 | تنظیم ضخامت خط (stroke). |
+| `draw-error-box` | boolean | - | کادر مرزی خطا (error bounding box) را رسم می‌کند که در آن، مکان نقاط انتهایی و نقطه کنترلی به عنوان پاسخ صحیح پذیرفته می‌شود. |
+| `offset-tol-x` | float | 0 | نصف طول کادر مرزی در جهت محور x. نقطه انتهایی در مرکز کادر مرزی قرار دارد. |
+| `offset-tol-y` | float | 0 | نصف طول کادر مرزی در جهت محور y. نقطه انتهایی در مرکز کادر مرزی قرار دارد. |
+| `offset-control-tol-x` | float | 0 | نصف طول کادر مرزی در جهت محور x. نقطه کنترلی در مرکز کادر مرزی قرار دارد. |
+| `offset-control-tol-y` | float | 0 | نصف طول کادر مرزی در جهت محور y. نقطه کنترلی در مرکز کادر مرزی قرار دارد. |
 
-## Accessibility
+## دسترس‌پذیری
 
-Interactive `pl-drawing` elements (`gradable="true"`) do not support keyboard or screen reader interaction. See [alternatives to drawing input](../question/accessibility.md#alternatives-to-drawing-input) for other ways students can answer.
+المان‌های تعاملی `pl-drawing` (با `gradable="true"`) از تعامل با صفحه‌کلید یا صفحه‌خوان پشتیبانی نمی‌کنند. برای سایر روش‌هایی که دانشجویان می‌توانند پاسخ دهند، به [جایگزین‌های ورودی ترسیمی](../question/accessibility.md#alternatives-to-drawing-input) مراجعه کنید.
 
-For static diagrams (`gradable="false"`), use `aria-label` for a short description and `aria-description` for a longer description read by screen readers. These attributes do not make interactive diagrams accessible.
+برای نمودارهای ایستا (`gradable="false"`)، از `aria-label` برای یک توضیح کوتاه و از `aria-description` برای یک توضیح طولانی‌تر که توسط صفحه‌خوان‌ها خوانده می‌شود استفاده کنید. این ویژگی‌ها نمودارهای تعاملی را دسترس‌پذیر نمی‌کنند.
 
-## Extension API
+## واسط برنامه‌نویسی افزونه‌ها (Extension API)
 
-Custom elements for `pl-drawing` can be added with [element extensions](../elementExtensions.md). Elements are defined in two places: in serverside Python to handle generation and reading of attributes from HTML, and in clientside JavaScript to enable user interaction and serializing back to the server. Your extension should thus contain at minimum a Python file and a JavaScript file.
+المان‌های سفارشی برای `pl-drawing` را می‌توان با استفاده از [افزونه‌های المان](../elementExtensions.md) اضافه کرد. المان‌ها در دو بخش تعریف می‌شوند: در پایتون سمت سرور برای مدیریت تولید و خواندن ویژگی‌ها از HTML، و در جاوااسکریپت سمت کلاینت برای فعال‌سازی تعامل کاربر و سریال‌سازی داده‌ها جهت ارسال به سرور. بنابراین افزونه شما باید حداقل شامل یک فایل پایتون و یک فایل جاوااسکریپت باشد.
 
-### Python
+### پایتون
 
-Each element is defined as a Python class, and inherits from `BaseElement`. You can import all relevant element functions and classes with the following:
+هر المان به صورت یک کلاس پایتون تعریف شده و از `BaseElement` ارث‌بری می‌کند. شما می‌توانید تمام توابع و کلاس‌های مرتبط با المان را با قطعه کد زیر وارد (import) کنید:
 
 ```python
 elements = pl.load_host_script("elements.py")
 ```
 
-This will load the `BaseElement` class, which contains the following method definitions:
+این دستور کلاس `BaseElement` را بارگذاری می‌کند که شامل تعاریف متدهای زیر است:
 
 ```python
 class BaseElement:
@@ -1875,22 +1876,22 @@ class BaseElement:
     def get_attributes()
 ```
 
-Any element is free to define any of the above methods, and a description for each is given here:
+هر المانی مجاز است هر یک از متدهای فوق را تعریف کند، و توضیحات مربوط به هر کدام در ادامه آمده است:
 
 - `generate(element, data)`
-  Generates the representation of the element that is sent to the clientside JavaScript. This function should parse element attributes using `prairielearn.get_x_attrib(el)` and return a dictionary that describes the element. The exact format of this dictionary is unimportant, as only the JavaScript implementation of your element will later be using this. `data` is a dictionary that currently contains `clientFilesUrl`, the base URL in which all client files can be loaded from.
+  نمایش المان را تولید می‌کند که به جاوااسکریپت سمت کلاینت ارسال می‌شود. این تابع باید ویژگی‌های المان را با استفاده از `prairielearn.get_x_attrib(el)` پارس کرده و یک دیکشنری برگرداند که المان را توصیف می‌کند. قالب دقیق این دیکشنری اهمیت خاصی ندارد، چرا که بعداً فقط پیاده‌سازی جاوااسکریپت المان شما از آن استفاده خواهد کرد. `data` دیکشنری‌ای است که در حال حاضر شامل `clientFilesUrl` می‌باشد؛ یعنی URL پایه‌ای که تمام فایل‌های کلاینت می‌توانند از آن بارگذاری شوند.
 - `is_gradable()`
-  Returns `True` if the current element is gradable, other it returns `False` if the element is not gradable and should be skipped in the grading stage.
+  اگر المان فعلی قابل نمره‌دهی باشد، مقدار `True` و در غیر این صورت مقدار `False` را برمی‌گرداند؛ در این حالت المان غیرقابل نمره‌دهی بوده و در مرحله نمره‌دهی نادیده گرفته می‌شود.
 - `grade(ref, student, tol, angtol)`
-  The grading method for this element, checks the `student` submission against the given reference (`ref`). This should return `True` if the element is placed correctly, and `False` otherwise. `tol` specifies the spatial tolerance in pixels, while `angtol` specifies rotational tolerance in degrees. The `ref` and `student` submissions will match the format given in `generate()`.
+  متد نمره‌دهی برای این المان است که پاسخ ارسالی دانشجو (`student`) را در برابر مرجع داده‌شده (`ref`) بررسی می‌کند. در صورتی که المان به درستی در جای خود قرار گرفته باشد باید `True` و در غیر این صورت `False` برگرداند. پارامتر `tol` رواداری مکانی بر حسب پیکسل را مشخص می‌کند، در حالی که `angtol` رواداری دورانی بر حسب درجه را تعیین می‌نماید. پاسخ‌های ارسالی `ref` و `student` با قالبی که در `generate()` ارائه شده مطابقت خواهند داشت.
 - `grading_name(element)`
-  Returns the grading name of this element as a string. Usually you do not need to define this unless you know what you are doing.
+  نام نمره‌دهی این المان را به صورت یک رشته برمی‌گرداند. معمولاً نیازی به تعریف این متد ندارید مگر اینکه بدانید دقیقاً چه کاری انجام می‌دهید.
 - `validate_attributes()`
-  Returns `True` if this element's attributes should be validated, `False` otherwise. It's recommended that you keep this as the default `True` unless you have a clear reason otherwise.
+  اگر ویژگی‌های این المان باید اعتبارسنجی شوند مقدار `True` و در غیر این صورت `False` برمی‌گرداند. توصیه می‌شود این مقدار را روی همان پیش‌فرض `True` نگه دارید مگر اینکه دلیل مشخصی برای خلاف آن داشته باشید.
 - `get_attributes()`
-  Returns a list of strings representing the possible attributes that this element may have defined in the `question.html`.
+  لیستی از رشته‌ها را برمی‌گرداند که نشان‌دهنده ویژگی‌های ممکنی است که این المان می‌تواند در `question.html` تعریف کرده باشد.
 
-Here is an example definition of the `pl-point` element:
+در اینجا یک تعریف نمونه از المان `pl-point` آورده شده است:
 
 ```python
 class Point(BaseElement):
@@ -1923,18 +1924,18 @@ class Point(BaseElement):
         return ["x1", "y1", "radius", "label", "offsetx", "offsety", "color"]
 ```
 
-Each of these classes should then be placed into a global `elements` dictionary, mapping the name of the element to its class. This `elements` dictionary will be automatically picked up by `pl-drawing` when the extension is loaded:
+سپس هر یک از این کلاس‌ها باید درون یک دیکشنری سراسری `elements` قرار گیرند که نام المان را به کلاس آن نگاشت می‌دهد. این دیکشنری `elements` هنگام بارگذاری افزونه، به طور خودکار توسط `pl-drawing` شناسایی و دریافت می‌شود:
 
 ```python
 elements = {}
 elements["pl-point"] = Point
 ```
 
-### JavaScript
+### جاوااسکریپت
 
-The clientside JavaScript portion of `pl-drawing` is built on [Fabric.js](http://fabricjs.com/docs/), any elements should therefore be built on top of Fabric's shapes and those that are defined in the included [`mechanicsObjects.js`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/elements/pl-drawing/mechanicsObjects.js) file.
+بخش جاوااسکریپت سمت کلاینت `pl-drawing` بر روی [Fabric.js](http://fabricjs.com/docs/) ساخته شده است؛ بنابراین هر المانی باید بر پایه اشکال Fabric و مواردی که در فایل ارائه‌شده [`mechanicsObjects.js`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/elements/pl-drawing/mechanicsObjects.js) تعریف شده‌اند، ساخته شود.
 
-Similarly to the Python code, each element inherits from a base JavaScript class:
+مشابه کد پایتون، هر المان از یک کلاس پایه جاوااسکریپت ارث‌بری می‌کند:
 
 ```javascript
 class PLDrawingBaseElement {
@@ -1945,21 +1946,18 @@ class PLDrawingBaseElement {
 }
 ```
 
-Any element is free to define any of the above methods, and a description for each is given here:
+هر المانی مجاز است هر یک از متدهای فوق را تعریف کند، و توضیحات مربوط به هر کدام در ادامه آمده است:
 
 - `generate(canvas, options, submittedAnswer)`
-  Creates a Fabric.js representation of the element and places it onto the canvas. The options dictionary that is passed in
-  is the same one that is generated in the Python `generate()` function. This function should also register the element with
-  the answer state (see example below, and definition of answer state class).
+  نمایش Fabric.js المان را ایجاد کرده و آن را روی بوم قرار می‌دهد. دیکشنری options که به آن ارسال می‌شود، همان دیکشنری تولیدشده در تابع `generate()` پایتون است. این تابع همچنین باید المان را در وضعیت پاسخ (answer state) ثبت کند (مثال زیر و تعریف کلاس وضعیت پاسخ را ببینید).
 - `button_press(canvas, options, submittedAnswer)`
-  This function will be run whenever the sidebar control button for this element is pressed. By default, this will call `generate()`,
-  so in most cases you do not need to implement this.
+  این تابع هر زمان که دکمه کنترلی نوار کناری مربوط به این المان فشرده شود، اجرا خواهد شد. به طور پیش‌فرض، این متد `generate()` را فراخوانی می‌کند، بنابراین در بیشتر موارد نیازی به پیاده‌سازی آن ندارید.
 - `get_button_icon(options)`
-  Returns the path as a string for this button's icon relative to `clientFilesElement` (or `clientFilesExtension`). By default, this will resolve to the same filename as the element's name, so if your image has the same name you do not need to implement this.
+  مسیر آیکون این دکمه را به صورت یک رشته و نسبت به `clientFilesElement` (یا `clientFilesExtension`) برمی‌گرداند. به طور پیش‌فرض، این مسیر به همان نام فایلی که برابر با نام المان است ارجاع می‌دهد؛ بنابراین اگر تصویر شما نام یکسانی دارد نیازی به پیاده‌سازی این متد ندارید.
 - `get_button_tooltip(options)`
-  Returns the tooltip that is displayed when the mouse hovers over this element's button.
+  تول‌تیپی (tooltip) را برمی‌گرداند که هنگام قرار گرفتن ماوس روی دکمه این المان نمایش داده می‌شود.
 
-Here is an example definition of the `pl-point` element:
+در اینجا یک تعریف نمونه از المان `pl-point` آورده شده است:
 
 ```javascript
 class Point extends PLDrawingBaseElement {
@@ -2002,7 +2000,7 @@ class Point extends PLDrawingBaseElement {
 }
 ```
 
-Afterwards, all elements must be explicitly registered with the `pl-drawing` element before they can be used. This can be achieved with the following code snippet:
+سپس، تمامی المان‌ها باید قبل از اینکه بتوان از آن‌ها استفاده کرد، صریحاً در المان `pl-drawing` ثبت شوند. این کار را می‌توان با قطعه کد زیر انجام داد:
 
 ```javascript
 // This should exactly match the folder in `elementExtensions/`
@@ -2013,9 +2011,9 @@ const my_extensions = {
 PLDrawingApi.registerElements(my_extension_name, my_extension);
 ```
 
-#### JavaScript API
+#### واسط برنامه‌نویسی جاوااسکریپت (JavaScript API)
 
-The `pl-drawing` element has some helper functions pre-defined and can be accessed with `PLDrawingApi`. A list of them is given here:
+المان `pl-drawing` دارای چند تابع کمکی از پیش تعریف‌شده است که می‌توان از طریق `PLDrawingApi` به آن‌ها دسترسی پیدا کرد. فهرستی از آن‌ها در ادامه آمده است:
 
 ```javascript
 window.PLDrawingApi = {
@@ -2066,7 +2064,7 @@ window.PLDrawingApi = {
 }
 ```
 
-The definition for the answer drawing state (`submittedAnswer`) is given here. In most cases, only `registerAnswerObject()` is needed, but `updateObject()` may be used if your object is sufficiently complex. (See `pl-controlled-line` in `mechanicsObjects.js` for an example of this.)
+تعریف وضعیت ترسیم پاسخ (`submittedAnswer`) در اینجا آورده شده است. در بیشتر موارد، تنها `registerAnswerObject()` مورد نیاز است، اما اگر شیء شما به اندازه کافی پیچیده باشد ممکن است از `updateObject()` استفاده شود (برای نمونه‌ای از این مورد، `pl-controlled-line` را در `mechanicsObjects.js` ببینید).
 
 ```javascript
 class PLDrawingAnswerState {
@@ -2107,11 +2105,11 @@ class PLDrawingAnswerState {
 }
 ```
 
-### Button Icons
+### آیکون‌های دکمه‌ها
 
-Button icons should be 38px&times;38px `.svg` files and placed in the `clientFilesExtension` directory of your extension. If you do not have an SVG editor installed, [Inkscape](https://inkscape.org/) can produce reasonable results.
+آیکون‌های دکمه‌ها باید فایل‌های `.svg` با ابعاد 38px&times;38px باشند و در دایرکتوری `clientFilesExtension` افزونه شما قرار گیرند. اگر ویرایشگر SVG روی سیستم خود ندارید، نرم‌افزار [Inkscape](https://inkscape.org/) می‌تواند نتایج مناسبی ایجاد کند.
 
-These button icons can then be attached to your elements by setting the `get_button_icon()` function in your element's JavaScript class. This function returns a string containing the filename of the button icon _relative to `clientFilesElement`_.
+این آیکون‌های دکمه را می‌توان با تنظیم تابع `get_button_icon()` در کلاس جاوااسکریپت المان خود، به المان‌ها متصل کرد. این تابع یک رشته شامل نام فایل آیکون دکمه را _نسبت به `clientFilesElement`_ برمی‌گرداند.
 
 <!-- Reference links -->
 
