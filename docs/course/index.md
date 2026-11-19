@@ -1,16 +1,16 @@
-# Course configuration
+# پیکربندی درس
 
 !!! note
 
-    Any time you edit the `infoCourse.json` file on a local copy of PrairieLearn, you need to click the “Load from disk” button in the page header so that the local PrairieLearn server reloads the changes.
+    هر بار که فایل `infoCourse.json` را در یک نسخه محلی PrairieLearn ویرایش می‌کنید، باید روی دکمه «Load from disk» در بالای صفحه کلیک کنید تا سرور محلی PrairieLearn تغییرات را مجدداً بارگذاری کند.
 
-## Directory layout
+## ساختار پوشه‌ها
 
-A course is specified by a single directory, with the following structure:
+یک درس توسط یک دایرکتوری منفرد با ساختار زیر مشخص می‌شود:
 
 ```bash
 exampleCourse
-+-- infoCourse.json     # Course configuration (see below)
++-- infoCourse.json     # پیکربندی درس (به زیر مراجعه کنید)
 +-- questions # (1)!
 |   `-- ...
 |   `-- ...
@@ -19,31 +19,31 @@ exampleCourse
 |   |   `-- ...
 |   `-- Sp17
 |       `-- ...
-+-- elements            # custom HTML elements for the course
++-- elements            # المان‌های سفارشی HTML برای درس
 |   +-- element1
 |       `-- ...
-+-- clientFilesCourse   # files available from the client at all times (3)
++-- clientFilesCourse   # فایل‌هایی که همیشه از سمت کلاینت در دسترس هستند (3)
 |   `-- library.js
 |   `-- refs.html
 |   `-- formulas.pdf
-`-- serverFilesCourse   # files only accessible from code on the server (4)
+`-- serverFilesCourse   # فایل‌هایی که فقط از طریق کد روی سرور قابل دسترسی هستند (4)
     `-- secret1.js
 ```
 
-1. See the [questions documentation](../question/overview.md) for more information.
-2. See the [course instance documentation](../courseInstance/index.md) for more information.
-3. See the [`clientFiles` and `serverFiles` documentation](../clientServerFiles.md) for information.
-4. See the [`clientFiles` and `serverFiles` documentation](../clientServerFiles.md) for information.
+1. برای اطلاعات بیشتر به [مستندات سوالات](../question/overview.md) مراجعه کنید.
+2. برای اطلاعات بیشتر به [مستندات دوره (Course Instance)](../courseInstance/index.md) مراجعه کنید.
+3. برای اطلاعات بیشتر به [مستندات `clientFiles` و `serverFiles`](../clientServerFiles.md) مراجعه کنید.
+4. برای اطلاعات بیشتر به [مستندات `clientFiles` و `serverFiles`](../clientServerFiles.md) مراجعه کنید.
 
-- See an [example course directory](https://github.com/PrairieLearn/PrairieLearn/blob/master/exampleCourse) in PrairieLearn
+- به [یک نمونه دایرکتوری درس](https://github.com/PrairieLearn/PrairieLearn/blob/master/exampleCourse) در PrairieLearn مراجعه کنید.
 
-- See [HTML element list](../elements/index.md) for a list of elements provided by PrairieLearn to all courses; PrairieLearn will use a course version of an element whenever it exists.
+- برای مشاهده فهرستی از المان‌های ارائه‌شده توسط PrairieLearn برای تمام دوره‌ها به [فهرست المان‌های HTML](../elements/index.md) مراجعه کنید؛ در صورتی که نسخه درسی از یک المان وجود داشته باشد، PrairieLearn از آن استفاده خواهد کرد.
 
-- See [clientFiles and serverFiles](../clientServerFiles.md) for information on the `clientFilesCourse` and `serverFilesCourse` directories.
+- برای اطلاعات بیشتر در مورد دایرکتوری‌های `clientFilesCourse` و `serverFilesCourse` به [clientFiles و serverFiles](../clientServerFiles.md) مراجعه کنید.
 
 ## `infoCourse.json`
 
-This file specifies basic information about the course:
+این فایل اطلاعات پایه‌ای در مورد درس را مشخص می‌کند:
 
 ```json title="infoCourse.json"
 {
@@ -57,7 +57,7 @@ This file specifies basic information about the course:
 }
 ```
 
-??? example "Example `infoCourse.json`"
+??? example "نمونه `infoCourse.json`"
 
     ```json title="infoCourse.json"
     {
@@ -124,37 +124,37 @@ This file specifies basic information about the course:
     }
     ```
 
-See the [reference for `infoCourse.json`](../schemas/infoCourse.md) for more information about what can be added to this file.
+برای اطلاعات بیشتر درباره آنچه می‌تواند به این فایل اضافه شود، به [مرجع `infoCourse.json`](../schemas/infoCourse.md) مراجعه کنید.
 
-## Assessment sets
+## مجموعه‌های ارزیابی
 
-Each assessment belongs to an _assessment set_. Each assessment set must have the following properties.
+هر ارزیابی متعلق به یک _مجموعه ارزیابی (Assessment set)_ است. هر مجموعه ارزیابی باید ویژگی‌های زیر را داشته باشد:
 
-| Property       | Description                                                                                                                                                                                                                          |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `abbreviation` | Abbreviation that is joined with the assessment `number` to form the label, so `"abbreviation": "HW"` produces `HW1`, `HW2`, etc. This should be one or two uppercase letters (e.g., `HW` for homework, `E` for exam, `Q` for quiz). |
-| `name`         | Full name that is joined with the assessment `number` to describe the assessment, so `"name": "Homework"` produces `Homework 1`, etc. This should be a singular noun.                                                                |
-| `heading`      | Title that is listed above all the assessments in the set. Should be the plural version of the `name`.                                                                                                                               |
-| `color`        | The color scheme for this assessment (see below for choices).                                                                                                                                                                        |
+| ویژگی | توضیحات |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `abbreviation` | مخففی که با `number` (شماره) ارزیابی ادغام می‌شود تا برچسب را تشکیل دهد، به این ترتیب `"abbreviation": "HW"` برچسب‌های `HW1`، `HW2` و غیره را تولید می‌کند. این مقدار باید یک یا دو حرف بزرگ باشد (مثلاً `HW` برای تکلیف، `E` برای آزمون، `Q` برای کوییز). |
+| `name`         | نام کاملی که با `number` (شماره) ارزیابی ادغام می‌شود تا ارزیابی را توصیف کند، بنابراین `"name": "Homework"` مقادیر `Homework 1` و غیره را تولید می‌کند. این باید یک اسم مفرد باشد.                                                                |
+| `heading`      | عنوانی که بالای تمام ارزیابی‌های موجود در مجموعه فهرست می‌شود. باید شکل جمعِ `name` باشد.                                                                                                                               |
+| `color`        | طرح رنگ برای این ارزیابی (برای گزینه‌ها به زیر مراجعه کنید).                                                                                                                                                                        |
 
-### Standardized assessment sets
+### مجموعه‌های ارزیابی استاندارد
 
-The following list of standardized assessments sets is automatically included in every course. You do not need to include these in your JSON file, but you can add extra assessment sets if needed (see below).
+فهرست زیر از مجموعه‌های ارزیابی استاندارد به‌طور خودکار در هر درسی گنجانده شده است. نیازی نیست این موارد را در فایل JSON خود قرار دهید، اما در صورت نیاز می‌توانید مجموعه‌های ارزیابی اضافی تعریف کنید (به زیر مراجعه کنید).
 
 | abbreviation | name            | purpose                                                 |
 | ------------ | --------------- | ------------------------------------------------------- |
-| `HW`         | Homework        | Weekly homeworks done at home.                          |
-| `MP`         | Machine Problem | Weekly coding assignments done outside of class.        |
-| `Q`          | Quiz            | Short frequent quizzes.                                 |
-| `PQ`         | Practice Quiz   | Practice quizzes.                                       |
-| `E`          | Exam            | Long-form midterm or final exams.                       |
-| `PE`         | Practice Exam   | Practice exams.                                         |
-| `P`          | Prep            | Temporary assessments used while writing new questions. |
-| `WS`         | Worksheet       | Guided activity, often completed in groups.             |
+| `HW`         | Homework        | تکالیف هفتگی که در خانه انجام می‌شوند.                          |
+| `MP`         | Machine Problem | تکالیف برنامه‌نویسی هفتگی که خارج از کلاس انجام می‌شوند.        |
+| `Q`          | Quiz            | کوییزهای کوتاه و مکرر.                                 |
+| `PQ`         | Practice Quiz   | کوییزهای تمرینی.                                       |
+| `E`          | Exam            | آزمون‌های میان‌ترم یا پایان‌ترم بلند.                       |
+| `PE`         | Practice Exam   | آزمون‌های تمرینی.                                         |
+| `P`          | Prep            | ارزیابی‌های موقتی که هنگام نوشتن سوالات جدید استفاده می‌شوند. |
+| `WS`         | Worksheet       | فعالیت هدایت‌شده که معمولاً به‌صورت گروهی انجام می‌شود.             |
 
-### Adding your own assessment sets
+### افزودن مجموعه‌های ارزیابی خودتان
 
-You can add more assessment sets by listing them in the `infoCourse.json` file as follows. Note that HW and Q don't need to be listed because they are automatically available as standardized sets (see above).
+می‌توانید با فهرست کردن مجموعه‌های ارزیابی در فایل `infoCourse.json` به‌صورت زیر، مجموعه‌های بیشتری اضافه کنید. توجه داشته باشید که نیازی به فهرست کردن HW و Q نیست چون به‌طور خودکار به‌عنوان مجموعه‌های استاندارد در دسترس هستند (به بالا مراجعه کنید).
 
 ```json title="infoCourse.json"
 {
@@ -175,7 +175,7 @@ You can add more assessment sets by listing them in the `infoCourse.json` file a
 }
 ```
 
-The assessment set order in `infoCourse.json` is the order in which the assessments will be shown within PrairieLearn (for both instructors and students). If you want to change the order of standardized assessment sets then you can re-list them in whatever order you like. For example, to put Exams and Quizzes first, you could use:
+ترتیب مجموعه‌های ارزیابی در `infoCourse.json` همان ترتیبی است که ارزیابی‌ها در PrairieLearn (هم برای مدرسان و هم برای دانشجویان) نمایش داده می‌شوند. اگر می‌خواهید ترتیب مجموعه‌های ارزیابی استاندارد را تغییر دهید، می‌توانید آن‌ها را به هر ترتیبی که مایلید مجدداً فهرست کنید. برای مثال، برای قرار دادن آزمون‌ها و کوییزها در ابتدا، می‌توانید از موارد زیر استفاده کنید:
 
 ```json title="infoCourse.json"
 {
@@ -232,11 +232,11 @@ The assessment set order in `infoCourse.json` is the order in which the assessme
 }
 ```
 
-## Assessment modules
+## ماژول‌های ارزیابی
 
-Each assessment in the course belongs to a _module_ defined in `infoCourse.json`. Modules can represent course topics, chapters or sections, or in PrairieLearn terms, a collection of assessments related to one another, but not necessarily of the same type. This means you can have a module with two homeworks, one lab, and one exam, for example.
+هر ارزیابی در درس به یک _ماژول_ تعریف‌شده در `infoCourse.json` تعلق دارد. ماژول‌ها می‌توانند موضوعات، فصول یا بخش‌های درس را نشان دهند، یا در اصطلاح PrairieLearn، مجموعه‌ای از ارزیابی‌ها باشند که به یکدیگر مرتبط هستند، اما لزوماً از یک نوع نیستند. این بدان معناست که شما می‌توانید ماژولی داشته باشید که مثلاً شامل دو تکلیف، یک آزمایشگاه و یک آزمون باشد.
 
-Modules are optional and do not affect any behavior by default. The order in which the modules are defined in `infoCourse.json` will be the order in which they are displayed in the student page. This can let students view their list of assessments in a chronological order, rather than simply grouped by set.
+ماژول‌ها اختیاری هستند و به‌طور پیش‌فرض هیچ تاثیری بر رفتار سیستم ندارند. ترتیبی که ماژول‌ها در `infoCourse.json` تعریف می‌شوند، همان ترتیبی خواهد بود که در صفحه دانشجو نمایش داده می‌شوند. این قابلیت به دانشجویان امکان می‌دهد فهرست ارزیابی‌های خود را به ترتیب زمانی مشاهده کنند، به جای آنکه صرفاً بر اساس مجموعه گروه‌بندی شوند.
 
 ```json title="infoCourse.json"
 {
@@ -257,30 +257,30 @@ Modules are optional and do not affect any behavior by default. The order in whi
 }
 ```
 
-The above configuration can result in the following view for students:
+پیکربندی فوق می‌تواند به نمای زیر برای دانشجویان منجر شود:
 
-![Assessments grouped by module on the student assessments overview.](./assessment-units.png)
+![ارزیابی‌های گروه‌بندی‌شده بر اساس ماژول در نمای کلی ارزیابی‌های دانشجو.](./assessment-units.png)
 
-Properties for assessmentModules are as follows.
+ویژگی‌های assessmentModules به شرح زیر است:
 
-| Property  | Description                                      |
+| ویژگی | توضیحات |
 | --------- | ------------------------------------------------ |
-| `name`    | Brief name for the module. Shorter is better.    |
-| `heading` | Longer title for the module, displayed to users. |
+| `name`    | نام مختصر ماژول. هرچه کوتاه‌تر باشد بهتر است.    |
+| `heading` | عنوان طولانی‌تر ماژول که به کاربران نمایش داده می‌شود. |
 
-The organization of the assessment page is configured at the course instance level. In the same PrairieLearn course, some course instances may group assessments by `"Module"`, and some others may group assessments by `"Set"`. See [Course Instance](../courseInstance/index.md#assessment-page-organization) for more details.
+سازمان‌دهی صفحه ارزیابی در سطح دوره (Course Instance) پیکربندی می‌شود. در یک درس PrairieLearn یکسان، برخی دوره‌ها ممکن است ارزیابی‌ها را بر اساس `"Module"` گروه‌بندی کنند، و برخی دیگر ممکن است بر اساس `"Set"` گروه‌بندی نمایند. برای جزئیات بیشتر به [دوره (Course Instance)](../courseInstance/index.md#assessment-page-organization) مراجعه کنید.
 
-## Topics
+## موضوعات
 
-Each question in the course has a topic from the list specified in the `infoCourse.json` file. Topics should be thought of as chapters or sections in a textbook, and there should be about 10 to 30 topics in a typical course. The topic properties are as follows.
+هر سوال در درس دارای یک موضوع از فهرست مشخص‌شده در فایل `infoCourse.json` است. موضوعات باید مانند فصل‌ها یا بخش‌های یک کتاب درسی در نظر گرفته شوند و در یک درس معمولی معمولاً حدود ۱۰ تا ۳۰ موضوع وجود دارد. ویژگی‌های موضوع به شرح زیر است:
 
-| Property      | Description                                                                                       |
+| ویژگی | توضیحات |
 | ------------- | ------------------------------------------------------------------------------------------------- |
-| `name`        | Brief name for the topic. Shorter is better. Should be in sentence case (leading capital letter). |
-| `color`       | The color scheme for this topic (see below for choices).                                          |
-| `description` | An explanation of what the topic includes, for human reference.                                   |
+| `name`        | نام مختصر موضوع. هرچه کوتاه‌تر باشد بهتر است. باید با حروف بزرگ شروع شود (Sentence case). |
+| `color`       | طرح رنگ برای این موضوع (برای گزینه‌ها به زیر مراجعه کنید).                                          |
+| `description` | توضیحی درباره آنچه موضوع شامل می‌شود، برای ارجاع انسانی.                                   |
 
-For example, topics could be listed like:
+برای مثال، موضوعات را می‌توان به این صورت فهرست کرد:
 
 ```json title="infoCourse.json"
 {
@@ -299,52 +299,52 @@ For example, topics could be listed like:
 }
 ```
 
-## Tags
+## برچسب‌ها
 
-Each question can have zero, one, or many tags associated with it. The properties of a tag are as follows.
+هر سوال می‌تواند صفر، یک یا چند برچسب وابسته به خود داشته باشد. ویژگی‌های یک برچسب به شرح زیر است:
 
-| Property      | Description                                                                                                                                                                                                                                   |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`        | Brief name for the tag. Tags should have very short names (preferably just a single word) because there might be many of them on one question. Should typically be in lower case (e.g., `drawing`) or an uppercase abbreviation (e.g., `MC`). |
-| `color`       | The color scheme for this tag (see below for choices).                                                                                                                                                                                        |
-| `description` | An explanation of what the tag means, for human reference.                                                                                                                                                                                    |
+| ویژگی | توضیحات |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`        | نام مختصر برچسب. برچسب‌ها باید نام‌های بسیار کوتاهی داشته باشند (ترجیحاً فقط یک کلمه) زیرا ممکن است تعداد زیادی از آن‌ها روی یک سوال قرار گیرد. معمولاً باید با حروف کوچک باشد (مانند `drawing`) یا یک مخفف با حروف بزرگ (مانند `MC`). |
+| `color`       | طرح رنگ برای این برچسب (برای گزینه‌ها به زیر مراجعه کنید).                                                                                                                                                         |
+| `description` | توضیحی درباره معنای برچسب، برای ارجاع انسانی.                                                                                                                                                     |
 
-### Standardized tag names
+### نام‌های برچسب استاندارد
 
-The following list of standardized tags is automatically included in every course. You do not need to include these in your JSON file, but you can add extra tags (see below).
+فهرست زیر از برچسب‌های استاندارد به‌طور خودکار در هر درسی گنجانده شده است. نیازی نیست این موارد را در فایل JSON خود قرار دهید، اما می‌توانید برچسب‌های اضافی اضافه کنید (به زیر مراجعه کنید).
 
-| Answer format tag | Meaning                                                                                                                                                   |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `numeric`         | The answer format is one or more numerical values.                                                                                                        |
-| `symbolic`        | The answer format is a symbolic expression.                                                                                                               |
-| `drawing`         | The answer format requires drawing on a canvas to input a graphical representation of an answer.                                                          |
-| `MC`              | The answer format is choosing from a small finite set of answers (multiple choice, possibly with multiple selections allowed, up to 10 possible answers). |
-| `code`            | The answer format is a piece of code.                                                                                                                     |
-| `multianswer`     | The question requires multiple answers, either as steps in a sequence or as separate questions.                                                           |
+| برچسب فرمت پاسخ | معنی |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `numeric`         | فرمت پاسخ یک یا چند مقدار عددی است.                                                                         |
+| `symbolic`        | فرمت پاسخ یک عبارت نمادین (ریاضی) است.                                                                                |
+| `drawing`         | فرمت پاسخ نیازمند رسم روی بوم (Canvas) برای ورود نمایش گرافیکی یک پاسخ است.                                                          |
+| `MC`              | فرمت پاسخ انتخاب از یک مجموعه محدود کوچک از پاسخ‌ها است (چندگزینه‌ای، احتمالاً با امکان انتخاب چند گزینه، تا سقف ۱۰ پاسخ ممکن). |
+| `code`            | فرمت پاسخ یک قطعه کد است.                                                                                      |
+| `multianswer`     | سوال نیازمند چندین پاسخ است، یا به‌صورت مراحلی در یک دنباله یا به‌صورت سوالات جداگانه.                                                           |
 
-| Skill testing tag | Meaning                                                                                                                                                                                                                         |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `graph`           | The question tests reading information from a graph or drawing a graph.                                                                                                                                                         |
-| `concept`         | The question tests conceptual understanding of a topic.                                                                                                                                                                         |
-| `calculate`       | The questions tests performing a numerical calculation, with either a calculator or equivalent software.                                                                                                                        |
-| `compute`         | The question tests the writing and running of a piece of code to compute the answer. The answer itself is not the code, but could be a numeric answer output by the code, for example (use `code` when the answer is the code). |
-| `software`        | The question tests the use of a specific piece of software (e.g., Matlab).                                                                                                                                                      |
-| `estimation`      | Answering the question correctly will require some amount of estimation, so an exact answer is not possible.                                                                                                                    |
+| برچسب سنجش مهارت | معنی |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `graph`           | سوال خواندن اطلاعات از روی نمودار یا رسم نمودار را می‌سنجد.                                                                                                                          |
+| `concept`         | سوال درک مفهومی از یک موضوع را می‌سنجد.                                                                                                                                          |
+| `calculate`       | سوال انجام محاسبات عددی را با استفاده از ماشین‌حساب یا نرم‌افزار معادل می‌سنجد.                                                                                          |
+| `compute`         | سوال نوشتن و اجرای یک قطعه کد برای محاسبه پاسخ را می‌سنجد. خود پاسخ، کد نیست، بلکه می‌تواند مثلاً یک پاسخ عددی خروجی کد باشد (هنگامی که خود پاسخ، کد است از `code` استفاده کنید). |
+| `software`        | سوال استفاده از یک نرم‌افزار خاص (مانند Matlab) را می‌سنجد.                                                                                                                      |
+| `estimation`      | پاسخ صحیح به سوال نیازمند مقداری تخمین خواهد بود، بنابراین پاسخ دقیق ممکن نیست.                                                                                                                    |
 
-| Question use tag | Meaning                                                                                                               |
+| برچسب کاربرد سوال | معنی |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `secret`         | Only use this question on exams or quizzes that won't be released to students, so the question can be kept secret.    |
-| `nontest`        | This question is not appropriate for use in a restricted testing environment, so only use it on homeworks or similar. |
+| `secret`         | از این سوال فقط در آزمون‌ها یا کوییزهایی استفاده کنید که در اختیار دانشجویان قرار نمی‌گیرند، تا سوال محرمانه باقی بماند.    |
+| `nontest`        | این سوال برای استفاده در یک محیط آزمون محدود و کنترل‌شده مناسب نیست، بنابراین فقط از آن در تکالیف یا موارد مشابه استفاده کنید. |
 
-| Tracking tag | Meaning                                                                                                                                                  |
+| برچسب ردیابی | معنی |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<course>`   | The course for which the question was originally written. E.g., `TAM212`, `CS233`.                                                                       |
-| `<email>`    | The email of the person who wrote the question, E.g., `instructor@example.com`. Multiple emails can be tagged when several people had significant input. |
-| `<semester>` | The semester when the question was written. E.g., `Sp15`, `Su16`, `Fa16`.                                                                                |
+| `<course>`   | درسی که سوال در ابتدا برای آن نوشته شده بود؛ مانند `TAM212`، `CS233`.                                                                       |
+| `<email>`    | ایمیل فردی که سوال را نوشته است؛ مانند `instructor@example.com`. در صورتی که چندین نفر مشارکت چشمگیری داشته‌اند، می‌توان چندین ایمیل را برچسب‌گذاری کرد. |
+| `<semester>` | نیم‌سالی که سوال در آن نوشته شده است؛ مانند `Sp15`، `Su16`، `Fa16`.                                                                                |
 
-### Adding your own tags
+### افزودن برچسب‌های خودتان
 
-You can add more tags to your course by listing them in the `infoCourse.json` file. For example:
+می‌توانید با فهرست کردن برچسب‌ها در فایل `infoCourse.json` برچسب‌های بیشتری به درس خود اضافه کنید. برای مثال:
 
 ```json title="infoCourse.json"
 {
@@ -363,20 +363,20 @@ You can add more tags to your course by listing them in the `infoCourse.json` fi
 }
 ```
 
-The tag order in `infoCourse.json` is the order in which the tags will be listed within PrairieLearn. If you want to change the order of your tags or standardized tags then you can re-list them in whatever order you like.
+ترتیب برچسب‌ها در `infoCourse.json` همان ترتیبی است که برچسب‌ها در PrairieLearn فهرست خواهند شد. اگر می‌خواهید ترتیب برچسب‌های خود یا برچسب‌های استاندارد را تغییر دهید، می‌توانید آن‌ها را به هر ترتیبی که مایلید مجدداً فهرست کنید.
 
-## Sharing Sets
+## مجموعه‌های اشتراک‌گذاری
 
-Questions can be added to sharing sets to enable other courses to use your questions in their assessments. Sharing sets are designed for sharing questions only to specific courses, if you would like to make questions available for anyone to use, you should make them publicly shared as explained in the [question documentation](../question/overview.md), or the [sharing documentation](../contentSharing.md).
+سوالات را می‌توان به مجموعه‌های اشتراک‌گذاری اضافه کرد تا سایر دروس بتوانند از سوالات شما در ارزیابی‌های خود استفاده کنند. مجموعه‌های اشتراک‌گذاری برای به اشتراک گذاشتن سوالات فقط با دروس خاصی طراحی شده‌اند؛ اگر می‌خواهید سوالات را در دسترس همگان قرار دهید، باید آن‌ها را به‌صورت عمومی به اشتراک بگذارید، همان‌طور که در [مستندات سوال](../question/overview.md) یا [مستندات اشتراک‌گذاری محتوا](../contentSharing.md) توضیح داده شده است.
 
-| Property      | Description                                                                                                                                                                                          |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`        | Brief descriptive name for the sharing set. You could say something about the type of questions you are grouping together, or about the type of course you would want to share the sharing set with. |
-| `description` | Additional explanation of what the sharing set is for, for human reference.                                                                                                                          |
+| ویژگی | توضیحات |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`        | نام توصیفی مختصر برای مجموعه اشتراک‌گذاری. می‌توانید درباره نوع سوالاتی که گروه‌بندی می‌کنید، یا درباره نوع درسی که می‌خواهید مجموعه اشتراک‌گذاری را با آن به اشتراک بگذارید، مطلبی بیان کنید. |
+| `description` | توضیحات تکمیلی درباره هدف این مجموعه اشتراک‌گذاری، برای ارجاع انسانی.                                                                                                                          |
 
-### Adding Sharing Sets
+### افزودن مجموعه‌های اشتراک‌گذاری
 
-You can add sharing sets to your course by listing them in the `infoCourse.json` file. For example:
+می‌توانید با فهرست کردن مجموعه‌های اشتراک‌گذاری در فایل `infoCourse.json`، آن‌ها را به درس خود اضافه کنید. برای مثال:
 
 ```json title="infoCourse.json"
 {
@@ -393,11 +393,11 @@ You can add sharing sets to your course by listing them in the `infoCourse.json`
 }
 ```
 
-At this time, sharing sets cannot be renamed or removed from `infoCourse.json` once they have been added, because deleting a sharing set shared to another course could break assessments in that course.
+در حال حاضر، مجموعه‌های اشتراک‌گذاری پس از اضافه شدن به `infoCourse.json` قابل تغییر نام یا حذف نیستند، زیرا حذف یک مجموعه اشتراک‌گذاری که با درس دیگری به اشتراک گذاشته شده است می‌تواند ارزیابی‌های آن درس را با خطا مواجه کند.
 
-## Timezone
+## منطقه زمانی
 
-The default timezone for courses is `America/Chicago` (U.S. Central Time). This can be changed with the `timezone` property in `infoCourse.json`. For example:
+منطقه زمانی پیش‌فرض برای دوره‌ها `America/Chicago` (منطقه زمانی مرکزی ایالات متحده) است. این مقدار را می‌توان با ویژگی `timezone` در `infoCourse.json` تغییر داد. برای مثال:
 
 ```json title="infoCourse.json"
 {
@@ -405,15 +405,15 @@ The default timezone for courses is `America/Chicago` (U.S. Central Time). This 
 }
 ```
 
-Allowable timezones are those in the TZ column in the [list of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), which is a display version of the [IANA Time Zone Database](https://www.iana.org/time-zones).
+مناطق زمانی مجاز مواردی هستند که در ستون TZ در [فهرست مناطق زمانی پایگاه داده tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) آمده‌اند که یک نسخه نمایشی از [پایگاه داده مناطق زمانی IANA](https://www.iana.org/time-zones) است.
 
-## Exposing user data to `server.py`
+## در معرض قرار دادن داده‌های کاربر برای `server.py`
 
-By default, question `server.py` code does not receive identifying information about users or groups. A course can opt in so that `server.py` receives the identity (UID, UIN, name) of the user who owns an individual variant through `data["options"]["user"]`, and group membership through `data["options"]["group"]` on group assessments. See the [`server.py` documentation](../question/server.md#accessing-user-and-group-identity) for the exact shape and access patterns.
+به‌طور پیش‌فرض، کد `server.py` سوال، اطلاعات شناسایی کاربران یا گروه‌ها را دریافت نمی‌کند. یک درس می‌تواند این قابلیت را فعال کند تا `server.py` هویت (UID، UIN، نام) کاربری که مالک یک واریانت منفرد است را از طریق `data["options"]["user"]` و عضویت گروه را از طریق `data["options"]["group"]` در ارزیابی‌های گروهی دریافت نماید. برای ساختار دقیق داده‌ها و الگوهای دسترسی، به [مستندات `server.py`](../question/server.md#accessing-user-and-group-identity) مراجعه کنید.
 
-To enable this for a course, on the course settings page, check "Allow questions to access user identity".
+برای فعال‌سازی این مورد در یک درس، در صفحه تنظیمات درس (Course settings)، گزینه «Allow questions to access user identity» را علامت بزنید.
 
-If you are running in development mode, you can also add the following to `infoCourse.json`:
+اگر در حالت توسعه (Development mode) کار می‌کنید، می‌توانید کد زیر را نیز به `infoCourse.json` اضافه کنید:
 
 ```json title="infoCourse.json"
 {
@@ -423,11 +423,11 @@ If you are running in development mode, you can also add the following to `infoC
 }
 ```
 
-The JSON value is only used in development mode. For questions imported from another course (via public sharing or a sharing set), `server.py` never receives user data, regardless of either course's settings.
+مقدار JSON فقط در حالت توسعه استفاده می‌شود. برای سوالاتی که از یک درس دیگر وارد شده‌اند (از طریق اشتراک‌گذاری عمومی یا مجموعه اشتراک‌گذاری)، `server.py` بدون در نظر گرفتن تنظیمات هر یک از دوره‌ها، هرگز داده‌های کاربر را دریافت نمی‌کند.
 
-## Comments in JSON files
+## کامنت‌ها در فایل‌های JSON
 
-You can add comments to JSON files using the `"comment"` key on any object. You can only use this key once for each object. For example:
+می‌توانید با استفاده از کلید `"comment"` در هر شیء (Object)، به فایل‌های JSON کامنت اضافه کنید. برای هر شیء فقط یک بار می‌توانید از این کلید استفاده نمایید. برای مثال:
 
 ```json title="infoCourse.json" hl_lines="2"
 {
@@ -444,38 +444,38 @@ You can add comments to JSON files using the `"comment"` key on any object. You 
 }
 ```
 
-Comments can be strings, arrays, or JSON objects, but for most uses strings are recommended.
+کامنت‌ها می‌توانند رشته‌ها، آرایه‌ها یا اشیاء JSON باشند، اما برای بیشتر کاربردها رشته‌ها توصیه می‌شوند.
 
-??? warning "Warning"
+??? warning "هشدار"
 
-    If you have more than one comment for a JSON object (objects are things wrapped in curly braces `{}`) then all but one of them will be silently discarded by the online course configuration editing tools. It's fine to have multiple comments in a JSON file but they have to be in separate objects. For example, comments inside the _same_ object (not supported) look like `{"comment": "AAA", "comment": "BBB"}`. Comments in _different_ objects (supported) look like `{"subObject1": {"comment": "AAA"}, "subObject2": {"comment": "BBB"}}`.
+    اگر برای یک شیء JSON (اشیاء مواردی هستند که درون آکولاد `{}` قرار دارند) بیش از یک کامنت داشته باشید، همه آن‌ها به جز یکی بی‌صدا توسط ابزارهای ویرایش آنلاین پیکربندی درس نادیده گرفته و دور انداخته می‌شوند. داشتن چندین کامنت در یک فایل JSON اشکالی ندارد، اما آن‌ها باید در اشیاء جداگانه‌ای باشند. برای مثال، کامنت‌های درون شیء _یکسان_ (پشتیبانی نمی‌شود) شبیه به `{"comment": "AAA", "comment": "BBB"}` هستند. کامنت‌ها در اشیاء _مختلف_ (پشتیبانی می‌شود) شبیه به `{"subObject1": {"comment": "AAA"}, "subObject2": {"comment": "BBB"}}` می‌باشند.
 
-## Colors
+## رنگ‌ها
 
-The possible colors for assessment sets, topic, and tags are:
+رنگ‌های ممکن برای مجموعه‌های ارزیابی، موضوعات و برچسب‌ها عبارتند از:
 
 --8<-- "docs/course/colors.html"
 
-## Course staff
+## کادر آموزشی درس
 
-Access permissions for course staff can be configured on the "Staff" tab. Course staff permissions are separated into _course content roles_ and _student data roles_. These can be mixed and matched arbitrarily, so any combination is possible.
+مجوزهای دسترسی برای کادر آموزشی درس را می‌توان در تب «Staff» پیکربندی کرد. مجوزهای کادر آموزشی به _نقش‌های دسترسی به محتوای درس_ و _نقش‌های دسترسی به داده‌های دانشجو_ تفکیک شده‌اند. این نقش‌ها را می‌توان به دلخواه با یکدیگر ترکیب کرد، بنابراین هر ترکیبی امکان‌پذیر است.
 
 !!! note
 
-    Course staff permissions and GitHub repository permissions are managed separately. Course Owners can grant themselves Admin access to the course's GitHub repository from the "Course settings" page. If you are not an Owner, ask a course Owner for access. You can find the list of Owners on the "Staff" page.
+    مجوزهای کادر آموزشی درس و مجوزهای مخزن GitHub به‌صورت جداگانه مدیریت می‌شوند. مالکان درس (Course Owners) می‌توانند از صفحه «Course settings» دسترسی مدیر (Admin) به مخزن GitHub درس را به خود اعطا کنند. اگر مالک نیستید، از یکی از مالکان درس درخواست دسترسی کنید. می‌توانید فهرست مالکان را در صفحه «Staff» بیابید.
 
-### Exporting and importing staff with CSV
+### خروجی گرفتن و وارد کردن کادر آموزشی با CSV
 
-Use **Export CSV** on the **Staff** tab to download `course-staff.csv` with the current staff permissions. The export includes all staff users and the course instances you can access, regardless of table filters or hidden columns. Course Owners can use **Import CSV** to add staff or update permissions in bulk.
+برای دانلود فایل `course-staff.csv` به همراه مجوزهای فعلی کارکنان، از گزینه **Export CSV** در تب **Staff** استفاده کنید. فایل خروجی شامل تمام کاربران کادر آموزشی و دوره‌هایی است که شما به آن‌ها دسترسی دارید، صرف‌نظر از فیلترهای جدول یا ستون‌های پنهان‌شده. مالکان درس می‌توانند از **Import CSV** برای افزودن کادر آموزشی یا به‌روزرسانی دسته‌جمعی مجوزها استفاده نمایند.
 
-1. Click **Export CSV** and edit the downloaded file in a spreadsheet or text editor.
-2. Click **Import CSV**, select your edited file, and click **Preview changes**.
-3. Review the users to be added, updated, or removed, along with any enrollment removals.
-4. Click **Confirm sync** to apply the changes. Uploading a file and generating a preview does not change permissions.
+1. روی **Export CSV** کلیک کرده و فایل دانلودشده را در یک برنامه صفحه‌گسترده یا ویرایشگر متن ویرایش کنید.
+2. روی **Import CSV** کلیک کنید، فایل ویرایش‌شده خود را انتخاب کرده و روی **Preview changes** کلیک نمایید.
+3. کاربرانی که قرار است اضافه، به‌روزرسانی یا حذف شوند را همراه با هرگونه حذف ثبت‌نام بررسی کنید.
+4. برای اعمال تغییرات روی **Confirm sync** کلیک کنید. بارگذاری یک فایل و ایجاد پیش‌نمایش، مجوزها را تغییر نمی‌دهد.
 
-#### CSV format
+#### فرمت CSV
 
-The first two headers must be `uid,course`, in that order. Each additional header is a course instance's exact short name, such as `Fa26`. Use one row per staff UID. For example:
+دو سرستون اول باید دقیقاً `uid,course` و با همین ترتیب باشند. هر سرستون اضافی، نام کوتاه دقیق یک دوره (Course instance) مانند `Fa26` است. برای هر UID کارمند از یک سطر استفاده کنید. برای مثال:
 
 ```csv
 uid,course,Fa26
@@ -485,59 +485,59 @@ developer@example.edu,Editor,None
 former-ta@example.edu,,
 ```
 
-| Column                     | Accepted values                                         |
+| ستون | مقادیر قابل قبول |
 | :------------------------- | :------------------------------------------------------ |
-| `uid`                      | The staff user's UID, typically an email address        |
-| `course`                   | `None`, `Previewer`, `Viewer`, `Editor`, or `Owner`     |
-| Course instance short name | `None`, `Student Data Viewer`, or `Student Data Editor` |
+| `uid`                      | شناسه UID کاربر کارمند، معمولاً یک آدرس ایمیل        |
+| `course`                   | `None`، `Previewer`، `Viewer`، `Editor`، یا `Owner`     |
+| نام کوتاه دوره | `None`، `Student Data Viewer`، یا `Student Data Editor` |
 
-Course instance columns also accept `Viewer` and `Editor` as aliases for `Student Data Viewer` and `Student Data Editor`. Role values are case-sensitive. Files must contain at least one staff row, with no duplicate UIDs or course instance headers, and may contain at most 5,000 staff users and be no larger than 1 MiB.
+ستون‌های دوره همچنین `Viewer` و `Editor` را به عنوان نام‌های مستعار برای `Student Data Viewer` و `Student Data Editor` می‌پذیرند. مقادیر نقش‌ها به حروف بزرگ و کوچک حساس هستند (Case-sensitive). فایل‌ها باید حداقل شامل یک سطر کارمند، بدون UID تکراری یا سرستون دوره تکراری باشند و حداکثر می‌توانند شامل ۵,۰۰۰ کاربر کادر آموزشی بوده و حجمی بیشتر از ۱ مبی‌بایت (MiB) نداشته باشند.
 
-#### How changes are applied
+#### نحوه اعمال تغییرات
 
-- Users omitted from the CSV remain unchanged. Deleting a row from the exported file does not remove that user from the course staff.
-- Course instance columns omitted from the CSV remain unchanged for users being added or updated.
-- Use `None` to remove access for a particular course or course instance permission. Every permission cell in an add or update row must contain a role or `None`; individual blank cells are invalid.
-- To remove a staff user entirely, leave **every cell after their UID blank**, as in the `former-ta@example.edu` row above. This removes their staff record, all course instance permissions, and enrollments in the course, including instances omitted from the CSV. The preview lists affected enrollments, including those in deleted instances.
+- کاربرانی که در فایل CSV ذکر نشده‌اند، بدون تغییر باقی می‌مانند. حذف یک سطر از فایل خروجی، آن کاربر را از کادر آموزشی درس حذف نمی‌کند.
+- ستون‌های دوره‌ای که در CSV ذکر نشده‌اند، برای کاربرانی که اضافه یا به‌روزرسانی می‌شوند بدون تغییر باقی می‌مانند.
+- برای حذف دسترسی یک مجوز درسی یا دوره‌ای خاص، از `None` استفاده کنید. هر سلول مجوز در سطر افزودن یا به‌روزرسانی باید شامل یک نقش یا `None` باشد؛ سلول‌های خالی منفرد نامعتبر هستند.
+- برای حذف کامل یک کاربر از کادر آموزشی، **تمام سلول‌های بعد از UID او را خالی بگذارید**، مانند سطر `former-ta@example.edu` در مثال بالا. این کار رکورد کادر آموزشی او، تمام مجوزهای دوره، و ثبت‌نام‌های او در درس را، شامل دوره‌هایی که در CSV قید نشده‌اند، حذف می‌کند. پیش‌نمایش، ثبت‌نام‌های تحت تأثیر، از جمله آن‌هایی که در دوره‌های حذف‌شده هستند را فهرست می‌کند.
 
-The usual staff editing restrictions apply: only administrators can remove Owners, remove themselves, or change their own course content access. If staff permissions or affected enrollments change after you generate the preview, generate a new preview before confirming. Changes are applied together; a failed import does not apply partial updates.
+محدودیت‌های معمول ویرایش کادر آموزشی اعمال می‌شوند: فقط مدیران سیستم می‌توانند مالکان (Owners) را حذف کنند، خود را حذف نمایند، یا دسترسی خود به محتوای درس را تغییر دهند. اگر مجوزهای کادر آموزشی یا ثبت‌نام‌های تحت تأثیر پس از ایجاد پیش‌نمایش تغییر کردند، قبل از تأیید مجدداً پیش‌نمایش جدیدی بسازید. تغییرات به‌صورت یکجا اعمال می‌شوند؛ وارد کردن ناموفق فایل هیچ به‌روزرسانی جزئی را اعمال نخواهد کرد.
 
-### Course content access roles
+### نقش‌های دسترسی به محتوای درس
 
-Course content access roles grant permission to access all course content, such as questions and assessments, including aggregate statistics from student usage.
+نقش‌های دسترسی به محتوای درس، مجوز دسترسی به تمام محتوای درس مانند سوالات و ارزیابی‌ها، از جمله آمار تجمیعی حاصل از استفاده دانشجویان را اعطا می‌کنند.
 
-| Action                                            | None | Previewer | Viewer | Editor | Owner |
+| اقدام | None | Previewer | Viewer | Editor | Owner |
 | :------------------------------------------------ | :--: | :-------: | :----: | :----: | :---: |
-| View questions and assessments                    |  ⋅   |     ✓     |   ✓    |   ✓    |   ✓   |
-| View issues                                       |  ⋅   |     ✓     |   ✓    |   ✓    |   ✓   |
-| View aggregate statistics in all course instances |  ⋅   |     ✓     |   ✓    |   ✓    |   ✓   |
-| View question code and JSON files                 |  ⋅   |     ⋅     |   ✓    |   ✓    |   ✓   |
-| Close issues                                      |  ⋅   |     ⋅     |   ⋅    |   ✓    |   ✓   |
-| Edit question code and JSON files                 |  ⋅   |     ⋅     |   ⋅    |   ✓    |   ✓   |
-| Sync from GitHub                                  |  ⋅   |     ⋅     |   ⋅    |   ✓    |   ✓   |
-| Edit course staff permissions                     |  ⋅   |     ⋅     |   ⋅    |   ⋅    |   ✓   |
+| مشاهده سوالات و ارزیابی‌ها                    |  ⋅   |     ✓     |   ✓    |   ✓    |   ✓   |
+| مشاهده مشکلات (Issues)                                       |  ⋅   |     ✓     |   ✓    |   ✓    |   ✓   |
+| مشاهده آمار تجمیعی در تمام دوره‌ها |  ⋅   |     ✓     |   ✓    |   ✓    |   ✓   |
+| مشاهده کد سوال و فایل‌های JSON                 |  ⋅   |     ⋅     |   ✓    |   ✓    |   ✓   |
+| بستن مشکلات (Issues)                                      |  ⋅   |     ⋅     |   ⋅    |   ✓    |   ✓   |
+| ویرایش کد سوال و فایل‌های JSON                 |  ⋅   |     ⋅     |   ⋅    |   ✓    |   ✓   |
+| همگام‌سازی از GitHub                                  |  ⋅   |     ⋅     |   ⋅    |   ✓    |   ✓   |
+| ویرایش مجوزهای کادر آموزشی درس                     |  ⋅   |     ⋅     |   ⋅    |   ⋅    |   ✓   |
 
-### Student data access roles
+### نقش‌های دسترسی به داده‌های دانشجو
 
-Student data access roles grant permission to access to individual student data.
+نقش‌های دسترسی به داده‌های دانشجو، مجوز دسترسی به داده‌های فردی دانشجویان را اعطا می‌کنند.
 
-| Action                                   | None | Viewer | Editor |
+| اقدام | None | Viewer | Editor |
 | :--------------------------------------- | :--: | :----: | :----: |
-| View individual student scores           |  ⋅   |   ✓    |   ✓    |
-| Download gradebook data                  |  ⋅   |   ✓    |   ✓    |
-| Manually grade student submissions       |  ⋅   |   ⋅    |   ✓    |
-| Edit individual student scores           |  ⋅   |   ⋅    |   ✓    |
-| Change time limits and close assessments |  ⋅   |   ⋅    |   ✓    |
+| مشاهده نمرات فردی دانشجویان           |  ⋅   |   ✓    |   ✓    |
+| دانلود داده‌های دفتر نمرات (Gradebook)                  |  ⋅   |   ✓    |   ✓    |
+| نمره‌دهی دستی پاسخ‌های ارسالی دانشجویان       |  ⋅   |   ⋅    |   ✓    |
+| ویرایش نمرات فردی دانشجویان           |  ⋅   |   ⋅    |   ✓    |
+| تغییر محدودیت‌های زمانی و بستن ارزیابی‌ها |  ⋅   |   ⋅    |   ✓    |
 
-### Recommended course staff roles
+### نقش‌های پیشنهادی برای کادر آموزشی درس
 
-While every course should use the different roles in a way that best suits the course needs, some recommended guidelines are:
+اگرچه هر درسی باید از نقش‌های مختلف به شیوه‌ای استفاده کند که به بهترین شکل متناسب با نیازهای درس باشد، برخی دستورالعمل‌های پیشنهادی عبارتند از:
 
-| Role                                 | Course content access | Student data access |
+| نقش | دسترسی به محتوای درس | دسترسی به داده‌های دانشجو |
 | :----------------------------------- | :-------------------: | :-----------------: |
-| Instructor                           | Course content owner  | Student data editor |
-| TAs developing course content        | Course content editor | Student data editor |
-| Student content developers (not TAs) | Course content editor |        None         |
-| TAs involved in grading              |         None          | Student data editor |
-| Other TAs                            |         None          | Student data viewer |
-| Instructors from other classes       | Course content viewer |        None         |
+| مدرس                               | مالک محتوای درس (Owner)  | ویرایشگر داده‌های دانشجو (Editor) |
+| دستیاران آموزشی (TA) توسعه‌دهنده محتوای درس        | ویرایشگر محتوای درس (Editor) | ویرایشگر داده‌های دانشجو (Editor) |
+| دانشجویان توسعه‌دهنده محتوا (غیر TA) | ویرایشگر محتوای درس (Editor) |        None         |
+| دستیاران آموزشی فعال در نمره‌دهی              |         None          | ویرایشگر داده‌های دانشجو (Editor) |
+| سایر دستیاران آموزشی                            |         None          | بیننده داده‌های دانشجو (Viewer) |
+| مدرسان کلاس‌های دیگر       | بیننده محتوای درس (Viewer) |        None         |

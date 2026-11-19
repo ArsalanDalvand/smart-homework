@@ -1,53 +1,53 @@
-# What To Tell Students
+# راهنمای اطلاع‌رسانی به دانشجویان
 
-Students who are using PrairieLearn for the first time often have questions about its little quirks. This page collects examples and best practices for what to tell students, in order to minimize confusion.
+دانشجویانی که برای اولین بار از پریری‌لرن (PrairieLearn) استفاده می‌کنند، اغلب سوالاتی در مورد سازوکارها و ظرافت‌های خاص آن دارند. این صفحه نمونه‌ها و الگوهای برتری را برای اطلاع‌رسانی به دانشجویان گردآوری کرده است تا ابهامات و سردرگمی‌ها به حداقل برسد.
 
-## Grading of Homework-type assessments
+## نمره‌دهی ارزیابی‌های از نوع تکلیفی (Homework)
 
-See the [Assessment page](assessment/overview.md) for a description of how grading works. See below for an example (a piazza post from AE353, Spring 2017) of how this process might be explained to students.
+برای مشاهده توضیحات مربوط به نحوه کارکرد نمره‌دهی، [صفحه ارزیابی](assessment/overview.md) را ببینید. در ادامه یک نمونه (پستی در پیازا از درس AE353 در بهار ۲۰۱۷) از نحوه توضیح این فرآیند به دانشجویان آورده شده است.
 
-### An example note to students about how grading works
+### یک نمونه اطلاعیه به دانشجویان در مورد نحوه نمره‌دهی
 
-Hi Folks,
+سلام به همگی،
 
-The first homework (HW1.1) has been posted. You'll find it here: [https://us.prairielearn.com/](https://us.prairielearn.com).
+اولین تکلیف (HW1.1) منتشر شد. می‌توانید آن را در اینجا بیابید: [https://us.prairielearn.com/](https://us.prairielearn.com).
 
-In assigning homework like this one, I am placing emphasis on **mastery**. The idea is to keep doing questions until you master the underlying concept or method. Once you do, you should be able to answer these questions very quickly.
+در ارائه تکالیفی مانند این، من بر **تسلط (Mastery)** تاکید دارم. ایده این است که به حل سوالات ادامه دهید تا زمانی که مفهوم یا روش بنیادین آن را به طور کامل یاد بگیرید. وقتی به این تسلط رسیدید، باید بتوانید به سرعت به این سوالات پاسخ دهید.
 
-The way this works in PrairieLearn is that each question has a value, a point total, and a point maximum. If you answer a question correctly, two things happen:
+شیوه کارکرد این فرآیند در پریری‌لرن به این صورت است که هر سوال دارای یک ارزش (Value)، یک مجموع نمره فعلی (Point total) و یک سقف نمره (Point maximum) است. اگر به سوالی پاسخ درست بدهید، دو اتفاق رخ می‌دهد:
 
-- The point total increases by the value, until you reach the point maximum.
-- The value increases (2x, 3x, 4x, etc.)
+- مجموع نمره شما به اندازه ارزش سوال افزایش می‌یابد تا زمانی که به سقف نمره برسید.
+- ارزش سوال برای پاسخ‌های متوالی بعدی افزایش می‌یابد (۲ برابر، ۳ برابر، ۴ برابر و غیره).
 
-If you answer a question incorrectly, one thing happens:
+اگر به سوالی پاسخ نادرست بدهید، یک اتفاق می‌افتد:
 
-- The value goes back to what it was originally (1x)
+- ارزش سوال به مقدار اولیه خود (۱ برابر) بازمی‌گردد.
 
-This system rewards repeated correct answers, which tend to demonstrate mastery. There is no penalty (other than resetting the value) for answering a question incorrectly, so don't be afraid to submit an answer. Similarly, don't be afraid to keep doing a question after you reach the point maximum - your point total will _never_ go down!
+این سیستم به پاسخ‌های صحیح پی‌درپی پاداش می‌دهد که نشان‌دهنده تسلط شماست. هیچ جریمه‌ای (به جز بازنشانی ارزش سوال به حالت پایه) برای پاسخ‌های نادرست وجود ندارد، بنابراین از ارسال پاسخ نترسید. به همین ترتیب، پس از رسیدن به سقف نمره نیز نگران ادامه دادن سوال نباشید - مجموع نمره شما _هرگز_ کاهش نخواهد یافت!
 
-HW1.1 is due at 10:59AM on Friday, January 27. There is no need to "submit" your homework. The system will record whatever your score is at that time.
+مهلت تکلیف HW1.1 تا ساعت ۱۰:۵۹ صبح روز جمعه ۲۷ ژانویه است. نیازی به زدن دکمه "ثبت نهایی" (Submit) برای کل تکلیف نیست؛ سیستم هر نمره‌ای را که تا آن لحظه کسب کرده باشید ثبت خواهد کرد.
 
-However, you'll note the following line at the top of your screen:
+با این حال، به این خط در بالای صفحه خود توجه کنید:
 
 > Available credit: 110% until 10:59, Wed, Jan 25
 
-What this means is that if you reach 100% prior to 10:59AM on _Wednesday_ - i.e., complete the homework early - you will receive an extra 10% bonus. You will see this reflected in your score (the instant you reach 100%, it will jump to 110%).
+مفهوم این عبارت این است که اگر قبل از ساعت ۱۰:۵۹ صبح _چهارشنبه_ به ۱۰۰٪ نمره برسید (یعنی تکلیف را زودتر تکمیل کنید)، ۱۰٪ پاداش (بونس) اضافی دریافت خواهید کرد. این افزایش را در نمره خود مشاهده خواهید کرد (همان لحظه‌ای که به ۱۰۰٪ برسید، نمره شما به ۱۱۰٪ جهش می‌یابد).
 
-If you click on the "?" just to the right of the line about available credit, you'll see all the dates associated with this homework. In particular, it says:
+اگر روی علامت سوال «؟» در سمت راست خط نمره در دسترس کلیک کنید، تمامی تاریخ‌های مربوط به این تکلیف را مشاهده خواهید کرد. به‌ویژه در آنجا آمده است:
 
-- you can receive 110% until 10:59AM, Wed, Jan 25
-- you can receive 100% until 10:59AM, Fri, Jan 27
-- you can receive 80% until 10:59AM, Fri, Feb 10 (two weeks later)
-- you can receive 0%, but can keep doing problems as practice for the rest of the semester.
+- می‌توانید تا ساعت ۱۰:۵۹ صبح چهارشنبه ۲۵ ژانویه، ۱۱۰٪ نمره را دریافت کنید.
+- می‌توانید تا ساعت ۱۰:۵۹ صبح جمعه ۲۷ ژانویه، ۱۰۰٪ نمره را دریافت کنید.
+- می‌توانید تا ساعت ۱۰:۵۹ صبح جمعه ۱۰ فوریه (دو هفته بعد)، ۸۰٪ نمره را دریافت کنید.
+- می‌توانید ۰٪ نمره دریافت کنید، اما می‌توانید تا پایان ترم به عنوان تمرین به حل سوالات ادامه دهید.
 
-Note that your score will _never_ go down. For example, if you achieve 90% by 10:59AM on Friday, January 25, you won't be able to increase your score after that time, but you won't be penalized for not reaching 100% - your score will remain 90% forever. On the other hand, if you achieve only 70% by 10:59AM on Friday, January 25, you _will_ be able to increase your score after that time (to a maximum of 80%).
+توجه داشته باشید که نمره شما _هرگز_ کم نخواهد شد. برای مثال، اگر تا ساعت ۱۰:۵۹ صبح جمعه ۲۵ ژانویه به ۹۰٪ دست پیدا کنید، پس از آن زمان قادر به افزایش نمره خود نخواهید بود، اما به خاطر نرسیدن به ۱۰۰٪ جریمه نمی‌شوید؛ نمره شما برای همیشه ۹۰٪ باقی می‌ماند. از طرف دیگر، اگر تا ساعت ۱۰:۵۹ صبح جمعه ۲۵ ژانویه فقط به ۷۰٪ برسید، _می‌توانید_ پس از آن زمان نیز نمره خود را افزایش دهید (حداکثر تا سقف ۸۰٪).
 
-I hope this will all make sense once you've actually tried the homework, but please let me know if you have any questions.
+امیدوارم وقتی عملاً تکلیف را شروع کردید همه‌چیز روشن و منطقی به نظر برسد، اما اگر هرگونه سوالی داشتید حتماً مطرح کنید.
 
-If you believe there is a typo or an error in a question, or if you believe your answer was graded incorrectly, please take a screenshot and let me know with a private piazza post. I have access to all of your submissions and can easily check to see what, if anything, went wrong.
+اگر فکر می‌کنید در سوالی غلط املایی یا خطایی وجود دارد، یا معتقدید به پاسخ شما نمره اشتباهی داده شده است، لطفاً یک اسکرین‌شات بگیرید و با یک پست خصوصی در پیازا به من اطلاع دهید. من به تمام پاسخ‌های ارسالی شما دسترسی دارم و به راحتی می‌توانم بررسی کنم که کجای کار مشکل داشته است.
 
-One last note - you'll get more homework on Wednesday, so I suggest you start HW1.1 now.
+نکته پایانی اینکه در روز چهارشنبه تکالیف بیشتری خواهید داشت، بنابراین پیشنهاد می‌کنم تکلیف HW1.1 را همین حالا شروع کنید.
 
-Good luck!
+موفق باشید!
 
-Tim
+تیم (Tim)

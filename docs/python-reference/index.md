@@ -1,10 +1,10 @@
-# Python Reference
+# مرجع پایتون (Python Reference)
 
 ![Codecov](https://codecov.io/github/prairielearn/prairielearn/graph/badge.svg?token=50XtugkgLU&flag=python)
 
-These helpers are available in the Python environment when running a PrairieLearn question or element. They are organized by category. The most commonly used helpers are the [grading](./prairielearn/grading_utils.md), [conversion](./prairielearn/conversion_utils.md), and [question](./prairielearn/question_utils.md) helpers.
+این توابع و ابزارهای کمکی (Helpers) در محیط پایتون هنگام اجرای یک سوال یا المان در پریری‌لرن (PrairieLearn) در دسترس هستند. آن‌ها بر اساس دسته‌بندی مرتب شده‌اند. پرکاربردترین ابزارهای کمکی، ابزارهای [نمره‌دهی](./prairielearn/grading_utils.md)، [تبدیل](./prairielearn/conversion_utils.md) و [سوال](./prairielearn/question_utils.md) هستند.
 
-Here are the recommended ways to import the helpers:
+در ادامه روش‌های توصیه‌شده برای وارد کردن (Import) این ابزارهای کمکی آورده شده است:
 
 ```python
 import prairielearn as pl
@@ -13,15 +13,15 @@ from prairielearn.to_precision import Z
 import prairielearn.sympy_utils as psu
 ```
 
-??? info "More info"
+??? info "اطلاعات بیشتر"
 
-    You can use the following import to access most of the helpers:
+    شما می‌توانید از ایمپورت زیر برای دسترسی به اکثر ابزارهای کمکی استفاده کنید:
 
     ```python
     from prairielearn import ...
     ```
 
-    These modules must be imported directly:
+    این ماژول‌ها باید مستقیماً وارد شوند:
 
     ```python
     from prairielearn.colors import Y
@@ -29,13 +29,13 @@ import prairielearn.sympy_utils as psu
     from prairielearn.sympy_utils import Z
     ```
 
-    You should **not** directly import the remaining dotted modules (e.g. `prairielearn.conversion_utils`), as they do not have a stable interface.
+    شما **نباید** سایر ماژول‌های نقطه‌دار (مانند `prairielearn.conversion_utils`) را مستقیماً وارد کنید، زیرا رابط کاربری پایدار (Stable interface) ندارند.
 
-!!! warning
+!!! warning "هشدار"
 
-    The following imports are now deprecated. They will be removed in a future release. Please update your code to use the new imports
+    روش‌های ایمپورت زیر اکنون منسوخ شده‌اند (Deprecated) و در نسخه‌های آتی حذف خواهند شد. لطفاً کد خود را به‌روزرسانی کنید تا از ایمپورت‌های جدید استفاده کند:
 
-    === "Old"
+    === "قدیمی"
 
         ```python { .no-copy }
         import colors
@@ -43,7 +43,7 @@ import prairielearn.sympy_utils as psu
         import python_helper_sympy
         ```
 
-    === "New"
+    === "جدید"
 
         ```python
         import prairielearn.colors

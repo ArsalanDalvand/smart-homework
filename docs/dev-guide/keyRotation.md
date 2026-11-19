@@ -1,47 +1,47 @@
-# Rotating application-managed keys
+# چرخش کلیدهای مدیریت‌شده توسط برنامه
 
-PrairieLearn accepts either a scalar string or an ordered, nonempty array for `secretKey`, `databaseEncryptionKey`, `prairieTestSharedAuthSecret`, and `stripeWebhookSigningSecret`. Empty arrays and invalid array members are rejected during configuration validation.
+پِری‌لرن (PrairieLearn) هم رشته‌های اسکالر (تک‌مقداری) و هم آرایه‌های مرتب و غیرخالی را برای `secretKey`، `databaseEncryptionKey`، `prairieTestSharedAuthSecret` و `stripeWebhookSigningSecret` می‌پذیرد. آرایه‌های خالی و اعضای نامعتبر آرایه در حین اعتبارسنجی پیکربندی رد می‌شوند.
 
-For credentials PrairieLearn uses to create signatures or ciphertext, the first key is active and every configured key is accepted for verification or decryption. `stripeWebhookSigningSecret` is verification-only, but its order remains deterministic. Continue to use scalar configuration until array-compatible application code has been deployed everywhere that reads a shared credential.
+برای اطلاعات اعتباری (Credentials) که پِری‌لرن جهت ایجاد امضاها یا متن رمزشده (Ciphertext) استفاده می‌کند، اولین کلید فعال است و تمام کلیدهای پیکربندی‌شده برای اعتبارسنجی (Verification) یا رمزگشایی (Decryption) پذیرفته می‌شوند. ویژگی `stripeWebhookSigningSecret` صرفاً برای اعتبارسنجی است، اما ترتیب آن همچنان قطعی و معین (Deterministic) باقی می‌ماند. تا زمانی که کد برنامه سازگار با آرایه در تمام بخش‌هایی که این اعتبار مشترک را می‌خوانند مستقر نشده است، همچنان از پیکربندی اسکالر استفاده کنید.
 
-## Standard rollout
+## فرآیند استاندارد انتشار (Rollout)
 
-Given an old key and a new key:
+با فرض داشتن یک کلید قدیمی و یک کلید جدید:
 
-1. Deploy array-compatible code while retaining the scalar old key.
-2. Configure `[old, new]` and refresh every application instance.
-3. Configure `[new, old]` and refresh every application instance. New signatures and ciphertext now use the new key.
-4. Satisfy the credential-specific old-key retirement conditions below.
-5. Configure `[new]` and refresh every application instance. For `databaseEncryptionKey`, first complete the re-encryption and verification procedure below.
+1. کد سازگار با آرایه را مستقر کنید در حالی که کلید قدیمی اسکالر حفظ شده است.
+2. مقدار را به‌صورت `[old, new]` پیکربندی کرده و تمام نمونه‌های برنامه (Application instances) را نوسازی (Refresh/Restart) کنید.
+3. مقدار را به‌صورت `[new, old]` پیکربندی کرده و تمام نمونه‌های برنامه را نوسازی کنید. امضاها و متن‌های رمزشده جدید اکنون از کلید جدید استفاده می‌کنند.
+4. شرایط بازنشستگی کلید قدیمی متناسب با نوع اعتبار مربوطه (که در ادامه آمده است) را برآورده سازید.
+5. مقدار را به‌صورت `[new]` پیکربندی کرده و تمام نمونه‌های برنامه را نوسازی کنید. برای `databaseEncryptionKey`، ابتدا فرایند بازرمزنگاری و اعتبارسنجی شرح داده‌شده در ادامه را تکمیل نمایید.
 
-Do not skip the `[old, new]` stage. It ensures every instance can verify with the new key before any instance begins signing with it. During the subsequent rolling change to `[new, old]`, updated instances can sign with the new key while instances still using `[old, new]` can verify signatures from either key.
+مرحله `[old, new]` را نادیده نگیرید. این مرحله تضمین می‌کند که هر نمونه می‌تواند با کلید جدید اعتبارسنجی را انجام دهد، پیش از آنکه هر نمونه‌ای شروع به امضا کردن با آن کند. در طول اعمال تدریجی بعدی به `[new, old]`، نمونه‌های به‌روزرسانی‌شده می‌توانند با کلید جدید امضا کنند در حالی که نمونه‌هایی که هنوز از `[old, new]` استفاده می‌کنند می‌توانند امضاهای هر دو کلید را اعتبارسنجی نمایند.
 
 ## `secretKey`
 
-`secretKey` signs session cookies and the signed tokens used for CSRF protection, assessment-password cookies, load testing, workspaces, jobs, variants, actions, and trace sampling. Session cookies have a maximum lifetime of `sessionStoreExpireSeconds` (30 days by default); assessment-password, load-test, and variant checks are bounded at 24 hours or less in their verification paths, and workspace authorization cookies default to one minute.
+کلید `secretKey` کوکی‌های نشست (Session cookies) و توکن‌های امضاشده‌ای را امضا می‌کند که برای حفاظت در برابر CSRF، کوکی‌های رمز عبور آزمون، تست بار (Load testing)، محیط‌های کاری، تسک‌ها (Jobs)، واریانت‌ها، اکشن‌ها و نمونه‌برداری لاگ‌ها/ردیابی‌ها (Trace sampling) استفاده می‌شوند. کوکی‌های نشست دارای حداکثر طول عمر `sessionStoreExpireSeconds` (به‌طور پیش‌فرض ۳۰ روز) هستند؛ بررسی‌های رمز عبور آزمون، تست بار و واریانت در مسیرهای اعتبارسنجی خود به ۲۴ ساعت یا کمتر محدود شده‌اند، و کوکی‌های احراز هویت محیط کاری به‌طور پیش‌فرض دارای اعتبار یک دقیقه‌ای هستند.
 
-Job-sequence tokens accepted through the Socket.IO join path, along with some page-scoped CSRF and other socket tokens, do not have a hard time limit. Keep the fallback key for at least the configured session lifetime and any longer operationally configured artifact lifetime. Retiring the fallback after that window can still invalidate an exceptionally old open form or socket page; a page refresh obtains a token signed by the new active key.
+توکن‌های توالی تسک (Job-sequence) که از طریق مسیر اتصال Socket.IO پذیرفته می‌شوند، به همراه برخی از توکن‌های CSRF و سایر توکن‌های سوکت در محدوده صفحه، محدودیت زمانی سخت‌گیرانه‌ای ندارند. کلید پشتیبان (Fallback) را حداقل به اندازه طول عمر نشست پیکربندی‌شده و هر طول عمر طولانی‌تر آرتیفکتی که از نظر عملیاتی تنظیم شده است، حفظ کنید. بازنشسته کردن کلید پشتیبان پس از این بازه زمانی همچنان ممکن است یک فرم باز یا صفحه سوکت بسیار قدیمی را نامعتبر کند؛ بازخوانی (Refresh) صفحه یک توکن امضاشده با کلید فعال جدید دریافت می‌کند.
 
-The trace-sampling cookie generator accepts a scalar or array-valued `secretKey` and explicitly signs with array index 0.
+تولیدکننده کوکی نمونه‌برداری لاگ (Trace-sampling cookie generator) هم مقدار اسکالر و هم آرایه برای `secretKey` را می‌پذیرد و صریحاً با ایندکس ۰ آرایه امضا می‌کند.
 
 ## `databaseEncryptionKey`
 
-The known persisted use of `databaseEncryptionKey` is `course_instance_ai_grading_credentials.encrypted_secret_key`. PrairieLearn continues to use its existing authenticated AES-256-GCM ciphertext format. It encrypts new values with the first configured key and attempts decryption with each key in order.
+کاربرد ماندگار شناخته‌شده برای `databaseEncryptionKey` در فیلد `course_instance_ai_grading_credentials.encrypted_secret_key` است. پِری‌لرن همچنان از فرمت متن رمزشده احرازشده AES-256-GCM موجود خود استفاده می‌کند. این سیستم مقادیر جدید را با اولین کلید پیکربندی‌شده رمزگذاری کرده و تلاش برای رمزگشایی را به ترتیب با هر یک از کلیدها انجام می‌دهد.
 
-After every PrairieLearn instance is using `[new, old]`, run the normal server entrypoint with `--database-encryption check` to count values requiring rotation. Run it with `--database-encryption rotate` to acquire a database-backed named lock, process bounded batches, and replace each value only if it has not changed concurrently. Rotation makes up to three passes to resolve concurrent-update conflicts and then rereads and authenticates every value with the primary key; it fails unless every row observed by the final scan is current. The operation is idempotent and may be rerun after a failure.
+پس از اینکه تمام نمونه‌های پِری‌لرن از `[new, old]` استفاده کردند، نقطه ورود سرور عادی را با آرگومان `--database-encryption check` اجرا کنید تا تعداد مقادیری که نیاز به چرخش دارند شمارش شود. آن را با `--database-encryption rotate` اجرا کنید تا یک قفل نام‌گذاری‌شده در سطح دیتابیس (Named lock) دریافت کند، دسته‌های محدود را پردازش نماید، و هر مقدار را تنها در صورتی جایگزین کند که همزمان تغییر نکرده باشد. عملیات چرخش تا سه مرحله (Pass) برای حل تداخلات به‌روزرسانی‌های همزمان انجام می‌دهد و سپس هر مقدار را با کلید اصلی مجدداً خوانده و اصالت‌سنجی می‌کند؛ این عملیات شکست می‌خورد مگر اینکه هر ردیفی که توسط اسکن نهایی مشاهده شده، به‌روز باشد. این عملیات خودتوان (Idempotent) است و پس از شکست می‌توان آن را مجدداً اجرا کرد.
 
-The named lock serializes rotation commands; it does not block ordinary application writes or inspect the configuration of other instances. Do not rotate until every writer uses the new primary key. Keep the fallback key configured through an operational grace period, repeat the check before retirement, and investigate any value written by a stale instance.
+قفل نام‌گذاری‌شده دستورات چرخش را متوالی (Serialize) می‌کند؛ این قفل مانع از نوشتن‌های عادی برنامه نمی‌شود و پیکربندی سایر نمونه‌ها را بررسی نمی‌کند. عملیات چرخش را تا زمانی که همه نویسنده‌ها از کلید اصلی جدید استفاده نکرده‌اند انجام ندهید. کلید پشتیبان را در طول یک دوره مهلت عملیاتی در پیکربندی حفظ کنید، بررسی را قبل از بازنشستگی تکرار نمایید، و هر مقداری که توسط یک نمونه قدیمی نوشته شده است را بررسی کنید.
 
-After rotation succeeds, run `--database-encryption check` again with only `[new]` configured in a one-off process. A zero `needsRotation` result proves the live rows are readable without the old key. The normal instances may then be refreshed with `[new]` only.
+پس از موفقیت در چرخش، دستور `--database-encryption check` را مجدداً در یک پردازش یک‌باره فقط با پیکربندی `[new]` اجرا کنید. نتیجه صفر برای `needsRotation` ثابت می‌کند که ردیف‌های فعال بدون نیاز به کلید قدیمی قابل خواندن هستند. سپس نمونه‌های عادی را می‌توان تنها با `[new]` نوسازی کرد.
 
-Database backups retain the ciphertext present when they were captured. Retain old keys under the same controls as retained backups; restoring a pre-rotation backup must restore the corresponding fallback keys and run the rotation and verification operation before those keys are removed from the restored environment.
+پشتیبان‌های دیتابیس (Backups) همان متون رمزشده‌ای را که در زمان تهیه وجود داشته‌اند حفظ می‌کنند. کلیدهای قدیمی را تحت همان کنترل‌هایی که برای پشتیبان‌های نگهداری‌شده اعمال می‌شود، نگه دارید؛ بازیابی پشتیبانی که پیش از چرخش گرفته شده است، مستلزم بازیابی کلیدهای پشتیبان متناظر و اجرای عملیات چرخش و اعتبارسنجی پیش از حذف آن کلیدها از محیط بازیابی‌شده است.
 
 ## `prairieTestSharedAuthSecret`
 
-PrairieLearn and PrairieTest both mint and verify JWTs with this credential. Do not switch either service to array configuration until array-compatible versions of both services are deployed. Apply each rollout configuration to both services and refresh all instances before moving to the next stage.
+پِری‌لرن و PrairieTest هر دو توکن‌های JWT را با این اعتبار ایجاد (Mint) و اعتبارسنجی می‌کنند. تا زمانی که نسخه‌های سازگار با آرایه برای هر دو سرویس مستقر نشده‌اند، هیچ‌یک از سرویس‌ها را به پیکربندی آرایه‌ای تغییر ندهید. هر پیکربندی انتشار را روی هر دو سرویس اعمال کرده و تمام نمونه‌ها را قبل از رفتن به مرحله بعدی نوسازی کنید.
 
-The longest current shared-auth token lifetime is five minutes for PrairieLearn's end-exam JWT; interactive authentication JWTs expire after one minute. After every instance of both services is using `[new, old]`, wait at least five minutes plus deployment and clock-skew margin before removing `old`; ten minutes after the last old-primary instance is stopped is a conservative minimum.
+طولانی‌ترین طول عمر فعلی برای توکن احراز هویت مشترک، پنج دقیقه برای JWT پایان آزمون پِری‌لرن است؛ JWTهای احراز هویت تعاملی پس از یک دقیقه منقضی می‌شوند. پس از اینکه همه نمونه‌های هر دو سرویس از `[new, old]` استفاده کردند، حداقل پنج دقیقه به علاوه حاشیه زمان استقرار و انحراف ساعت (Clock-skew) قبل از حذف `old` صبر کنید؛ ده دقیقه پس از متوقف شدن آخرین نمونه با کلید اصلی قدیمی، یک حداقل محتاطانه است.
 
 ## `stripeWebhookSigningSecret`
 
-PrairieLearn verifies each inbound Stripe webhook against every configured signing secret and does not use this credential to mint outbound signatures. Keep both secrets configured for the entire provider-side overlap, then remove the old secret only after Stripe no longer signs deliveries with it. This does not change the outbound `stripeSecretKey`.
+پِری‌لرن هر وبهوک ورودی Stripe را در برابر تمام کلیدهای محرمانه امضای پیکربندی‌شده اعتبارسنجی می‌کند و از این اعتبار برای تولید امضاهای خروجی استفاده نمی‌کند. هر دو کلید محرمانه را برای کل دوره هم‌پوشانی در سمت ارائه‌دهنده (Stripe) در پیکربندی نگه دارید، سپس کلید قدیمی را تنها پس از اینکه Stripe دیگر تحویل‌ها را با آن امضا نکرد، حذف کنید. این کار تغییری در `stripeSecretKey` خروجی ایجاد نمی‌کند.

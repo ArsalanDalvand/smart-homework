@@ -1,39 +1,39 @@
-# SAML SSO configuration
+# پیکربندی ورود یکپارچه SAML SSO
 
-SAML SSO is available for users of [us.prairielearn.com](https://us.prairielearn.com). Reach out to <support@prairielearn.com> to get it set up.
+ورود یکپارچه بر پایه سامِل (SAML SSO) برای کاربران [us.prairielearn.com](https://us.prairielearn.com) در دسترس است. جهت راه‌اندازی و فعال‌سازی آن، با <support@prairielearn.com> تماس بگیرید.
 
-## Required attributes
+## ویژگی‌ها (اتریبیوت‌های) الزامی
 
-PrairieLearn requires that SAML identity providers (IdPs) make three attributes available.
+پریری‌لرن نیازمند این است که ارائه‌دهندگان هویت سامِل (SAML Identity Providers یا IdPs) سه ویژگی (Attribute) را فراهم کنند.
 
-### Name
+### نام (Name)
 
-The full name of the user, e.g. "Joe Smith". This attribute is often named `displayName` or `urn:oid:2.16.840.1.113730.3.1.241`.
+نام کامل کاربر؛ برای مثال "Joe Smith". این ویژگی معمولاً `displayName` یا `urn:oid:2.16.840.1.113730.3.1.241` نامیده می‌شود.
 
-Alternatively, if your Identity Provider cannot provide a single full name attribute, you can configure separate **given name** and **family name** attributes. When both are configured and both values are present in a SAML response, PrairieLearn will combine them as "Given Family" (e.g. "Joe Smith") and use that value. If either value is missing, PrairieLearn falls back to the full-name attribute. The given name attribute is often named `givenName` or `urn:oid:2.5.4.42`, and the family name attribute is often named `sn` or `urn:oid:2.5.4.4`.
+همچنین، اگر ارائه‌دهنده هویت شما نمی‌تواند یک اتریبیوت واحد برای نام کامل ارائه دهد، می‌توانید دو اتریبیوت مجزای **نام کوچک (Given name)** و **نام خانوادگی (Family name)** را پیکربندی کنید. هنگامی که هر دو پیکربندی شده و در پاسخ SAML موجود باشند، پریری‌لرن آن‌ها را به صورت «نام کوچک نام خانوادگی» (مثلاً "Joe Smith") ترکیب کرده و از آن مقدار استفاده می‌کند. اگر هر یک از این دو مقدار موجود نباشد، پریری‌لرن به اتریبیوت نام کامل بازمی‌گردد. اتریبیوت نام کوچک معمولاً `givenName` یا `urn:oid:2.5.4.42` نام دارد، و اتریبیوت نام خانوادگی معمولاً `sn` یا `urn:oid:2.5.4.4` نامیده می‌شود.
 
-### UID
+### شناسه UID
 
-An identifier with an institution-specific suffix, e.g. `jsmith@example.com`. This attribute is often named `eppn`, `eduPersonPrincipalName`, or `urn:oid:1.3.6.1.4.1.5923.1.1.1.6`.
+شناسه‌ای همراه با پسوند مختص به موسسه؛ مانند `jsmith@example.com`. این اتریبیوت معمولاً `eppn` ،`eduPersonPrincipalName` یا `urn:oid:1.3.6.1.4.1.5923.1.1.1.6` نامیده می‌شود.
 
-This attribute is allowed to change. For instance, at many institutions, someone who changes their name will receive an updated identifier. The next time they log in to PrairieLearn, their UID will be updated to reflect the latest value from the IdP.
+تغییر مقدار این اتریبیوت مجاز است. به عنوان مثال، در بسیاری از موسسات، فردی که نام خود را تغییر می‌دهد یک شناسه به‌روزشده دریافت خواهد کرد. دفعه بعد که کاربر وارد پریری‌لرن شود، UID او به‌روزرسانی می‌شود تا آخرین مقدار دریافتی از IdP را منعکس کند.
 
-Note that this will often look like an email, but does not need to be routable as such.
+توجه داشته باشید که این شناسه اغلب شبیه یک آدرس ایمیل است، اما لزومی ندارد که واقعاً قابلیت دریافت/ارسال ایمیل (مسیریابی ایمیل) داشته باشد.
 
-### UIN
+### شناسه UIN
 
-An **immutable** identifier for a given user. A student/staff ID number is typically a good fit, although this varies from institution to institution.
+یک شناسه **تغییرناپذیر (Immutable)** برای کاربر مربوطه. شماره دانشجویی یا شماره پرسنلی معمولاً گزینه مناسبی است، اگرچه این موضوع از موسسه‌ای به موسسه دیگر متفاوت است.
 
-This attribute's value _must never change_ for a given individual, even if they change their name or email. To be more precise, this value _must_ be **persistent** (stable across multiple login sessions) and **non-reassignable** (must never be reassigned from one individual to another).
+مقدار این ویژگی برای یک فرد خاص _هرگز نباید تغییر کند_، حتی اگر نام یا ایمیل خود را تغییر دهد. به بیان دقیق‌تر، این مقدار _باید_ **پایا (Persistent)** (در تمام نشست‌های ورود پایدار باشد) و **غیرقابل واگذاری مجدد (Non-reassignable)** باشد (هرگز نباید از فردی به فرد دیگر اختصاص داده شود).
 
-This value will be visible to instructors and included in gradebook downloads, so it _should_ be a value with a useful meaning to instructors and across other campus services.
+این مقدار برای مدرسان قابل مشاهده خواهد بود و در فایل‌های دانلودی دفترچه نمرات گنجانده می‌شود، بنابراین _بهتر است_ مقداری باشد که برای مدرسان و سایر خدمات و سامانه‌های دانشگاهی معنادار و کاربردی باشد.
 
-For institutions using PrairieTest, this value can be used when deploying ID-card-based check-in for exams, so it's beneficial if this value is derivable (either directly or indirectly) from swiping or tapping an individual's institutional ID card.
+برای موسساتی که از پریری‌تست (PrairieTest) استفاده می‌کنند، این مقدار می‌تواند هنگام پیاده‌سازی احراز هویت و ورود به آزمون از طریق کارت شناسایی مورد استفاده قرار گیرد؛ بنابراین اگر این مقدار (به صورت مستقیم یا غیرمستقیم) از طریق کشیدن یا زدن کارت شناسایی دانشگاهی فرد قابل استخراج باشد، بسیار سودمند خواهد بود.
 
-## Optional attributes
+## ویژگی‌های (اتریبیوت‌های) اختیاری
 
-### Email
+### ایمیل (Email)
 
-The email address of the user, e.g. `student@example.com`. This attribute is often named `mail` or `urn:oid:0.9.2342.19200300.100.1.3`.
+نشانی ایمیل کاربر؛ برای مثال `student@example.com`. این اتریبیوت معمولاً `mail` یا `urn:oid:0.9.2342.19200300.100.1.3` نامیده می‌شود.
 
-While this attribute is not strictly required, it is highly recommended. In the future, it will be used to send notifications to students about upcoming exams and other important information.
+اگرچه وجود این ویژگی اکیداً الزامی نیست، اما استفاده از آن به شدت توصیه می‌شود. در آینده از این فیلد برای ارسال اعلان‌های مربوط به آزمون‌های پیش رو و سایر اطلاعات مهم به دانشجویان استفاده خواهد شد.

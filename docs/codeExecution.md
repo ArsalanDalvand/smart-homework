@@ -1,88 +1,88 @@
-# Code Execution
+# اجرای کد (Code Execution)
 
-Central to PrairieLearn is the ability to securely execute arbitrary code. There are three primary contexts in which PrairieLearn must execute code:
+قابلیت اجرای امن کدهای دلخواه یکی از ارکان محوری و بنیادین پریری‌لرن است. پریری‌لرن در سه بستر اصلی باید کدها را اجرا کند:
 
-- **Question and element code**: This is code from a question's `server.py` or any PrairieLearn/course [elements](./elements/index.md). This code must execute as quickly as possible, as it will be executed any time a question is rendered or graded and thus needs to render during a single HTTP request.
-- [**Externally-graded questions**](externalGrading.md): This is code submitted by a student and graded for them by course code. This code can take longer to execute and is queued to be executed on a distributed set of machines.
-- [**Workspaces**](workspaces/index.md): This is an interactive environment in which a student can write and execute code, in contrast to the non-interactive batch execution by external graders. Workspaces can persist for many hours, and so they are executed on a distributed set of machines (the _workspace hosts_, a distinct set from the _external grader hosts_).
+- **کد سوال و المان**: این کد مربوط به فایل `server.py` یک سوال یا هر یک از [المان‌های](./elements/index.md) پریری‌لرن/درس است. این کد باید در سریع‌ترین زمان ممکن اجرا شود، چرا که در هر بار رندر یا نمره‌دهی سوال اجرا می‌شود و بنابراین باید در طول یک درخواست HTTP واحد پاسخ داده شود.
+- [**سوالات با نمره‌دهی خارجی**](externalGrading.md): این کد توسط دانشجو ارسال می‌شود و کدهای درس آن را برای دانشجو نمره‌دهی می‌کنند. اجرای این کد ممکن است زمان بیشتری ببرد و برای اجرا روی مجموعه‌ای از ماشین‌های توزیع‌شده در صف قرار می‌گیرد.
+- [**محیط‌های کاری (Workspaces)**](workspaces/index.md): این یک محیط تعاملی است که دانشجو می‌تواند در آن به نوشتن و اجرای کد بپردازد؛ بر خلاف اجرای غیرتعاملی دسته‌ای (batch) توسط نمره‌دهنده‌های خارجی. محیط‌های کاری می‌توانند ساعت‌ها فعال بمانند، بنابراین روی مجموعه‌ای از ماشین‌های توزیع‌شده اجرا می‌شوند (هاست‌های محیط کاری یا _workspace hosts_، که مجموعه‌ای متمایز از هاست‌های نمره‌دهنده خارجی هستند).
 
-The [external grading docs](externalGrading.md) and [workspace docs](workspaces/index.md) describe those execution modes in more detail. This document is primarily concerned with describing how question and element code is executed.
+مستندات [نمره‌دهی خارجی](externalGrading.md) و [محیط‌های کاری](workspaces/index.md) این حالت‌های اجرا را با جزئیات بیشتری شرح می‌دهند. تمرکز اصلی این سند بر توضیح چگونگی اجرای کد سوال و المان است.
 
-## The Python zygote
+## زایگوت پایتون (The Python zygote)
 
-Every time we want to execute code for a question, we want to use a fresh Python environment that could not have been modified or broken by previous code. However, starting up a new Python interpreter is relatively expensive, taking on the order of hundreds of milliseconds. Compared to external grading code execution, the primary concern of question and element code execution (in addition to security) is speed.
+هر بار که می‌خواهیم کدی را برای یک سوال اجرا کنیم، مایل هستیم از یک محیط پایتون تازه و تمیز استفاده کنیم که توسط کدهای پیشین دستکاری یا خراب نشده باشد. با این حال، راه‌اندازی یک مفسر پایتون جدید نسبتاً هزینه‌بر و کند است و در مقیاس صدها میلی‌ثانیه زمان می‌برد. در مقایسه با اجرای کد نمره‌دهی خارجی، دغدغه اصلی اجرای کد سوال و المان (علاوه بر امنیت)، سرعت است.
 
-To solve this, we've borrowed Android's concept of a [zygote process](https://developer.android.com/topic/performance/memory-overview#SharingRAM). Instead of starting a new Python process for every request, we start a special zygote process that starts a Python interpreter, preloads commonly-used libraries like `numpy` and `lxml`, and forks itself. The fork inherits the file descriptors from the parent, which we use to communicate with the forked process. The forked process will use [copy-on-write](https://en.wikipedia.org/wiki/Copy-on-write), which is essentially free. When we want to execute code, we send commands to the forked process over `stdin` and receive the results of executing code over file descriptor 3. Many commands may be sent during a single use of the forked process. When a question is done being rendered/graded/etc., we send a special `restart` message to the forked process, which will in turn exit with status 0. The zygote will detect that the child exited normally and immediately refork itself, and the fork will again begin listening for commands. This way, each request will get a fresh Python environment with almost zero overhead.
+برای حل این مسئله، ما از مفهوم [فرایند زایگوت (zygote process)](https://developer.android.com/topic/performance/memory-overview#SharingRAM) در اندروید الهام گرفته‌ایم. به جای راه‌اندازی یک فرایند پایتون جدید برای هر درخواست، یک فرایند زایگوت ویژه را شروع می‌کنیم که مفسر پایتون را اجرا کرده، کتابخانه‌های پرکاربرد مانند `numpy` و `lxml` را پیش‌بارگذاری (preload) نموده و از خودش فورک (fork) می‌گیرد. این فرایند فورک‌شده توصیف‌کننده‌های فایل (file descriptors) را از فرایند والد به ارث می‌برد که از آن‌ها برای برقراری ارتباط با فرایند فرزند استفاده می‌کنیم. فرایند فورک‌شده از مکانیزم [کپی در زمان نوشتن (Copy-on-write)](https://en.wikipedia.org/wiki/Copy-on-write) استفاده می‌کند که عملاً بدون هیچ سرباری است. هنگامی که می‌خواهیم کدی را اجرا کنیم، دستورات را از طریق `stdin` به فرایند فورک‌شده ارسال می‌کنیم و نتایج اجرای کد را از طریق توصیف‌کننده فایل ۳ (file descriptor 3) تحویل می‌گیریم. در طول یک بار استفاده از فرایند فورک‌شده ممکن است چندین دستور ارسال شود. زمانی که رندر/نمره‌دهی/غیره یک سوال به پایان رسید، یک پیام ویژه `restart` به فرایند فورک‌شده ارسال می‌کنیم که در پاسخ، آن فرایند با کد وضعیت 0 خارج می‌شود. زایگوت تشخیص می‌دهد که فرزند به صورت عادی پایان یافته و بلافاصله مجدداً از خود فورک می‌گیرد، و فرایند فورک‌شده دوباره آماده شنیدن دستورات می‌شود. با این روش، هر درخواست با سرباری تقریباً نزدیک به صفر، به یک محیط پایتون تر و تازه دسترسی خواهد داشت.
 
-## The worker pool
+## استخر ورکرها (The worker pool)
 
-A single PrairieLearn server may be serving potentially hundreds or thousands of assessments at one time. To handle this, we actually run a pool of zygotes described above that we call the _worker pool_. The pool maintains `N` zygotes and distributes requests to execute Python code across them. Requests are queued and handled in a FIFO basis. The worker pool also handles detecting unhealthy zygotes and replacing them with new ones.
+یک سرور پریری‌لرن ممکن است در یک لحظه به صدها یا هزاران آزمون سرویس دهد. برای مدیریت این بار، ما در عمل استخری از زایگوت‌های شرح داده شده در بالا را اجرا می‌کنیم که آن را _استخر ورکرها (worker pool)_ می‌نامیم. این استخر `N` زایگوت را نگهداری کرده و درخواست‌های اجرای کد پایتون را بین آن‌ها توزیع می‌کند. درخواست‌ها صف‌بندی شده و به صورت خروج به ترتیب ورود (FIFO) پردازش می‌شوند. استخر ورکرها همچنین وظیفه شناسایی زایگوت‌های ناسالم و جایگزینی آن‌ها با موارد جدید را بر عهده دارد.
 
-## Execution modes
+## حالت‌های اجرا (Execution modes)
 
-PrairieLearn must execute in two main environments: locally on the computers of people developing course content, and in a production environment. The primary differences between these two environments are (a) ease of setup and (b) whether PrairieLearn is running in a Docker container.
+پریری‌لرن باید در دو محیط اصلی اجرا شود: به صورت محلی روی رایانه افرادی که محتوای درس را توسعه می‌دهند، و در یک محیط عملیاتی (production). تفاوت‌های عمده میان این دو محیط عبارتند از: (الف) سهولت راه‌اندازی و (ب) اجرای پریری‌لرن درون کانتینر داکر.
 
-For local development, PrairieLearn must be easy to set up; it should not require complex infrastructure or commands to run. For this use case, PrairieLearn is distributed as a single Docker container that can be run without any external dependencies. In production environments, we can shoulder some additional complexity in order to gained improved security and reliability.
+برای توسعه محلی، راه‌اندازی پریری‌لرن باید ساده باشد؛ نباید نیازمند زیرساخت‌ها یا دستورات پیچیده برای اجرا باشد. برای این کاربرد، پریری‌لرن در قالب یک کانتینر داکر منفرد توزیع می‌شود که بدون نیاز به هیچ وابستگی خارجی قابل اجراست. در محیط‌های عملیاتی، می‌توانیم مقداری پیچیدگی بیشتر را به جان بخریم تا امنیت و قابلیت اطمینان ارتقا یافته‌ای به دست آوریم.
 
-To account for the variety of contexts in which PrairieLearn is executed, there are two related but distinct ways that PrairieLearn can execute question and element code: `native` and `container`. These modes correspond to the `workersExecutionMode` config value. They are described in more detail below.
+برای پاسخ‌گویی به تنوع محیط‌هایی که پریری‌لرن در آن‌ها اجرا می‌شود، دو روش مرتبط اما متمایز وجود دارد که پریری‌لرن می‌تواند کد سوال و المان را اجرا کند: `native` و `container`. این حالت‌ها متناظر با مقدار پیکربندی `workersExecutionMode` هستند و در ادامه با جزئیات بیشتری شرح داده شده‌اند.
 
-### `native` execution mode
+### حالت اجرای `native`
 
-Under this mode, PrairieLearn directly executes Python code with limited isolation from the rest of the system. This is largely the process described above, with a pool of zygotes.
+در این حالت، پریری‌لرن کدهای پایتون را مستقیماً با ایزولاسیون محدودی از بقیه سیستم اجرا می‌کند. این فرایند تا حد زیادی همان چیزی است که در بالا با استخری از زایگوت‌ها توضیح داده شد.
 
-This is still how PrairieLearn functions by default for local development. The `priairelearn/prairielearn` Docker image that is distributed to users includes all of the Python and R dependencies needed by question and element code, and said code is executed in the same container that PrairieLearn executes in. This is obviously bad for security, but doesn't matter for local development.
+این شیوه همچنان نحوه عملکرد پیش‌فرض پریری‌لرن برای توسعه محلی است. ایمیج داکر `prairielearn/prairielearn` که برای کاربران توزیع می‌شود، شامل تمام وابستگی‌های پایتون و R مورد نیاز کدهای سوال و المان است و کدهای مذکور در همان کانتینری اجرا می‌شوند که پریری‌لرن در آن در حال اجراست. این موضوع مسلماً از نظر امنیتی نامناسب است، اما برای توسعه محلی اهمیتی ندارد.
 
-### `container` execution mode
+### حالت اجرای `container`
 
-Under this mode, PrairieLearn uses Docker to provide a degree of isolation from both PrairieLearn and other courses.
+در این حالت، پریری‌لرن از داکر استفاده می‌کند تا سطحی از ایزولاسیون را هم نسبت به پریری‌لرن و هم در مقایسه با سایر درس‌ها فراهم آورد.
 
-Instead of using a pool of zygotes as described above, it actually maintains a pool of Docker containers, each of which runs a simple Node script (the _executor_), which in turn runs a Python zygote. The Node script listens for requests from PrairieLearn and essentially just forwards them to the Python process. You may ask, "Why not just run the zygote as the primary process in the container?" Well, starting up a Docker container is significantly more expensive than starting up a Python interpreter. Given that we occasionally want to completely restart the Python worker, such as when it encounters an error, having an additional level of indirection allows us to gracefully restart the Python process inside the Docker container without having to restart the entire Docker container.
+به جای استفاده از استخری از زایگوت‌ها مطابق با توضیحات بالا، در واقع استخری از کانتینرهای داکر نگهداری می‌شود که هر کدام یک اسکریپت ساده نود (Node) موسوم به مجری (_executor_) را اجرا می‌کنند که آن هم به نوبه خود یک زایگوت پایتون را اجرا می‌نماید. اسکریپت Node به درخواست‌های رسیده از طرف پریری‌لرن گوش فرا داده و اساساً آن‌ها را به فرایند پایتون فوروارد می‌کند. شاید بپرسید: «چرا زایگوت را مستقیماً به عنوان فرایند اصلی کانتینر اجرا نمی‌کنید؟» پاسخ این است که راه‌اندازی یک کانتینر داکر بسیار سنگین‌تر و کندتر از راه‌اندازی یک مفسر پایتون است. با توجه به اینکه ما گاهی اوقات نیاز داریم ورکر پایتون را به طور کامل ری‌استارت کنیم (مثلاً هنگام مواجهه با خطا)، داشتن یک لایه واسطه اضافی به ما امکان می‌دهد بدون نیاز به ری‌استارت کل کانتینر داکر، فرایند پایتون را با ظرافت درون کانتینر داکر ری‌استارت کنیم.
 
-This mode also allows us to isolate one course from another so that course A cannot see content from course B, and vice versa. To achieve this, we take advantage of bind mounts. When creating a container, PrairieLearn also creates a special directory on the host, and then mounts that directory to `/course` in the container. To execute content for course A, PrairieLearn first bind mounts that course's directory to the container's host directory. This is transitive to the container, which will now see that course's content at `/course`. In the future, when a different course's code needs to be executed in that container, PrairieLearn will simply update the bind mount to point to the other course.
+این حالت همچنین به ما امکان می‌دهد دوره‌ها را از یکدیگر ایزوله کنیم تا درس A نتواند محتوای درس B را ببیند و بالعکس. برای رسیدن به این هدف، ما از اتصال‌های بایند (bind mounts) بهره می‌گیریم. هنگام ایجاد یک کانتینر، پریری‌لرن همچنین یک دایرکتوری ویژه روی ماشین میزبان (host) ایجاد می‌کند و سپس آن دایرکتوری را در مسیر `/course` درون کانتینر مونت می‌نماید. برای اجرای محتوای درس A، پریری‌لرن ابتدا دایرکتوری آن درس را به دایرکتوری میزبان کانتینر bind mount می‌کند. این اتصال به کانتینر سرایت می‌کند و اکنون کانتینر محتوای آن درس را در `/course` مشاهده خواهد کرد. در ادامه، هنگامی که نیاز باشد کد مربوط به درس دیگری در آن کانتینر اجرا شود، پریری‌لرن به سادگی bind mount را تغییر می‌دهد تا به درس دیگر اشاره کند.
 
-## Code execution in practice
+## اجرای کد در عمل
 
-So far, this discussion has been pretty abstract. But what about all the actual code that underpins this stuff? Fear not, dear reader, we haven't forgotten about that!
+تا اینجا، این مباحث نسبتاً انتزاعی بوده‌اند. اما در مورد کدهای واقعی که زیربنای این سازوکار هستند چطور؟ خواننده گرامی نگران نباشید، ما آن‌ها را فراموش نکرده‌ایم!
 
-### Code callers
+### فراخوان‌کننده‌های کد (Code callers)
 
-A _code caller_ serves as an abstraction on top of the different execution modes above and hides the implementation details of exactly how code is executed. There are currently two different types of code callers, referred to here by the filenames of their implementations.
+یک فراخوان‌کننده کد (_code caller_) به عنوان یک لایه انتزاعی بر روی حالت‌های مختلف اجرای ذکرشده عمل می‌کند و جزئیات پیاده‌سازی نحوه دقیق اجرای کد را پنهان می‌سازد. در حال حاضر دو نوع مختلف از فراخوان‌کننده‌های کد وجود دارند که در اینجا با نام فایل‌های پیاده‌سازی‌شان نام برده می‌شوند:
 
-- `lib/code-caller-container` handles executing code inside of Docker containers, as required by the `container` execution mode.
-  - This execution mode is only supported on Linux, as it relies on Docker's ability to forward bind mounts, which is not implemented on macOS.
-- `lib/code-caller-native` handles executing Python processes directly, as required by the `native` execution mode.
+- `lib/code-caller-container`: اجرای کد درون کانتینرهای داکر را بر عهده دارد، همان‌طور که در حالت اجرای `container` الزامی است.
+  - این حالت اجرا فقط در لینوکس پشتیبانی می‌شود، زیرا بر توانایی داکر در فوروارد کردن bind mountها تکیه دارد که در macOS پیاده‌سازی نشده است.
+- `lib/code-caller-native`: اجرای مستقیم فرایندهای پایتون را بر عهده دارد، همان‌طور که در حالت اجرای `native` الزامی است.
 
-The primary external interface of these callers is the `call()` function, which takes five arguments:
+رابط خارجی اصلی این فراخوان‌کننده‌ها تابع `call()` است که پنج آرگومان دریافت می‌کند:
 
-- `type`: the type of code being executed (either `question`, `course-element`, or `core-element`).
-- `directory`: the directory containing the file whose code will be executed.
-  - For questions, this is an item in a course's `questions` directory.
-  - For course elements, this is an item in a course's `elements` directory.
-  - For core elements, this is an item in PrairieLearn's `elements` directory.
-- `file`: the name of the file whose code will be executed (e.g. `server.py`)
-- `fcn`: the name of the function in `file` that will be executed (e.g. `grade` or `render`).
-- `args`: an array of JSON-encodable arguments to the function being called.
+- `type`: نوع کد در حال اجرا (یکی از مقادیر `question`، `course-element` یا `core-element`).
+- `directory`: دایرکتوری حاوی فایلی که کد آن اجرا خواهد شد.
+  - برای سوالات، این مورد یک آیتم در دایرکتوری `questions` درس است.
+  - برای المان‌های درس، این مورد یک آیتم در دایرکتوری `elements` درس است.
+  - برای المان‌های اصلی (core)، این مورد یک آیتم در دایرکتوری `elements` پریری‌لرن است.
+- `file`: نام فایلی که کد آن اجرا خواهد شد (مثلاً `server.py`).
+- `fcn`: نام تابعی در `file` که اجرا خواهد شد (مثلاً `grade` یا `render`).
+- `args`: آرایه‌ای از آرگومان‌های قابل تبدیل به JSON برای تابعی که فراخوانی می‌شود.
 
-The piece of code to execute is specified by (`type`, `directory`, `file`) instead of an absolute path because the location of each file on disk may change between each type of code caller; allowing the code caller to construct the path from that information keeps the code that uses a caller agnostic to the underlying caller being used.
+قطعه کدی که باید اجرا شود به جای یک مسیر مطلق، با سه‌تایی (`type`, `directory`, `file`) مشخص می‌شود؛ زیرا مکان هر فایل روی دیسک ممکن است بین هر نوع فراخوان‌کننده کد تغییر کند؛ امکان دادن به فراخوان‌کننده کد برای ساخت مسیر با استفاده از این اطلاعات، کدی را که از فراخوان‌کننده استفاده می‌کند نسبت به فراخوان‌کننده زیربنایی مستقل و بی‌خبر نگه می‌دارد.
 
-### A full request cycle
+### یک چرخه کامل درخواست (A full request cycle)
 
-Let's walk through a typical request to view a question that requires a function in a corresponding `server.py` file to run.
+بیایید یک درخواست معمول برای مشاهده سوالی را مرور کنیم که نیازمند اجرای تابعی در فایل `server.py` متناظر است:
 
-1. The page request is handled by `pages/studentInstanceQuestion` or similar.
-2. That handler calls `getAndRenderVariant` in `lib/question` (a different function would be called if the user were submitting an answer).
-3. That function calls an internal function that calls `render` in `question-servers/freeform.js`.
-4. That function calls `withCodeCaller` in `lib/workers`. Depending on the active execution mode
-   1. If running in `container` mode, a `lib/code-caller-container` caller will be "prepared" for the current course (which sets up necessary bind mounts) and returned.
-   2. If running in `native` mode, any available `lib/code-caller-native` caller will be returned.
-5. `call(...)` is then repeatedly invoked on the code caller with the appropriate pieces of code to be executed.
-6. Once the code caller is no longer needed during this request, `done()` is invoked on it. The forked worker is sent a `restart` message, which will cause the worker to exit and return control to the zygote. The zygote will then fork itself again, and the forked worker will wait until it receives more instructions.
-7. Page render completes and the response is sent, thus finishing the request cycle.
+1. درخواست صفحه توسط `pages/studentInstanceQuestion` یا موارد مشابه مدیریت می‌شود.
+2. آن کنترل‌کننده تابع `getAndRenderVariant` را در `lib/question` فراخوانی می‌کند (اگر کاربر در حال ارسال پاسخ بود، تابع دیگری فراخوانی می‌شد).
+3. آن تابع یک متد داخلی را فراخوانی می‌کند که تابع `render` را در `question-servers/freeform.js` صدا می‌زند.
+4. آن تابع `withCodeCaller` را در `lib/workers` فراخوانی می‌کند. بسته به حالت اجرای فعال:
+   1. اگر در حالت `container` اجرا شود، یک کالر `lib/code-caller-container` برای درس جاری «آماده‌سازی» شده (که bind mountهای لازم را تنظیم می‌کند) و بازگردانده می‌شود.
+   2. اگر در حالت `native` اجرا شود، هر کالر دردسترس از `lib/code-caller-native` بازگردانده خواهد شد.
+5. سپس `call(...)` به طور مکرر با قطعات کد مناسبی که باید اجرا شوند، روی فراخوان‌کننده کد صدا زده می‌شود.
+6. هنگامی که در طول این درخواست دیگر نیازی به فراخوان‌کننده کد نبود، `done()` روی آن فراخوانی می‌شود. به ورکر فورک‌شده یک پیام `restart` ارسال می‌شود که باعث خروج ورکر و بازگرداندن کنترل به زایگوت می‌گردد. سپس زایگوت مجدداً از خود فورک ایجاد می‌کند و ورکر فورک‌شده منتظر می‌ماند تا دستورالعمل‌های بیشتری دریافت کند.
+7. رندر صفحه کامل می‌شود و پاسخ ارسال می‌گردد، و بدین ترتیب چرخه درخواست به پایان می‌رسد.
 
-## Operating in production
+## عملیات در محیط پروداکشن (تولید)
 
-When new versions of PrairieLearn are deployed, it's important to ensure that the appropriate executor image for the version being deployed is present on the machine. This ensures that PrairieLearn is able to serve traffic immediately instead of waiting for the new version to be pulled. The image will be published as `prairielearn/executor:GIT_HASH`, where `GIT_HASH` is the SHA-1 hash of the Git commit that's being deployed.
+هنگامی که نسخه‌های جدید پریری‌لرن مستقر می‌شوند، مهم است که مطمئن شوید ایمیج مجری (executor) مناسب برای نسخه‌ای که مستقر می‌شود روی ماشین وجود دارد. این امر تضمین می‌کند که پریری‌لرن به جای منتظر ماندن برای دریافت (pull) نسخه جدید، بتواند بلافاصله به ترافیک پاسخ دهد. این ایمیج با عنوان `prairielearn/executor:GIT_HASH` منتشر می‌شود، که در آن `GIT_HASH` همان هش SHA-1 کامیت گیت در حال استقرار است.
 
-PrairieLearn will automatically determine the correct version of the executor image to use at runtime. However, in an emergency, it's possible to configure PrairieLearn to use a specific image and tag. Set the `workerExecutorImageRepository` and/or the `workerExecutorImageTag` config options appropriately. Then, ensure the image is present on the machine. Finally, deploy the updated config and restart the server; new requests will be executed in the specified container version.
+پریری‌لرن به طور خودکار نسخه صحیح ایمیج executor را در زمان اجرا تعیین خواهد کرد. با این حال، در مواقع اضطراری، می‌توان پریری‌لرن را به گونه‌ای پیکربندی کرد که از یک ایمیج و تگ خاص استفاده نماید. گزینه‌های پیکربندی `workerExecutorImageRepository` و/یا `workerExecutorImageTag` را به طور مناسب تنظیم کنید. سپس اطمینان حاصل کنید که ایمیج روی ماشین حاضر است. در نهایت، پیکربندی به‌روزرسانی‌شده را اعمال کرده و سرور را ری‌استارت نمایید؛ درخواست‌های جدید در نسخه کانتینر مشخص‌شده اجرا خواهند شد.
 
-If the `cacheImageRegistry` option is set and `workerExecutorImageRepository` is NOT set, PrairieLearn will use the image from that registry. If you're specifying `workerExecutorImageRepository` and want to use an image from a specific registry, you should ensure that the registry is included in the `workerExecutionImageRepository` value.
+اگر گزینه `cacheImageRegistry` تنظیم شده باشد و `workerExecutorImageRepository` تنظیم نشده باشد، پریری‌لرن از ایمیج موجود در آن رجیستری استفاده خواهد کرد. اگر `workerExecutorImageRepository` را مشخص می‌کنید و می‌خواهید از ایمیجی از یک رجیستری خاص استفاده نمایید، باید اطمینان حاصل کنید که نام رجیستری در مقدار `workerExecutionImageRepository` گنجانده شده باشد.

@@ -1,55 +1,55 @@
-# External Grading
+# نمره‌دهی خارجی (External Grading)
 
-PrairieLearn allows you to securely run custom grading scripts in environments that you specify. This is mainly used to enable the automatic grading of submitted code, but it's flexible enough to support a variety of use cases.
+سامانه PrairieLearn به شما این امکان را می‌دهد که اسکریپت‌های نمره‌دهی سفارشی را به طور امن در محیط‌هایی که مشخص می‌کنید اجرا نمایید. این قابلیت عمدتاً برای فعال‌سازی نمره‌دهی خودکار کدهای ارسال‌شده استفاده می‌شود، اما به اندازه کافی انعطاف‌پذیر است تا از طیف گسترده‌ای از کاربردها پشتیبانی کند.
 
-## High-level overview
+## نمای کلی سطح بالا
 
-You can define a number of resources for the external grading process:
+شما می‌توانید منابع متعددی را برای فرآیند نمره‌دهی خارجی تعریف کنید:
 
-- A Docker image to execute your tests in, which may be:
-  - A PrairieLearn-provided image.
-  - A custom version of a PrairieLearn-provided image that you've built and pushed to Docker Hub.
-  - A standard public image from Docker Hub (e.g., `python:3.13`, `node:24`, etc.) that can execute course-specific grading scripts.
-  - A completely custom image containing scripts and resources that you've built and pushed to Docker Hub.
-- Files, scripts and other resources that are shared between questions.
-- Files, scripts, tests and other resources that are specific to individual questions.
+- یک ایمیج Docker برای اجرای تست‌های شما در آن، که می‌تواند یکی از موارد زیر باشد:
+  - یک ایمیج ارائه‌شده توسط PrairieLearn.
+  - نسخه سفارشی از یک ایمیج ارائه‌شده توسط PrairieLearn که خودتان ساخته‌اید و در Docker Hub پوش (push) کرده‌اید.
+  - یک ایمیج عمومی استاندارد از Docker Hub (مانند `python:3.13`، `node:24` و غیره) که می‌تواند اسکریپت‌های نمره‌دهی اختصاصی درس را اجرا کند.
+  - یک ایمیج کاملاً سفارشی حاوی اسکریپت‌ها و منابعی که خودتان ساخته‌اید و در Docker Hub پوش کرده‌اید.
+- فایل‌ها، اسکریپت‌ها و سایر منابعی که بین سوالات به اشتراک گذاشته می‌شوند.
+- فایل‌ها، اسکریپت‌ها، تست‌ها و سایر منابعی که مختص هر سوال جداگانه هستند.
 
-When a student clicks "Submit" on an externally-graded question, PrairieLearn will assemble all of those resources that you've defined into an archive. That archive will be submitted to be run inside the environment that you specify. Results are then sent back to PrairieLearn; once they are processed, the student will immediately be shown their score, individual test cases, `stdout`/`stderr`, and any information you want to show to them.
+هنگامی که دانشیاری روی گزینه «Submit» (ارسال) در یک سوال با نمره‌دهی خارجی کلیک می‌کند، PrairieLearn تمام آن منابعی را که تعریف کرده‌اید در قالب یک فایل آرشیو گردآوری می‌کند. آن آرشیو ارسال می‌شود تا درون محیطی که مشخص کرده‌اید اجرا گردد. سپس نتایج به PrairieLearn بازگردانده می‌شوند؛ پس از پردازش نتایج، بلافاصله نمره، موارد تست جداگانه، `stdout`/`stderr` و هر اطلاعاتی که مایل باشید به دانشجو نشان داده خواهد شد.
 
-## External grading timestamps and phases
+## برچسب‌های زمانی و مراحل نمره‌دهی خارجی
 
-When a student submits to a question that uses external grading, a grading job is created to handle the submission. A pool of graders is available to handle these jobs. The grading job then follows a series of steps:
+هنگامی که دانشیاری پاسخی برای سوالی که از نمره‌دهی خارجی استفاده می‌کند ارسال می‌نماید، یک جاب نمره‌دهی (grading job) برای رسیدگی به این پاسخ ارسالی ایجاد می‌شود. مجموعه‌ای (استخری) از نمره‌دهنده‌ها (graders) برای رسیدگی به این جاب‌ها در دسترس است. سپس جاب نمره‌دهی مراحل زیر را طی می‌کند:
 
-1. PrairieLearn creates the grading job and puts the job on the grading queue.
-2. The job waits on the grading queue until it is received by a grader.
-3. A grader from the pool receives the job, reads the grading information, pulls the appropriate grading Docker image, and starts the grading container.
-4. The course grading code runs inside the Docker container.
-5. The grader sends the grading results back to PrairieLearn.
-6. PrairieLearn processes the results, records the grade, and shows the student their results.
+1. سامانه PrairieLearn جاب نمره‌دهی را ایجاد کرده و آن را در صف نمره‌دهی قرار می‌دهد.
+2. جاب در صف نمره‌دهی منتظر می‌ماند تا توسط یک نمره‌دهنده دریافت شود.
+3. یک نمره‌دهنده از استخر موجود، جاب را دریافت می‌کند، اطلاعات نمره‌دهی را می‌خواند، ایمیج داکر نمره‌دهی مناسب را پول (pull) می‌کند و کانتینر نمره‌دهی را راه‌اندازی می‌نماید.
+4. کد نمره‌دهی درس در داخل کانتینر داکر اجرا می‌شود.
+5. نمره‌دهنده نتایج نمره‌دهی را به PrairieLearn بازمی‌گرداند.
+6. سامانه PrairieLearn نتایج را پردازش می‌کند، نمره را ثبت می‌نماید و نتایج را به دانشجو نشان می‌دهد.
 
-The timestamps for each individual phase of the grading process are recorded and can be viewed by instructors in the submission info box for each submission, as well as the grading job page. This can be useful for debugging issues with grading performance.
+برچسب‌های زمانی (timestamps) برای هر مرحله از فرآیند نمره‌دهی ثبت می‌شوند و توسط مدرسان در کادر اطلاعات پاسخ ارسالی برای هر submission و همچنین در صفحه جاب نمره‌دهی قابل مشاهده هستند. این اطلاعات می‌تواند برای دیباگ کردن مشکلات مربوط به کارایی و عملکرد نمره‌دهی مفید باشد.
 
-## Configuring and enabling external grader support
+## پیکربندی و فعال‌سازی پشتیبانی از نمره‌دهنده خارجی
 
-External grading configuration is done on a per-question basis. The question needs to be set to use the 'External' grading method. All configuration may be done using the question settings page, or via the `externalGradingOptions` object in a question's `info.json`. A minimal configuration for an externally-graded question includes the following option:
+پیکربندی نمره‌دهی خارجی به ازای هر سوال انجام می‌شود. روش نمره‌دهی سوال باید روی 'External' تنظیم شود. تمام پیکربندی‌ها را می‌توان با استفاده از صفحه تنظیمات سوال یا از طریق شیء `externalGradingOptions` در فایل `info.json` سوال انجام داد. یک پیکربندی حداقلی برای یک سوال با نمره‌دهی خارجی شامل گزینه زیر است:
 
-- `image`: The public Docker image that should be used for the question. Supported registries are Docker Hub (`docker.io`), GHCR (`ghcr.io`), Quay (`quay.io`), GitLab (`registry.gitlab.com`), and Amazon ECR Public (`public.ecr.aws`). For example, `docker.io/org/image:tag` for Docker Hub or `ghcr.io/org/image:tag` for GHCR. The Docker Hub shorthand `org/image:tag` is also supported. Custom registry domains and explicit ports are not supported. See [Supported registries](dockerImages.md#supported-registries) for details. This property is required when external grading is enabled.
+- `image`: ایمیج عمومی داکر که باید برای سوال استفاده شود. رجیستری‌های پشتیبانی‌شده عبارتند از Docker Hub (`docker.io`)، GHCR (`ghcr.io`)، Quay (`quay.io`)، GitLab (`registry.gitlab.com`) و Amazon ECR Public (`public.ecr.aws`). برای مثال، `docker.io/org/image:tag` برای Docker Hub یا `ghcr.io/org/image:tag` برای GHCR. قالب خلاصه Docker Hub یعنی `org/image:tag` نیز پشتیبانی می‌شود. دامنه‌های رجیستری سفارشی و پورت‌های صریح پشتیبانی نمی‌شوند. برای جزئیات به [رجیستری‌های پشتیبانی‌شده](dockerImages.md#supported-registries) مراجعه کنید. این ویژگی زمانی که نمره‌دهی خارجی فعال باشد الزامی است.
 
-Additional options are available for further customization:
+گزینه‌های بیشتری برای سفارشی‌سازی بیشتر در دسترس هستند:
 
-- `entrypoint`: The script or command line that will be run when your container starts. If this property is not provided, the default entrypoint of the Docker image will be used.
-  - If specified, this should be an absolute path to something that is executable in the Docker image. This could be a shell script, a Python script, a compiled executable, or anything else that can be executed. This file can be built into your image, which must be executable in the image itself; or it can be one of the files that will be mounted into `/grade` (more on that later), in which case the entrypoint file is given executable permission by the grading process itself before running (i.e., `chmod +x /path/to/entrypoint && /path/to/entrypoint`).
-  - The `entrypoint` may also be provided with additional command line arguments. If set via `info.json`, these may be provided either as a string (e.g., `"/path/to/entrypoint -h"`) or as an array, with each element corresponding to an argument (e.g., `["/path/to/entrypoint", "-h"]`).
+- `entrypoint`: اسکریپت یا خط فرمانی که هنگام راه‌اندازی کانتینر شما اجرا خواهد شد. اگر این ویژگی ارائه نشود، entrypoint پیش‌فرض ایمیج داکر استفاده خواهد شد.
+  - در صورت تعیین، این مقدار باید یک مسیر مطلق به فایلی اجرایی در ایمیج داکر باشد. این می‌تواند یک اسکریپت شل، یک اسکریپت پایتون، یک فایل اجرایی کامپایل‌شده یا هر چیز دیگری باشد که قابلیت اجرا داشته باشد. این فایل می‌تواند درون ایمیج شما تعبیه شده باشد، که در این صورت باید درون خود ایمیج قابل اجرا باشد؛ یا می‌تواند یکی از فایل‌هایی باشد که در `/grade` مانت (mount) می‌شوند (توضیحات بیشتر در ادامه)، که در این صورت قبل از اجرا، فرآیند نمره‌دهی مجوز اجرا را به فایل entrypoint می‌دهد (یعنی `chmod +x /path/to/entrypoint && /path/to/entrypoint`).
+  - برای `entrypoint` همچنین می‌توان آرگومان‌های خط فرمان اضافی در نظر گرفت. اگر از طریق `info.json` تنظیم شود، این موارد را می‌توان به عنوان یک رشته (مثلاً `"/path/to/entrypoint -h"`) یا به عنوان یک آرایه، که هر المان آن متناظر با یک آرگومان است (مثلاً `["/path/to/entrypoint", "-h"]`) ارائه داد.
 
-- `serverFilesCourse`: Specifies a list of files or directories that will be copied from a course's `serverFilesCourse` into the grading job. This can be useful if you want to share standard resources, such as scripts, libraries, and data files, between many questions. This property is optional.
+- `serverFilesCourse`: فهرستی از فایل‌ها یا دایرکتوری‌هایی را مشخص می‌کند که از `serverFilesCourse` درس در جاب نمره‌دهی کپی خواهند شد. اگر بخواهید منابع استانداردی مانند اسکریپت‌ها، کتابخانه‌ها و فایل‌های داده را بین سوالات متعددی به اشتراک بگذارید، این قابلیت می‌تواند مفید باشد. این ویژگی اختیاری است.
 
-- `timeout`: Specifies a timeout for the grading job in seconds. If grading has not completed after that time has elapsed, the job will be killed and reported as a failure to the student. This property is optional and defaults to 30 seconds. It should be as small as is reasonable for your jobs, and cannot exceed 600 seconds (10 minutes).
+- `timeout`: مهلت زمانی (timeout) برای جاب نمره‌دهی را بر حسب ثانیه مشخص می‌کند. اگر نمره‌دهی پس از سپری شدن این مدت به پایان نرسد، جاب متوقف (kill) شده و به عنوان یک شکست/خطا به دانشجو گزارش می‌شود. این ویژگی اختیاری است و پیش‌فرض آن ۳۰ ثانیه است. این مقدار باید تا حد منطقی برای جاب‌های شما کوچک باشد و نمی‌تواند از ۶۰۰ ثانیه (۱۰ دقیقه) فراتر رود.
 
-- `enableNetworking`: Allows the container to access the public internet. This is disabled by default to make secure, isolated execution the default behavior.
+- `enableNetworking`: به کانتینر اجازه می‌دهد به اینترنت عمومی دسترسی داشته باشد. این گزینه به طور پیش‌فرض غیرفعال است تا اجرای امن و ایزوله رفتار پیش‌فرض باشد.
 
-- `environment`: Environment variables to set inside the grading container. Set variables using `{"VAR": "value", ...}`, and unset variables using `{"VAR": null}` (no quotes around `null`). This property is optional.
+- `environment`: متغیرهای محیطی که باید درون کانتینر نمره‌دهی تنظیم شوند. متغیرها را با استفاده از `{"VAR": "value", ...}` تنظیم کنید، و با استفاده از `{"VAR": null}` لغو مقداردهی (unset) نمایید (بدون علامت نقل‌قول در اطراف `null`). این ویژگی اختیاری است.
 
-Here's an example of a complete `externalGradingOptions` portion of a question's `info.json`:
+در اینجا نمونه‌ای از بخش کامل `externalGradingOptions` در فایل `info.json` یک سوال آمده است:
 
 ```json title="info.json"
 {
@@ -61,95 +61,95 @@ Here's an example of a complete `externalGradingOptions` portion of a question's
 }
 ```
 
-This config file specifies the following things:
+این فایل پیکربندی موارد زیر را مشخص می‌کند:
 
-- External grading is enabled.
-- The `prairielearn/grader-python` image will be used.
-- The files/directories under `serverFilesCourse/my_libraries` will be copied into your image while grading.
-- The default entrypoint script set by the image will be executed when your container starts up.
-- If grading takes longer than 5 seconds, the container will be killed.
+- نمره‌دهی خارجی فعال است.
+- از ایمیج `prairielearn/grader-python` استفاده خواهد شد.
+- فایل‌ها/دایرکتوری‌های زیرمجموعه `serverFilesCourse/my_libraries` در طول نمره‌دهی در ایمیج شما کپی خواهند شد.
+- اسکریپت entrypoint پیش‌فرض تعیین‌شده توسط ایمیج هنگام راه‌اندازی کانتینر شما اجرا خواهد شد.
+- اگر نمره‌دهی بیش از ۵ ثانیه طول بکشد، کانتینر متوقف (kill) خواهد شد.
 
 !!! info
 
-    See the [`externalGradingOptions` schema for a question `info.json` file](./schemas/infoQuestion.md/#properties/externalGradingOptions) for more information about how to set these fields in the `info.json` file.
+    برای اطلاعات بیشتر درباره نحوه تنظیم این فیلدها در فایل `info.json`، [طرح‌واره (اسکیمای) `externalGradingOptions` برای فایل `info.json` سوال](./schemas/infoQuestion.md/#properties/externalGradingOptions) را ببینید.
 
-### Writing questions
+### نوشتن سوالات
 
-There are multiple ways to allow students to submit files for external grading:
+روش‌های متعددی وجود دارد که به دانشجویان امکان می‌دهد فایل‌ها را برای نمره‌دهی خارجی ارسال کنند:
 
-- The [`pl-file-editor` element](./elements/pl-file-editor.md) gives students an in-browser editor that they can use to write code.
-- The [`pl-file-upload` element](./elements/pl-file-upload.md) allows students to upload files from their own computer.
-- The [`pl-order-blocks` element](./elements/pl-order-blocks.md), using the `grading-method="external"` attribute, allows students to submit code by arranging pre-defined blocks of code in the correct order.
-- The [`pl-rich-text-editor` element](./elements/pl-rich-text-editor.md) allows students to create HTML documents.
-- The [`pl-image-capture` element](./elements/pl-image-capture.md) allows students to submit images taken with their device's camera.
-- For questions using [workspaces](./workspaces/index.md), [the `gradedFiles` option](workspaces/index.md#infojson) identifies workspace files that will be made available to the external grader.
+- المان [`pl-file-editor`](./elements/pl-file-editor.md) یک ویرایشگر درون مرورگر در اختیار دانشجویان قرار می‌دهد که می‌توانند از آن برای نوشتن کد استفاده کنند.
+- المان [`pl-file-upload`](./elements/pl-file-upload.md) به دانشجویان اجازه می‌دهد فایل‌ها را از کامپیوتر خود آپلود کنند.
+- المان [`pl-order-blocks`](./elements/pl-order-blocks.md)، با استفاده از صفت `grading-method="external"`، به دانشجویان اجازه می‌دهد با مرتب کردن بلوک‌های از پیش تعریف‌شده کد به ترتیب درست، کد خود را ارسال کنند.
+- المان [`pl-rich-text-editor`](./elements/pl-rich-text-editor.md) به دانشجویان امکان می‌دهد اسناد HTML ایجاد کنند.
+- المان [`pl-image-capture`](./elements/pl-image-capture.md) به دانشجویان اجازه می‌دهد تصاویری را که با دوربین دستگاه خود گرفته‌اند ارسال کنند.
+- برای سوالاتی که از [محیط‌های کاری](./workspaces/index.md) استفاده می‌کنند، [گزینه `gradedFiles`](workspaces/index.md#infojson) فایل‌های محیط کاری را که در اختیار نمره‌دهنده خارجی قرار می‌گیرد مشخص می‌کند.
 
-For examples of questions that allow student submissions, you can look at [`PrairieLearn/exampleCourse/questions/demo/autograder/codeEditor`](https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/codeEditor) and [`PrairieLearn/exampleCourse/questions/demo/autograder/codeUpload`](https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/codeUpload).
+برای مشاهده نمونه سوالاتی که امکان ارسال پاسخ‌های دانشجویی را فراهم می‌کنند، می‌توانید به [`PrairieLearn/exampleCourse/questions/demo/autograder/codeEditor`](https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/codeEditor) و [`PrairieLearn/exampleCourse/questions/demo/autograder/codeUpload`](https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/codeUpload) نگاهی بیندازید.
 
-If you want to write your own submission mechanism (as a custom element, for instance), you can do that as well. Files may be submitted to external graders by including them in a `_files` array on the `submitted_answers` dict. This can be done by [calling `pl.add_submitted_file()`](./python-reference/prairielearn/question_utils.md#prairielearn.question_utils.add_submitted_file) in the `parse()` method of your question or custom element. For a working example of this, see [the implementation of `pl-file-upload`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/elements/pl-file-upload/pl-file-upload.py).
+اگر می‌خواهید مکانیزم ارسال اختصاصی خود را بنویسید (مثلاً به عنوان یک المان سفارشی)، آن کار نیز امکان‌پذیر است. فایل‌ها می‌توانند با گنجانده شدن در یک آرایه `_files` در دیکشنری `submitted_answers` به نمره‌دهنده‌های خارجی ارسال شوند. این کار می‌تواند با [فراخوانی `pl.add_submitted_file()`](./python-reference/prairielearn/question_utils.md#prairielearn.question_utils.add_submitted_file) در متد `parse()` سوال یا المان سفارشی شما انجام شود. برای مشاهده یک نمونه کاربردی از این قابلیت، [پیاده‌سازی `pl-file-upload`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/elements/pl-file-upload/pl-file-upload.py) را ببینید.
 
-### Special directories
+### دایرکتوری‌های ویژه
 
-Inside the question directory, you can create a `tests` directory containing any question-specific files that you want to make available to the external grading container. These may be individual tests, input files, code files or library files that will be used during the grading process. The format of these files may vary depending on the grading image you are using.
+درون دایرکتوری سوال، می‌توانید یک دایرکتوری `tests` شامل هرگونه فایل اختصاصی سوال ایجاد کنید که مایلید در دسترس کانتینر نمره‌دهی خارجی قرار گیرد. این موارد می‌توانند تست‌های جداگانه، فایل‌های ورودی، فایل‌های کد یا فایل‌های کتابخانه‌ای باشند که در طول فرآیند نمره‌دهی استفاده خواهند شد. فرمت این فایل‌ها ممکن است بسته به ایمیج نمره‌دهی که استفاده می‌کنید متفاوت باشد.
 
-Additionally, as listed above, you can specify files or directories in `serverFilesCourse` that should be copied into your container. A common use case for this is if you want to share a library, script or data file across different questions in the course.
+علاوه بر این، همان‌طور که در بالا ذکر شد، می‌توانید فایل‌ها یا دایرکتوری‌هایی را در `serverFilesCourse` مشخص کنید که باید درون کانتینر شما کپی شوند. یک کاربرد متداول برای این کار زمانی است که بخواهید یک کتابخانه، اسکریپت یا فایل داده را در بین سوالات مختلف یک درس به اشتراک بگذارید.
 
 !!! warning
 
-    Any files included in `tests` or in the specified `serverFilesCourse` directories will be copied to the grading job every time a submission is made. If you include large files or directories, this may slow down the grading process significantly. We recommend only including files that are necessary for grading. If you have large files that are shared between many questions, consider [building them into a custom Docker image](./dockerImages.md#custom-variations-of-maintained-images) instead.
+    هر فایلی که در `tests` یا در دایرکتوری‌های مشخص‌شده `serverFilesCourse` قرار داده شود، با هر بار ارسال پاسخ به جاب نمره‌دهی کپی خواهد شد. اگر فایل‌ها یا دایرکتوری‌های بزرگی را وارد کنید، این امر ممکن است فرآیند نمره‌دهی را به طور چشمگیری کُند کند. توصیه می‌کنیم فقط فایل‌هایی را قرار دهید که برای نمره‌دهی ضروری هستند. اگر فایل‌های بزرگی دارید که بین سوالات زیادی به اشتراک گذاشته می‌شوند، به جای آن [تعبیه آنها در یک ایمیج داکر سفارشی](./dockerImages.md#custom-variations-of-maintained-images) را در نظر بگیرید.
 
-## The Grading Process
+## فرآیند نمره‌دهی
 
-All question and student-submitted code will be present in various subdirectories in `/grade` inside your container.
+تمام کدهای سوال و کدهای ارسالی دانشجو در زیردایرکتوری‌های مختلف در مسیر `/grade` در داخل کانتینر شما قرار خواهند داشت:
 
-- If you specify any files or directories in `serverFilesCourse`, they will be copied to `/grade/serverFilesCourse`.
-- If your question has a `tests` directory, it will be copied to `/grade/tests`.
-- Files submitted by the student will be copied to `/grade/student`.
-- The `data` object that would normally be provided to the `grade` method of your question's server file will be serialized to JSON at `/grade/data/data.json`.
+- اگر هرگونه فایل یا دایرکتوری در `serverFilesCourse` مشخص کنید، آنها در `/grade/serverFilesCourse` کپی خواهند شد.
+- اگر سوال شما دارای دایرکتوری `tests` باشد، در `/grade/tests` کپی خواهد شد.
+- فایل‌های ارسال‌شده توسط دانشجو در `/grade/student` کپی خواهند شد.
+- شیء `data` که معمولاً به متد `grade` در فایل سرور سوال شما ارائه می‌شود، در قالب JSON در `/grade/data/data.json` سریالایز خواهد شد.
 
-When your container starts up, the entrypoint script (either the default one set by the image or the one specified in the question settings) will be executed. The only requirement is that by the time that script finishes, it should have written results for the grading job to `/grade/results/results.json`. The format for this file is specified below. The contents of that file will be sent back to PrairieLearn to record a grade and possibly be shown to students.
+هنگامی که کانتینر شما راه‌اندازی می‌شود، اسکریپت entrypoint (یا اسکریپت پیش‌فرض تعیین‌شده توسط ایمیج یا اسکریپت مشخص‌شده در تنظیمات سوال) اجرا خواهد شد. تنها الزام این است که تا زمان پایان یافتن آن اسکریپت، باید نتایج جاب نمره‌دهی در فایل `/grade/results/results.json` نوشته شده باشد. فرمت این فایل در ادامه مشخص شده است. محتویات آن فایل به PrairieLearn بازگردانده می‌شود تا نمره ثبت شود و احتمالاً به دانشجویان نمایش داده شود.
 
 !!! note
 
-    The `/grade/results` directory is not automatically created, so you must create it yourself before writing `results.json`.
+    دایرکتوری `/grade/results` به صورت خودکار ایجاد نمی‌شود، بنابراین قبل از نوشتن فایل `results.json` باید خودتان آن را ایجاد کنید.
 
-In particular, the file system structure of the grader looks like:
+به طور ویژه، ساختار فایل‌سیستم نمره‌دهنده به صورت زیر است:
 
 ```text
-/grade                         # Root directory of the grading job
-+-- /data                      # JSON dump of the data object from server.py
+/grade                         # دایرکتوری ریشه جاب نمره‌دهی
++-- /data                      # دامپ JSON از شیء data ارائه‌شده توسط server.py
 |   `-- data.json
 |
-+-- /results                   # Report of test output formatted for PrairieLearn
++-- /results                   # گزارش خروجی تست با فرمت مخصوص PrairieLearn
 |   `-- results.json
 |
-+-- /serverFilesCourse         # Files from serverFilesCourse/ in the course directory
++-- /serverFilesCourse         # فایل‌های برگرفته از serverFilesCourse/ در دایرکتوری درس
 |   +-- /my_testing_framework
-|   |   +-- testfile           # Test framework configuration
-|   |   `-- run.sh             # Entrypoint called in the container
+|   |   +-- testfile           # پیکربندی فریم‌ورک تست
+|   |   `-- run.sh             # Entrypoint فراخوانی‌شده درون کانتینر
 |
-+-- /student                   # Files submitted by student
++-- /student                   # فایل‌های ارسال‌شده توسط دانشجو
 |   +-- studentfile1
 |   `-- studentfile2
 |
-+-- /tests                     # Files found in the question's tests/ directory
++-- /tests                     # فایل‌های موجود در دایرکتوری tests/ سوال
 |   +-- test1
 |   `-- test2
 ```
 
-### Grading results
+### نتایج نمره‌دهی
 
-Your grading process must write its results to `/grade/results/results.json`.
+فرآیند نمره‌دهی شما باید نتایج خود را در `/grade/results/results.json` بنویسد:
 
-- If the submission is gradable, the result only has one mandatory field: `score`, which is the score for the submitted attempt, and should be a floating-point number in the range [0.0, 1.0]. The field `gradable` may be optionally included and set to `true` to indicate that the submission was gradable, though this is not required, as the omission of this field is equivalent to assuming that the input was gradable.
-  - If the question has [partial credit disabled](./question/overview.md#partial-credit), the final score will be set to 100% only if the `score` is 1. If the score is less than 1, it will be set to zero, overriding any partial scores set by the autograder.
-- If the submission is not gradable, the field `gradable` is required, and must be set to `false`. In this case, the `score` field is not needed. This indicates that the submission could not be graded, for example due to a syntax error, or if the input was missing, invalid, or formatted incorrectly. In this case, the submission will be marked as "invalid, not gradable", no points will be awarded or lost, and the student will not be penalized an attempt on the question.
+- اگر پاسخ ارسالی قابل نمره‌دهی باشد، نتیجه تنها یک فیلد اجباری دارد: `score`، که نمره تلاش ارسال‌شده است و باید یک عدد ممیز شناور در بازه [0.0, 1.0] باشد. فیلد `gradable` می‌تواند به صورت اختیاری گنجانده شده و روی `true` تنظیم شود تا نشان دهد که پاسخ ارسالی قابل نمره‌دهی بوده است، هرچند این مورد الزامی نیست، زیرا عدم درج این فیلد معادل فرض قابل نمره‌دهی بودن ورودی است.
+  - اگر سوال دارای [نمره بخشی غیرفعال](./question/overview.md#partial-credit) باشد، نمره نهایی تنها در صورتی ۱۰۰٪ خواهد شد که `score` برابر با ۱ باشد. اگر نمره کمتر از ۱ باشد، برابر با صفر تنظیم خواهد شد و هرگونه نمره بخشی تعیین‌شده توسط نمره‌دهنده خودکار بازنویسی می‌شود.
+- اگر پاسخ ارسالی قابل نمره‌دهی نباشد، فیلد `gradable` الزامی است و باید روی `false` تنظیم شود. در این حالت، نیازی به فیلد `score` نیست. این وضعیت نشان می‌دهد که پاسخ ارسالی نمی‌تواند نمره‌دهی شود، به عنوان مثال به دلیل خطای ساختاری (syntax error)، یا اگر ورودی وجود نداشته باشد، نامعتبر باشد یا فرمت نامناسبی داشته باشد. در این حالت، پاسخ ارسالی به عنوان «نامعتبر، غیرقابل نمره‌دهی» علامت‌گذاری می‌شود، هیچ امتیازی داده یا کسر نمی‌شود و دانشجو یکی از فرصت‌های تلاش خود برای سوال را از دست نخواهد داد.
 
-Other than `score` and `gradable`, you may add any additional data to that object that you want. This could include information like detailed test results, stdout/stderr, compiler errors, rendered plots, and so on. Note, though, that this file should be limited to 1 MB, so you must ensure any extensive use of data takes this limit into account.
+به غیر از `score` و `gradable`، می‌توانید هر داده اضافی دیگری را که مایلید به آن شیء اضافه کنید. این اطلاعات می‌تواند شامل مواردی مانند نتایج تفصیلی تست، stdout/stderr، خطاهای کامپایلر، نمودارهای رندرشده و غیره باشد. با این حال توجه داشته باشید که حجم این فایل باید حداکثر به ۱ مگابایت محدود شود، بنابراین باید اطمینان حاصل کنید که هرگونه استفاده گسترده از داده‌ها این محدودیت را در نظر می‌گیرد.
 
-If `gradable` is set to false, error messages related to the formatting of the answer can be added to the grading results by setting the `format_errors` key. This can be either a string or an array of strings, depending on the number of error messages.
+اگر `gradable` روی false تنظیم شده باشد، پیام‌های خطای مربوط به قالب‌بندی و فرمت پاسخ را می‌توان با تنظیم کلید `format_errors` به نتایج نمره‌دهی اضافه کرد. این فیلد بسته به تعداد پیام‌های خطا، می‌تواند یک رشته یا آرایه‌ای از رشته‌ها باشد.
 
-The [`<pl-external-grader-results>` element](./elements/pl-external-grader-results.md) is capable of rendering a list of tests with associated test names, descriptions, point values, output, messages, and images. Here is an example of well-formed results that can be rendered by this element. Note that all fields other than `score` (or `gradable`) are optional.
+المان [`<pl-external-grader-results>`](./elements/pl-external-grader-results.md) قادر به رندر کردن فهرستی از تست‌ها به همراه نام تست‌ها، توضیحات، مقادیر امتیاز، خروجی، پیام‌ها و تصاویر مربوطه است. در اینجا نمونه‌ای از نتایج با ساختار صحیح آورده شده است که توسط این المان قابل رندر است. توجه داشته باشید که تمام فیلدها به جز `score` (یا `gradable`) اختیاری هستند:
 
 ```json
 {
@@ -198,19 +198,19 @@ The [`<pl-external-grader-results>` element](./elements/pl-external-grader-resul
 }
 ```
 
-The per-test points display is all-or-nothing: if `points` or `max_points` is omitted on _any_ single test, the detailed per-test points display (badges, colors, and the points list) is disabled for _all_ tests, and a warning banner is shown instead. To get the detailed display, include both `points` and `max_points` on every test.
+نمایش امتیاز به ازای هر تست به صورت «همه یا هیچ» (all-or-nothing) است: اگر `points` یا `max_points` در _حتی یک_ تست حذف شود، نمایش تفصیلی امتیازات هر تست (نشان‌ها/بج‌ها، رنگ‌ها و لیست امتیازات) برای _تمام_ تست‌ها غیرفعال می‌شود و به جای آن یک بنر هشدار نمایش داده خواهد شد. برای داشتن نمایش تفصیلی، هر دو مقدار `points` و `max_points` را در همه تست‌ها قرار دهید.
 
-A test with `max_points` set to `0` is rendered neutrally (gray, with an info icon) rather than as correct or incorrect.
+تستی که مقدار `max_points` آن روی `0` تنظیم شده باشد، به صورت خنثی (خاکستری، با یک آیکون اطلاعات) رندر می‌شود و نه به صورت صحیح یا غلط.
 
-Plots or images can be added to either individual test cases or to the main output by adding [base64-encoded data URLs](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data) to their respective `images` array, as listed in the examples above, provided the resulting file respects the size limit of 1 MB listed above. Each element of the array is expected to be an object containing the following keys:
+نمودارها یا تصاویر را می‌توان با افزودن [data URLهای انکودشده با base64](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data) به آرایه `images` مربوطه در هر تست یا در خروجی اصلی اضافه کرد، همان‌طور که در مثال‌های بالا ذکر شده است، مشروط بر اینکه فایل نهایی از محدودیت حجم ۱ مگابایت ذکرشده در بالا تبعیت کند. انتظار می‌رود هر المان از این آرایه یک شیء شامل کلیدهای زیر باشد:
 
-- `url`: The source of the image, typically formatted as standard data URL like `"data:[mimetype];base64,[contents]"`.
-- `label`: An optional label for the image (defaults to "Figure").
+- `url`: منبع تصویر، که معمولاً به صورت یک data URL استاندارد مانند `"data:[mimetype];base64,[contents]"` فرمت‌بندی می‌شود.
+- `label`: یک برچسب اختیاری برای تصویر (به طور پیش‌فرض "Figure").
 
-For compatibility with older versions of external graders, the object may be replaced with a string containing only the URL.
+برای سازگاری با نسخه‌های قدیمی‌تر نمره‌دهنده‌های خارجی، این شیء می‌تواند با یک رشته که تنها شامل URL است جایگزین شود.
 
-## Running locally for development
+## اجرای محلی برای توسعه
 
-In order to run external graders in a local Docker environment, the `docker` command must include options that support the creation of local "sibling" containers. Detailed instructions on how to run Docker can be found in the [installation instructions](installing.md#support-for-external-graders-and-workspaces). More details on testing custom images locally can be found in the [Docker images documentation](dockerImages.md).
+برای اجرای نمره‌دهنده‌های خارجی در یک محیط محلی Docker، دستور `docker` باید شامل گزینه‌هایی باشد که از ایجاد کانتینرهای محلی «همتا» (sibling containers) پشتیبانی کند. دستورالعمل‌های دقیق در مورد نحوه اجرای داکر را می‌توانید در [دستورالعمل‌های نصب](installing.md#support-for-external-graders-and-workspaces) بیابید. جزئیات بیشتر در مورد آزمایش ایمیج‌های سفارشی به صورت محلی را می‌توانید در [مستندات ایمیج‌های داکر](dockerImages.md) مشاهده کنید.
 
-When not running in Docker, things are easier. The Docker socket can be used normally, and we're able to store job files automatically without setting `HOST_JOBS_DIR`. By default, they are stored in `$HOME/.pljobs`. However, if you run PrairieLearn with an environment variable `JOBS_DIR=/abs/path/to/my/custom/jobs/directory/`, that directory will be used instead. Note that this environment variable has no effect when running on Docker, in which case the jobs directory is specified using `HOST_JOBS_DIR` instead of `JOBS_DIR`.
+هنگامی که روی داکر اجرا نمی‌شود، کارها ساده‌تر است. سوکت داکر (Docker socket) را می‌توان به طور معمول استفاده کرد، و می‌توانیم فایل‌های جاب را به طور خودکار بدون تنظیم `HOST_JOBS_DIR` ذخیره کنیم. به طور پیش‌فرض، آنها در `$HOME/.pljobs` ذخیره می‌شوند. با این حال، اگر PrairieLearn را با متغیر محیطی `JOBS_DIR=/abs/path/to/my/custom/jobs/directory/` اجرا کنید، آن دایرکتوری به جای پیش‌فرض استفاده خواهد شد. توجه داشته باشید که این متغیر محیطی هنگام اجرا روی داکر هیچ تأثیری ندارد؛ در آن حالت، دایرکتوری جاب‌ها به جای `JOBS_DIR` با استفاده از `HOST_JOBS_DIR` مشخص می‌شود.

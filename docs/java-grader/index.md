@@ -1,10 +1,10 @@
-# Java Autograder
+# نمره‌دهنده خودکار Java
 
-This file documents the default Java autograder included in the `prairielearn/grader-java` Docker image. For general information on how to set up an external grader, visit the [external grading](../externalGrading.md) documentation.
+این سند به تشریح نمره‌دهنده خودکار پیش‌فرض Java موجود در ایمیج داکر `prairielearn/grader-java` می‌پردازد. برای اطلاعات کلی در مورد نحوه راه‌اندازی یک نمره‌دهنده خارجی، به مستندات [نمره‌دهی خارجی](../externalGrading.md) مراجعه کنید.
 
-## Overview
+## نمای کلی {#overview}
 
-The Java autograder is based on [JUnit 5](https://docs.junit.org/5.14.1/overview.html). In essence, individual tests correspond to individual annotated methods that run testing code, such as ([source](https://docs.junit.org/5.14.1/writing-tests/intro.html)):
+نمره‌دهنده خودکار Java بر پایه [JUnit 5](https://docs.junit.org/5.14.1/overview.html) استوار است. در اصل، هر تست به یک متد نشانه‌گذاری‌شده (Annotated) مجزا اشاره دارد که کد تست را اجرا می‌کند، مانند ([منبع](https://docs.junit.org/5.14.1/writing-tests/intro.html)):
 
 ```java
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,21 +25,19 @@ class MyFirstJUnitJupiterTests {
 }
 ```
 
-The autograder combines several classes to allow these tests to happen:
+نمره‌دهنده خودکار چندین کلاس را برای فراهم کردن امکان اجرای این تست‌ها ترکیب می‌کند:
 
-- Student-provided class files. These are files submitted by the student (typically via `pl-file-upload` or `pl-file-editor` elements) containing the code to be tested.
+- فایل‌های کلاس ارائه‌شده توسط دانشجو: این‌ها فایل‌هایی هستند که توسط دانشجو ارسال شده‌اند (معمولاً از طریق المان‌های `pl-file-upload` یا `pl-file-editor`) و شامل کدی هستند که باید آزمایش شود.
+- فایل‌های کلاس تست: این فایل‌ها توسط طراح سوال در زیرپوشه `tests/junit` درون دایرکتوری سوال قرار داده می‌شوند. ممکن است چندین فایل تست وجود داشته باشد که هر کدام دارای چندین متد تست باشند.
+- فایل‌های کتابخانه و کلاس‌های ارائه‌شده توسط مدرس: این موارد نیز توسط مدرس ارائه می‌شوند و همان‌طور که در ادامه توضیح داده شده است، می‌توانند برای هر سوال یا برای کل درس تنظیم شوند.
 
-- Test class files. These are provided by the question creator in the subdirectory `tests/junit` inside the question directory. There may be multiple test files, each with multiple test methods.
-
-- Library files and instructor-provided classes. These again are provided by the instructor, and can be set up per question or per course, as described below.
-
-## Setting up
+## راه‌اندازی {#setting-up}
 
 ### `info.json`
 
-The question should be first set up to enable [external grading](../externalGrading.md), with `"gradingMethod": "External"` set in the `info.json` settings. To use the specific Java autograder detailed in this document, in the `"externalGradingOptions"` dictionary, `"image"` should be set to `"prairielearn/grader-java"`. The `"entrypoint"` does not need to be provided.
+ابتدا باید سوال را برای فعال‌سازی [نمره‌دهی خارجی](../externalGrading.md) تنظیم کرد، به این صورت که `"gradingMethod": "External"` در تنظیمات `info.json` قرار گیرد. برای استفاده از نمره‌دهنده خودکار خاص Java که در این سند شرح داده شده است، در دیکشنری `"externalGradingOptions"`، مقدار `"image"` باید برابر با `"prairielearn/grader-java"` تنظیم شود. نیازی به ارائه `"entrypoint"` نیست.
 
-A full `info.json` file should look something like:
+یک فایل کامل `info.json` به شکل زیر خواهد بود:
 
 ```json title="info.json"
 {
@@ -56,13 +54,13 @@ A full `info.json` file should look something like:
 }
 ```
 
-!!! note "Timeouts"
+!!! note "مهلت‌های زمانی (Timeouts)"
 
-    The `timeout` field in the `externalGradingOptions` dictionary, if set, should be long enough to allow the autograder to both compile and run all tests. The default timeout of 30 seconds is typically sufficient for most questions, but instructors may want to adjust this value based on the expected complexity of the question and the number of tests. Note that `javac` may take a few seconds just to compile the student code and the test files, so a timeout of less than 10 seconds may cause a timeout even before the student code itself runs. Longer timeouts are encouraged for more complex questions that require additional compilation time, or questions with a large number of tests or with tests that take a long time to run.
+    فیلد `timeout` در دیکشنری `externalGradingOptions`، در صورت تنظیم، باید به اندازه کافی بزرگ باشد تا به نمره‌دهنده خودکار اجازه دهد هم تمام تست‌ها را کامپایل کرده و هم اجرا کند. مهلت زمانی پیش‌فرض ۳۰ ثانیه معمولاً برای بیشتر سوالات کافی است، اما مدرسان ممکن است بخواهند این مقدار را بر اساس پیچیدگی مورد انتظار سوال و تعداد تست‌ها تنظیم کنند. توجه داشته باشید که کامپایلر `javac` تنها برای کامپایل کد دانشجو و فایل‌های تست ممکن است چند ثانیه طول بکشد، بنابراین تعیین مهلت زمانی کمتر از ۱۰ ثانیه ممکن است حتی پیش از اجرای خودِ کد دانشجو، موجب پایان مهلت زمانی (Timeout) شود. برای سوالات پیچیده‌تر که به زمان کامپایل بیشتری نیاز دارند، یا سوالاتی با تعداد تست زیاد یا تست‌هایی که اجرای آن‌ها طول می‌کشد، افزایش مهلت زمانی توصیه می‌شود.
 
 ### `question.html`
 
-As with other autograders, most questions using this autograder will contain a `pl-file-editor` or `pl-file-upload` element. The question should also include, in the `pl-submission-panel`, a `pl-external-grader-results` to show the status of grading jobs. It is also recommended to place a `pl-file-preview` element in the submission panel so that students may see their previous code submissions. An example question markup is given below:
+همانند سایر نمره‌دهنده‌های خودکار، بیشتر سوالاتی که از این نمره‌دهنده استفاده می‌کنند شامل یک المان `pl-file-editor` یا `pl-file-upload` خواهند بود. سوال همچنین باید در `pl-submission-panel` شامل یک المان `pl-external-grader-results` باشد تا وضعیت کارهای نمره‌دهی را نمایش دهد. همچنین توصیه می‌شود که المان `pl-file-preview` در پانل پاسخ ارسالی قرار داده شود تا دانشجویان بتوانند کدهای ارسالی قبلی خود را مشاهده کنند. یک نمونه نشانه‌گذاری سوال در زیر ارائه شده است:
 
 ```html
 <pl-question-panel>
@@ -77,11 +75,11 @@ As with other autograders, most questions using this autograder will contain a `
 
 ### `tests/junit/*.java`
 
-Inside the `tests/junit` directory, one or more classes can be provided with methods corresponding to JUnit tests. The autograder will compile each of the classes found in this directory, then run JUnit on these classes.
+درون دایرکتوری `tests/junit`، می‌توان یک یا چند کلاس شامل متدهای متناظر با تست‌های JUnit تعریف کرد. نمره‌دهنده خودکار تک‌تک کلاس‌های موجود در این دایرکتوری را کامپایل کرده و سپس JUnit را روی این کلاس‌ها اجرا می‌کند.
 
-Tests that are part of a package must be provided in an equivalent subdirectory. For example, if a test named `AppTest` is in package `com.example.myapp.test`, it must be saved in the file `tests/junit/com/example/myapp/test/AppTest.java`.
+تست‌هایی که بخشی از یک پکیج هستند باید در زیرپوشه معادل آن قرار گیرند. برای مثال، اگر تستی به نام `AppTest` در پکیج `com.example.myapp.test` قرار داشته باشد، باید در فایل `tests/junit/com/example/myapp/test/AppTest.java` ذخیره شود.
 
-Each test found by JUnit will be provided as an individual result to the student. The name of the test result is based on the test's [display name](https://docs.junit.org/5.14.1/writing-tests/display-names.html). By default, each test will be worth one point. To change this default, a [tag](https://docs.junit.org/5.14.1/writing-tests/tagging-and-filtering.html) in the format `@Tag("points=XX")` (replacing `XX` with a number of points) must be provided. For example:
+هر تستی که توسط JUnit پیدا شود به عنوان یک نتیجه مجزا به دانشجو ارائه خواهد شد. نام نتیجه تست بر اساس [نام نمایشی (Display name)](https://docs.junit.org/5.14.1/writing-tests/display-names.html) تست تعیین می‌شود. به‌طور پیش‌فرض، هر تست ارزش ۱ نمره خواهد داشت. برای تغییر این حالت پیش‌فرض، باید یک [تگ](https://docs.junit.org/5.14.1/writing-tests/tagging-and-filtering.html) با فرمت `@Tag("points=XX")` (با جایگزین کردن `XX` با تعداد نمرات) ارائه شود. برای مثال:
 
 ```java
     @Test
@@ -92,7 +90,7 @@ Each test found by JUnit will be provided as an individual result to the student
     }
 ```
 
-An alternative method to specify points and display name is to use the custom `@AutograderInfo` annotation as shown below. This is recommended for legacy JUnit 4 tests, which provide limited support for tags.
+یک روش جایگزین برای تعیین نمره و نام نمایشی، استفاده از انوتیشن اختصاصی `@AutograderInfo` به صورت نشان‌داده‌شده در زیر است. این روش برای تست‌های قدیمی JUnit 4 که پشتیبانی محدودی از تگ‌ها دارند، پیشنهاد می‌شود:
 
 ```java
 import org.prairielearn.autograder.AutograderInfo;
@@ -107,9 +105,9 @@ import org.prairielearn.autograder.AutograderInfo;
     }
 ```
 
-To change the order in which test results are shown to the user, you may use [the `@TestMethodOrder` annotation](https://docs.junit.org/5.14.1/writing-tests/test-execution-order.html).
+برای تغییر ترتیبی که در آن نتایج تست به کاربر نشان داده می‌شوند، می‌توانید از [انوتیشن `@TestMethodOrder`](https://docs.junit.org/5.14.1/writing-tests/test-execution-order.html) استفاده کنید.
 
-To produce output that will be visible to students, tests may be optionally declared with [an argument of type `TestReporter`](https://docs.junit.org/5.14.1/writing-tests/dependency-injection-for-constructors-and-methods.html). Calling [the `publishEntry` method for the test reporter](https://docs.junit.org/5.14.1/api/org.junit.jupiter.api/org/junit/jupiter/api/TestReporter.html) will cause the provided entry to be printed as the output of the test. For example:
+برای تولید خروجی که برای دانشجویان قابل مشاهده باشد، می‌توان تست‌ها را به صورت اختیاری با [آرگومانی از نوع `TestReporter`](https://docs.junit.org/5.14.1/writing-tests/dependency-injection-for-constructors-and-methods.html) اعلان کرد. فراخوانی [متد `publishEntry` برای TestReporter](https://docs.junit.org/5.14.1/api/org.junit.jupiter.api/org/junit/jupiter/api/TestReporter.html) باعث می‌شود ورودی ارائه‌شده به عنوان خروجی تست چاپ شود. برای مثال:
 
 ```java
 @Test
@@ -125,15 +123,15 @@ void addition(TestReporter reporter) {
 }
 ```
 
-The autograder will give a question points based on if a test passed or failed based on the default Java behavior. Note that [Java's built-in assertions](https://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html) are disabled by default, and as such tests that rely on Java's `assert` keyword may not work as intended. If test failures based on `assert` statements are needed, the program must be set up to be executed with the `-ea` option, [as listed below](#changing-compilation-options). An alternative is to use the `assertTrue` method in JUnit itself, with the benefit of providing more flexibility on the error message shown to students.
+نمره‌دهنده خودکار بر اساس قبولی یا ردی هر تست مطابق با رفتار پیش‌فرض جاوا به سوال نمره می‌دهد. توجه داشته باشید که [دستورات ارزیابی درون‌ساخت جاوا (Java assertions)](https://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html) به‌طور پیش‌فرض غیرفعال هستند، و بنابراین تست‌هایی که به کلمه کلیدی `assert` در جاوا تکیه می‌کنند ممکن است مطابق انتظار عمل نکنند. اگر به رد شدن تست‌ها بر اساس دستورات `assert` نیاز دارید، برنامه باید طوری تنظیم شود که با گزینه `-ea` اجرا شود، [همان‌طور که در ادامه فهرست شده است](#changing-compilation-options). یک جایگزین مناسب، استفاده از متد `assertTrue` در خودِ JUnit است که انعطاف‌پذیری بیشتری در پیام خطای نمایش‌داده‌شده به دانشجویان فراهم می‌کند.
 
-### Dynamic, parameterized and repeated tests
+### تست‌های پویا، پارامتریک و مکرر {#dynamic-parameterized-and-repeated-tests}
 
-JUnit 5 supports tests that are generated dynamically. These include [parameterized tests](https://docs.junit.org/5.14.1/writing-tests/parameterized-classes-and-tests.html), [repeated tests](https://docs.junit.org/5.14.1/writing-tests/repeated-tests.html) and [test factories](https://docs.junit.org/5.14.1/writing-tests/dynamic-tests.html).
+فریم‌ورک JUnit 5 از تست‌هایی که به صورت پویا تولید می‌شوند پشتیبانی می‌کند. این موارد شامل [تست‌های پارامتریک (Parameterized tests)](https://docs.junit.org/5.14.1/writing-tests/parameterized-classes-and-tests.html)، [تست‌های مکرر (Repeated tests)](https://docs.junit.org/5.14.1/writing-tests/repeated-tests.html) و [کارخانه‌های تست (Test factories)](https://docs.junit.org/5.14.1/writing-tests/dynamic-tests.html) می‌شوند.
 
-While the autograder supports the execution of these types of tests, they may in rare instances cause inconsistencies in the total number of points assigned to each submission. In particular, if different submissions generate different sets of tests, the total number of tests assigned to one student (and consequentially the maximum number of points) may be different from other students, causing the score percentage to be inconsistent. Also, if the student's code causes the autograder to crash (e.g., in case of out-of-memory errors or thread exhaustion), some tests may not be registered on time to be considered in the grading process.
+اگرچه نمره‌دهنده خودکار از اجرای این نوع تست‌ها پشتیبانی می‌کند، اما آن‌ها ممکن است در موارد نادر باعث بروز ناهماهنگی در تعداد کل نمرات اختصاص‌یافته به هر پاسخ ارسالی شوند. به ویژه، اگر پاسخ‌های ارسالی مختلف مجموعه‌های متفاوتی از تست‌ها را تولید کنند، تعداد کل تست‌های تخصیص‌یافته به یک دانشجو (و در نتیجه حداکثر نمره ممکن) ممکن است با سایر دانشجویان تفاوت داشته باشد و باعث ناهمخوانی درصد نمرات شود. همچنین، اگر کد دانشجو موجب توقف ناگهانی (Crash) نمره‌دهنده خودکار شود (مثلاً در صورت خطاهای کمبود حافظه یا اتمام رشته‌ها)، برخی از تست‌ها ممکن است به‌موقع ثبت نشوند تا در فرآیند نمره‌دهی لحاظ گردند.
 
-To avoid these issues, if a particular test class includes any dynamic test (i.e., tests using annotations like `@ParameterizedTest`, `@RepeatedTest` or `@TestFactory`), instructors are encouraged to define the maximum number of expected points as a class annotation, as demonstrated below. Classes that only use regular method tests (i.e., tests using annotations like `@Test`) are not required to use such a tag, as the total number of points can be easily retrieved from the static tests themselves at the start of the testing process.
+برای جلوگیری از این مسائل، اگر یک کلاس تست خاص شامل تست‌های پویا باشد (یعنی تست‌هایی با انوتیشن‌هایی مانند `@ParameterizedTest`، `@RepeatedTest` یا `@TestFactory`)، به مدرسان توصیه می‌شود که حداکثر نمره مورد انتظار را به عنوان یک انوتیشن کلاسی تعریف کنند، همان‌طور که در زیر نشان داده شده است. کلاس‌هایی که فقط از متدهای تست عادی استفاده می‌کنند (یعنی تست‌هایی با انوتیشن‌هایی نظیر `@Test`) نیازی به استفاده از چنین تگی ندارند، زیرا تعداد کل نمرات را می‌توان به سادگی در شروع فرآیند تست از خودِ تست‌های ایستا استخراج کرد.
 
 ```java
 @Tag("maxpoints=16")
@@ -148,9 +146,9 @@ public class ExampleJUnit5Test {
 }
 ```
 
-### Changing compilation options
+### تغییر گزینه‌های کامپایل {#changing-compilation-options}
 
-By default, the Java compiler will show all compilation warnings to the user, except for `serial` (missing `serialVersionUID` on serializable classes). If you would like to change the compilation warnings or other compilation settings, you may do so by setting the `JDK_JAVAC_OPTIONS` environment variable in `info.json`, as follows:
+به‌طور پیش‌فرض، کامپایلر جاوا تمام اخطارهای کامپایل را به کاربر نمایش می‌دهد، به جز اخطار `serial` (عدم وجود `serialVersionUID` در کلاس‌های قابل سریال‌سازی). اگر مایلید اخطارهای کامپایل یا سایر تنظیمات کامپایل را تغییر دهید، می‌توانید این کار را با تنظیم متغیر محیطی `JDK_JAVAC_OPTIONS` در `info.json` به صورت زیر انجام دهید:
 
 ```json title="info.json"
 {
@@ -164,23 +162,23 @@ By default, the Java compiler will show all compilation warnings to the user, ex
 }
 ```
 
-The example above disables the `static` warning (use of static fields applied to object expressions) and limits the number of errors to 3. A more comprehensive list of options can be found in the [`javac` documentation page](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html#options). Some options of interest may include:
+مثال بالا اخطار `static` (استفاده از فیلدهای استاتیک اعمال‌شده روی عبارات شیء) را غیرفعال کرده و تعداد خطاها را به ۳ محدود می‌کند. فهرست جامع‌تری از گزینه‌ها را می‌توانید در [صفحه مستندات `javac`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html#options) بیابید. برخی از گزینه‌های قابل توجه عبارتند از:
 
-- `-Xlint:none` or `-nowarn` to disable all warnings;
-- `-Xdoclint` to enable warnings for javadoc comments;
-- `--release 11` to compile using the Java 11 language version.
+- `-Xlint:none` یا `-nowarn` برای غیرفعال کردن تمام اخطارها؛
+- `-Xdoclint` برای فعال‌سازی اخطارها در کامنت‌های javadoc؛
+- `--release 11` برای کامپایل با استفاده از نسخه زبان جاوا ۱۱.
 
-Similarly, you may set specific options to the `java` command line using the `JDK_JAVA_OPTIONS`. A list of valid options can be found in the [`java` documentation page](https://docs.oracle.com/en/java/javase/25/docs/specs/man/java.html#standard-options-for-java). Some options of interest may include:
+به همین ترتیب، می‌توانید گزینه‌های خاصی را با استفاده از `JDK_JAVA_OPTIONS` برای خط فرمان `java` تنظیم کنید. فهرستی از گزینه‌های معتبر در [صفحه مستندات `java`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/java.html#standard-options-for-java) در دسترس است. برخی از گزینه‌های قابل توجه عبارتند از:
 
-- `-Dproperty=value` to set system properties that may be retrieved with `System.getProperty(name)`;
-  - This may be useful to set JUnit configuration properties, as described in [the JUnit documentation](https://docs.junit.org/5.14.1/running-tests/configuration-parameters.html).
-- `-ea` to enable [Java assertions](https://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html).
+- `-Dproperty=value` برای تنظیم مشخصه‌های سیستمی که می‌توان آن‌ها را با `System.getProperty(name)` دریافت کرد؛
+  - این مورد می‌تواند برای تنظیم مشخصه‌های پیکربندی JUnit، همان‌طور که در [مستندات JUnit](https://docs.junit.org/5.14.1/running-tests/configuration-parameters.html) توضیح داده شده است، مفید باشد.
+- `-ea` برای فعال‌سازی [دستورات ارزیابی جاوا (Java assertions)](https://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html).
 
-### Libraries and instructor-provided classes
+### کتابخانه‌ها و کلاس‌های ارائه‌شده توسط مدرس {#libraries-and-instructor-provided-classes}
 
-Instructors may provide additional libraries and classes as part of the Java classpath. By default, all `*.jar` files in the subdirectory `tests/libs` of the question will be included in the classpath, as well as the `tests/libs` directory itself. So, classes that need to be included in the compilation and runtime of the application should either be saved into a `*.jar` file and saved in the `tests/libs` directory, or compiled into a `*.class` file inside the same directory (with appropriate subdirectories if packages are used).
+مدرسان می‌توانند کتابخانه‌ها و کلاس‌های اضافی را به عنوان بخشی از مسیر کلاس (Classpath) جاوا ارائه دهند. به‌طور پیش‌فرض، تمام فایل‌های `*.jar` در زیرپوشه `tests/libs` سوال و همچنین خودِ دایرکتوری `tests/libs` در مسیر کلاس لحاظ می‌شوند. بنابراین، کلاس‌هایی که لازم است در مراحل کامپایل و زمان اجرای برنامه قرار داشته باشند، باید یا درون یک فایل `*.jar` در دایرکتوری `tests/libs` ذخیره شوند یا در قالب فایل `*.class` درون همان دایرکتوری (با زیرپوشه‌های مناسب در صورت استفاده از پکیج‌ها) کامپایل گردند.
 
-Some questions may include libraries and base classes that are common across multiple questions. For such questions, it is possible to save these libraries and classes in the course's `serverFilesCourse/java/libs` directory, using the same conventions as above. If this option is used, however, the question's `info.json` file should indicate that this directory should be added to the grading container, as below:
+برخی از سوالات ممکن است شامل کتابخانه‌ها و کلاس‌های پایه‌ای باشند که بین چندین سوال مشترک هستند. برای چنین سوالاتی، می‌توان این کتابخانه‌ها و کلاس‌ها را با استفاده از همان قواعد بالا در دایرکتوری `serverFilesCourse/java/libs` درس ذخیره کرد. با این حال، در صورت استفاده از این گزینه، فایل `info.json` سوال باید مشخص کند که این دایرکتوری باید به کانتینر نمره‌دهی اضافه شود، مطابق زیر:
 
 ```json title="info.json"
 {
@@ -191,22 +189,22 @@ Some questions may include libraries and base classes that are common across mul
 }
 ```
 
-The libraries required to run JUnit 5 tests are already included as part of the autograder container, and don't need to be included again.
+کتابخانه‌های لازم برای اجرای تست‌های JUnit 5 از قبل در کانتینر نمره‌دهنده خودکار گنجانده شده‌اند و نیازی به افزودن مجدد آن‌ها نیست.
 
-## Technical details
+## جزئیات فنی {#technical-details}
 
-### Sandbox environment and access to files
+### محیط سندباکس و دسترسی به فایل‌ها {#sandbox-environment-and-access-to-files}
 
-The JUnit tests, as well as the student code, are executed in a sandboxed environment as a non-root user. The code has the ability to create, modify or delete any files within the sandbox user's home directory (`/home/sbuser`), but cannot access most other directories in the environment. This is set up to deter students from creating code that manipulates the autograder or the grading results, since these can only be updated by the autograder script.
+تست‌های JUnit و همچنین کد دانشجو در یک محیط سندباکس‌شده به عنوان یک کاربر غیر ریشه (non-root) اجرا می‌شوند. این کد توانایی ایجاد، ویرایش یا حذف هر فایلی درون دایرکتوری خانگی کاربر سندباکس (`/home/sbuser`) را دارد، اما به بیشتر دایرکتوری‌های دیگر محیط دسترسی ندارد. این پیکربندی به این منظور انجام شده است تا مانع از آن شود که دانشجویان کدهایی بنویسند که نمره‌دهنده خودکار یا نتایج نمره‌دهی را دستکاری کند، چرا که این نتایج تنها توسط اسکریپت نمره‌دهنده خودکار قابل به‌روزرسانی هستند.
 
-If the question includes a `tests/studentFiles` directory, its contents are copied to the sandbox user's home directory before testing begins. This allows instructors to provide files that may be required for testing, such as input files or configuration files. If this directory is not provided, the sandbox user's home directory will be empty at the start of testing. The JUnit tests and fixtures, as well as student code, may also create, modify or delete files in this directory as needed during testing.
+اگر سوال شامل دایرکتوری `tests/studentFiles` باشد، محتویات آن قبل از شروع تست در دایرکتوری خانگی کاربر سندباکس کپی می‌شود. این قابلیت به مدرسان اجازه می‌دهد فایل‌هایی را که ممکن است برای تست مورد نیاز باشند، مانند فایل‌های ورودی یا فایل‌های پیکربندی، در اختیار بگذارند. اگر این دایرکتوری ارائه نشود، دایرکتوری خانگی کاربر سندباکس در ابتدای تست خالی خواهد بود. همچنین تست‌ها و فیکسچرهای JUnit و کد دانشجو می‌توانند در حین تست بر حسب نیاز فایل‌هایی را در این دایرکتوری ایجاد، ویرایش یا حذف کنند.
 
-The [instructor provided library files](index.md#libraries-and-instructor-provided-classes) are copied to the testing environment as they are to a directory called `/grade/classpath`. To ensure they can be used in the Java library, this directory and its contents are readable by the sandbox user. Instructors are warned that any file that should not be viewed by the student (e.g., the source code of test files or some libraries) should not be included in the question's `tests/libs` directory or in the course's `serverFilesCourse/java/libs` directory, as such files could be visible by a well-crafted malicious student submission.
+[فایل‌های کتابخانه ارائه‌شده توسط مدرس](index.md#libraries-and-instructor-provided-classes) به همان شکلی که هستند به دایرکتوری به نام `/grade/classpath` در محیط تست کپی می‌شوند. برای اطمینان از اینکه می‌توان از آن‌ها در کتابخانه جاوا استفاده کرد، این دایرکتوری و محتویات آن برای کاربر سندباکس قابل خواندن است. به مدرسان هشدار داده می‌شود که هر فایلی که نباید توسط دانشجو دیده شود (مثلاً سورس کد فایل‌های تست یا برخی کتابخانه‌ها) نباید در دایرکتوری `tests/libs` سوال یا دایرکتوری `serverFilesCourse/java/libs` درس قرار گیرد، زیرا چنین فایل‌هایی ممکن است با یک پاسخ ارسالی مخرب و هوشمندانه توسط دانشجو قابل مشاهده باشند.
 
-### Restricted access to advanced features
+### دسترسی محدودشده به قابلیت‌های پیشرفته {#restricted-access-to-advanced-features}
 
-The autograder is set up to disable some advanced Java features that may be used by students to attempt to access private information about the grading environment, such as the heap or the stack. In particular, Java management options are disabled by default, which prevents students from using tools such as `jmap` or `jstack` to get information about the memory or threads of the autograder. Additionally, Java code is blocked from accessing files in directories like `/proc`, `/sys` or `/dev`, which may contain information about the system or the running processes.
+نمره‌دهنده خودکار به گونه‌ای تنظیم شده است که برخی از قابلیت‌های پیشرفته جاوا را که ممکن است دانشجویان از آن‌ها برای دسترسی به اطلاعات محرمانه محیط نمره‌دهی (مانند هیپ یا استک) استفاده کنند، غیرفعال می‌سازد. به ویژه، گزینه‌های مدیریت جاوا (Management options) به‌طور پیش‌فرض غیرفعال هستند؛ این امر مانع از آن می‌شود که دانشجویان بتوانند با استفاده از ابزارهایی مانند `jmap` یا `jstack` اطلاعاتی در مورد حافظه یا رشته‌های نمره‌دهنده خودکار به دست آورند. علاوه بر این، کدهای جاوا از دسترسی به فایل‌های موجود در دایرکتوری‌هایی مانند `/proc`، `/sys` یا `/dev` که ممکن است حاوی اطلاعاتی در مورد سیستم یا فرآیندهای در حال اجرا باشند، منع شده‌اند.
 
-There is currently no method to enable access to these directories for specific questions. If you have a specific use case that requires the use of these features, please create an issue in the [PrairieLearn repository](https://github.com/PrairieLearn/PrairieLearn/issues) describing the use case and the features needed, and what guardrails you expect to provide to prevent abuse of these features.
+در حال حاضر هیچ روشی برای فعال‌سازی دسترسی به این دایرکتوری‌ها برای سوالات خاص وجود ندارد. اگر مورد کاربرد خاصی دارید که نیازمند استفاده از این قابلیت‌هاست، لطفاً یک ایشو در [مخزن PrairieLearn](https://github.com/PrairieLearn/PrairieLearn/issues) ایجاد کنید و مورد کاربرد، قابلیت‌های مورد نیاز و تدابیر حفاظتی که قصد دارید برای جلوگیری از سوءاستفاده از این امکانات ارائه دهید را شرح دهید.
 
-[Restricted methods](https://docs.oracle.com/en/java/javase/25/core/restricted-methods.html) (which includes JNI in recent Java versions) are also disabled by default, which prevents students from running native code that may be used to access information about the system. If these modules are needed in a particular question, [the `JDK_JAVA_OPTIONS` environment variable can be set](#changing-compilation-options) to include the `--enable-native-access` option, which will allow specific modules to be executed. However, instructors are warned that this may allow students to run malicious code that can access private information about the grading environment, and should only be used if necessary and with appropriate guardrails in place. Also note that the autograder image does not include any C libraries or compilers by default, so native code may need be provided as a shared library (e.g., `*.so` files) that can be loaded by the Java code.
+[متدهای محدودشده (Restricted methods)](https://docs.oracle.com/en/java/javase/25/core/restricted-methods.html) (که در نسخه‌های اخیر جاوا شامل JNI نیز می‌شود) نیز به‌طور پیش‌فرض غیرفعال هستند، که این امر مانع از اجرای کدهای بومی (Native code) توسط دانشجویان برای دسترسی به اطلاعات سیستم می‌شود. اگر این ماژول‌ها در یک سوال خاص مورد نیاز باشند، [می‌توان متغیر محیطی `JDK_JAVA_OPTIONS` را تنظیم کرد](#changing-compilation-options) تا شامل گزینه `--enable-native-access` شود، که اجازه اجرای ماژول‌های خاص را می‌دهد. با این وجود، به مدرسان هشدار داده می‌شود که این کار ممکن است به دانشجویان اجازه دهد کدهای مخربی را اجرا کنند که به اطلاعات محرمانه محیط نمره‌دهی دسترسی پیدا کند، و بنابراین تنها در صورت ضرورت و با وجود تدابیر حفاظتی مناسب باید از آن استفاده کرد. همچنین توجه داشته باشید که ایمیج نمره‌دهنده خودکار به‌طور پیش‌فرض شامل هیچ کتابخانه یا کامپایلر C نیست، بنابراین کدهای بومی ممکن است نیاز باشد به صورت کتابخانه‌های اشتراکی (مانند فایل‌های `*.so`) که توسط کد جاوا قابل بارگذاری هستند، ارائه شوند.

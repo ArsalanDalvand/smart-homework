@@ -1,14 +1,14 @@
-# C/C++ Autograder
+# نمره‌دهنده خودکار C/C++
 
-This file documents the default C/C++ autograder included in the `prairielearn/grader-c` Docker image. For general information on how to set up an external grader, view the [external grading](../externalGrading.md) documentation.
+این سند به تشریح نمره‌دهنده خودکار پیش‌فرض C/C++ موجود در ایمیج داکر `prairielearn/grader-c` می‌پردازد. برای اطلاعات کلی در مورد نحوه راه‌اندازی یک نمره‌دهنده خارجی، مستندات [نمره‌دهی خارجی](../externalGrading.md) را مشاهده کنید.
 
-## Setting up
+## راه‌اندازی {#setting-up}
 
 ### `info.json`
 
-The question should be first set up to enable [external grading](../externalGrading.md), with `"gradingMethod": "External"` set in the `info.json` settings. To use the specific C/C++ autograder detailed in this document, in the `"externalGradingOptions"` dictionary, `"image"` should be set to `"prairielearn/grader-c"`. The `"entrypoint"` does not need to be provided.
+ابتدا باید سوال را برای فعال‌سازی [نمره‌دهی خارجی](../externalGrading.md) تنظیم کرد، به این صورت که `"gradingMethod": "External"` در تنظیمات `info.json` قرار گیرد. برای استفاده از نمره‌دهنده خودکار خاص C/C++ که در این سند شرح داده شده است، در دیکشنری `"externalGradingOptions"`، مقدار `"image"` باید برابر با `"prairielearn/grader-c"` تنظیم شود. نیازی به ارائه `"entrypoint"` نیست.
 
-A full `info.json` file should look something like:
+یک فایل کامل `info.json` به شکل زیر خواهد بود:
 
 ```json title="info.json"
 {
@@ -28,7 +28,7 @@ A full `info.json` file should look something like:
 
 ### `question.html`
 
-Most questions using this autograder will contain a `pl-file-editor` or `pl-file-upload` element, though questions using other elements (e.g., `pl-string-input` for short expressions) are also possible. The question should also include, in the `pl-submission-panel`, a `pl-external-grader-results` to show the status of grading jobs. It is also recommended to place a `pl-file-preview` element in the submission panel so that students may see their previous code submissions. An example question markup is given below:
+بیشتر سوالاتی که از این نمره‌دهنده خودکار استفاده می‌کنند حاوی المان `pl-file-editor` یا `pl-file-upload` خواهند بود، هرچند سوالاتی که از المان‌های دیگر استفاده می‌کنند (مثلاً `pl-string-input` برای عبارات کوتاه) نیز امکان‌پذیر هستند. سوال همچنین باید در `pl-submission-panel` شامل یک المان `pl-external-grader-results` باشد تا وضعیت کارهای نمره‌دهی را نشان دهد. همچنین توصیه می‌شود یک المان `pl-file-preview` در پانل پاسخ ارسالی قرار داده شود تا دانشجویان بتوانند کدهای ارسالی قبلی خود را مشاهده کنند. یک نمونه نشانه‌گذاری سوال در زیر آمده است:
 
 ```html
 <pl-question-panel>
@@ -43,7 +43,7 @@ Most questions using this autograder will contain a `pl-file-editor` or `pl-file
 
 ### `tests/test.py`
 
-The `test.py` file will contain the basic tests that must be executed by the C/C++ grader. A simple `test.py` to grade C code will look like this:
+فایل `test.py` حاوی تست‌های پایه‌ای خواهد بود که باید توسط نمره‌دهنده C/C++ اجرا شوند. یک `test.py` ساده برای نمره‌دهی کد C به این شکل خواهد بود:
 
 ```python
 #! /usr/bin/python3
@@ -59,7 +59,7 @@ g = QuestionGrader()
 g.start()
 ```
 
-A simple `test.py` to grade C++ code will look like this (the only difference is the parent class):
+یک `test.py` ساده برای نمره‌دهی کد C++ به شکل زیر خواهد بود (تنها تفاوت، کلاس والد است):
 
 ```python
 #! /usr/bin/python3
@@ -75,21 +75,21 @@ g = QuestionGrader()
 g.start()
 ```
 
-The `tests` method above will contain the basis for user tests, and will have access to some regular functions provided by the C/C++ grader. Some methods that can be called are listed below.
+متد `tests` در بالا مبنای تست‌های کاربر را در بر می‌گیرد و به برخی از توابع عادی ارائه‌شده توسط نمره‌دهنده C/C++ دسترسی خواهد داشت. برخی از متدهایی که می‌توان فراخوانی کرد در ادامه فهرست شده‌اند.
 
-Any file submitted using a `pl-file-editor` or `pl-file-upload`, or through workspaces, will be available for use by the C/C++ grader. To create tests based on parameters defined by `server.py`, or to have access to submitted data from other elements such as `pl-string-input` elements, you can access the `self.data` dictionary. This dictionary contains keys similar to those found in the `grade()` function in `server.py`, such as `self.data["params"]` or `self.data["submitted_answers"]`.
+هر فایلی که با استفاده از `pl-file-editor` یا `pl-file-upload` یا از طریق محیط‌های کاری ارسال شود، برای استفاده توسط نمره‌دهنده C/C++ در دسترس خواهد بود. برای ایجاد تست‌ها بر اساس پارامترهای تعریف‌شده توسط `server.py` یا دسترسی به داده‌های ارسالی از سایر المان‌ها مانند المان‌های `pl-string-input`، می‌توانید به دیکشنری `self.data` دسترسی داشته باشید. این دیکشنری شامل کلیدهایی مشابه کلیدهای موجود در تابع `grade()` در `server.py` است، از جمله `self.data["params"]` یا `self.data["submitted_answers"]`.
 
-## Available test options
+## گزینه‌های تست موجود {#available-test-options}
 
-After compiling the student and instructor code, tests may be created using one of three methods. The choice of method depends on the type of code students are expected to write, and the type of validation that need to be performed. The three main options are:
+پس از کامپایل کدهای دانشجو و مدرس، تست‌ها را می‌توان با استفاده از یکی از سه روش زیر ایجاد کرد. انتخاب روش به نوع کدی که انتظار می‌رود دانشجویان بنویسند و نوع اعتبارسنجی مورد نیاز بستگی دارد. سه گزینه اصلی عبارتند از:
 
-- Running the executable file compiled from student code, and [checking its output](#running-a-program-and-checking-its-standard-output). This option is recommended if students are expected to write open-ended complete programs that can be executed from the command line, and where the main purpose of the program is to generate some predetermined output based on the standard input, command line arguments, or external files.
-- Running a [unit test suite based on the Check framework](#running-a-check-framework-test-suite). This option is strongly recommended for more complex cases, where students are expected to implement specific functions with well-defined behavior, and where multiple test cases and scenarios must be checked. This option is also recommended if you want to check for memory leaks and dangling pointers, which can be done using [the AddressSanitizer functionality](#identifying-dangling-pointers-memory-leaks-and-similar-issues).
-- Performing your own checks in `test.py`. This option may be used to perform checks that rely on parsing the student code itself (e.g., looking for features like recursion or use of specific libraries) or side effects (e.g., checking if files are created or modified correctly). You can [use the `self.run_command()` method](#running-a-command-without-creating-a-test) to execute student code and capture its output, and then [create your own test results](#manually-adding-test-results). You may also use libraries like `clang` to parse the student code and check for specific features, or to perform static analysis on the code. This may be combined with student code execution using the other methods above.
+- اجرای فایل اجرایی کامپایل‌شده از کد دانشجو و [بررسی خروجی آن](#running-a-program-and-checking-its-standard-output). این گزینه در صورتی توصیه می‌شود که از دانشجویان انتظار می‌رود برنامه‌های کامل و مستقلی بنویسند که از طریق خط فرمان قابل اجرا باشند و هدف اصلی برنامه، تولید خروجی از پیش تعیین‌شده‌ای بر اساس ورودی استاندارد، آرگومان‌های خط فرمان یا فایل‌های خارجی باشد.
+- اجرای یک [مجموعه تست واحد بر پایه فریم‌ورک Check](#running-a-check-framework-test-suite). این گزینه برای حالت‌های پیچیده‌تر اکیداً توصیه می‌شود؛ جایی که از دانشجویان انتظار می‌رود توابع خاصی را با رفتار مشخص پیاده‌سازی کنند و لازم است چندین مورد آزمون (Test case) و سناریوی مختلف بررسی شوند. همچنین اگر می‌خواهید نشت حافظه و اشاره‌گرهای معلق را بررسی کنید، این گزینه با استفاده از [قابلیت AddressSanitizer](#identifying-dangling-pointers-memory-leaks-and-similar-issues) پیشنهاد می‌شود.
+- انجام بررسی‌های سفارشی خود در `test.py`. از این گزینه می‌توان برای بررسی‌هایی استفاده کرد که متکی به تجزیه (Parsing) خودِ کد دانشجو هستند (مثلاً بررسی وجود ویژگی‌هایی مانند بازگشت یا استفاده از کتابخانه‌های خاص) یا بررسی اثرات جانبی (مانند بررسی اینکه آیا فایل‌ها به درستی ایجاد یا تغییر یافته‌اند یا خیر). می‌توانید [از متد `self.run_command()` استفاده کنید](#running-a-command-without-creating-a-test) تا کد دانشجو را اجرا کرده و خروجی آن را دریافت کنید، و سپس [نتایج تست اختصاصی خود را بسازید](#manually-adding-test-results). همچنین می‌توانید از کتابخانه‌هایی مانند `clang` برای تجزیه کد دانشجو و بررسی ویژگی‌های خاص یا انجام تحلیل ایستای کد استفاده کنید. این کار می‌تواند با اجرای کد دانشجو از طریق سایر روش‌های بالا ترکیب شود.
 
-## Compiling a C/C++ program
+## کامپایل یک برنامه C/C++ {#compiling-a-cc-program}
 
-To compile a C or C++ file, you may use the method `self.compile_file()`. A typical call to this method, assuming students write a complete C file including the `main` function, will include two parameters: the name of the C or C++ file to be compiled (the file submitted by the student), and the name of an executable file to be created.
+برای کامپایل یک فایل C یا C++، می‌توانید از متد `self.compile_file()` استفاده کنید. یک فراخوانی معمول برای این متد، با این فرض که دانشجویان یک فایل کامل C شامل تابع `main` را می‌نویسند، شامل دو پارامتر خواهد بود: نام فایل C یا C++ که باید کامپایل شود (فایل ارسال‌شده توسط دانشجو)، و نام فایل اجرایی که باید ایجاد شود.
 
 ```python
 # Compile the file, but do not create a unit test result
@@ -98,34 +98,34 @@ self.compile_file("square.c", "square")
 self.test_compile_file("square.c", "square")
 ```
 
-By default, these methods use `gcc` and `g++` (for `CGrader` and `CPPGrader`, respectively) to compile the code. To use a different compiler (e.g., `clang`), set the `compiler` argument:
+به‌طور پیش‌فرض، این متدها از `gcc` و `g++` (به ترتیب برای `CGrader` و `CPPGrader`) برای کامپایل کد استفاده می‌کنند. برای استفاده از یک کامپایلر دیگر (مانند `clang`)، آرگومان `compiler` را تنظیم کنید:
 
 ```python
 self.compile_file("square.c", "square", compiler="clang")
 ```
 
-By default, if the compilation fails, it will stop all tests and return the submission as ungradable. This means that the submission will not count towards the student's submission limit, and the student will not receive a grade. The student will, however, see the result of the compilation. If you would like the tests to proceed in case of failure, you can call the function with:
+به‌طور پیش‌فرض، اگر کامپایل با شکست مواجه شود، تمام تست‌ها متوقف شده و پاسخ ارسالی به عنوان غیرقابل نمره‌دهی (Ungradable) برگردانده می‌شود. این بدان معناست که این پاسخ ارسالی جزو محدودیت دفعات ارسال دانشجو محاسبه نخواهد شد و دانشجو نمره‌ای دریافت نخواهد کرد. با این حال، دانشجو نتیجه کامپایل را مشاهده خواهد کرد. اگر می‌خواهید در صورت شکست کامپایل نیز تست‌ها ادامه پیدا کنند، می‌توانید تابع را به این صورت فراخوانی کنید:
 
 ```python
 self.compile_file("square.c", "square", ungradable_if_failed=False)
 ```
 
-By default, if the compilation succeeds but gives a warning, a message with the warning will be listed in the main results message, above the test results. If you would not like the warnings to be listed at the top of the results, you can call the function with:
+به‌طور پیش‌فرض، اگر کامپایل موفقیت‌آمیز باشد اما اخطار (Warning) داشته باشد، پیامی حاوی اخطار در پیام اصلی نتایج و در بالای نتایج تست درج می‌شود. اگر تمایلی ندارید که اخطارها در بالای نتایج فهرست شوند، می‌توانید تابع را به این صورت فراخوانی کنید:
 
 ```python
 self.compile_file("square.c", "square", add_warning_result_msg=False)
 ```
 
-### Setting compilation flags
+### تنظیم فلگ‌های کامپایل {#setting-compilation-flags}
 
-You may also include additional compilation flags accepted by `gcc` (or `g++`) with the `flags` argument, which can be invoked with a single string for flags, or with an array of strings:
+همچنین می‌توانید فلگ‌های کامپایل اضافی قابل قبول برای `gcc` (یا `g++`) را با آرگومان `flags` وارد کنید؛ این آرگومان می‌تواند یک رشته منفرد یا آرایه‌ای از رشته‌ها باشد:
 
 ```python
 self.compile_file("square.c", "square", flags="-Wall -O3")  # single string
 self.compile_file("square.c", "square", flags=["-Wall", "-O3"])  # array
 ```
 
-For flags based on `pkg-config`, use `pkg_config_flags` with the library or libraries that should be queried.
+برای فلگ‌های مبتنی بر `pkg-config`، از `pkg_config_flags` همراه با کتابخانه یا کتابخانه‌هایی که باید مورد پرس‌وجو قرار گیرند استفاده کنید:
 
 ```python
 self.compile_file(
@@ -134,17 +134,17 @@ self.compile_file(
 self.compile_file("square.c", "square", pkg_config_flags=["check", "ncurses"])  # array
 ```
 
-### Working with multiple files
+### کار با چندین فایل {#working-with-multiple-files}
 
-It is also possible to test programs where the student only submits part of an application. To compile the C/C++ file submitted by the user with some functions (including, for example, a `main` function) implemented by the instructor, you can save a `main.c` (or `main.cpp`) file inside the `tests` folder and run:
+همچنین امکان تست برنامه‌هایی که در آن‌ها دانشجو تنها بخشی از یک برنامه را ارسال می‌کند، وجود دارد. برای کامپایل فایل C/C++ ارسال‌شده توسط کاربر در کنار برخی از توابع (از جمله به عنوان مثال تابع `main`) که توسط مدرس پیاده‌سازی شده‌اند، می‌توانید یک فایل `main.c` (یا `main.cpp`) را در داخل پوشه `tests` ذخیره کرده و دستور زیر را اجرا کنید:
 
 ```python
 self.compile_file("square.c", "square", add_c_file="/grade/tests/main.c")
 ```
 
-The instruction above will compile the student-provided C/C++ file with the instructor-provided C/C++ file into the same executable.
+دستور بالا فایل C/C++ ارائه‌شده توسط دانشجو را به همراه فایل C/C++ ارائه‌شده توسط مدرس در قالب یک فایل اجرایی واحد کامپایل می‌کند.
 
-If the student implements any function that is also implemented by the instructor's code, including `main` if provided, it will be ignored, and the instructor-provided functions will take precedence. This is achieved by compiling the code with the `-Wl,--allow-multiple-definition` flag of `gcc`. If, however, there is a need to make reference to some of these functions implemented by the student, the option `objcopy_args` can be used. If provided, the [`objcopy` command](https://man7.org/linux/man-pages/man1/objcopy.1.html) is called on the student's code with the specified list of arguments. This option only operates on student files, not on added (instructor-provided) files. For example, the following instruction compiles the same files above, but renames the student's `main` function into `student_main` and makes the static function `my_static_fn` global, so that the instructor's `main` function can call both of these functions directly.
+اگر دانشجو تابعی را پیاده‌سازی کند که در کد مدرس نیز پیاده‌سازی شده است (از جمله `main` در صورت وجود)، تابع دانشجو نادیده گرفته شده و اولویت با توابع ارائه‌شده توسط مدرس خواهد بود. این کار با کامپایل کد با فلگ `-Wl,--allow-multiple-definition` در `gcc` انجام می‌شود. با این حال، اگر نیاز به ارجاع به برخی از این توابع پیاده‌سازی‌شده توسط دانشجو باشد، می‌توان از گزینه `objcopy_args` استفاده کرد. در صورت ارائه این گزینه، [دستور `objcopy`](https://man7.org/linux/man-pages/man1/objcopy.1.html) با لیست آرگومان‌های مشخص‌شده روی کد دانشجو اجرا می‌شود. این گزینه فقط روی فایل‌های دانشجو اعمال می‌شود و نه روی فایل‌های اضافه‌شده (ارائه‌شده توسط مدرس). به عنوان مثال، دستورالعمل زیر همان فایل‌های بالا را کامپایل می‌کند، اما تابع `main` دانشجو را به `student_main` تغییر نام داده و تابع ایستای `my_static_fn` را سراسری (Global) می‌کند تا تابع `main` مدرس بتواند هر دوی این توابع را مستقیماً فراخوانی کند.
 
 ```python
 self.compile_file(
@@ -160,7 +160,7 @@ self.compile_file(
 )
 ```
 
-It is also possible to compile multiple student files and multiple question-provided files into a single executable, by providing lists of files:
+همچنین می‌توان چندین فایل دانشجو و چندین فایل ارائه‌شده توسط سوال را با ارائه فهرستی از فایل‌ها، در قالب یک فایل اجرایی واحد کامپایل کرد:
 
 ```python
 self.compile_file(
@@ -171,9 +171,9 @@ self.compile_file(
 )
 ```
 
-If the compilation involves include (`.h`) files, the flags `-I/grade/tests` (for question-provided includes) and `-I/grade/student` (for student-provided includes) are recommended as well. The specific `.h` files don't need to be listed as arguments to `compile_file`.
+اگر کامپایل شامل فایل‌های هدر (`.h`) باشد، استفاده از فلگ‌های `-I/grade/tests` (برای هدرهای ارائه‌شده توسط سوال) و `-I/grade/student` (برای هدرهای ارائه‌شده توسط دانشجو) نیز توصیه می‌شود. نیازی نیست فایل‌های `.h` به صورت جداگانه به عنوان آرگومان‌های `compile_file` ذکر شوند.
 
-If the executable name is not provided, then the files will be compiled only into equivalent object files (with `.o` extension). To link these files into an executable, the `link_object_files` can be used. This function receives three mandatory arguments: the student object files, the additional object files (which can be set to `None` if there are none), and the executable name. This separation allows for more fine-tuned compilation flags between different C files or between compilation and linking, as well as additional operations to be performed with the generated object files. For example, the following sequence compiles student files and instructor files with different flags.
+اگر نام فایل اجرایی ارائه نشود، فایل‌ها تنها به فایل‌های آبجکت معادل (با پسوند `.o`) کامپایل می‌شوند. برای لینک کردن این فایل‌ها به یک فایل اجرایی، می‌توان از `link_object_files` استفاده کرد. این تابع سه آرگومان اجباری دریافت می‌کند: فایل‌های آبجکت دانشجو، فایل‌های آبجکت اضافی (که در صورت عدم وجود می‌توان مقدار آن را برابر با `None` قرار داد) و نام فایل اجرایی. این تفکیک امکان تنظیم دقیق‌تر فلگ‌های کامپایل را میان فایل‌های مختلف C یا بین مراحل کامپایل و لینک فراهم می‌کند و همچنین اجازه می‌دهد عملیات دیگری روی فایل‌های آبجکت تولیدشده انجام شود. به عنوان مثال، توالی زیر فایل‌های دانشجو و فایل‌های مدرس را با فلگ‌های متفاوتی کامپایل می‌کند:
 
 ```python
 self.compile_file(
@@ -192,11 +192,11 @@ self.link_object_files(
 )
 ```
 
-The `link_object_files` also accepts arguments like `flags`, `pkg_config_flags`, `add_warning_result_msg=False` and `ungradable_if_failed=False`, with the same functionality as `self.compile_file()` or `self.test_compile_file()`.
+تابع `link_object_files` همچنین آرگومان‌هایی مانند `flags`، `pkg_config_flags`، `add_warning_result_msg=False` و `ungradable_if_failed=False` را با همان کاربرد موجود در `self.compile_file()` یا `self.test_compile_file()` می‌پذیرد.
 
-### Restricting the use of specific functions or global variables
+### محدود کردن استفاده از توابع یا متغیرهای سراسری خاص {#restricting-the-use-of-specific-functions-or-global-variables}
 
-For questions where students are not allowed to use a specific set of functions or global variables (e.g., students are not allowed to use the `system` library call), it is possible to reject a specific set of symbols. This option will cause an error similar to a compilation error if any of these symbols is referenced in the code. Only student files are checked against this list of symbols, so they can still be used in instructor code.
+برای سوالاتی که در آن‌ها دانشجویان مجاز به استفاده از مجموعه خاصی از توابع یا متغیرهای سراسری نیستند (برای مثال، دانشجویان مجاز به استفاده از فراخوانی کتابخانه‌ای `system` نباشند)، می‌توان مجموعه‌ای از نمادها (Symbols) را رد کرد. در صورت ارجاع به هر یک از این نمادها در کد، این گزینه خطایی مشابه خطای کامپایل ایجاد می‌کند. تنها فایل‌های دانشجو در برابر این لیست از نمادها بررسی می‌شوند، بنابراین می‌توان همچنان از آن‌ها در کد مدرس استفاده کرد.
 
 ```python
 self.compile_file(
@@ -215,16 +215,16 @@ self.compile_file(
 )
 ```
 
-### Creating a test result for the compilation
+### ایجاد نتیجه تست برای فرآیند کامپایل {#creating-a-test-result-for-the-compilation}
 
-To create a test result based on the compilation itself, use `self.test_compile_file()` instead of `self.compile_file()`. This method accepts the same arguments as `self.compile_file()`, but will create a test named "Compilation" worth one point by default.
+برای ایجاد یک نتیجه تست بر اساس خودِ عملیات کامپایل، به جای `self.compile_file()` از `self.test_compile_file()` استفاده کنید. این متد همان آرگومان‌های `self.compile_file()` را می‌پذیرد، اما به‌طور پیش‌فرض تستی به نام «Compilation» با ارزش یک نمره ایجاد می‌کند.
 
 ```python
 # Compile the file and give one point to student if compilation is successful
 self.test_compile_file("square.c", "square")
 ```
 
-To change the name and/or points, set the `name` or `points` argument as follows:
+برای تغییر نام و/یا نمره، آرگومان‌های `name` یا `points` را به صورت زیر تنظیم کنید:
 
 ```python
 self.test_compile_file(
@@ -232,35 +232,35 @@ self.test_compile_file(
 )
 ```
 
-Note that you can set the `points` to zero if you want to create a test result for the compilation, but do not want to assign any points to it. This may be useful in combination with the `add_warning_result_msg=False` argument, which in this case will cause the warning to be shown in the test output instead of the main results message.
+توجه داشته باشید که اگر می‌خواهید یک نتیجه تست برای کامپایل ایجاد کنید اما قصد ندارید نمره‌ای به آن اختصاص دهید، می‌توانید `points` را روی صفر تنظیم کنید. این حالت در ترکیب با آرگومان `add_warning_result_msg=False` می‌تواند مفید باشد، چرا که در این صورت اخطار به جای پیام اصلی نتایج، در خروجی تست نمایش داده می‌شود.
 
 ```python
 self.test_compile_file("square.c", "square", points=0, add_warning_result_msg=False)
 ```
 
-## Running a program and checking its standard output
+## اجرای برنامه و بررسی خروجی استاندارد آن {#running-a-program-and-checking-its-standard-output}
 
-The `self.test_run()` method can be used to run an executable and check its output. This will typically be the program generated by the compiler above, but it can be used for any program. The program will run [as a non-privileged user](#sandbox-execution).
+متد `self.test_run()` را می‌توان برای اجرای یک فایل اجرایی و بررسی خروجی آن استفاده کرد. این برنامه معمولاً همان برنامه‌ای خواهد بود که توسط کامپایلر بالا تولید شده است، اما می‌توان از آن برای هر برنامه‌ای استفاده کرد. برنامه [به عنوان یک کاربر غیرممتاز](#sandbox-execution) اجرا خواهد شد.
 
-The only required argument is the `command` argument, which corresponds to the command to be executed. If no additional parameters are set, the test will pass if the program completes within a certain time limit.
+تنها آرگومان اجباری، آرگومان `command` است که مربوط به دستوری است که باید اجرا شود. اگر پارامتر اضافی دیگری تنظیم نشود، در صورتی که برنامه در یک محدودیت زمانی مشخص به پایان برسد، تست قبول می‌شود.
 
 ```python
 self.test_run("./square")
 ```
 
-### Validating the output of the executed program
+### اعتبارسنجی خروجی برنامه اجراشده {#validating-the-output-of-the-executed-program}
 
-In most cases, though, this program will be executed to check the output of the program, which can be done by including the `exp_output` argument. In its simplest case, `exp_output` can be provided with a single string, and the test will pass if that string is found somewhere in the output of the program.
+با این حال، در اغلب موارد، این برنامه برای بررسی خروجی آن اجرا می‌شود که این کار را می‌توان با قرار دادن آرگومان `exp_output` انجام داد. در ساده‌ترین حالت، `exp_output` می‌تواند به صورت یک رشته واحد ارائه شود، و اگر آن رشته در جایی از خروجی برنامه پیدا شود، تست قبول خواهد شد.
 
 ```python
 self.test_run("./square", exp_output="SUCCESS")
 ```
 
-The `exp_output` argument can also be used to check for multiple output patterns by passing in a list of strings. The test will then look for all the patterns in the program output, and the result of the test will depend on the `must_match_all_outputs` flag. This flag may be set to:
+آرگومان `exp_output` همچنین می‌تواند با ارسال فهرستی از رشته‌ها، برای بررسی چندین الگوی خروجی مورد استفاده قرار گیرد. در این حالت، تست به دنبال تمام الگوها در خروجی برنامه می‌گردد و نتیجه تست به فلگ `must_match_all_outputs` بستگی خواهد داشت. این فلگ می‌تواند مقادیر زیر را داشته باشد:
 
-- `must_match_all_outputs="any"`: if any of the patterns is found in the program output, the test passes and full points are assigned (this is the default). The value `False` is also accepted for backwards compatibility.
-- `must_match_all_outputs="all"`: all patterns must be found in the program output to pass the test. The value `True` is also accepted for backwards compatibility.
-- `must_match_all_outputs="partial"`: the points assigned to the test are based on the number of patterns that are found in the program output (for example, if three patterns out of four are found, then the test is assigned 0.75 points).
+- `must_match_all_outputs="any"`: اگر هر یک از الگوها در خروجی برنامه پیدا شود، تست قبول شده و نمره کامل اختصاص می‌یابد (این حالت پیش‌فرض است). مقدار `False` نیز برای سازگاری با نسخه‌های پیشین پذیرفته می‌شود.
+- `must_match_all_outputs="all"`: برای قبولی در تست، تمام الگوها باید در خروجی برنامه یافت شوند. مقدار `True` نیز برای سازگاری با نسخه‌های پیشین پذیرفته می‌شود.
+- `must_match_all_outputs="partial"`: نمره اختصاص‌یافته به تست بر اساس تعداد الگوهای یافت‌شده در خروجی برنامه محاسبه می‌شود (برای مثال، اگر از چهار الگو سه الگو پیدا شود، تست ۰٫۷۵ نمره دریافت می‌کند).
 
 ```python
 # default, either SUCCESS or CORRECT are enough for full points
@@ -273,13 +273,13 @@ self.test_run(
 )
 ```
 
-Sometimes a test must ensure that some strings are _not_ found in the output of the program. This can be achieved with the `reject_output` argument, which again can be an array or a single string.
+گاهی اوقات یک تست باید اطمینان حاصل کند که برخی رشته‌ها در خروجی برنامه یافت _نمی‌شوند_. این امر با استفاده از آرگومان `reject_output` حاصل می‌شود که آن هم می‌تواند یک آرایه یا یک رشته منفرد باشد.
 
 ```python
 self.test_run("diff -q output.txt expected.txt", reject_output=["differ"])
 ```
 
-If you would like to highlight, in the test message or output, the expected and rejected outputs, you can use the `highlight_matches` argument. This option will highlight in green (for expected outputs) and red (for rejected outputs) all strings that matched in the program output.
+اگر می‌خواهید در پیام یا خروجی تست، خروجی‌های مورد انتظار و ردشده برجسته (Highlight) شوند، می‌توانید از آرگومان `highlight_matches` استفاده کنید. این گزینه تمام رشته‌هایی را که در خروجی برنامه مطابقت یافته‌اند، با رنگ سبز (برای خروجی‌های مورد انتظار) و قرمز (برای خروجی‌های ردشده) برجسته می‌کند.
 
 ```python
 self.test_run(
@@ -291,7 +291,7 @@ self.test_run(
 )
 ```
 
-By default, any sequence of space-like characters (space, line break, carriage return, tab) in the program output, expected output and rejected output strings will be treated as a single space for comparison. This means difference in the number and type of spacing will be ignored. So, for example, if the output prints two numbers as `1 \n 2`, while the expected output is `1 2`, the test will pass. If, however, the intention is that spaces must match a pattern exactly, the `ignore_consec_spaces` option can be set to `False`:
+به‌طور پیش‌فرض، هر توالی از نویسه‌های فاصله‌مانند (فاصله، شکست خط، بازگشت مکان‌نما، تب) در خروجی برنامه، رشته‌های خروجی مورد انتظار و خروجی‌های ردشده، برای مقایسه به عنوان یک فاصله منفرد در نظر گرفته می‌شوند. این بدان معناست که تفاوت در تعداد و نوع فاصله‌گذاری نادیده گرفته می‌شود. بنابراین، برای مثال، اگر خروجی دو عدد را به صورت `1 \n 2` چاپ کند، در حالی که خروجی مورد انتظار `1 2` باشد، تست قبول خواهد شد. با این حال، اگر هدف این باشد که فاصله‌ها دقیقاً با الگو مطابقت داشته باشند، می‌توان گزینه `ignore_consec_spaces` را برابر با `False` قرار داد:
 
 ```python
 self.test_run(
@@ -301,13 +301,13 @@ self.test_run(
 )
 ```
 
-By default, differences in cases are ignored. To make all comparisons case-sensitive, set the `ignore_case` argument to `False`:
+به‌طور پیش‌فرض، تفاوت در بزرگی و کوچکی حروف (Case) نادیده گرفته می‌شود. برای حساس کردن تمام مقایسه‌ها به حروف بزرگ و کوچک، آرگومان `ignore_case` را برابر با `False` قرار دهید:
 
 ```python
 self.test_run("./lowercase ABC", exp_output="abc", ignore_case=False)
 ```
 
-For both `exp_output` and `reject_output`, regular expressions may be used, by providing a compiled pattern object from [Python's `re` module](https://docs.python.org/3/library/re.html#re.compile). Note: if a pattern object is used, arguments `ignore_consec_spaces` and `ignore_case` do not take effect. If these patterns should ignore consecutive spaces, a pattern such as `\\s+` may be used instead of spaces, while case may be ignored by using the [`re.I` flag](https://docs.python.org/3/library/re.html#re.I);
+هم برای `exp_output` و هم برای `reject_output`، می‌توان از عبارات منظم (Regular Expressions) با ارائه یک شیء الگوی کامپایل‌شده از [ماژول `re` در پایتون](https://docs.python.org/3/library/re.html#re.compile) استفاده کرد. توجه: در صورت استفاده از شیء الگو، آرگومان‌های `ignore_consec_spaces` و `ignore_case` اعمال نخواهند شد. اگر لازم است این الگوها فاصله‌های متوالی را نادیده بگیرند، می‌توان از الگویی مانند `\\s+` به جای فاصله‌ها استفاده کرد، و با استفاده از [فلگ `re.I`](https://docs.python.org/3/library/re.html#re.I) بزرگی و کوچکی حروف را نادیده گرفت:
 
 ```python
 self.test_run(
@@ -316,15 +316,15 @@ self.test_run(
 )
 ```
 
-### Providing input to the executed program
+### ارسال ورودی به برنامه در حال اجرا {#providing-input-to-the-executed-program}
 
-This method can also be provided with an input string to be passed to the standard input of the program, with the `input` argument:
+به این متد همچنین می‌توان از طریق آرگومان `input` یک رشته ورودی برای ارسال به ورودی استاندارد برنامه ارائه کرد:
 
 ```python
 self.test_run("./square", input="3\n", exp_output="9")
 ```
 
-To use command-line arguments for a command, the arguments can be included either in the `command` itself, or with the `args` argument, which can be a single argument set as a string, or multiple arguments in a list:
+برای استفاده از آرگومان‌های خط فرمان برای یک دستور، می‌توان آرگومان‌ها را مستقیماً در خودِ `command` قرار داد یا از طریق آرگومان `args` ارائه کرد که می‌تواند یک آرگومان منفرد به صورت رشته یا چندین آرگومان در قالب یک لیست باشد:
 
 ```python
 self.test_run("./square 3 5", exp_output=["9", "25"], must_match_all_outputs="all")
@@ -334,23 +334,23 @@ self.test_run(
 )
 ```
 
-### Limiting the execution time and output size
+### محدود کردن زمان اجرا و حجم خروجی {#limiting-the-execution-time-and-output-size}
 
-To avoid issues with student-provided code running longer than expected, such as in cases of infinite loop, the program will time out after one second. In this case, the test will be considered failed. This setting can be changed with the `timeout` argument, which should be set to a number of seconds.
+برای جلوگیری از مشکلاتی که ناشی از طولانی‌تر شدن اجرای کد دانشجو نسبت به حد انتظار است (مانند حلقه‌های بی‌نهایت)، برنامه پس از یک ثانیه با پایان مهلت زمانی (Timeout) مواجه خواهد شد. در این حالت، تست ناموفق در نظر گرفته می‌شود. این تنظیم را می‌توان با آرگومان `timeout` که باید برابر با تعداد ثانیه‌ها باشد، تغییر داد:
 
 ```python
 self.test_run("./slowprogram", exp_output="COMPLETED", timeout=10)
 ```
 
-To avoid issues with student-provided code producing code that is too large for PrairieLearn to handle, by default any program with more than 10 KB (more precisely, 10240 characters) of output will fail and have its output truncated. To change this limit, use the `size_limit` argument, which should be set to a number of characters.
+برای جلوگیری از مشکلاتی ناشی از تولید خروجی‌های بسیار بزرگ توسط کد دانشجو که مدیریت آن‌ها برای PrairieLearn دشوار است، به‌طور پیش‌فرض هر برنامه‌ای با خروجی بیش از ۱۰ کیلوبایت (دقیق‌تر: ۱۰۲۴۰ نویسه) ناموفق شده و خروجی آن کوتاه (Truncate) می‌شود. برای تغییر این محدودیت، از آرگومان `size_limit` استفاده کنید که باید بر حسب تعداد نویسه‌ها تنظیم شود:
 
 ```python
 self.test_run("./verboseprogram", exp_output="COMPLETED", size_limit=102400)
 ```
 
-### Setting a custom test name, message and points
+### تنظیم نام تست، پیام و نمره سفارشی {#setting-a-custom-test-name-message-and-points}
 
-The test will be created and shown to the user, worth 1 point by default. The default name for a test that includes an `input` argument is: `Test with input "<INPUT>"` (where `INPUT` is the provided input). For a test that uses `args`, the default name is `Test with arguments "<ARGS>"` (where `ARGS` is the set of arguments separated by spaces). A message will also be included with a summary of expected and rejected outputs. To change these settings, use the `max_points`, `msg` and/or `name` arguments:
+تست ایجاد شده و به کاربر نشان داده می‌شود که به‌طور پیش‌فرض ارزش آن ۱ نمره است. نام پیش‌فرض برای تستی که شامل آرگومان `input` است، برابر است با: `Test with input "<INPUT>"` (که در آن `INPUT` همان ورودی ارائه‌شده است). برای تستی که از `args` استفاده می‌کند، نام پیش‌فرض برابر است با `Test with arguments "<ARGS>"` (که در آن `ARGS` مجموعه‌ای از آرگومان‌هاست که با فاصله از هم جدا شده‌اند). همچنین پیامی شامل خلاصه‌ای از خروجی‌های مورد انتظار و ردشده درج خواهد شد. برای تغییر این تنظیمات، از آرگومان‌های `max_points`، `msg` و/یا `name` استفاده کنید:
 
 ```python
 self.test_run(
@@ -362,11 +362,11 @@ self.test_run(
 )
 ```
 
-## Running a Check framework test suite
+## اجرای یک مجموعه تست فریم‌ورک Check {#running-a-check-framework-test-suite}
 
-For tests that involve more complex scenarios, particularly related to individual function calls and unit tests, the C autograder allows integration with a modified version of the [Check framework](https://libcheck.github.io/check/). This framework provides functionality to run multiple test suites and test cases with individual unit tests. It is also able to capture signals (e.g., segmentation fault) by running unit tests in an isolated process.
+برای تست‌هایی که شامل سناریوهای پیچیده‌تر هستند، به‌ویژه مواردی که به فراخوانی توابع منفرد و تست‌های واحد مربوط می‌شوند، نمره‌دهنده خودکار C امکان یکپارچه‌سازی با نسخه‌ای تغییریافته از [فریم‌ورک Check](https://libcheck.github.io/check/) را فراهم می‌کند. این فریم‌ورک قابلیت اجرای چندین مجموعه تست (Test suites) و مورد آزمون (Test cases) را همراه با تست‌های واحد مجزا فراهم می‌آورد. همچنین قادر است با اجرای تست‌های واحد در یک فرآیند ایزوله، سیگنال‌ها (مانند خطای Segmentation fault) را دریافت و مدیریت کند.
 
-To run a Check suite, create a main C file in the `tests` directory, containing the tests and a `main` function that runs the Check suite. This C file may look like:
+برای اجرای یک مجموعه Check، یک فایل اصلی C در دایرکتوری `tests` ایجاد کنید که شامل تست‌ها و یک تابع `main` برای اجرای مجموعه Check باشد. این فایل C ممکن است به این شکل باشد:
 
 ```c title="main.c"
 #include <check.h>
@@ -396,13 +396,13 @@ int main(void) {
 }
 ```
 
-A tutorial with instructions on how to create test suites, test cases and unit tests can be found in [the official Check documentation](https://libcheck.github.io/check/doc/check_html/check_3.html#Tutorial). The example course also includes [basic questions](https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/c) that can be used as a starting point.
+آموزشی همراه با دستورالعمل‌های نحوه ایجاد مجموعه‌های تست، موارد آزمون و تست‌های واحد را می‌توانید در [مستندات رسمی Check](https://libcheck.github.io/check/doc/check_html/check_3.html#Tutorial) بیابید. درس نمونه نیز شامل [سوالات پایه‌ای](https://github.com/PrairieLearn/PrairieLearn/tree/master/exampleCourse/questions/demo/autograder/c) است که می‌تواند به عنوان نقطه شروع استفاده شود.
 
-!!! note
+!!! note "توجه"
 
-    Note that the functionality for working with the Check framework relies on its [test logging features](https://libcheck.github.io/check/doc/check_html/check_4.html#Test-Logging). To ensure the tests are properly captured by the autograder you should not overwrite the log files.
+    توجه داشته باشید که قابلیت کار با فریم‌ورک Check به [ویژگی‌های ثبت گزارش تست (Test logging)](https://libcheck.github.io/check/doc/check_html/check_4.html#Test-Logging) آن وابسته است. برای اطمینان از اینکه تست‌ها به درستی توسط نمره‌دهنده خودکار ثبت می‌شوند، نباید فایل‌های گزارش را رونویسی کنید.
 
-A typical `test.py` file for a Check-based suite will look something like this, assuming `student_code.c` contains the student code and `/grade/tests/main.c` contains the Check tests like the example above:
+یک فایل نمونه `test.py` برای یک مجموعه مبتنی بر Check شبیه به این خواهد بود، با این فرض که `student_code.c` شامل کد دانشجو است و `/grade/tests/main.c` شامل تست‌های Check مشابه مثال بالا می‌باشد:
 
 ```python title="test.py"
 import cgrader
@@ -424,26 +424,26 @@ g = DemoGrader()
 g.start()
 ```
 
-To compile the student code and test suite, use the `self.compile_file()` or `self.test_compile_file()` described above. Make sure that the `pkg_config_flags` argument includes the `check` library for proper compilation.
+برای کامپایل کد دانشجو و مجموعه تست، از متدهای `self.compile_file()` یا `self.test_compile_file()` که در بالا توضیح داده شدند استفاده کنید. اطمینان حاصل کنید که آرگومان `pkg_config_flags` شامل کتابخانه `check` باشد تا کامپایل به درستی انجام گیرد.
 
-The `self.run_check_suite()` method will call the executable containing the Check test suites, will parse the log files, and will create one autograder test for each unit test executed by the Check suites. One test result will be created for each unit test within each test case, so you may create as many test cases and as many unit tests as you wish to provide further details to students. The name of the test will typically be the name of the Check test case followed by the unit test ID, though this can be changed by setting the following arguments to `True` or `False`:
+متد `self.run_check_suite()` فایل اجرایی حاوی مجموعه‌های تست Check را فراخوانی می‌کند، فایل‌های لاگ را تجزیه کرده و برای هر تست واحد که توسط مجموعه‌های Check اجرا می‌شود، یک تست در نمره‌دهنده خودکار ایجاد می‌کند. برای هر تست واحد درون هر مورد آزمون یک نتیجه تست ایجاد می‌شود، بنابراین می‌توانید به تعداد دلخواه مورد آزمون و تست واحد ایجاد کنید تا جزئیات بیشتری به دانشجویان ارائه دهید. نام تست معمولاً نام مورد آزمون Check و به دنبال آن شناسه تست واحد خواهد بود، هرچند می‌توان این مورد را با تنظیم آرگومان‌های زیر روی `True` یا `False` تغییر داد:
 
-- `use_suite_title`: use the title of the test suite in the test name (default: false);
-- `use_case_name`: use the name of the test case in the test name (default: true);
-- `use_unit_test_id`: use the ID of the unit test in the test name (default: true);
-- `use_iteration`: for tests executed in a loop, include the iteration number in the test name (default: false).
+- `use_suite_title`: استفاده از عنوان مجموعه تست در نام تست (پیش‌فرض: `false`)؛
+- `use_case_name`: استفاده از نام مورد آزمون در نام تست (پیش‌فرض: `true`)؛
+- `use_unit_test_id`: استفاده از شناسه تست واحد در نام تست (پیش‌فرض: `true`)؛
+- `use_iteration`: برای تست‌هایی که درون یک حلقه اجرا می‌شوند، درج شماره تکرار در نام تست (پیش‌فرض: `false`).
 
 ```python
 self.run_check_suite("./main", use_suite_title=True, use_unit_test_id=False)
 ```
 
-The version of Check used in the autograder has been modified slightly to include additional safeguards against malicious student code. These safeguards restrict access to test logs and other resources to the processes running unit tests. To ensure these safeguards work as expected, your test application:
+نسخه Check مورد استفاده در نمره‌دهنده خودکار اندکی تغییر یافته تا تدابیر امنیتی بیشتری در برابر کدهای مخرب دانشجویان در نظر گرفته شود. این تدابیر حفاظتی، دسترسی فرآیندهای در حال اجرای تست‌های واحد به گزارش‌های تست و سایر منابع را محدود می‌کنند. برای اطمینان از اینکه این تدابیر حفاظتی طبق انتظار عمل می‌کنند، برنامه تست شما:
 
-- should keep Check's default fork status enabled, i.e., do not set "No Fork Mode".
-- should open any files or file-like resources in the unit test itself or in checked fixtures. Do not open files in unchecked fixtures or in the main application.
-- should not rely on environment variables for any student application. If environment variables are needed, set them manually in the unit test itself or in checked fixtures.
+- باید وضعیت پیش‌فرض fork در Check را فعال نگه دارد، یعنی حالت «No Fork Mode» را تنظیم نکنید.
+- باید هرگونه فایل یا منبع شبیه به فایل را درون خودِ تست واحد یا در فیکسچرهای بررسی‌شده (Checked fixtures) باز کند. فایل‌ها را در فیکسچرهای بررسی‌نشده یا در برنامه اصلی باز نکنید.
+- نباید برای هیچ‌یک از برنامه‌های دانشجو به متغیرهای محیطی اتکا کند. در صورت نیاز به متغیرهای محیطی، آن‌ها را به صورت دستی در خودِ تست واحد یا در فیکسچرهای بررسی‌شده تنظیم نمایید.
 
-If your application explicitly needs to keep any of the restricted environments above, you may disable some of these safeguards in your code. _Note that disabling these safeguards increases the chances that a student may bypass your unit tests and autograder_, so only do this if absolutely necessary. You may do this by setting the following preprocessor directives _at the top of your test code_ (before `#include <check.h>`):
+اگر برنامه شما به صراحت نیاز به حفظ هر یک از محیط‌های محدودشده بالا دارد، می‌توانید برخی از این تدابیر حفاظتی را در کد خود غیرفعال کنید. _توجه داشته باشید که غیرفعال کردن این تدابیر امنیتی احتمال دور زدن تست‌های واحد و نمره‌دهنده خودکار توسط دانشجو را افزایش می‌دهد_، بنابراین این کار را تنها در صورت ضرورت قطعی انجام دهید. می‌توانید این کار را با تنظیم دستورات پیش‌پردازنده زیر _در ابتدای کد تست خود_ (قبل از `#include <check.h>`) انجام دهید:
 
 ```c
 // Use this directive to retain file descriptors opened by the test application or unchecked fixtures
@@ -459,23 +459,23 @@ If your application explicitly needs to keep any of the restricted environments 
 #define PLCHECK_NO_EXTRA_FORK
 ```
 
-## Identifying dangling pointers, memory leaks and similar issues
+## شناسایی اشاره‌گرهای معلق، نشت حافظه و مسائل مشابه {#identifying-dangling-pointers-memory-leaks-and-similar-issues}
 
-A major concern when testing C/C++ code is to identify cases of dangling pointers and memory leaks. The [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer) library can be used for this purpose in this autograder. In particular, it is able to detect: use-after-free and use-after-return; out-of-bounds access in heap, stack and global arrays; and memory leaks.
+یکی از دغدغه‌های اصلی هنگام تست کد C/C++، شناسایی مواردی از اشاره‌گرهای معلق (Dangling pointers) و نشت حافظه (Memory leaks) است. کتابخانه [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer) می‌تواند برای این منظور در این نمره‌دهنده خودکار مورد استفاده قرار گیرد. به ویژه، این ابزار قادر به تشخیص موارد زیر است: استفاده پس از آزادسازی (use-after-free) و استفاده پس از بازگشت تابع (use-after-return)؛ دسترسی خارج از محدوده (out-of-bounds) در حافظه هیپ، استک و آرایه‌های سراسری؛ و نشت حافظه.
 
-To add this library to the code, add the following option to the compilation function (`compile_file`, `test_compile_file` or `link_object_files`):
+برای افزودن این کتابخانه به کد، گزینه زیر را به تابع کامپایل (`compile_file`، `test_compile_file` یا `link_object_files`) اضافه کنید:
 
 ```python
 self.compile_file(..., enable_asan=True)
 ```
 
-By default, the options above will compile the code with flags that will cause the application to abort immediately when an invalid memory access is identified, or before exiting in case of memory leaks. If you are using the autograder workflow that checks the program's standard output, this functionality should capture the majority of cases, though you may want to include some reject strings that capture memory leaks. For example:
+به‌طور پیش‌فرض، گزینه‌های فوق کد را با فلگ‌هایی کامپایل می‌کنند که باعث می‌شود برنامه بلافاصله پس از شناسایی دسترسی نامعتبر به حافظه، یا پیش از خروج در صورت بروز نشت حافظه متوقف (Abort) شود. اگر از گردش کاری نمره‌دهنده خودکاری استفاده می‌کنید که خروجی استاندارد برنامه را بررسی می‌کند، این قابلیت باید اکثر موارد را به دام اندازد، هرچند ممکن است بخواهید چند رشته ردشده (Reject strings) را برای ثبت نشت‌های حافظه اضافه کنید. برای مثال:
 
 ```python
 self.test_run(..., reject_output=["AddressSanitizer"])
 ```
 
-If you are using the check-based workflow, note that while the setup above will cause the tests to fail in these scenarios, it may not provide a useful message to students. To provide a more detailed feedback to students in this case, you are strongly encouraged to add a call to `pl_setup_asan_hooks()` at the start of your main function, like this:
+اگر از گردش کاری مبتنی بر Check استفاده می‌کنید، توجه داشته باشید که اگرچه پیکربندی بالا باعث مردود شدن تست‌ها در این سناریوها می‌شود، اما ممکن است پیام مفیدی را به دانشجویان نمایش ندهد. برای ارائه بازخورد دقیق‌تر به دانشجویان در این حالت، اکیداً توصیه می‌شود که فراخوانی `pl_setup_asan_hooks()` را در ابتدای تابع اصلی (main) خود اضافه کنید، مانند زیر:
 
 ```c
 int main(int argc, char *argv[]) {
@@ -486,7 +486,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-If you need more fine-tuned control over when and where these memory access problems happen, you can use the ASAN interface to provide further control. For example, if you want to identify the status of individual pointers to check if they have been correctly allocated, you can use `__asan_address_is_poisoned` or `__asan_region_is_poisoned`:
+اگر به کنترل دقیق‌تری بر زمان و مکان وقوع این مشکلات دسترسی به حافظه نیاز دارید، می‌توانید از رابط ASAN برای کنترل بیشتر استفاده کنید. به عنوان مثال، اگر می‌خواهید وضعیت تک‌تک اشاره‌گرها را بررسی کنید تا مشخص شود که آیا به درستی تخصیص یافته‌اند یا خیر، می‌توانید از `__asan_address_is_poisoned` یا `__asan_region_is_poisoned` استفاده کنید:
 
 ```c
   ck_assert_msg(__asan_address_is_poisoned(deleted_node), "Deleted node has not been freed");
@@ -494,54 +494,54 @@ If you need more fine-tuned control over when and where these memory access prob
   ck_assert_msg(!__asan_region_is_poisoned(new_node, sizeof(struct node)), "Node was not allocated with appropriate size");
 ```
 
-It is also possible to [set specific flags](https://github.com/google/sanitizers/wiki/AddressSanitizerFlags) to change the behavior of AddressSanitizer, by setting the environment variable `ASAN_OPTIONS` when calling `run_check_suite`. For example, to disable the memory leak check, you may use:
+همچنین می‌توان با تنظیم متغیر محیطی `ASAN_OPTIONS` هنگام فراخوانی `run_check_suite`، [فلگ‌های خاصی را تنظیم کرد](https://github.com/google/sanitizers/wiki/AddressSanitizerFlags) تا رفتار AddressSanitizer تغییر یابد. برای مثال، برای غیرفعال کردن بررسی نشت حافظه، می‌توانید از کد زیر استفاده کنید:
 
 ```python
 self.run_check_suite("./main", env={"ASAN_OPTIONS": "detect_leaks=0"})
 ```
 
-## Running a command without creating a test
+## اجرای یک دستور بدون ایجاد تست {#running-a-command-without-creating-a-test}
 
-It is also possible to run a command that is not directly linked to a specific test. This can be done with the `self.run_command()` method, which at the minimum receives a command as argument. This command can be a single string with or without arguments, or an array of strings containing the executable as the first element, and the arguments to follow. The method returns a string containing the standard output (and standard error) generated by the program.
+همچنین امکان اجرای دستوری که مستقیماً به یک تست خاص مرتبط نیست نیز وجود دارد. این کار را می‌توان با متد `self.run_command()` انجام داد که در کمترین حالت یک دستور را به عنوان آرگومان دریافت می‌کند. این دستور می‌تواند یک رشته منفرد با یا بدون آرگومان‌ها، یا آرایه‌ای از رشته‌ها باشد که شامل نام فایل اجرایی به عنوان اولین عنصر و آرگومان‌ها پس از آن است. این متد رشته‌ای شامل خروجی استاندارد (و خطای استاندارد) تولیدشده توسط برنامه را برمی‌گرداند:
 
 ```python
 files = self.run_command("ls -alR /grade")
 files = self.run_command(["ls", "-alR", "/grade"])
 ```
 
-The command by default will run as a [sandboxed user](#sandbox-execution). If you need to run the command as the container's `root` (the same user running the test script itself) you may set the argument `sandboxed` to `False` (not recommended for any program provided by a student):
+دستور به‌طور پیش‌فرض به عنوان [کاربر سندباکس‌شده (محیط ایزوله)](#sandbox-execution) اجرا می‌شود. اگر نیاز دارید که دستور را با دسترسی `root` کانتینر (همان کاربری که خودِ اسکریپت تست را اجرا می‌کند) اجرا نمایید، می‌توانید آرگومان `sandboxed` را برابر با `False` قرار دهید (این کار به هیچ وجه برای برنامه‌های ارائه‌شده توسط دانشجو توصیه نمی‌شود):
 
 ```python
 result = self.run_command("rm -rf testfile.txt", sandboxed=False)
 ```
 
-To provide a string to be used as standard input for the program, use the `input` argument:
+برای ارائه رشته‌ای که به عنوان ورودی استاندارد برنامه استفاده شود، از آرگومان `input` استفاده کنید:
 
 ```python
 result = self.run_command("./square", input="3\n")
 ```
 
-To ensure the program does not run forever, you may set a `timeout` option, which provides a timeout in seconds. If the program doesn't complete within this timeout, the method will return a standard timeout message. It is highly recommended that student-provided code run with a timeout setting.
+برای اطمینان از اینکه برنامه تا ابد اجرا نمی‌شود، می‌توانید گزینه `timeout` را تنظیم کنید که محدودیت زمانی را بر حسب ثانیه تعیین می‌کند. اگر برنامه در این بازه زمانی به پایان نرسد، متد یک پیام خطای زمان استاندارد (Timeout) را برمی‌گرداند. اکیداً توصیه می‌شود که کدهای ارائه‌شده توسط دانشجو همواره با تنظیم محدودیت زمانی اجرا شوند:
 
 ```python
 result = self.run_command("./square", timeout=1)
 ```
 
-If the program requires specific environment variables, you may set the `env` argument. This argument must be provided as a key-value `dict`.
+اگر برنامه به متغیرهای محیطی خاصی نیاز دارد، می‌توانید آرگومان `env` را تنظیم کنید. این آرگومان باید به صورت یک دیکشنری (`dict`) کلید-مقدار ارائه شود:
 
 ```python
 result = self.run_command("./square", env={"TEMP_FILE": "/tmp/my_temp.dat"})
 ```
 
-## Manually adding test results
+## افزودن دستی نتایج تست {#manually-adding-test-results}
 
-Methods like `self.test_compile_file()` and `self.test_run()` will create a new test result that will be presented to the user. It is also possible to create your own tests based on separate computations, with the `self.add_test_result()` method. The simplest invocation of this method is with only the test name, which will create a passing test worth one point, with no message, no output and no description.
+متدهایی مانند `self.test_compile_file()` و `self.test_run()` یک نتیجه تست جدید ایجاد می‌کنند که به کاربر نمایش داده خواهد شد. همچنین می‌توان بر اساس محاسبات جداگانه، تست‌های سفارشی خود را با متد `self.add_test_result()` ایجاد کرد. ساده‌ترین حالت فراخوانی این متد تنها با نام تست است که یک تست قبول‌شده با ارزش یک نمره، بدون پیام، بدون خروجی و بدون توضیحات ایجاد خواهد کرد:
 
 ```python
 self.add_test_result("Bonus point for submitting something!")
 ```
 
-You may also optionally add a description, message and output to the test:
+همچنین می‌توانید به صورت اختیاری توضیحات (Description)، پیام (Message) و خروجی (Output) را به تست اضافه کنید:
 
 ```python
 self.add_test_result(
@@ -552,13 +552,13 @@ self.add_test_result(
 )
 ```
 
-To set the number of points the test is worth, and/or its maximum number of points, use the `points` and `max_points` arguments. The `max_points` value must be a number (integer or float), and defaults to `1` if not provided. The `points` argument can be a number, in which case it is based on the maximum number of points; or you may set `points` to a boolean-like expression, in which case `points` will be set to 0 if the expression is `False`, and to `max_points` if the expression is `True`.
+برای تنظیم میزان نمره‌ای که تست به آن تعلق می‌گیرد و/یا حداکثر نمره آن، از آرگومان‌های `points` و `max_points` استفاده کنید. مقدار `max_points` باید یک عدد (صحیح یا اعشاری) باشد و در صورت عدم ارائه، پیش‌فرض آن برابر با `1` است. آرگومان `points` می‌تواند یک عدد باشد که بر مبنای حداکثر نمره محاسبه می‌شود؛ یا می‌توانید `points` را با یک عبارت بولی‌مانند (Boolean-like) مقداردهی کنید که در این صورت اگر عبارت `False` باشد مقدار `points` برابر با 0 و اگر `True` باشد برابر با `max_points` خواهد شد:
 
 ```python
 self.add_test_result("I am lazy, everyone gets 70%", points=70, max_points=100)
 ```
 
-This method also allows you to add one or more images to the result. Images must follow the format described in the [external grading](../externalGrading.md) documentation.
+این متد همچنین به شما امکان می‌دهد یک یا چند تصویر را به نتیجه اضافه کنید. تصاویر باید از فرمت شرح داده شده در مستندات [نمره‌دهی خارجی](../externalGrading.md) پیروی کنند:
 
 ```python
 self.add_test_result("Generated image", points=matched_pixels,
@@ -567,19 +567,19 @@ self.add_test_result("Generated image", points=matched_pixels,
                              {"label": "Expected image", "url": expectedURI})
 ```
 
-## Sandbox execution
+## اجرای سندباکس (محیط ایزوله) {#sandbox-execution}
 
-The autograder is set up to allow programs to run either as root or as a non-privileged user. This feature is available to ensure that the student is unable to manipulate the testing environment or manually modify their grade in the container.
+نمره‌دهنده خودکار به گونه‌ای پیکربندی شده است که امکان اجرای برنامه‌ها را به صورت کاربر root یا به عنوان یک کاربر غیرممتاز فراهم می‌کند. این ویژگی برای اطمینان از این موضوع در نظر گرفته شده که دانشجو نتواند محیط تست را دستکاری کرده یا نمره خود را به صورت دستی در کانتینر تغییر دهد.
 
-By default, the sandbox user will not have access to any files inside the `/grade` folder in the container. If it is expected that a program running in this environment have access to a specific file, access must be explicitly granted to the user. This can be done with the `change_mode()` method, which receives two arguments: the file name/path, and the mode to be set.
+به‌طور پیش‌فرض، کاربر سندباکس به هیچ فایلی درون پوشه `/grade` در کانتینر دسترسی نخواهد داشت. اگر انتظار می‌رود برنامه‌ای که در این محیط اجرا می‌شود به فایل خاصی دسترسی داشته باشد، باید این دسترسی صراحتاً به کاربر اعطا شود. این کار با استفاده از متد `change_mode()` انجام می‌شود که دو آرگومان دریافت می‌کند: نام/مسیر فایل و حالت دسترسی (Mode) که باید تنظیم شود:
 
 ```python
 self.change_mode("/grade/student/myfile.txt", "744")
 ```
 
-Any program compiled with `test_compile_file()` will be granted executable permissions (mode `755`), so these programs don't need to be explicitly allowed by your tests.
+به هر برنامه‌ای که با `test_compile_file()` کامپایل شود، مجوزهای اجرایی (حالت `755`) اعطا خواهد شد؛ بنابراین نیازی نیست دسترسی این برنامه‌ها صراحتاً توسط تست‌های شما مجاز اعلام شود.
 
-As is typical in Unix-like systems, creating new files requires write permission in the directory where the file is created. Therefore, if a program is expected to create new files in a specific directory, write permission must be granted to that directory as well. You should avoid granting write permissions to system directories, such as `/grade` or `/grade/tests`, as students may be able to bypass the sandbox environment otherwise. Instead, create specific subdirectories for student files, and grant write permission to those directories only. You may want to switch the current working directory to that directory as well, which can be done with the `os.chdir()` method.
+همان‌طور که در سیستم‌های شبه‌یونیکس متداول است، ایجاد فایل‌های جدید مستلزم داشتن مجوز نوشتن در دایرکتوری محل ایجاد فایل است. بنابراین، اگر انتظار می‌رود برنامه‌ای فایل‌های جدیدی در یک دایرکتوری خاص ایجاد کند، باید مجوز نوشتن به آن دایرکتوری نیز داده شود. باید از اعطای مجوز نوشتن به دایرکتوری‌های سیستمی مانند `/grade` یا `/grade/tests` خودداری کنید، چرا که در غیر این صورت دانشجویان ممکن است بتوانند محیط سندباکس را دور بزنند. در عوض، زیرپوشه‌های مشخصی برای فایل‌های دانشجو ایجاد کرده و فقط به همان دایرکتوری‌ها مجوز نوشتن بدهید. همچنین ممکن است بخواهید دایرکتوری کاری فعلی را به آن دایرکتوری تغییر دهید، که این کار با متد `os.chdir()` قابل انجام است:
 
 ```python
 self.run_command("mkdir -p /tmp/sbdir", sandboxed=False)
@@ -587,10 +587,10 @@ self.change_mode("/tmp/sbdir", "777")
 os.chdir("/tmp/sbdir")
 ```
 
-Note that changing the working directory also affects how student programs are invoked. This typically means that any execution of a student program must replace the typical `./` prefix with the directory where the student file was originally compiled, which by default is `/grade/student/`. For example, if the compilation process was executed before the statements above, the following command must be used to run a student program named `myprog`:
+توجه داشته باشید که تغییر دایرکتوری کاری روی نحوه فراخوانی برنامه‌های دانشجو نیز تأثیر می‌گذارد. این معمولاً به این معنی است که در هر بار اجرای برنامه دانشجو، باید پیشوند معمول `./` با دایرکتوری که فایل دانشجو در اصل در آن کامپایل شده است (که به‌طور پیش‌فرض `/grade/student/` است) جایگزین شود. به عنوان مثال، اگر فرآیند کامپایل قبل از دستورات فوق انجام شده باشد، برای اجرای برنامه دانشجویی به نام `myprog` باید از دستور زیر استفاده شود:
 
 ```python
 self.test_run("/grade/student/myprog", ...)
 ```
 
-The use of the `tempfile` library is also recommended to create temporary files and directories that the student code may use. Note that any file or directory created with this library will not be accessible to the sandbox user by default, so you must explicitly change its mode as shown above.
+همچنین استفاده از کتابخانه `tempfile` برای ایجاد فایل‌ها و دایرکتوری‌های موقتی که کد دانشجو ممکن است از آن‌ها استفاده کند، توصیه می‌شود. توجه داشته باشید که هر فایل یا دایرکتوری ایجادشده با این کتابخانه به‌طور پیش‌فرض برای کاربر سندباکس قابل دسترسی نخواهد بود، بنابراین باید همان‌طور که در بالا نشان داده شد، مجوز دسترسی آن را صراحتاً تغییر دهید.

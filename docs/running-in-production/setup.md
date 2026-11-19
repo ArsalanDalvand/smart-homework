@@ -1,30 +1,30 @@
-# Running in Production
+# اجرا در محیط عملیاتی (Production)
 
-As the PrairieLearn source code is publicly-available, it's possible to run PrairieLearn on your own infrastructure. Running a single instance of the PrairieLearn server may be appropriate for tens or hundreds of total users, and a number of universities have done this successfully.
+از آنجا که کد منبع PrairieLearn به صورت عمومی در دسترس است، اجرای PrairieLearn بر روی زیرساخت اختصاصی خودتان امکان‌پذیر است. اجرای یک نمونه (Instance) واحد از سرور PrairieLearn ممکن است برای ده‌ها یا صدها کاربر در مجموع مناسب باشد و تعدادی از دانشگاه‌ها این کار را با موفقیت انجام داده‌اند.
 
-This documentation does not cover vital information for production usage such as database backups or high availability.
+این مستندات اطلاعات حیاتی برای استفاده در محیط عملیاتی از قبیل پشتیبان‌گیری از پایگاه داده یا دسترسی‌پذیری بالا (High Availability) را پوشش نمی‌دهد.
 
-## Running in Production with Docker
+## اجرا در محیط عملیاتی با استفاده از Docker
 
-PrairieLearn can also be run in production mode in a Docker container [using Docker Compose](./docker-compose.md).
+سامانه PrairieLearn همچنین می‌تواند در حالت عملیاتی درون یک کانتینر داکر [با استفاده از Docker Compose](./docker-compose.md) اجرا شود.
 
-## Getting started
+## شروع کار
 
-Follow the steps to [install PrairieLearn natively](../dev-guide/installingNative.md), including installing dependencies. You can then run `NODE_ENV=production make start` and access PrairieLearn from port `3000`.
+مراحل [نصب PrairieLearn به صورت نیتیو](../dev-guide/installingNative.md) شامل نصب پیش‌نیازها را دنبال کنید. سپس می‌توانید دستور `NODE_ENV=production make start` را اجرا کرده و از طریق پورت `3000` به PrairieLearn دسترسی پیدا کنید.
 
-### Configuration
+### پیکربندی
 
-PrairieLearn can be configured by a `config.json` in the root of the repository. You can also provide a path to a config file when starting the server:
+پیکربندی PrairieLearn می‌تواند از طریق یک فایل `config.json` در ریشه مخزن انجام شود. همچنین می‌توانید هنگام راه‌اندازی سرور، مسیری به فایل پیکربندی مشخص نمایید:
 
 ```sh
 NODE_ENV=production node apps/prairielearn/dist/server.js --config /path/to/config.json
 ```
 
-The `config.json` file should contain appropriate overrides for the keys in [`lib/config.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/config.ts). At a minimum, you'll probably want to update the various `postgres*` options to point it at your database.
+فایل `config.json` باید شامل مقادیر بازنویسی‌شده (Overrides) مناسب برای کلیدهای موجود در [`lib/config.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/config.ts) باشد. به عنوان حداقل، احتمالاً مایل خواهید بود گزینه‌های مختلف `*postgres` را به‌روزرسانی کنید تا به پایگاه داده شما اشاره کنند.
 
-### Handling unknown SSH hosts
+### مدیریت میزبان‌های SSH ناشناخته
 
-PrairieLearn uses SSH for all Git operations — including course sync (clone/fetch/push), editor commits, and course creation from a remote repo. Connections to a new Git host may fail with a "Host key verification failed" error if the host is not in `known_hosts`. To automatically accept host keys for new hosts, set `gitSshCommand` in your `config.json`:
+سامانه PrairieLearn برای تمامی عملیات Git از پروتکل SSH استفاده می‌کند — شامل همگام‌سازی درس (clone/fetch/push)، ثبت کامیت‌های ویرایشگر، و ساخت درس از یک مخزن راه دور. اتصالات به یک میزبان گیت جدید ممکن است در صورتی که هاست در `known_hosts` نباشد، با خطای "Host key verification failed" مواجه شوند. برای پذیرش خودکار کلیدهای میزبان برای هاست‌های جدید، مقدار `gitSshCommand` را در فایل `config.json` خود تنظیم کنید:
 
 ```json title="config.json"
 {
@@ -32,7 +32,7 @@ PrairieLearn uses SSH for all Git operations — including course sync (clone/fe
 }
 ```
 
-This accepts host keys on first connection and saves them, but still rejects connections if a previously-seen host's key changes. If you need to specify both a custom SSH key and accept new hosts, combine the options:
+این تنظیم کلیدهای میزبان را در نخستین اتصال پذیرفته و ذخیره می‌کند، اما در صورتی که کلید میزبانی که قبلاً ثبت شده تغییر کند، همچنان اتصال را رد می‌نماید. اگر نیاز دارید که هم یک کلید SSH سفارشی را مشخص کنید و هم میزبان‌های جدید را بپذیرید، گزینه‌ها را ترکیب نمایید:
 
 ```json title="config.json"
 {
@@ -40,11 +40,11 @@ This accepts host keys on first connection and saves them, but still rejects con
 }
 ```
 
-### Reverse Proxy
+### پراکسی معکوس (Reverse Proxy)
 
-A reverse proxy can be implemented using something like [Apache](https://httpd.apache.org/docs/2.4/howto/reverse_proxy.html) or [NGINX](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/).
+یک پراکسی معکوس می‌تواند با ابزارهایی مانند [Apache](https://httpd.apache.org/docs/2.4/howto/reverse_proxy.html) یا [NGINX](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) پیاده‌سازی شود.
 
-In `config.json` to configure your domain add:
+در فایل `config.json` برای پیکربندی دامنه خود مقدار زیر را اضافه کنید:
 
 ```json title="config.json"
 {
@@ -52,28 +52,28 @@ In `config.json` to configure your domain add:
 }
 ```
 
-### Authentication
+### احراز هویت
 
-Read more in the [authentication documentation](./authentication.md).
+اطلاعات بیشتر را در [مستندات احراز هویت](./authentication.md) مطالعه کنید.
 
-### Admin User
+### کاربر مدیر (Admin User)
 
-You will need to be an [Admin User](./admin-user.md) to set up PrairieLearn.
+برای راه‌اندازی PrairieLearn باید یک [کاربر مدیر](./admin-user.md) باشید.
 
-## Productionalizing
+## آماده‌سازی برای محیط عملیاتی (Productionalizing)
 
-You'll likely want a load balancer in front of PrairieLearn that's bound to your own domain or subdomain. You can configure the domain via `serverCanonicalHost` in `config.json`. If your load balancer supports health checks, you can point it to `/pl/webhooks/ping`. This route will respond with a 200 if the PrairieLearn server is healthy.
+احتمالاً تمایل خواهید داشت که یک توزیع‌کننده بار (Load Balancer) در مقابل PrairieLearn قرار دهید که به دامنه یا زیردامنه شما متصل باشد. می‌توانید دامنه را از طریق `serverCanonicalHost` در `config.json` پیکربندی نمایید. اگر لود بالانسر شما از بررسی سلامت (Health Check) پشتیبانی می‌کند، می‌توانید آن را به `/pl/webhooks/ping` هدایت کنید. این مسیر در صورتی که سرور PrairieLearn در وضعیت سالم باشد، کد 200 را بازمی‌گرداند.
 
-Running a single instance of the PrairieLearn server may be appropriate for tens or hundreds of total users. However, for use cases that call for hundreds or thousands of simultaneous users, you'll likely want to scale PrairieLearn horizontally. If you're running multiple servers, you'll need to provide a [Redis cluster](https://redis.io/) and configure access to it with `redisUrl` in `config.json`. You can also enable support for chunks to deploy servers that don't need access to course Git repositories on disk; see [`lib/chunks.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/chunks.ts) to get a sense of how this works and how to configure it.
+اجرای یک نمونه منفرد از سرور PrairieLearn ممکن است در مجموع برای ده‌ها یا صدها کاربر مناسب باشد. با این حال، برای سناریوهایی که نیاز به صدها یا هزاران کاربر هم‌زمان دارند، احتمالاً مایل خواهید بود PrairieLearn را به صورت افقی (Horizontally) مقیاس‌پذیری کنید. اگر چندین سرور را اجرا می‌کنید، باید یک [کلاستر ردیس (Redis Cluster)](https://redis.io/) فراهم کرده و دسترسی به آن را از طریق `redisUrl` در فایل `config.json` پیکربندی نمایید. همچنین می‌توانید پشتیبانی از chunks (تکه‌ها) را فعال کنید تا سرورهایی را مستقر نمایید که نیازی به دسترسی به مخازن گیت دوره‌ها روی دیسک ندارند؛ برای درک نحوه عملکرد این قابلیت و چگونگی پیکربندی آن، به [`lib/chunks.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/chunks.ts) مراجعه فرمایید.
 
-If you want to use [external graders](../externalGrading.md) or [workspaces](../workspaces/index.md), you'll need to provide appropriate infrastructure and config to support them. You'll likely want to run the [grader host](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/grader-host) and [workspace host](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/workspace-host) on independent fleets of machines that can autoscale to handle bursts of traffic and that can automatically replace unhealthy hosts.
+اگر می‌خواهید از [تصحیح‌کننده‌های خارجی (External Graders)](../externalGrading.md) یا [محیط‌های کاری (Workspaces)](../workspaces/index.md) استفاده کنید، باید زیرساخت و پیکربندی مناسبی برای پشتیبانی از آن‌ها فراهم نمایید. احتمالاً تمایل خواهید داشت که [هاست نمره‌دهی (grader host)](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/grader-host) و [هاست محیط کاری (workspace host)](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/workspace-host) را روی ناوگان مستقلی از ماشین‌ها اجرا کنید که بتوانند برای مدیریت ترافیک‌های ناگهانی به صورت خودکار مقیاس‌پذیر شوند (Autoscale) و میزبان‌های ناسالم را به طور خودکار جایگزین کنند.
 
-## Upgrading
+## ارتقا دادن (Upgrading)
 
-The recommended way to deploy new versions of PrairieLearn is to shut down all running servers, run any pending database migrations, and then start the servers again.
+روش توصیه‌شده برای استقرار نسخه‌های جدید PrairieLearn این است که تمام سرورهای در حال اجرا خاموش شوند، مایگریشن‌های در انتظار پایگاه داده اجرا گردند و سپس سرورها مجدداً راه‌اندازی شوند.
 
-Zero-downtime deploys are possible (we do them on [prairielearn.com](https://www.prairielearn.com)), but they require specialized tooling, infrastructure, and operational expertise, and are thus not officially supported at this time.
+استقرارهای بدون زمان توقف (Zero-downtime deploys) امکان‌پذیر هستند (ما این کار را در [prairielearn.com](https://www.prairielearn.com) انجام می‌دهیم)، اما نیازمند ابزارهای تخصصی، زیرساخت و تخصص عملیاتی بوده و بنابراین در حال حاضر به صورت رسمی پشتیبانی نمی‌شوند.
 
-## Support
+## پشتیبانی
 
-Due to the custom nature of self-hosted installations and the difficulty associated with operating complex software in production, we do not offer any specific recommendations or guidance around deploying, operating, or scaling self-hosted installations. Over at [prairielearn.com](https://www.prairielearn.com/), we do what works best for the thousands of instructors and students who are using our hosting offering, and we'd love to work with you there once your self-hosted installation becomes a burden instead of a joy.
+با توجه به ماهیت سفارشی نصب‌های سلف‌هاستد و دشواری‌های مربوط به مدیریت نرم‌افزارهای پیچیده در محیط عملیاتی، ما هیچ توصیه یا راهنمایی خاصی پیرامون استقرار، بهره‌برداری یا مقیاس‌پذیری نمونه‌های سلف‌هاستد ارائه نمی‌دهیم. در [prairielearn.com](https://www.prairielearn.com/)، ما آنچه را که برای هزاران مدرس و دانشجو به بهترین شکل ممکن عمل می‌کند ارائه می‌دهیم، و هر زمان که نگهداری از نصب اختصاصی خودتان به جای لذت‌بخش بودن پرزحمت و دشوار شد، مشتاقانه آماده همکاری با شما در آنجا هستیم.

@@ -1,80 +1,80 @@
-# Questions
+# سوالات
 
-Questions are the basic building blocks of PrairieLearn. They are the individual problems that students will solve, and they can be combined into assessments (homeworks and exams). Questions can be simple or complex, and they can be written in a variety of ways. This document describes how to create questions, including the directory structure, metadata, HTML templates, and server-side code.
+سوالات، بلوک‌های سازنده اصلی در PrairieLearn هستند. آن‌ها مسائلی منفرد هستند که دانشجویان حل خواهند کرد و می‌توان آن‌ها را در ارزیابی‌ها (تکالیف و آزمون‌ها) ترکیب نمود. سوالات می‌توانند ساده یا پیچیده باشند و به روش‌های گوناگونی نوشته شوند. این سند نحوه ایجاد سوالات، از جمله ساختار دایرکتوری، متادیتا، قالب‌های HTML و کدهای سمت سرور را شرح می‌دهد.
 
-![A sample question](example-question.png)
+![یک سوال نمونه](example-question.png)
 
-## Question components
+## اجزای سوال
 
-A question is made up of three main components:
+یک سوال از سه جزء اصلی تشکیل شده است:
 
-1. **`info.json`**: Metadata about the question, including the question title, topic, and tags.
-2. **`question.html`**: The HTML template that defines the question. This is where you write the question text and define the input elements. Reference the [question template documentation](template.md) for more details.
-3. **`server.py`**: This is where you write the logic for generating random values, grading student responses, and any other server-side code. This file is optional, but it is necessary for any question that has non-trivial randomization or custom grading behavior. Reference the [server documentation](server.md) for more details.
+1. **`info.json`**: متادیتا درباره سوال، شامل عنوان سوال، مبحث (Topic) و برچسب‌ها (Tags).
+2. **`question.html`**: قالب HTML که سوال را تعریف می‌کند. در اینجا متن سوال را می‌نویسید و المان‌های ورودی را تعریف می‌کنید. برای جزئیات بیشتر به [مستندات قالب سوال](template.md) مراجعه کنید.
+3. **`server.py`**: در اینجا منطق تولید مقادیر تصادفی، نمره‌دهی پاسخ‌های دانشجویان و هرگونه کد سمت سرور دیگر را می‌نویسید. این فایل اختیاری است، اما برای هر سوالی که تصادفی‌سازی غیرجزئی یا رفتار نمره‌دهی سفارشی دارد ضروری است. برای جزئیات بیشتر به [مستندات سرور](server.md) مراجعه کنید.
 
-You can also include an optional `README.md` file directly in the question directory. PrairieLearn renders it as Markdown above the question on the instructor **Preview** page; it is not visible to students. Use it to document the question's intent, variants, or maintenance notes.
+همچنین می‌توانید یک فایل اختیاری `README.md` را مستقیماً در دایرکتوری سوال قرار دهید. PrairieLearn آن را به صورت Markdown در بالای سوال در صفحه **Preview** (پیش‌نمایش) مدرس رندر می‌کند؛ این فایل برای دانشجویان قابل مشاهده نیست. از آن برای مستندسازی اهداف سوال، انواع گونه‌ها (Variants) یا یادداشت‌های نگهداری استفاده کنید.
 
-## Creating a question
+## ایجاد یک سوال
 
-To create a new question through the PrairieLearn web interface:
+برای ایجاد یک سوال جدید از طریق رابط کاربری وب PrairieLearn:
 
-1. Navigate to the **Questions** tab in your course.
-2. Click the **Add question** button.
-3. Enter a title and Question ID (QID) for your new question.
-4. Choose a starting point:
-   - **Empty question**: Creates a blank question with just the essential files (`question.html` and `server.py`).
-   - **PrairieLearn template**: Start from one of PrairieLearn's pre-built question templates.
-   - **Course template**: Start from a template defined in your course. See [Custom templates](#custom-templates) for details.
-5. Click **Create question**.
+1. در درس خود به تب **Questions** بروید.
+2. روی دکمه **Add question** کلیک کنید.
+3. یک عنوان و شناسه سوال (QID) برای سوال جدید خود وارد کنید.
+4. یک نقطه شروع انتخاب کنید:
+   - **Empty question**: یک سوال خالی فقط با فایل‌های اساسی (`question.html` و `server.py`) ایجاد می‌کند.
+   - **PrairieLearn template**: از یکی از قالب‌های سوال از پیش ساخته شده PrairieLearn شروع کنید.
+   - **Course template**: از قالبی که در درس شما تعریف شده است شروع کنید. برای جزئیات بیشتر [قالب‌های سفارشی](#custom-templates) را ببینید.
+5. روی **Create question** کلیک کنید.
 
 !!! tip
 
-    Avoid using term names (e.g. `Spring20/questionName`) or assessment names (e.g. `exam3/question12`) in your question ID, as these can make it harder to find and reuse questions across assessments and terms. One potential folder structure you could consider is `topic/subtopic/question`.
+    از استفاده از نام ترم‌ها (مانند `Spring20/questionName`) یا نام ارزیابی‌ها (مانند `exam3/question12`) در شناسه سوال (QID) خود خودداری کنید، زیرا این کار یافتن و استفاده مجدد از سوالات را در بین ارزیابی‌ها و ترم‌های مختلف دشوارتر می‌کند. یک ساختار پوشه‌ای مناسب که می‌توانید در نظر بگیرید `topic/subtopic/question` است.
 
-## Directory structure
+## ساختار دایرکتوری
 
-Questions are all stored inside the `questions` directory (or any subfolder) for a course. Each question is a single directory that contains all the files for that question. The name of the full question directory relative to `questions` is the QID (the "question ID") for that question. For example, here are three different questions:
+سوالات همگی در داخل دایرکتوری `questions` (یا هر زیرپوشه‌ای) از یک درس ذخیره می‌شوند. هر سوال یک دایرکتوری مستقل است که تمام فایل‌های مربوط به آن سوال را در بر می‌گیرد. نام دایرکتوری کامل سوال نسبت به `questions` همان QID (شناسه سوال) برای آن سوال است. برای مثال، در اینجا سه سوال متفاوت آمده است:
 
 ```text
 questions
 |
-|-- fossilFuelsRadio          # first question, id is "fossilFuelsRadio"
+|-- fossilFuelsRadio          # اولین سوال، شناسه "fossilFuelsRadio" است
 |   |
-|   +-- info.json             # metadata for the fossilFuelsRadio question
-|   +-- server.py             # secret server-side code (optional)
-|   `-- question.html         # HTML template for the question
+|   +-- info.json             # متادیتا برای سوال fossilFuelsRadio
+|   +-- server.py             # کد محرمانه سمت سرور (اختیاری)
+|   `-- question.html         # قالب HTML برای سوال
 |
-|-- addVectors                # second question, id is "addVectors"
+|-- addVectors                # دومین سوال، شناسه "addVectors" است
 |   |
-|   +-- info.json             # metadata for the addVectors question
+|   +-- info.json             # متادیتا برای سوال addVectors
 |   +-- server.py
 |   +-- question.html
-|   +-- notes.docx            # more files, like notes on how the question works
-|   +-- solution.docx         # these are secret (can't be seen by students)
+|   +-- notes.docx            # فایل‌های بیشتر، مانند یادداشت‌هایی درباره نحوه کار سوال
+|   +-- solution.docx         # این‌ها محرمانه هستند (توسط دانشجویان دیده نمی‌شوند)
 |   |
-|   +-- clientFilesQuestion/  # Files accessible to the client (web browser)
-|   |   `-- fig1.png          # A client file (an image)
+|   +-- clientFilesQuestion/  # فایل‌های قابل دسترس برای کلاینت (مرورگر وب)
+|   |   `-- fig1.png          # یک فایل کلاینت (یک تصویر)
 |   |
-|   +-- tests/                # external grading files (see other doc)
+|   +-- tests/                # فایل‌های نمره‌دهی خارجی (سند دیگر را ببینید)
 |       `-- ...
 |
-`-- subfolder                 # a subfolder we can put questions in -- this itself can't be a question
+`-- subfolder                 # یک زیرپوشه که می‌توانیم سوالات را در آن قرار دهیم -- این خودش نمی‌تواند یک سوال باشد
     |
-    `-- nestedQuestion        # third question, id is "subfolder/nestedQuestion"
+    `-- nestedQuestion        # سومین سوال، شناسه "subfolder/nestedQuestion" است
         |
-        +-- info.json         # metadata for the "subfolder/nestedQuestion" question
+        +-- info.json         # متادیتا برای سوال "subfolder/nestedQuestion"
         `-- question.html
 ```
 
-PrairieLearn assumes independent questions; nothing ties them together. However, each question could have multiple parts (inputs that are validated together).
+PrairieLearn سوالات را مستقل فرض می‌کند؛ هیچ چیز آن‌ها را به هم پیوند نمی‌دهد. با این حال، هر سوال می‌تواند چندین بخش داشته باشد (ورودی‌هایی که با هم اعتبارسنجی می‌شوند).
 
 !!! info
 
-    An extensive library of example questions can be found under the [`exampleCourse/questions`](https://github.com/PrairieLearn/PrairieLearn/blob/master/exampleCourse/questions) directory of PrairieLearn. You can also view these questions by [running PrairieLearn locally](../installing.md/#running-instructions).
+    مجموعه گسترده‌ای از سوالات نمونه را می‌توان در دایرکتوری [`exampleCourse/questions`](https://github.com/PrairieLearn/PrairieLearn/blob/master/exampleCourse/questions) در PrairieLearn پیدا کرد. شما همچنین می‌توانید این سوالات را با [اجرای محلی PrairieLearn](../installing.md/#running-instructions) مشاهده کنید.
 
-## Metadata (`info.json`)
+## متادیتا (`info.json`)
 
-The `info.json` file for each question defines properties of the question. For example:
+فایل `info.json` برای هر سوال، ویژگی‌های آن سوال را تعریف می‌کند. برای مثال:
 
 ```json title="info.json"
 {
@@ -88,33 +88,33 @@ The `info.json` file for each question defines properties of the question. For e
 }
 ```
 
-| Property                 | Type    | Description                                                                                                                                                                                                                     |
-| ------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `uuid`                   | string  | [Unique identifier](../uuid.md). (Required; no default)                                                                                                                                                                         |
-| `type`                   | enum    | Type of the question. Must be `"v3"` for new-style questions. (Required; no default)                                                                                                                                            |
-| `title`                  | string  | The title of the question (e.g., `"Addition of vectors in Cartesian coordinates"`). (Required; no default)                                                                                                                      |
-| `topic`                  | string  | The category of question (e.g., `"Vectors"`, `"Energy"`). Like the chapter in a textbook. (Required; no default)                                                                                                                |
-| `tags`                   | array   | Optional extra tags associated with the question (e.g., `["secret", "concept"]`). (Optional; default: no tags)                                                                                                                  |
-| `authors`                | array   | UIDs of the question authors, as an array of nonblank strings. UIDs need not match existing accounts or routable email addresses. Surrounding whitespace is trimmed and duplicates are ignored. (Optional; default: no authors) |
-| `gradingMethod`          | enum    | The grading method used for auto-grading this question. Valid values: `Internal`, `External`, or `Manual` (for manual-only questions). (Optional; default: `Internal`)                                                          |
-| `singleVariant`          | boolean | Whether the question is not randomized and only generates a single variant. (Optional; default: `false`)                                                                                                                        |
-| `showCorrectAnswer`      | boolean | Whether the question should display the answer panel. (Optional; default: `true`)                                                                                                                                               |
-| `partialCredit`          | boolean | Whether the question will give partial points for fractional scores. (Optional; default: `true`)                                                                                                                                |
-| `externalGradingOptions` | object  | Options for externally graded questions. See the [external grading docs](../externalGrading.md). (Optional; default: none)                                                                                                      |
-| `dependencies`           | object  | External JavaScript or CSS dependencies to load. See below. (Optional; default: `{}`)                                                                                                                                           |
-| `preferences`            | object  | A schema defining [question preferences](preferences.md) that can be overridden per-assessment. (Optional; default: none)                                                                                                       |
-| `sharePublicly`          | boolean | Whether the question should be available for anyone to preview or use in their course                                                                                                                                           |
-| `shareSourcePublicly`    | boolean | Whether the source code of the question should be available                                                                                                                                                                     |
-| `sharingSets`            | array   | Sharing sets which the question belongs to                                                                                                                                                                                      |
-| `copiedFrom`             | string  | Identifies the source of a copied question. See [Question-copy provenance](../contentSharing.md#question-copy-provenance). (Optional; default: none)                                                                            |
+| ویژگی | نوع | توضیحات |
+| --- | --- | --- |
+| `uuid` | string | [شناسه یکتا](../uuid.md). (اجباری؛ بدون مقدار پیش‌فرض) |
+| `type` | enum | نوع سوال. برای سوالات سبک جدید باید `"v3"` باشد. (اجباری؛ بدون مقدار پیش‌فرض) |
+| `title` | string | عنوان سوال (مثلاً `"Addition of vectors in Cartesian coordinates"`). (اجباری؛ بدون مقدار پیش‌فرض) |
+| `topic` | string | دسته‌بندی سوال (مثلاً `"Vectors"`، `"Energy"`). مشابه فصل در یک کتاب درسی. (اجباری؛ بدون مقدار پیش‌فرض) |
+| `tags` | array | برچسب‌های اضافی و اختیاری مرتبط با سوال (مثلاً `["secret", "concept"]`). (اختیاری؛ پیش‌فرض: بدون برچسب) |
+| `authors` | array | شناسه‌های UID نویسندگان سوال، به صورت آرایه‌ای از رشته‌های غیرخالی. نیازی نیست شناسه‌های UID با حساب‌های کاربری موجود یا آدرس‌های ایمیل قابل ارسال مطابقت داشته باشند. فاصله‌های سفید ابتدا و انتها حذف می‌شوند و موارد تکراری نادیده گرفته می‌شوند. (اختیاری؛ پیش‌فرض: بدون نویسنده) |
+| `gradingMethod` | enum | روش نمره‌دهی مورد استفاده برای نمره‌دهی خودکار این سوال. مقادیر معتبر: `Internal`، `External`، یا `Manual` (برای سوالات صرفاً دستی). (اختیاری؛ پیش‌فرض: `Internal`) |
+| `singleVariant` | boolean | اینکه آیا سوال تصادفی‌سازی نشده است و فقط یک گونه (Variant) تولید می‌کند یا خیر. (اختیاری؛ پیش‌فرض: `false`) |
+| `showCorrectAnswer` | boolean | اینکه آیا سوال باید پنل پاسخ را نمایش دهد یا خیر. (اختیاری؛ پیش‌فرض: `true`) |
+| `partialCredit` | boolean | اینکه آیا سوال برای نمرات کسری، نمره بخشی اعطا می‌کند یا خیر. (اختیاری؛ پیش‌فرض: `true`) |
+| `externalGradingOptions` | object | گزینه‌ها برای سوالات دارای نمره‌دهی خارجی. به [مستندات نمره‌دهی خارجی](../externalGrading.md) مراجعه کنید. (اختیاری؛ پیش‌فرض: ندارد) |
+| `dependencies` | object | وابستگی‌های خارجی JavaScript یا CSS که باید بارگذاری شوند. بخش زیر را ببینید. (اختیاری؛ پیش‌فرض: `{}`) |
+| `preferences` | object | یک طرح‌واره که [ترجیحات سوال](preferences.md) را تعریف می‌کند و می‌تواند به ازای هر ارزیابی بازنویسی (Override) شود. (اختیاری؛ پیش‌فرض: ندارد) |
+| `sharePublicly` | boolean | اینکه آیا سوال باید برای پیش‌نمایش یا استفاده توسط هر کسی در درس خود در دسترس باشد یا خیر |
+| `shareSourcePublicly` | boolean | اینکه آیا سورس کد سوال باید در دسترس عموم باشد یا خیر |
+| `sharingSets` | array | مجموعه‌های اشتراک‌گذاری که سوال به آن‌ها تعلق دارد |
+| `copiedFrom` | string | منبع یک سوال کپی‌شده را مشخص می‌کند. به [اصالت کپی سوال](../contentSharing.md#question-copy-provenance) مراجعه کنید. (اختیاری؛ پیش‌فرض: ندارد) |
 
-!!! note "Local development note"
+!!! note "یادداشت توسعه محلی"
 
-    Any time you edit a question `info.json` file on a local copy of PrairieLearn, you need to click “Load from disk” to reload the changes. Most edits to HTML or Python files will be picked up by reloading the page. However, if you made changes to question generation or element arguments, you might also need to generate a new variant.
+    هر زمان که یک فایل `info.json` سوال را در یک نسخه محلی PrairieLearn ویرایش می‌کنید، باید روی "Load from disk" کلیک کنید تا تغییرات مجدداً بارگذاری شوند. اکثر ویرایش‌های فایل‌های HTML یا Python با بارگذاری مجدد صفحه اعمال می‌شوند. با این حال، اگر تغییراتی در نحوه تولید سوال یا آرگومان‌های المان‌ها ایجاد کرده‌اید، ممکن است لازم باشد یک گونه جدید نیز ایجاد کنید.
 
-### Question Sharing
+### اشتراک‌گذاری سوال
 
-Any question that is marked with `"shareSourcePublicly": true` will be considered and displayed as being published for free use under the [CC-BY-NC](https://www.creativecommons.org/licenses/by-nc/4.0/) license. Any question that is marked with `"sharePublicly": true` will be considered and displayed as being published for free use under the [CC-BY-NC-ND](https://creativecommons.org/licenses/by-nc-nd/4.0/) license. Questions may be privately shared to individual courses using sharing sets, as explained in the [sharing documentation](../contentSharing.md). Sharing sets that a question belongs to are specified as a list of strings. These must match sharing sets that are declared in the [course configuration](../course/index.md#adding-sharing-sets).
+هر سوالی که با `"shareSourcePublicly": true` علامت‌گذاری شده باشد، به عنوان اثری منتشرشده برای استفاده رایگان تحت مجوز [CC-BY-NC](https://www.creativecommons.org/licenses/by-nc/4.0/) در نظر گرفته شده و نمایش داده می‌شود. هر سوالی که با `"sharePublicly": true` علامت‌گذاری شده باشد، به عنوان اثری منتشرشده برای استفاده رایگان تحت مجوز [CC-BY-NC-ND](https://creativecommons.org/licenses/by-nc-nd/4.0/) در نظر گرفته شده و نمایش داده می‌شود. سوالات را می‌توان با استفاده از مجموعه‌های اشتراک‌گذاری (Sharing sets) به صورت خصوصی با درس‌های خاصی به اشتراک گذاشت، همان‌طور که در [مستندات اشتراک‌گذاری](../contentSharing.md) توضیح داده شده است. مجموعه‌های اشتراک‌گذاری که یک سوال به آن‌ها تعلق دارد به صورت لیستی از رشته‌ها مشخص می‌شوند. این موارد باید با مجموعه‌های اشتراک‌گذاری تعریف‌شده در [پیکربندی درس](../course/index.md#adding-sharing-sets) مطابقت داشته باشند.
 
 ```json title="info.json"
 {
@@ -122,9 +122,9 @@ Any question that is marked with `"shareSourcePublicly": true` will be considere
 }
 ```
 
-### Question Authorship
+### نویسندگی سوال (Authorship)
 
-List the UIDs or ORCID URLs of the people who contributed to this question in `authors` (at most 100 entries):
+شناسه‌های UID یا نشانی‌های اینترنتی ORCID افرادی را که در این سوال مشارکت داشته‌اند در `authors` فهرست کنید (حداکثر ۱۰۰ مورد):
 
 ```json
 {
@@ -132,19 +132,19 @@ List the UIDs or ORCID URLs of the people who contributed to this question in `a
 }
 ```
 
-UIDs are identifiers, not display names or necessarily email addresses. Any UID may be credited, even if the person has no PrairieLearn account or is no longer on course staff. UIDs are stored as declared and are not automatically changed when an account's UID changes. Update the question's `info.json` if an author's UID changes.
+شناسه‌های UID شناسه هستند، نه نام نمایشی یا لزوماً آدرس ایمیل. هر UID می‌تواند درج شود، حتی اگر فرد حسابی در PrairieLearn نداشته باشد یا دیگر جزو کادر آموزشی درس نباشد. شناسه‌های UID همان‌طور که اعلان شده‌اند ذخیره می‌شوند و هنگامی که UID یک حساب تغییر می‌کند، به طور خودکار تغییر نمی‌یابند. در صورتی که UID یک نویسنده تغییر کند، فایل `info.json` سوال را به‌روزرسانی کنید.
 
-Use the full ORCID URL in the form `https://orcid.org/0000-0002-1825-0097`. It is displayed as a link without verifying ownership or connecting it to a PrairieLearn account. A UID and an ORCID for the same person remain separate entries.
+از URL کامل ORCID به فرم `https://orcid.org/0000-0002-1825-0097` استفاده کنید. این مقدار به عنوان یک لینک بدون راستی‌آزمایی مالکیت یا اتصال آن به حساب PrairieLearn نمایش داده می‌شود. یک UID و یک ORCID برای همان شخص به عنوان ورودی‌های جداگانه باقی می‌مانند.
 
-Authors can also be added and removed on the question's **Settings** page, including using **Add myself**. Names are shown only for current course staff; other authors are displayed by UID. Editing authors and saving settings writes the identifier array to `info.json` through the normal course file editor.
+نویسندگان را می‌توان در صفحه **Settings** سوال نیز اضافه و حذف کرد، از جمله با استفاده از **Add myself**. نام‌ها فقط برای کادر آموزشی فعلی درس نشان داده می‌شوند؛ سایر نویسندگان با UID نمایش داده می‌شوند. ویرایش نویسندگان و ذخیره تنظیمات، آرایه شناسه‌ها را از طریق ویرایشگر عادی فایل درس در `info.json` می‌نویسد.
 
-The old object format (`name`, `email`, `orcid`, and `originCourse`) is no longer supported. Replace legacy objects with UID strings or full ORCID URLs in `info.json`; they are not converted automatically during sync.
+فرمت قدیمی شیء (`name`، `email`، `orcid` و `originCourse`) دیگر پشتیبانی نمی‌شود. اشیاء قدیمی را در `info.json` با رشته‌های UID یا نشانی‌های اینترنتی کامل ORCID جایگزین کنید؛ آن‌ها در طول همگام‌سازی (Sync) به صورت خودکار تبدیل نمی‌شوند.
 
-### Question Dependencies
+### وابستگی‌های سوال (Question Dependencies)
 
-Your question can load client-side assets such as scripts or stylesheets from different sources. A full list of dependencies will be compiled based on the question's needs and any dependencies needed by page elements, then they will be deduplicated and loaded onto the page.
+سوال شما می‌تواند دارایی‌های سمت کلاینت مانند اسکریپت‌ها یا استایل‌شیت‌ها را از منابع مختلف بارگذاری کند. لیست کاملی از وابستگی‌ها بر اساس نیازهای سوال و هرگونه وابستگی مورد نیاز المان‌های صفحه تدوین شده، سپس موارد تکراری حذف و بر روی صفحه بارگذاری می‌شوند.
 
-These dependencies are specified in the `info.json` file, and can be configured as follows:
+این وابستگی‌ها در فایل `info.json` مشخص می‌شوند و می‌توان آن‌ها را به صورت زیر پیکربندی کرد:
 
 ```json title="info.json"
 {
@@ -157,45 +157,45 @@ These dependencies are specified in the `info.json` file, and can be configured 
 }
 ```
 
-The different types of dependency properties available are summarized in this table:
+انواع مختلف ویژگی‌های وابستگی موجود در این جدول خلاصه شده‌اند:
 
-| Property                     | Description                                                                                       |
-| ---------------------------- | ------------------------------------------------------------------------------------------------- |
-| `nodeModulesStyles`          | The styles required by this question, relative to `[PrairieLearn directory]/node_modules`.        |
-| `nodeModulesScripts`         | The scripts required by this question, relative to `[PrairieLearn directory]/node_modules`.       |
-| `clientFilesQuestionStyles`  | The styles required by this question relative to the question's `clientFilesQuestion` directory.  |
-| `clientFilesQuestionScripts` | The scripts required by this question relative to the question's `clientFilesQuestion` directory. |
-| `clientFilesCourseStyles`    | The styles required by this question relative to `[course directory]/clientFilesCourse`.          |
-| `clientFilesCourseScripts`   | The scripts required by this question relative to `[course directory]/clientFilesCourse`.         |
+| ویژگی | توضیحات |
+| --- | --- |
+| `nodeModulesStyles` | استایل‌های مورد نیاز این سوال، نسبت به `[PrairieLearn directory]/node_modules`. |
+| `nodeModulesScripts` | اسکریپت‌های مورد نیاز این سوال، نسبت به `[PrairieLearn directory]/node_modules`. |
+| `clientFilesQuestionStyles` | استایل‌های مورد نیاز این سوال نسبت به دایرکتوری `clientFilesQuestion` سوال. |
+| `clientFilesQuestionScripts` | اسکریپت‌های مورد نیاز این سوال نسبت به دایرکتوری `clientFilesQuestion` سوال. |
+| `clientFilesCourseStyles` | استایل‌های مورد نیاز این سوال نسبت به `[course directory]/clientFilesCourse`. |
+| `clientFilesCourseScripts` | اسکریپت‌های مورد نیاز این سوال نسبت به `[course directory]/clientFilesCourse`. |
 
-Additional details about how to access these fields from `server.py` can be found in the [clientFiles and serverFiles documentation](../clientServerFiles.md#accessing-files-from-serverpy-question-code).
+جزئیات بیشتر درباره نحوه دسترسی به این فیلدها از `server.py` را می‌توانید در [مستندات clientFiles و serverFiles](../clientServerFiles.md#accessing-files-from-serverpy-question-code) بیابید.
 
 !!! warning
 
-    Keep in mind that node module dependencies should be avoided, as they may be updated without warning, which in some cases may break your question. More information can be found in the [element developer guide](../devElements.md#using-node-dependencies-in-element-code).
+    به یاد داشته باشید که از وابستگی‌های node module باید اجتناب شود، زیرا ممکن است بدون اطلاع قبلی به‌روزرسانی شوند که در برخی موارد ممکن است سوال شما را با مشکل مواجه کند. اطلاعات بیشتر را می‌توانید در [راهنمای توسعه‌دهنده المان](../devElements.md#using-node-dependencies-in-element-code) بیابید.
 
-### Non-randomized questions
+### سوالات غیرتصادفی
 
-While it is recommended that all questions contain random parameters, sometimes it is impractical to do this. For questions that don't have a meaningful amount of randomization in them, the `info.json` file should set `"singleVariant": true`. This has the following effects:
+اگرچه توصیه می‌شود که تمام سوالات حاوی پارامترهای تصادفی باشند، گاهی اوقات این کار عملی نیست. برای سوالاتی که مقدار معناداری از تصادفی‌سازی در آن‌ها وجود ندارد، فایل `info.json` باید `"singleVariant": true` را تنظیم کند. این کار اثرات زیر را به همراه دارد:
 
-- On `Homework`-type assessments, each student will only ever be given one variant of the question, which they can repeatedly attempt without limit. The correct answer will never be shown to students.
-- On `Exam`-type assessments, all questions are effectively single-variant, so the `singleVariant` option has no effect.
+- در ارزیابی‌های نوع `Homework` (تکلیف)، به هر دانشجو فقط یک گونه از سوال داده می‌شود که می‌توانند آن را بدون محدودیت مکرراً امتحان کنند. پاسخ صحیح هرگز به دانشجویان نشان داده نخواهد شد.
+- در ارزیابی‌های نوع `Exam` (آزمون)، همه سوالات عملاً تک‌گونه هستند، بنابراین گزینه `singleVariant` تأثیری ندارد.
 
-### Partial credit
+### نمره بخشی (Partial credit)
 
-By default, all questions award partial credit. For example, if there are two numeric answers in a question and only one of them is correct, the student will be awarded 50% of the available points.
+به‌طور پیش‌فرض، همه سوالات نمره بخشی اعطا می‌کنند. به عنوان مثال، اگر دو پاسخ عددی در یک سوال وجود داشته باشد و تنها یکی از آن‌ها صحیح باشد، ۵۰٪ از نمرات موجود به دانشجو تعلق می‌گیرد.
 
-To disable partial credit for a question, set `"partialCredit": false` in the `info.json` file for the question. This will mean that the question will either give 0% or 100%, and it will only give 100% if every element on the page is fully correct. This setting only affects points obtained from auto-grading (internal or external grading), and does not affect manual grading or AI grading. Some [question elements](../elements/index.md) also provide more fine-grained control over partial credit.
+برای غیرفعال کردن نمره بخشی در یک سوال، مقدار `"partialCredit": false` را در فایل `info.json` سوال تنظیم کنید. این بدان معناست که سوال یا ۰٪ یا ۱۰۰٪ خواهد داد، و تنها در صورتی ۱۰۰٪ می‌دهد که هر المان روی صفحه کاملاً درست باشد. این تنظیم تنها بر نمرات به‌دست‌آمده از نمره‌دهی خودکار (نمره‌دهی داخلی یا خارجی) تأثیر می‌گذارد و بر نمره‌دهی دستی یا نمره‌دهی با هوش مصنوعی تأثیری ندارد. برخی از [المان‌های سوال](../elements/index.md) نیز کنترل دقیق‌تری بر نمره بخشی ارائه می‌دهند.
 
-In general, it is _strongly_ recommended to leave partial credit enabled for all questions.
+به‌طور کلی، _اکیداً_ توصیه می‌شود که نمره بخشی برای همه سوالات فعال بماند.
 
 !!! info
 
-    See the [reference for `infoQuestion.json`](../schemas/infoQuestion.md) for an exhaustive list of all the properties available, and their schemas.
+    برای مشاهده لیست کاملی از تمام ویژگی‌های موجود و طرح‌واره‌های آن‌ها، به [مرجع `infoQuestion.json`](../schemas/infoQuestion.md) مراجعه کنید.
 
-## HTML (`question.html`)
+## کد HTML (`question.html`)
 
-The `question.html` is a template used to render the question to the student. A complete `question.html` example looks like:
+فایل `question.html` قالبی است که برای نمایش سوال به دانشجو استفاده می‌شود. یک نمونه کامل از `question.html` به شکل زیر است:
 
 ```html title="question.html"
 <pl-question-panel>
@@ -217,24 +217,24 @@ The `question.html` is a template used to render the question to the student. A 
 </p>
 ```
 
-The `question.html` is regular HTML, with a few special features:
+فایل `question.html` یک HTML معمولی است، با چند ویژگی خاص:
 
-1. Any text in double-curly-braces (like `{{params.m}}`) is substituted with variable values using [Mustache](https://mustache.github.io/mustache.5.html). These parameters are typically defined by a [question's `server.py`](#custom-generation-and-grading-serverpy).
-2. Special HTML elements (like [`<pl-number-input>`](../elements/pl-number-input.md)) enable input and formatted output. A student's submission is composed of the answers they provide to the question elements. See the [list of PrairieLearn elements](../elements/index.md).
+1. هر متنی در آکولادهای دوتایی (مانند `{{params.m}}`) با مقادیر متغیرها با استفاده از [Mustache](https://mustache.github.io/mustache.5.html) جایگزین می‌شود. این پارامترها معمولاً توسط [`server.py` یک سوال](#custom-generation-and-grading-serverpy) تعریف می‌شوند.
+2. المان‌های ویژه HTML (مانند [`<pl-number-input>`](../elements/pl-number-input.md)) ورودی و خروجی قالب‌بندی‌شده را امکان‌پذیر می‌سازند. پاسخ ارسالی دانشجو از پاسخ‌هایی تشکیل می‌شود که به المان‌های سوال ارائه می‌دهد. [لیست المان‌های PrairieLearn](../elements/index.md) را ببینید.
 
-   :warning: **All submission elements must have unique `answers-name` attributes.** This is necessary for questions to be graded properly.
+   :warning: **تمام المان‌های پاسخ ارسالی باید دارای ویژگی‌های `answers-name` یکتا باشند.** این امر برای نمره‌دهی صحیح سوالات ضروری است.
 
-3. A special `<markdown>` tag allows you to write Markdown inline in questions.
-4. LaTeX equations are available within HTML by using `$x^2$` for inline equations, and `$$x^2$$` or `\[x^2\]` for display equations.
-5. Special layout elements like [`<pl-question-panel>`](../elements/pl-question-panel.md) and [`<pl-answer-panel>`](../elements/pl-answer-panel.md) can be used to show content to students in different contexts.
+3. یک تگ ویژه `<markdown>` به شما امکان می‌دهد در داخل سوالات به صورت درون‌خطی Markdown بنویسید.
+4. معادلات LaTeX در داخل HTML با استفاده از `$x^2$` برای معادلات درون‌خطی و `$$x^2$$` یا `\[x^2\]` برای معادلات نمایشی در دسترس هستند.
+5. المان‌های چیدمان ویژه مانند [`<pl-question-panel>`](../elements/pl-question-panel.md) و [`<pl-answer-panel>`](../elements/pl-answer-panel.md) را می‌توان برای نمایش محتوا به دانشجویان در زمینه‌ها و شرایط مختلف استفاده کرد.
 
 !!! info
 
-    More details about these features and information about `question.html` is in the [question template documentation](template.md).
+    جزئیات بیشتر درباره این ویژگی‌ها و اطلاعات مربوط به `question.html` در [مستندات قالب سوال](template.md) آمده است.
 
-## Custom generation and grading (`server.py`)
+## تولید و نمره‌دهی سفارشی (`server.py`)
 
-The `server.py` file for each question creates randomized question variants by generating random parameters and the corresponding correct answers. A minimal `server.py` might set random parameters and calculate correct answers based on those parameters, while using the built-in grading ability of the PrairieLearn elements to grade the student's submission. More complex questions may use `server.py` to provide custom parsing and grading functionality, or randomized images and files.
+فایل `server.py` برای هر سوال، با تولید پارامترهای تصادفی و پاسخ‌های صحیح مربوطه، گونه‌های تصادفی سوال را ایجاد می‌کند. یک `server.py` حداقلی می‌تواند پارامترهای تصادفی را تنظیم کرده و پاسخ‌های صحیح را بر اساس آن پارامترها محاسبه کند، در حالی که از قابلیت نمره‌دهی داخلی المان‌های PrairieLearn برای نمره‌دهی پاسخ ارسالی دانشجو استفاده می‌کند. سوالات پیچیده‌تر ممکن است از `server.py` برای ارائه قابلیت‌های پارس کردن و نمره‌دهی سفارشی، یا تصاویر و فایل‌های تصادفی‌سازی‌شده استفاده کنند.
 
 ```python title="server.py"
 import random
@@ -251,26 +251,26 @@ def generate(data):
 
 !!! info
 
-    More information about `server.py`, custom grading, and more can be found in the [server.py documentation](server.md).
+    اطلاعات بیشتر درباره `server.py`، نمره‌دهی سفارشی و موارد دیگر را می‌توانید در [مستندات server.py](server.md) بیابید.
 
-## Grading student answers
+## نمره‌دهی پاسخ‌های دانشجو
 
-Elements like [`pl-multiple-choice`](../elements/pl-multiple-choice.md) or [`pl-checkbox`](../elements/pl-checkbox.md), which aren't freeform answers, are automatically graded based on the element parameters. For other elements, like [`pl-number-input`](../elements/pl-number-input.md) and [`pl-string-input`](../elements/pl-string-input.md), which have students input an answer of their choosing, there are four different methods of auto-grading the student answer:
+المان‌هایی مانند [`pl-multiple-choice`](../elements/pl-multiple-choice.md) یا [`pl-checkbox`](../elements/pl-checkbox.md) که پاسخ‌های تشریحی و آزاد نیستند، به طور خودکار بر اساس پارامترهای المان نمره‌دهی می‌شوند. برای سایر المان‌ها مانند [`pl-number-input`](../elements/pl-number-input.md) و [`pl-string-input`](../elements/pl-string-input.md) که دانشجویان در آن‌ها پاسخی را به انتخاب خود وارد می‌کنند، چهار روش مختلف برای نمره‌دهی خودکار پاسخ دانشجو وجود دارد:
 
-1. Set the correct answer using the correct-answer attributes for each element in `question.html`. This will use the built-in grading methods for each element. This option is typically used for answers with a hard-coded value (i.e. if `"singleVariant": true` in `info.json`), and is not expected to be used in most randomized questions.
+1. پاسخ صحیح را با استفاده از ویژگی‌های پاسخ صحیح (correct-answer) برای هر المان در `question.html` تنظیم کنید. این کار از روش‌های نمره‌دهی توکار برای هر المان استفاده می‌کند. این گزینه معمولاً برای پاسخ‌هایی با مقدار هاردکدشده استفاده می‌شود (یعنی اگر در `info.json` مقدار `"singleVariant": true` باشد)، و انتظار نمی‌رود در اکثر سوالات تصادفی استفاده شود.
 
-2. Set `data["correct_answers"][VAR_NAME]` in `server.py`. This is for questions where you can pre-compute a single correct answer based on the (randomized) parameters.
+2. مقدار `data["correct_answers"][VAR_NAME]` را در `server.py` تنظیم کنید. این برای سوالاتی است که می‌توانید یک پاسخ صحیح واحد را بر اساس پارامترهای (تصادفی‌سازی‌شده) از پیش محاسبه کنید.
 
-3. Write a [custom grading function](./server.md#step-5-grade) in `server.py` that checks `data["submitted_answers"][VAR_NAME]` and sets scores. This supports a variety of alternative grading options, including having multiple correct answers, testing properties of the submitted answer for correctness, compute correct answers of some elements based on the value of other elements, etc.
+3. یک [تابع نمره‌دهی سفارشی](./server.md#step-5-grade) در `server.py` بنویسید که `data["submitted_answers"][VAR_NAME]` را بررسی کرده و نمرات را تنظیم کند. این روش از گزینه‌های متنوعی از نمره‌دهی جایگزین پشتیبانی می‌کند، از جمله داشتن چندین پاسخ صحیح، آزمایش ویژگی‌های پاسخ ارسالی برای درستی، محاسبه پاسخ‌های صحیح برخی المان‌ها بر اساس مقدار المان‌های دیگر و غیره.
 
-4. Write an [external grader](../externalGrading.md), though this is typically applied to more complex questions like coding.
+4. یک [نمره‌دهنده خارجی (External grader)](../externalGrading.md) بنویسید، هرچند این روش معمولاً برای سوالات پیچیده‌تر مانند کدنویسی به کار می‌رود.
 
-If a question uses more than one method for grading, options 3 and 4 override options 1 and 2. If you grade a question using a custom grading function (option 3) or an external grader (option 4), you are still strongly encouraged to provide a possible correct answer so that students can see it in the answer panel. More details about providing feedback on student answers can be found in the `"answer"` panel section of the [question template documentation](template.md#answer-panel).
+اگر سوالی از بیش از یک روش برای نمره‌دهی استفاده کند، گزینه‌های ۳ و ۴ گزینه‌های ۱ و ۲ را بازنویسی (Override) می‌کنند. اگر سوالی را با استفاده از یک تابع نمره‌دهی سفارشی (گزینه ۳) یا یک نمره‌دهنده خارجی (گزینه ۴) نمره‌دهی می‌کنید، باز هم اکیداً توصیه می‌شود یک پاسخ صحیح ممکن را ارائه دهید تا دانشجویان بتوانند آن را در پنل پاسخ ببینند. جزئیات بیشتر درباره ارائه بازخورد در مورد پاسخ‌های دانشجو را می‌توانید در بخش پنل `"answer"` از [مستندات قالب سوال](template.md#answer-panel) بیابید.
 
-## Accessibility
+## دسترس‌پذیری
 
-See the [question accessibility documentation](accessibility.md) for more information about how to ensure your questions are accessible to all students, including those using screen readers or other assistive technologies.
+برای کسب اطلاعات بیشتر در مورد نحوه اطمینان از دسترس‌پذیر بودن سوالات شما برای همه دانشجویان، از جمله کسانی که از صفحه‌خوان‌ها یا سایر فناوری‌های کمکی استفاده می‌کنند، به [مستندات دسترس‌پذیری سوال](accessibility.md) مراجعه کنید.
 
-## Custom templates
+## قالب‌های سفارشی
 
-Creating a question with a QID starting with `template/` will create a question that will be presented as a template option when [creating a question](#creating-a-question). This should allow instructors to create course-specific patterns, conventions, or grading processes that can then be adopted by new questions.
+ایجاد یک سوال با QID که با `template/` شروع می‌شود، سوالی ایجاد می‌کند که هنگام [ایجاد یک سوال](#creating-a-question) به عنوان یک گزینه قالب نمایش داده خواهد شد. این کار به مدرسان امکان می‌دهد الگوها، قراردادها یا فرآیندهای نمره‌دهی مختص درس را ایجاد کنند که سپس می‌تواند توسط سوالات جدید به کار گرفته شود.

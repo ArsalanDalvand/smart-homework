@@ -1,109 +1,108 @@
-# Using Docker Compose
+# استفاده از Docker Compose
 
-This page documents the basic steps to use Docker Compose to run PrairieLearn. It does not cover vital information for production usage such as database backups or high availability.
+این صفحه مراحل اولیه استفاده از Docker Compose را برای اجرای PrairieLearn مستند می‌کند. این مستندات شامل اطلاعات حیاتی برای استفاده در محیط عملیاتی (Production) از قبیل پشتیبان‌گیری از پایگاه داده یا دسترسی‌پذیری بالا (High Availability) نمی‌شود.
 
-## Getting started
+## شروع کار
 
-Follow the steps to [install PrairieLearn with local source code](../dev-guide/installingLocal.md). Then run this command in the root folder:
+مراحل [نصب PrairieLearn با استفاده از کد منبع محلی](../dev-guide/installingLocal.md) را دنبال کنید. سپس این دستور را در پوشه ریشه (Root) اجرا نمایید:
 
 ```sh
 docker compose -f docker-compose-production.yml up
 ```
 
-Then access PrairieLearn from port `3000`.
+سپس از طریق پورت `3000` به PrairieLearn دسترسی پیدا کنید.
 
-## Configuration
+## پیکربندی
 
-PrairieLearn can be configured by a `config.json` in the root of the repository.
+پیکربندی PrairieLearn می‌تواند از طریق یک فایل `config.json` در ریشه مخزن انجام شود.
 
-- First make the file `config.json` in your root repository.
-- Add the following line to `docker-compose-production.yml` under `services.pl.volumes`:
+- ابتدا فایل `config.json` را در ریشه مخزن خود بسازید.
+- خط زیر را به فایل `docker-compose-production.yml` در زیر بخش `services.pl.volumes` اضافه کنید:
 
   ```sh
   - ./config.json:/PrairieLearn/config.json
   ```
 
-The `config.json` file should contain appropriate overrides for the keys in [`lib/config.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/config.ts).
+فایل `config.json` باید شامل مقادیر جایگزین مناسب (Overrides) برای کلیدهای موجود در [`lib/config.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/config.ts) باشد.
 
-## Reverse Proxy
+## پراکسی معکوس (Reverse Proxy)
 
-Read more about implementing a reverse proxy in the [general setup documentation](./setup.md#reverse-proxy).
+اطلاعات بیشتر درباره پیاده‌سازی پراکسی معکوس را در [مستندات راه‌اندازی عمومی](./setup.md#reverse-proxy) مطالعه کنید.
 
-## Authentication
+## احراز هویت
 
-Read more in the [authentication documentation](./authentication.md).
+اطلاعات بیشتر را در [مستندات احراز هویت](./authentication.md) مطالعه کنید.
 
-## Admin User
+## کاربر مدیر (Admin User)
 
-- Find the name of your running PrairieLearn container by running
+- نام کانتینر در حال اجرای PrairieLearn خود را با اجرای دستور زیر پیدا کنید:
 
   ```sh
   docker ps
   ```
 
-  which will output multiple columns of information about your running container(s). Look for the `prairielearn/prairielearn` image and copy its corresponding name. For example, the name of the PrairieLearn container in this `docker ps` output is `upbeat_roentgen`:
+  این دستور چندین ستون از اطلاعات مربوط به کانتینر(های) در حال اجرای شما را خروجی می‌دهد. ایمیج `prairielearn/prairielearn` را پیدا کرده و نام متناظر با آن را کپی کنید. به عنوان مثال، نام کانتینر PrairieLearn در این خروجی `docker ps` برابر با `upbeat_roentgen` است:
 
   ```output
   CONTAINER ID  IMAGE                      COMMAND              CREATED      STATUS      PORTS                   NAMES
   e0f522f41ea4  prairielearn/prairielearn  "/bin/sh -c /Prai…"  2 hours ago  Up 2 hours  0.0.0.0:3000->3000/tcp  upbeat_roentgen
   ```
 
-- Open a shell in your PrairieLearn container by running
+- با اجرای دستور زیر یک شل (Shell) در کانتینر PrairieLearn خود باز کنید:
 
   ```sh
   docker exec -it CONTAINER_NAME /bin/bash
   ```
 
-Then follow along at [Admin User](./admin-user.md) to set up PrairieLearn.
+سپس مراحل موجود در [کاربر مدیر](./admin-user.md) را دنبال کنید تا PrairieLearn را راه‌اندازی نمایید.
 
-## Adding SSH Keys
+## افزودن کلیدهای SSH
 
-To get courses through GitHub we will need to configure the SSH keys in the container. Every time the container is destroyed, the keys are lost, so we need to make the keys the same as the Host.
+برای دریافت درس‌ها از طریق GitHub، باید کلیدهای SSH را درون کانتینر پیکربندی کنیم. هر بار که کانتینر حذف می‌شود، کلیدها از دست می‌روند؛ بنابراین باید کلیدها را با سیستم میزبان (Host) یکسان کنیم.
 
-Run the command on the host system
+دستور زیر را در سیستم میزبان اجرا کنید:
 
 ```sh
 ssh-keygen
 ```
 
-Which will generate a new key. Save this somewhere you will remember. Next you must bind mount these keys into the Docker container. In `docker-compose-production.yml` under `volumes` add
+این دستور یک کلید جدید تولید می‌کند. آن را در محلی ذخیره کنید که به خاطر بسپارید. در مرحله بعد باید این کلیدها را به کانتینر داکر متصل (Bind mount) کنید. در فایل `docker-compose-production.yml` و در زیر بخش `volumes` این مورد را اضافه کنید:
 
 ```sh
 - /host/path/to/.ssh:/root/.ssh
 ```
 
-To view the public key run the command
+برای مشاهده کلید عمومی دستور زیر را اجرا کنید:
 
 ```sh
 cat ~/.ssh/id_rsa.pub
 ```
 
-Next to add the SSH key on GitHub go to [SSH keys](https://github.com/settings/ssh/new) under `profile settings`. Add a title, then copy the public key into the `Key` field.
+سپس برای افزودن کلید SSH در GitHub، به بخش [SSH keys](https://github.com/settings/ssh/new) در `profile settings` بروید. یک عنوان (Title) اضافه کرده و سپس کلید عمومی را در فیلد `Key` کپی نمایید.
 
-## Adding courses
+## افزودن درس‌ها
 
-Adding courses is done through a GitHub repository. It is recommended to set up an organization under one user to which you can add all courses.
+افزودن درس‌ها از طریق مخزن GitHub انجام می‌شود. توصیه می‌شود یک سازمان (Organization) ذیل یک حساب کاربری ایجاد کنید تا بتوانید تمام درس‌ها را به آن اضافه نمایید.
 
-To make sure the courses remain if the Docker container goes down
-we must bind mount the folder in which courses are stored to the host machine, in `docker-compose-production.yml` under `volumes` add
+برای اطمینان از اینکه در صورت خاموش شدن کانتینر داکر درس‌ها باقی می‌مانند، باید پوشه‌ای را که درس‌ها در آن ذخیره می‌شوند به سیستم میزبان Bind mount کنیم. در فایل `docker-compose-production.yml` در زیر بخش `volumes` خط زیر را اضافه کنید:
 
 ```sh
 - host/place/to/store/courses/:/container_courses_dir/
 ```
 
-Once you have a course created, on PrairieLearn go to `Admin` then scroll down to `Courses`. Here click `Add Course`. Add the relevant information, take extra care that under `Path` you use the bind mounted path.
+هنگامی که یک درس ایجاد کردید، در PrairieLearn به بخش `Admin` رفته و سپس به سمت پایین تا بخش `Courses` اسکرول کنید. در اینجا روی `Add Course` کلیک کنید. اطلاعات مربوطه را وارد نمایید، و توجه ویژه داشته باشید که در بخش `Path` از مسیر متصل‌شده (Bind mount) استفاده کنید.
 
-For example:
+برای مثال:
 
 `Path: /container_courses_dir/mycourse`
 
-To clone the course into PrairieLearn:
+برای کلون کردن درس در PrairieLearn:
 
-- Go to the course GitHub repository you wish to put on PrairieLearn, click `code` and then `SSH`.
-- Copy the SSH URL and paste it under the `Repository` section. Go back to the homepage, and you should see the course there.
-- Click on the course, then `Sync`.
-- Click on `Pull from remote git repository` which will then clone all the files into the specified directory.
+- به مخزن گیت‌هاب درسی که می‌خواهید روی PrairieLearn قرار دهید بروید، روی `code` و سپس `SSH` کلیک کنید.
+- نشانی SSH URL را کپی کرده و در بخش `Repository` جای‌گذاری نمایید. به صفحه اصلی بازگردید، اکنون باید درس را در آنجا مشاهده کنید.
+- روی درس کلیک کنید، سپس دکمه `Sync` را بزنید.
+- روی `Pull from remote git repository` کلیک کنید که تمام فایل‌ها را در پوشه مشخص‌شده کلون خواهد کرد.
 
-## Support
+## پشتیبانی
 
-See here for [extra information](./setup.md#support).
+برای [اطلاعات تکمیلی](./setup.md#support) اینجا را ببینید.

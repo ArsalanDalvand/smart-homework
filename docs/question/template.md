@@ -1,30 +1,30 @@
-# `question.html`
+# فایل `question.html`
 
-## Template file
+## فایل قالب (Template)
 
-All `question.html` files are processed with the [Mustache template engine](https://mustache.github.io/mustache.5.html), which allows for basic dynamic rendering of HTML. In addition, it supports:
+تمام فایل‌های `question.html` با [موتور قالب Mustache](https://mustache.github.io/mustache.5.html) پردازش می‌شوند، که امکان رندر پویای پایه‌ای HTML را فراهم می‌کند. علاوه بر این، از موارد زیر پشتیبانی می‌کند:
 
-- [**Rendering panels**](#rendering-panels-from-questionhtml): These panels control what is shown when a student is viewing the question, viewing their submission, or viewing the correct answer.
+- [**رندر پنل‌ها**](#rendering-panels-from-questionhtml): این پنل‌ها تعیین می‌کنند چه چیزی هنگام مشاهده سوال، مشاهده پاسخ ارسالی یا مشاهده پاسخ صحیح توسط دانشجو نشان داده شود.
 
-- [**Markdown**](#markdown-in-questions): HTML and custom elements are great for flexibility and expressiveness. However, they're not great for working with large amounts of text, formatting text, and so on. [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) is a lightweight plaintext markup syntax that's ideal for authoring simple but rich text.
+- [**مارک‌داون (Markdown)**](#markdown-in-questions): کد HTML و المان‌های سفارشی برای انعطاف‌پذیری و قدرت بیان عالی هستند. با این حال، کار با حجم زیادی از متن، قالب‌بندی متن و مواردی از این دست در آن‌ها چندان ساده نیست. [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) یک سینتکس نشانه‌گذاری متنی سبک است که برای نگارش متون ساده اما غنی ایده‌آل است.
 
-- [**LaTeX**](#using-latex-in-questions-math-mode): PrairieLearn supports LaTeX equations in questions.
+- [**LaTeX**](#using-latex-in-questions-math-mode): سامانه PrairieLearn از معادلات LaTeX در سوالات پشتیبانی می‌کند.
 
-## Rendering panels from `question.html`
+## رندر پنل‌ها از `question.html`
 
-When a question is displayed to a student, there are three "panels" that will be shown at different stages: the `"question"` panel, the `"submission"` panel, and the `"answer"` panel. These display the question prompt, the solution provided by the student, and the correct answer.
+هنگامی که یک سوال به دانشجو نمایش داده می‌شود، سه «پنل» وجود دارد که در مراحل مختلف نمایش داده می‌شوند: پنل `"question"` (سوال)، پنل `"submission"` (پاسخ ارسالی)، و پنل `"answer"` (پاسخ صحیح). این‌ها به ترتیب صورت سوال، راه‌حل ارائه‌شده توسط دانشجو و پاسخ صحیح را نمایش می‌دهند.
 
-![Question panels](./panels.png)
+![پنل‌های سوال](./panels.png)
 
-The `"question"` panel is displayed when the question is first shown to the student. A `"submission"` panel is displayed each time the student saves an answer; there may be multiple submission panels if the student submits multiple answers to the same variant. The `"answer"` panel is displayed based on question/assessment configuration; by default, it is shown when the student either submits the correct answer or runs out of attempts. You can see the [lifecycle diagram](server.md#question-lifecycle) for more details on how these panels are displayed.
+پنل `"question"` هنگامی که سوال برای اولین بار به دانشجو نشان داده می‌شود نمایش می‌یابد. پنل `"submission"` هر بار که دانشجو پاسخی را ذخیره می‌کند نمایش داده می‌شود؛ اگر دانشجو چندین پاسخ را به همان گونه ارسال کند، ممکن است چندین پنل پاسخ ارسالی وجود داشته باشد. پنل `"answer"` بر اساس پیکربندی سوال/ارزیابی نمایش داده می‌شود؛ به‌طور پیش‌فرض، زمانی نشان داده می‌شود که دانشجو پاسخ صحیح را ارسال کند یا فرصت‌های تلاش او تمام شود. برای جزئیات بیشتر در مورد نحوه نمایش این پنل‌ها، می‌توانید [نمودار چرخه حیات](server.md#question-lifecycle) را مشاهده کنید.
 
-All three panels are displayed based on the same `question.html` template, but elements will render differently in each panel. For example, the `<pl-number-input>` element displays an input box in the "question" panel, the submitted answer in the "submissions" panel, and the correct answer in the "answer" panel.
+هر سه پنل بر اساس یک قالب یکسان `question.html` نمایش داده می‌شوند، اما المان‌ها در هر پنل به صورت متفاوتی رندر می‌شوند. برای مثال، المان `<pl-number-input>` در پنل "question" یک کادر ورودی، در پنل "submissions" پاسخ ارسالی، و در پنل "answer" پاسخ صحیح را نمایش می‌دهد.
 
-### `"question"` panel
+### پنل `"question"`
 
-Text in `question.html` can be set to only display in the "question" panel by wrapping it in the [`<pl-question-panel>` element](../elements/pl-question-panel.md). This is useful for the question prompt, which doesn't need to be repeated in the "submission" and "answer" panels. For example:
+متن موجود در `question.html` را می‌توان با قرار دادن در داخل [المان `<pl-question-panel>`](../elements/pl-question-panel.md) طوری تنظیم کرد که فقط در پنل "question" نمایش داده شود. این کار برای صورت سوال مفید است که نیازی به تکرار آن در پنل‌های "submission" و "answer" نیست. برای مثال:
 
-=== "Good"
+=== "خوب (Good)"
 
     ```html
     <pl-question-panel>
@@ -33,20 +33,20 @@ Text in `question.html` can be set to only display in the "question" panel by wr
     <pl-number-input answers-name="y" label="$y =$"></pl-number-input>
     ```
 
-=== "Bad"
+=== "بد (Bad)"
 
     ```html { .no-copy }
     <p>What is y, if y is 1 + 3?</p>
     <pl-number-input answers-name="y" label="$y =$"></pl-number-input>
     ```
 
-    The question will be repeated in the "submission" and "answer" panels, which is unnecessary and can be confusing for students.
+    سوال در پنل‌های "submission" و "answer" تکرار خواهد شد که غیرضروری است و می‌تواند برای دانشجویان گیج‌کننده باشد.
 
-### `"submission"` panel
+### پنل `"submission"`
 
-By default, feedback given by elements (`data["partial_scores"][NAME]["feedback"]`) is rendered when an element renders in the "submission" panel. You can use the [`pl-submission-panel`](../elements/pl-submission-panel.md) to show additional text only in the "submission" panel. For example:
+به‌طور پیش‌فرض، بازخوردی که توسط المان‌ها داده می‌شود (`data["partial_scores"][NAME]["feedback"]`) هنگامی که یک المان در پنل "submission" رندر می‌شود، به نمایش درمی‌آید. شما می‌توانید از [`pl-submission-panel`](../elements/pl-submission-panel.md) برای نشان دادن متن اضافی فقط در پنل "submission" استفاده کنید. برای مثال:
 
-=== "Good"
+=== "خوب (Good)"
 
     ```html
     <pl-submission-panel>
@@ -56,45 +56,45 @@ By default, feedback given by elements (`data["partial_scores"][NAME]["feedback"
     </pl-submission-panel>
     ```
 
-=== "Bad"
+=== "بد (Bad)"
 
     ```html { .no-copy }
     <p>Feedback: {{feedback.y}}</p>
     ```
 
-    This will show the feedback in the "question" and "answer" panels as well, which is unnecessary and can be confusing for students. Since `feedback.y` won't be defined until the student submits an answer, it will show as an empty string in the "question" panel, just showing `"Feedback: "`.
+    این کار بازخورد را در پنل‌های "question" و "answer" نیز نشان می‌دهد که غیرضروری است و می‌تواند برای دانشجویان گیج‌کننده باشد. از آنجا که `feedback.y` تا زمانی که دانشجو پاسخی ارسال نکند تعریف نخواهد شد، در پنل "question" به صورت یک رشته خالی ظاهر می‌شود و صرفاً `"Feedback: "` را نشان می‌دهد.
 
-More details about providing feedback can be found on the [`server.py` page](server.md#providing-feedback).
+جزئیات بیشتر درباره ارائه بازخورد را می‌توانید در [صفحه `server.py`](server.md#providing-feedback) بیابید.
 
-### `"answer"` panel
+### پنل `"answer"`
 
-By default, the correct answers are shown in the "answer" panel. This can be disabled by setting `showCorrectAnswer: false` in the question's `info.json`. The FAQ item ["How can I hide the correct answer when students see their grading results?"](../faq.md#how-can-i-hide-the-correct-answer-when-students-see-their-grading-results) describes some other techniques for hiding the correct answer.
+به‌طور پیش‌فرض، پاسخ‌های صحیح در پنل "answer" نشان داده می‌شوند. این قابلیت را می‌توان با تنظیم `showCorrectAnswer: false` در فایل `info.json` سوال غیرفعال کرد. مورد سوالات متداول ["چگونه می‌توانم پاسخ صحیح را هنگامی که دانشجویان نتایج نمره‌دهی خود را می‌بینند پنهان کنم؟"](../faq.md#how-can-i-hide-the-correct-answer-when-students-see-their-grading-results) تکنیک‌های دیگری را برای پنهان کردن پاسخ صحیح شرح می‌دهد.
 
-If you grade a question using a [custom grading function](./server.md#step-5-grade), an [external grader](../externalGrading.md), or using [manual grading](../manualGrading/index.md), you are encouraged to display a correct answer so that students can see it in the answer panel. If there are multiple correct answers, you should add a note within the [`pl-answer-panel`](../elements/pl-answer-panel.md) element that any correct answer would be accepted, and the displayed answer is only an example. You can also show additional text in the answer panel as well, e.g. extended explanations for the correct answers.
+اگر سوالی را با استفاده از یک [تابع نمره‌دهی سفارشی](./server.md#step-5-grade)، یک [نمره‌دهنده خارجی](../externalGrading.md) یا با استفاده از [نمره‌دهی دستی](../manualGrading/index.md) نمره‌دهی می‌کنید، توصیه می‌شود یک پاسخ صحیح را نمایش دهید تا دانشجویان بتوانند آن را در پنل پاسخ ببینند. اگر چندین پاسخ صحیح وجود دارد، باید یادداشتی را درون المان [`pl-answer-panel`](../elements/pl-answer-panel.md) اضافه کنید مبنی بر اینکه هر پاسخ صحیحی پذیرفته می‌شود و پاسخ نمایش‌داده‌شده صرفاً یک نمونه است. همچنین می‌توانید متن اضافی نیز در پنل پاسخ نشان دهید، مانند توضیحات تکمیلی برای پاسخ‌های صحیح.
 
-## Mustache templates
+## قالب‌های Mustache
 
-Any text in double-curly-braces (like `{{params.m}}`) is substituted with variable values using [Mustache](https://mustache.github.io/mustache.5.html). These parameters are typically defined by a [question's `server.py`](server.md). For example, if `params["m"]` is defined in `server.py`, you can use it in `question.html` like this:
+هر متنی در آکولادهای دوتایی (مانند `{{params.m}}`) با مقادیر متغیرها با استفاده از [Mustache](https://mustache.github.io/mustache.5.html) جایگزین می‌شود. این پارامترها معمولاً توسط [`server.py` یک سوال](server.md) تعریف می‌شوند. برای مثال، اگر `params["m"]` در `server.py` تعریف شده باشد، می‌توانید از آن در `question.html` به صورت زیر استفاده کنید:
 
 ```html title="question.html"
 <p>If m is {{params.m}}, what is {{params.m}} * 3?</p>
 ```
 
-This will be rendered as:
+این به صورت زیر رندر خواهد شد:
 
 ```html
 <p>If m is 5, what is 5 * 3?</p>
 ```
 
-### Data available to Mustache templates
+### داده‌های در دسترس قالب‌های Mustache
 
-When the student first views a question variant, `parse` and `grade` have not run yet, so values set in `data` by those functions won't be available to the template. Each `server.py` function has restrictions on how the `data` object can be modified, which are documented in the [`server.py` function table](./server.md#serverpy-functions). For example, in the `generate` phase, you can only modify `data["params"]` and `data["correct_answers"]`.
+هنگامی که دانشجو برای اولین بار یک گونه سوال را مشاهده می‌کند، توابع `parse` و `grade` هنوز اجرا نشده‌اند، بنابراین مقادیر تنظیم‌شده در `data` توسط آن توابع برای قالب در دسترس نخواهند بود. هر تابع `server.py` محدودیت‌هایی در نحوه اصلاح شیء `data` دارد که در [جدول توابع `server.py`](./server.md#serverpy-functions) مستند شده است. برای مثال، در فاز `generate`، فقط می‌توانید `data["params"]` و `data["correct_answers"]` را تغییر دهید.
 
-See the [question lifecycle diagram](./server.md#question-lifecycle) for detailed information on when the `server.py` functions are called. Note that any modifications to the `data` object in later phases like `parse` or `grade` will be persisted and used for any subsequent renderings of the question. For example, if the `grade` function alters `data["params"]` after a student submission, the updated `data["params"]` will be used when the question is rendered again.
+برای اطلاعات دقیق درباره زمان فراخوانی توابع `server.py`، [نمودار چرخه حیات سوال](./server.md#question-lifecycle) را ببینید. توجه داشته باشید که هرگونه تغییر در شیء `data` در فازهای بعدی مانند `parse` یا `grade` ماندگار خواهد شد و برای رندرهای بعدی سوال استفاده می‌شود. به عنوان مثال، اگر تابع `grade` مقدار `data["params"]` را پس از ارسال دانشجو تغییر دهد، مقدار به‌روزشده `data["params"]` زمانی که سوال دوباره رندر می‌شود استفاده خواهد شد.
 
-### Advanced rendering
+### رندر پیشرفته
 
-You can use the following syntax to conditionally render a piece of HTML:
+می‌توانید از سینتکس زیر برای رندر شرطی یک قطعه HTML استفاده کنید:
 
 ```html title="question.html"
 {{#params.show}}
@@ -102,7 +102,7 @@ You can use the following syntax to conditionally render a piece of HTML:
 {{/params.show}}
 ```
 
-You can use this syntax to render over an array of strings (the `.` represents the current item in the array):
+می‌توانید از این سینتکس برای پیمایش روی آرایه‌ای از رشته‌ها استفاده کنید (علامت `.` نشان‌دهنده آیتم جاری در آرایه است):
 
 ```html title="question.html"
 {{#params.items}}
@@ -110,17 +110,17 @@ You can use this syntax to render over an array of strings (the `.` represents t
 {{/params.items}}
 ```
 
-!!! info "HTML rendering"
+!!! info "رندر HTML"
 
-    By default, Mustache escapes special characters when using double braces (`{{params.x}}`). This ensures that any content that may contain characters used by HTML (such as quotes or `<` characters) is displayed or interpreted in its original context.
+    به‌طور پیش‌فرض، Mustache هنگام استفاده از آکولاد دوتایی (`{{params.x}}`) کاراکترهای ویژه را اسکیپ (Escape) می‌کند. این تضمین می‌کند هر محتوایی که ممکن است حاوی کاراکترهای مورد استفاده در HTML باشد (مانند نقل‌قول‌ها یا کاراکترهای `<`) در زمینه اصلی خود نمایش داده شده یا تفسیر شود.
 
-    You can use triple-braces (e.g. `{{{params.html}}}`) to substitute raw HTML without escaping. This should only be used for content that is defined by the instructor. If you want to render student-provided HTML, you can use the [`<pl-xss-safe>` element](../elements/pl-xss-safe.md).
+    می‌توانید از آکولادهای سه‌تایی (مثلاً `{{{params.html}}}`) برای جایگزینی مستقیم HTML خام بدون اسکیپ کردن استفاده کنید. این کار فقط باید برای محتوایی استفاده شود که توسط مدرس تعریف شده است. اگر می‌خواهید HTML ارائه‌شده توسط دانشجو را رندر کنید، می‌توانید از [المان `<pl-xss-safe>`](../elements/pl-xss-safe.md) استفاده کنید.
 
-### Hiding staff comments in `question.html`
+### پنهان کردن یادداشت‌های کادر آموزشی در `question.html`
 
-HTML or JavaScript comments in your `question.html` source are visible to students in the rendered page source. To leave small maintenance notes to staff in your `question.html` source, you should use [Mustache comments](https://mustache.github.io/mustache.5.html#Comments) (`{{! ... }}`) that will be removed during the rendering process. Never put sensitive information, such as solutions, in a HTML/JS comment.
+کامنت‌های HTML یا JavaScript در سورس `question.html` شما در سورس صفحه رندرشده برای دانشجویان قابل مشاهده هستند. برای گذاشتن یادداشت‌های نگهداری کوچک برای کادر آموزشی در سورس `question.html`، باید از [کامنت‌های Mustache](https://mustache.github.io/mustache.5.html#Comments) (`{{! ... }}`) استفاده کنید که در طول فرآیند رندر حذف خواهند شد. هرگز اطلاعات حساس، مانند راه‌حل‌ها را در یک کامنت HTML/JS قرار ندهید.
 
-Example:
+مثال:
 
 ```html
 <!-- This HTML comment will not be visible to students in the web page, 
@@ -129,9 +129,9 @@ Example:
 {{! This Mustache comment will NOT be included in the rendered page source. }}
 ```
 
-## Markdown in questions
+## نگارش Markdown در سوالات
 
-You can use the special `<markdown>` tag to automatically convert its contents to HTML. Here's an example `question.html` that utilizes this element:
+می‌توانید از تگ ویژه `<markdown>` برای تبدیل خودکار محتوای آن به HTML استفاده کنید. در اینجا نمونه‌ای از `question.html` آمده است که از این المان استفاده می‌کند:
 
 <!-- prettier-ignore -->
 ```html title="question.html"
@@ -142,7 +142,7 @@ This is some **Markdown** text.
 </markdown>
 ```
 
-That question would be rendered like this:
+آن سوال به این صورت رندر می‌شود:
 
 ```html
 <h1>Hello, world!</h1>
@@ -151,9 +151,9 @@ That question would be rendered like this:
 
 !!! warning
 
-    Markdown recognizes indentation as a code block, so text inside these tags should **not** be indented with the corresponding HTML content.
+    مارک‌داون دندانه‌گذاری (Indentation) را به عنوان بلوک کد شناسایی می‌کند، بنابراین متن داخل این تگ‌ها نباید با محتوای HTML متناظر دندانه‌گذاری شود.
 
-    === "Good"
+    === "خوب (Good)"
 
         ```html
         <div>
@@ -162,7 +162,7 @@ That question would be rendered like this:
           </markdown>
         </div>
         ```
-    === "Bad"
+    === "بد (Bad)"
 
         ```html { .no-copy }
         <div>
@@ -172,9 +172,9 @@ That question would be rendered like this:
         </div>
         ```
 
-### Markdown code blocks
+### بلوک‌های کد Markdown
 
-Fenced code blocks (those using triple-backticks ` ``` `) are rendered as [`<pl-code>` elements](../elements/pl-code.md), which will then be rendered as usual by PrairieLearn. These blocks support specifying language and highlighted lines, which are then passed to the resulting `<pl-code>` element. Consider the following Markdown:
+بلوک‌های کد حصاردار (Fenced code blocks - آن‌هایی که از بک‌تیک سه‌تایی ` ``` ` استفاده می‌کنند) به عنوان [المان‌های `<pl-code>`](../elements/pl-code.md) رندر می‌شوند که سپس طبق معمول توسط PrairieLearn رندر خواهند شد. این بلوک‌ها از مشخص کردن زبان و خطوط برجسته‌شده (Highlight) پشتیبانی می‌کنند که سپس به المان حاصله `<pl-code>` منتقل می‌شوند. مارک‌داون زیر را در نظر بگیرید:
 
 <!-- prettier-ignore -->
 ````html title="question.html"
@@ -188,7 +188,7 @@ int m = 4;
 </markdown>
 ````
 
-This will be rendered to the following `<pl-code>` element (which itself will eventually be rendered to standard HTML):
+این به المان `<pl-code>` زیر رندر می‌شود (که خودش در نهایت به HTML استاندارد رندر خواهد شد):
 
 <!-- prettier-ignore -->
 ```html
@@ -200,15 +200,15 @@ int m = 4;
 </pl-code>
 ```
 
-??? note "Escaping literal `<markdown>` tags"
+??? note "گریز از تگ‌های لغوی `<markdown>`"
 
-    PrairieLearn defines a special escape syntax to allow a literal `<markdown>` or `</markdown>` tag in your question. If you have `<markdown#>` or `</markdown#>` in a Markdown block, they will be rendered as `<markdown>` and `</markdown>` respectively (but will not be used to find regions of text to process as Markdown).
+    سامانه PrairieLearn یک سینتکس ویژه گریز (Escape) تعریف می‌کند تا امکان استفاده از تگ لغوی `<markdown>` یا `</markdown>` در سوال شما فراهم شود. اگر `<markdown#>` یا `</markdown#>` را در یک بلوک Markdown داشته باشید، به ترتیب به صورت `<markdown>` و `</markdown>` رندر می‌شوند (اما برای یافتن بخش‌هایی از متن جهت پردازش به عنوان Markdown استفاده نخواهند شد).
 
-## Using LaTeX in questions (math mode)
+## استفاده از LaTeX در سوالات (حالت ریاضی)
 
-PrairieLearn supports LaTeX equations in questions. You can view a full list of [supported MathJax commands](https://docs.mathjax.org/en/latest/input/tex/macros/index.html).
+سامانه PrairieLearn از معادلات LaTeX در سوالات پشتیبانی می‌کند. می‌توانید لیست کاملی از [دستورات پشتیبانی‌شده MathJax](https://docs.mathjax.org/en/latest/input/tex/macros/index.html) را مشاهده کنید.
 
-Inline equations can be written using `$x^2$` or `\(x^2\)`, and display equations can be written using `$$x^2$$` or `\[x^2\]`. For example:
+معادلات درون‌خطی (Inline) را می‌توان با استفاده از `$x^2$` یا `\(x^2\)` نوشت، و معادلات نمایشی (Display) را می‌توان با استفاده از `$$x^2$$` یا `\[x^2\]` نوشت. برای مثال:
 
 <!-- prettier-ignore -->
 ```html title="question.html"
@@ -222,11 +222,11 @@ $$\phi = \frac{1+\sqrt{5}}{2}$$
 </markdown>
 ```
 
-### Using a dollar sign ($) without triggering math mode
+### استفاده از علامت دلار ($) بدون فعال‌سازی حالت ریاضی
 
-Dollar signs by default denote either **inline** (`$ x $`) or **display mode** (`$$ x $$`) environments.
+علامت‌های دلار به‌طور پیش‌فرض نشان‌دهنده محیط‌های **درون‌خطی** (`$ x $`) یا **حالت نمایشی** (`$$ x $$`) هستند.
 
-To escape either math environment, consider using PrairieLearn's `<markdown>` tag and inline code syntax.
+برای گریز از هر یک از این محیط‌های ریاضی، استفاده از تگ `<markdown>` در PrairieLearn و سینتکس کد درون‌خطی را مد نظر قرار دهید.
 
 <!-- prettier-ignore -->
 ```html
@@ -235,8 +235,7 @@ What happens if we use a `$` to reference the spreadsheet cell location `$A$1`?
 </markdown>
 ```
 
-In scenarios where it does not make sense to use the code environment, consider disabling math entirely by
-adding the `mathjax_ignore` class to an HTML element.
+در مواردی که استفاده از محیط کد منطقی نیست، در نظر داشته باشید که ریاضیات را به طور کامل با اضافه کردن کلاس `mathjax_ignore` به یک المان HTML غیرفعال کنید.
 
 ```html
 <div class="mathjax_ignore">
@@ -247,26 +246,26 @@ adding the `mathjax_ignore` class to an HTML element.
 <div>$x = 1$ and I have <span class="mathjax_ignore">$</span>5 dollars.</div>
 ```
 
-### Using Mustache values inside LaTeX braces
+### استفاده از مقادیر Mustache درون آکولادهای LaTeX
 
-LaTeX uses curly braces for grouping (e.g., `\frac{a}{b}`), which can conflict with [Mustache's `{{ }}` syntax](#mustache-templates). When a Mustache tag is placed directly inside a LaTeX brace, the sequence `{{{` is interpreted as a [triple-brace (unescaped) Mustache tag](#advanced-rendering), and the question will fail to render correctly or produce unexpected output.
+زبان LaTeX از آکولادها برای گروه‌بندی استفاده می‌کند (مثلاً `\frac{a}{b}`)، که می‌تواند با [سینتکس `{{ }}` در Mustache](#mustache-templates) تداخل داشته باشد. هنگامی که یک تگ Mustache مستقیماً درون یک آکولاد LaTeX قرار می‌گیرد، دنباله `{{{` به عنوان یک [تگ Mustache سه‌آکولادی (اسکیپ‌نشده)](#advanced-rendering) تفسیر می‌شود و رندر سوال با شکست مواجه شده یا خروجی غیرمنتظره‌ای تولید می‌کند.
 
 ```html { title="question.html" .no-copy }
 <!-- Bad: `{{{` is parsed as a triple-brace Mustache tag. -->
 <p>$\frac{{{params.a}}}{{{params.b}}}$</p>
 ```
 
-There are three ways to avoid this:
+سه روش برای جلوگیری از این وضعیت وجود دارد:
 
-1. **Add a space before the Mustache tag.** Where LaTeX ignores whitespace (which is most places in math mode), add a space between the LaTeX brace and the Mustache tag so that the braces are no longer adjacent:
+1. **اضافه کردن یک فاصله قبل از تگ Mustache.** در جاهایی که LaTeX فاصله‌های خالی را نادیده می‌گیرد (که در بیشتر جاهای حالت ریاضی چنین است)، یک فاصله بین آکولاد LaTeX و تگ Mustache اضافه کنید تا آکولادها دیگر در کنار هم نباشند:
 
    ```html title="question.html"
    <p>$\frac{ {{params.a}} }{ {{params.b}} }$</p>
    ```
 
-   This is not suitable where whitespace is significant, such as inside `\text{...}`.
+   این روش در جاهایی که فاصله سفید اهمیت دارد، مانند داخل `\text{...}` مناسب نیست.
 
-2. **Change the Mustache delimiters.** Mustache lets you [change the delimiters](https://mustache.github.io/mustache.5.html#Set-Delimiter) with a set delimiter tag, e.g., `{{=<% %>=}}`. After it, Mustache tags are written as `<% params.a %>`, with `{{` and `}}` treated as regular characters. You may switch back to the default delimiters with `<%={{ }}=%>`.
+2. **تغییر جداکننده‌های (Delimiters) موتور Mustache.** موستاش به شما اجازه می‌دهد [جداکننده‌ها را تغییر دهید](https://mustache.github.io/mustache.5.html#Set-Delimiter) با استفاده از یک تگ تنظیم جداکننده، مثلاً `{{=<% %>=}}`. پس از آن، تگ‌های Mustache به صورت `<% params.a %>` نوشته می‌شوند و با `{{` و `}}` مانند کاراکترهای معمولی رفتار می‌شود. می‌توانید با `<%={{ }}=%>` دوباره به جداکننده‌های پیش‌فرض برگردید.
 
    ```html title="question.html"
    {{=<% %>=}}
@@ -274,9 +273,9 @@ There are three ways to avoid this:
    <%={{ }}=%>
    ```
 
-   Any Mustache tags after the delimiter tag is changed must use the new delimiters. You are encouraged, though not required, to switch back to the default delimiters after the LaTeX expression, as it makes the formatting more recognizable to other question authors.
+   هر تگ Mustache پس از تغییر تگ جداکننده باید از جداکننده‌های جدید استفاده کند. توصیه می‌شود (هرچند الزامی نیست) پس از عبارت LaTeX به جداکننده‌های پیش‌فرض بازگردید، زیرا این کار قالب‌بندی را برای سایر نویسندگان سوال خواناتر و آشناتر می‌کند.
 
-3. **Build the formula in `server.py`.** Construct the full LaTeX string in Python and store it in `data["params"]`, so that `question.html` only needs a single Mustache tag:
+3. **ساخت فرمول در `server.py`.** رشته کامل LaTeX را در پایتون بسازید و آن را در `data["params"]` ذخیره کنید، به طوری که `question.html` تنها به یک تگ Mustache واحد نیاز داشته باشد:
 
    ```python title="server.py"
    def generate(data):
@@ -289,4 +288,4 @@ There are three ways to avoid this:
    <p>${{params.formula}}$</p>
    ```
 
-   Note that, if you're using `f` strings, you will need to double the braces in the string to escape them, as in the example above. You may also benefit from using a raw string (the `r` prefix) to avoid having to escape backslashes in LaTeX commands.
+   توجه داشته باشید که اگر از f-stringها استفاده می‌کنید، باید آکولادها را در رشته دوبل کنید تا اسکیپ شوند، همان‌طور که در مثال بالا نشان داده شده است. همچنین می‌توانید از رشته خام (پیشوند `r`) استفاده کنید تا از اسکیپ کردن بک‌اسلش‌ها در دستورات LaTeX بی‌نیاز شوید.

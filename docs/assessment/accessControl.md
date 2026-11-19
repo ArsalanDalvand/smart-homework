@@ -1,250 +1,250 @@
-# Assessment access control
+# کنترل دسترسی آزمون
 
-Instructors can use the assessment **Access** page to configure availability, deadlines, credit, time limits, passwords, PrairieTest access, and student-specific overrides.
+مدرسان می‌توانند از صفحه **Access** (دسترسی) آزمون برای پیکربندی در دسترس بودن، مهلت‌ها، نمره (اعتبار)، محدودیت‌های زمانی، رمزهای عبور، دسترسی PrairieTest و بازنویسی‌های (Overrides) مختص دانشجویان استفاده کنند.
 
-## Access control checks
+## بررسی‌های کنترل دسترسی
 
-PrairieLearn checks access at two levels:
+پریری‌لرن (PrairieLearn) دسترسی را در دو سطح بررسی می‌کند:
 
-1. The **course instance** must be available to the student. The student must be enrolled in the course instance, and the course instance must be published or otherwise visible through its [publishing controls](../courseInstance/index.md#publishing-controls).
-2. The **assessment** must grant the student access. Configure assessment access from the assessment **Access** page: **Defaults** apply to all students, and **Overrides** apply to selected student labels or specific students.
+1. **دوره تحصیلی (Course instance)** باید برای دانشجو در دسترس باشد. دانشجو باید در دوره تحصیلی ثبت‌نام شده باشد، و دوره تحصیلی باید منتشر شده یا به نحوی از طریق [کنترل‌های انتشار](../courseInstance/index.md#publishing-controls) آن قابل مشاهده باشد.
+2. **آزمون (Assessment)** باید به دانشجو دسترسی بدهد. دسترسی آزمون را از صفحه **Access** آزمون پیکربندی کنید: **Defaults** (پیش‌فرض‌ها) برای همه دانشجویان اعمال می‌شوند، و **Overrides** (بازنویسی‌ها) برای برچسب‌های دانشجویی مشخص‌شده یا دانشجویان خاص اعمال می‌گردند.
 
-These two checks are both required. Publishing a course instance lets enrolled students see the course instance, but it does not by itself grant access to every assessment in it. Granting assessment access only works for students who can also access the course instance.
+هر دوی این بررسی‌ها الزامی هستند. انتشار یک دوره تحصیلی به دانشجویان ثبت‌نام‌شده امکان می‌دهد آن دوره را ببینند، اما این امر به خودی خود دسترسی به تک‌تک آزمون‌های درون آن را اعطا نمی‌کند. اعطای دسترسی به آزمون تنها برای دانشجویانی کار می‌کند که بتوانند به دوره تحصیلی نیز دسترسی داشته باشند.
 
-!!! note "Legacy `allowAccess`"
+!!! note "سیستم قدیمی `allowAccess`"
 
-    Existing assessments that still use `allowAccess` can continue to do so. New assessments should use the **Access** page and the `accessControl` format documented here. For details about the older format, see the [legacy assessment access control](accessControlLegacy.md) documentation.
+    آزمون‌های موجودی که هنوز از `allowAccess` استفاده می‌کنند می‌توانند همچنان به کار خود ادامه دهند. آزمون‌های جدید باید از صفحه **Access** و فرمت `accessControl` که در اینجا مستند شده است استفاده کنند. برای جزئیات درباره فرمت قدیمی‌تر، به مستندات [کنترل دسترسی قدیمی آزمون](accessControlLegacy.md) مراجعه کنید.
 
-## Open the Access page
+## باز کردن صفحه Access
 
-From an assessment, open the **Access** tab. The page has two sections:
+از داخل یک آزمون، برگه **Access** را باز کنید. این صفحه دارای دو بخش است:
 
-- **Defaults**: settings that apply to all students.
-- **Overrides**: settings that apply only to selected student labels or specific students.
+- **Defaults** (پیش‌فرض‌ها): تنظیماتی که برای همه دانشجویان اعمال می‌شوند.
+- **Overrides** (بازنویسی‌ها): تنظیماتی که فقط برای برچسب‌های دانشجویی منتخب یا دانشجویان خاص اعمال می‌شوند.
 
-![Access control page showing Defaults and Overrides](accessControl/01-overview.png)
+![صفحه کنترل دسترسی که Defaults و Overrides را نمایش می‌دهد](accessControl/01-overview.png)
 /// caption
-The Access page summarizes the active configuration and lists every override that applies to the assessment.
+صفحه Access پیکربندی فعال را خلاصه کرده و تمام بازنویسی‌های اعمال‌شده روی آزمون را فهرست می‌کند.
 ///
 
-The summary card shows the current access state, the release/due timeline, credit after deadlines, and visibility settings. Click **Edit** on a card to open the detail panel, make changes, and then click **Save** to persist the changes.
+کارت خلاصه، وضعیت فعلی دسترسی، خط زمانی انتشار/موعد تحویل، نمره پس از مهلت‌ها و تنظیمات قابلیت مشاهده را نشان می‌دهد. روی **Edit** در یک کارت کلیک کنید تا پنل جزئیات باز شود، تغییرات را اعمال کنید و سپس روی **Save** کلیک نمایید تا تغییرات ذخیره شوند.
 
-## Configure defaults
+## پیکربندی پیش‌فرض‌ها
 
-Click **Edit** in the **Defaults** section. Defaults are the baseline settings for every student who does not match a more specific override.
+در بخش **Defaults** روی **Edit** کلیک کنید. پیش‌فرض‌ها تنظیمات خط پایه (Baseline) برای هر دانشجویی هستند که مشمول بازنویسی خاص‌تری نمی‌شود.
 
-By default, students cannot access the assessment. Grant access through a **Date control** release or an active **PrairieTest** reservation for a linked exam.
+به طور پیش‌فرض، دانشجویان نمی‌توانند به آزمون دسترسی داشته باشند. دسترسی را از طریق انتشار با **Date control** (کنترل تاریخ) یا یک رزرو فعال در **PrairieTest** برای یک امتحان مرتبط اعطا کنید.
 
-![Defaults editor panel for access control](accessControl/02-defaults-editor.png)
+![پنل ویرایشگر Defaults برای کنترل دسترسی](accessControl/02-defaults-editor.png)
 /// caption
-Editing the defaults opens a side panel with date control, PrairieTest, before-release, and after-completion settings.
+ویرایش پیش‌فرض‌ها یک پنل جانبی با تنظیمات کنترل تاریخ، PrairieTest، پیش از انتشار و پس از اتمام باز می‌کند.
 ///
 
-### Date control
+### کنترل تاریخ (Date control)
 
-Use **Date control** to configure when students can open the assessment, when submissions are accepted, and how much credit submissions receive over time.
+از **Date control** برای پیکربندی زمان باز شدن آزمون برای دانشجویان، زمان پذیرش پاسخ‌های ارسالی، و میزان نمره‌ای که پاسخ‌های ارسالی در طول زمان دریافت می‌کنند، استفاده کنید.
 
-Date control is initially disabled. When first enabled, it defaults to **Released** with no due date.
+کنترل تاریخ در ابتدا غیرفعال است. هنگامی که برای اولین بار فعال می‌شود، به طور پیش‌فرض روی **Released** (منتشر شده) بدون موعد تحویل قرار می‌گیرد.
 
-Set a **Release** option:
+یک گزینه **Release** (انتشار) را تنظیم کنید:
 
-- **Released**: students can access the assessment immediately, unless other access settings prevent it.
-- **Scheduled for release**: students cannot open the assessment before the release date. If **List before release** is enabled, they can see the assessment title before release.
+- **Released**: دانشجویان می‌توانند بلافاصله به آزمون دسترسی پیدا کنند، مگر اینکه سایر تنظیمات دسترسی مانع از آن شود.
+- **Scheduled for release** (زمان‌بندی‌شده برای انتشار): دانشجویان قبل از تاریخ انتشار نمی‌توانند آزمون را باز کنند. اگر **List before release** فعال باشد، آن‌ها می‌توانند عنوان آزمون را قبل از انتشار ببینند.
 
-Set a **Due date** option:
+یک گزینه **Due date** (موعد تحویل) را تنظیم کنید:
 
-- **No due date**: students can submit indefinitely after release.
-- **Due on date**: students receive the due-date credit until that date.
+- **No due date** (بدون موعد تحویل): دانشجویان می‌توانند پس از انتشار به صورت نامحدود پاسخ ارسال کنند.
+- **Due on date** (موعد در تاریخ مشخص): دانشجویان تا آن تاریخ، نمره موعد تحویل را دریافت می‌کنند.
 
-By default, the due date is worth 100% credit. Click **Change** next to the due credit if you need a different on-time credit value. This is uncommon — most courses keep the on-time value at 100% and use an **early deadline** to reward early submissions or [bonus points](configuration.md#assessment-points) to let students exceed 100% by doing additional work.
+به طور پیش‌فرض، موعد تحویل دارای ۱۰۰٪ نمره است. اگر به مقدار نمره به‌موقع متفاوتی نیاز دارید، روی **Change** در کنار نمره موعد تحویل کلیک کنید. این کار معمول نیست — اکثر درس‌ها مقدار به‌موقع را روی ۱۰۰٪ نگه می‌دارند و از یک **مهلت زودهنگام (early deadline)** برای پاداش دادن به ارسال‌های زودهنگام یا [امتیازهای بونوس](configuration.md#assessment-points) برای اینکه دانشجویان بتوانند با انجام کارهای اضافی از ۱۰۰٪ فراتر روند استفاده می‌کنند.
 
-#### Credit
+#### نمره (Credit)
 
-Available credit is the maximum percentage score a student can earn during a particular access window. When the available credit is less than 100%, the percentage score is capped at that value. When the available credit is greater than 100%, students receive the bonus credit percentage once they reach full points; if [`maxBonusPoints`](configuration.md#assessment-points) is used, points above `maxPoints` are also scaled by the available credit percentage.
+نمره در دسترس (Available credit)، حداکثر درصد نمره‌ای است که دانشجو می‌تواند در طول یک پنجره دسترسی مشخص کسب کند. هنگامی که نمره در دسترس کمتر از ۱۰۰٪ باشد، درصد نمره نهایی به آن مقدار محدود (Cap) می‌شود. هنگامی که نمره در دسترس بیشتر از ۱۰۰٪ باشد، دانشجویان پس از رسیدن به نمره کامل، درصد نمره بونوس را دریافت می‌کنند؛ اگر از [`maxBonusPoints`](configuration.md#assessment-points) استفاده شود، امتیازهای بالاتر از `maxPoints` نیز با درصد نمره در دسترس مقیاس‌بندی می‌شوند.
 
-For example, on a 10-point assessment with 80% available credit, a student who earns 9/10 points receives an 80% score because the access window caps the percentage score. With 110% available credit, a student who earns 10/10 points receives 110%, while a student who earns 8/10 points still receives 80%.
+به عنوان مثال، در یک آزمون ۱۰ امتیازی با ۸۰٪ نمره در دسترس، دانشجویی که ۹ امتیاز از ۱۰ امتیاز را کسب کند، نمره ۸۰٪ دریافت می‌کند زیرا پنجره دسترسی، درصد نمره را محدود می‌کند. با ۱۱۰٪ نمره در دسترس، دانشجویی که ۱۰ امتیاز از ۱۰ امتیاز را کسب کند ۱۱۰٪ دریافت می‌کند، در حالی که دانشجویی که ۸ امتیاز از ۱۰ امتیاز را کسب کند همچنان ۸۰٪ دریافت می‌نماید.
 
-#### Early and late deadlines
+#### مهلت‌های زودهنگام و دیرهنگام
 
-Use **Early deadlines** for bonus-credit windows before the due date, and **Late deadlines** for reduced-credit windows after the due date.
+از **Early deadlines** (مهلت‌های زودهنگام) برای پنجره‌های نمره بونوس قبل از موعد تحویل، و از **Late deadlines** (مهلت‌های دیرهنگام) برای پنجره‌های نمره کاهش‌یافته پس از موعد تحویل استفاده کنید.
 
-For each deadline, choose:
+برای هر مهلت، موارد زیر را انتخاب کنید:
 
-- a date and time;
-- the integer credit percentage students receive until that deadline.
+- یک تاریخ و زمان؛
+- درصد عدد صحیح نمره‌ای که دانشجویان تا آن مهلت دریافت می‌کنند.
 
-Deadlines form one chronological credit timeline. For example, an assessment might be worth 110% until an early deadline, 100% until the due date, 80% until a late deadline, and then 0% or practice credit after that.
+مهلت‌ها یک خط زمانی تقویمیِ واحد برای نمره تشکیل می‌دهند. به عنوان مثال، یک آزمون ممکن است تا یک مهلت زودهنگام ۱۱۰٪، تا موعد تحویل ۱۰۰٪، تا یک مهلت دیرهنگام ۸۰٪، و پس از آن ۰٪ یا نمره تمرینی ارزش داشته باشد.
 
-!!! tip
+!!! tip "نکته"
 
-    With the default 100% due-date credit, **early deadlines must offer more than 100% credit** and **late deadlines must offer less than 100%**. More generally, early credits must exceed the due-date credit, and all credit after the due date must be below 100%.
+    با نمره پیش‌فرض ۱۰۰٪ برای موعد تحویل، **مهلت‌های زودهنگام باید نمره‌ای بیش از ۱۰۰٪ ارائه دهند** و **مهلت‌های دیرهنگام باید نمره‌ای کمتر از ۱۰۰٪ داشته باشند**. به طور کلی‌تر، نمرات زودهنگام باید از نمره موعد تحویل بیشتر باشند، و تمام نمرات پس از موعد تحویل باید زیر ۱۰۰٪ باشند.
 
-#### After deadlines
+#### پس از مهلت‌ها
 
-Configure what happens after all deadlines have passed. The setting is labeled **After due date** when there are no late deadlines, **After late deadline** when there is one, and **After late deadlines** when there are several.
+پیکربندی کنید که پس از سپری شدن تمام مهلت‌ها چه اتفاقی رخ دهد. این تنظیم هنگامی که هیچ مهلت دیرهنگامی وجود ندارد با عنوان **After due date**، زمانی که یک مهلت دیرهنگام وجود دارد با عنوان **After late deadline**، و زمانی که چندین مهلت دیرهنگام وجود دارد با عنوان **After late deadlines** برچسب‌گذاری می‌شود.
 
-- **No submissions allowed**: students can view only what the assessment visibility settings allow, but cannot submit.
-- **Allow practice submissions**: students can submit for feedback, but receive 0% credit.
-- **Allow submissions for partial credit**: students can submit for the credit percentage you choose.
+- **No submissions allowed** (ارسال پاسخ مجاز نیست): دانشجویان فقط می‌توانند مواردی را مشاهده کنند که تنظیمات قابلیت مشاهده آزمون مجاز می‌داند، اما نمی‌توانند پاسخی ارسال کنند.
+- **Allow practice submissions** (اجازه ارسال‌های تمرینی): دانشجویان می‌توانند برای دریافت بازخورد پاسخ ارسال کنند، اما ۰٪ نمره دریافت می‌کنند.
+- **Allow submissions for partial credit** (اجازه ارسال پاسخ برای نمره بخشی): دانشجویان می‌توانند برای درصد نمره‌ای که شما انتخاب می‌کنید پاسخ ارسال نمایند.
 
-This setting controls submission permission only; it does not make associated [workspaces](../workspaces/index.md) read-only. If **After completion** allows students to review a workspace question, they can still open the workspace and modify its files, but they cannot submit those changes for grading.
+این تنظیم فقط اجازه ارسال پاسخ را کنترل می‌کند؛ و [محیط‌های کاری (workspaces)](../workspaces/index.md) مرتبط را فقط-خواندنی نمی‌کند. اگر تنظیمات **After completion** به دانشجویان اجازه مرور یک سوال محیط کاری را بدهد، آن‌ها همچنان می‌توانند محیط کاری را باز کرده و فایل‌های آن را تغییر دهند، اما نمی‌توانند آن تغییرات را برای نمره‌دهی ارسال کنند.
 
-If submissions are not allowed after the final deadline, the **After completion** visibility settings determine what students can review. If after-deadline submissions are allowed, **After completion** applies only after the student's assessment instance closes or its time limit expires.
+اگر پس از آخرین مهلت پاسخی مجاز نباشد، تنظیمات قابلیت مشاهده **After completion** تعیین می‌کند که دانشجویان چه مواردی را می‌توانند مرور کنند. اگر ارسال پاسخ پس از مهلت مجاز باشد، تنظیمات **After completion** تنها پس از بسته شدن نمونه آزمون دانشجو یا انقضای محدودیت زمانی آن اعمال می‌شود.
 
-#### Time limits
+#### محدودیت‌های زمانی
 
-Enable **Time limit** to give each student a fixed amount of working time after they start the assessment.
+گزینه **Time limit** (محدودیت زمانی) را فعال کنید تا به هر دانشجو پس از شروع آزمون، مدت زمان مشخصی برای کار روی آن داده شود.
 
-Timed attempts can span early deadlines, the due date, and late deadlines that still allow submissions, so the credit a student earns can shift as those deadlines pass during the attempt. If an assessment has a due date, a late deadline, and a 60-minute time limit, a student who starts 1 minute before the due date works for the full 60 minutes: the first minute earns the on-time credit, and the remainder earns the late-deadline credit.
+تلاش‌های زمان‌دار می‌توانند دربرگیرنده مهلت‌های زودهنگام، موعد تحویل و مهلت‌های دیرهنگامی باشند که هنوز اجازه ارسال پاسخ را می‌دهند؛ بنابراین نمره‌ای که دانشجو کسب می‌کند می‌تواند با سپری شدن آن مهلت‌ها در طول تلاش تغییر کند. اگر آزمونی دارای یک موعد تحویل، یک مهلت دیرهنگام و محدودیت زمانی ۶۰ دقیقه‌ای باشد، دانشجویی که ۱ دقیقه قبل از موعد تحویل شروع به کار می‌کند، برای کل ۶۰ دقیقه کار می‌کند: دقیقه اول نمره به‌موقع را کسب می‌کند و مابقی زمان نمره مهلت دیرهنگام را دریافت می‌نماید.
 
-However, a timed attempt cannot continue past the point where submissions stop entirely. For example, if **After due date** is set to **No submissions allowed** with no late deadlines, a student who starts shortly before the due date receives only the remaining time until then, not the full configured time limit.
+با این حال، یک تلاش زمان‌دار نمی‌تواند پس از نقطه‌ای که ارسال پاسخ‌ها کاملاً متوقف می‌شود ادامه یابد. به عنوان مثال، اگر **After due date** روی **No submissions allowed** بدون مهلت‌های دیرهنگام تنظیم شده باشد، دانشجویی که کمی قبل از موعد تحویل شروع به کار می‌کند، فقط زمان باقی‌مانده تا آن لحظه را دریافت می‌کند، نه کل محدودیت زمانی پیکربندی‌شده را.
 
-#### Passwords
+#### رمزهای عبور
 
-Enable **Password** to require a password to start or continue working on the assessment. This is typically used for proctored exams. The password gates active, submittable work; students do not need to re-enter the password to review their work once submissions are no longer allowed (for example, in **No submissions allowed** mode after the last deadline).
+گزینه **Password** (رمز عبور) را فعال کنید تا برای شروع یا ادامه کار روی آزمون، رمز عبور لازم باشد. این ویژگی معمولاً برای آزمون‌های تحت نظارت (Proctored) استفاده می‌شود. رمز عبور، فعالیت‌های ارسالیِ فعال را کنترل می‌کند؛ وقتی که دیگر ارسال پاسخ مجاز نباشد (برای مثال در حالت **No submissions allowed** پس از آخرین مهلت)، دانشجویان برای مرور کارهای خود نیازی به وارد کردن مجدد رمز عبور ندارند.
 
-!!! info
+!!! info "اطلاعات"
 
-    Time limits and passwords apply only when a student gains access through **date control**. They are not enforced inside an active PrairieTest reservation — PrairieTest enforces its own scheduled time limit and access controls, including any PrairieTest session password.
+    محدودیت‌های زمانی و رمزهای عبور تنها زمانی اعمال می‌شوند که دانشجو از طریق **کنترل تاریخ (date control)** دسترسی پیدا کند. این موارد در یک رزرو فعال PrairieTest اعمال نمی‌شوند — PrairieTest محدودیت زمانی زمان‌بندی‌شده و کنترل‌های دسترسی خاص خود، از جمله هرگونه رمز عبور جلسه PrairieTest را اعمال می‌کند.
 
 ### PrairieTest
 
-Enable **PrairieTest** to let an active PrairieTest reservation grant access to the assessment. Add the PrairieTest exam UUID from the PrairieTest exam settings.
+گزینه **PrairieTest** را فعال کنید تا یک رزرو فعال PrairieTest بتواند دسترسی به آزمون را اعطا کند. شناسه یکتای (UUID) امتحان PrairieTest را از تنظیمات امتحان PrairieTest اضافه کنید.
 
-PrairieLearn shows an **Exam** badge in the navigation bar when a student is in **Exam mode**, which means the student has a checked-in PrairieTest reservation. While a matching reservation is active and the student is in Exam mode, PrairieTest controls the scheduled access window and time limit. Outside Exam mode, the top-level date control, before-release behavior, and after-completion visibility apply normally.
+هنگامی که دانشجو در **Exam mode** (حالت امتحان) باشد، پریری‌لرن یک نشان **Exam** در نوار ناوبری نشان می‌دهد، به این معنی که دانشجو یک رزرو پذیرش‌شده (Checked-in) در PrairieTest دارد. تا زمانی که یک رزرو منطبق فعال باشد و دانشجو در حالت امتحان قرار داشته باشد، PrairieTest پنجره دسترسی زمان‌بندی‌شده و محدودیت زمانی را کنترل می‌کند. در خارج از حالت امتحان، کنترل تاریخ سطح بالا، رفتار پیش از انتشار و قابلیت مشاهده پس از اتمام به طور عادی اعمال می‌شوند.
 
-For each PrairieTest exam, configure what students see after they finish **while the reservation is still active**:
+برای هر امتحان PrairieTest، مشخص کنید که دانشجویان پس از اتمام کار **در حالی که رزرو هنوز فعال است** چه چیزی را می‌بینند:
 
-- **Show questions and score**: students can review questions and see their score.
-- **Show score only**: students can see their score, but not the questions.
-- **Hide questions and score**: students see neither questions nor score.
+- **Show questions and score** (نمایش سوالات و نمره): دانشجویان می‌توانند سوالات را مرور کرده و نمره خود را ببینند.
+- **Show score only** (فقط نمایش نمره): دانشجویان می‌توانند نمره خود را ببینند، اما سوالات را نمی‌بینند.
+- **Hide questions and score** (پنهان کردن سوالات و نمره): دانشجویان نه سوالات را می‌بینند و نه نمره را.
 
-These per-exam settings do not support reveal dates. Use the top-level **After completion** settings for visibility after the active reservation ends.
+این تنظیمات اختصاصی امتحان از تاریخ‌های آشکارسازی پشتیبانی نمی‌کنند. برای قابلیت مشاهده پس از پایان رزرو فعال، از تنظیمات سطح بالای **After completion** استفاده کنید.
 
-You can also enable **Read-only mode**. During a read-only reservation, students can view previous submissions but cannot submit new answers or start the assessment if they have not already started. Questions and scores are always shown during read-only reservations, regardless of the per-exam visibility settings.
+همچنین می‌توانید **Read-only mode** (حالت فقط-خواندنی) را فعال کنید. در طول یک رزرو فقط-خواندنی، دانشجویان می‌توانند ارسال‌های قبلی را مشاهده کنند اما نمی‌توانند پاسخ‌های جدید ارسال کنند یا اگر قبلاً آزمون را شروع نکرده‌اند آن را شروع نمایند. سوالات و نمرات همیشه در طول رزروهای فقط-خواندنی نمایش داده می‌شوند، صرف‌نظر از تنظیمات قابلیت مشاهده اختصاصی امتحان.
 
-**Read-only mode** applies to assessment submissions, not workspace file access. Students can still open and modify [workspaces](../workspaces/index.md) for questions they can review, but they cannot submit those changed files for grading.
+**حالت فقط-خواندنی** برای ارسال‌های آزمون اعمال می‌شود، نه برای دسترسی به فایل‌های محیط کاری. دانشجویان همچنان می‌توانند [محیط‌های کاری](../workspaces/index.md) سوالاتی را که می‌توانند مرور کنند باز کرده و تغییر دهند، اما نمی‌توانند آن فایل‌های تغییر‌یافته را برای نمره‌دهی ارسال کنند.
 
-#### PrairieTest precedence
+#### اولویت PrairieTest
 
-When a PrairieTest exam is associated with the assessment, PrairieLearn resolves access in this order:
+هنگامی که یک امتحان PrairieTest با آزمون مرتبط است، پریری‌لرن دسترسی را به این ترتیب حل‌وفصل می‌کند:
 
-- **During an active matching reservation (Exam mode)**, PrairieTest grants access. Date-control scheduling, time limits, and passwords are **not** enforced — PrairieTest enforces its own scheduling, time limit, and access controls. For non-read-only reservations, the per-exam **After completion** visibility setting controls what students see after they finish, until the reservation ends.
-- **In Exam mode without an active matching reservation**, date control is not used as a fallback access path. PrairieLearn denies access, omits the assessment from the student assessment list, and hides completed-work visibility such as gradebook scores.
-- **Outside Exam mode**, the top-level date control rules apply normally when a date-control release exists. Top-level **After completion** visibility also takes over for completed instances once the reservation ends.
+- **در طول یک رزرو فعال منطبق (حالت امتحان)**، PrairieTest دسترسی را اعطا می‌کند. زمان‌بندی کنترل تاریخ، محدودیت‌های زمانی و رمزهای عبور اعمال **نمی‌شوند** — PrairieTest زمان‌بندی، محدودیت زمانی و کنترل‌های دسترسی خاص خود را اعمال می‌کند. برای رزروهای غیر فقط-خواندنی، تنظیم قابلیت مشاهده اختصاصی **After completion** امتحان کنترل می‌کند که دانشجویان پس از اتمام، تا زمانی که رزرو پایان یابد، چه چیزی را مشاهده کنند.
+- **در حالت امتحان بدون یک رزرو فعال منطبق**، از کنترل تاریخ به عنوان مسیر دسترسی جایگزین (Fallback) استفاده نمی‌شود. پریری‌لرن دسترسی را رد می‌کند، آزمون را از لیست آزمون‌های دانشجو حذف می‌کند و قابلیت مشاهده کارهای تکمیل‌شده مانند نمرات دفترچه نمرات را پنهان می‌سازد.
+- **در خارج از حالت امتحان**، در صورتی که یک انتشار کنترل تاریخ وجود داشته باشد، قوانین کنترل تاریخ سطح بالا به طور عادی اعمال می‌شوند. همچنین پس از پایان رزرو، قابلیت مشاهده سطح بالای **After completion** مدیریت موارد تکمیل‌شده را بر عهده می‌گیرد.
 
-To restrict submission access to PrairieTest only, leave date control disabled. If students should also be unable to review questions or scores outside the reservation, keep top-level **Question visibility** and **Score visibility** hidden.
+برای محدود کردن دسترسی ارسال پاسخ فقط به PrairieTest، کنترل تاریخ را غیرفعال بگذارید. اگر دانشجویان نباید بتوانند سوالات یا نمرات را در خارج از رزرو مرور کنند، تنظیمات سطح بالای **Question visibility** و **Score visibility** را در حالت پنهان نگه دارید.
 
-### Before release
+### پیش از انتشار (Before release)
 
-Enable **List before release** when students should see the assessment title before they can open it. With date control, this is the period before the release date. With PrairieTest only (no date control), this controls whether students can see the assessment title outside Exam mode even though they cannot open it. In Exam mode, only assessments with an active matching reservation are listed or accessible. If neither date control nor PrairieTest is enabled, the assessment is listed but students cannot start it.
+گزینه **List before release** (فهرست شدن پیش از انتشار) را هنگامی فعال کنید که دانشجویان باید عنوان آزمون را قبل از اینکه بتوانند آن را باز کنند ببینند. با کنترل تاریخ، این دوره زمانیِ قبل از تاریخ انتشار است. فقط با PrairieTest (بدون کنترل تاریخ)، این تنظیم کنترل می‌کند که آیا دانشجویان می‌توانند عنوان آزمون را خارج از حالت امتحان ببینند، هرچند نتوانند آن را باز کنند. در حالت امتحان، فقط آزمون‌هایی با یک رزرو فعال منطبق فهرست می‌شوند یا در دسترس هستند. اگر نه کنترل تاریخ و نه PrairieTest فعال نباشد، آزمون فهرست می‌شود اما دانشجویان نمی‌توانند آن را شروع کنند.
 
-Disable it when the assessment should be completely hidden until release.
+زمانی که آزمون باید تا زمان انتشار کاملاً پنهان باشد، این گزینه را غیرفعال کنید.
 
-### After completion
+### پس از اتمام (After completion)
 
-Use **Question visibility** and **Score visibility** to decide what students can see after the assessment is complete.
+از **Question visibility** (قابلیت مشاهده سوالات) و **Score visibility** (قابلیت مشاهده نمره) برای تصمیم‌گیری در مورد آنچه دانشجویان پس از تکمیل آزمون می‌توانند ببینند استفاده کنید.
 
-An assessment instance is considered to be complete once submissions are no longer allowed: after the final deadline, when a timed assessment closes, when an Exam assessment auto-closes after inactivity, or when an instructor closes it. If after-deadline submissions are allowed, **After completion** applies only after the student's assessment instance closes or its time limit expires.
+یک نمونه آزمون زمانی تکمیل‌شده تلقی می‌شود که ارسال پاسخ‌ها دیگر مجاز نباشد: پس از مهلت نهایی، هنگامی که یک آزمون زمان‌دار بسته می‌شود، هنگامی که یک آزمون در حالت Exam پس از عدم فعالیت به طور خودکار بسته می‌شود، یا زمانی که مدرس آن را می‌بندد. اگر ارسال پاسخ پس از مهلت مجاز باشد، تنظیمات **After completion** تنها پس از بسته شدن نمونه آزمون دانشجو یا انقضای محدودیت زمانی آن اعمال می‌گردد.
 
-Question visibility options:
+گزینه‌های قابلیت مشاهده سوالات:
 
-- **Hide questions permanently**: questions are never visible after completion.
-- **Show questions after completion**: students can review questions and answers immediately after completing the assessment.
-- **Show questions after date**: questions are hidden after completion and become visible on the chosen date.
-- **Show questions between dates**: questions are visible only between the chosen dates.
+- **Hide questions permanently** (پنهان کردن دائمی سوالات): سوالات پس از اتمام هرگز قابل مشاهده نیستند.
+- **Show questions after completion** (نمایش سوالات پس از اتمام): دانشجویان می‌توانند بلافاصله پس از تکمیل آزمون، سوالات و پاسخ‌ها را مرور کنند.
+- **Show questions after date** (نمایش سوالات پس از تاریخ مشخص): سوالات پس از اتمام پنهان هستند و در تاریخ انتخاب‌شده قابل مشاهده می‌شوند.
+- **Show questions between dates** (نمایش سوالات بین دو تاریخ): سوالات فقط بین تاریخ‌های انتخاب‌شده قابل مشاهده هستند.
 
-Score visibility options:
+گزینه‌های قابلیت مشاهده نمره:
 
-- **Hide score permanently**: the score is never visible after completion.
-- **Show score after completion**: students can see their score immediately.
-- **Show score after date**: the score is hidden after completion and becomes visible on the chosen date.
+- **Hide score permanently** (پنهان کردن دائمی نمره): نمره پس از اتمام هرگز قابل مشاهده نیست.
+- **Show score after completion** (نمایش نمره پس از اتمام): دانشجویان می‌توانند بلافاصله نمره خود را ببینند.
+- **Show score after date** (نمایش نمره پس از تاریخ مشخص): نمره پس از اتمام پنهان است و در تاریخ انتخاب‌شده قابل مشاهده می‌شود.
 
-For PrairieTest exams, top-level after-completion settings apply outside an active reservation. Use the per-exam PrairieTest visibility setting to control what students see while their reservation is still active.
+برای امتحان‌های PrairieTest، تنظیمات سطح بالای پس از اتمام، در خارج از یک رزرو فعال اعمال می‌شوند. از تنظیمات قابلیت مشاهده اختصاصی امتحان PrairieTest برای کنترل آنچه دانشجویان در حالی که رزرو آن‌ها هنوز فعال است می‌بینند، استفاده کنید.
 
-Visibility dates are only valid when the corresponding item is hidden first. Hiding the score also requires hiding questions, because PrairieLearn does not support showing question submissions while hiding their resulting score.
+تاریخ‌های قابلیت مشاهده تنها زمانی معتبر هستند که مورد مربوطه ابتدا پنهان شده باشد. پنهان کردن نمره همچنین مستلزم پنهان کردن سوالات است، زیرا پریری‌لرن از نمایش پاسخ‌های ارسالی سوالات در عین پنهان کردن نمره حاصل از آن‌ها پشتیبانی نمی‌کند.
 
-## Add an override
+## افزودن یک بازنویسی (Add an override)
 
-Overrides customize access for selected students while inheriting anything they do not explicitly change from the defaults.
+بازنویسی‌ها (Overrides) دسترسی را برای دانشجویان منتخب سفارشی‌سازی می‌کنند، در حالی که هر چیزی را که صریحاً تغییر ندهند از مقادیر پیش‌فرض به ارث می‌برند.
 
-Click **Add override** in the **Overrides** section.
+روی **Add override** در بخش **Overrides** کلیک کنید.
 
-Choose who the override applies to:
+مشخص کنید بازنویسی برای چه کسانی اعمال می‌شود:
 
-- **Specific students**: select enrolled students. This is the usual choice for one-off accommodations and makeup windows.
-- **Students by label**: select one or more student labels, such as "Section A" or "Extra time". The override applies to students with _any_ of the selected labels (not all of them).
+- **Specific students** (دانشجویان خاص): دانشجویان ثبت‌نام‌شده را انتخاب کنید. این گزینه، انتخاب معمول برای تسهیلات موردی و پنجره‌های آزمون جبرانی است.
+- **Students by label** (دانشجویان بر اساس برچسب): یک یا چند برچسب دانشجو را انتخاب کنید، مانند «Section A» یا «Extra time». بازنویسی برای دانشجویانی اعمال می‌شود که _هر یک_ از برچسب‌های انتخاب‌شده را داشته باشند (نه لزوماً همه آن‌ها را).
 
-[Student labels](../courseInstance/index.md#student-labels) are managed on the course instance **Students** page. They are the recommended way to handle repeated accommodations, sections, or cohort-specific deadlines.
+[برچسب‌های دانشجو (Student labels)](../courseInstance/index.md#student-labels) در صفحه **Students** دوره تحصیلی مدیریت می‌شوند. آن‌ها روش توصیه‌شده برای مدیریت تسهیلات تکرارشونده، گروه‌های درسی (Sections)، یا مهلت‌های مختص یک ورودی/کوهورت هستند.
 
-After choosing the target, click **Override** next to each field you want to customize. Fields that you do not override continue to inherit from the defaults.
+پس از انتخاب هدف، روی **Override** در کنار هر فیلدی که می‌خواهید سفارشی‌سازی کنید کلیک نمایید. فیلدهایی که بازنویسی نمی‌کنید همچنان از مقادیر پیش‌فرض ارث‌بری می‌کنند.
 
-Common override uses include:
+کاربردهای رایج بازنویسی عبارتند از:
 
-- extending the due date for a student label;
-- adding extra time for students with an accommodation label;
-- giving one student a password or different access window;
-- hiding or revealing completed exam content differently for one group.
+- تمدید موعد تحویل برای یک برچسب دانشجو؛
+- افزودن وقت اضافه برای دانشجویان دارای برچسب تسهیلات؛
+- دادن رمز عبور یا پنجره دسترسی متفاوت به یک دانشجو؛
+- پنهان کردن یا آشکارسازی محتوای امتحان تکمیل‌شده به شکلی متفاوت برای یک گروه.
 
-## Edit an existing override
+## ویرایش یک بازنویسی موجود
 
-Existing overrides appear as cards under **Overrides for student labels** or **Overrides for specific students**. Click **Edit** to change the target or overridden fields.
+بازنویسی‌های موجود به صورت کارت‌هایی در زیر **Overrides for student labels** یا **Overrides for specific students** ظاهر می‌شوند. برای تغییر هدف یا فیلدهای بازنویسی‌شده، روی **Edit** کلیک کنید.
 
-![Student-specific override editor with an overridden release date](accessControl/03-student-override.png)
+![ویرایشگر بازنویسی مختص دانشجو با تاریخ انتشار بازنویسی‌شده](accessControl/03-student-override.png)
 /// caption
-Each override starts with every field inherited from the defaults; click **Override** next to a field to set a different value just for the targeted students.
+هر بازنویسی با ارث‌بری تمام فیلدها از پیش‌فرض‌ها شروع می‌شود؛ روی **Override** در کنار یک فیلد کلیک کنید تا مقدار متفاوتی را فقط برای دانشجویان مورد نظر تنظیم نمایید.
 ///
 
-When an override field is active, the detail panel shows **Remove override** for that field. Removing the override does not clear the default value; it makes the rule inherit that field again.
+هنگامی که یک فیلد بازنویسی فعال است، پنل جزئیات دکمه **Remove override** را برای آن فیلد نشان می‌دهد. حذف بازنویسی، مقدار پیش‌فرض را پاک نمی‌کند؛ بلکه باعث می‌شود آن قانون مجدداً آن فیلد را به ارث ببرد.
 
-## Override priority
+## اولویت بازنویسی‌ها (Override priority)
 
-Student-specific overrides take priority over student-label overrides. Within each section, overrides lower in the list take priority over those higher in the list; use the drag handle to reorder overrides when priority matters.
+بازنویسی‌های مختص دانشجو بر بازنویسی‌های برچسب دانشجو اولویت دارند. در هر بخش، بازنویسی‌هایی که در پایین لیست قرار دارند نسبت به بازنویسی‌های بالاتر در لیست اولویت دارند؛ در مواقعی که اولویت اهمیت دارد، از دسته کشیدن (Drag handle) برای تغییر ترتیب بازنویسی‌ها استفاده کنید.
 
-For example, suppose a student has both the "Section A" and "Extended time" labels:
+برای مثال، فرض کنید دانشجویی هر دو برچسب «Section A» و «Extended time» را دارد:
 
-- The **Section A** override sets a later **due date** (Feb 20).
-- The **Extended time** override sets a longer **time limit** (90 minutes) and an earlier **release date** (Jan 14).
+- بازنویسی **Section A** یک **موعد تحویل** دیرتر (۲۰ فوریه) تعیین می‌کند.
+- بازنویسی **Extended time** یک **محدودیت زمانی** طولانی‌تر (۹۰ دقیقه) و یک **تاریخ انتشار** زودهنگام‌تر (۱۴ ژانویه) تنظیم می‌کند.
 
-The student inherits both overrides on top of the defaults: due date Feb 20, time limit 90 minutes, release date Jan 14. If both overrides set the same field — say, both set the due date — the override lower in the list wins.
+دانشجو هر دو بازنویسی را علاوه بر مقادیر پیش‌فرض به ارث می‌برد: موعد تحویل ۲۰ فوریه، محدودیت زمانی ۹۰ دقیقه، تاریخ انتشار ۱۴ ژانویه. اگر هر دو بازنویسی یک فیلد مشابه را تنظیم کنند — مثلاً هر دو موعد تحویل را تعیین کنند — بازنویسی که در لیست پایین‌تر است اعمال می‌گردد.
 
-## Save changes
+## ذخیره تغییرات
 
-The page tracks unsaved changes at the bottom of the screen. Click **Save** to apply your access-control changes.
+این صفحه تغییرات ذخیره‌نشده را در پایین صفحه ردیابی می‌کند. برای اعمال تغییرات کنترل دسترسی خود، روی **Save** کلیک کنید.
 
-Click **Cancel** to discard unsaved UI changes.
+برای لغو تغییرات ذخیره‌نشده در رابط کاربری، روی **Cancel** کلیک کنید.
 
-Click **Clear** on the Defaults card to remove the default access-control configuration. Click **Remove** on an override card to delete the entire override.
+روی **Clear** در کارت Defaults کلیک کنید تا پیکربندی کنترل دسترسی پیش‌فرض حذف شود. روی **Remove** در کارت یک بازنویسی کلیک کنید تا کل آن بازنویسی حذف گردد.
 
-## Migrating from legacy access control
+## مهاجرت از کنترل دسترسی قدیمی (Legacy)
 
-Legacy access control uses `allowAccess` rules. Modern access control uses `accessControl` rules. See the [legacy access control documentation](accessControlLegacy.md) for details about the older format.
+کنترل دسترسی قدیمی از قوانین `allowAccess` استفاده می‌کند. کنترل دسترسی مدرن از قوانین `accessControl` استفاده می‌نماید. برای جزئیات بیشتر درباره فرمت قدیمی‌تر، به [مستندات کنترل دسترسی قدیمی](accessControlLegacy.md) مراجعه کنید.
 
-Migration from legacy `allowAccess` can be done in two ways:
+مهاجرت از `allowAccess` قدیمی را می‌توان به دو روش انجام داد:
 
-- On an assessment's **Access** tab, click **Migrate to modern format**. PrairieLearn shows the migrated changes and any warnings before you confirm.
-- When **copying a course instance**, PrairieLearn migrates compatible assessment-level rules and reports any caveats before you confirm the copy.
+- در برگه **Access** یک آزمون، روی **Migrate to modern format** کلیک کنید. پریری‌لرن قبل از تأیید شما، تغییرات مهاجرت‌یافته و هرگونه هشدار را نشان می‌دهد.
+- هنگام **کپی کردن یک دوره تحصیلی (Course instance)**، پریری‌لرن قوانین سازگار در سطح آزمون را مهاجرت داده و قبل از تأیید کپی، هرگونه نکته و هشدار را گزارش می‌کند.
 
-!!! note
+!!! note "نکته"
 
-    UID-based rules from the legacy system do not have a direct JSON equivalent in modern access control. After migration, use the Access page to configure overrides for student labels or specific enrolled students.
+    قوانین مبتنی بر UID از سیستم قدیمی معادل JSON مستقیمی در کنترل دسترسی مدرن ندارند. پس از مهاجرت، از صفحه Access برای پیکربندی بازنویسی‌ها برای برچسب‌های دانشجویی یا دانشجویان ثبت‌نام‌شده خاص استفاده کنید.
 
-For JSON-level before-and-after examples, see [Legacy migration examples](#legacy-migration-examples) in the advanced JSON reference.
+برای نمونه‌های قبل و بعد در سطح JSON، به [نمونه‌های مهاجرت از سیستم قدیمی](#legacy-migration-examples) در مرجع پیشرفته JSON مراجعه فرمایید.
 
-## Common scenarios
+## سناریوهای رایج
 
-### Simple homework with a due date
+### تکلیف ساده با موعد تحویل
 
-Students can start and submit the homework from Jan 15 to Feb 15 for 100% credit. After Feb 15, submissions are not allowed. The **After completion** settings apply; by default, students can see their score but not the questions.
+دانشجویان می‌توانند از ۱۵ ژانویه تا ۱۵ فوریه تکلیف را با ۱۰۰٪ نمره شروع کرده و ارسال کنند. پس از ۱۵ فوریه، ارسال پاسخ مجاز نیست. تنظیمات **After completion** اعمال می‌شوند؛ به طور پیش‌فرض، دانشجویان می‌توانند نمره خود را ببینند اما سوالات را نمی‌بینند.
 
-In the UI:
+در رابط کاربری:
 
-1. Edit **Defaults**.
-2. Enable **Date control**.
-3. Set **Release** to **Scheduled for release** and enter Jan 15.
-4. Set **Due date** to **Due on date** and enter Feb 15.
-5. Leave due-date credit at the default 100%.
-6. Leave **After due date** set to **No submissions allowed**.
+1. بخش **Defaults** را ویرایش کنید.
+2. گزینه **Date control** را فعال نمایید.
+3. گزینه **Release** را روی **Scheduled for release** تنظیم کرده و تاریخ ۱۵ ژانویه را وارد کنید.
+4. گزینه **Due date** را روی **Due on date** تنظیم کرده و تاریخ ۱۵ فوریه را وارد کنید.
+5. نمره موعد تحویل را روی مقدار پیش‌فرض ۱۰۰٪ رها کنید.
+6. گزینه **After due date** را روی حالت **No submissions allowed** رها کنید.
 
 ??? info "JSON"
 
@@ -261,16 +261,16 @@ In the UI:
     }
     ```
 
-### Always-open practice assessment
+### آزمون تمرینی همیشه باز
 
-Students can access a practice assessment indefinitely after release with full credit.
+دانشجویان می‌توانند پس از انتشار، به طور نامحدود و با نمره کامل به یک آزمون تمرینی دسترسی داشته باشند.
 
-In the UI:
+در رابط کاربری:
 
-1. Edit **Defaults**.
-2. Enable **Date control**.
-3. Set **Release** to **Released** (or **Scheduled for release** with a release date).
-4. Set **Due date** to **No due date**.
+1. بخش **Defaults** را ویرایش کنید.
+2. گزینه **Date control** را فعال نمایید.
+3. گزینه **Release** را روی **Released** (یا **Scheduled for release** با یک تاریخ انتشار) تنظیم کنید.
+4. گزینه **Due date** را روی **No due date** تنظیم نمایید.
 
 ??? info "JSON"
 
@@ -287,29 +287,29 @@ In the UI:
     }
     ```
 
-    With `due.date: null`, `due.credit` (default 100%) applies indefinitely after release.
+    با مقدار `due.date: null`، نمره `due.credit` (پیش‌فرض ۱۰۰٪) پس از انتشار به طور نامحدود اعمال می‌شود.
 
-### Homework with early bonus and late penalty
+### تکلیف با بونوس زودهنگام و جریمه تاخیر
 
-| Period        | Credit                                    |
+| دوره زمانی | نمره (اعتبار) |
 | ------------- | ----------------------------------------- |
-| Before Jan 15 | Not open                                  |
-| Jan 15-Feb 1  | 110%                                      |
-| Feb 1-Feb 15  | 100%                                      |
-| Feb 15-Feb 22 | 80%                                       |
-| Feb 22-Mar 1  | 50%                                       |
-| After Mar 1   | 0%, with submissions allowed for feedback |
+| قبل از ۱۵ ژانویه | باز نیست |
+| ۱۵ ژانویه تا ۱ فوریه | ۱۱۰٪ |
+| ۱ فوریه تا ۱۵ فوریه | ۱۰۰٪ |
+| ۱۵ فوریه تا ۲۲ فوریه | ۸۰٪ |
+| ۲۲ فوریه تا ۱ مارس | ۵۰٪ |
+| بعد از ۱ مارس | ۰٪، با امکان ارسال برای دریافت بازخورد |
 
-After Mar 1, submissions remain open indefinitely for feedback at 0% credit. The **After completion** settings apply only after the student's assessment instance closes or its time limit expires.
+پس از ۱ مارس، ارسال پاسخ‌ها برای دریافت بازخورد با نمره ۰٪ به طور نامحدود باز می‌ماند. تنظیمات **After completion** تنها پس از بسته شدن نمونه آزمون دانشجو یا انقضای محدودیت زمانی آن اعمال می‌گردد.
 
-In the UI:
+در رابط کاربری:
 
-1. Edit **Defaults**.
-2. Enable **Date control** and set the release date to Jan 15.
-3. Add an **Early deadline** on Feb 1 with 110% credit.
-4. Set the **Due date** to Feb 15 and leave credit at 100%.
-5. Add **Late deadlines** on Feb 22 with 80% credit and Mar 1 with 50% credit.
-6. Set **After late deadlines** to **Allow practice submissions**.
+1. بخش **Defaults** را ویرایش کنید.
+2. گزینه **Date control** را فعال کرده و تاریخ انتشار را روی ۱۵ ژانویه تنظیم نمایید.
+3. یک **Early deadline** (مهلت زودهنگام) در ۱ فوریه با ۱۱۰٪ نمره اضافه کنید.
+4. مقدار **Due date** را روی ۱۵ فوریه تنظیم کرده و نمره را روی ۱۰۰٪ بگذارید.
+5. موارد **Late deadlines** (مهلت‌های دیرهنگام) را در ۲۲ فوریه با ۸۰٪ نمره و ۱ مارس با ۵۰٪ نمره اضافه کنید.
+6. گزینه **After late deadlines** را روی **Allow practice submissions** تنظیم نمایید.
 
 ??? info "JSON"
 
@@ -335,19 +335,19 @@ In the UI:
     }
     ```
 
-### Timed exam with password
+### امتحان زمان‌دار با رمز عبور
 
-Students have a 90-minute time limit within the two-hour exam window. A password is required to start. Submissions stop after the exam window. Once the exam is complete, questions and scores are hidden, with scores revealed on Mar 12.
+دانشجویان در طول پنجره امتحانیِ دو ساعته، یک محدودیت زمانی ۹۰ دقیقه‌ای دارند. برای شروع به یک رمز عبور نیاز است. ارسال پاسخ‌ها پس از پنجره امتحان متوقف می‌شود. پس از تکمیل امتحان، سوالات و نمرات پنهان می‌شوند و نمرات در ۱۲ مارس آشکار می‌گردند.
 
-In the UI:
+در رابط کاربری:
 
-1. Edit **Defaults**.
-2. Enable **Date control**.
-3. Set the release date to Mar 10 at 9:00am and the due date to Mar 10 at 11:00am.
-4. Enable **Time limit** and enter 90 minutes.
-5. Enable **Password** and enter the password.
-6. Under **After completion**, set **Question visibility** to **Hide questions permanently**.
-7. Set **Score visibility** to **Show score after date** and enter Mar 12.
+1. بخش **Defaults** را ویرایش کنید.
+2. گزینه **Date control** را فعال نمایید.
+3. تاریخ انتشار را روی ۱۰ مارس ساعت ۹:۰۰ صبح و موعد تحویل را روی ۱۰ مارس ساعت ۱۱:۰۰ صبح تنظیم کنید.
+4. گزینه **Time limit** را فعال کرده و ۹۰ دقیقه را وارد نمایید.
+5. گزینه **Password** را فعال کرده و رمز عبور را وارد کنید.
+6. در بخش **After completion**، گزینه **Question visibility** را روی **Hide questions permanently** تنظیم نمایید.
+7. گزینه **Score visibility** را روی **Show score after date** تنظیم کرده و تاریخ ۱۲ مارس را وارد کنید.
 
 ??? info "JSON"
 
@@ -370,18 +370,18 @@ In the UI:
     }
     ```
 
-### PrairieTest exam
+### امتحان PrairieTest
 
-Students access the assessment through an active PrairieTest reservation; time limits and scheduling are managed by PrairieTest.
+دانشجویان از طریق یک رزرو فعال PrairieTest به آزمون دسترسی پیدا می‌کنند؛ محدودیت‌های زمانی و زمان‌بندی توسط PrairieTest مدیریت می‌شوند.
 
-In the UI:
+در رابط کاربری:
 
-1. Edit **Defaults**.
-2. Enable **PrairieTest** under **Integrations**.
-3. Enter the PrairieTest exam UUID.
-4. For **After completion**, choose what students can see after they finish, while their reservation is still active.
-5. Use the top-level **After completion** settings for what students can see after the reservation ends.
-6. Do not configure an ordinary date-control access window unless students should also be able to access the assessment outside PrairieTest.
+1. بخش **Defaults** را ویرایش کنید.
+2. گزینه **PrairieTest** را در زیر بخش **Integrations** فعال نمایید.
+3. شناسه یکتای (UUID) امتحان PrairieTest را وارد کنید.
+4. برای **After completion**، مشخص کنید دانشجویان پس از اتمام کار، در حالی که رزرو آن‌ها هنوز فعال است، چه چیزی را می‌توانند ببینند.
+5. از تنظیمات سطح بالای **After completion** برای مواردی که دانشجویان پس از پایان رزرو می‌توانند ببینند استفاده کنید.
+6. پنجره دسترسی عادیِ کنترل تاریخ را پیکربندی نکنید مگر اینکه دانشجویان باید بتوانند در خارج از PrairieTest نیز به آزمون دسترسی داشته باشند.
 
 ??? info "JSON"
 
@@ -403,18 +403,18 @@ In the UI:
     }
     ```
 
-### Extended due date for a student label
+### تمدید موعد تحویل برای یک برچسب دانشجو
 
-Students with the "Extended time" label get a later due date and more time. All other settings inherit from the defaults.
+دانشجویان دارای برچسب «Extended time» موعد تحویل دیرتر و زمان بیشتری دریافت می‌کنند. تمام تنظیمات دیگر از مقادیر پیش‌فرض به ارث برده می‌شوند.
 
-In the UI:
+در رابط کاربری:
 
-1. Create or confirm a student label such as "Extended time" on the course instance **Students** page.
-2. On the assessment **Access** page, click **Add override**.
-3. Choose **Students by label** and select "Extended time".
-4. Click **Override** next to **Due date** and set the later due date.
-5. Click **Override** next to **Time limit** and enter the longer duration.
-6. Leave every other field inherited.
+1. یک برچسب دانشجو مانند «Extended time» را در صفحه **Students** دوره تحصیلی ایجاد یا تأیید کنید.
+2. در صفحه **Access** آزمون، روی **Add override** کلیک کنید.
+3. گزینه **Students by label** را انتخاب کرده و برچسب «Extended time» را برگزینید.
+4. روی **Override** در کنار **Due date** کلیک کرده و موعد تحویل دیرتر را تعیین کنید.
+5. روی **Override** در کنار **Time limit** کلیک کرده و مدت زمان طولانی‌تر را وارد نمایید.
+6. سایر فیلدها را در حالت ارث‌بری رها کنید.
 
 ??? info "JSON"
 
@@ -440,50 +440,50 @@ In the UI:
     }
     ```
 
-### Extended access for specific students
+### دسترسی تمدید‌شده برای دانشجویان خاص
 
-Use student-specific overrides for one-off accommodations or makeup windows.
+از بازنویسی‌های مختص دانشجو برای تسهیلات موردی یا پنجره‌های آزمون جبرانی استفاده کنید.
 
-In the UI:
+در رابط کاربری:
 
-1. Click **Add override**.
-2. Choose **Specific students**.
-3. Click **Select students** and choose the enrolled students.
-4. Click **Override** next to only the fields that should differ, such as **Release**, **Due date**, or **Time limit**.
-5. Save the changes.
+1. روی **Add override** کلیک کنید.
+2. گزینه **Specific students** را انتخاب نمایید.
+3. روی **Select students** کلیک کرده و دانشجویان ثبت‌نام‌شده را انتخاب کنید.
+4. فقط در کنار فیلدهایی که باید متفاوت باشند مانند **Release**، **Due date** یا **Time limit** روی **Override** کلیک کنید.
+5. تغییرات را ذخیره نمایید.
 
-## Limitations
+## محدودیت‌های مفهومی (Limitations)
 
-Modern access control models credit as a single contiguous submission timeline from the release date through deadlines to the point where submissions stop. It cannot represent non-contiguous submission ranges where credit is available, then unavailable, then available again.
+کنترل دسترسی مدرن، نمره را به عنوان یک خط زمانی پیوسته و یکپارچه برای ارسال پاسخ از تاریخ انتشار تا مهلت‌ها و نقطه‌ای که ارسال‌ها متوقف می‌شوند مدل‌سازی می‌کند. این سیستم نمی‌تواند بازه‌های ارسالی ناپیوسته را که در آن نمره در دسترس است، سپس از دسترس خارج می‌شود و سپس مجدداً در دسترس قرار می‌گیرد، نشان دهد.
 
-For example, a legacy setup that accepts 100% credit submissions from Jan 15 to Feb 15, stops accepting submissions, and then reopens for 100% credit submissions from Mar 1 to Mar 15 cannot be represented as one modern credit timeline.
+برای مثال، ساختار قدیمی‌ای که ارسال پاسخ‌های ۱۰۰٪ نمره را از ۱۵ ژانویه تا ۱۵ فوریه می‌پذیرد، سپس پذیرش ارسال‌ها را متوقف می‌کند، و بعد مجدداً از ۱ مارس تا ۱۵ مارس برای ارسال‌های ۱۰۰٪ نمره بازگشایی می‌شود، نمی‌تواند به صورت یک خط زمانی نمره در سیستم مدرن نمایش داده شود.
 
-Assessments with non-contiguous credit ranges are flagged as incompatible during migration. You can clear those rules and reconfigure access manually, or keep the legacy format.
+آزمون‌هایی که دارای بازه‌های نمره ناپیوسته هستند در حین مهاجرت به عنوان ناسازگار علامت‌گذاری می‌شوند. شما می‌توانید آن قوانین را پاک کرده و دسترسی را به صورت دستی مجدداً پیکربندی کنید، یا اینکه فرمت قدیمی را حفظ نمایید.
 
-## Limits
+## سقف‌ها و محدودیت‌های عددی (Limits)
 
-Modern access control limits unusually large configurations so that access settings remain reviewable and do not accept unbounded input. Most assessments should be well below these limits; use student labels for repeated accommodations, sections, or cohorts instead of selecting large groups of students individually.
+کنترل دسترسی مدرن، پیکربندی‌های بسیار بزرگ را محدود می‌کند تا تنظیمات دسترسی همچنان قابل بازبینی باقی بمانند و ورودی‌های نامحدود را نپذیرند. اکثر آزمون‌ها باید بسیار کمتر از این سقف‌ها باشند؛ به جای انتخاب تک‌تک گروه‌های بزرگ دانشجویان، از برچسب‌های دانشجو برای تسهیلات تکرارشونده، گروه‌های درسی (Sections)، یا ورودی‌ها استفاده کنید.
 
-| Setting                                      | Limit                                   |
+| تنظیم | سقف مجاز |
 | -------------------------------------------- | --------------------------------------- |
-| Student-label overrides                      | 100 overrides per assessment            |
-| Student-specific overrides                   | 100 overrides per assessment            |
-| Students in one student-specific override    | 100 students                            |
-| Student labels in one student-label override | 100 labels                              |
-| Early and late deadlines                     | 10 early and 10 late deadlines per rule |
-| Linked PrairieTest exams                     | 10 exams per assessment                 |
-| Time limits                                  | 525,600 minutes (365 days)              |
-| Passwords                                    | 128 characters                          |
+| بازنویسی‌های برچسب دانشجو | ۱۰۰ بازنویسی به ازای هر آزمون |
+| بازنویسی‌های مختص دانشجو | ۱۰۰ بازنویسی به ازای هر آزمون |
+| دانشجویان در یک بازنویسی مختص دانشجو | ۱۰۰ دانشجو |
+| برچسب‌های دانشجو در یک بازنویسی برچسب دانشجو | ۱۰۰ برچسب |
+| مهلت‌های زودهنگام و دیرهنگام | ۱۰ مهلت زودهنگام و ۱۰ مهلت دیرهنگام به ازای هر قانون |
+| امتحان‌های متصل‌شده PrairieTest | ۱۰ امتحان به ازای هر آزمون |
+| محدودیت‌های زمانی | ۵۲۵,۶۰۰ دقیقه (۳۶۵ روز) |
+| رمزهای عبور | ۱۲۸ کاراکتر |
 
-## Staff access
+## دسترسی کادر آموزشی (Staff access)
 
-Course staff with a course role of Previewer or above, or a course instance role of Student Data Viewer or above, always receive full access to all assessments regardless of access control rules. They see 100% credit with a "(Staff override)" indicator.
+کادر آموزشی درس با نقش درسیِ Previewer یا بالاتر، یا نقش دوره تحصیلیِ Student Data Viewer یا بالاتر، فارغ از قوانین کنترل دسترسی همیشه به تمام آزمون‌ها دسترسی کامل دارند. آن‌ها ۱۰۰٪ نمره را همراه با نشانگر «(Staff override)» مشاهده می‌کنند.
 
-## Advanced JSON configuration
+## پیکربندی پیشرفته JSON
 
-Most instructors should use the Access page. The JSON format is useful when you need to script access-control changes, review diffs, or generate assessments programmatically.
+اکثر مدرسان باید از صفحه Access استفاده کنند. فرمت JSON زمانی مفید است که نیاز دارید تغییرات کنترل دسترسی را اسکریپت‌نویسی کنید، تفاوت‌ها (Diffs) را بررسی نمایید، یا آزمون‌ها را به صورت برنامه‌نویسی‌شده تولید کنید.
 
-The `accessControl` field is an array in `infoAssessment.json`:
+فیلد `accessControl` یک آرایه در `infoAssessment.json` است:
 
 ```json title="infoAssessment.json"
 {
@@ -514,11 +514,11 @@ The `accessControl` field is an array in `infoAssessment.json`:
 }
 ```
 
-If `accessControl` is omitted or set to `[]`, students have no access. In a nonempty array, the first element is the defaults rule and must not have a `uuid`. When the defaults grant no access but overrides follow, keep `{}` as the first element; without it, the first override occupies the defaults position and validation fails.
+اگر `accessControl` حذف شود یا روی `[]` تنظیم گردد، دانشجویان هیچ‌گونه دسترسی نخواهند داشت. در یک آرایه غیرخالی، اولین المان قانون پیش‌فرض‌ها (Defaults) است و نباید `uuid` داشته باشد. هنگامی که پیش‌فرض‌ها هیچ دسترسی‌ای اعطا نمی‌کنند اما بازنویسی‌ها در ادامه می‌آیند، `{}` را به عنوان اولین المان نگه دارید؛ بدون آن، اولین بازنویسی جایگاه پیش‌فرض‌ها را اشغال کرده و اعتبارسنجی با شکست مواجه می‌شود.
 
-Every later element is an override and must have a `uuid`. Overrides with `labels` target student labels; trailing overrides without `labels` store student-specific rule bodies, while the selected students stay in PrairieLearn rather than in course content. Use `labels: []` for a student-label override that intentionally targets no labels.
+هر المان بعدی یک بازنویسی است و باید دارای یک `uuid` باشد. بازنویسی‌های دارای `labels` برچسب‌های دانشجویی را هدف قرار می‌دهند؛ بازنویسی‌های انتهاییِ بدون `labels` بدنه قوانین مختص دانشجو را ذخیره می‌کنند، در حالی که دانشجویان انتخاب‌شده به جای محتوای درس، درون پریری‌لرن باقی می‌مانند. برای بازنویسی برچسب دانشجویی که عمداً هیچ برچسبی را هدف قرار نمی‌دهد، از `labels: []` استفاده کنید.
 
-### Full JSON skeleton
+### اسکلت کامل JSON
 
 ```json title="infoAssessment.json"
 {
@@ -584,99 +584,99 @@ Every later element is an override and must have a `uuid`. Overrides with `label
 
 ### `dateControl`
 
-| Field               | Type    | Description                                                                                                                                                                                 |
+| فیلد | نوع | توضیحات |
 | ------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `release`           | object  | Object with `date` (ISO datetime). The assessment is not open to students before this date.                                                                                                 |
-| `due`               | object  | Object with `date` (ISO datetime, or `null` for no due date) and optional integer `credit` (0-200, default 100).                                                                            |
-| `earlyDeadlines`    | array   | Array of `{date, credit}` objects. Deadlines before the due date that offer bonus credit.                                                                                                   |
-| `lateDeadlines`     | array   | Array of `{date, credit}` objects. Deadlines after the due date that offer reduced credit.                                                                                                  |
-| `afterLastDeadline` | object  | Controls whether submissions are allowed after all deadlines have passed, and how much credit they receive. Omit on the default rule to disallow submissions; omit on overrides to inherit. |
-| `durationMinutes`   | integer | Time limit in minutes.                                                                                                                                                                      |
-| `password`          | string  | Password required to start the assessment.                                                                                                                                                  |
+| `release` | object | شیء حاوی `date` (تاریخ-زمان استاندارد ISO). آزمون قبل از این تاریخ به روی دانشجویان باز نیست. |
+| `due` | object | شیء حاوی `date` (تاریخ-زمان استاندارد ISO، یا `null` در صورت نبود موعد تحویل) و نمره اختیاری به صورت عدد صحیح `credit` (۰ تا ۲۰۰، پیش‌فرض ۱۰۰). |
+| `earlyDeadlines` | array | آرایه‌ای از اشیاء `{date, credit}`. مهلت‌های قبل از موعد تحویل که نمره بونوس ارائه می‌دهند. |
+| `lateDeadlines` | array | آرایه‌ای از اشیاء `{date, credit}`. مهلت‌های پس از موعد تحویل که نمره کاهش‌یافته ارائه می‌دهند. |
+| `afterLastDeadline` | object | کنترل می‌کند که آیا ارسال پاسخ پس از سپری شدن تمام مهلت‌ها مجاز است یا خیر، و چقدر نمره دریافت می‌کند. در قانون پیش‌فرض برای عدم مجاز بودن ارسال آن را حذف کنید؛ در بازنویسی‌ها برای ارث‌بری آن را حذف کنید. |
+| `durationMinutes` | integer | محدودیت زمانی به دقیقه. |
+| `password` | string | رمز عبور لازم برای شروع آزمون. |
 
-`due.credit` defaults to 100. Deadline credits may use any integer percentage from 0 to 200, but the resolved sequence of early deadlines, due date, late deadlines, and `afterLastDeadline.credit` must strictly decrease over time. Early deadlines are not allowed when due credit is below 100%. Late deadlines and `afterLastDeadline.credit` must be below 100%.
+مقدار `due.credit` به طور پیش‌فرض ۱۰۰ است. نمرات مهلت‌ها ممکن است از هر درصد عدد صحیحی از ۰ تا ۲۰۰ استفاده کنند، اما توالی حل‌شده مهلت‌های زودهنگام، موعد تحویل، مهلت‌های دیرهنگام و `afterLastDeadline.credit` باید در طول زمان اکیداً نزولی باشد. مهلت‌های زودهنگام زمانی که نمره موعد تحویل زیر ۱۰۰٪ باشد مجاز نیستند. مهلت‌های دیرهنگام و `afterLastDeadline.credit` باید زیر ۱۰۰٪ باشند.
 
-When `due.date` is `null`, the due credit applies indefinitely after release.
+هنگامی که `due.date` برابر با `null` باشد، نمره موعد تحویل پس از انتشار به طور نامحدود اعمال می‌شود.
 
 ### `afterLastDeadline`
 
-| Field              | Type    | Default | Description                                                                                          |
+| فیلد | نوع | پیش‌فرض | توضیحات |
 | ------------------ | ------- | ------- | ---------------------------------------------------------------------------------------------------- |
-| `allowSubmissions` | boolean | `false` | Whether students can still submit answers after all deadlines.                                       |
-| `credit`           | integer | -       | Required when `allowSubmissions` is `true`; credit percentage after the last deadline, from 0 to 99. |
+| `allowSubmissions` | boolean | `false` | آیا دانشجویان پس از همه مهلت‌ها همچنان می‌توانند پاسخ ارسال کنند. |
+| `credit` | integer | - | در صورتی که `allowSubmissions` برابر با `true` باشد الزامی است؛ درصد نمره پس از آخرین مهلت، از ۰ تا ۹۹. |
 
-If `allowSubmissions` is `true`, `credit` is required and must be below 100% and below the preceding deadline's credit. Use `"credit": 0` for practice submissions.
+اگر `allowSubmissions` برابر با `true` باشد، فیلد `credit` الزامی است و باید زیر ۱۰۰٪ و کمتر از نمره مهلت قبلی باشد. برای ارسال‌های تمرینی از `"credit": 0` استفاده کنید.
 
-If `afterLastDeadline` is omitted on the default rule or set to `{ "allowSubmissions": false }`, students cannot submit after the final deadline. They can still review whatever the `afterComplete` settings make visible. On overrides, omit `afterLastDeadline` to inherit from the default rule, or set `{ "allowSubmissions": false }` to explicitly disable submissions.
+اگر `afterLastDeadline` در قانون پیش‌فرض حذف شود یا روی `{ "allowSubmissions": false }` تنظیم گردد، دانشجویان پس از مهلت نهایی نمی‌توانند پاسخی ارسال کنند. آن‌ها همچنان می‌توانند هر آنچه را که تنظیمات `afterComplete` قابل مشاهده می‌سازد مرور کنند. در بازنویسی‌ها، برای ارث‌بری از قانون پیش‌فرض `afterLastDeadline` را حذف کنید، یا برای غیرفعال کردن صریح ارسال‌ها آن را روی `{ "allowSubmissions": false }` تنظیم نمایید.
 
-If `allowSubmissions` is `true`, the `afterComplete` visibility settings apply only after the student's assessment instance closes or its time limit expires.
+اگر `allowSubmissions` برابر با `true` باشد، تنظیمات قابلیت مشاهده `afterComplete` تنها پس از بسته شدن نمونه آزمون دانشجو یا انقضای محدودیت زمانی آن اعمال می‌گردد.
 
 ### `beforeRelease`
 
-| Field    | Type    | Default | Description                                                                                          |
+| فیلد | نوع | پیش‌فرض | توضیحات |
 | -------- | ------- | ------- | ---------------------------------------------------------------------------------------------------- |
-| `listed` | boolean | `false` | Whether students can see the assessment title before release. They still cannot open the assessment. |
+| `listed` | boolean | `false` | آیا دانشجویان می‌توانند عنوان آزمون را قبل از انتشار ببینند. آن‌ها همچنان نمی‌توانند آزمون را باز کنند. |
 
-`beforeRelease` can only be configured on the defaults rule.
+فیلد `beforeRelease` فقط در قانون پیش‌فرض‌ها (Defaults) قابل پیکربندی است.
 
 ### `afterComplete`
 
-By default, questions are hidden and scores are shown after completion.
+به طور پیش‌فرض، سوالات پنهان هستند و نمرات پس از اتمام نمایش داده می‌شوند.
 
-| Field                        | Type    | Default | Description                                        |
+| فیلد | نوع | پیش‌فرض | توضیحات |
 | ---------------------------- | ------- | ------- | -------------------------------------------------- |
-| `questions.hidden`           | boolean | `true`  | Whether questions are hidden after completion.     |
-| `questions.visibleFromDate`  | string  |         | Date to reveal questions after completion.         |
-| `questions.visibleUntilDate` | string  |         | Date to hide questions again after revealing them. |
-| `score.hidden`               | boolean | `false` | Whether the score is hidden after completion.      |
-| `score.visibleFromDate`      | string  |         | Date to reveal the score after completion.         |
+| `questions.hidden` | boolean | `true` | آیا سوالات پس از اتمام پنهان هستند. |
+| `questions.visibleFromDate` | string | | تاریخ آشکارسازی سوالات پس از اتمام. |
+| `questions.visibleUntilDate` | string | | تاریخ پنهان‌سازی مجدد سوالات پس از آشکارسازی آن‌ها. |
+| `score.hidden` | boolean | `false` | آیا نمره پس از اتمام پنهان است. |
+| `score.visibleFromDate` | string | | تاریخ آشکارسازی نمره پس از اتمام. |
 
-The visibility fields follow a toggle pattern. For example, if `questions.hidden` is `true`, questions are hidden after completion. At `questions.visibleFromDate`, they become visible. At `questions.visibleUntilDate`, they are hidden again.
+فیلدهای قابلیت مشاهده از یک الگوی سوییچ (تغییر وضعیت) پیروی می‌کنند. به عنوان مثال، اگر `questions.hidden` برابر با `true` باشد، سوالات پس از اتمام پنهان هستند. در تاریخ `questions.visibleFromDate`، آن‌ها قابل مشاهده می‌شوند. در تاریخ `questions.visibleUntilDate`، آن‌ها مجدداً پنهان می‌گردند.
 
-### PrairieTest JSON
+### ساختار JSON برای PrairieTest
 
-| Field                                                             | Type    | Description                                                                                       |
+| فیلد | نوع | توضیحات |
 | ----------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------- |
-| `integrations.prairieTest.exams`                                  | array   | Array of exam objects.                                                                            |
-| `integrations.prairieTest.exams[].examUuid`                       | string  | UUID of the associated PrairieTest exam.                                                          |
-| `integrations.prairieTest.exams[].readOnly`                       | boolean | Whether the exam is read-only for students.                                                       |
-| `integrations.prairieTest.exams[].afterComplete.questions.hidden` | boolean | If `true`, questions are hidden after the student finishes while the reservation is still active. |
-| `integrations.prairieTest.exams[].afterComplete.score.hidden`     | boolean | If `true`, the score is hidden after the student finishes while the reservation is still active.  |
+| `integrations.prairieTest.exams` | array | آرایه‌ای از اشیاء امتحان. |
+| `integrations.prairieTest.exams[].examUuid` | string | شناسه یکتای (UUID) امتحان مربوطه در PrairieTest. |
+| `integrations.prairieTest.exams[].readOnly` | boolean | آیا امتحان برای دانشجویان فقط-خواندنی است یا خیر. |
+| `integrations.prairieTest.exams[].afterComplete.questions.hidden` | boolean | اگر `true` باشد، سوالات پس از اتمام کار دانشجو در حالی که رزرو هنوز فعال است پنهان می‌شوند. |
+| `integrations.prairieTest.exams[].afterComplete.score.hidden` | boolean | اگر `true` باشد، نمره پس از اتمام کار دانشجو در حالی که رزرو هنوز فعال است پنهان می‌شود. |
 
-`readOnly: true` cannot be combined with exam-level `afterComplete` settings that hide questions or scores. Also, `afterComplete.score.hidden: true` requires `afterComplete.questions.hidden: true`. Exam-level `afterComplete` only supports the three UI modes above; it does not support `visibleFromDate` or `visibleUntilDate`.
+مقدار `readOnly: true` نمی‌تواند با تنظیمات `afterComplete` در سطح امتحان که سوالات یا نمرات را پنهان می‌کنند ترکیب شود. همچنین، `afterComplete.score.hidden: true` مستلزم `afterComplete.questions.hidden: true` است. تنظیمات `afterComplete` در سطح امتحان تنها از سه حالت رابط کاربری ذکرشده در بالا پشتیبانی می‌کنند؛ این تنظیمات از `visibleFromDate` یا `visibleUntilDate` پشتیبانی نمی‌کنند.
 
-### JSON override inheritance
+### ارث‌بری بازنویسی‌ها در JSON
 
-JSON overrides store the fields they change; omitted fields inherit through the same priority order used by the UI:
+بازنویسی‌های JSON فیلدهایی را که تغییر می‌دهند ذخیره می‌کنند؛ فیلدهای حذف‌شده از طریق همان ترتیب اولویتی که توسط رابط کاربری استفاده می‌شود به ارث می‌رسند:
 
-1. Start with the defaults rule.
-2. Apply matching overrides with `labels` in the order they appear in the `accessControl` array.
-3. Apply matching student-specific overrides, which have `uuid` and no `labels`.
+1. با قانون پیش‌فرض‌ها (Defaults) شروع کنید.
+2. بازنویسی‌های منطبقِ دارای `labels` را به ترتیبی که در آرایه `accessControl` ظاهر می‌شوند اعمال کنید.
+3. بازنویسی‌های منطبقِ مختص دانشجو را که دارای `uuid` و بدون `labels` هستند اعمال نمایید.
 
-Later matching student-label overrides replace fields from earlier matching student-label overrides. Student-specific overrides take priority over student-label overrides. Student-specific rule bodies may appear in JSON, but the selected student mappings remain stored in PrairieLearn and are not listed in `infoAssessment.json`.
+بازنویسی‌های منطبقِ برچسب دانشجو که دیرتر می‌آیند، جایگزین فیلدهای بازنویسی‌های منطبقِ قبلی می‌شوند. بازنویسی‌های مختص دانشجو بر بازنویسی‌های برچسب دانشجو اولویت دارند. بدنه‌های قوانین مختص دانشجو ممکن است در JSON ظاهر شوند، اما نگاشت‌های دانشجویان انتخاب‌شده در پریری‌لرن ذخیره می‌مانند و در `infoAssessment.json` فهرست نمی‌شوند.
 
-| Field                        | Defaults to override merge                                          | Override to override cascade                              |
+| فیلد | ادغام پیش‌فرض با بازنویسی | توالی آبشاری بازنویسی با بازنویسی |
 | ---------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------- |
-| `dateControl.*` sub-fields   | Override replaces individual sub-fields; omitted sub-fields inherit | Later override replaces; omitted fields kept from earlier |
-| `afterComplete.questions`    | Replaced as a whole object when set                                 | Replaced as a whole object; otherwise inherited           |
-| `afterComplete.score`        | Replaced as a whole object when set                                 | Replaced as a whole object; otherwise inherited           |
-| `beforeRelease`              | Cannot be overridden                                                | Not applicable                                            |
-| `integrations.prairieTest.*` | Cannot be overridden                                                | Not applicable                                            |
+| زیرفیلدهای `dateControl.*` | بازنویسی، زیرفیلدهای منفرد را جایگزین می‌کند؛ زیرفیلدهای حذف‌شده به ارث می‌رسند | بازنویسی بعدی جایگزین می‌کند؛ فیلدهای حذف‌شده از بازنویسی قبلی حفظ می‌شوند |
+| `afterComplete.questions` | در صورت تنظیم، به عنوان یک شیء کامل جایگزین می‌شود | به عنوان یک شیء کامل جایگزین می‌شود؛ در غیر این صورت به ارث می‌رسد |
+| `afterComplete.score` | در صورت تنظیم، به عنوان یک شیء کامل جایگزین می‌شود | به عنوان یک شیء کامل جایگزین می‌شود؛ در غیر این صورت به ارث می‌رسد |
+| `beforeRelease` | قابل بازنویسی نیست | قابل اعمال نیست |
+| `integrations.prairieTest.*` | قابل بازنویسی نیست | قابل اعمال نیست |
 
-There are a few important details:
+چند نکته مهم وجود دارد:
 
-- `due` is one atomic setting. Overriding the due date also overrides the due-date credit choice — they cannot be cascaded independently.
-- `earlyDeadlines` and `lateDeadlines` are each replaced as a whole array. Setting either to `[]` in an override **clears** the inherited deadlines for that override's students.
-- `afterLastDeadline` is inherited when omitted from an override. Set `{ "allowSubmissions": false }` to explicitly disable after-deadline submissions for that override.
-- `durationMinutes: null` and `password: null` in an override **clear** the inherited time limit or password. Omitting the field entirely keeps the inherited value.
-- `afterComplete.questions` and `afterComplete.score` inherit independently of each other, but each is replaced as a whole object: an override that sets `afterComplete.questions` without dates does not retain the default's `visibleFromDate`/`visibleUntilDate`.
-- `beforeRelease.listed` and PrairieTest integrations (`integrations.prairieTest`) are **defaults-only**. Overrides cannot enable, disable, or change them.
+- فیلد `due` یک تنظیم یکپارچه (Atomic) است. بازنویسی موعد تحویل، انتخاب نمره موعد تحویل را نیز بازنویسی می‌کند — آن‌ها را نمی‌توان به طور مستقل به صورت آبشاری منتقل کرد.
+- موارد `earlyDeadlines` و `lateDeadlines` هر کدام به عنوان یک آرایه کامل جایگزین می‌شوند. تنظیم هر کدام روی `[]` در یک بازنویسی، مهلت‌های به ارث رسیده را برای دانشجویان آن بازنویسی **پاک** می‌کند.
+- فیلد `afterLastDeadline` زمانی که در یک بازنویسی حذف شود به ارث برده می‌شود. برای غیرفعال کردن صریح ارسال‌های پس از مهلت برای آن بازنویسی، مقدار `{ "allowSubmissions": false }` را تنظیم کنید.
+- مقادیر `durationMinutes: null` و `password: null` در یک بازنویسی، محدودیت زمانی یا رمز عبور به ارث رسیده را **پاک** می‌کنند. حذف کامل این فیلد، مقدار به ارث رسیده را حفظ می‌کند.
+- فیلدهای `afterComplete.questions` و `afterComplete.score` مستقل از یکدیگر به ارث می‌رسند، اما هر کدام به عنوان یک شیء کامل جایگزین می‌شوند: بازنویسی‌ای که `afterComplete.questions` را بدون تاریخ تنظیم می‌کند، مقادیر `visibleFromDate`/`visibleUntilDate` پیش‌فرض را حفظ نمی‌کند.
+- فیلد `beforeRelease.listed` و ادغام‌های PrairieTest به صورت (`integrations.prairieTest`) **فقط مختص پیش‌فرض‌ها** هستند. بازنویسی‌ها نمی‌توانند آن‌ها را فعال، غیرفعال یا تغییر دهند.
 
-### Legacy migration examples
+### نمونه‌های مهاجرت از سیستم قدیمی
 
-#### Single deadline
+#### موعد تحویل منفرد
 
-=== "Legacy `allowAccess`"
+=== "سیستم قدیمی `allowAccess`"
 
     ```json title="infoAssessment.json"
     {
@@ -690,7 +690,7 @@ There are a few important details:
     }
     ```
 
-=== "Modern `accessControl`"
+=== "سیستم مدرن `accessControl`"
 
     ```json title="infoAssessment.json"
     {
@@ -705,9 +705,9 @@ There are a few important details:
     }
     ```
 
-#### Declining credit
+#### نمره کاهشی
 
-=== "Legacy `allowAccess`"
+=== "سیستم قدیمی `allowAccess`"
 
     ```json title="infoAssessment.json"
     {
@@ -731,7 +731,7 @@ There are a few important details:
     }
     ```
 
-=== "Modern `accessControl`"
+=== "سیستم مدرن `accessControl`"
 
     ```json title="infoAssessment.json"
     {
@@ -748,9 +748,9 @@ There are a few important details:
     }
     ```
 
-#### Timed exam
+#### امتحان زمان‌دار
 
-=== "Legacy `allowAccess`"
+=== "سیستم قدیمی `allowAccess`"
 
     ```json title="infoAssessment.json"
     {
@@ -765,7 +765,7 @@ There are a few important details:
     }
     ```
 
-=== "Modern `accessControl`"
+=== "سیستم مدرن `accessControl`"
 
     ```json title="infoAssessment.json"
     {
@@ -781,9 +781,9 @@ There are a few important details:
     }
     ```
 
-#### Password-gated exam
+#### امتحان محافظت‌شده با رمز عبور
 
-=== "Legacy `allowAccess`"
+=== "سیستم قدیمی `allowAccess`"
 
     ```json title="infoAssessment.json"
     {
@@ -798,7 +798,7 @@ There are a few important details:
     }
     ```
 
-=== "Modern `accessControl`"
+=== "سیستم مدرن `accessControl`"
 
     ```json title="infoAssessment.json"
     {

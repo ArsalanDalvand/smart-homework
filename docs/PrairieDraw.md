@@ -1,47 +1,47 @@
 # PrairieDraw
 
-!!! warning
+!!! warning "هشدار"
 
-    This page describes the old PrairieDraw library. This library will be supported indefinitely, but it is strongly recommended that all new questions use the [`pl-drawing`](./pl-drawing/index.md) element instead.
+    این صفحه کتابخانه قدیمی PrairieDraw را توضیح می‌دهد. از این کتابخانه تا مدت نامحدودی پشتیبانی خواهد شد، اما قویاً توصیه می‌شود که تمام سوالات جدید از المان [`pl-drawing`](./pl-drawing/index.md) استفاده کنند.
 
 ---
 
-The PrairieDraw library (`PrairieDraw.js`) is a figure-drawing library which allows dynamic figures to be rendered through the [`pl-prairiedraw-figure` element](elements/pl-prairiedraw-figure.md).
+کتابخانه پریری‌دراو (`PrairieDraw.js`) یک کتابخانه رسم شکل است که امکان رندر شکل‌های پویا را از طریق [المان `pl-prairiedraw-figure`](elements/pl-prairiedraw-figure.md) فراهم می‌سازد.
 
-Any parameters passed to the script from the `params-names` option in the `pl-prairiedraw-figure` element can be accessed with `this.params.get([parameter])`
+هر پارامتری که از گزینه `params-names` در المان `pl-prairiedraw-figure` به اسکریپت ارسال شود، با `this.params.get([parameter])` قابل دسترسی است.
 
-## `Sylvester.js` library and selected methods
+## کتابخانه `Sylvester.js` و متدهای منتخب
 
-PrairieDraw uses the `Sylvester.Vector` class to specify positions and directions for drawing; any Vector-type arguments listed below are of this type.
+پریری‌دراو از کلاس `Sylvester.Vector` برای مشخص کردن موقعیت‌ها و جهت‌ها در رسم استفاده می‌کند؛ هر آرگومانی از نوع Vector که در ادامه ذکر شده از این نوع است.
 
-Below is an incomplete selection of useful operations on Vector; the complete documentation is found in the [documentation for the Sylvester library](http://sylvester.jcoglan.com/docs.html).
+در ادامه گزیده‌ای از عملیات‌های مفید روی Vector آمده است؛ مستندات کامل را می‌توان در [مستندات کتابخانه Sylvester](http://sylvester.jcoglan.com/docs.html) یافت.
 
 `Sylvester.Vector.create(elements)`
-Creates and returns a new Vector from the array `elements`. It is often useful to alias this command in your script as `var $V = Sylvester.Vector.create`, so you can write `$V([x,y])` later on.
+یک بردار جدید از آرایه `elements` ایجاد کرده و برمی‌گرداند. معمولاً مفید است که برای این دستور در اسکریپت خود نام مستعاری به صورت `var $V = Sylvester.Vector.create` تعریف کنید تا بتوانید بعداً `$V([x,y])` را بنویسید.
 
 `add(vector)`
-Returns a new Vector which is the sum of the receiver and the argument.
+بردار جدیدی برمی‌گرداند که حاصل جمع گیرنده (receiver) و آرگومان ورودی است.
 
 `subtract(vector)`
-Returns a new Vector which is the difference between the receiver and argument; i.e., `a.subtract(b)` returns the vector difference `a-b`.
+بردار جدیدی برمی‌گرداند که تفاضل گیرنده و آرگومان است؛ یعنی `a.subtract(b)` تفاضل برداری `a-b` را برمی‌گرداند.
 
-`multiply(scalar)` or `x(scalar)`
-Returns a new Vector which is the receiver scaled by the argument. `a.multiply(k)` and `a.x(k)` are equivalent.
+`multiply(scalar)` یا `x(scalar)`
+بردار جدیدی برمی‌گرداند که حاصل مقیاس‌بندی گیرنده در آرگومان اسکالر است. دو دستور `a.multiply(k)` و `a.x(k)` معادل یکدیگرند.
 
 `dot(vector)`
-Returns the scalar product of the receiver and argument.
+حاصل‌ضرب اسکالر (داخلی) گیرنده و آرگومان را برمی‌گرداند.
 
 `cross(vector)`
-Returns a new Vector which is the cross product in left-to-right order; i.e., `A.cross(B)` returns `A x B`.
+بردار جدیدی برمی‌گرداند که حاصل‌ضرب خارجی به ترتیب چپ‌به‌راست است؛ یعنی `A.cross(B)` مقدار `A x B` را بازمی‌گرداند.
 
 `modulus()`
-Returns the (2)-norm of the vector.
+نُرم ۲ (یا طول) بردار را برمی‌گرداند.
 
 `toUnitVector()`
-Returns a new Vector which is the receiver scaled to have modulus one.
+بردار جدیدی برمی‌گرداند که حاصل مقیاس‌بندی گیرنده برای داشتن طول یک (بردار یکه) است.
 
 `rotate(angle, axis)`
-Returns a new Vector formed by rotating the receiver counterclockwise through `angle` (in radians), using the Vector `axis` as a center point. E.g.,
+بردار جدیدی را برمی‌گرداند که حاصل دوران گیرنده در جهت پادساعت‌گرد به اندازه زاویه `angle` (بر حسب رادیان) با استفاده از بردار `axis` به عنوان نقطه مرکز است. به عنوان مثال:
 
 ```javascript
 a = $V([10, 5]);
@@ -49,44 +49,44 @@ b = $V([5, 5]);
 c = a.rotate(Math.PI / 2, b); // c = [5, 10]
 ```
 
-## `PrairieDraw.js` library
+## کتابخانه `PrairieDraw.js`
 
-The script provided by `script_name` may access the PrairieDraw figure via `this.pd`. The operations below allow for changing the orientation or scaling of the figure, as well as adding drawing elements to it.
+اسکریپت ارائه‌شده توسط `script_name` می‌تواند از طریق `this.pd` به شکل پریری‌دراو دسترسی داشته باشد. عملیات‌های زیر امکان تغییر جهت یا مقیاس شکل و همچنین افزودن المان‌های رسم به آن را فراهم می‌کنند.
 
-In general, drawing objects are opaque, so the order in which items are added affects the final appearance of the figure.
+به طور کلی، اشیای رسم کدر (opaque) هستند، بنابراین ترتیبی که موارد اضافه می‌شوند بر ظاهر نهایی شکل تأثیر می‌گذارد.
 
-Below is an incomplete list of operations available from PrairieDraw; the library source code can be found in the [PrairieLearn repository](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/public/javascripts/PrairieDraw.js).
+در ادامه فهرست ناقصی از عملیات‌های موجود در PrairieDraw ارائه شده است؛ کد منبع کتابخانه را می‌توان در [مخزن PrairieLearn](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/public/javascripts/PrairieDraw.js) مشاهده کرد.
 
-## Constants provided by PrairieDraw
+## ثوابت ارائه‌شده توسط PrairieDraw
 
 `goldenRatio`
-Returns the golden ratio; useful for creating pleasantly-proportioned figures in the arguments to `setUnits`.
+نسبت طلایی را برمی‌گرداند؛ برای ایجاد شکل‌هایی با تناسب دلپذیر در آرگومان‌های `setUnits` مفید است.
 
 `milesPerKilometer`
-Returns a conversion factor of 0.621371
+ضریب تبدیل ۰٫۶۲۱۳۷۱ را برمی‌گرداند.
 
-## Setting and changing the coordinate system
+## تنظیم و تغییر دستگاه مختصات
 
 `setUnits(xSize, ySize [, canvasWidth, preserveCanvasSize])`
-Sets the size of the canvas in drawing units, with the origin at the center of the drawing. The optional `canvasWidth` argument specifies (in pixels) the width of the figure, while `preserveCanvasSize` prevents reshaping the canvas to match the coordinate ratio.
+اندازه بوم (canvas) را بر حسب واحدهای رسم تنظیم می‌کند، به طوری که مبدا در مرکز تصویر قرار می‌گیرد. آرگومان اختیاری `canvasWidth` عرض شکل را (بر حسب پیکسل) مشخص می‌کند، در حالی که `preserveCanvasSize` از تغییر ابعاد بوم برای هماهنگی با نسبت مختصات جلوگیری می‌کند.
 
 `scale(factor)`
-Scale drawing coordinates by the given factor (i.e., the relationship between coordinates and pixels).
+مختصات رسم را با ضریب داده‌شده مقیاس‌بندی می‌کند (یعنی رابطه بین مختصات و پیکسل‌ها).
 
 `translate(offset)`
-Translate the origin of the coordinate system by the Vector `offset`.
+مبدا دستگاه مختصات را به اندازه بردار `offset` جابجا می‌کند.
 
 `rotate(angle)`
-Rotate the coordinate system counterclockwise by `angle` radians.
+دستگاه مختصات را در جهت پادساعت‌گرد به اندازه زاویه `angle` (بر حسب رادیان) دوران می‌دهد.
 
 `transformByPoints(old1, old2, new1, new2)`
-Perform a combination of `scale`, `translate`, and `rotate` such that Vector points `old1` and `old2` are mapped to `new1` and `new2`.
+ترکیبی از عملیات‌های `scale`، `translate` و `rotate` را به گونه‌ای اجرا می‌کند که نقاط برداری `old1` و `old2` به `new1` و `new2` نگاشت شوند.
 
-## Drawing object options
+## گزینه‌های اشیای رسم
 
-Some drawing objects below have the optional `type` argument to specify a physical meaning for the line/arrow. When specified, a corresponding color is chosen for the object based on the [TAM 2XX style guide](http://dynref.engr.illinois.edu/rvn.html#rvn-sc).
+برخی از اشیای رسم در ادامه دارای آرگومان اختیاری `type` برای تعیین معنای فیزیکی خط/پیکان هستند. در صورت مشخص شدن، رنگ متناظری بر اساس [راهنمای سبک TAM 2XX](http://dynref.engr.illinois.edu/rvn.html#rvn-sc) برای شیء انتخاب می‌شود.
 
-| Type           | Color              |
+| نوع (Type)     | رنگ (Color)        |
 | -------------- | ------------------ |
 | `grid`         | `rgb(200,200,200)` |
 | `position`     | `rgb(0,0,255)`     |
@@ -100,107 +100,107 @@ Some drawing objects below have the optional `type` argument to specify a physic
 | `force`        | `rgb(210,105,30)`  |
 | `moment`       | `rbg(255,102,80)`  |
 
-The optional `filled` argument (default is false) is a boolean to specify if the shape should be shaded.
+آرگومان اختیاری `filled` (پیش‌فرض false است) مقداری بولی برای تعیین سایه‌دار بودن/توپُر بودن شکل است.
 
-## Drawing points and lines
+## رسم نقاط و خطوط
 
 `point(vector)`
-Draw a point at the coordinates given by `vector`.
+یک نقطه در مختصات مشخص‌شده توسط `vector` رسم می‌کند.
 
 `line(start, end [, type])`
-Draw a line segment from Vector position `start` to `stop`.
+یک پاره‌خط از موقعیت برداری `start` تا `stop` رسم می‌کند.
 
 `polyline(points [, closed, filled])`
-Draw a series of line segments connecting the array of `points`. The optional arguments (defaulting to false) determine if the polyLine should be closed by a line connecting the first and last elements of `points`.
+مجموعه‌ای از پاره‌خط‌ها را برای اتصال آرایه `points` رسم می‌کند. آرگومان‌های اختیاری (با مقدار پیش‌فرض false) تعیین می‌کنند که آیا چندخطی (polyline) با خطی که اولین و آخرین المان `points` را به هم وصل می‌کند بسته شود یا خیر.
 
 `arc(center, radius, startAngle, endAngle [, filled, aspect])`
-Draw an arc of a circle centered at `center`, with radius `radius`, from angle `startAngle` to `endAngle` (in radians). When `aspect` is provided, the arc is drawn for an ellipse with major axis `radius` and minor axis `radius / aspect` (i.e., `aspect` is major / minor).
+کمانی از یک دایره به مرکزیت `center`، با شعاع `radius`، از زاویه `startAngle` تا `endAngle` (بر حسب رادیان) رسم می‌کند. هنگامی که `aspect` ارائه شود، کمان برای بیضی با نیم‌قطر بزرگ `radius` و نیم‌قطر کوچک `radius / aspect` رسم می‌شود (یعنی `aspect` نسبت بزرگ به کوچک است).
 
 `circle(center, radius [, filled])`
-Draws a circle centered at `center` with radius `radius`.
+دایره‌ای به مرکزیت `center` با شعاع `radius` رسم می‌کند.
 
 `rectangle(width, height [, center, angle, filled])`
-Draw a rectangle (aligned to the axes) of the given width and height. When not specified, `center` is assumed to be the origin. An `angle` to rotate can also be given.
+یک مستطیل (هم‌راستا با محورها) با عرض و ارتفاع داده‌شده رسم می‌کند. در صورت عدم تعیین، فرض می‌شود `center` همان مبدا مختصات است. یک زاویه (`angle`) برای دوران نیز می‌تواند تعیین شود.
 
 `rectangleGeneric(bottomLeft, bottomRight, height)`
-Draw a rectangle with one side connecting `bottomLeft` and `bottomRight` of the given `height`. The rectangle extends perpendicular (counterclockwise) to this line.
+یک مستطیل با یک ضلع که `bottomLeft` و `bottomRight` را متصل می‌کند با ارتفاع مشخص‌شده `height` رسم می‌کند. این مستطیل به طور عمود (در جهت پادساعت‌گرد) نسبت به این خط امتداد می‌یابد.
 
-## Drawing vector arrows
+## رسم پیکان‌های برداری
 
 `arrow(start, end [, type])`
-Draw an arrow from `start` to `stop` (with arrowhead at `stop`).
+یک پیکان از `start` به `stop` رسم می‌کند (با نوک پیکان در `stop`).
 
 `arrowFrom(start, offset [, type])`
-Draw an arrow from `start` to `start.add(offset)`.
+یک پیکان از `start` به `start.add(offset)` رسم می‌کند.
 
 `arrowTo(end, offset [, type])`
-Draw an arrow from `end.subtract(offset)` to `end`.
+یک پیکان از `end.subtract(offset)` به `end` رسم می‌کند.
 
 `arrowOutOfPage(vector [, type])`
-Draw an arrow out of the screen (circle with center dot) at `vector`.
+یک پیکان به سمت خارج از صفحه (دایره با نقطه در مرکز) در موقعیت `vector` رسم می‌کند.
 
 `arrowIntoPage(vector [, type])`
-Draw an arrow into the screen (circle with center x) at `vector`.
+یک پیکان به سمت داخل صفحه (دایره با ضربدر در مرکز) در موقعیت `vector` رسم می‌کند.
 
 `circleArrow(center, radius, startAngle, endAngle [, type, fixedRad, idealSegmentSize])`
-Draw an arrow arc centered at `center`, with radius `radius`, from `startAngle` to `endAngle` (in radians). The `fixedRad` option (default false) specifies if a constant radius should be used (as opposed to curling in the beginning/end).
+کمانی پیکان‌دار به مرکزیت `center`، با شعاع `radius`، از زاویه `startAngle` تا `endAngle` (بر حسب رادیان) رسم می‌کند. گزینه `fixedRad` (پیش‌فرض false) مشخص می‌کند که آیا از یک شعاع ثابت استفاده شود (بر خلاف حالت پیچش تدریجی در ابتدا/انتها).
 
 `circleArrowCentered(center, radius, centerAngle, extentAngle [, type, fixedRad])`
-Draw an arrow arc centered at `center`, with radius `radius`, centered at `centerAngle` and spanning `extentAngle` (in radians).
+کمانی پیکان‌دار به مرکزیت `center`، با شعاع `radius`، به مرکزیت زاویه‌ای در `centerAngle` و با گستره زاویه‌ای `extentAngle` (بر حسب رادیان) رسم می‌کند.
 
 `triangularDistributedLoad(start, end, startSize, endSize, startLabel, endLabel, arrowToLine, arrowDown)`
-This creates a (trapezoidal) distributed load acting on the line between `start` and `end`, with height `startSize` at one side and `endSize` at the other and corresponding labels `startLabel` and `endLabel`. `arrowToLine` is true if the arrowheads point towards the line between `start` and `end`, and false otherwise. `arrowDown` is true if the arrowheads point down (negative y direction) and false otherwise. These last two options determine whether arrows appear above or below the line.
+این تابع یک بار گسترده (ذوزنقه‌ای) ایجاد می‌کند که روی خط بین `start` و `end` عمل می‌کند، با ارتفاع `startSize` در یک سمت و `endSize` در سمت دیگر و برچسب‌های متناظر `startLabel` و `endLabel`. مقدار `arrowToLine` در صورتی که نوک پیکان‌ها به سمت خط بین `start` و `end` اشاره کند برابر true و در غیر این صورت false است. مقدار `arrowDown` در صورتی که نوک پیکان‌ها به سمت پایین (جهت منفی y) اشاره کنند برابر true و در غیر این صورت false است. این دو گزینه آخر تعیین می‌کنند که آیا پیکان‌ها در بالا یا پایین خط ظاهر شوند.
 
-This function assumes the line from `start` to `end` is horizontal, and has unexpected behaviors when it does not.
+این تابع فرض می‌کند که خط از `start` تا `end` افقی است، و در صورتی که افقی نباشد رفتارهای غیرمنتظره‌ای بروز می‌دهد.
 
-## Drawing mechanical shapes
+## رسم اشکال مکانیکی
 
 `rod(start, end, width)`
-Draws a rod with endpoint pins at `start` and `end`. The rounded ends of the rod will extend slightly beyond these points.
+یک میله با پین‌های انتهایی در `start` و `end` رسم می‌کند. سرهای گرد میله اندکی فراتر از این نقاط امتداد خواهند یافت.
 
 `LshapeRod(start, middle, end, width)`
-Draws an L-shaped rod with endpoints `start` and `end` and corner at `middle`.
+یک میله L-شکل با نقاط انتهایی `start` و `end` و گوشه در `middle` رسم می‌کند.
 
 `TshapeRod(start, center, end, centerEnd, width)`
-Draws a T-shaped rod with hinges at the four points listed. To draw a well-formed rod with three arms, let `center` be the intersection of the arms and the order `start`, `end`, `centerEnd` represent the clockwise ordering of the three endpoints.
+یک میله T-شکل با لولا در چهار نقطه ذکرشده رسم می‌کند. برای رسم میله‌ای خوش‌فرم با سه بازو، فرض کنید `center` محل تقاطع بازوها باشد و ترتیب `start`، `end` و `centerEnd` نشان‌دهنده ترتیب ساعت‌گرد سه نقطه انتهایی باشد.
 
 `pivot(baseCenter, center, width)`
-Creates a pivot base with hinge point at `center` and other end at `baseCenter`. When combined with `ground` below, `baseCenter` is usually the midpoint of the ground element.
+یک پایه تکیه‌گاه (لولایی) با نقطه لولا در `center` و سر دیگر در `baseCenter` ایجاد می‌کند. هنگامی که با المان `ground` در زیر ترکیب شود، `baseCenter` معمولاً نقطه میانی المان زمین است.
 
 `ground(baseCenter, normal, width)`
-Draws a (shaded) ground element centered at `baseCenter` and width `width`. The direction of `normal` is perpendicular to and away from the ground.
+یک المان زمین (هاشور خورده) به مرکزیت `baseCenter` و عرض `width` رسم می‌کند. جهت `normal` عمود بر زمین و رو به بیرون از آن است.
 
 `arcGround(center, radius, startAngle, endAngle, outside)`
-Draws a curved ground element with arguments similar to the `arc` command above. `outside` is `true` if the shading goes on the outside of the curve, and `false` otherwise.
+یک المان زمین منحنی با آرگومان‌هایی مشابه دستور `arc` بالا رسم می‌کند. مقدار `outside` در صورتی که هاشور در قسمت خارجی منحنی باشد برابر `true` و در غیر این صورت `false` است.
 
-## Drawing text and/or LaTex labels
+## رسم متن و/یا برچسب‌های LaTeX
 
-See [below](PrairieDraw.md#generating-latex-labels-on-figures) for instructions on formatting the `text` argument in these commands.
+برای دستورالعمل‌های نحوه قالب‌بندی آرگومان `text` در این دستورات، [پایین‌تر](PrairieDraw.md#generating-latex-labels-on-figures) را مشاهده کنید.
 
 `text(position, anchor, text [, boxed, angle])`
-Draws text at the given `position`. `anchor` is a Vector with components from (-1,0,1) specifying alignment; i.e., `$V([-1,-1])` corresponds to "left" and "bottom" alignment for the text; `$V([1,1])` corresponds to "right" and "above". Optional `boxed` frames the text, and `angle` rotates it in place.
+متن را در موقعیت داده‌شده `position` رسم می‌کند. `anchor` یک بردار با مؤلفه‌هایی از (-1,0,1) است که تراز متن را مشخص می‌کند؛ یعنی `$V([-1,-1])` متناظر با تراز «چپ» و «پایین» برای متن است؛ `$V([1,1])` متناظر با «راست» و «بالا» است. گزینه اختیاری `boxed` دور متن کادر می‌کشد، و `angle` آن را در جای خود می‌چرخاند.
 
 `labelLine(start, end, pos, text [, anchor])`
-Places text along the line between `start` and `end`. `pos` takes values in local coordinates from (-1,1) specifying the position along and above/below the line. The optional `anchor` uses the same pattern as above.
+متن را در امتداد خط بین `start` و `end` قرار می‌دهد. `pos` مقادیری در مختصات محلی از (-1,1) می‌گیرد که موقعیت در امتداد و بالا/پایین خط را مشخص می‌کند. آرگومان اختیاری `anchor` از همان الگوی بالا استفاده می‌کند.
 
 `labelCircleLine(center, radius, startAngle, endAngle, pos, text)`
-Places text along the arc specified by `center`, `radius`, `startAngle`, and `endAngle`. `pos` takes values in local coordinates from (-1,1) along and above/below the curve.
+متن را در امتداد کمان مشخص‌شده توسط `center`، `radius`، `startAngle` و `endAngle` قرار می‌دهد. `pos` مقادیری در مختصات محلی از (-1,1) در امتداد و بالا/پایین منحنی می‌گیرد.
 
-## Generating LaTeX labels on figures
+## تولید برچسب‌های LaTeX روی شکل‌ها
 
-When using `PrairieDraw.js` to draw figures in questions, figure labels can be included using either plain text, like `pd.text(..., "label")`, or with LaTeX, like `pd.text(..., "TEX:$x$")`. If you are using LaTeX labels then they have to be rendered into image files before they can be displayed. This is done by running the command:
+هنگام استفاده از `PrairieDraw.js` برای رسم شکل‌ها در سوالات، برچسب‌های شکل را می‌توان با استفاده از متن ساده مانند `pd.text(..., "label")`، یا با LaTeX مانند `pd.text(..., "TEX:$x$")` درج کرد. اگر از برچسب‌های LaTeX استفاده می‌کنید، قبل از اینکه بتوانند نمایش داده شوند باید در قالب فایل‌های تصویری رندر شوند. این کار با اجرای دستور زیر انجام می‌شود:
 
 ```sh
 docker run -it --rm -v PATH_TO_MY_COURSE:/course prairielearn/prairielearn /PrairieLearn/contrib/generate_text.py
 ```
 
-Replace `PATH_TO_MY_COURSE` above with your local course path directory, such as `/Users/mwest/git/pl-tam212` or `C:/GitHub/pl-tam212`.
+عبارت `PATH_TO_MY_COURSE` در بالا را با مسیر دایرکتوری درس محلی خود، مانند `/Users/mwest/git/pl-tam212` یا `C:/GitHub/pl-tam212` جایگزین کنید.
 
-LaTeX labels are searched for by looking for strings of the form `"TEX:..."` or `'TEX:...'` (note the different quote types). Use the `""` form if you want to have `'` characters in the string itself, and vice versa.
+جستجو برای برچسب‌های LaTeX با یافتن رشته‌هایی به شکل `"TEX:..."` یا `'TEX:...'` انجام می‌شود (به تفاوت انواع علامت نقل‌قول دقت کنید). اگر می‌خواهید در خود رشته کاراکتر `'` داشته باشید از قالب `""` استفاده کنید و بالعکس.
 
-The above command needs to be repeated after any LaTeX labels are added or changed in questions.
+پس از افزودن یا تغییر هرگونه برچسب LaTeX در سوالات، دستور بالا باید مجدداً اجرا شود.
 
-The LaTeX label images will be filenames that look like:
+تصاویر برچسب‌های LaTeX فایل‌هایی با نام‌هایی شبیه به زیر خواهند بود:
 
 ```text
 pl-tam212/questions/QID/text/186b41e2a92b8b22694dda1305699937df032555.png
@@ -209,11 +209,11 @@ pl-tam212/questions/QID/text/d68de4af4e4de5858554f8a90c5a519d9d435589.png
 pl-tam212/questions/QID/text/d68de4af4e4de5858554f8a90c5a519d9d435589_hi.png
 ```
 
-These files should be committed to the `git` repository and pushed to the live server so that they are available along with the question.
+این فایل‌ها باید به مخزن `git` کامیت شده و به سرور فعال (live server) پوش (push) شوند تا به همراه سوال در دسترس قرار گیرند.
 
-## Advanced: Running without Docker
+## پیشرفته: اجرا بدون داکر (Docker)
 
-If you want to generate LaTeX label images without Docker then you will need to install [Python](https://www.python.org), [ImageMagick](https://imagemagick.org/), and [LaTeX](https://tug.org/texlive/) and then run the following command in the root of the PrairieLearn repository:
+اگر می‌خواهید تصاویر برچسب‌های LaTeX را بدون داکر تولید کنید، باید [پایتون (Python)](https://www.python.org)، [ImageMagick](https://imagemagick.org/) و [LaTeX](https://tug.org/texlive/) را نصب کنید و سپس دستور زیر را در ریشه مخزن PrairieLearn اجرا نمایید:
 
 ```sh
 python contrib/generate_text.py --subdir /path/to/course

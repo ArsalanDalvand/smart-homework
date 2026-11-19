@@ -1,14 +1,14 @@
-# Admin User Setup
+# راه‌اندازی کاربر مدیر (Admin User)
 
-After setting up authentication we can elevate a user that's logged into the system to administrator status:
+پس از راه‌اندازی احراز هویت، می‌توانیم سطح دسترسی کاربری را که به سیستم وارد شده است به وضعیت مدیر (Administrator) ارتقا دهیم:
 
-- Connect to the postgres database by running
+- با اجرای دستور زیر به پایگاه داده PostgreSQL متصل شوید:
 
   ```sh
   psql postgres
   ```
 
-- Check the users table by running
+- با اجرای کوئری زیر جدول کاربران را بررسی کنید:
 
   ```sql
   SELECT
@@ -20,7 +20,7 @@ After setting up authentication we can elevate a user that's logged into the sys
     users;
   ```
 
-  Which will display a table of users in the database:
+  این دستور جدولی از کاربران موجود در پایگاه داده را نمایش می‌دهد:
 
   ```txt
   id |       uid       |    uin    |   name
@@ -28,7 +28,7 @@ After setting up authentication we can elevate a user that's logged into the sys
    1 | dev@example.com | 000000000 | Dev User
   ```
 
-- Add the desired user to the administrators table by running the following (substitute the `1` with the desired user's `id`):
+- با اجرای دستور زیر کاربر مورد نظر را به جدول مدیران (`administrators`) اضافه کنید (به جای `1`، شناسه `id` کاربر مورد نظر را جایگزین نمایید):
 
   ```sql
   INSERT INTO

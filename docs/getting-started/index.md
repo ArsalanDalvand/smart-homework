@@ -1,87 +1,87 @@
-# Getting started
+# شروع کار
 
-This guide walks you through the process of creating your first course instance and assessment in the browser.
+این راهنما شما را در فرآیند ایجاد اولین دوره (Course Instance) و ارزیابی در مرورگر هدایت می‌کند.
 
-If you're brand-new to PrairieLearn, consider reading the [Concepts](../concepts/index.md) page first — this guide assumes you know what a course, course instance, assessment, and question are.
+اگر به تازگی کار با پریری‌لرن را شروع کرده‌اید، توصیه می‌کنیم ابتدا صفحه [مفاهیم](../concepts/index.md) را مطالعه کنید — این راهنما فرض می‌کند که شما می‌دانید درس، دوره، ارزیابی و سوال چه هستند.
 
-!!! tip "Course content is stored in a Git repository"
+!!! tip "محتوای درس در یک مخزن Git ذخیره می‌شود"
 
-    PrairieLearn stores all of your course content in a **Git repository**. This means that course configuration files (questions, assessments, course staff, etc.) can be managed as files on disk, which can be beneficial for larger course staffs. See [editing and syncing](../sync.md) and [local installation](../installing.md) for more information.
+    پریری‌لرن تمام محتوای درس شما را در یک **مخزن Git** ذخیره می‌کند. این بدان معناست که فایل‌های پیکربندی درس (سوالات، ارزیابی‌ها، کادر آموزشی درس و غیره) را می‌توان به‌صورت فایل‌هایی روی دیسک مدیریت کرد، که این موضوع می‌تواند برای کادر آموزشی پرتعداد بسیار مفید باشد. برای اطلاعات بیشتر به بخش‌های [ویرایش و همگام‌سازی](../sync.md) و [نصب محلی](../installing.md) مراجعه کنید.
 
-Before you start, you need a PrairieLearn course space. If you don't have one yet, [request a course](../requestCourse/index.md). When approved, you'll get Owner permissions on the course in PrairieLearn. If you provided your GitHub account in your request, you will also get access to the GitHub repository for your course content.
+پیش از شروع، به یک فضای درس در پریری‌لرن نیاز دارید. اگر هنوز چنین فضایی ندارید، [درخواست یک درس بدهید](../requestCourse/index.md). پس از تأیید، مجوزهای مالک (Owner) را برای آن درس در پریری‌لرن دریافت خواهید کرد. اگر حساب GitHub خود را در درخواستتان ارائه کرده باشید، به مخزن GitHub محتوای درس خود نیز دسترسی خواهید داشت.
 
-## 1. Open your course
+## ۱. باز کردن درس
 
-Sign in at [https://us.prairielearn.com](https://us.prairielearn.com) (or your institution's PrairieLearn instance). Your course appears under **Courses with instructor access** on the home page.
+در [https://us.prairielearn.com](https://us.prairielearn.com) (یا نمونه پریری‌لرن مؤسسه خود) وارد شوید. درس شما زیر بخش **Courses with instructor access** در صفحه اصلی ظاهر می‌شود.
 
-![PrairieLearn home page with the courses panel](screenshots/01-home.png)
+![صفحه اصلی پریری‌لرن همراه با پنل درس‌ها](screenshots/01-home.png)
 
-Click the course name to open it. You will land on the **Course instances** page.
+روی نام درس کلیک کنید تا باز شود. شما وارد صفحه **Course instances** خواهید شد.
 
-![Course landing page showing the Course instances tab and sidebar](screenshots/02-course-instances.png)
+![صفحه فرود درس که برگه Course instances و نوار کناری را نشان می‌دهد](screenshots/02-course-instances.png)
 
-The sidebar splits into two scopes:
+نوار کناری به دو محدوده تقسیم می‌شود:
 
-- **Course** (top): everything that lives across all terms — questions, course-wide settings, the question bank, course staff.
-- **Course instance** (bottom): one term's offering — assessments, gradebook, students, LMS connections.
+- **Course** (بالا): هر آنچه در تمام ترم‌ها مشترک است — سوالات، تنظیمات سراسری درس، بانک سوال و کادر آموزشی درس.
+- **Course instance** (پایین): ارائه یک ترم مشخص — ارزیابی‌ها، دفترچه نمرات، دانشجویان و اتصالات LMS.
 
-## 2. Create a course instance
+## ۲. ایجاد یک دوره
 
-A course instance is one offering of the course — for example, "Fall 2025." From **Course instances**, click **Add course instance**.
+دوره (Course Instance) در واقع یک ارائه از درس است — برای مثال، «Fall 2025». از صفحه **Course instances**، روی **Add course instance** کلیک کنید.
 
-![Create course instance dialog](screenshots/04-create-course-instance.png)
+![کادر گفتگوی ایجاد دوره](screenshots/04-create-course-instance.png)
 
-Fill in:
+موارد زیر را تکمیل کنید:
 
-- **Long name** — what students see (e.g., `Fall 2025`).
-- **Short name** — a directory-safe identifier (e.g., `Fa25`). No spaces.
-- **Publishing settings** — leave **Unpublished** while you build. You'll publish in step 10.
-- **Self-enrollment settings** — leave the defaults if you'll share an enrollment link with students; uncheck if you'll add students manually or via LMS. See [enrollment controls](../courseInstance/index.md#enrollment-controls) for the full set of options.
-- **Course instance permissions** — pick **Student data editor** if you want to view/edit grades from this course instance. (You can change this later from the Staff tab.)
+- **Long name** — آنچه دانشجویان می‌بینند (مثلاً `Fall 2025`).
+- **Short name** — یک شناسه مجاز برای پوشه‌ها و مسیرها (مثلاً `Fa25`). بدون فاصله.
+- **Publishing settings** — هنگام ساخت محتوا آن را روی **Unpublished** بگذارید. در مرحله ۱۰ آن را منتشر خواهید کرد.
+- **Self-enrollment settings** — اگر قصد دارید پیوند ثبت‌نام را با دانشجویان به اشتراک بگذارید، مقادیر پیش‌فرض را حفظ کنید؛ اگر دانشجویان را به‌صورت دستی یا از طریق LMS اضافه می‌کنید، تیک آن را بردارید. برای مشاهده مجموعه کامل گزینه‌ها، به [کنترل‌های ثبت‌نام](../courseInstance/index.md#enrollment-controls) مراجعه کنید.
+- **Course instance permissions** — اگر می‌خواهید نمرات این دوره را مشاهده/ویرایش کنید، گزینه **Student data editor** را انتخاب کنید. (می‌توانید بعداً این مورد را از برگه Staff تغییر دهید.)
 
-Click **Create**. You're now inside the new course instance.
+روی **Create** کلیک کنید. اکنون شما داخل دوره جدید قرار دارید.
 
-!!! tip "Reusing a previous semester"
+!!! tip "استفاده مجدد از ترم‌های گذشته"
 
-    To clone a previous instance with all its assessments, instead of clicking on "Add course instance", open the previous instance you want to copy, go to **Instance settings → Settings**, and scroll to **Make a copy of this course instance**. You'll have the option to edit dates and any new assessments, but the structure is preserved.
+    برای شبیه‌سازی (Clone) یک دوره قبلی به همراه تمامی ارزیابی‌های آن، به جای کلیک بر روی «Add course instance»، دوره قبلی را که می‌خواهید کپی کنید باز کرده، به **Instance settings → Settings** بروید و به بخش **Make a copy of this course instance** اسکرول کنید. امکان ویرایش تاریخ‌ها و هرگونه ارزیابی جدید را خواهید داشت، در حالی که ساختار کلی حفظ می‌شود.
 
-## 3. Add your course staff
+## ۳. افزودن کادر آموزشی درس
 
-If you have TAs or co-instructors, invite them now. Go to **Staff** in the **Course** sidebar.
+اگر دستیار آموزشی (TA) یا هم‌مدرس دارید، اکنون آن‌ها را دعوت کنید. به بخش **Staff** در نوار کناری **Course** بروید.
 
-![Staff page with Add users button](screenshots/03-staff.png)
+![صفحه Staff همراه با دکمه Add users](screenshots/03-staff.png)
 
-Click **Add users** and invite by UID (typically an email-like identification). Then specify the access provided to your staff.
+روی **Add users** کلیک کرده و با استفاده از UID (معمولاً شناسه‌ای شبیه به ایمیل) آن‌ها را دعوت کنید. سپس میزان دسترسی ارائه‌شده به کادر آموزشی خود را مشخص نمایید.
 
-Course content access refers to the ability to see and author course content. The most common roles used here are:
+دسترسی به محتوای درس (Course content access) به توانایی مشاهده و ایجاد محتوای درس اشاره دارد. رایج‌ترین نقش‌های مورد استفاده در اینجا عبارتند از:
 
-- **Editor** — can create and modify questions and assessments. This is designed for co-instructors and TAs responsible for managing course content.
-- **Viewer** — can see questions and assessments, but not modify them. This is designed for TAs that provide other supporting roles, or course observers.
+- **Editor** — می‌تواند سوالات و ارزیابی‌ها را ایجاد و ویرایش کند. این نقش برای هم‌مدرس‌ها و دستیاران آموزشی مسئول مدیریت محتوای درس طراحی شده است.
+- **Viewer** — می‌تواند سوالات و ارزیابی‌ها را ببیند، اما نمی‌تواند آن‌ها را تغییر دهد. این نقش برای دستیاران آموزشی با وظایف پشتیبانی دیگر یا ناظران درس طراحی شده است.
 
-Course instance access refers to access to student data. Staff members may be given the following roles for each instance:
+دسترسی به دوره (Course instance access) به دسترسی به داده‌های دانشجویان اشاره دارد. به اعضای کادر آموزشی می‌توان نقش‌های زیر را برای هر دوره اختصاص داد:
 
-- **Student data editor** — can view and modify student data (such as enrollment status and grades) on this course instance. TAs responsible for grading must be given this role.
-- **Student data viewer** — can view student data on this course instance, but not modify. This may be used for TAs that are not involved in grading.
+- **Student data editor** — می‌تواند داده‌های دانشجو (مانند وضعیت ثبت‌نام و نمرات) را در این دوره مشاهده و ویرایش کند. به دستیاران آموزشی که مسئول نمره‌دهی هستند باید این نقش اختصاص یابد.
+- **Student data viewer** — می‌تواند داده‌های دانشجو را در این دوره مشاهده کند، اما امکان تغییر آن‌ها را ندارد. این نقش می‌تواند برای دستیارانی که در نمره‌دهی نقشی ندارند استفاده شود.
 
-See [course staff](../course/index.md#course-staff) for the full breakdown and recommended roles.
+برای جزئیات کامل و نقش‌های پیشنهادی، به [کادر آموزشی درس](../course/index.md#course-staff) مراجعه کنید.
 
-## 4. Build your first question
+## ۴. ساخت اولین سوال
 
-In the **Course** sidebar, click **Questions**.
+در نوار کناری **Course**، روی **Questions** کلیک کنید.
 
-![Questions list — a populated course; yours will start empty](screenshots/06-questions.png)
+![فهرست سوالات — یک درس پرشده؛ مال شما در ابتدا خالی خواهد بود](screenshots/06-questions.png)
 
-(Yours will be empty — the screenshot shows a populated course so you can see the layout.) Click **Add question**. We highly recommend starting with a template, but for this tutorial, we will start from an empty question.
+(مال شما خالی خواهد بود — این تصویر یک درس پرشده را نشان می‌دهد تا چیدمان را ببینید.) روی **Add question** کلیک کنید. ما قویاً پیشنهاد می‌کنیم کار را با یک قالب شروع کنید، اما برای این آموزش، کار را از یک سوال خالی آغاز می‌کنیم.
 
-![Add question form with template tabs and a list of basic question templates](screenshots/07-create-question.png)
+![فرم ایجاد سوال با برگه‌های قالب و فهرستی از قالب‌های پایه سوال](screenshots/07-create-question.png)
 
-Name it `Find the area of a rectangle`, set the **QID** to `rectangle-area`, choose **Empty question**, and then click **Create question**.
+نام آن را `Find the area of a rectangle` بگذارید، مقدار **QID** را برابر با `rectangle-area` قرار دهید، گزینه **Empty question** را انتخاب کنید و سپس روی **Create question** کلیک نمایید.
 
-You will land on the question's **Files** tab.
+شما وارد برگه **Files** مربوط به سوال خواهید شد.
 
-![Files tab for a question showing README.md, info.json, question.html, server.py](screenshots/09-question-files.png)
+![برگه Files برای یک سوال که README.md، info.json، question.html و server.py را نشان می‌دهد](screenshots/09-question-files.png)
 
-Click **Edit** next to `question.html` and replace the contents with:
+روی **Edit** در کنار `question.html` کلیک کرده و محتویات آن را با کد زیر جایگزین کنید:
 
 ```html title="question.html"
 <pl-question-panel>
@@ -97,23 +97,23 @@ Click **Edit** next to `question.html` and replace the contents with:
 </pl-multiple-choice>
 ```
 
-[`pl-multiple-choice`](../elements/pl-multiple-choice.md) is one of PrairieLearn's [submission elements](../elements/index.md#submission-elements) — the inputs students interact with. The [element catalog](../elements/index.md) lists every element you can use here.
+المان [`pl-multiple-choice`](../elements/pl-multiple-choice.md) یکی از [المان‌های ارسال پاسخ](../elements/index.md#submission-elements) در پریری‌لرن است — ورودی‌هایی که دانشجویان با آن‌ها تعامل دارند. [کاتالوگ المان‌ها](../elements/index.md) تمامی المان‌هایی را که می‌توانید در اینجا استفاده کنید فهرست کرده است.
 
-![Browser file editor for question.html with syntax highlighting and a Save button](screenshots/10-question-editor.png)
+![ویرایشگر فایل مرورگر برای question.html با برجسته‌سازی نحو و دکمه Save](screenshots/10-question-editor.png)
 
-Click **Save**, then click the **Preview** tab.
+روی **Save** کلیک کنید، سپس برگه **Preview** را باز نمایید.
 
-![Question preview after answering 20 and clicking Save & Grade; the submission panel shows a Correct! badge and the staff information sidebar is visible](screenshots/08-question-preview.png)
+![پیش‌نمایش سوال پس از پاسخ دادن ۲۰ و کلیک روی Save & Grade؛ پنل ارسال برچسب Correct! را نشان می‌دهد و نوار کناری اطلاعات کادر آموزشی قابل مشاهده است](screenshots/08-question-preview.png)
 
-Select an option and click **Save & Grade**.
+یک گزینه را انتخاب کرده و روی **Save & Grade** کلیک کنید.
 
-!!! tip "Randomization is recommended"
+!!! tip "تصادفی‌سازی توصیه می‌شود"
 
-    Although the question above provides the options in a random order, the question always provides the same set of options. You are encouraged to introduce randomization in all auto-graded questions where possible.
+    اگرچه سوال بالا گزینه‌ها را با ترتیبی تصادفی ارائه می‌دهد، اما سوال همیشه همان مجموعه گزینه‌های یکسان را نشان می‌دهد. توصیه می‌شود در صورت امکان، در تمامی سوالات نمره‌دهی خودکار از تصادفی‌سازی استفاده کنید.
 
-## 5. Add randomization with `server.py`
+## ۵. افزودن تصادفی‌سازی با `server.py`
 
-A question's [`server.py`](../question/server.md) generates random parameters per student and (optionally) custom-grades responses. Go back to **Files** and edit `server.py`:
+فایل [`server.py`](../question/server.md) یک سوال، پارامترهای تصادفی را برای هر دانشجو تولید می‌کند و (به‌صورت اختیاری) پاسخ‌ها را به شیوه سفارشی نمره‌دهی می‌نماید. به برگه **Files** بازگردید و `server.py` را ویرایش کنید:
 
 ```python title="server.py"
 import random
@@ -134,7 +134,7 @@ def generate(data):
     data["params"]["truearea"] = a * b
 ```
 
-Go back to **Files** and again edit `question.html`, now with the templated version:
+مجدداً به **Files** بازگردید و این بار `question.html` را با نسخه قالب‌بندی‌شده ویرایش کنید:
 
 ```html title="question.html"
 <pl-question-panel>
@@ -150,93 +150,93 @@ Go back to **Files** and again edit `question.html`, now with the templated vers
 </pl-multiple-choice>
 ```
 
-Save and preview. Click **New variant** to see the values change. Each student now gets a different version of this question.
+ذخیره کنید و پیش‌نمایش را ببینید. روی **New variant** کلیک کنید تا تغییر مقادیر را مشاهده نمایید. اکنون هر دانشجو نسخه متفاوتی از این سوال را دریافت می‌کند.
 
-!!! tip "You don't need to write every question from scratch"
+!!! tip "نیازی نیست همه سوالات را از صفر بنویسید"
 
-    The **Add question** form leads with a gallery of templates organized into three categories — **Basic questions** (hardcoded prompts and answers), **Intermediate questions** (built-in randomization without Python), and **Advanced questions** (Python-powered randomization). After picking a template, you'll land in the **Files** tab with a working `question.html` (and `server.py` if applicable) ready to edit.
+    فرم **Add question** با گالری‌ای از قالب‌ها آغاز می‌شود که در سه دسته سازمان‌دهی شده‌اند — **Basic questions** (صورت سوال و پاسخ‌های ثابت)، **Intermediate questions** (تصادفی‌سازی توکار بدون پایتون) و **Advanced questions** (تصادفی‌سازی مبتنی بر پایتون). پس از انتخاب یک قالب، با یک `question.html` کارآمد (و در صورت کاربرد، `server.py`) آماده ویرایش وارد برگه **Files** خواهید شد.
 
-    ![Add question form with the PrairieLearn template gallery showing Basic, Intermediate, and Advanced template cards](screenshots/11-question-templates.png)
+    ![فرم ایجاد سوال با گالری قالب‌های پریری‌لرن که کارت‌های قالب Basic، Intermediate و Advanced را نشان می‌دهد](screenshots/11-question-templates.png)
 
-    For something more specific, browse [**XC 101: Example Course**](https://us.prairielearn.com/pl/course/108/), which ships with 200+ ready-to-copy questions covering every element and grading style. To copy one into your course:
+    برای موارد خاص‌تر، درس نمونه [**XC 101: Example Course**](https://us.prairielearn.com/pl/course/108/) را مرور کنید که همراه با بیش از ۲۰۰ سوال آماده کپی‌برداری است و تمامی المان‌ها و سبک‌های نمره‌دهی را پوشش می‌دهد. برای کپی کردن یک سوال در درس خود:
 
-    1. Open [XC 101](https://us.prairielearn.com/pl/course/108/) and find a question (the **Course instance → SectionA** has assessments that group questions by topic, e.g. "Question gallery for PL elements").
-    2. Open the question's **Preview** tab and click **Copy question** in the top-right.
-    3. Pick your course as the destination and submit.
+    1. درس [XC 101](https://us.prairielearn.com/pl/course/108/) را باز کنید و یک سوال بیابید (بخش **Course instance → SectionA** شامل ارزیابی‌هایی است که سوالات را بر اساس موضوع گروه‌بندی کرده‌اند، مثلاً «Question gallery for PL elements»).
+    2. برگه **Preview** سوال را باز کرده و روی **Copy question** در بالا سمت راست کلیک کنید.
+    3. درس خود را به عنوان مقصد انتخاب کرده و تایید نمایید.
 
-    You're now editing a copy inside your own course. Rename the QID and tweak as needed.
+    اکنون در حال ویرایش یک کپی در درس خودتان هستید. در صورت نیاز QID را تغییر داده و ویرایش‌های لازم را انجام دهید.
 
-## 6. Create your first assessment
+## ۶. ایجاد اولین ارزیابی
 
-Switch to your course instance (sidebar → **Course instance**) and click **Assessments**.
+به دوره خود بروید (نوار کناری → **Course instance**) و روی **Assessments** کلیک کنید.
 
-![Assessments list with Add assessment button](screenshots/05-assessments.png)
+![فهرست ارزیابی‌ها با دکمه Add assessment](screenshots/05-assessments.png)
 
-Click **Add assessment**.
+روی **Add assessment** کلیک کنید.
 
-![Create assessment dialog with Title, Short name, Type (Homework/Exam), Set fields](screenshots/17-create-assessment.png)
+![کادر گفتگوی ایجاد ارزیابی با فیلدهای Title، Short name، Type (تکلیف/آزمون) و Set](screenshots/17-create-assessment.png)
 
-Fill in:
+موارد زیر را تکمیل کنید:
 
-- **Title** — student-visible (e.g., `Geometric properties and applications`).
-- **Short name** — directory identifier (e.g., `homework1`).
-- **Type** — **Homework** for formative practice with unlimited retries; **Exam** for graded assessments with limited attempts. The type cannot be changed later.
-- **Set** — pick from `Homework`, `Quiz`, `Exam`, etc. The set is purely organizational; it doesn't change behavior.
+- **Title** — برای دانشجو قابل مشاهده است (مثلاً `Geometric properties and applications`).
+- **Short name** — شناسه دایرکتوری (مثلاً `homework1`).
+- **Type** — گزینه **Homework** برای تمرین تکوینی با تلاش مجدد نامحدود؛ گزینه **Exam** برای ارزیابی‌های نمره‌دار با تعداد تلاش‌های محدود. نوع ارزیابی بعداً قابل تغییر نیست.
+- **Set** — از میان `Homework`، `Quiz`، `Exam` و غیره انتخاب کنید. مجموعه صرفاً جنبه سازمانی دارد و رفتار ارزیابی را تغییر نمی‌دهد.
 
-Click **Create**. You land on the assessment with empty zones.
+روی **Create** کلیک کنید. وارد صفحه ارزیابی با ناحیه‌های (Zones) خالی خواهید شد.
 
-## 7. Add questions to the assessment
+## ۷. افزودن سوالات به ارزیابی
 
-Go to the assessment's **Questions** tab and click **Edit**. Click **Add zone** to create a zone, then click **Add question** at the bottom of the zone, search for `rectangle-area`, and pick the matching result.
+به برگه **Questions** ارزیابی بروید و روی **Edit** کلیک کنید. روی **Add zone** کلیک کنید تا یک ناحیه ساخته شود، سپس روی **Add question** در پایین ناحیه کلیک نمایید، عبارت `rectangle-area` را جستجو کرده و نتیجه منطبق را برگزینید.
 
-![Question picker with rectangle-area searched and the result highlighted](screenshots/21-question-picker.png)
+![انتخاب‌گر سوال همراه با جستجوی rectangle-area و برجسته شدن نتیجه](screenshots/21-question-picker.png)
 
-After clicking the result, the question is added to the zone:
+پس از کلیک بر روی نتیجه، سوال به ناحیه اضافه می‌شود:
 
-![Assessment Questions tab in edit mode with rectangle-area in the zone](screenshots/19-assessment-edit-mode.png)
+![برگه Questions ارزیابی در حالت ویرایش با سوال rectangle-area در ناحیه](screenshots/19-assessment-edit-mode.png)
 
-Set the point value if you want, then click **Save**.
+در صورت تمایل ارزش نمره (Point value) را تعیین کنید و سپس روی **Save** کلیک نمایید.
 
-## 8. Configure assessment access rules
+## ۸. پیکربندی قوانین کنترل دسترسی ارزیابی
 
-Open the assessment's **Access** tab. In **Defaults**, click **Edit**. In **Date control**, choose **Scheduled for release**, set the release date/time when students may start, choose **Due on date**, set the due date/time, and keep the due-date credit at 100%. Click **Save**.
+برگه **Access** ارزیابی را باز کنید. در بخش **Defaults**، روی **Edit** کلیک کنید. در بخش **Date control**، گزینه **Scheduled for release** را انتخاب کرده و تاریخ/زمان انتشار (زمانی که دانشجویان می‌توانند شروع کنند) را تنظیم کنید؛ گزینه **Due on date** را برگزینید و تاریخ/زمان مهلت تحویل را تعیین نمایید، و اعتبار تاریخ مهلت تحویل (due-date credit) را روی ۱۰۰٪ بگذارید. سپس روی **Save** کلیک کنید.
 
-The **Access** tab summarizes the release window and due-date credit:
+برگه **Access** خلاصه‌ای از بازه زمانی انتشار و اعتبار مهلت تحویل را نشان می‌دهد:
 
-![Assessment Access tab showing modern access control defaults](screenshots/12-assessment-access.png)
+![برگه Access ارزیابی که پیش‌فرض‌های نوین کنترل دسترسی را نشان می‌دهد](screenshots/12-assessment-access.png)
 
-To learn more about the different access control options, see the [assessment access control documentation](../assessment/accessControl.md).
+برای کسب اطلاعات بیشتر درباره گزینه‌های مختلف کنترل دسترسی، به [مستندات کنترل دسترسی ارزیابی](../assessment/accessControl.md) مراجعه کنید.
 
-## 9. Preview as a student
+## ۹. پیش‌نمایش در نقش دانشجو
 
-Before sharing anything with students, dry-run the assessment yourself. Open the user menu (top right) and pick **Student view without access restrictions**.
+قبل از به اشتراک گذاشتن هر چیزی با دانشجویان، ارزیابی را خودتان به صورت آزمایشی اجرا (Dry-run) کنید. منوی کاربر (بالا سمت راست) را باز کرده و گزینه **Student view without access restrictions** را انتخاب نمایید.
 
-![Dev User dropdown showing Staff view, Student view, Student view without access restrictions](screenshots/13-student-view-menu.png)
+![منوی کشویی Dev User که گزینه‌های Staff view، Student view و Student view without access restrictions را نشان می‌دهد](screenshots/13-student-view-menu.png)
 
-You see exactly what a student sees, plus a yellow **Regenerate your assessment instance** banner only staff can see:
+دقیقاً همان چیزی را مشاهده می‌کنید که یک دانشجو می‌بیند، به علاوه یک کادر زرد رنگ با عنوان **Regenerate your assessment instance** که فقط کادر آموزشی قادر به دیدن آن هستند:
 
-![Student view of an assessment with question list and points; the Regenerate your assessment instance banner is highlighted](screenshots/14-student-assessment.png)
+![نمای دانشجو از یک ارزیابی همراه با فهرست سوالات و نمرات؛ کادر Regenerate your assessment instance مشخص شده است](screenshots/14-student-assessment.png)
 
-!!! warning "Regenerate after editing"
+!!! warning "تولید مجدد پس از ویرایش"
 
-    Whenever you change an assessment's questions, points, or zones, your existing dry-run instance is **stale** — it was built from the old configuration. Click **Regenerate your assessment instance** to discard it and pick up your edits. Students don't have this option — if a real student needs a fresh instance after you've made changes, staff must regenerate it for them.
+    هر زمان که سوالات، نمرات یا ناحیه‌های یک ارزیابی را تغییر دهید، نمونه آزمایشی قبلی شما **کهنه و قدیمی (Stale)** می‌شود — زیرا بر اساس پیکربندی پیشین ساخته شده است. روی **Regenerate your assessment instance** کلیک کنید تا آن را کنار گذاشته و تغییرات جدید اعمال شوند. دانشجویان این گزینه را ندارند — اگر یک دانشجوی واقعی پس از اعمال تغییرات شما به یک نمونه تازه نیاز داشته باشد، کادر آموزشی باید آن را برای او مجدداً تولید کنند.
 
-Click into a question to see how it renders for a student:
+روی یک سوال کلیک کنید تا ببینید برای دانشجو چگونه رندر می‌شود:
 
-![Student view of a single question with Save & Grade and Save only buttons](screenshots/15-student-question.png)
+![نمای دانشجو از یک سوال همراه با دکمه‌های Save & Grade و Save only](screenshots/15-student-question.png)
 
-Switch back to staff view from the same dropdown when you're done.
+پس از اتمام کار، از همان منوی کشویی به نمای کادر آموزشی (Staff view) بازگردید.
 
-## 10. Publish and enroll students
+## ۱۰. انتشار و ثبت‌نام دانشجویان
 
-Go to **Instance settings → Publishing**.
+به مسیر **Instance settings → Publishing** بروید.
 
-![Publishing settings with Unpublished/Scheduled/Published radio buttons, end date, and Extensions section](screenshots/16-publishing.png)
+![تنظیمات انتشار با دکمه‌های رادیویی Unpublished/Scheduled/Published، تاریخ پایان و بخش Extensions](screenshots/16-publishing.png)
 
-Pick **Published** to make the course instance available to students, and then hit **Save**. You can read more about publishing in the [course instance documentation](../courseInstance/index.md#publishing-controls).
+گزینه **Published** را انتخاب کنید تا دوره در دسترس دانشجویان قرار گیرد، و سپس روی **Save** کلیک نمایید. می‌توانید در [مستندات دوره](../courseInstance/index.md#publishing-controls) درباره انتشار اطلاعات بیشتری مطالعه کنید.
 
-To get students in, you can share the enrollment link from **Instance settings → Self-enrollment**. Students click the link and enroll themselves. See [enrollment controls](../courseInstance/index.md#enrollment-controls) for codes, institution restrictions, and disabling self-enrollment after a deadline.
+برای وارد کردن دانشجویان، می‌توانید پیوند ثبت‌نام را از بخش **Instance settings → Self-enrollment** با آن‌ها به اشتراک بگذارید. دانشجویان روی پیوند کلیک کرده و خودشان ثبت‌نام می‌کنند. برای اطلاع از کدهای دسترسی، محدودیت‌های مؤسسه و غیرفعال کردن خودثبت‌نامی پس از یک مهلت مشخص، به [کنترل‌های ثبت‌نام](../courseInstance/index.md#enrollment-controls) مراجعه فرمایید.
 
-## Next steps
+## گام‌های بعدی
 
-You now have a working course instance with a published assessment :partying_face:. From here, head to the [instructor guide](../instructor-guide/index.md) for reference material on every PrairieLearn feature.
+اکنون شما یک دوره فعال همراه با یک ارزیابی منتشرشده دارید :partying_face:. از اینجا می‌توانید به [راهنمای مدرس](../instructor-guide/index.md) برای دسترسی به منابع مرجع درباره تمامی امکانات پریری‌لرن مراجعه کنید.

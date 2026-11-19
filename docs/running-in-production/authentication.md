@@ -1,25 +1,25 @@
-# Authentication
+# احراز هویت
 
-PrairieLearn currently uses [Google OAuth 2](#google-oauth-2) as its only supported method of user authentication for self-hosted PrairieLearn instances. While [LTI 1.1](../courseInstance/index.md#lti-support) is also available, it is currently deprecated and should be avoided for new deployments. [LTI 1.3](../lti13.md) is supported for interoperability with learning management systems, but not as an authentication method.
+در حال حاضر PrairieLearn از [Google OAuth 2](#google-oauth-2) به عنوان تنها روش پشتیبانی‌شده برای احراز هویت کاربران در نمونه‌های سلف‌هاستد (Self-hosted) PrairieLearn استفاده می‌کند. اگرچه [LTI 1.1](../courseInstance/index.md#lti-support) نیز در دسترس است، اما منسوخ (Deprecated) شده و باید در استقرارهای جدید از آن اجتناب شود. پروتکل [LTI 1.3](../lti13.md) برای تعامل‌پذیری با سامانه‌های مدیریت یادگیری (LMS) پشتیبانی می‌شود، اما نه به عنوان یک روش احراز هویت.
 
-!!! note "SAML and Azure authentication"
+!!! note "احراز هویت با SAML و Azure"
 
-    Authentication using SAML or Azure are available only as enterprise features, and are not supported in self-hosted PrairieLearn instances. If you are interested in these features, please visit <https://www.prairielearn.com> for information about paid hosting and enterprise support.
+    احراز هویت با استفاده از SAML یا Azure تنها به عنوان ویژگی‌های سازمانی (Enterprise) در دسترس است و در نمونه‌های سلف‌هاستد PrairieLearn پشتیبانی نمی‌شود. در صورت تمایل به استفاده از این قابلیت‌ها، لطفاً جهت کسب اطلاعات درباره میزبانی پولی و پشتیبانی سازمانی از <https://www.prairielearn.com> دیدن فرمایید.
 
-## Google OAuth 2
+## پروتکل Google OAuth 2
 
-To start, create a [Google Cloud account](https://cloud.google.com/) and then:
+برای شروع، یک [حساب Google Cloud](https://cloud.google.com/) ایجاد کرده و سپس:
 
-- Click [console](https://console.cloud.google.com/) to log in to your console.
-- Create a project then go to [APIs & Services](https://console.cloud.google.com/apis/dashboard).
-  - Go to `OAuth consent screen` and complete the consent form.
-  - Proceed to `Credentials` and create a new `OAuth client ID`.
-  - Select `Web application`.
-  - Under Authorized JavaScript origins, click `ADD URI` and add your domain.
-  - Under Authorized redirect URIs, click `ADD URI` and add `https://yourdomain.com/pl/oauth2callback` which is the route to the Google OAuth callback.
-  - Click `Create` which will give you a `Client ID` and a `Client Secret`. **Keep these values secret.**
+- روی [کنسول (Console)](https://console.cloud.google.com/) کلیک کنید تا وارد کنسول خود شوید.
+- یک پروژه بسازید و سپس به بخش [APIs & Services](https://console.cloud.google.com/apis/dashboard) بروید.
+  - به بخش `OAuth consent screen` رفته و فرم رضایت را تکمیل کنید.
+  - به بخش `Credentials` بروید و یک `OAuth client ID` جدید ایجاد نمایید.
+  - گزینه `Web application` را انتخاب کنید.
+  - در بخش Authorized JavaScript origins، روی `ADD URI` کلیک کرده و دامنه خود را اضافه کنید.
+  - در بخش Authorized redirect URIs، روی `ADD URI` کلیک کرده و آدرس `https://yourdomain.com/pl/oauth2callback` را که مسیر بازخورد (Callback) برای Google OAuth است وارد کنید.
+  - روی `Create` کلیک کنید که به شما یک `Client ID` و یک `Client Secret` ارائه می‌دهد. **این مقادیر را مخفی نگه دارید.**
 
-Now add the keys to `config.json`:
+اکنون کلیدها را به فایل `config.json` اضافه کنید:
 
 ```json title="config.json"
 {
@@ -30,4 +30,4 @@ Now add the keys to `config.json`:
 }
 ```
 
-You should now be able to use Google to log in to your PrairieLearn instance.
+اکنون باید بتوانید با استفاده از گوگل وارد نمونه PrairieLearn خود شوید.

@@ -1,57 +1,57 @@
-# LTI 1.3 configuration
+# پیکربندی LTI 1.3
 
-Learning Management System (LMS) integration is supported via LTI 1.3. Reach out to [support@prairielearn.com](mailto:support@prairielearn.com) to get it set up.
+یکپارچه‌سازی با سامانه‌های مدیریت یادگیری (LMS) از طریق LTI 1.3 پشتیبانی می‌شود. جهت راه‌اندازی و فعال‌سازی آن با [support@prairielearn.com](mailto:support@prairielearn.com) ارتباط برقرار کنید.
 
-Learning Tools Interoperability (LTI) provides app integration between Learning Management Systems (LMSes) like Canvas, Moodle, etc. and PrairieLearn. It includes single sign on from the LMS with additional features like course context information and roles. Version 1.3 enhances LTI to include an API for asynchronous two-way updates for assessments, scores, and rosters.
+قابلیت هم‌کنش‌پذیری ابزارهای یادگیری یا Learning Tools Interoperability (LTI)، امکان یکپارچه‌سازی میان سامانه‌های مدیریت یادگیری (LMSها مانند Canvas، Moodle و غیره) و پریری‌لرن را فراهم می‌آورد. این پروتکل شامل ورود یکپارچه (Single Sign-On یا SSO) از طریق سامانه مدیریت یادگیری به همراه ویژگی‌های مضاعفی همچون اطلاعات زمینه درس و نقش‌های کاربری است. نسخه ۱.۳ با ارائه یک رابط برنامه‌نویسی کاربردی (API) برای به‌روزرسانی‌های دوطرفه و ناهمگام ارزیابی‌ها، نمرات و لیست کلاسی (Roster)، پروتکل LTI را ارتقا داده است.
 
-LTI 1.3 is configured on an institution level by establishing a trust relationship between the LMS and PrairieLearn. LMS admins can decide where to apply that integration (per course, per account, per institution). Instructors will have to reach out to their LMS admins to set up PrairieLearn integration.
+پیکربندی LTI 1.3 در سطح موسسه و از طریق برقراری رابطه اعتماد (Trust relationship) میان سامانه LMS و پریری‌لرن انجام می‌شود. مدیران LMS می‌توانند تعیین کنند که این یکپارچه‌سازی در چه سطحی اعمال شود (به ازای هر درس، هر حساب یا کل موسسه). مدرسان برای راه‌اندازی یکپارچه‌سازی پریری‌لرن باید با مدیران LMS موسسه خود تماس بگیرند.
 
-## Information LMS administrators will provide
+## اطلاعاتی که مدیران LMS باید ارائه دهند
 
-LTI 1.3 configuration
+پیکربندی LTI 1.3:
 
-- Information about your LMS: type, self-hosted or cloud-provider hosted, etc.
-- Typical LTI 1.3 OIDC authentication for your LMS
-  - Issuer, JWK or JWK key set URL, URL endpoints for token and authorization
-- Client ID for PrairieLearn from the LMS LTI configuration
+- اطلاعات مربوط به سامانه LMS شما: نوع سامانه، میزبانی اختصاصی (Self-hosted) یا ارائه‌دهنده ابری و غیره.
+- احراز هویت معمول OIDC در LTI 1.3 برای سامانه LMS شما:
+  - صادرکننده (Issuer)، نشانی اینترنتی کلید JWK یا مجموعه کلیدهای JWK، و نقاط پایانی URL برای توکن و مجوزدهی (Authorization).
+- شناسه Client ID پریری‌لرن از پیکربندی LTI سامانه LMS.
 
-PrairieLearn institution configuration (see the [SAML SSO doc](saml.md) for our definitions)
+پیکربندی موسسه در پریری‌لرن (تعاریف ما را در [مستند SAML SSO](saml.md) ببینید):
 
-- What do email addresses from the institution look like? (Or other UID value)
-- What is appropriate for the UIN?
-- What LTI claims should we use for:
-  - Name (typically `name` from LTI 1.3/OIDC)
-  - UID (typically `email` from LTI 1.3/OIDC)
-  - UIN (probably a custom LTI property)
+- آدرس‌های ایمیل موسسه چه ساختاری دارند؟ (یا سایر مقادیر UID)
+- چه مقداری برای UIN مناسب است؟
+- از چه ادعاهای (Claims) پروتکل LTI باید برای موارد زیر استفاده کنیم:
+  - نام (معمولاً `name` از LTI 1.3/OIDC)
+  - شناسه UID (معمولاً `email` از LTI 1.3/OIDC)
+  - شناسه UIN (احتمالاً یک ویژگی سفارشی در LTI)
 
-## Information PrairieLearn administrators will provide
+## اطلاعاتی که مدیران پریری‌لرن ارائه خواهند داد
 
-LTI 1.3 configuration
+پیکربندی LTI 1.3:
 
-- A JSON configuration URL to set up your LMS to work with PrairieLearn
-  - This could be imported into the LMS programmatically (it was designed for Canvas) or read by a human and includes the OIDC authentication URLs
-- A JWKS key set URL for public key exchange with PrairieLearn
+- یک URL پیکربندی JSON برای تنظیم سامانه LMS شما جهت کار با پریری‌لرن
+  - این فایل می‌تواند به صورت برنامه‌نویسی‌شده وارد سامانه LMS شود (برای Canvas طراحی شده است) یا توسط انسان خوانده شود و شامل URLهای احراز هویت OIDC است.
+- یک URL مجموعه کلید JWKS برای تبادل کلید عمومی با پریری‌لرن.
 
-## LMS setup
+## راه‌اندازی در سامانه LMS
 
-### LTI Advantage Services
+### سرویس‌های LTI Advantage
 
-The services of LTI 1.3 that do grade passback, assessment setup, or roster syncing have their own specific standards and configuration. Make sure these "scopes" are enabled for PrairieLearn in your LMS to use this functionality.
+سرویس‌های LTI 1.3 که بازگردانی نمرات (Grade passback)، تنظیم ارزیابی‌ها یا همگام‌سازی لیست کلاسی را انجام می‌دهند، دارای استانداردها و پیکربندی‌های خاص خود هستند. مطمئن شوید که این "حیطه‌ها" (Scopes) برای پریری‌لرن در سامانه LMS شما فعال شده باشند تا بتوانید از این قابلیت‌ها استفاده کنید.
 
-Canvas uses these terms in their config as something to enable for the PrairieLearn LTI developer key:
+سامانه Canvas در بخش پیکربندی خود برای فعال‌سازی کلید توسعه‌دهنده (Developer key) پریری‌لرن در LTI از این عبارات استفاده می‌کند:
 
-- Create and view assignment data in the gradebook
-- View assignment data in the gradebook associated with the tool
-- View submission data for assignments associated with the tool
-- Create and update submission results for assignments associated with the tool
-- Retrieve user data associated with the context the tool is in
+- ایجاد و مشاهده داده‌های تکلیف در دفترچه نمرات (Create and view assignment data in the gradebook)
+- مشاهده داده‌های تکلیف مرتبط با این ابزار در دفترچه نمرات (View assignment data in the gradebook associated with the tool)
+- مشاهده داده‌های پاسخ ارسالی برای تکالیف مرتبط با این ابزار (View submission data for assignments associated with the tool)
+- ایجاد و به‌روزرسانی نتایج پاسخ‌های ارسالی برای تکالیف مرتبط با این ابزار (Create and update submission results for assignments associated with the tool)
+- بازیابی داده‌های کاربر مرتبط با زمینه‌ای که ابزار در آن قرار دارد (Retrieve user data associated with the context the tool is in)
 
-More technically, make sure the [AGS](https://www.imsglobal.org/spec/lti-ags/v2p0) `score` and `lineitem` scopes are enabled as well as [NRPS](https://www.imsglobal.org/spec/lti-nrps/v2p0/) `contextmembership.readonly`.
+از دیدگاه فنی‌تر، مطمئن شوید که حیطه‌های (Scopes) مربوط به `score` و `lineitem` در پروتکل [AGS](https://www.imsglobal.org/spec/lti-ags/v2p0) و همچنین حیطه‌ی `contextmembership.readonly` در پروتکل [NRPS](https://www.imsglobal.org/spec/lti-nrps/v2p0/) فعال شده باشند.
 
-### Anonymous logins not allowed
+### عدم مجاز بودن ورودهای ناشناس (Anonymous logins)
 
-You must configure your LMS to send user identifying claims. Anonymous logins are not supported with PrairieLearn. Canvas calls this "Privacy Public".
+شما باید سامانه LMS خود را به گونه‌ای پیکربندی کنید که ادعاهای هویتی کاربر (User identifying claims) را ارسال کند. ورود ناشناس در پریری‌لرن پشتیبانی نمی‌شود. سامانه Canvas این گزینه را "Privacy Public" می‌نامد.
 
-### Placements
+### جای‌گذاری‌ها (Placements)
 
-PrairieLearn recommends "Course Navigation" placements, as described in the configuration JSON. More placements may be added in the future.
+پریری‌لرن جای‌گذاری "Course Navigation" (ناوبری درس) را طبق توضیحات فایل JSON پیکربندی توصیه می‌کند. ممکن است در آینده جای‌گذاری‌های بیشتری نیز اضافه شود.

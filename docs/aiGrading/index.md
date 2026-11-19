@@ -1,328 +1,328 @@
-# AI grading
+# نمره‌دهی هوش مصنوعی
 
-## Overview
+## نمای کلی
 
-AI grading uses large language models to grade manual questions in PrairieLearn. It applies your rubric to submissions, produces scores, and generates explanations instructors can review, adjust, or override.
+نمره‌دهی هوش مصنوعی از مدل‌های زبانی بزرگ برای نمره‌دهی سوالات دستی در پری‌لرن (PrairieLearn) استفاده می‌کند. این قابلیت، ماتریس نمره‌دهی (Rubric) شما را بر روی پاسخ‌های ارسالی اعمال می‌کند، نمرات را محاسبه می‌نماید و توضیحاتی تولید می‌کند که مدرسان می‌توانند آن‌ها را بازبینی، تعدیل یا بازنویسی (Override) کنند.
 
-## Use cases
+## موارد کاربرد
 
-AI grading works on manually graded questions that use these elements:
+نمره‌دهی هوش مصنوعی بر روی سوالات با نمره‌دهی دستی که از این المان‌ها استفاده می‌کنند کار می‌کند:
 
-- [`pl-file-upload`](../elements/pl-file-upload.md) for text and source-code files, PDFs, and supported images
-- [`pl-file-editor`](../elements/pl-file-editor.md) for source-code files
+- [`pl-file-upload`](../elements/pl-file-upload.md) برای فایل‌های متنی و کد منبع، PDFها و تصاویر پشتیبانی‌شده
+- [`pl-file-editor`](../elements/pl-file-editor.md) برای فایل‌های کد منبع
 - [`pl-image-capture`](../elements/pl-image-capture.md)
 - [`pl-rich-text-editor`](../elements/pl-rich-text-editor.md)
 - [`pl-string-input`](../elements/pl-string-input.md)
 
-Common use cases include:
+موارد کاربرد رایج عبارتند از:
 
-- Essay and free-response questions
-- Mathematical proofs and derivations
-- Diagrams and handwritten work
-- PDF documents produced with external tools
-- Source code, code explanations, and written reasoning
-- Short-answer justifications
+- سوالات انشایی و پاسخ آزاد (تشریحی)
+- اثبات‌ها و محاسبات/استنتاج‌های ریاضی
+- نمودارها و دست‌نوشته‌ها
+- اسناد PDF تولیدشده با ابزارهای خارجی
+- کد منبع، توضیحات کد و استدلال‌های نوشتاری
+- توجیهات و استدلال‌های پاسخ کوتاه
 
-Questions can combine these elements. For example, when a question contains both `pl-file-upload` and `pl-image-capture`, every distinct supported submitted file is sent to the model once.
+سوالات می‌توانند این المان‌ها را با هم ترکیب کنند. به عنوان مثال، هنگامی که یک سوال هم شامل `pl-file-upload` و هم `pl-image-capture` باشد، هر فایل ارسالی پشتیبانی‌شده و متمایز یک بار به مدل ارسال می‌شود.
 
-AI grading also includes files saved in the submission from [workspaces](../workspaces/index.md). Only files collected for grading are included; the AI grader does not read the live workspace. A [`pl-file-preview`](../elements/pl-file-preview.md) element is not required for AI grading, but is recommended so students can check their submitted files.
+نمره‌دهی هوش مصنوعی همچنین شامل فایل‌های ذخیره‌شده در پاسخ ارسالی از [محیط‌های کاری (Workspaces)](../workspaces/index.md) می‌شود. فقط فایل‌های جمع‌آوری‌شده برای نمره‌دهی گنجانده می‌شوند؛ سیستم نمره‌دهی هوش مصنوعی محیط کاری زنده را نمی‌خواند. وجود المان [`pl-file-preview`](../elements/pl-file-preview.md) برای نمره‌دهی هوش مصنوعی الزامی نیست، اما توصیه می‌شود تا دانشجویان بتوانند فایل‌های ارسالی خود را بررسی کنند.
 
-### Images in questions and reference answers
+### تصاویر در سوالات و پاسخ‌های مرجع
 
-AI grading includes images rendered as `<img src="...">` in the question or instructor reference answer, including images added with [`pl-figure`](../elements/pl-figure.md). Supported formats are **PNG, JPEG (`.jpg` or `.jpeg`), WebP, and SVG**. SVG images are converted to PNG before grading.
+نمره‌دهی هوش مصنوعی شامل تصاویری است که به صورت `<img src="...">` در سوال یا پاسخ مرجع مدرس رندر می‌شوند، از جمله تصاویری که با [`pl-figure`](../elements/pl-figure.md) اضافه شده‌اند. فرمت‌های پشتیبانی‌شده عبارتند از **PNG، JPEG (با پسوند `.jpg` یا `.jpeg`)، WebP و SVG**. تصاویر SVG قبل از نمره‌دهی به PNG تبدیل می‌شوند.
 
-SVG files containing `<foreignObject>` are rejected because their embedded content is not preserved during conversion. Export these diagrams as PNG instead.
+فایل‌های SVG حاوی `<foreignObject>` رد می‌شوند زیرا محتوای جاسازی‌شده آن‌ها در طول تبدیل حفظ نمی‌شود. در عوض، این نمودارها را با فرمت PNG خروجی بگیرید.
 
-Supported image sources include:
+منابع تصویر پشتیبانی‌شده عبارتند از:
 
-- Static files in the question's `clientFilesQuestion` directory or the course's `clientFilesCourse` directory.
-- Files generated dynamically by the question's `server.py`.
-- Base64-encoded `data:` URLs, such as `data:image/png;base64,...` or `data:image/svg+xml;base64,...`.
-- Publicly accessible HTTPS URLs that point directly to an image. External image requests do not support authentication or redirects.
+- فایل‌های ایستا در دایرکتوری `clientFilesQuestion` سوال یا دایرکتوری `clientFilesCourse` درس.
+- فایل‌های تولیدشده به‌صورت پویا توسط فایل `server.py` سوال.
+- آدرس‌های اینترنتی `data:` با کدگذاری Base64، مانند `data:image/png;base64,...` یا `data:image/svg+xml;base64,...`.
+- آدرس‌های HTTPS با دسترسی عمومی که مستقیماً به یک تصویر اشاره دارند. درخواست‌های تصویر خارجی از احراز هویت یا تغییر مسیر (Redirect) پشتیبانی نمی‌کنند.
 
-For example, an SVG file can be included with:
+به عنوان مثال، یک فایل SVG را می‌توان به این صورت قرار داد:
 
 ```html
 <pl-figure file-name="diagram.svg"></pl-figure>
 ```
 
-Inline `<svg>` drawings, `<canvas>` drawings, and CSS background images are not captured. AI grading does not execute browser JavaScript to produce images. Student-submitted files follow the [submitted file format rules](#submitted-file-formats) below; submitted SVG files are handled as text rather than rendered images.
+نقاشی‌های درون‌خطی `<svg>`، ترسیم‌های `<canvas>` و تصاویر پس‌زمینه CSS ثبت نمی‌شوند. نمره‌دهی هوش مصنوعی کدهای جاوااسکریپت مرورگر را برای تولید تصاویر اجرا نمی‌کند. فایل‌های ارسال‌شده توسط دانشجو از [قوانین فرمت فایل‌های ارسالی](#submitted-file-formats) در زیر پیروی می‌کنند؛ فایل‌های SVG ارسالی به‌جای تصاویر رندرشده، به‌عنوان متن پردازش می‌شوند.
 
-Repeated references to the same image source are included once per question or reference-answer section. If an image cannot be loaded or uses an unsupported format, AI grading fails for that submission.
+ارجاعات مکرر به یک منبع تصویر یکسان، در هر بخش سوال یا پاسخ مرجع فقط یک بار گنجانده می‌شوند. اگر تصویری بارگذاری نشود یا از فرمت پشتیبانی‌نشده استفاده کند، نمره‌دهی هوش مصنوعی برای آن پاسخ ارسالی با شکست مواجه می‌شود.
 
-### Submitted file formats
+### فرمت‌های فایل ارسالی
 
-- **Text and source code:** Files such as `.py`, `.cpp`, `.java`, `.txt`, `.csv`, and `.json` are decoded and sent as text with their filenames. Any filename or extension is accepted if the contents are readable text. Indentation and line breaks are preserved. Unicode is preserved when `pl-file-editor`'s `normalize-to-ascii` option is disabled (the default); enabling it normalizes non-ASCII characters before submission. Supported encodings are UTF-8 (with or without a byte-order mark) and UTF-16 (with a byte-order mark).
-- **PDFs and images:** PDF, JPEG, PNG, and WebP files are sent as attachments so the model can interpret their visual content.
-- **Other binary formats or encodings:** Files such as ZIP archives, compiled programs, and binary Office documents are not decoded as text. AI grading continues with the rest of the submission, and the model receives a message naming the unreadable file and explaining that its contents are unavailable. Convert these files to a supported format if their contents are needed for grading.
+- **متن و کد منبع:** فایل‌هایی مانند `.py`، `.cpp`، `.java`، `.txt`، `.csv` و `.json` رمزگشایی شده و به همراه نام فایلشان به عنوان متن ارسال می‌شوند. هر نام فایل یا پسوندی در صورتی که محتوای آن متنی خوانا باشد پذیرفته می‌شود. تورفتگی‌ها (Indentation) و شکستگی‌های خط حفظ می‌شوند. یونیکد (Unicode) زمانی که گزینه `normalize-to-ascii` در المان `pl-file-editor` غیرفعال باشد (حالت پیش‌فرض) حفظ می‌شود؛ فعال کردن آن کاراکترهای غیر ASCII را قبل از ارسال نرمال‌سازی می‌کند. کدگذاری‌های پشتیبانی‌شده عبارتند از UTF-8 (با یا بدون نشانگر ترتیب بایت یا BOM) و UTF-16 (با نشانگر ترتیب بایت یا BOM).
+- **فایل‌های PDF و تصاویر:** فایل‌های PDF، JPEG، PNG و WebP به عنوان پیوست ارسال می‌شوند تا مدل بتواند محتوای بصری آن‌ها را تفسیر کند.
+- **سایر فرمت‌ها یا کدگذاری‌های باینری:** فایل‌هایی مانند آرشیوهای ZIP، برنامه‌های کامپایل‌شده و اسناد باینری آفیس به عنوان متن رمزگشایی نمی‌شوند. نمره‌دهی هوش مصنوعی با بقیه پاسخ ارسالی ادامه می‌یابد و مدل پیامی حاوی نام فایل غیرقابل‌خواندن دریافت می‌کند که توضیح می‌دهد محتوای آن در دسترس نیست. اگر محتوای این فایل‌ها برای نمره‌دهی مورد نیاز است، آن‌ها را به یک فرمت پشتیبانی‌شده تبدیل کنید.
 
-Text files are passed as source text, without executing code or rendering HTML, Markdown, or SVG. File contents count toward the model's input limits; they are not truncated by PrairieLearn.
+فایل‌های متنی به عنوان متن منبع (Source text)، بدون اجرای کد یا رندر کردن HTML، Markdown یا SVG ارسال می‌شوند. محتوای فایل‌ها در محدودیت‌های ورودی مدل محاسبه می‌شود؛ این محتوا توسط پری‌لرن کوتاه یا بریده (Truncate) نمی‌شود.
 
-### File size limits
+### محدودیت‌های اندازه فایل
 
-AI grading applies a separate **10 MiB (10,485,760 bytes) combined file-size limit** to each of these sections:
+نمره‌دهی هوش مصنوعی یک **محدودیت اندازه فایل تجمیعی ۱۰ مبی‌بایت (۱۰٬۴۸۵٬۷۶۰ بایت)** مجزا را بر هر یک از این بخش‌ها اعمال می‌کند:
 
-- Images in the question.
-- Images in the instructor reference answer.
-- Binary submission attachments, including PDF, JPEG, PNG, and WebP files.
+- تصاویر موجود در سوال.
+- تصاویر موجود در پاسخ مرجع مدرس.
+- پیوست‌های باینری پاسخ ارسالی، شامل فایل‌های PDF، JPEG، PNG و WebP.
 
-Each section has its own budget. File sizes are measured without base64 encoding overhead; SVG images count toward the limit after conversion to PNG. Text and source-code files sent as text do not count toward the binary submission attachment limit.
+هر بخش سهمیه (بودجه) اختصاصی خود را دارد. اندازه‌های فایل بدون سربار کدگذاری Base64 اندازه‌گیری می‌شوند؛ تصاویر SVG پس از تبدیل به PNG در این محدودیت محاسبه می‌شوند. فایل‌های متنی و کد منبع که به صورت متن ارسال می‌شوند، در محدودیت پیوست‌های باینری پاسخ ارسالی محاسبه نمی‌شوند.
 
-If any section exceeds its limit, AI grading fails for that submission.
+اگر هر یک از بخش‌ها از حد مجاز خود فراتر رود، نمره‌دهی هوش مصنوعی برای آن پاسخ ارسالی با شکست مواجه می‌شود.
 
-## Prerequisites
+## پیش‌نیازها
 
-Before you can use AI grading, you'll need:
+قبل از اینکه بتوانید از نمره‌دهی هوش مصنوعی استفاده کنید، به موارد زیر نیاز خواهید داشت:
 
-- A course instance
-- A manually graded question with at least one submission
-  - See the [manual grading page](../manualGrading/index.md) for more details
-- A rubric
-  - See the [manual grading page](../manualGrading/index.md#creating-a-rubric-for-manual-grading) for information on how to create one
-  - Read the [best practices](#best-practices) to optimize it for AI grading
-- Course owner permissions, required to purchase credits
-- AI grading billing configured for your course instance
-  - See [instructions here](#billing)
+- یک دوره آموزشی (Course instance)
+- یک سوال با نمره‌دهی دستی با حداقل یک پاسخ ارسالی
+  - برای جزئیات بیشتر به [صفحه نمره‌دهی دستی](../manualGrading/index.md) مراجعه کنید
+- یک بارم‌بندی (Rubric)
+  - برای اطلاعات درباره نحوه ایجاد بارم‌بندی، [صفحه نمره‌دهی دستی](../manualGrading/index.md#creating-a-rubric-for-manual-grading) را مشاهده کنید
+  - [بهترین شیوه‌ها](#best-practices) را برای بهینه‌سازی آن جهت نمره‌دهی هوش مصنوعی مطالعه کنید
+- مجوزهای مالک درس (Course Owner)، که برای خرید اعتبار لازم است
+- پیکربندی صورت‌حساب نمره‌دهی هوش مصنوعی برای دوره شما
+  - [دستورالعمل‌ها را در اینجا ببینید](#billing)
 
-## Setup
+## راه‌اندازی
 
-1. **Navigate to manual grading** for your assessment question.
+1. برای سوال ارزیابی خود **به بخش نمره‌دهی دستی بروید**.
 
-   ![Manual grading page for an assessment question.](manual-grading-page.png)
+   ![صفحه نمره‌دهی دستی برای یک سوال ارزیابی.](manual-grading-page.png)
 
-2. **Turn "AI grading mode" on.**
+2. **گزینه «AI grading mode» (حالت نمره‌دهی هوش مصنوعی) را روشن کنید.**
 
-3. **Open the "AI grading" dropdown.** Select an option.
+3. **منوی کشویی «AI grading» را باز کنید.** یک گزینه را انتخاب نمایید.
 
-   ![Manual grading page with the AI grading dropdown open.](ai-grading-open.png){ style="width: 50%" }
+   ![صفحه نمره‌دهی دستی با منوی کشویی بازشده نمره‌دهی هوش مصنوعی.](ai-grading-open.png){ style="width: 50%" }
 
-4. **Select a model.** Use PrairieLearn's recommended model for your question type.
+4. **یک مدل را انتخاب کنید.** از مدل توصیه‌شده پری‌لرن برای نوع سوال خود استفاده کنید.
 
-5. **Grade submissions.** Start with your existing rubric, grade a small batch (5 submissions), and review the output before running on the full set.
+5. **پاسخ‌های ارسالی را نمره‌دهی کنید.** با بارم‌بندی موجود خود شروع کنید، یک دسته کوچک (۵ پاسخ ارسالی) را تصحیح نمایید، و قبل از اجرا بر روی کل مجموعه، خروجی را بررسی کنید.
 
-## Best practices
+## بهترین شیوه‌ها
 
-- **Use PrairieLearn's recommended model.** Model choice can significantly impact grading accuracy, particularly for image submissions. The recommended model is updated as provider capabilities change.
-- **Use rubrics over point-based grading.** Rubrics give the model clear, discrete criteria, which significantly improves accuracy and consistency.
-- **Write well-specified rubric items.** Each item should describe exactly what earns or loses credit. Ambiguous items produce ambiguous grades.
-- **Use grader guidelines.** This field is for instructions the model should follow but that shouldn't appear in the student-facing rubric — e.g., "accept equivalent algebraic forms" or "do not penalize minor notation differences."
-- **Keep uploaded documents upright.** Automatic rotation correction applies to submitted image files, but not to individual pages inside PDF documents.
-- **Keep PDFs concise.** Providers process every PDF page, so long documents cost more and may exceed model context or page limits.
-- **Test with a small batch first.** Running on 5–10 submissions surfaces rubric problems early, before you spend credits and time on the full set.
-- **Iterate.** If you see systematic errors in the first batch, refine the rubric rather than overriding grades one by one.
+- **از مدل توصیه‌شده پری‌لرن استفاده کنید.** انتخاب مدل می‌تواند به‌طور قابل‌توجهی بر دقت نمره‌دهی، به‌ویژه برای پاسخ‌های ارسالی تصویری تأثیر بگذارد. مدل توصیه‌شده با تغییر قابلیت‌های ارائه‌دهندگان به‌روزرسانی می‌شود.
+- **از بارم‌بندی (Rubric) به جای نمره‌دهی صرفاً امتیازی استفاده کنید.** بارم‌بندی‌ها معیارهای مشخص و گسسته‌ای در اختیار مدل قرار می‌دهند که به‌طور چشمگیری دقت و یکنواختی نمره‌دهی را بهبود می‌بخشد.
+- **آیتم‌های بارم‌بندی دقیق و مشخص بنویسید.** هر آیتم باید دقیقاً مشخص کند که چه چیزی امتیاز کسب می‌کند یا باعث کسر امتیاز می‌شود. آیتم‌های مبهم، نمرات مبهمی تولید می‌کنند.
+- **از دستورالعمل‌های مصحح (Grader guidelines) استفاده کنید.** این فیلد برای دستورالعمل‌هایی است که مدل باید دنبال کند اما نباید در بارم‌بندی پیش روی دانشجو ظاهر شود؛ مثلاً «شکل‌های جبری معادل را بپذیرید» یا «به خاطر تفاوت‌های جزئی در نمادگذاری جریمه اعمال نکنید».
+- **اسناد بارگذاری‌شده را در جهت درست (عمودی) نگه دارید.** اصلاح چرخش خودکار بر روی فایل‌های تصویری ارسالی اعمال می‌شود، اما بر روی صفحات مجزای درون اسناد PDF اعمال نمی‌گردد.
+- **فایل‌های PDF را مختصر نگه دارید.** ارائه‌دهندگان تمام صفحات PDF را پردازش می‌کنند، بنابراین اسناد طولانی هزینه بیشتری دارند و ممکن است از محدوده کانتکست یا محدودیت تعداد صفحات مدل فراتر روند.
+- **ابتدا با یک دسته کوچک آزمایش کنید.** اجرای فرآیند بر روی ۵ تا ۱۰ پاسخ ارسالی، مشکلات بارم‌بندی را پیش از صرف اعتبار و زمان برای کل مجموعه آشکار می‌کند.
+- **به‌صورت تکرارشونده بهبود دهید.** اگر خطاهای سیستماتیکی در دسته اول مشاهده کردید، به‌جای بازنویسی دستی نمرات تک‌تک پاسخ‌ها، بارم‌بندی را اصلاح و پالایش کنید.
 
-## Bias and fairness
+## سوگیری و انصاف
 
-AI models can exhibit biases, such as favoring polished English or familiar solution methods when those features are unrelated to the rubric. Differences in handwriting recognition can also affect grading. When reviewing grades, look for deductions that are unsupported by the rubric.
+مدل‌های هوش مصنوعی می‌توانند سوگیری‌هایی نشان دهند؛ مانند ترجیح دادن زبان انگلیسی روان یا روش‌های حل آشنا در شرایطی که این ویژگی‌ها ارتباطی با بارم‌بندی ندارند. تفاوت‌ها در تشخیص دست‌خط نیز می‌تواند بر نمره‌دهی تأثیر بگذارد. هنگام بازبینی نمرات، به دنبال کسوراتی باشید که در بارم‌بندی پشتیبانی نشده‌اند.
 
-Frontier models often work well with the same grading criteria you would give a human grader, so start with your existing rubric and guidelines. If you find a pattern of unfair deductions, correct affected grades and consider a targeted clarification or a different model.
+مدل‌های پیشرو اغلب با همان معیارهای نمره‌دهی که به یک مصحح انسانی می‌دهید به خوبی کار می‌کنند؛ بنابراین کار را با بارم‌بندی و دستورالعمل‌های موجود خود آغاز کنید. اگر الگویی از کسورات غیرمنصفانه مشاهده کردید، نمرات تحت‌تأثیر را تصحیح کرده و شفاف‌سازی هدفمند در دستورالعمل‌ها یا استفاده از یک مدل دیگر را مد نظر قرار دهید.
 
-## Reviewing AI grading
+## بازبینی نمره‌دهی هوش مصنوعی
 
-Instructors should review AI output before relying on it for grades. For each submission, AI grading produces a graded rubric and explanation.
+مدرسان باید قبل از اتکا به خروجی هوش مصنوعی برای ثبت نمرات، آن را بازبینی کنند. برای هر پاسخ ارسالی، نمره‌دهی هوش مصنوعی یک بارم‌بندی نمره‌داده‌شده و توضیح تولید می‌کند.
 
-- **Graded rubric** — The rubric items the model selected, along with their point values.
+- **بارم‌بندی نمره‌داده‌شده** — آیتم‌های بارم‌بندی که مدل انتخاب کرده است، به همراه مقادیر امتیازی آن‌ها.
 
-  Manually changing the rubric items overrides the AI grading. Both the AI and human grading are visible.
+  تغییر دستی آیتم‌های بارم‌بندی، نمره‌دهی هوش مصنوعی را بازنویسی (Override) می‌کند. هر دو نمره‌دهی هوش مصنوعی و انسانی قابل مشاهده هستند.
 
-  ??? example "Graded rubric example"
+  ??? example "نمونه بارم‌بندی نمره‌داده‌شده"
 
-      The AI's selected rubric items appear in the grading panel on the right side of the instance question page.
+      آیتم‌های انتخابی هوش مصنوعی در بارم‌بندی، در پنل نمره‌دهی در سمت راست صفحه سوال دوره نمایش داده می‌شوند.
 
-      ![AI-generated grading shown as selected rubric items with point values.](ai-generated-grading.png)
+      ![نمره‌دهی تولیدشده توسط هوش مصنوعی که به صورت آیتم‌های انتخاب‌شده بارم‌بندی با مقادیر امتیاز نشان داده شده است.](ai-generated-grading.png)
 
-      Once a human also grades the submission, both sets of selections appear side by side: the sparkle column shows the AI's selections, and the person column shows the human grader's.
+      هنگامی که یک انسان نیز پاسخ ارسالی را تصحیح کند، هر دو مجموعه انتخاب‌ها در کنار هم نشان داده می‌شوند: ستون جرقه (ستاره) انتخاب‌های هوش مصنوعی را نشان می‌دهد، و ستون شخص، انتخاب‌های مصحح انسانی را نمایش می‌دهد.
 
-      ![Human-graded rubric with differences from the AI grade highlighted.](ai-human-grading-difference.png)
+      ![بارم‌بندی تصحیح‌شده توسط انسان با برجسته‌سازی تفاوت‌ها نسبت به نمره هوش مصنوعی.](ai-human-grading-difference.png)
 
-- **Explanation** — The reasoning behind the model's grading decisions.
+- **توضیحات (Explanation)** — استدلال و منطق نهفته در تصمیمات نمره‌دهی مدل.
 
-  The model is instructed to explain its grading decisions concisely. For each submitted standalone image file, it must also provide a complete transcription of relevant text, numbers, and final answers, whether handwritten or typed. This includes images submitted through `pl-image-capture` and `pl-file-upload`.
+  به مدل دستور داده شده است که تصمیمات نمره‌دهی خود را به‌صورت مختصر توضیح دهد. برای هر فایل تصویری مستقل ارسالی، مدل باید یک رونویسی (Transcription) کامل از متون، اعداد و پاسخ‌های نهایی مرتبط ارائه دهد، چه دست‌نویس باشند و چه تایپ‌شده. این شامل تصاویری که از طریق `pl-image-capture` و `pl-file-upload` ارسال شده‌اند نیز می‌شود.
 
-  Text/code answers and document attachments such as PDFs do not trigger a full transcription requirement. The model quotes or describes the specific evidence needed to justify the grade, including relevant readings of handwritten answers and interpretations of diagrams or plots. Unclear or ambiguous readings are flagged.
+  پاسخ‌های متنی/کد و اسناد پیوست مانند PDFها نیازمند رونویسی کامل نیستند. مدل شواهد مشخصی را که برای توجیه نمره لازم است نقل‌قول یا توصیف می‌کند؛ از جمله خوانش‌های مرتبط از پاسخ‌های دست‌نویس و تفسیر نمودارها یا طرح‌ها. خوانش‌های نامشخص یا مبهم علامت‌گذاری (Flag) می‌شوند.
 
-  ??? example "Explanation example"
+  ??? example "نمونه توضیحات"
 
-      **Explanation:**
+      **توضیحات:**
 
-      ![AI grading explanation describing the model's reasoning.](ai-grading-explanation.png)
+      ![توضیحات نمره‌دهی هوش مصنوعی که استدلال مدل را شرح می‌دهد.](ai-grading-explanation.png)
 
-      **Transcription of submitted images:**
+      **رونویسی از تصاویر ارسالی:**
 
-      ![AI transcription of a student's handwritten image submission, shown beneath the explanation.](ai-grading-transcription.png)
+      ![رونویسی هوش مصنوعی از تصویر دست‌نویس ارسالی دانشجو که در زیر توضیحات نشان داده شده است.](ai-grading-transcription.png)
 
-After both AI and human grades are present, PrairieLearn can also show comparison information:
+پس از اینکه هر دو نمره هوش مصنوعی و انسانی ثبت شدند، پری‌لرن می‌تواند اطلاعات مقایسه‌ای را نیز نمایش دهد:
 
-- **AI agreement indicator** — A per-item view of where the AI and human grader agreed or disagreed.
+- **نشانگر توافق هوش مصنوعی (AI agreement indicator)** — نمای تفکیک‌شده به ازای هر آیتم که در آن توافق یا عدم توافق هوش مصنوعی و مصحح انسانی مشخص شده است.
 
-  Once both an AI and a human have graded a submission, an "AI agreement" column appears in the manual grading table and rubric editor, flagging the rubric items they agreed or disagreed on.
+  به محض اینکه هم هوش مصنوعی و هم انسان یک پاسخ ارسالی را تصحیح کنند، یک ستون به نام «AI agreement» در جدول نمره‌دهی دستی و ویرایشگر بارم‌بندی ظاهر می‌شود که آیتم‌های مورد توافق یا اختلاف آن‌ها را مشخص می‌کند.
 
-  ??? example "Agreement indicator example"
+  ??? example "نمونه نشانگر توافق"
 
-      === "AI/human disagreement"
+      === "اختلاف نظر هوش مصنوعی و انسان"
 
-          ![AI agreement column on the submission list, showing per-item disagreements.](ai-agreement-column-per-submission.png)
+          ![ستون توافق هوش مصنوعی در فهرست پاسخ‌های ارسالی که اختلافات هر آیتم را نشان می‌دهد.](ai-agreement-column-per-submission.png)
 
-          - **Red plus** — AI selected the item; the human did not.
-          - **Red minus** — The human selected the item; the AI did not.
+          - **علامت مثبت قرمز** — هوش مصنوعی آیتم را انتخاب کرده است؛ انسان انتخاب نکرده است.
+          - **علامت منفی قرمز** — انسان آیتم را انتخاب کرده است؛ هوش مصنوعی انتخاب نکرده است.
 
-      === "Full agreement"
+      === "توافق کامل"
 
-          ![AI agreement column on the submission list, showing a green checkmark for full agreement.](ai-agreement-column-per-submission-checkmark.png)
+          ![ستون توافق هوش مصنوعی در فهرست پاسخ‌های ارسالی که یک تیک سبز را برای توافق کامل نشان می‌دهد.](ai-agreement-column-per-submission-checkmark.png)
 
-## The grading process
+## فرآیند نمره‌دهی
 
-AI grading assembles a prompt from the following inputs and sends it to the selected model.
+نمره‌دهی هوش مصنوعی یک پرامپت (Prompt) را از ورودی‌های زیر جمع‌آوری کرده و آن را به مدل انتخاب‌شده ارسال می‌کند.
 
-**Inputs sent to the model:**
+**ورودی‌های ارسالی به مدل:**
 
-- Tuned grader prompt (maintained by PrairieLearn)
-- Question prompt
-- Correct answer
-- Rubric
-- Student submission
+- پرامپت تنظیم‌شده مصحح (تنظیم و نگهداری توسط PrairieLearn)
+- متن صورت سوال
+- پاسخ صحیح
+- بارم‌بندی (Rubric)
+- پاسخ ارسالی دانشجو
 
-**Outputs returned:**
+**خروجی‌های بازگردانده‌شده:**
 
-- Graded rubric (item-by-item scoring)
-- Explanation, including transcripts of submitted image files and relevant interpretations of other content
+- بارم‌بندی نمره‌داده‌شده (نمره‌دهی آیتم به آیتم)
+- توضیحات، شامل رونویسی از فایل‌های تصویری ارسالی و تفاسیر مرتبط از سایر محتواها
 
-For transparency and debugging, the exact prompt sent to the model is available on each graded submission.
+برای شفافیت و اشکال‌زدایی، پرامپت دقیق ارسال‌شده به مدل در هر پاسخ ارسالی نمره‌داده‌شده در دسترس است.
 
-??? example "Example prompt"
+??? example "نمونه پرامپت"
 
-    ![Raw prompt sent to the model for a single submission.](ai-grading-raw-prompt.png)
+    ![پرامپت خام ارسال‌شده به مدل برای یک پاسخ ارسالی منفرد.](ai-grading-raw-prompt.png)
 
-**Rotation correction:** Specifically for image grading with Gemini models, a separate LLM call first rotates submitted image files so the handwriting is upright before grading runs. Pages inside PDF documents are not rotated separately.
+**اصلاح چرخش:** به‌طور ویژه برای نمره‌دهی تصاویر با مدل‌های Gemini، ابتدا یک فراخوانی مجزای LLM فایل‌های تصویری ارسالی را می‌چرخاند تا دست‌خط قبل از اجرای نمره‌دهی در جهت عمودی و صحیح قرار گیرد. صفحات داخل اسناد PDF به‌صورت مجزا چرخانده نمی‌شوند.
 
-**PDF visual detail:** For OpenAI models, PrairieLearn explicitly requests [high-detail PDF page images](https://developers.openai.com/api/docs/guides/file-inputs#pdf-detail-levels) to preserve small notation, diagrams, and scanned work. Text extracted from the PDF is included separately. Other providers use their default PDF processing.
+**جزئیات بصری PDF:** برای مدل‌های OpenAI، پری‌لرن به‌طور صریح [تصاویر با جزئیات بالای صفحات PDF](https://developers.openai.com/api/docs/guides/file-inputs#pdf-detail-levels) را درخواست می‌کند تا نمادگذاری‌های کوچک، نمودارها و کارهای اسکن‌شده حفظ شوند. متن استخراج‌شده از PDF به‌صورت جداگانه گنجانده می‌شود. سایر ارائه‌دهندگان از پردازش پیش‌فرض PDF خود استفاده می‌کنند.
 
-**Concurrency:** AI grading keeps up to 20 submissions in progress at any time. When one finishes, the next begins automatically.
+**همزمانی (Concurrency):** نمره‌دهی هوش مصنوعی در هر لحظه حداکثر ۲۰ پاسخ ارسالی را در حال پردازش نگه می‌دارد. وقتی یکی تمام می‌شود، بعدی به‌طور خودکار آغاز می‌گردد.
 
-**Privacy:** Student identifying information (name, email, UIN) is not sent to LLM providers, as long as it is not in the submission, question, or correct answer. Avoid including unnecessary personal data in questions, rubrics, grader guidelines, or submissions. Student submissions are not used for model training when using PrairieLearn AI grading credits.
+**حفظ حریم خصوصی:** اطلاعات هویتی دانشجو (نام، ایمیل، UIN) به ارائه‌دهندگان LLM ارسال نمی‌شود، به شرطی که در خودِ پاسخ ارسالی، صورت سوال یا پاسخ صحیح ذکر نشده باشد. از قرار دادن داده‌های شخصی غیرضروری در سوالات، بارم‌بندی‌ها، دستورالعمل‌های مصحح یا پاسخ‌های ارسالی خودداری کنید. پاسخ‌های ارسالی دانشجویان هنگام استفاده از اعتبارات نمره‌دهی هوش مصنوعی پری‌لرن، برای آموزش مدل استفاده نمی‌شوند.
 
-## Billing
+## صورت‌حساب و هزینه‌ها
 
-AI grading requires either PrairieLearn-managed credits or a custom API key. Billing is configured per course instance.
+نمره‌دهی هوش مصنوعی به اعتبارات مدیریت‌شده توسط پری‌لرن یا یک کلید API اختصاصی نیاز دارد. صورت‌حساب به ازای هر دوره آموزشی (Course instance) پیکربندی می‌شود.
 
-### Billing modes
+### حالت‌های صورت‌حساب
 
-- **PrairieLearn-managed credits** — Simpler setup, no provider account needed. You purchase credits through PrairieLearn and pay a 20% infrastructure fee on top of provider costs.
-- **Custom API key** — Bring your own key for OpenAI, Anthropic, Google, or an OpenAI-compatible endpoint. PrairieLearn charges no infrastructure fee; endpoint charges depend on the provider's terms.
+- **اعتبارات مدیریت‌شده توسط پری‌لرن** — راه‌اندازی ساده‌تر، بدون نیاز به حساب کاربری در ارائه‌دهنده. شما اعتبار را از طریق پری‌لرن خریداری می‌کنید و ۲۰٪ کارمزد زیرساخت علاوه بر هزینه‌های ارائه‌دهنده پرداخت می‌نمایید.
+- **کلید API اختصاصی (BYOK)** — کلید اختصاصی خود را برای OpenAI، Anthropic، Google یا یک اندپوینت سازگار با OpenAI وارد کنید. پری‌لرن هیچ کارمزد زیرساختی دریافت نمی‌کند؛ هزینه‌های اندپوینت به شرایط ارائه‌دهنده بستگی دارد.
 
-You can switch between billing modes at any time. Purchased credits and saved API keys persist until you explicitly remove them, so switching back later does not require re-purchasing credits or re-entering keys.
+شما می‌توانید در هر زمان بین حالت‌های صورت‌حساب جابه‌جا شوید. اعتبارات خریداری‌شده و کلیدهای API ذخیره‌شده تا زمانی که صریحاً آن‌ها را حذف نکنید باقی می‌مانند، بنابراین بازگشت به حالت قبل نیازی به خرید مجدد اعتبار یا وارد کردن مجدد کلیدها ندارد.
 
-API keys are encrypted at rest — PrairieLearn never stores them in plaintext.
+کلیدهای API در حالت استراحت (At rest) رمزگذاری می‌شوند — پری‌لرن هرگز آن‌ها را به‌صورت متن ساده ذخیره نمی‌کند.
 
-### Billing configuration
+### پیکربندی صورت‌حساب
 
-=== "PrairieLearn-managed credits"
+=== "اعتبارات مدیریت‌شده توسط پری‌لرن"
 
-    1. Go to **Instance settings → AI grading** in your course instance.
+    1. به **تنظیمات دوره (Instance settings) → AI grading** در دوره آموزشی خود بروید.
 
-    2. Click **Purchase credits** and complete checkout.
+    2. روی **Purchase credits** کلیک کرده و مراحل پرداخت را تکمیل کنید.
 
-    There are two types of credit:
+    دو نوع اعتبار وجود دارد:
 
-    - **Transferable credit** — All purchased credit is transferable and can be moved between course instances within the same institution.
-    - **Nontransferable credit** — Free credit provided by PrairieLearn is nontransferable and is locked to the course instance where it was redeemed.
+    - **اعتبار قابل انتقال (Transferable credit)** — تمام اعتبارات خریداری‌شده قابل انتقال هستند و می‌توان آن‌ها را بین دوره‌های مختلف درون همان مؤسسه جابه‌جا کرد.
+    - **اعتبار غیرقابل انتقال (Nontransferable credit)** — اعتبارات رایگانی که توسط پری‌لرن ارائه می‌شوند غیرقابل انتقال بوده و به دوره‌ای که در آن فعال شده‌اند قفل می‌شوند.
 
-    The billing page displays usage in two ways:
+    صفحه صورت‌حساب میزان استفاده را به دو روش نمایش می‌دهد:
 
-    - **Daily spending chart** — Credit usage broken down by day, so you can spot grading spikes or unexpected spend.
-    - **Transaction history** — A running log of past credit purchases and deductions.
+    - **نمودار مخارج روزانه (Daily spending chart)** — میزان مصرف اعتبار به تفکیک روز، تا بتوانید جهش‌های نمره‌دهی یا هزینه‌های غیرمنتظره را شناسایی کنید.
+    - **تاریخچه تراکنش‌ها (Transaction history)** — یک گزارش مداوم از خریدها و کسورات اعتباری گذشته.
 
-    ![Billing page showing the daily spending chart and transaction history.](transaction-history.png)
+    ![صفحه صورت‌حساب که نمودار مخارج روزانه و تاریخچه تراکنش‌ها را نشان می‌دهد.](transaction-history.png)
 
-=== "Custom API key"
+=== "کلید API اختصاصی"
 
-    1. Go to **Instance settings → AI grading** in your course instance.
+    1. به **تنظیمات دوره (Instance settings) → AI grading** در دوره آموزشی خود بروید.
 
-    2. Check **Use custom API keys**.
+    2. گزینه **Use custom API keys** را علامت بزنید.
 
-    3. Click **Add key** and provide one.
+    3. روی **Add key** کلیک کرده و کلید خود را وارد کنید.
 
-    When using custom API keys, instructors are responsible for the provider terms and account configuration.
+    هنگام استفاده از کلیدهای API اختصاصی، مدرسان مسئول شرایط و پیکربندی حساب ارائه‌دهنده هستند.
 
-    ![Custom API key billing configuration.](ai-grading-byok.png)
+    ![پیکربندی صورت‌حساب کلید API اختصاصی.](ai-grading-byok.png)
 
-### OpenAI-compatible providers
+### ارائه‌دهندگان سازگار با OpenAI
 
-You can configure one OpenAI-compatible provider per course instance, alongside your keys for official providers. This allows you to use a university-supported or other custom endpoint that offers an OpenAI-compatible API.
+شما می‌توانید برای هر دوره آموزشی، در کنار کلیدهای ارائه‌دهندگان رسمی، یک ارائه‌دهنده سازگار با OpenAI را نیز پیکربندی کنید. این به شما امکان می‌دهد از یک اندپوینت پشتیبانی‌شده توسط دانشگاه یا سایر اندپوینت‌های سفارشی که API سازگار با OpenAI ارائه می‌دهند استفاده کنید.
 
-#### Configure a provider
+#### پیکربندی یک ارائه‌دهنده
 
-As a course owner:
+به عنوان مالک درس:
 
-1. Go to **Instance settings → AI grading** and enable **Use custom API keys**.
-2. Click **Add key** and select **OpenAI-compatible**.
-3. Enter the API base URL and API key. The URL must use HTTPS and be publicly reachable from PrairieLearn. Include the provider's API path, such as `https://provider.example/v1`; do not include `/models` or `/chat/completions`.
-4. Click **Next** to load the provider's available models. PrairieLearn requests `/models` relative to the base URL you entered.
-5. Review the model list and save the configuration. Loading the list confirms access to the catalog; it does not verify that each model can grade submissions.
+1. به مسیر **تنظیمات دوره (Instance settings) → AI grading** بروید و گزینه **Use custom API keys** را فعال کنید.
+2. بر روی **Add key** کلیک کرده و گزینه **OpenAI-compatible** را انتخاب نمایید.
+3. آدرس پایه (Base URL) و کلید API را وارد کنید. آدرس اینترنتی باید از HTTPS استفاده کند و از سمت پری‌لرن به‌صورت عمومی قابل دسترسی باشد. مسیر API ارائه‌دهنده را نیز درج کنید، مانند `https://provider.example/v1`؛ از درج `/models` یا `/chat/completions` خودداری فرمایید.
+4. روی **Next** کلیک کنید تا مدل‌های موجود ارائه‌دهنده بارگذاری شوند. پری‌لرن مسیر `/models` را نسبت به آدرس پایه‌ای که وارد کرده‌اید درخواست می‌دهد.
+5. فهرست مدل‌ها را بررسی کرده و پیکربندی را ذخیره کنید. بارگذاری فهرست فقط دسترسی به کاتالوگ را تأیید می‌کند؛ این عمل بررسی نمی‌کند که آیا هر مدل قادر به نمره‌دهی پاسخ‌های ارسالی هست یا خیر.
 
-When starting AI grading, choose a model from **Custom provider models** in the model-selection dialog.
+هنگام شروع نمره‌دهی هوش مصنوعی، مدلی را از بخش **Custom provider models** در کادر گفتگوی انتخاب مدل برگزینید.
 
-#### Model requirements and limitations
+#### الزامات و محدودیت‌های مدل
 
-- **Structured outputs are required.** Choose a model and endpoint that support JSON schema structured outputs. Appearing in the model list does not guarantee this support.
-- **Image and PDF support is strongly recommended.** PrairieLearn attempts to send attachments to the selected model. If the endpoint or model cannot process an attachment, that submission can fail; separate text-only submissions can still succeed. Test representative submissions before grading a full batch.
-- **Pricing is unavailable.** The model catalog does not provide token prices, so PrairieLearn cannot show relative costs for custom models. A name matching an official model does not establish the custom endpoint's price. Check pricing with your provider; unknown pricing does not mean the model is free.
-- **Compatibility varies by endpoint.** Some features supported by official providers may not be available through an OpenAI-compatible endpoint.
+- **خروجی‌های ساختاریافته الزامی هستند.** مدل و اندپوینتی را انتخاب کنید که از خروجی‌های ساختاریافته با اسکیمای JSON (JSON schema structured outputs) پشتیبانی کند. ظاهر شدن نام یک مدل در فهرست مدل‌ها این پشتیبانی را تضمین نمی‌کند.
+- **پشتیبانی از تصویر و PDF اکیداً توصیه می‌شود.** پری‌لرن تلاش می‌کند پیوست‌ها را به مدل انتخابی ارسال کند. اگر اندپوینت یا مدل نتواند یک پیوست را پردازش کند، ممکن است نمره‌دهی آن پاسخ ارسالی با شکست مواجه شود؛ پاسخ‌های ارسالی صرفاً متنی مجزا همچنان می‌توانند با موفقیت انجام شوند. قبل از نمره‌دهی یک دسته کامل، پاسخ‌های ارسالی نمونه را آزمایش کنید.
+- **قیمت‌گذاری در دسترس نیست.** کاتالوگ مدل قیمت توکن‌ها را ارائه نمی‌دهد، بنابراین پری‌لرن نمی‌تواند هزینه‌های نسبی را برای مدل‌های سفارشی نشان دهد. تطابق نام با یک مدل رسمی به معنای یکسان بودن قیمت اندپوینت سفارشی نیست. قیمت‌گذاری را با ارائه‌دهنده خود بررسی کنید؛ مشخص نبودن قیمت به معنای رایگان بودن مدل نیست.
+- **سازگاری بسته به اندپوینت متفاوت است.** برخی از ویژگی‌های پشتیبانی‌شده توسط ارائه‌دهندگان رسمی ممکن است از طریق یک اندپوینت سازگار با OpenAI در دسترس نباشند.
 
-With a custom endpoint, review the provider's terms, data retention, and account configuration before sending student submissions. PrairieLearn's managed-credit data-use assurances do not establish the policies of your custom provider.
+در صورت استفاده از یک اندپوینت سفارشی، قبل از ارسال پاسخ‌های ارسالی دانشجویان، شرایط ارائه‌دهنده، نگهداری داده‌ها و پیکربندی حساب را بررسی کنید. ضمانت‌های استفاده از داده‌ها در اعتبارات مدیریت‌شده پری‌لرن، خط‌مشی‌های ارائه‌دهنده سفارشی شما را پوشش نمی‌دهد.
 
-#### Replace or remove a provider
+#### جایگزینی یا حذف یک ارائه‌دهنده
 
-To change the URL or API key, use **Add key → OpenAI-compatible** again. Saving replaces the existing configuration; it does not add a second compatible provider to the course instance. You can also delete the configuration from the API-key table.
+برای تغییر آدرس URL یا کلید API، دوباره از مسیر **Add key → OpenAI-compatible** استفاده کنید. ذخیره کردن، جایگزین پیکربندی فعلی می‌شود و ارائه‌دهنده سازگار دومی به دوره اضافه نمی‌کند. همچنین می‌توانید پیکربندی را از جدول کلیدهای API حذف کنید.
 
-## Accuracy
+## دقت
 
-AI grading has been piloted at the University of Illinois Urbana-Champaign since Fall 2025, across multiple STEM courses and thousands of student submissions.
+نمره‌دهی هوش مصنوعی از پاییز ۲۰۲۵ در دانشگاه ایلینوی اربانا-شمپین (UIUC) در چندین درس علوم پایه، فناوری، مهندسی و ریاضی (STEM) و بر روی هزاران پاسخ ارسالی دانشجویان به صورت آزمایشی اجرا شده است.
 
-Across a range of open-ended questions and frontier models, rubric-item accuracy exceeded 99% when paired with clear student work and a well-aligned rubric. Instructors and TAs reported that AI grading was as accurate as human graders for their needs and saved enormous amounts of grading effort.
+در طیف وسیعی از سوالات پاسخ‌آزاد و با استفاده از مدل‌های پیشرو، دقت نمره‌دهی آیتم‌های بارم‌بندی در شرایطی که کار دانشجو واضح و بارم‌بندی به‌خوبی تنظیم شده بود، به بیش از ۹۹٪ رسید. مدرسان و دستیاران آموزشی گزارش دادند که نمره‌دهی هوش مصنوعی برای نیازهای آن‌ها به اندازه مصححان انسانی دقیق بوده و حجم عظیمی از زحمت نمره‌دهی را کاهش داده است.
 
-For more detail, see our published research:
+برای جزئیات بیشتر، پژوهش‌های منتشرشده ما را مشاهده کنید:
 
-- **Text grading** — Zhao, C., Fowler, M., Gertner, Y., Poulsen, S., West, M., & Silva, M. (2026). [AI-Supported Grading and Rubric Refinement for Free Response Questions](https://dl.acm.org/doi/10.1145/3770762.3772545). In _Proceedings of the 57th ACM Technical Symposium on Computer Science Education_ (SIGCSE TS 2026).
-- **Image grading** — Levine, J., Aenlle, M., Zilles, C., West, M., & Silva, M. (forthcoming). [Automated grading of handwritten mathematics using vision-capable LLMs](https://arxiv.org/abs/2605.19043). In _Proceedings of the 27th International Conference on Artificial Intelligence in Education_ (AIED 2026). Springer.
+- **نمره‌دهی متن** — Zhao, C., Fowler, M., Gertner, Y., Poulsen, S., West, M., & Silva, M. (2026). [AI-Supported Grading and Rubric Refinement for Free Response Questions](https://dl.acm.org/doi/10.1145/3770762.3772545). In _Proceedings of the 57th ACM Technical Symposium on Computer Science Education_ (SIGCSE TS 2026).
+- **نمره‌دهی تصویر** — Levine, J., Aenlle, M., Zilles, C., West, M., & Silva, M. (به‌زودی). [Automated grading of handwritten mathematics using vision-capable LLMs](https://arxiv.org/abs/2605.19043). In _Proceedings of the 27th International Conference on Artificial Intelligence in Education_ (AIED 2026). Springer.
 
-## Cost and runtime
+## هزینه و زمان اجرا
 
-### Factors affecting cost and runtime
+### عوامل مؤثر بر هزینه و زمان اجرا
 
-| Factor                | Increases cost                       | Decreases cost                                                    |
-| --------------------- | ------------------------------------ | ----------------------------------------------------------------- |
-| Model                 | Larger, reasoning models             | Smaller, non-reasoning models                                     |
-| Submission type       | File and image submissions           | Text submissions                                                  |
-| Question content size | Longer prompts and reference answers | Shorter prompts and reference answers                             |
-| Cached input          | —                                    | Repeated content across submissions (e.g., question text, rubric) |
+| عامل | افزایش هزینه | کاهش هزینه |
+| --- | --- | --- |
+| مدل | مدل‌های بزرگ‌تر و استدلالی (Reasoning) | مدل‌های کوچک‌تر و غیراستدلالی |
+| نوع پاسخ ارسالی | پاسخ‌های ارسالی فایلی و تصویری | پاسخ‌های ارسالی متنی |
+| حجم محتوای سوال | پرامپت‌ها و پاسخ‌های مرجع طولانی‌تر | پرامپت‌ها و پاسخ‌های مرجع کوتاه‌تر |
+| ورودی کش‌شده | — | محتوای تکراری در بین پاسخ‌های ارسالی (مانند متن سوال، بارم‌بندی) |
 
-PrairieLearn-managed keys carry a 20% infrastructure fee on top of provider costs.
+پری‌لرن برای کلیدهای مدیریت‌شده ۲۰٪ کارمزد زیرساخت علاوه بر هزینه‌های ارائه‌دهنده دریافت می‌کند.
 
-### Benchmarks
+### معیارهای سنجش عملکرد (Benchmarks)
 
-Costs vary course-to-course depending on rubric length, submission length, and model choice. The numbers below are representative, not guarantees.
+هزینه‌ها بسته به طول بارم‌بندی، طول پاسخ ارسالی و انتخاب مدل از درسی به درس دیگر متفاوت است. اعداد زیر نمونه هستند و تضمین‌شده محسوب نمی‌شوند.
 
-_Benchmarks below were run using PrairieLearn-managed keys and include the 20% infrastructure fee._
+_معیارهای زیر با استفاده از کلیدهای مدیریت‌شده توسط پری‌لرن اجرا شده‌اند و شامل ۲۰٪ کارمزد زیرساخت می‌باشند._
 
-**Numerical methods problem — text grading (139 submissions):**
+**مسئله روش‌های عددی — نمره‌دهی متن (۱۳۹ پاسخ ارسالی):**
 
-This was a Numerical Methods question with typed, paragraph-length submissions, no randomization, and a rubric.
+این سوال مربوط به درس روش‌های عددی با پاسخ‌های تایپ‌شده به اندازه یک پاراگراف، بدون تصادفی‌سازی و دارای بارم‌بندی بوده است.
 
-| Model          | Cost / submission | Time / submission |
-| -------------- | ----------------- | ----------------- |
-| GPT-5.4 mini   | $0.0020           | 0.1s              |
-| GPT-5.4        | $0.0058           | 0.2s              |
-| Gemini 3.1 Pro | $0.0126           | 0.6s              |
+| مدل | هزینه / پاسخ ارسالی | زمان / پاسخ ارسالی |
+| --- | --- | --- |
+| GPT-5.4 mini | $0.0020 | 0.1s |
+| GPT-5.4 | $0.0058 | 0.2s |
+| Gemini 3.1 Pro | $0.0126 | 0.6s |
 
-**Dynamics problem — image grading (242 submissions):**
+**مسئله دینامیک — نمره‌دهی تصویر (۲۴۲ پاسخ ارسالی):**
 
-This was an Intro Dynamics problem that had image submissions, randomization, and a rubric.
+این سوال مربوط به درس دینامیک مقدماتی بوده که دارای پاسخ‌های ارسالی تصویری، تصادفی‌سازی و بارم‌بندی بوده است.
 
-| Model          | Cost / submission | Time / submission |
-| -------------- | ----------------- | ----------------- |
-| GPT-5.4 mini   | $0.0042           | 0.3s              |
-| GPT-5.4        | $0.0159           | 0.5s              |
-| Gemini 3.1 Pro | $0.0488           | 1.5s              |
+| مدل | هزینه / پاسخ ارسالی | زمان / پاسخ ارسالی |
+| --- | --- | --- |
+| GPT-5.4 mini | $0.0042 | 0.3s |
+| GPT-5.4 | $0.0159 | 0.5s |
+| Gemini 3.1 Pro | $0.0488 | 1.5s |
 
-_Per-submission times are measured with many submissions in flight — a single submission graded on its own will take longer._
+_زمان‌های ذکرشده به ازای هر پاسخ ارسالی در حالتی اندازه‌گیری شده‌اند که پاسخ‌های زیادی به‌طور همزمان در جریان بوده‌اند — تصحیح یک پاسخ ارسالی منفرد به تنهایی زمان بیشتری خواهد برد._

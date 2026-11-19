@@ -1,24 +1,24 @@
-# Authoring accessible questions
+# نگارش سوالات دسترس‌پذیر
 
-Ensuring that PrairieLearn questions are accessible to all students, including those with disabilities, is crucial for an inclusive learning environment. This guide provides recommendations for authors to create accessible question content.
+اطمینان از دسترس‌پذیر بودن سوالات PrairieLearn برای همه دانشجویان، از جمله افراد دارای معلولیت، برای ایجاد یک محیط یادگیری فراگیر بسیار حیاتی است. این راهنما توصیه‌هایی را برای نویسندگان جهت ایجاد محتوای سوالات دسترس‌پذیر ارائه می‌دهد.
 
-## Semantic HTML
+## کد HTML معنایی (Semantic HTML)
 
-Using semantic HTML elements appropriately is the foundation of web accessibility. Semantic HTML means using HTML tags for their intended purpose, which helps assistive technologies (like screen readers) understand the structure and meaning of the content.
+استفاده مناسب از المان‌های معنایی HTML پایه و اساس دسترس‌پذیری وب است. کد HTML معنایی به معنای استفاده از تگ‌های HTML برای اهداف تعیین‌شده آن‌هاست که به فناوری‌های کمکی (مانند صفحه‌خوان‌ها) کمک می‌کند تا ساختار و معنای محتوا را درک کنند.
 
-- **Headings**: Use `<h1>`, `<h2>`, etc., to structure your question content logically. Avoid skipping heading levels.
-- **Lists**: Use `<ol>` for ordered lists and `<ul>` for unordered lists. Use `<li>` for list items.
-- **Paragraphs**: Wrap text content in `<p>` tags.
-- **Emphasis**: Use `<em>` for emphasis and `<strong>` for strong importance, rather than relying on visual styling alone.
-- **Tables**: Use `<table>` with `<thead>`, `<tbody>`, `<tr>`, `<th>`, and `<td>` appropriately. Ensure tables have clear headings and meaningful row/column relationships. [MDN's table accessibility guide](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility) provides a good overview of how to create accessible tables.
+- **سرفصل‌ها (Headings)**: از `<h1>`، `<h2>` و غیره برای ساختاردهی منطقی محتوای سوال خود استفاده کنید. از پرش بین سطوح سرفصل‌ها خودداری نمایید.
+- **فهرست‌ها (Lists)**: از `<ol>` برای فهرست‌های مرتب و از `<ul>` برای فهرست‌های نامرتب استفاده کنید. از `<li>` برای آیتم‌های فهرست استفاده نمایید.
+- **پاراگراف‌ها (Paragraphs)**: محتوای متنی را در تگ‌های `<p>` قرار دهید.
+- **تأکید (Emphasis)**: برای تأکید از `<em>` و برای اهمیت زیاد از `<strong>` استفاده کنید، به جای اینکه صرفاً به استایل‌های بصری متکی باشید.
+- **جدول‌ها (Tables)**: از `<table>` به همراه `<thead>`، `<tbody>`، `<tr>`، `<th>`، و `<td>` به شکل مناسب استفاده کنید. اطمینان حاصل کنید که جداول دارای سرستون‌های واضح و روابط سطری/ستونی معنادار هستند. [راهنمای دسترس‌پذیری جدول MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility) دید کلی خوبی در مورد نحوه ایجاد جداول دسترس‌پذیر ارائه می‌دهد.
 
-## Text alternatives for non-text content
+## جایگزین‌های متنی برای محتوای غیرمتنی
 
-All non-text content must have a text alternative that serves an equivalent purpose.
+تمام محتوای غیرمتنی باید یک جایگزین متنی داشته باشند که هدفی معادل را برآورده کند.
 
-### Images and figures (`pl-figure`)
+### تصاویر و نمودارها (`pl-figure`)
 
-When using the [`pl-figure`](../elements/pl-figure.md) element to embed images, always provide descriptive alternative text (alt text) via the `alt` attribute. Good alt text is concise and conveys the essential information or function of the image.
+هنگام استفاده از المان [`pl-figure`](../elements/pl-figure.md) برای جاسازی تصاویر، همیشه متن جایگزین توصیفی (alt text) را از طریق ویژگی `alt` ارائه دهید. یک متن جایگزین خوب، مختصر است و اطلاعات ضروری یا کارکرد تصویر را منتقل می‌کند.
 
 ```html
 <pl-figure
@@ -27,17 +27,17 @@ When using the [`pl-figure`](../elements/pl-figure.md) element to embed images, 
 ></pl-figure>
 ```
 
-If the figure contains complex information that's essential to understand the content or answer the question, you should provide that information elsewhere in the question text.
+اگر نمودار حاوی اطلاعات پیچیده‌ای است که برای درک محتوا یا پاسخ به سوال ضروری است، باید آن اطلاعات را در جای دیگری در متن سوال ارائه دهید.
 
-### Input elements
+### المان‌های ورودی
 
-Many PrairieLearn elements that involve student input have attributes to enhance accessibility. For example, most input elements support a `label` attribute that is shown visually next to the input:
+بسیاری از المان‌های PrairieLearn که شامل ورودی دانشجو هستند، ویژگی‌هایی برای ارتقای دسترس‌پذیری دارند. به عنوان مثال، بیشتر المان‌های ورودی از ویژگی `label` پشتیبانی می‌کنند که به صورت بصری در کنار ورودی نشان داده می‌شود:
 
 ```html
 <pl-integer-input answers-name="num_apples" label="Number of apples:"></pl-integer-input>
 ```
 
-Many elements support an `aria-label` attribute to provide a label that is not visible on the page but can be read by assistive technologies. This can be used in addition to or instead of the `label` attribute, as appropriate. This is particularly useful for elements like `<pl-multiple-choice>` where the default accessible label may not be sufficient.
+بسیاری از المان‌ها از ویژگی `aria-label` پشتیبانی می‌کنند تا برچسبی را ارائه دهند که در صفحه قابل مشاهده نیست اما توسط فناوری‌های کمکی قابل خواندن است. این ویژگی می‌تواند بسته به شرایط، علاوه بر ویژگی `label` یا به جای آن استفاده شود. این امر به ویژه برای المان‌هایی مانند `<pl-multiple-choice>` مفید است که در آن‌ها ممکن است برچسب دسترس‌پذیر پیش‌فرض کافی نباشد.
 
 ```html
 <pl-multiple-choice answers-name="x" aria-label="Value of x in the equation">
@@ -48,42 +48,42 @@ Many elements support an `aria-label` attribute to provide a label that is not v
 </pl-multiple-choice>
 ```
 
-Consult [the documentation for each specific PrairieLearn element](../elements/index.md) to understand its accessibility features and best practices.
+برای درک ویژگی‌های دسترس‌پذیری و بهترین شیوه‌های هر المان خاص، به [مستندات هر یک از المان‌های PrairieLearn](../elements/index.md) مراجعه کنید.
 
-## Perceivable content
+## محتوای قابل درک (Perceivable content)
 
-- **Color contrast**: Ensure sufficient contrast between text and background colors. Do not rely on color alone to convey information.
-- **Text resizing**: Content should remain readable and functional when text is resized.
-- **External resources**: If linking to or embedding resources like PDFs or videos, ensure they also follow accessibility best practices. For example, PDFs should have selectable text and a logical reading order, and videos should have accurate captions or subtitles.
+- **کنتراست رنگ**: از کنتراست کافی بین رنگ متن و پس‌زمینه اطمینان حاصل کنید. برای انتقال اطلاعات تنها به رنگ متکی نباشید.
+- **تغییر اندازه متن**: محتوا باید هنگام تغییر اندازه متن، خوانا و کاربردی باقی بماند.
+- **منابع خارجی**: در صورت لینک دادن به منابعی مانند فایل‌های PDF یا ویدیوها یا جاسازی آن‌ها، اطمینان حاصل کنید که آن‌ها نیز از بهترین روش‌های دسترس‌پذیری پیروی می‌کنند. به عنوان مثال، فایل‌های PDF باید دارای متن قابل انتخاب و ترتیب خواندن منطقی باشند، و ویدیوها باید زیرنویس یا کپشن دقیق داشته باشند.
 
-## Operable content
+## محتوای قابل استفاده (Operable content)
 
-- **Keyboard navigation**: All interactive elements in a question should be operable via a keyboard.
-- **Focus indicators**: Ensure that keyboard focus is visible and clear.
+- **پیمایش با صفحه‌کلید**: تمام المان‌های تعاملی در یک سوال باید از طریق صفحه‌کلید قابل استفاده باشند.
+- **نشانگرهای فوکوس**: اطمینان حاصل کنید که فوکوس صفحه‌کلید واضح و قابل مشاهده است.
 
-Most PrairieLearn elements are designed to meet these requirements by default. However, any custom HTML or JavaScript should be tested to ensure that it is also operable via keyboard navigation.
+اکثر المان‌های PrairieLearn به گونه‌ای طراحی شده‌اند که به طور پیش‌فرض این الزامات را برآورده سازند. با این حال، هر کد سفارشی HTML یا JavaScript باید آزمایش شود تا اطمینان حاصل گردد که از طریق پیمایش با صفحه‌کلید نیز قابل استفاده است.
 
-### Alternatives to drawing input
+### جایگزین‌ها برای ورودی‌های ترسیمی
 
-Drawing inputs such as [`pl-drawing`](../pl-drawing/index.md), [`pl-excalidraw`](../elements/pl-excalidraw.md), and [`pl-sketch`](../elements/pl-sketch.md) do not fully support keyboard navigation or screen reader interaction. Consider alternatives that assess the same concepts:
+ورودی‌های ترسیمی مانند [`pl-drawing`](../pl-drawing/index.md)، [`pl-excalidraw`](../elements/pl-excalidraw.md)، و [`pl-sketch`](../elements/pl-sketch.md) به طور کامل از پیمایش با صفحه‌کلید یا تعامل با صفحه‌خوان پشتیبانی نمی‌کنند. جایگزین‌هایی را در نظر بگیرید که همان مفاهیم را ارزیابی می‌کنند:
 
-- **Text responses** with [`pl-rich-text-editor`](../elements/pl-rich-text-editor.md) let students describe a diagram using typing or speech-to-text. This can help students who use screen readers or have difficulty drawing or handwriting.
-- **Structured inputs**, such as labeled fields for each force's magnitude and direction, avoid precise dragging and break the response into smaller parts.
-- **File uploads** with [`pl-file-upload`](../elements/pl-file-upload.md) allow students to work in familiar software with their preferred assistive tools.
-- **Image capture** with [`pl-image-capture`](../elements/pl-image-capture.md) lets students submit paper drawings if handwriting is easier than using a mouse. It may still be difficult for students with visual or motor disabilities or dysgraphia, so consider offering a text option too.
+- **پاسخ‌های متنی** با [`pl-rich-text-editor`](../elements/pl-rich-text-editor.md) به دانشجویان امکان می‌دهد یک نمودار را با تایپ کردن یا تبدیل گفتار به نوشتار توصیف کنند. این امر می‌تواند به دانشجویانی که از صفحه‌خوان استفاده می‌کنند یا در کشیدن یا دست‌نویسی مشکل دارند کمک کند.
+- **ورودی‌های ساختاریافته**، مانند فیلدهای برچسب‌دار برای بزرگی و جهت هر نیرو، از کشیدن دقیق (Dragging) با ماوس جلوگیری کرده و پاسخ را به بخش‌های کوچک‌تر تقسیم می‌کنند.
+- **بارگذاری فایل** با [`pl-file-upload`](../elements/pl-file-upload.md) به دانشجویان اجازه می‌دهد تا در نرم‌افزارهای آشنا با ابزارهای کمکی دلخواه خود کار کنند.
+- **تصویربرداری (Image capture)** با [`pl-image-capture`](../elements/pl-image-capture.md) به دانشجویان اجازه می‌دهد تا در صورتی که دست‌نویسی آسان‌تر از کار با ماوس باشد، نقشه‌های کاغذی ارسال کنند. این کار ممکن است هنوز برای دانشجویان دارای معلولیت‌های بینایی یا حرکتی یا اختلال نوشتن (Dysgraphia) دشوار باشد، بنابراین ارائه یک گزینه متنی را نیز مد نظر قرار دهید.
 
-Alternative responses need their own grading approach, often [manual grading](../manualGrading/index.md). Students should only need to complete one response format.
+پاسخ‌های جایگزین به رویکرد نمره‌دهی مخصوص به خود نیاز دارند که اغلب [نمره‌دهی دستی](../manualGrading/index.md) است. دانشجویان فقط باید یکی از فرمت‌های پاسخ را تکمیل کنند.
 
-## Understandable content
+## محتوای قابل فهم (Understandable content)
 
-- **Clear language**: Use clear and concise language. Avoid jargon where possible, or provide explanations.
-- **Consistent navigation**: Maintain a consistent layout and structure for your questions.
-- **Cultural relevance**: Use examples and values that are understandable and relevant to a diverse audience.
+- **زبان واضح**: از زبانی واضح و مختصر استفاده کنید. تا حد امکان از اصطلاحات تخصصی پیچیده خودداری کنید یا در صورت نیاز توضیح ارائه دهید.
+- **ناوبری منسجم**: ساختار و چیدمان یکدستی برای سوالات خود حفظ کنید.
+- **تناسب فرهنگی**: از مثال‌ها و مقادیری استفاده کنید که برای مخاطبان گوناگون قابل درک و ملموس باشد.
 
-## Testing for accessibility
+## آزمایش دسترس‌پذیری
 
-While PrairieLearn aims to provide accessible building blocks, it's important to test your questions for accessibility.
+در حالی که PrairieLearn تلاش می‌کند تا بلوک‌های سازنده دسترس‌پذیر را فراهم کند، مهم است که سوالات خود را از نظر دسترس‌پذیری آزمایش کنید.
 
-- **Keyboard-only navigation**: Can you navigate and answer the question using only the keyboard?
-- **Screen reader**: Use a screen reader (e.g., [NVDA](https://www.nvaccess.org/download/) or [JAWS](https://www.freedomscientific.com/products/software/jaws/) for Windows, [Orca](https://help.gnome.org/orca/index.html) for Linux, or [VoiceOver](https://www.apple.com/accessibility/voiceover/) for macOS) to experience the question like a student who is blind or has low vision.
-- **Accessibility checkers**: Browser extensions and online tools can help identify common accessibility issues. However, they cannot identify all issues, so manual testing is still important.
+- **پیمایش فقط با صفحه‌کلید**: آیا می‌توانید تنها با استفاده از صفحه‌کلید در سوال پیمایش کرده و به آن پاسخ دهید؟
+- **صفحه‌خوان**: از یک صفحه‌خوان (مانند [NVDA](https://www.nvaccess.org/download/) یا [JAWS](https://www.freedomscientific.com/products/software/jaws/) برای ویندوز، [Orca](https://help.gnome.org/orca/index.html) برای لینوکس، یا [VoiceOver](https://www.apple.com/accessibility/voiceover/) برای macOS) استفاده کنید تا سوال را همانند دانشجویی که نابینا یا کم‌بینا است تجربه کنید.
+- **ابزارهای بررسی دسترس‌پذیری**: افزونه‌های مرورگر و ابزارهای آنلاین می‌توانند به شناسایی مشکلات رایج دسترس‌پذیری کمک کنند. با این حال، آن‌ها نمی‌توانند همه مشکلات را شناسایی کنند، بنابراین آزمایش دستی همچنان مهم است.

@@ -1,121 +1,121 @@
-# Importing content from other platforms
+# درون‌ریزی محتوا از سایر پلتفرم‌ها
 
-If you're migrating from Canvas or another learning management system, you can import existing quizzes, assessments, question banks, and questions into PrairieLearn. The import tool reads QTI 1.2 content, which is the format Canvas exports for quiz and course content.
+اگر در حال انتقال از Canvas یا سامانه مدیریت یادگیری (LMS) دیگری هستید، می‌توانید آزمون‌ها، ارزیابی‌ها، بانک‌های سوال و سوالات موجود را به PrairieLearn درون‌ریزی (Import) کنید. ابزار درون‌ریزی، محتوای QTI 1.2 را می‌خواند که فرمت خروجی Canvas برای آزمون‌ها و محتوای درسی است.
 
-## Overview
+## نمای کلی
 
-The importer is a review-and-confirm workflow:
+فرایند درون‌ریزی یک جریان کاری مبتنی بر «بررسی و تأیید» (Review-and-confirm) است:
 
-1. Export quiz or course content from Canvas or another LMS.
-2. Upload the exported `.zip` or `.imscc` file to PrairieLearn.
-3. If the upload references question banks that were not included in the file, PrairieLearn asks for supplemental exports that contain those banks. You can also continue without the missing bank content.
-4. Review what PrairieLearn found. The review page separates **Assessments** from **Question banks**:
-   - Assessments are imported to PrairieLearn with their questions and basic quiz structure. After import, you can edit their settings, adjust question order and points, and assign them like any other assessment.
-   - Question banks are imported as a set of PrairieLearn questions in your course. You can add them to existing assessments or use them in any new assessments you create.
-5. Optionally edit assessment settings and question metadata before importing.
-6. Confirm the import. PrairieLearn writes the files to your course repository and syncs them automatically.
+۱. محتوای آزمون یا درس را از Canvas یا سایر LMSها خروجی (Export) بگیرید.
+۲. فایل خروجی با پسوند `.zip` یا `.imscc` را در PrairieLearn آپلود کنید.
+۳. اگر فایل آپلودشده به بانک‌های سوالی ارجاع دهد که در فایل گنجانده نشده‌اند، PrairieLearn از شما فایل‌های خروجی تکمیلی حاوی آن بانک‌ها را درخواست می‌کند. همچنین می‌توانید بدون محتوای بانک‌های مفقود فرایند را ادامه دهید.
+۴. مواردی را که PrairieLearn پیدا کرده است بررسی کنید. صفحه بررسی، **ارزیابی‌ها (Assessments)** را از **بانک‌های سوال (Question banks)** تفکیک می‌کند:
+   - ارزیابی‌ها به همراه سوالات و ساختار پایه آزمون وارد PrairieLearn می‌شوند. پس از درون‌ریزی، می‌توانید تنظیمات آن‌ها را ویرایش کنید، ترتیب سوالات و امتیازات را تغییر دهید و همانند هر ارزیابی دیگری آن‌ها را اختصاص دهید.
+   - بانک‌های سوال به صورت مجموعه‌ای از سوالات PrairieLearn در درس شما درون‌ریزی می‌شوند. می‌توانید آن‌ها را به ارزیابی‌های موجود اضافه کنید یا در ارزیابی‌های جدیدی که می‌سازید به کار ببرید.
+۵. در صورت تمایل، تنظیمات ارزیابی و متادیتای سوالات را پیش از درون‌ریزی ویرایش کنید.
+۶. درون‌ریزی را تأیید کنید. سامانه PrairieLearn فایل‌ها را در مخزن درس شما می‌نویسد و آن‌ها را به طور خودکار همگام‌سازی (Sync) می‌کند.
 
-## Where to start an import
+## شروع فرایند درون‌ریزی
 
-You can start the QTI importer from either of these pages:
+می‌توانید درون‌ریز QTI را از هر یک از این دو صفحه آغاز کنید:
 
-- On a course instance **Assessments** page, click **Import content**.
-- On the **Questions** page, open the **Add questions** dropdown and click **Import questions**.
+- در صفحه **Assessments** (ارزیابی‌ها) در یک دوره درسی، روی **Import content** کلیک کنید.
+- در صفحه **Questions** (سوالات)، منوی کشویی **Add questions** را باز کرده و روی **Import questions** کلیک کنید.
 
-Both entry points use the same importer. If you start from the Questions page, PrairieLearn returns you to the Questions page after the import completes. Otherwise, it returns you to the Assessments page.
+هر دو نقطه ورود از یک ابزار درون‌ریزی یکسان استفاده می‌کنند. اگر از صفحه Questions شروع کنید، PrairieLearn پس از تکمیل فرایند شما را به همان صفحه Questions بازمی‌گرداند. در غیر این صورت، شما را به صفحه Assessments برمی‌گرداند.
 
-Assessments can only be created inside a course instance. If your course has more than one, the importer lets you choose which one receives the imported assessments. You can also import from the Questions page before the course has any course instances; quizzes in the export are then imported as standalone questions that you can add to assessments later.
+ارزیابی‌ها تنها می‌توانند در داخل یک دوره درسی (Course Instance) ساخته شوند. اگر درس شما بیش از یک دوره دارد، ابزار درون‌ریزی به شما امکان می‌دهد دوره‌ای را که ارزیابی‌های درون‌ریزی‌شده را دریافت می‌کند انتخاب کنید. همچنین می‌توانید قبل از اینکه درس دارای دوره‌ای باشد، درون‌ریزی را از صفحه Questions انجام دهید؛ در این صورت، آزمون‌های موجود در فایل خروجی به صورت سوالات مستقل درون‌ریزی می‌شوند که می‌توانید بعداً آنها را به ارزیابی‌ها اضافه کنید.
 
-## What you can import
+## موارد قابل درون‌ریزی
 
-The import tool supports individual quiz exports (`.zip` files) and full course exports (`.imscc` files). It handles the following QTI 1.2 question types:
+ابزار درون‌ریزی از خروجی‌های تکی آزمون (فایل‌های `.zip`) و خروجی‌های کامل درس (فایل‌های `.imscc`) پشتیبانی می‌کند. این ابزار انواع سوالات QTI 1.2 زیر را پردازش می‌کند:
 
-| QTI question type             | PrairieLearn output                                                                                                               |
+| نوع سوال در QTI | خروجی معادل در PrairieLearn |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Multiple choice               | [`pl-multiple-choice`](elements/pl-multiple-choice.md)                                                                            |
-| True/false                    | [`pl-multiple-choice`](elements/pl-multiple-choice.md)                                                                            |
-| Multiple answers (select all) | [`pl-checkbox`](elements/pl-checkbox.md)                                                                                          |
-| Fill in the blank             | [`pl-string-input`](elements/pl-string-input.md)                                                                                  |
-| Fill in multiple blanks       | Inline [`pl-string-input`](elements/pl-string-input.md) blanks                                                                    |
-| Multiple dropdowns            | Inline [`pl-multiple-choice`](elements/pl-multiple-choice.md) with `display="dropdown"`                                           |
-| Matching                      | [`pl-matching`](elements/pl-matching.md)                                                                                          |
-| Numerical answer              | [`pl-integer-input`](elements/pl-integer-input.md) for exact integers; otherwise [`pl-number-input`](elements/pl-number-input.md) |
-| Short answer                  | `pl-string-input`, `pl-integer-input`, or `pl-number-input`                                                                       |
-| Calculated / formula          | [`pl-number-input`](elements/pl-number-input.md) with `server.py`                                                                 |
-| Essay / free response         | [`pl-rich-text-editor`](elements/pl-rich-text-editor.md)                                                                          |
-| File upload                   | [`pl-file-upload`](elements/pl-file-upload.md)                                                                                    |
-| Text-only (no response)       | Prompt-only question panel                                                                                                        |
+| چندگزینه‌ای (Multiple choice) | [`pl-multiple-choice`](elements/pl-multiple-choice.md) |
+| صحیح/غلط (True/false) | [`pl-multiple-choice`](elements/pl-multiple-choice.md) |
+| چندپاسخی - انتخاب همه موارد (Multiple answers) | [`pl-checkbox`](elements/pl-checkbox.md) |
+| جای خالی (Fill in the blank) | [`pl-string-input`](elements/pl-string-input.md) |
+| چند جای خالی (Fill in multiple blanks) | المان درون‌خطی [`pl-string-input`](elements/pl-string-input.md) برای جای خالی‌ها |
+| منوهای کشویی چندگانه (Multiple dropdowns) | المان درون‌خطی [`pl-multiple-choice`](elements/pl-multiple-choice.md) با ویژگی `display="dropdown"` |
+| تطبیقی یا جورکردنی (Matching) | [`pl-matching`](elements/pl-matching.md) |
+| پاسخ عددی (Numerical answer) | [`pl-integer-input`](elements/pl-integer-input.md) برای اعداد صحیح دقیق؛ در غیر این صورت [`pl-number-input`](elements/pl-number-input.md) |
+| پاسخ کوتاه (Short answer) | `pl-string-input`، `pl-integer-input`، یا `pl-number-input` |
+| محاسباتی / فرمولی (Calculated / formula) | [`pl-number-input`](elements/pl-number-input.md) به همراه `server.py` |
+| تشریحی / پاسخ آزاد (Essay / free response) | [`pl-rich-text-editor`](elements/pl-rich-text-editor.md) |
+| آپلود فایل (File upload) | [`pl-file-upload`](elements/pl-file-upload.md) |
+| فقط متنی بدون پاسخ (Text-only) | پنل سوال فقط شامل متن اعلان (Prompt-only) |
 
-Referenced images and other non-video media files are imported into each question's `clientFilesQuestion` directory. Canvas equation images are converted back to their LaTeX source so PrairieLearn can render them with MathJax. If a question references a remote HTTPS image instead of an exported file, PrairieLearn attempts to copy it into this course. A remote image that cannot be copied is left unchanged in the generated HTML and produces a warning.
+تصاویر و سایر فایل‌های چندرسانه‌ای غیرویدیویی ارجاع داده شده، در دایرکتوری `clientFilesQuestion` مربوط به هر سوال درون‌ریزی می‌شوند. تصاویر فرمول‌های ریاضی در Canvas به متن اصلی لاتک (LaTeX) برگردانده می‌شوند تا PrairieLearn بتواند آنها را با MathJax رندر کند. اگر سوالی به یک تصویر ریموت HTTPS به جای یک فایل درون خروجی ارجاع دهد، PrairieLearn تلاش می‌کند آن را در این درس کپی کند. تصویری ریموت که امکان کپی آن وجود نداشته باشد، بدون تغییر در HTML تولیدشده باقی می‌ماند و یک پیام هشدار ایجاد می‌کند.
 
-## What isn't imported
+## مواردی که درون‌ریزی نمی‌شوند
 
-- **Access rules**: Time limits, passwords, and start/end dates are stripped during import. Configure these after import with PrairieLearn's [access control](assessment/accessControl.md) system.
-- **Rubrics**: Rubric definitions are not imported from QTI exports.
-- **Video files**: Video content (`.mp4`, `.webm`, `.mov`, etc.) is excluded due to file size. The review page lists skipped video files on the affected questions so you can re-host or replace them separately.
-- **Missing question bank content**: Your exports may reference question banks without including the actual bank questions. PrairieLearn can only import those questions if you provide an export that contains the matching bank content, or if the original upload already includes it.
-- **Student data**: Submissions, grades, and enrollment data are not part of QTI exports and are not imported.
+- **قوانین دسترسی (Access rules)**: محدودیت‌های زمانی، رمزهای عبور و تاریخ‌های شروع/پایان در حین درون‌ریزی حذف می‌شوند. این موارد را پس از درون‌ریزی از طریق سیستم [کنترل دسترسی](assessment/accessControl.md) سامانه PrairieLearn پیکربندی کنید.
+- **بارم‌بندی‌ها (Rubrics)**: تعاریف بارم‌بندی از خروجی‌های QTI درون‌ریزی نمی‌شوند.
+- **فایل‌های ویدیویی**: محتوای ویدیویی (`.mp4`، `.webm`، `.mov` و غیره) به دلیل حجم فایل‌ها نادیده گرفته می‌شوند. صفحه بررسی، فایل‌های ویدیویی نادیده‌گرفته‌شده را در سوالات مربوطه فهرست می‌کند تا بتوانید به صورت جداگانه آنها را میزبانی مجدد یا جایگزین کنید.
+- **محتوای بانک‌های سوال ناموجود**: خروجی‌های شما ممکن است بدون دربرداشتن سوالات واقعی بانک، صرفاً به یک بانک سوال ارجاع داده باشند. PrairieLearn تنها زمانی می‌تواند آن سوالات را درون‌ریزی کند که یک فایل خروجی حاوی محتوای آن بانک را ارائه دهید، یا اینکه فایل آپلودشده اولیه از قبل شامل آن باشد.
+- **داده‌های دانشجویان**: پاسخ‌های ارسالی، نمرات و اطلاعات ثبت‌نام دانشجویان جزو خروجی‌های QTI نیستند و درون‌ریزی نمی‌شوند.
 
-The review page summarizes what can be imported and what known content was skipped or stripped.
+صفحه بررسی خلاصه‌ای از آنچه قابل درون‌ریزی است و محتواهای شناخته‌شده‌ای را که حذف یا نادیده گرفته شده‌اند نمایش می‌دهد.
 
-## Canvas question banks
+## بانک‌های سوال در Canvas
 
-Canvas exports can represent question banks in several ways:
+خروجی‌های Canvas می‌توانند بانک‌های سوال را به چند روش نمایش دهند:
 
-- A full course export may include the question bank content directly. PrairieLearn imports those banks as standalone PrairieLearn questions and can attach matching bank questions to assessments that reference them.
-- A quiz export may only contain a reference to a question bank. When that happens, PrairieLearn pauses on a **Some questions are in question banks** step and asks you to upload supplemental exported content for each missing bank.
-- If Canvas identifies the source course for a missing bank, PrairieLearn shows the Canvas course ID to help you find the right course export. You can find that ID in Canvas URLs such as `/courses/12345`.
-- If you upload supplemental content that does not contain the referenced bank, PrairieLearn shows an alert and lets you try another file.
-- If you continue without additional content, the unresolved bank questions are omitted from the imported assessment. PrairieLearn shows a warning on the review page for any bank references that remain unresolved.
+- خروجی کامل درس ممکن است محتوای بانک سوال را مستقیماً شامل شود. سامانه PrairieLearn این بانک‌ها را به صورت سوالات مستقل PrairieLearn درون‌ریزی می‌کند و می‌تواند سوالات منطبق در بانک را به ارزیابی‌هایی که به آنها ارجاع دارند متصل کند.
+- خروجی یک آزمون تکی ممکن است تنها حاوی یک ارجاع به بانک سوال باشد. در این شرایط، PrairieLearn در مرحله‌ای با عنوان **Some questions are in question banks** متوقف شده و از شما می‌خواهد محتوای خروجی تکمیلی را برای هر بانک مفقود آپلود کنید.
+- اگر Canvas درس مبدأ یک بانک مفقود را مشخص کرده باشد، PrairieLearn شناسه درس Canvas را نشان می‌دهد تا به شما در پیدا کردن خروجی درس صحیح کمک کند. می‌توانید این شناسه را در آدرس‌های Canvas مانند `/courses/12345` پیدا کنید.
+- اگر محتوای تکمیلی آپلودشده شامل بانک ارجاع داده شده نباشد، PrairieLearn یک هشدار نشان داده و به شما امکان می‌دهد فایل دیگری را امتحان کنید.
+- اگر بدون افزودن محتوای اضافی ادامه دهید، سوالات بانک برطرف‌نشده از ارزیابی درون‌ریزی‌شده حذف می‌شوند. سامانه PrairieLearn برای هرگونه ارجاع به بانک سوال که برطرف‌نشده باقی بماند، در صفحه بررسی یک هشدار نمایش می‌دهد.
 
-When multiple assessments use the same imported bank questions, PrairieLearn points them at the same imported question directories instead of creating duplicate copies.
+هنگامی که چندین ارزیابی از سوالات یکسان یک بانک درون‌ریزی‌شده استفاده می‌کنند، PrairieLearn به جای ایجاد نسخه‌های تکراری، ارزیابی‌ها را به دایرکتوری‌های سوال یکسان درون‌ریزی‌شده ارجاع می‌دهد.
 
-If the same generated question appears in more than one imported question bank, PrairieLearn imports one copy and shows an informational note above the **Question banks** section with the number of deduplicated questions.
+اگر یک سوال تولیدشده یکسان در بیش از یک بانک سوال درون‌ریزی‌شده وجود داشته باشد، PrairieLearn یک نسخه از آن را درون‌ریزی می‌کند و یک یادداشت اطلاعاتی در بالای بخش **Question banks** با تعداد سوالات تکراری‌زدایی‌شده (Deduplicated) نمایش می‌دهد.
 
-## Duplicate questions
+## سوالات تکراری (Duplicate questions)
 
-PrairieLearn deduplicates identical generated questions during the import. If two source questions produce the same title, generated question markup, grading code, grading metadata, skipped video list, and client file contents, PrairieLearn imports one copy and rewrites assessments to reference that shared question.
+سامانه PrairieLearn در طول فرایند درون‌ریزی، سوالات تولیدشده کاملاً یکسان را تکراری‌زدایی می‌کند. اگر دو سوال مبدأ دارای عنوان، نشانه‌گذاری (Markup) تولیدشده سوال، کد نمره‌دهی، متادیتای نمره‌دهی، فهرست ویدیوهای نادیده‌گرفته‌شده و محتویات فایل کلاینت یکسان باشند، PrairieLearn یک نسخه را درون‌ریزی کرده و ارزیابی‌ها را به‌گونه‌ای بازنویسی می‌کند که به آن سوال مشترک ارجاع دهند.
 
-This is intended for cases where Canvas exports copied questions or repeated question bank content. Questions that differ in generated content are imported separately.
+این سازوکار برای مواردی در نظر گرفته شده است که خروجی‌های Canvas شامل سوالات کپی‌شده یا محتوای تکراری بانک سوال هستند. سوالاتی که در محتوای تولیدشده تفاوت داشته باشند به صورت جداگانه درون‌ریزی می‌شوند.
 
-## How to export from Canvas
+## نحوه خروجی گرفتن از Canvas
 
-1. In Canvas, go to **Settings** for your course.
-2. Click **Export Course Content**.
-3. Choose either:
-   - **Quiz**: exports a single quiz as a `.zip` file.
-   - **Course**: exports the course as an `.imscc` file. Use this when importing multiple quizzes, question banks, or quizzes that depend on question banks.
-4. Download the export file when it's ready.
+۱. در Canvas، به بخش **Settings** درس خود بروید.
+۲. روی **Export Course Content** کلیک کنید.
+۳. یکی از موارد زیر را انتخاب نمایید:
+   - **Quiz**: یک آزمون واحد را به صورت یک فایل `.zip` خروجی می‌گیرد.
+   - **Course**: کل درس را به صورت یک فایل `.imscc` خروجی می‌گیرد. از این گزینه هنگام درون‌ریزی چندین آزمون، بانک‌های سوال، یا آزمون‌هایی که به بانک‌های سوال وابسته‌اند استفاده کنید.
+۴. پس از آماده شدن فایل خروجی، آن را دانلود کنید.
 
-Other LMS platforms may have similar export features. Look for "QTI export" or "IMS Common Cartridge export" in your platform's documentation.
+سایر سامانه‌های LMS ممکن است قابلیت‌های خروجی مشابهی داشته باشند. عبارت‌های "QTI export" یا "IMS Common Cartridge export" را در مستندات پلتفرم خود جستجو کنید.
 
-## Importing into PrairieLearn
+## درون‌ریزی به PrairieLearn
 
-1. Open the importer from the Assessments or Questions page.
-2. Upload a `.zip` quiz export or `.imscc` course export.
-3. If PrairieLearn asks for supplemental question bank content, upload the requested course export files or click **Continue without additional content**.
-4. Review the import summary. It may include:
-   - The number of assessments, question banks, questions, and referenced assets that can be imported.
-   - Access rules, rubrics, videos, unsupported content, or parse warnings that will not be imported.
-   - Warnings for unresolved question bank references or remote images that could not be copied, plus an informational note for question bank questions that were deduplicated.
-   - Warnings for repeated question names that should be renamed before import.
-5. In the **Assessments** section, choose which assessments to import. For each assessment, you can edit the **title**, **type** (Homework or Exam), **set**, and **number**.
-6. In the **Question banks** section, choose which question banks to import as standalone PrairieLearn questions.
-7. Expand the **Questions** section on any assessment or question bank to review individual questions. For each question, you can:
-   - Edit the **title**, **topic**, and **tags**.
-   - Browse the generated files, including `info.json`, `question.html`, `server.py`, and referenced assets.
-   - View syntax-highlighted file contents.
-   - Review any warnings associated with that specific question.
-   - Exclude the question from the import.
-8. If an imported question conflicts with an existing question directory, choose **Replace existing question** or **Keep both**. You can also apply overwrite/rename choices to all conflicts in a section.
-9. Click the final **Import** button to create the selected content.
+۱. ابزار درون‌ریزی را از صفحه Assessments یا Questions باز کنید.
+۲. فایل خروجی آزمون با پسوند `.zip` یا خروجی درس با پسوند `.imscc` را آپلود کنید.
+۳. اگر PrairieLearn محتوای تکمیلی بانک سوال را درخواست کرد، فایل‌های خروجی درخواستی درس را آپلود کنید یا روی **Continue without additional content** کلیک کنید.
+۴. خلاصه درون‌ریزی را بررسی کنید. این خلاصه ممکن است شامل موارد زیر باشد:
+   - تعداد ارزیابی‌ها، بانک‌های سوال، سوالات و دارایی‌های ارجاع داده شده که قابل درون‌ریزی هستند.
+   - قوانین دسترسی، بارم‌بندی‌ها، ویدیوها، محتواهای پشتیبانی‌نشده یا هشدارهای تجزیه که درون‌ریزی نخواهند شد.
+   - هشدارها برای ارجاعات برطرف‌نشده بانک سوال یا تصاویر ریموتی که کپی نشده‌اند، به علاوه یک یادداشت اطلاعاتی برای سوالات بانک سوال که تکراری‌زدایی شده‌اند.
+   - هشدارها برای نام‌های سوال تکراری که باید پیش از درون‌ریزی تغییر نام داده شوند.
+۵. در بخش **Assessments**، انتخاب کنید کدام ارزیابی‌ها درون‌ریزی شوند. برای هر ارزیابی، می‌توانید **title** (عنوان)، **type** (نوع: Homework یا Exam)، **set** و **number** را ویرایش کنید.
+۶. در بخش **Question banks**، مشخص کنید کدام بانک‌های سوال به صورت سوالات مستقل PrairieLearn درون‌ریزی شوند.
+۷. بخش **Questions** را در هر ارزیابی یا بانک سوال باز کنید تا تک‌تک سوالات را بررسی نمایید. برای هر سوال می‌توانید:
+   - فیلدهای **title**، **topic** و **tags** را ویرایش کنید.
+   - فایل‌های تولیدشده از جمله `info.json`، `question.html`، `server.py` و دارایی‌های ارجاع‌یافته را مرور کنید.
+   - محتوای فایل‌ها را با برجسته‌سازی نحوی (Syntax-highlighted) مشاهده کنید.
+   - هرگونه هشدار مرتبط با آن سوال خاص را بررسی کنید.
+   - سوال را از فرایند درون‌ریزی مستثنی کنید.
+۸. اگر یک سوال درون‌ریزی‌شده با دایرکتوری یک سوال موجود تداخل نام دارد، گزینه **Replace existing question** (جایگزینی سوال موجود) یا **Keep both** (نگهداری هر دو) را انتخاب کنید. همچنین می‌توانید تنظیم جایگزینی/تغییر نام را برای همه تداخل‌های یک بخش اعمال کنید.
+۹. روی دکمه نهایی **Import** کلیک کنید تا محتوای انتخاب‌شده ایجاد شود.
 
-Imported questions are written under `questions/imported/`. Imported assessments are written under the selected course instance's `assessments/` directory. After import, you can edit the generated content like any other PrairieLearn question or assessment.
+سوالات درون‌ریزی‌شده در مسیر `questions/imported/` نوشته می‌شوند. ارزیابی‌های درون‌ریزی‌شده در دایرکتوری `assessments/` مربوط به دوره درسی انتخاب‌شده نوشته می‌شوند. پس از درون‌ریزی، می‌توانید محتوای تولیدشده را همانند هر سوال یا ارزیابی دیگر PrairieLearn ویرایش کنید.
 
-## Tips
+## نکات کاربردی
 
-- **Use a full Canvas course export for question banks.** Quiz exports often contain only references to banks, not the bank questions themselves.
-- **Start with a single quiz** to get a feel for the import process before importing a large course export.
-- **Review the generated markup**. The converter does its best to produce clean PrairieLearn HTML, but you may want to adjust formatting, grading behavior, or randomized parameters after import.
-- **Imported questions are tagged** with `imported` by default, making them easy to find and filter in the Questions list.
-- **Manually graded source questions** such as essays and file uploads are marked for manual grading in PrairieLearn.
+- **برای بانک‌های سوال از خروجی کامل درس در Canvas استفاده کنید.** خروجی‌های آزمون اغلب فقط شامل ارجاعاتی به بانک‌ها هستند، نه خود سوالات موجود در بانک.
+- **ابتدا با یک آزمون تکی شروع کنید** تا قبل از درون‌ریزی خروجی یک درس بزرگ، با فرایند درون‌ریزی آشنا شوید.
+- **کدهای نشانه‌گذاری تولیدشده را بررسی کنید.** مبدل تمام تلاش خود را می‌کند تا کد تمیز PrairieLearn HTML تولید کند، اما ممکن است پس از درون‌ریزی مایل باشید قالب‌بندی، رفتار نمره‌دهی یا پارامترهای تصادفی‌سازی را تنظیم کنید.
+- **سوالات درون‌ریزی‌شده به صورت پیش‌فرض با برچسب `imported` نشانه‌گذاری می‌شوند** تا پیدا کردن و فیلتر کردن آن‌ها در فهرست سوالات آسان باشد.
+- **سوالات مبدأ با نمره‌دهی دستی** مانند سوالات تشریحی و آپلود فایل، در PrairieLearn برای نمره‌دهی دستی علامت‌گذاری می‌شوند.

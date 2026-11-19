@@ -1,34 +1,34 @@
-# Remote exam configurations
+# پیکربندی‌های آزمون از راه دور
 
-This page walks through common assessment configurations for remote exams, where students are not physically present in the same location as the proctors.
+این صفحه پیکربندی‌های رایج ارزیابی را برای آزمون‌های از راه دور (جایی که دانشجویان به‌صورت فیزیکی در همان محل حضور مراقبان آزمون نیستند) بررسی می‌کند.
 
-Use the assessment **Access** page to configure availability, deadlines, time limits, PrairieTest access, after-completion visibility, and student-specific or student-label overrides.
+از صفحه **Access** ارزیابی برای پیکربندی قابلیت دسترسی، مهلت‌ها، محدودیت‌های زمانی، دسترسی به PrairieTest، قابلیت مشاهده پس از اتمام آزمون و بازنویسی‌های دسترسی (Overrides) مختص دانشجو یا برچسب دانشجو استفاده کنید.
 
-These examples use [modern assessment access control](accessControl.md). Existing assessments that still use `allowAccess` can use the [legacy access control](accessControlLegacy.md) documentation.
+این مثال‌ها از [سیستم مدرن کنترل دسترسی ارزیابی](accessControl.md) استفاده می‌کنند. ارزیابی‌های فعلی که همچنان از `allowAccess` استفاده می‌کنند می‌توانند از مستندات [کنترل دسترسی قدیمی](accessControlLegacy.md) بهره ببرند.
 
-Student-specific access overrides are managed from the assessment **Access** page. Use **Specific students** for assessment-specific exceptions such as one-off makeups or alternate exam windows. Use [student labels](../courseInstance/index.md#student-labels) for groups that are maintained across multiple assessments, such as remote sections, online cohorts, or standing accommodation groups.
+بازنویسی‌های دسترسی مختص دانشجو از صفحه **Access** ارزیابی مدیریت می‌شوند. از **Specific students** برای استثناهای اختصاصی ارزیابی مانند آزمون‌های جبرانی یک‌باره یا بازه‌های زمانی جایگزین آزمون استفاده کنید. از [برچسب‌های دانشجو](../courseInstance/index.md#student-labels) برای گروه‌هایی استفاده کنید که در چندین ارزیابی مشترک هستند، مانند گروه‌های درسی از راه دور، دوره‌های آنلاین یا گروه‌های تسهیلات همیشگی.
 
-## Exams in a PrairieTest-managed testing center
+## آزمون‌ها در یک مرکز آزمون مدیریت‌شده توسط PrairieTest
 
-For a PrairieTest-only access path, enable PrairieTest on the assessment and leave date control disabled.
+برای ایجاد یک مسیر دسترسی منحصر به PrairieTest، گزینه PrairieTest را در ارزیابی فعال کرده و کنترل تاریخ (Date control) را غیرفعال بگذارید.
 
-In the UI:
+در رابط کاربری:
 
-1. Open the assessment **Access** tab.
-2. Click **Edit** in **Defaults**.
-3. Leave **Date control** disabled.
-4. Under **Integrations**, enable **PrairieTest**.
-5. Enter the PrairieTest exam UUID from the PrairieTest exam settings.
-6. For **After completion**, choose what students can see after they finish while their reservation is still active.
-7. Use the top-level **After completion** settings for what students can see after the reservation ends.
-8. Click **Save**.
+1. تب **Access** ارزیابی را باز کنید.
+2. در بخش **Defaults** روی **Edit** کلیک کنید.
+3. گزینه **Date control** را غیرفعال بگذارید.
+4. زیر بخش **Integrations**، گزینه **PrairieTest** را فعال کنید.
+5. شناسه یکتای (UUID) آزمون PrairieTest را از تنظیمات آزمون PrairieTest وارد نمایید.
+6. برای بخش **After completion**، انتخاب کنید که دانشجویان پس از پایان آزمون تا زمانی که رزرو آن‌ها همچنان فعال است، چه مواردی را مشاهده کنند.
+7. از تنظیمات سطح بالای **After completion** برای مواردی استفاده کنید که دانشجویان پس از پایان رزرو می‌توانند مشاهده نمایند.
+8. روی **Save** کلیک کنید.
 
-Some notes about this configuration:
+چند نکته در مورد این پیکربندی:
 
-- The PrairieTest exam UUID should be copied from PrairieTest for the specific exam. Each exam has its own unique UUID, and it's vital that the correct value is used for each separate exam.
-- Do not configure date control or a PrairieLearn time limit.
-- Apply overrides and disability accommodations in PrairieTest. Do not use overrides in PrairieLearn.
-- Use the PrairieTest exam's after-completion visibility setting if students should not review questions or scores after finishing while their reservation is still active.
+- شناسه UUID آزمون PrairieTest باید برای آزمون مورد نظر از سیستم PrairieTest کپی شود. هر آزمون دارای UUID منحصر‌به‌فرد خود است و بسیار حیاتی است که مقدار صحیح برای هر آزمون مجزا به کار رود.
+- کنترل تاریخ یا محدودیت زمانی در PrairieLearn را پیکربندی نکنید.
+- بازنویسی‌ها و تسهیلات معلولیت یا شرایط خاص را در PrairieTest اعمال کنید. از بازنویسی‌ها در PrairieLearn استفاده نکنید.
+- اگر دانشجویان پس از پایان آزمون در حالی که نوبت رزرو آن‌ها همچنان فعال است نباید سوالات یا نمرات را بازبینی کنند، از تنظیم قابلیت مشاهده پس از اتمام در آزمون PrairieTest استفاده نمایید.
 
 ??? info "JSON"
 
@@ -50,31 +50,31 @@ Some notes about this configuration:
     }
     ```
 
-## Testing center exams with a few students outside PrairieTest
+## آزمون‌های مرکز آزمون با تعدادی دانشجو خارج از PrairieTest
 
-Sometimes a PrairieTest-managed exam needs a separate access path for a small number of students who are not taking it through PrairieTest. Start with the PrairieTest-only defaults, then add an override that gives the selected students a date-control access path.
+گاهی اوقات یک آزمون تحت مدیریت PrairieTest نیاز به یک مسیر دسترسی مجزا برای تعداد اندکی از دانشجویان دارد که از طریق PrairieTest در آزمون شرکت نمی‌کنند. ابتدا تنظیمات پیش‌فرضِ مختص به PrairieTest را اعمال کنید، سپس یک بازنویسی (Override) اضافه کنید که به دانشجویان انتخاب‌شده مسیر دسترسی کنترل تاریخ را اعطا کند.
 
-Use a student-specific override for one-off exceptions, since the affected students usually change from assessment to assessment. Use a student label only when the same group should be managed together across multiple assessments.
+برای استثناهای یک‌باره از بازنویسی مختص دانشجو استفاده کنید، زیرا دانشجویان مشمول معمولاً از یک ارزیابی به ارزیابی دیگر تغییر می‌کنند. از برچسب دانشجو تنها زمانی استفاده کنید که قرار است همان گروه در چندین ارزیابی با یکدیگر مدیریت شوند.
 
-In the UI:
+در رابط کاربری:
 
-1. Configure the defaults as a PrairieTest-only exam.
-2. On the assessment **Access** page, click **Add override**.
-3. Choose **Specific students** and select the enrolled students.
-4. Click **Override** next to **Release** and set the remote exam start time.
-5. Click **Override** next to **Due date** and set the remote exam end time.
-6. Click **Override** next to **Time limit** and enter the working time for the remote exam.
-7. Click **Save**.
+1. مقادیر پیش‌فرض را به عنوان یک آزمون اختصاصی PrairieTest پیکربندی کنید.
+2. در صفحه **Access** ارزیابی، روی **Add override** کلیک کنید.
+3. گزینه **Specific students** را انتخاب کرده و دانشجویان ثبت‌نام‌شده مورد نظر را انتخاب نمایید.
+4. روی **Override** در کنار **Release** کلیک کرده و زمان شروع آزمون از راه دور را تنظیم کنید.
+5. روی **Override** در کنار **Due date** کلیک کرده و زمان پایان آزمون از راه دور را تنظیم نمایید.
+6. روی **Override** در کنار **Time limit** کلیک کرده و مدت زمان کار برای آزمون از راه دور را وارد کنید.
+7. روی **Save** کلیک کنید.
 
-Some notes about this configuration:
+چند نکته در مورد این پیکربندی:
 
-- The override uses [date control](accessControl.md#date-control) to create a non-PrairieTest access window with its own [time limit](accessControl.md#time-limits). See the [synchronous exam notes](#synchronous-timed-exams) for details about choosing the window and time limit.
-- The override can be added at any time, including after other students already completed the exam using PrairieTest. This is useful for accommodations or makeup exams.
-- For a reusable cohort, choose **Students by label** instead of **Specific students** and select the appropriate label, such as "Remote section".
+- این بازنویسی از [کنترل تاریخ](accessControl.md#date-control) برای ایجاد یک بازه دسترسیِ غیر از PrairieTest با [محدودیت زمانی](accessControl.md#time-limits) مخصوص به خود استفاده می‌کند. برای جزئیات مربوط به نحوه انتخاب بازه و محدودیت زمانی، [نکات آزمون‌های همگام](#synchronous-timed-exams) را مشاهده کنید.
+- این بازنویسی را می‌توان در هر زمانی اضافه کرد، از جمله پس از اینکه سایر دانشجویان آزمون را با استفاده از PrairieTest به پایان رسانده باشند. این ویژگی برای تسهیلات ویژه یا آزمون‌های جبرانی بسیار کاربردی است.
+- برای یک گروه قابل استفاده مجدد، به جای **Specific students** گزینه **Students by label** را انتخاب کرده و برچسب مناسب مانند "Remote section" را مشخص کنید.
 
 ??? info "JSON"
 
-    This reference shows the reusable-cohort version using a student label.
+    این مرجع نسخه گروه قابل استفاده مجدد را با استفاده از برچسب دانشجو نشان می‌دهد.
 
     ```json title="infoAssessment.json"
     {
@@ -103,51 +103,51 @@ Some notes about this configuration:
     }
     ```
 
-## Synchronous, timed exams
+## آزمون‌های زمان‌دار همگام
 
 !!! tip
 
-    We recommend that exams held outside a controlled testing center should be run using a synchronous, timed configuration.
+    توصیه می‌کنیم آزمون‌هایی که خارج از یک مرکز آزمون کنترل‌شده برگزار می‌شوند، با استفاده از یک پیکربندی همگام و زمان‌دار اجرا شوند.
 
-This configuration is good when:
+این پیکربندی در شرایط زیر مناسب است:
 
-- Almost all students take the exam at the same time.
-- Some students have accommodations, such as 1.5x time.
-- Some students need an alternate exam window.
+- تقریباً تمام دانشجویان در یک زمان مشخص در آزمون شرکت می‌کنند.
+- برخی دانشجویان تسهیلات دارند، مانند زمان ۱.۵ برابری.
+- برخی از دانشجویان به یک بازه زمانی جایگزین برای آزمون نیاز دارند.
 
 !!! warning
 
-    Use student-specific overrides for one-off alternate windows or unusual combinations of accommodations. Use student-label overrides only for cohorts that are already maintained as labels or should intentionally be reused across assessments. If a student matches multiple label overrides, [override priority](accessControl.md#override-priority) determines which settings apply.
+    از بازنویسی‌های مختص دانشجو برای بازه‌های جایگزین یک‌باره یا ترکیب‌های نامعمول تسهیلات استفاده کنید. از بازنویسی‌های برچسب دانشجو فقط برای گروه‌هایی استفاده کنید که از قبل به عنوان برچسب نگهداری شده‌اند یا هدفمندانه قرار است در ارزیابی‌های مختلف مجدداً استفاده شوند. اگر یک دانشجو با چندین بازنویسی برچسب مطابقت داشته باشد، [اولویت بازنویسی‌ها](accessControl.md#override-priority) تعیین می‌کند که کدام تنظیمات اعمال گردند.
 
-In the UI:
+در رابط کاربری:
 
-1. On the assessment **Access** page, click **Edit** in **Defaults**.
-2. Enable **Date control**.
-3. Set **Release** to the exam start time, such as Apr 20 at 11:00am.
-4. Set **Due date** to slightly after the ordinary time limit, such as Apr 20 at 12:05pm for a 60-minute exam.
-5. Enable **Time limit** and enter the ordinary working time, such as 60 minutes.
-6. Leave **After due date** set to **No submissions allowed**.
-7. Under **After completion**, set **Question visibility** to **Hide questions permanently**. Leave **Score visibility** visible after completion if students should see their total score.
-8. For students with extra-time accommodations, click **Add override**. Choose **Students by label** if you already maintain an accommodation label such as "Extended time"; otherwise choose **Specific students**.
-9. In the extra-time override, click **Override** next to **Due date** and **Time limit**. For 1.5x time on a 60-minute exam, use a 90-minute time limit and extend the due date to cover that time.
-10. For students taking the exam in an alternate window, click **Add override**. Choose **Specific students** unless this is a reusable cohort that should be managed by label.
-11. In the alternate-window override, click **Override** next to **Release**, **Due date**, and **Time limit** for the alternate exam window.
-12. For students who need both an alternate window and extra time, add a student-specific override or a dedicated reusable-cohort label override listed below the other matching overrides.
-13. Click **Save**.
+1. در صفحه **Access** ارزیابی، در بخش **Defaults** روی **Edit** کلیک کنید.
+2. گزینه **Date control** را فعال کنید.
+3. مقدار **Release** را روی زمان شروع آزمون، مانند ۲۰ آوریل ساعت ۱۱:۰۰ صبح تنظیم کنید.
+4. مقدار **Due date** را کمی بعد از محدودیت زمانی معمول، مثلاً ۲۰ آوریل ساعت ۱۲:۰۵ بعدازظهر برای یک آزمون ۶۰ دقیقه‌ای تنظیم نمایید.
+5. گزینه **Time limit** را فعال کرده و مدت زمان کار معمول، مانند ۶۰ دقیقه را وارد کنید.
+6. گزینه **After due date** را روی **No submissions allowed** بگذارید.
+7. در بخش **After completion**، گزینه **Question visibility** را روی **Hide questions permanently** تنظیم کنید. اگر دانشجویان باید نمره کل خود را مشاهده کنند، گزینه **Score visibility** را پس از پایان به صورت قابل مشاهده باقی بگذارید.
+8. برای دانشجویان دارای تسهیلات زمان اضافه، روی **Add override** کلیک کنید. اگر قبلاً برچسب تسهیلاتی مانند "Extended time" را ایجاد کرده‌اید، گزینه **Students by label** را برگزینید؛ در غیر این صورت **Specific students** را انتخاب نمایید.
+9. در بازنویسی زمان اضافه، روی **Override** در کنار **Due date** و **Time limit** کلیک کنید. برای زمان ۱.۵ برابر در یک آزمون ۶۰ دقیقه‌ای، محدودیت زمانی را ۹۰ دقیقه قرار دهید و مهلت موعد (Due date) را برای پوشش این مدت افزایش دهید.
+10. برای دانشجویانی که در بازه زمانی جایگزین در آزمون شرکت می‌کنند، روی **Add override** کلیک کنید. گزینه **Specific students** را انتخاب نمایید مگر اینکه یک گروه قابل استفاده مجدد باشد که باید با برچسب مدیریت شود.
+11. در بازنویسی بازه زمانی جایگزین، روی **Override** در کنار **Release**، **Due date** و **Time limit** برای بازه آزمون جایگزین کلیک کنید.
+12. برای دانشجویانی که هم به بازه جایگزین و هم به زمان اضافه نیاز دارند، یک بازنویسی مختص دانشجو یا یک بازنویسی برچسب گروهی اختصاصی اضافه کنید که در فهرستی پایین‌تر از سایر بازنویسی‌های منطبق قرار گیرد.
+13. روی **Save** کلیک کنید.
 
-Some notes about this configuration:
+چند نکته در مورد این پیکربندی:
 
-- Set the exam window (release to due date) to be 5 minutes longer than the exam time limit. Students will not be able to submit past the due date under any circumstances. If a student starts this exam more than 5 minutes late, then the countdown timer on their exam will reflect the time remaining until the due date.
-- If a student closes their web browser accidentally during an exam, they can reopen PrairieLearn and continue where they left off. They can also switch computers and continue the same exam. The timer does not pause while the browser is closed.
-- Remember to extend both the due date and time limit for students with extra-time accommodations.
-- After the timer expires the exam will auto-close and grade any saved but ungraded questions. Students cannot submit after their timer expires or after the due time, whichever comes first. Once the assessment is complete, students can see their final score but cannot review any questions.
-- If a student closes their web browser before the exam is complete, their exam will be automatically closed and graded within 12 minutes after their timer expires. If they try and access their exam during this time it will immediately close and grade.
-- Before downloading final scores, wait at least 12 minutes after the last student would have finished to ensure all exams are closed. You can also check and manually close exams on the **Students** page under the assessment in PrairieLearn.
-- Because no after-deadline submission mode is configured, submissions are not allowed after the due date. The **Question visibility** setting keeps completed exam questions hidden while the total score remains visible by default. This does not prevent students from seeing questions or grading feedback while they are taking the exam.
+- پنجره آزمون (از تاریخ شروع Release تا موعد تحویل Due date) را ۵ دقیقه طولانی‌تر از محدودیت زمانی آزمون تنظیم کنید. دانشجویان تحت هیچ شرایطی پس از موعد مقرر قادر به ارسال پاسخ نخواهند بود. اگر دانشجویی این آزمون را بیش از ۵ دقیقه دیرتر آغاز کند، تایمر معکوس در آزمون او زمان باقی‌مانده تا موعد مقرر را منعکس خواهد کرد.
+- اگر دانشجویی در طول آزمون به‌طور تصادفی مرورگر وب خود را ببندد، می‌تواند مجدداً PrairieLearn را باز کند و از همان‌جایی که کار را رها کرده بود ادامه دهد. آن‌ها همچنین می‌توانند کامپیوتر خود را عوض کرده و همان آزمون را ادامه دهند. زمان تایمر هنگام بسته بودن مرورگر متوقف نمی‌شود.
+- به یاد داشته باشید که برای دانشجویان دارای تسهیلات زمان اضافه، هم مهلت تحویل و هم محدودیت زمانی را افزایش دهید.
+- پس از اتمام تایمر، آزمون به‌طور خودکار بسته می‌شود و سوالات ذخیره‌شده‌ای که هنوز نمره‌دهی نشده‌اند را نمره‌دهی می‌کند. دانشجویان پس از پایان تایمر خود یا پس از فرارسیدن مهلت مقرر (هرکدام که زودتر پیش آید) نمی‌توانند پاسخی ارسال کنند. پس از تکمیل ارزیابی، دانشجویان می‌توانند نمره نهایی خود را ببینند اما نمی‌توانند سوالات را بازبینی نمایند.
+- اگر دانشجویی قبل از تکمیل آزمون مرورگر وب خود را ببندد، آزمون او ظرف مدت ۱۲ دقیقه پس از پایان تایمرش به‌صورت خودکار بسته شده و نمره‌دهی خواهد شد. اگر آن‌ها سعی کنند در این مدت به آزمون خود دسترسی پیدا کنند، آزمون بلافاصله بسته و نمره‌دهی می‌شود.
+- پیش از دانلود نمرات نهایی، حداقل ۱۲ دقیقه پس از زمانی که آخرین دانشجو کارش تمام می‌شد صبر کنید تا اطمینان حاصل شود که تمام آزمون‌ها بسته شده‌اند. همچنین می‌توانید وضعیت آزمون‌ها را در صفحه **Students** در ارزیابی مورد نظر در PrairieLearn بررسی کرده و آن‌ها را دستی ببندید.
+- از آنجا که هیچ حالت ارسالی برای پس از موعد تحویل پیکربندی نشده است، ارسال پاسخ پس از تاریخ موعد مجاز نیست. تنظیم **Question visibility** سوالات آزمون تکمیل‌شده را پنهان نگه می‌دارد در حالی که نمره کل به‌طور پیش‌فرض قابل مشاهده است. این تنظیم مانع از دیدن سوالات یا بازخورد نمره‌دهی توسط دانشجو هنگام شرکت در آزمون نمی‌شود.
 
 ??? info "JSON"
 
-    This reference shows an extra-time label override and an alternate-window override for specific students.
+    این مرجع یک بازنویسی برچسب برای زمان اضافه و یک بازنویسی بازه جایگزین برای دانشجویان مشخص را نشان می‌دهد.
 
     ```json title="infoAssessment.json"
     {
@@ -182,42 +182,42 @@ Some notes about this configuration:
     }
     ```
 
-## Asynchronous, timed exams
+## آزمون‌های زمان‌دار ناهمگام
 
-We do **NOT** recommend running high-stakes exams using this configuration. While giving exams asynchronously will simplify exam administration and provide students with more flexibility, it comes at the expense of making it easier to cheat. We recommend [synchronous, timed exams](#synchronous-timed-exams) unless you have a secure testing environment.
+ما اجرای آزمون‌های سرنوشت‌ساز و پرریسک را با استفاده از این پیکربندی توصیه **نمی‌کنیم**. اگرچه برگزاری ناهمگام آزمون‌ها روند اداره آزمون را آسان‌تر کرده و انعطاف‌پذیری بیشتری در اختیار دانشجویان می‌گذارد، اما این مزیت به قیمت ساده‌تر شدن تقلب تمام می‌شود. ما [آزمون‌های زمان‌دار همگام](#synchronous-timed-exams) را توصیه می‌کنیم مگر آنکه یک محیط آزمون امن در اختیار داشته باشید.
 
-This configuration is good when:
+این پیکربندی در شرایط زیر مناسب است:
 
-- Students can choose when to take the exam over a long period, typically about 24 hours.
-- Once a student starts working on the exam, they have limited time, such as 1 hour.
-- Some students have accommodations, such as 1.5x time.
-- There is no need for alternate exam windows because students can choose their own time.
+- دانشجویان می‌توانند زمان شرکت در آزمون را در یک بازه طولانی، معمولاً حدود ۲۴ ساعت، انتخاب کنند.
+- به محض اینکه دانشجو کار روی آزمون را شروع کند، زمان محدودی دارد، مانند ۱ ساعت.
+- برخی دانشجویان تسهیلات دارند، مانند زمان ۱.۵ برابری.
+- نیازی به بازه‌های زمانی جایگزین وجود ندارد زیرا دانشجویان می‌توانند زمان مناسب خود را انتخاب نمایند.
 
 !!! warning
 
-    Use student-label overrides only for cohorts that are already maintained as labels or should intentionally be reused across assessments. Otherwise, use student-specific overrides. If a student matches multiple label overrides, [override priority](accessControl.md#override-priority) determines which settings apply.
+    از بازنویسی‌های برچسب دانشجو فقط برای گروه‌هایی استفاده کنید که از قبل به عنوان برچسب نگهداری شده‌اند یا هدفمندانه قرار است در چند ارزیابی مجدداً استفاده شوند. در غیر این صورت، از بازنویسی‌های مختص دانشجو استفاده کنید. اگر یک دانشجو با چند بازنویسی برچسب مطابقت داشته باشد، [اولویت بازنویسی‌ها](accessControl.md#override-priority) مشخص می‌کند کدام تنظیمات اعمال شوند.
 
-In the UI:
+در رابط کاربری:
 
-1. On the assessment **Access** page, click **Edit** in **Defaults**.
-2. Enable **Date control**.
-3. Set **Release** to the start of the availability period, such as Apr 20 at 6:00am.
-4. Set **Due date** to the end of the availability period, such as Apr 21 at 6:00am.
-5. Enable **Time limit** and enter the ordinary working time, such as 60 minutes.
-6. Leave **After due date** set to **No submissions allowed**.
-7. Under **After completion**, set **Question visibility** to **Hide questions permanently**.
-8. For students with extra-time accommodations, click **Add override**. Choose **Students by label** if you already maintain an accommodation label such as "Extended time"; otherwise choose **Specific students**.
-9. In the extra-time override, click **Override** next to **Time limit** and enter the accommodated working time, such as 90 minutes.
-10. Click **Save**.
+1. در صفحه **Access** ارزیابی، در بخش **Defaults** روی **Edit** کلیک کنید.
+2. گزینه **Date control** را فعال کنید.
+3. مقدار **Release** را روی شروع بازه دسترسی، مثلاً ۲۰ آوریل ساعت ۶:۰۰ صبح تنظیم کنید.
+4. مقدار **Due date** را روی پایان بازه دسترسی، مثلاً ۲۱ آوریل ساعت ۶:۰۰ صبح تنظیم نمایید.
+5. گزینه **Time limit** را فعال کرده و زمان کار معمول، مانند ۶۰ دقیقه را وارد کنید.
+6. گزینه **After due date** را روی **No submissions allowed** قرار دهید.
+7. در بخش **After completion**، گزینه **Question visibility** را روی **Hide questions permanently** تنظیم کنید.
+8. برای دانشجویان دارای تسهیلات زمان اضافه، روی **Add override** کلیک کنید. اگر از قبل برچسب تسهیلاتی مانند "Extended time" را نگهداری می‌کنید، گزینه **Students by label** را برگزینید؛ در غیر این صورت **Specific students** را انتخاب نمایید.
+9. در بازنویسی زمان اضافه، روی **Override** در کنار **Time limit** کلیک کرده و مدت زمان مجاز بر اساس تسهیلات، مانند ۹۰ دقیقه را وارد کنید.
+10. روی **Save** کلیک کنید.
 
-Some notes about this configuration:
+چند نکته در مورد این پیکربندی:
 
-- All of the [notes above](#synchronous-timed-exams) still apply.
-- For long asynchronous windows, consider running the exam early-morning to early-morning, with a due date around 6am. Students are less likely to be active between about 4am and 7am, based on PrairieLearn usage data, so this can reduce end-of-window pile-ups and confusion about exactly when the exam closes.
+- تمام [نکات بالا](#synchronous-timed-exams) همچنان در این مورد نیز برقرار هستند.
+- برای بازه‌های طولانی ناهمگام، در نظر داشته باشید که آزمون را از صبح زود تا صبح زود بعدی اجرا نمایید، با مهلت تحویلی در حدود ساعت ۶ صبح. بر اساس داده‌های مصرف PrairieLearn، احتمال فعالیت دانشجویان بین ساعت ۴ تا ۷ صبح کمتر است؛ بنابراین این رویکرد می‌تواند ازدحام اواخر مهلت آزمون و سردرگمی در مورد زمان دقیق بسته شدن آزمون را کاهش دهد.
 
 ??? info "JSON"
 
-    This reference shows the reusable-accommodation version using a student label.
+    این مرجع نسخه تسهیلات قابل استفاده مجدد با استفاده از برچسب دانشجو را نشان می‌دهد.
 
     ```json title="infoAssessment.json"
     {
@@ -243,44 +243,44 @@ Some notes about this configuration:
     }
     ```
 
-## Post-graded exams
+## آزمون‌های نمره‌دهی مؤخر
 
-This post-graded configuration is **NOT** our recommended approach, but it is good for mimicking traditional pen-and-paper exams. Exams run in this manner forfeit the ability to provide immediate feedback as well as partial credit to students. Instead, we recommend [synchronous, timed exams](#synchronous-timed-exams).
+این پیکربندی با نمره‌دهی مؤخر رویکرد توصیه‌شده ما **نیست**، اما برای شبیه‌سازی آزمون‌های سنتی قلم و کاغذی مناسب است. آزمون‌هایی که به این شیوه برگزار می‌شوند امکان ارائه بازخورد فوری و همچنین نمره بخشی به دانشجویان را از دست می‌دهند. در عوض، ما [آزمون‌های زمان‌دار همگام](#synchronous-timed-exams) را پیشنهاد می‌کنیم.
 
-This configuration is good when:
+این پیکربندی در موارد زیر کاربرد دارد:
 
-- You want to mimic a pen-and-paper exam as much as possible.
-- You have a Scantron exam you would like to convert to PrairieLearn.
-- You want to prevent students from finding out which questions they answered correctly.
-- The exam only contains multiple-choice questions or very simple numeric questions. More complex questions need to allow students multiple attempts, which this configuration disables by turning off real-time grading.
+- می‌خواهید تا حد امکان یک آزمون قلم و کاغذی را شبیه‌سازی کنید.
+- آزمون تستی پاسخ‌برگی (مانند Scantron) دارید که مایلید آن را به PrairieLearn تبدیل نمایید.
+- می‌خواهید مانع از آگاهی دانشجویان از این موضوع شوید که به کدام سوالات پاسخ درست داده‌اند.
+- آزمون تنها شامل سوالات چندگزینه‌ای یا سوالات عددی بسیار ساده است. سوالات پیچیده‌تر نیازمند آن هستند که به دانشجویان اجازه چندین بار تلاش داده شود، که این پیکربندی با خاموش کردن نمره‌دهی در لحظه، آن را غیرفعال می‌سازد.
 
-In the UI:
+در رابط کاربری:
 
-1. On the assessment **Settings** page, under **Grading**, clear **Allow real-time grading** and save the settings.
-2. On the assessment **Access** page, click **Edit** in **Defaults**.
-3. Enable **Date control**.
-4. Set **Release** to the exam start time, such as Apr 20 at 11:00am.
-5. Set **Due date** to the exam end time, such as Apr 20 at 12:10pm.
-6. Enable **Time limit** and enter the ordinary working time, such as 60 minutes.
-7. Under **After completion**, set **Question visibility** to **Hide questions permanently**.
-8. For students with extra-time accommodations, click **Add override**. Choose **Students by label** if you already maintain an accommodation label such as "Extended time"; otherwise choose **Specific students**.
-9. In the extra-time override, click **Override** next to **Due date** and **Time limit**. For 1.5x time on a 60-minute exam, use a 90-minute time limit and extend the due date to cover that time.
-10. For students taking the exam in an alternate window, click **Add override**. Choose **Specific students** unless this is a reusable cohort that should be managed by label.
-11. In the alternate-window override, click **Override** next to **Release**, **Due date**, and **Time limit** for the alternate exam window.
-12. Click **Save**.
+1. در صفحه **Settings** ارزیابی، در زیر بخش **Grading**، تیک گزینه **Allow real-time grading** را بردارید و تنظیمات را ذخیره نمایید.
+2. در صفحه **Access** ارزیابی، در بخش **Defaults** روی **Edit** کلیک کنید.
+3. گزینه **Date control** را فعال کنید.
+4. مقدار **Release** را روی زمان شروع آزمون، مانند ۲۰ آوریل ساعت ۱۱:۰۰ صبح تنظیم نمایید.
+5. مقدار **Due date** را روی زمان اتمام آزمون، مانند ۲۰ آوریل ساعت ۱۲:۱۰ بعدازظهر تنظیم نمایید.
+6. گزینه **Time limit** را فعال کرده و زمان معمول کار، مانند ۶۰ دقیقه را وارد کنید.
+7. در بخش **After completion**، گزینه **Question visibility** را روی **Hide questions permanently** تنظیم کنید.
+8. برای دانشجویان دارای تسهیلات زمان اضافه، روی **Add override** کلیک کنید. اگر از قبل برچسب تسهیلاتی مانند "Extended time" را نگهداری می‌کنید، گزینه **Students by label** را انتخاب کنید؛ در غیر این صورت **Specific students** را انتخاب نمایید.
+9. در بازنویسی زمان اضافه، روی **Override** در کنار **Due date** و **Time limit** کلیک کنید. برای زمان ۱.۵ برابری در یک آزمون ۶۰ دقیقه‌ای، از محدودیت زمانی ۹۰ دقیقه استفاده کنید و مهلت تحویل را برای پوشش دادن این زمان افزایش دهید.
+10. برای دانشجویانی که در یک بازه زمانی جایگزین آزمون می‌دهند، روی **Add override** کلیک کنید. گزینه **Specific students** را انتخاب کنید مگر اینکه یک گروه قابل استفاده مجدد باشد که باید با برچسب مدیریت شود.
+11. در بازنویسی بازه زمانی جایگزین، روی **Override** در کنار **Release**، **Due date** و **Time limit** برای بازه آزمون جایگزین کلیک کنید.
+12. روی **Save** کلیک کنید.
 
-Some notes about this configuration:
+چند نکته در مورد این پیکربندی:
 
-- Clearing **Allow real-time grading** hides the **Save & Grade** button on student question pages; only the **Save** button will be available. The **Grade saved answers** button on the assessment overview will also be hidden.
-- When they are doing the exam, students can save answers to a question as many times as they like. When the exam finishes, the most recent saved answer for each question, if any, will be graded. Any earlier saved answers will be ignored.
-- With this configuration students will never see their grading results for specific questions. This is because real-time grading is disabled during the exam, and **Question visibility** hides per-question grading results after the exam is over.
-- To prevent students from seeing their total exam score after their assessment is graded, set **Score visibility** to **Hide score permanently**; otherwise the students will see their total score even if the per-question results are hidden.
-- Having real-time grading disabled means that students are unable to re-attempt questions. This means you should not include complex numeric or programming questions, because students will often need multiple attempts at a question after grading feedback to correct minor typos and errors.
-- It's possible to also combine this configuration with [asynchronous, timed](#asynchronous-timed-exams) by clearing **Allow real-time grading** on the assessment **Settings** page.
+- برداشتن تیک **Allow real-time grading** دکمه **Save & Grade** را در صفحات سوالات دانشجویان پنهان می‌کند؛ تنها دکمه **Save** در دسترس خواهد بود. دکمه **Grade saved answers** در نمای کلی ارزیابی نیز پنهان خواهد شد.
+- هنگام برگزاری آزمون، دانشجویان می‌توانند پاسخ‌های یک سوال را هر چند بار که بخواهند ذخیره کنند. با پایان یافتن آزمون، آخرین پاسخ ذخیره‌شده برای هر سوال (در صورت وجود) نمره‌دهی خواهد شد. پاسخ‌های ذخیره‌شده قبلی نادیده گرفته می‌شوند.
+- با این پیکربندی دانشجویان هرگز نتایج نمره‌دهی را برای سوالات خاص مشاهده نخواهند کرد. این به این دلیل است که نمره‌دهی همزمان در طول آزمون غیرفعال است و **Question visibility** نتایج نمره‌دهی هر سوال را پس از اتمام آزمون پنهان می‌کند.
+- برای جلوگیری از مشاهده نمره کل آزمون توسط دانشجویان پس از نمره‌دهی ارزیابی، گزینه **Score visibility** را روی **Hide score permanently** تنظیم کنید؛ در غیر این صورت حتی اگر نتایج تک‌تک سوالات پنهان باشد، دانشجویان نمره کل خود را مشاهده خواهند کرد.
+- غیرفعال بودن نمره‌دهی همزمان به این معناست که دانشجویان قادر به تلاش مجدد برای سوالات نیستند. این یعنی شما نباید سوالات عددی پیچیده یا برنامه‌نویسی قرار دهید، زیرا دانشجویان اغلب پس از دریافت بازخورد نمره‌دهی برای تصحیح اشتباهات جزئی و خطاهای تایپی به چندین تلاش نیاز دارند.
+- همچنین می‌توان این پیکربندی را با [آزمون‌های زمان‌دار ناهمگام](#asynchronous-timed-exams) از طریق غیرفعال کردن **Allow real-time grading** در صفحه **Settings** ارزیابی ترکیب کرد.
 
 ??? info "JSON"
 
-    This reference shows an extra-time label override and an alternate-window override for specific students.
+    این مرجع یک بازنویسی برچسب برای زمان اضافه و یک بازنویسی بازه جایگزین برای دانشجویان مشخص را نشان می‌دهد.
 
     ```json title="infoAssessment.json"
     {

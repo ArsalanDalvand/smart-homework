@@ -1,14 +1,14 @@
-# Content sharing
+# اشتراک‌گذاری محتوا (Content sharing)
 
-To allow instructors to share their course content with others and to avoid instructors needing to copy question files in between courses, PrairieLearn provides a way for questions from one course to be used in assessments in other courses.
+برای اینکه مدرسان بتوانند محتوای درسی خود را با دیگران به اشتراک بگذارند و از نیاز مدرسان به کپی کردن دستی فایل‌های سوال بین درس‌های مختلف جلوگیری شود، PrairieLearn روشی فراهم کرده است که می‌توان از سوالات یک درس در ارزیابی‌های درس‌های دیگر استفاده کرد.
 
-## Using shared questions
+## استفاده از سوالات به اشتراک‌گذاشته‌شده
 
-You can use a shared question by referencing it from an assessment, or by copying it when source copying is allowed. A reference uses the question maintained in the source course; a copy is a separate question in your course that you can edit independently.
+شما می‌توانید با ارجاع دادن به یک سوال در یک ارزیابی، یا کپی کردن آن (در صورتی که کپی سورس‌کد مجاز باشد)، از یک سوال به اشتراک‌گذاشته‌شده استفاده کنید. ارجاع (Reference) از سوال نگهداری‌شده در درس مبدأ استفاده می‌کند؛ در حالی که کپی (Copy) یک سوال مجزا در درس شما ایجاد می‌کند که می‌توانید آن را به صورت مستقل ویرایش کنید.
 
-### Using a question by reference
+### استفاده از یک سوال از طریق ارجاع (By Reference)
 
-To refer to a question from another course, use the question ID (qid) prefixed by the `@` symbol and the sharing name of the other course. For example, to use the question `addNumbers` from the course with sharing name `test-course`, you would put `@test-course/addNumbers` into your `assessmentInfo.json`. In the context of the `assessmentInfo.json`, this may look like:
+برای ارجاع به سوالی از یک درس دیگر، از شناسه سوال (QID) که با نماد `@` و نام اشتراک‌گذاری (Sharing name) درس مبدأ پیشوند شده است استفاده کنید. به عنوان مثال، برای استفاده از سوال `addNumbers` از درسی با نام اشتراک‌گذاری `test-course`، باید عبارت `@test-course/addNumbers` را در فایل `assessmentInfo.json` خود قرار دهید. در داخل `assessmentInfo.json`، این ساختار به صورت زیر خواهد بود:
 
 ```json title="assessmentInfo.json"
 {
@@ -25,15 +25,15 @@ To refer to a question from another course, use the question ID (qid) prefixed b
 }
 ```
 
-### Copying a shared question
+### کپی کردن یک سوال به اشتراک‌گذاشته‌شده
 
-When a question's source code is shared with your course, you can make a copy to edit independently. On the question's Settings page, choose **Make a copy** and select the destination course. Changes to your copy do not affect the source question, and later changes to the source are not automatically applied to your copy.
+هنگامی که سورس‌کد یک سوال با درس شما به اشتراک گذاشته می‌شود، می‌توانید یک نسخه کپی از آن تهیه کنید تا به صورت مستقل ویرایش شود. در صفحه Settings سوال، گزینه **Make a copy** را انتخاب کرده و درس مقصد را مشخص کنید. تغییرات اعمال‌شده در نسخه کپی شما بر سوال مبدأ تأثیری نخواهد داشت، و تغییرات بعدی در سوال مبدأ نیز به طور خودکار بر نسخه کپی شما اعمال نخواهند شد.
 
-When you copy a question into another course, PrairieLearn records its source in `copiedFrom` and removes the copied `authors` list. This also applies to questions copied when adopting a course instance. Copying within the same course preserves existing authors and `copiedFrom`.
+هنگامی که سوالی را در درس دیگری کپی می‌کنید، PrairieLearn مبدأ آن را در فیلد `copiedFrom` ثبت کرده و فهرست نویسندگان (`authors`) کپی‌شده را حذف می‌کند. این قاعده همچنین برای سوالاتی که هنگام اتخاذ (Adoption) یک دوره کپی می‌شوند نیز اعمال می‌شود. کپی کردن در داخل همان درس، نویسندگان فعلی و مقدار `copiedFrom` را حفظ می‌کند.
 
-### Question-copy provenance
+### اصالت و پیشینه سوال کپی‌شده (Question-copy provenance)
 
-The optional `copiedFrom` field in a question's `info.json` identifies the question it was copied from:
+فیلد اختیاری `copiedFrom` در فایل `info.json` یک سوال، سوال مبدأیی را که از آن کپی شده است مشخص می‌کند:
 
 ```json title="info.json (partial)"
 {
@@ -41,86 +41,86 @@ The optional `copiedFrom` field in a question's `info.json` identifies the quest
 }
 ```
 
-The first UUID identifies the source course, and the second identifies the source question. Everything after the second UUID is optional text for readers, such as the source question's QID. Renaming that QID does not break the reference. A value containing just the two UUIDs is also valid.
+اولین شناسه UUID مشخص‌کننده درس مبدأ و دومین UUID مشخص‌کننده سوال مبدأ است. هر متنی که بعد از شناسه دوم قرار گیرد، متنی اختیاری و کمکی برای خوانندگان است؛ مانند QID سوال مبدأ. تغییر نام آن QID این ارجاع را مختل نمی‌کند. مقداری که صرفاً شامل دو شناسه UUID باشد نیز معتبر است.
 
-If you copy a question that was itself copied, the new copy points to the question you copied directly. For example, copying from course A to B, then from B to C, records B's question as C's source.
+اگر سوالی را کپی کنید که خود قبلاً کپی شده بوده است، نسخه کپی جدید به سوالی اشاره می‌کند که مستقیماً از آن کپی گرفته‌اید. به عنوان مثال، کپی از درس A به B و سپس از B به C، سوال موجود در B را به عنوان مبدأ C ثبت می‌کند.
 
-You can edit or remove this field. It records the declared source of a copy; it does not verify authorship or grant access to the source question. It does not change the sharing-name syntax used to reference shared questions in assessments.
+شما می‌توانید این فیلد را ویرایش یا حذف کنید. این فیلد صرفاً مبدأ اعلام‌شده یک نسخه کپی را ثبت می‌کند؛ این کار اصالت نویسنده را تأیید نکرده و دسترسی جدیدی به سوال مبدأ اعطا نمی‌کند. همچنین سینتکس نام اشتراک‌گذاری که برای ارجاع به سوالات اشتراکی در ارزیابی‌ها استفاده می‌شود را تغییر نمی‌دهد.
 
-## Sharing questions
+## اشتراک‌گذاری سوالات
 
-!!! info
+!!! info "اطلاعیه"
 
-    Sharing your own questions and assessments is a Beta feature. If your course is hosted on the official PrairieLearn server, you may request that question sharing be turned on for your course. If you administer your own PrairieLearn server, you should _not_ use question sharing at this time. In the future, question sharing may be supported across PrairieLearn servers, so turning on question sharing on unofficial servers at this point in time may lead to naming conflicts in the future.
+    اشتراک‌گذاری سوالات و ارزیابی‌های اختصاصی خود در حال حاضر یک قابلیت آزمایشی (Beta) است. اگر درس شما روی سرور رسمی PrairieLearn میزبانی می‌شود، می‌توانید درخواست کنید قابلیت اشتراک‌گذاری سوال برای درس شما فعال گردد. اگر سرور اختصاصی PrairieLearn خود را مدیریت می‌کنید، در حال حاضر نباید از اشتراک‌گذاری سوال استفاده کنید. در آینده ممکن است اشتراک‌گذاری سوال بین سرورهای مختلف PrairieLearn پشتیبانی شود؛ بنابراین فعال‌سازی آن در سرورهای غیررسمی در این زمان ممکن است در آینده به تداخل نام منجر شود.
 
-### Sharing names
+### نام‌های اشتراک‌گذاری (Sharing names)
 
-In order for another course to use questions from your course in their assessments, you must choose a _sharing name_ for your course that they will use as a prefix to your question IDs. This sharing name will be unique across all PrairieLearn instances. Sharing names must be 1–64 characters long and contain only ASCII letters, digits, hyphens, or underscores. It is recommended that you choose something short but descriptive. For example, if you're teaching a calculus course at a university that goes by the abbreviation "XYZ", then you could choose the sharing name "xyz-calculus". Then other courses will use questions from your course with the syntax `@xyz-calculus/qid`.
+برای اینکه درس دیگری بتواند از سوالات درس شما در ارزیابی‌های خود استفاده کند، باید یک *نام اشتراک‌گذاری* (Sharing name) برای درس خود انتخاب کنید که آن‌ها به عنوان پیشوند برای شناسه‌های سوال شما به کار ببرند. این نام اشتراک‌گذاری در تمام نمونه‌های PrairieLearn یکتا خواهد بود. نام‌های اشتراک‌گذاری باید بین ۱ تا ۶۴ کاراکتر طول داشته و تنها شامل حروف ASCII، اعداد، خط تیره (-) یا زیرخط (_) باشند. توصیه می‌شود نامی کوتاه اما توصیفی انتخاب کنید. به عنوان مثال، اگر در حال تدریس درسی در زمینه حساب دیفرانسیل و انتگرال در دانشگاهی با مخفف "XYZ" هستید، می‌توانید نام اشتراک‌گذاری "xyz-calculus" را انتخاب کنید. سپس درس‌های دیگر می‌توانند با سینتکس `@xyz-calculus/qid` از سوالات درس شما استفاده کنند.
 
-Course owners can choose or change the sharing name on the "Sharing" tab of the course settings page. An existing sharing name can be changed only while no question in the course is shared publicly (including source-code sharing) or included in a sharing set. This restriction protects references to shared questions in other courses, even if no other course is currently using them.
+مالکان درس می‌توانند نام اشتراک‌گذاری را در برگه "Sharing" از صفحه تنظیمات درس انتخاب کرده یا تغییر دهند. نام اشتراک‌گذاری موجود تنها زمانی قابل تغییر است که هیچ سوالی در درس به صورت عمومی به اشتراک گذاشته نشده باشد (شامل اشتراک‌گذاری سورس‌کد) یا در یک مجموعه اشتراک‌گذاری (Sharing set) قرار نگرفته باشد. این محدودیت برای محافظت از ارجاعات به سوالات اشتراکی در سایر درس‌هاست، حتی اگر در حال حاضر هیچ درس دیگری از آن‌ها استفاده نکند.
 
-### Two ways to share: publicly or through "Sharing sets"
+### دو روش برای اشتراک‌گذاری: عمومی یا از طریق «مجموعه‌های اشتراک‌گذاری»
 
-Questions can either be shared publicly so that anyone can preview the questions and use them in their course, or shared only to specific other courses using sharing sets.
+سوالات می‌توانند به صورت عمومی به اشتراک گذاشته شوند تا هر کاربری بتواند سوالات را پیش‌نمایش کرده و در درس خود استفاده کند، یا اینکه فقط با درس‌های خاصی از طریق مجموعه‌های اشتراک‌گذاری به اشتراک گذاشته شوند.
 
-Any question that is marked for sharing will be considered and displayed as being published for free use under a Creative Commons license ([CC-BY-NC-ND](https://www.creativecommons.org/licenses/by-nc-nd/4.0/) for `"sharePublicly": true`, [CC-BY-NC](https://www.creativecommons.org/licenses/by-nc/4.0/) for `"shareSourcePublicly": true`). This license is granted in addition to the [User Content License](https://www.prairielearn.com/legal/terms#3-user-content-license-grant) described by the PrairieLearn Terms of Service. We recommend adding an `authors` field to the [metadata](question/overview.md#metadata-infojson) of shared questions to allow attribution of the original author(s).
+هر سوالی که برای اشتراک‌گذاری مشخص شود، به عنوان محتوایی که برای استفاده رایگان تحت مجوز Creative Commons منتشر شده است در نظر گرفته شده و نمایش داده می‌شود ([CC-BY-NC-ND](https://www.creativecommons.org/licenses/by-nc-nd/4.0/) برای `"sharePublicly": true`، و [CC-BY-NC](https://www.creativecommons.org/licenses/by-nc/4.0/) برای `"shareSourcePublicly": true`). این مجوز علاوه بر [مجوز محتوای کاربر (User Content License)](https://www.prairielearn.com/legal/terms#3-user-content-license-grant) شرح داده شده در شرایط خدمات PrairieLearn اعطا می‌شود. ما توصیه می‌کنیم فیلد `authors` را به [متادیتا](question/overview.md#metadata-infojson) سوالات به اشتراک گذاشته شده اضافه کنید تا امکان ارجاع و انتساب به نویسنده یا نویسندگان اصلی فراهم باشد.
 
-### Sharing sets
+### مجموعه‌های اشتراک‌گذاری (Sharing sets)
 
-Access to shared questions which are not shared publicly is controlled through **sharing sets**. A sharing set is a named set of questions which you can share to another course all at once. The sharing set system exists so that course owners may differentially share different sets of their questions. For example, an instructor may want to share some questions only with other courses in their department, and other questions with anyone using PrairieLearn. Sharing sets are created by adding them to the [`infoCourse.json` file](course/index.md#sharing-sets).
+دسترسی به سوالات اشتراکی که به صورت عمومی به اشتراک گذاشته نشده‌اند، از طریق **مجموعه‌های اشتراک‌گذاری (Sharing sets)** کنترل می‌شود. یک مجموعه اشتراک‌گذاری، دسته‌ای نام‌گذاری‌شده از سوالات است که می‌توانید همه آن‌ها را یکجا با درس دیگری به اشتراک بگذارید. سیستم مجموعه‌های اشتراک‌گذاری به این منظور ایجاد شده است که مالکان درس بتوانند مجموعه‌های مختلف سوالات خود را به صورت مجزا به اشتراک بگذارند. به عنوان مثال، یک مدرس ممکن است بخواهد برخی سوالات را فقط با درس‌های دیگر در دانشکده خود، و سوالات دیگر را با تمام کاربران PrairieLearn به اشتراک بگذارد. مجموعه‌های اشتراک‌گذاری با افزودن آنها به [فایل `infoCourse.json`](course/index.md#sharing-sets) ساخته می‌شوند.
 
-### Sharing a sharing set with another course
+### به اشتراک گذاشتن یک مجموعه اشتراک‌گذاری با درسی دیگر
 
-For security reasons, establishing the connection for one course to share questions with another course requires coordinated action by owners of the course sharing the questions (which we will refer to hereafter as the "sharing course") and the course that is using the questions that are being shared ('which we will refer to hereafter as the "consuming course")
+به دلایل امنیتی، برقراری اتصال برای اینکه یک درس سوالاتی را با درس دیگری به اشتراک بگذارد، مستلزم اقدام هماهنگ مالکان درسی که سوالات را به اشتراک می‌گذارد (که از این پس به آن «درس اشتراک‌گذارنده» می‌گوییم) و درسی که از سوالات استفاده می‌کند (که از این پس به آن «درس مصرف‌کننده» می‌گوییم) است.
 
-To allow someone to share their questions with your course, you must provide them with the "Sharing Token" listed on the "Sharing" tab of your instructor settings page. Then the sharing course must use the sharing token which you provide to them to add your course as a consumer of one of their sharing sets.
+برای اینکه به کسی اجازه دهید سوالات خود را با درس شما به اشتراک بگذارد، باید "Sharing Token" (توکن اشتراک‌گذاری) مندرج در برگه "Sharing" صفحه تنظیمات مدرس خود را در اختیار او قرار دهید. سپس درس اشتراک‌گذارنده باید با استفاده از توکن اشتراک‌گذاری که شما ارائه داده‌اید، درس شما را به عنوان مصرف‌کننده یکی از مجموعه‌های اشتراک‌گذاری خود اضافه کند.
 
-### Client and server files
+### فایل‌های کلاینت و سرور (Client and server files)
 
-Questions that make use of `clientFilesQuestion` and `serverFilesCourse` will work as expected. Using `clientFilesCourse` in a question is not supported at this time.
+سوالاتی که از `clientFilesQuestion` و `serverFilesCourse` استفاده می‌کنند طبق انتظار کار خواهند کرد. استفاده از `clientFilesCourse` در یک سوال در حال حاضر پشتیبانی نمی‌شود.
 
-If a sharing course attempts to share a question which accesses client or server files associated with a course instance or an assessment, the question will not work as expected because the consuming course can not use it within the context of the sharing course's course instance or assessment.
+اگر یک درس اشتراک‌گذارنده تلاش کند سوالی را به اشتراک بگذارد که به فایل‌های کلاینت یا سرور مرتبط با یک دوره (Course Instance) یا یک ارزیابی دسترسی دارد، سوال طبق انتظار کار نخواهد کرد زیرا درس مصرف‌کننده نمی‌تواند از آن در چارچوب دوره یا ارزیابی درس اشتراک‌گذارنده استفاده کند.
 
-See the [client and server files documentation](clientServerFiles.md) for general information about client and server files.
+برای کسب اطلاعات عمومی درباره فایل‌های کلاینت و سرور، به [مستندات فایل‌های کلاینت و سرور](clientServerFiles.md) مراجعه کنید.
 
-Just as anyone with access to a question in your course can access any file in `clientFilesQuestion`, anyone with permissions to any of the questions you have shared from your course may also access these `clientFilesQuestion` files. This means that if you have any questions from your course that are publicly shared, anyone with access to the internet can access the `clientFilesQuestion` directories for these questions. Additionally, anyone with access to a question shared from your course will be able to access the client assets in your custom course elements, just as any students with access to your course can access the client assets in your custom course elements.
+همان‌طور که هر فرد دارای دسترسی به یک سوال در درس شما می‌تواند به هر فایلی در `clientFilesQuestion` دسترسی داشته باشد، هر فردی که به هر یک از سوالات اشتراک‌گذاشته‌شده درس شما دسترسی دارد نیز می‌تواند به این فایل‌های `clientFilesQuestion` دسترسی یابد. این بدان معناست که اگر سوالاتی از درس شما وجود دارند که به صورت عمومی به اشتراک گذاشته شده‌اند، هر کسی در اینترنت می‌تواند به دایرکتوری‌های `clientFilesQuestion` آن سوالات دسترسی داشته باشد. علاوه بر این، هر فرد دارای دسترسی به یک سوال به اشتراک گذاشته شده از درس شما، قادر خواهد بود به دارایی‌های کلاینت در المان‌های سفارشی درس شما دسترسی پیدا کند؛ دقیقاً همان‌طور که دانشجویان دارای دسترسی به درس شما می‌توانند به دارایی‌های کلاینت المان‌های سفارشی دسترسی داشته باشند.
 
-### Steps to share a question to a course, using a sharing set
+### مراحل اشتراک‌گذاری یک سوال با یک درس با استفاده از یک مجموعه اشتراک‌گذاری
 
-**Note:** Once a question is added to a sharing set, the question cannot be renamed, deleted, or removed from the sharing set because doing so could break the assessments of people who have used the shared question.
+**نکته:** پس از افزودن یک سوال به یک مجموعه اشتراک‌گذاری، نمی‌توان سوال را تغییر نام داد، حذف کرد یا از مجموعه اشتراک‌گذاری خارج نمود؛ چرا که انجام این کار می‌تواند ارزیابی‌های افرادی را که از آن سوال اشتراکی استفاده کرده‌اند مختل کند.
 
-1. On your course settings page, visit the "Sharing" tab.
-2. Choose a sharing name for your course.
-3. Create a sharing set by adding it to your course's `infoCourse.json` file.
-4. Have the instructor or the course you would like to share your question with visit the "Sharing" tab on their course settings page and provide you with their course's sharing token.
-5. Use the provided sharing token to add the other instructor's course as a consumer of the sharing set you created.
-6. Add the sharing set to the `sharingSets` list in `info.json` file of the questions you would like to share.
-7. The course you have shared the question with may now use it by referencing it in their assessments.
+۱. در صفحه تنظیمات درس خود، به برگه "Sharing" بروید.
+۲. یک نام اشتراک‌گذاری (Sharing name) برای درس خود انتخاب کنید.
+۳. با افزودن مجموعه اشتراک‌گذاری به فایل `infoCourse.json` درس خود، یک مجموعه اشتراک‌گذاری ایجاد کنید.
+۴. از مدرس درسی که می‌خواهید سوال خود را با او به اشتراک بگذارید بخواهید به برگه "Sharing" در صفحه تنظیمات درس خود رفته و توکن اشتراک‌گذاری درس خود را در اختیارتان قرار دهد.
+۵. با استفاده از توکن اشتراک‌گذاری ارائه‌شده، درس مدرس دیگر را به عنوان مصرف‌کننده مجموعه اشتراک‌گذاری ساخته‌شده اضافه کنید.
+۶. مجموعه اشتراک‌گذاری را به فهرست `sharingSets` در فایل `info.json` سوالاتی که می‌خواهید به اشتراک بگذارید اضافه کنید.
+۷. درسی که سوال را با آن به اشتراک گذاشته‌اید اکنون می‌تواند با ارجاع به آن در ارزیابی‌های خود، از آن استفاده کند.
 
-### Steps to share a question publicly
+### مراحل اشتراک‌گذاری عمومی یک سوال
 
-**Note:** Once a question is publicly shared, the question cannot be renamed, deleted, or un-publicly shared because doing so could break the assessments of people who have used the shared question. Sharing the source code of a question may be un-done.
+**نکته:** پس از اینکه یک سوال به صورت عمومی به اشتراک گذاشته شد، نمی‌توان آن را تغییر نام داد، حذف کرد یا از حالت اشتراک عمومی خارج نمود؛ چرا که این کار می‌تواند ارزیابی‌های افرادی را که از آن سوال استفاده کرده‌اند دچار مشکل کند. با این حال، اشتراک‌گذاری سورس‌کد یک سوال قابل بازگشت است.
 
-1. On your course settings page, visit the "Sharing" tab.
-2. Choose a sharing name for your course.
-3. Add `"sharePublicly": true` to the `info.json` file of questions you would like to share publicly.
-4. Optionally, add `"shareSourcePublicly": true` to the `info.json` file if you would like people to also be able to view and copy the source code of your question.
-5. Anyone with a PrairieLearn account may preview your question, and any PrairieLearn course may now use it by referencing it in their assessments.
+۱. در صفحه تنظیمات درس خود، به برگه "Sharing" بروید.
+۲. یک نام اشتراک‌گذاری (Sharing name) برای درس خود انتخاب کنید.
+۳. عبارت `"sharePublicly": true` را به فایل `info.json` سوالاتی که می‌خواهید به صورت عمومی به اشتراک بگذارید اضافه کنید.
+۴. در صورت تمایل، عبارت `"shareSourcePublicly": true` را به فایل `info.json` اضافه کنید اگر مایلید افراد بتوانند سورس‌کد سوال شما را نیز مشاهده و کپی کنند.
+۵. هر فرد دارای حساب PrairieLearn می‌تواند پیش‌نمایش سوال شما را ببیند، و هر درس PrairieLearn می‌تواند با ارجاع به آن در ارزیابی‌های خود، از آن استفاده کند.
 
-## Sharing assessments
+## اشتراک‌گذاری ارزیابی‌ها (Sharing assessments)
 
-You may also publicly share whole assessments, provided that every question referenced by the assessment is also publicly shared. When an assessment is shared, the public URL for it can be found on the assessment settings page.
+شما همچنین می‌توانید کل یک ارزیابی را به صورت عمومی به اشتراک بگذارید، به شرط آنکه تک‌تک سوالات ارجاع‌یافته در آن ارزیابی نیز به صورت عمومی به اشتراک گذاشته شده باشند. هنگامی که یک ارزیابی به اشتراک گذاشته می‌شود، URL عمومی آن در صفحه تنظیمات ارزیابی قابل مشاهده خواهد بود.
 
-### Steps to share an assessment
+### مراحل اشتراک‌گذاری یک ارزیابی
 
-1. Ensure that all questions on the assessment have `"sharePublicly": true` or `"shareSourcePublicly": true`. This is to enable others to copy your assessment into their course and maintain access to all of its questions. When a publicly shared assessment is copied to another course, questions which only have `"shareSourcePublicly": true` will also be copied, while questions that have `"sharePublicly": true` will not be copied, instead the `infoAssessment.json` will reference the question in the sharing course.
-2. Add `"shareSourcePublicly": true` to the `infoAssessment.json` file of the assessment that you would like to be publicly shared.
+۱. اطمینان حاصل کنید که تمام سوالات موجود در ارزیابی دارای `"sharePublicly": true` یا `"shareSourcePublicly": true` هستند. این کار برای آن است که دیگران بتوانند ارزیابی شما را در درس خود کپی کرده و دسترسی به تمام سوالات آن را حفظ کنند. هنگامی که یک ارزیابی اشتراک‌گذاری‌شده عمومی در درس دیگری کپی می‌شود، سوالاتی که فقط `"shareSourcePublicly": true` دارند نیز کپی خواهند شد، در حالی که سوالات دارای `"sharePublicly": true` کپی نخواهند شد و در عوض فایل `infoAssessment.json` به سوال موجود در درس اشتراک‌گذارنده ارجاع خواهد داد.
+۲. عبارت `"shareSourcePublicly": true` را به فایل `infoAssessment.json` ارزیابی‌ای که می‌خواهید به صورت عمومی به اشتراک گذاشته شود اضافه کنید.
 
-## Sharing course instances
+## اشتراک‌گذاری دوره‌های درسی (Sharing course instances)
 
-If every assessment in a course instance is shared, the course instance can also be marked as publicly shared. When a course instance is shared, the public URL for it can be found on the course instance settings page.
+اگر تک‌تک ارزیابی‌های یک دوره به اشتراک گذاشته شده باشند، آن دوره (Course Instance) نیز می‌تواند به عنوان اشتراک‌گذاری عمومی علامت‌گذاری شود. هنگامی که یک دوره به اشتراک گذاشته می‌شود، URL عمومی آن در صفحه تنظیمات دوره در دسترس خواهد بود.
 
-### Steps to share a course instance
+### مراحل اشتراک‌گذاری یک دوره درسی
 
-1. Ensure that all assessments in the course instance have `"shareSourcePublicly": true`.
-2. Add `"shareSourcePublicly": true` to the `infoCourseInstance.json` file of the course instance that you would like to be publicly shared.
+۱. اطمینان حاصل کنید که تمام ارزیابی‌های موجود در دوره دارای `"shareSourcePublicly": true` باشند.
+۲. عبارت `"shareSourcePublicly": true` را به فایل `infoCourseInstance.json` دوره‌ای که می‌خواهید به صورت عمومی به اشتراک گذاشته شود اضافه کنید.

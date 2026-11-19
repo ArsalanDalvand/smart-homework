@@ -1,125 +1,125 @@
-# Assessment configuration
+# پیکربندی ارزیابی
 
-!!! note
+!!! note "نکته"
 
-    Any time you edit or add an `infoAssessment.json` file on a local copy of PrairieLearn, you need to click the “Load from disk” button in the header so that the local PrairieLearn server reloads the changes.
+    هر بار که یک فایل `infoAssessment.json` را در نسخه محلی پریری‌لرن (PrairieLearn) ویرایش کرده یا اضافه می‌کنید، لازم است روی دکمه «Load from disk» در هدر کلیک کنید تا سرور محلی PrairieLearn تغییرات را مجدداً بارگذاری کند.
 
-## Required properties
+## ویژگی‌های الزامی {: #required-properties }
 
-Each assessment must set the following properties in their `infoAssessment.json` file:
+هر ارزیابی باید ویژگی‌های زیر را در فایل `infoAssessment.json` خود تنظیم کند:
 
-| Property                       | Type   | Description                                                               |
+| ویژگی | نوع | توضیحات |
 | ------------------------------ | ------ | ------------------------------------------------------------------------- |
-| `uuid`                         | string | [Unique identifier](../uuid.md).                                          |
-| [`type`](#assessment-types)    | string | Either `"Homework"` or `"Exam"`.                                          |
-| `title`                        | string | The title of the assessment (e.g., `"Derivatives and integrals"`).        |
-| `set`                          | string | Which assessment set this belongs to (e.g., `"Quiz"`, `"Practice Quiz"`). |
-| [`number`](#assessment-naming) | string | The number of the assessment within the set (e.g., `"1"`, `"2B"`).        |
+| `uuid` | string | [شناسه یکتا](../uuid.md). |
+| [`type`](#assessment-types) | string | یکی از دو مقدار `"Homework"` یا `"Exam"`. |
+| `title` | string | عنوان ارزیابی (مثلاً `"Derivatives and integrals"`). |
+| `set` | string | این ارزیابی به کدام مجموعه ارزیابی تعلق دارد (مثلاً `"Quiz"`، `"Practice Quiz"`). |
+| [`number`](#assessment-naming) | string | شماره ارزیابی درون مجموعه (مثلاً `"1"`، `"2B"`). |
 
-## Optional properties
+## ویژگی‌های اختیاری {: #optional-properties }
 
-In addition to those properties, the following properties can be used to further configure how the assessment behaves. Most assessments will need to configure the [`accessControl`](../assessment/accessControl.md) property to control access to the assessment, and the [`zones`](#question-specification) property, which breaks down the assessment into zones of questions. Each zone allows for additional configuration of the questions within the zone.
+علاوه بر این ویژگی‌ها، ویژگی‌های زیر می‌توانند برای پیکربندی دقیق‌تر رفتار ارزیابی مورد استفاده قرار گیرند. بیشتر ارزیابی‌ها نیازمند پیکربندی ویژگی [`accessControl`](../assessment/accessControl.md) برای کنترل دسترسی به ارزیابی، و ویژگی [`zones`](#question-specification) هستند که ارزیابی را به بخش‌هایی از سوالات تفکیک می‌کند. هر بخش (Zone) امکان پیکربندی بیشتر سوالات درون خود را فراهم می‌سازد.
 
-| Property                                                       | Type    | Description                                                                                                                 |
+| ویژگی | نوع | توضیحات |
 | -------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------- |
-| [`module`](#grouping-assessments-by-modules)                   | string  | The module that this assessment belongs to (e.g., `Chapter 3`). (default: `"Default"`)                                      |
-| [`accessControl`](../assessment/accessControl.md)              | array   | Modern access control rules. (default: no student access)                                                                   |
-| [`allowAccess`](../assessment/accessControlLegacy.md)          | array   | Legacy access rules. Prefer `accessControl` for new assessments. (default: no student access)                               |
-| [`zones`](#question-specification)                             | array   | Specification of zones and questions. (default: none)                                                                       |
-| `text`                                                         | string  | HTML text shown on the assessment overview page. (default: none)                                                            |
-| `multipleInstance`                                             | boolean | Whether to allow students to create whole new attempts at the entire assessment. (default: `false`)                         |
-| `maxPoints`                                                    | number  | The maximum points that can be earned. (default: sum of zone max points)                                                    |
-| [`maxBonusPoints`](#assessment-points)                         | number  | The maximum number of additional points that can be earned beyond `maxPoints`. (default: 0)                                 |
-| [`shuffleQuestions`](#question-order-randomization)            | boolean | Whether to randomize the question order. (default: `false` for Homework-type assessments, `true` for Exam-type assessments) |
-| `autoClose`                                                    | boolean | Whether to automatically close the assessment after 6 hours of inactivity (Exams only). (default: `true`)                   |
-| `allowIssueReporting`                                          | boolean | Whether to allow students to report question issues. (default: `true`)                                                      |
-| `allowPersonalNotes`                                           | boolean | Whether to allow students to add personal notes. (default: `true`)                                                          |
-| `constantQuestionValue`                                        | boolean | Whether to disable the question value boost on correct solutions (Homework only). (default: `false`)                        |
-| `allowRealTimeGrading`                                         | boolean | Whether to grade questions in real time (Exams only). (default: `true`)                                                     |
-| `requireHonorCode`                                             | boolean | Whether to require students to agree to the honor code (Exams only). (default: `true`)                                      |
-| `honorCode`                                                    | string  | Custom text to be specified for the honor code (Exams only). (default: none)                                                |
-| `advanceScorePerc`                                             | number  | Minimum score percentage require to advance to the next question (Exams only). (default: 0)                                 |
-| `gradeRateMinutes`                                             | number  | Minimum amount of time (in minutes) between graded submissions to the same question. (default: 0)                           |
-| [`groups`](#enabling-group-work-for-collaborative-assessments) | object  | Configuration for group-based assessments. (default: none)                                                                  |
-| [`tools`](#assessment-tools)                                   | object  | Configuration for assessment tools (e.g., calculator). (default: none)                                                      |
-| `showQuestionTitles`                                           | boolean | Whether to show question titles to students. (default: `false` for Exam, `true` for Homework)                               |
+| [`module`](#grouping-assessments-by-modules) | string | ماژولی که این ارزیابی به آن تعلق دارد (مثلاً `Chapter 3`). (پیش‌فرض: `"Default"`) |
+| [`accessControl`](../assessment/accessControl.md) | array | قوانین نوین کنترل دسترسی. (پیش‌فرض: بدون دسترسی دانشجو) |
+| [`allowAccess`](../assessment/accessControlLegacy.md) | array | قوانین قدیمی دسترسی. ترجیحاً برای ارزیابی‌های جدید از `accessControl` استفاده کنید. (پیش‌فرض: بدون دسترسی دانشجو) |
+| [`zones`](#question-specification) | array | مشخصات بخش‌ها و سوالات. (پیش‌فرض: هیچ‌کدام) |
+| `text` | string | متن HTML نمایش‌داده‌شده در صفحه نمای کلی (Overview) ارزیابی. (پیش‌فرض: هیچ‌کدام) |
+| `multipleInstance` | boolean | آیا به دانشجویان اجازه داده شود که تلاش‌های کاملاً جدیدی برای کل ارزیابی ایجاد کنند یا خیر. (پیش‌فرض: `false`) |
+| `maxPoints` | number | حداکثر امتیازی که می‌توان کسب کرد. (پیش‌فرض: مجموع حداکثر امتیازات بخش‌ها) |
+| [`maxBonusPoints`](#assessment-points) | number | حداکثر تعداد امتیازات تشویقی (بونس) اضافی قابل کسب مازاد بر `maxPoints`. (پیش‌فرض: 0) |
+| [`shuffleQuestions`](#question-order-randomization) | boolean | آیا ترتیب سوالات تصادفی‌سازی شود یا خیر. (پیش‌فرض: `false` برای ارزیابی‌های نوع Homework، و `true` برای ارزیابی‌های نوع Exam) |
+| `autoClose` | boolean | آیا ارزیابی پس از ۶ ساعت عدم فعالیت به‌طور خودکار بسته شود یا خیر (فقط آزمون‌ها / Exams). (پیش‌فرض: `true`) |
+| `allowIssueReporting` | boolean | آیا به دانشجویان اجازه گزارش اشکالات سوال داده شود یا خیر. (پیش‌فرض: `true`) |
+| `allowPersonalNotes` | boolean | آیا به دانشجویان اجازه افزودن یادداشت‌های شخصی داده شود یا خیر. (پیش‌فرض: `true`) |
+| `constantQuestionValue` | boolean | آیا افزایش ارزش سوال به ازای پاسخ‌های صحیح غیرفعال شود یا خیر (فقط Homework). (پیش‌فرض: `false`) |
+| `allowRealTimeGrading` | boolean | آیا سوالات به‌صورت آنی نمره‌دهی شوند یا خیر (فقط Exams). (پیش‌فرض: `true`) |
+| `requireHonorCode` | boolean | آیا دانشجویان ملزم به پذیرش مرام‌نامه اخلاقی باشند یا خیر (فقط Exams). (پیش‌فرض: `true`) |
+| `honorCode` | string | متن سفارشی تعیین‌شده برای مرام‌نامه اخلاقی (فقط Exams). (پیش‌فرض: هیچ‌کدام) |
+| `advanceScorePerc` | number | حداقل درصد نمره مورد نیاز برای رفتن به سوال بعدی (فقط Exams). (پیش‌فرض: 0) |
+| `gradeRateMinutes` | number | حداقل مدت زمان (به دقیقه) بین دو پاسخ ارسالیِ نیازمند نمره‌دهی برای یک سوال یکسان. (پیش‌فرض: 0) |
+| [`groups`](#enabling-group-work-for-collaborative-assessments) | object | پیکربندی ارزیابی‌های مبتنی بر گروه. (پیش‌فرض: هیچ‌کدام) |
+| [`tools`](#assessment-tools) | object | پیکربندی ابزارهای ارزیابی (مثلاً ماشین‌حساب). (پیش‌فرض: هیچ‌کدام) |
+| `showQuestionTitles` | boolean | آیا عناوین سوالات به دانشجویان نشان داده شود یا خیر. (پیش‌فرض: `false` برای Exam، و `true` برای Homework) |
 
-See the [reference for `infoAssessment.json`](../schemas/infoAssessment.md) for more information about what can be added to this file.
+برای اطلاعات بیشتر درباره آنچه می‌توان به این فایل افزود، [مرجع `infoAssessment.json`](../schemas/infoAssessment.md) را ببینید.
 
-??? note "Legacy group properties"
+??? note "ویژگی‌های قدیمی گروه (Legacy group properties)"
 
-    The following legacy properties are still supported but will be eventually deprecated in favor of the `groups` schema.
+    ویژگی‌های قدیمی زیر همچنان پشتیبانی می‌شوند اما در نهایت به نفع شمای `groups` منسوخ خواهند شد.
 
-    | Property                   | Type    | Description                                                                                                                     |
+    | ویژگی | نوع | توضیحات |
     | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
-    | `groupWork`                | boolean | Whether the assessment will support group work. (default: `false`)                                                              |
-    | `groupMaxSize`             | number  | Maximum number of students in a group. (default: none)                                                                          |
-    | `groupMinSize`             | number  | Minimum number of students in a group. (default: none)                                                                          |
-    | `groupRoles`               | array   | Array of custom user roles in a group. (default: none)                                                                          |
-    | `canSubmit`                | array   | A list of group role names that can submit questions in this assessment. Only applicable for group assessments. (default: none) |
-    | `canView`                  | array   | A list of group role names that can view questions in this assessment. Only applicable for group assessments. (default: none)   |
-    | `studentGroupCreate`       | boolean | Whether students can create groups. (default: `false`)                                                                          |
-    | `studentGroupJoin`         | boolean | Whether students can join groups. (default: `false`)                                                                            |
-    | `studentGroupLeave`        | boolean | Whether students can leave groups. (default: `false`)                                                                           |
-    | `studentGroupChooseName`   | boolean | Whether students can choose their own group name. (default: `true`)                                                             |
+    | `groupWork` | boolean | آیا ارزیابی از کار گروهی پشتیبانی می‌کند یا خیر. (پیش‌فرض: `false`) |
+    | `groupMaxSize` | number | حداکثر تعداد دانشجویان در یک گروه. (پیش‌فرض: هیچ‌کدام) |
+    | `groupMinSize` | number | حداقل تعداد دانشجویان در یک گروه. (پیش‌فرض: هیچ‌کدام) |
+    | `groupRoles` | array | آرایه‌ای از نقش‌های سفارشی کاربران در یک گروه. (پیش‌فرض: هیچ‌کدام) |
+    | `canSubmit` | array | فهرستی از نام نقش‌های گروهی که می‌توانند سوالات این ارزیابی را ارسال کنند. فقط برای ارزیابی‌های گروهی کاربرد دارد. (پیش‌فرض: هیچ‌کدام) |
+    | `canView` | array | فهرستی از نام نقش‌های گروهی که می‌توانند سوالات این ارزیابی را مشاهده کنند. فقط برای ارزیابی‌های گروهی کاربرد دارد. (پیش‌فرض: هیچ‌کدام) |
+    | `studentGroupCreate` | boolean | آیا دانشجویان می‌توانند گروه بسازند. (پیش‌فرض: `false`) |
+    | `studentGroupJoin` | boolean | آیا دانشجویان می‌توانند به گروه‌ها بپیوندند. (پیش‌فرض: `false`) |
+    | `studentGroupLeave` | boolean | آیا دانشجویان می‌توانند گروه‌ها را ترک کنند. (پیش‌فرض: `false`) |
+    | `studentGroupChooseName` | boolean | آیا دانشجویان می‌توانند نام گروه خود را انتخاب کنند. (پیش‌فرض: `true`) |
 
-    You cannot use both `groups` and legacy group properties in the same assessment.
+    شما نمی‌توانید هم‌زمان از `groups` و ویژگی‌های قدیمی گروه در یک ارزیابی استفاده کنید.
 
-## Assessment types
+## انواع ارزیابی {: #assessment-types }
 
-Each assessment has a `type`, which must be either `"Homework"` or `"Exam"`:
+هر ارزیابی دارای یک `type` است که باید `"Homework"` یا `"Exam"` باشد:
 
-- Homeworks are designed for formative learning and allow students to infinitely retry different random variants of questions. A persistent student can eventually get 100%.
-- Exams, on the other hand, are designed for measuring student knowledge and give each student just one variant of each question, with limited retries. Students will typically not get 100%.
+- تکالیف (Homeworks) برای یادگیری تکوینی (Formative learning) طراحی شده‌اند و به دانشجویان اجازه می‌دهند تا گونه‌های تصادفی مختلف سوالات را بارها و بارها امتحان کنند. یک دانشجوی کوشا در نهایت می‌تواند نمره ۱۰۰٪ را کسب کند.
+- از سوی دیگر، آزمون‌ها (Exams) برای سنجش دانش دانشجو طراحی شده‌اند و به هر دانشجو فقط یک گونه از هر سوال با تعداد تلاش‌های محدود می‌دهند. دانشجویان معمولاً نمره ۱۰۰٪ کسب نخواهند کرد.
 
-The type controls the overall behavior of the assessment and applies various default settings, some of which can be customized. An assessment's type doesn't have to correspond to how the assessment is administered; for example, an instructor could assign an Exam-type assessment for completion outside of class as homework.
+نوع ارزیابی، رفتار کلی آن را کنترل کرده و تنظیمات پیش‌فرض گوناگونی را اعمال می‌کند که برخی از آن‌ها قابل سفارشی‌سازی هستند. نوع ارزیابی لزوماً نباید متناظر با نحوه برگزاری آن باشد؛ برای مثال، یک مدرس می‌تواند یک ارزیابی از نوع Exam را برای تکمیل خارج از کلاس به عنوان تکلیف در نظر بگیرد.
 
-A detailed comparison of the two types is shown below.
+مقایسه دقیق این دو نوع در جدول زیر نشان داده شده است.
 
-|                          | `Homework`                                                                                          | `Exam`                                                                                     |
+| | `Homework` | `Exam` |
 | ------------------------ | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **General purpose**      | Formative assessments, practice                                                                     | Summative assessments, measure learning                                                    |
-| **Randomized questions** | [Multiple variants (if question supports them)](#limiting-the-number-of-attempts-for-each-question) | Each student gets a single variant                                                         |
-| **Number of attempts**   | Unlimited attempts                                                                                  | [Limited attempts, possibly with decreasing points](#question-points-for-exam-assessments) |
-| **Gamification**         | [Rewards repeated correct answers](#question-points-for-homework-assessments)                       | Incentivizes a correct answer as early as possible                                         |
-| **Question order**       | [Fixed order by default](#question-order-randomization)                                             | [Shuffled order within zones by default](#question-order-randomization)                    |
-| **Time limits**          | Not supported                                                                                       | [Supported](../assessment/accessControl.md#time-limits)                                    |
-| **Passwords**            | Not supported                                                                                       | [Supported](../assessment/accessControl.md#passwords)                                      |
-| **Multiple instances**   | Not supported                                                                                       | [Supported](#multiple-instance-versus-single-instance-assessments)                         |
-| **Assessment updates**   | Updated if assessment changes                                                                       | Assessment is fixed on creation                                                            |
-| **Closing assessments**  | Assessments remain open                                                                             | [By default, idle assessments are closed after 6 hours](#auto-closing-exam-assessments)    |
-| **Honor pledge**         | Not supported                                                                                       | [Enabled by default](#honor-code)                                                          |
-| **Real-time grading**    | Always enabled                                                                                      | [Can be disabled](#disabling-real-time-grading)                                            |
+| **هدف کلی** | ارزیابی‌های تکوینی، تمرین | ارزیابی‌های تراکمی، سنجش یادگیری |
+| **سوالات تصادفی‌شده** | [چندین گونه (اگر سوال از آن پشتیبانی کند)](#limiting-the-number-of-attempts-for-each-question) | هر دانشجو یک گونه دریافت می‌کند |
+| **تعداد تلاش‌ها** | تلاش‌های نامحدود | [تلاش‌های محدود، احتمالاً با امتیاز کاهشی](#question-points-for-exam-assessments) |
+| **بازی‌وارسازی / انگیزش** | [پاداش‌دهی به پاسخ‌های صحیح متوالی](#question-points-for-homework-assessments) | ایجاد انگیزه برای ارائه پاسخ صحیح در سریع‌ترین زمان ممکن |
+| **ترتیب سوالات** | [ترتیب ثابت به‌طور پیش‌فرض](#question-order-randomization) | [ترتیب تصادفی در هر بخش به‌طور پیش‌فرض](#question-order-randomization) |
+| **محدودیت‌های زمانی** | پشتیبانی نمی‌شود | [پشتیبانی می‌شود](../assessment/accessControl.md#time-limits) |
+| **رمزهای عبور** | پشتیبانی نمی‌شود | [پشتیبانی می‌شود](../assessment/accessControl.md#passwords) |
+| **نمونه‌های متعدد** | پشتیبانی نمی‌شود | [پشتیبانی می‌شود](#multiple-instance-versus-single-instance-assessments) |
+| **به‌روزرسانی‌های ارزیابی** | در صورت تغییر ارزیابی به‌روزرسانی می‌شود | ارزیابی در زمان ایجاد ثابت است |
+| **بستن ارزیابی‌ها** | ارزیابی‌ها باز می‌مانند | [به‌طور پیش‌فرض، ارزیابی‌های غیرفعال پس از ۶ ساعت بسته می‌شوند](#auto-closing-exam-assessments) |
+| **تعهدنامه اخلاقی** | پشتیبانی نمی‌شود | [به‌طور پیش‌فرض فعال است](#honor-code) |
+| **نمره‌دهی آنی** | همیشه فعال است | [می‌تواند غیرفعال شود](#disabling-real-time-grading) |
 
-## Assessment naming
+## نام‌گذاری ارزیابی {: #assessment-naming }
 
-Each assessment has a `title` describing its topic. Additionally, each assessment belongs to a `set` (e.g., `Homework`, `Quiz`, `Exam`) and within each set the assessment has a `number`. Depending on the context, assessments are referred to by either an _abbreviation_, a _short name_ or a _long name_. The format of these is:
+هر ارزیابی دارای یک عنوان (`title`) است که موضوع آن را توصیف می‌کند. علاوه بر این، هر ارزیابی متعلق به یک مجموعه (`set`) است (مثلاً `Homework`، `Quiz`، `Exam`) و در هر مجموعه، ارزیابی یک شماره (`number`) دارد. بسته به زمینه، ارزیابی‌ها با یک _مخفف_ (abbreviation)، یک _نام کوتاه_ (short name) یا یک _نام کامل_ (long name) مورد اشاره قرار می‌گیرند. قالب این موارد به صورت زیر است:
 
-- Abbreviation = `[Set abbreviation][Number]` (e.g., `Q2` to mean the second quiz).
-- Short name = `[Set] [Number]` (e.g., `Quiz 2`).
-- Long name = `[Set] [Number]: [Title]` (e.g., `Quiz 2: Coordinates and Vectors`).
+- مخفف (Abbreviation) = `[مخفف مجموعه][شماره]` (مثلاً `Q2` به معنای آزمونک یا کوئیز دوم).
+- نام کوتاه (Short name) = `[مجموعه] [شماره]` (مثلاً `Quiz 2`).
+- نام کامل (Long name) = `[مجموعه] [شماره]: [عنوان]` (مثلاً `Quiz 2: Coordinates and Vectors`).
 
-You can select a set name from the list of [standardized assessment sets](../course/index.md#standardized-assessment-sets) or [create your own](../course/index.md#adding-your-own-assessment-sets).
+شما می‌توانید نام مجموعه را از فهرست [مجموعه‌های استاندارد ارزیابی](../course/index.md#standardized-assessment-sets) انتخاب کنید یا [مجموعه ارزیابی اختصاصی خود را بسازید](../course/index.md#adding-your-own-assessment-sets).
 
-The `type` of an assessment does not have to correspond to the `set` it is in, but these are generally compatible. For example, `"type": "Homework"` assessments normally have `"set": "Homework"` or `"set": "Machine Problem"`. On the other hand, `"type": "Exam"` assessments normally have `"set": "Quiz"`, `"set": "Exam"`, or similar.
+نوع (`type`) ارزیابی لزوماً نباید متناظر با مجموعه‌ای (`set`) باشد که در آن قرار دارد، اما این دو عموماً با یکدیگر سازگار هستند. برای مثال، ارزیابی‌های با `"type": "Homework"` معمولاً دارای `"set": "Homework"` یا `"set": "Machine Problem"` هستند. از طرف دیگر، ارزیابی‌های با `"type": "Exam"` معمولاً دارای `"set": "Quiz"`، `"set": "Exam"` یا موارد مشابه می‌باشند.
 
-## Grouping assessments by modules
+## گروه‌بندی ارزیابی‌ها بر اساس ماژول‌ها {: #grouping-assessments-by-modules }
 
-Instructors may want to group their assessments by course modules (topics, sections, or chapters in a course). When using `"groupAssessmentsBy": "Module"` in `infoCourseInstance.json`, instructors can assign an assessment to a specific module by setting the `module` property in `infoAssessment.json`, as illustrated in the example above. If the property `module` is omitted, by default the assessment will have `"module": "Default"`.
+مدرسان ممکن است بخواهند ارزیابی‌های خود را بر اساس ماژول‌های دوره (مباحث، بخش‌ها یا فصل‌های یک درس) گروه‌بندی کنند. هنگام استفاده از `"groupAssessmentsBy": "Module"` در `infoCourseInstance.json`، مدرسان می‌توانند با تنظیم ویژگی `module` در `infoAssessment.json`، همان‌طور که در مثال بالا نشان داده شده است، یک ارزیابی را به یک ماژول خاص اختصاص دهند. اگر ویژگی `module` قید نشود، به‌طور پیش‌فرض ارزیابی دارای `"module": "Default"` خواهد بود.
 
-For more information about how to create your own assessment modules, see the [course configuration](../course/index.md#assessment-modules) documentation.
+برای اطلاعات بیشتر درباره نحوه ایجاد ماژول‌های ارزیابی اختصاصی خود، مستندات [پیکربندی درس](../course/index.md#assessment-modules) را ببینید.
 
-## Question order randomization
+## تصادفی‌سازی ترتیب سوالات {: #question-order-randomization }
 
-The `shuffleQuestions` option controls the order of questions after [PrairieLearn selects them for an assessment instance](#assessment-instances-question-selection-and-question-order); it does not affect which questions are selected. When `true`, PrairieLearn randomizes question order within each zone for each assessment instance. When `false`, it preserves the relative order of the selected questions from `infoAssessment.json`. The zones themselves always retain their configured order, so questions can change position relative to one another only within the same zone.
+گزینه `shuffleQuestions` ترتیب سوالات را پس از [انتخاب آن‌ها توسط PrairieLearn برای یک نمونه ارزیابی](#assessment-instances-question-selection-and-question-order) کنترل می‌کند؛ این گزینه تاثیری بر اینکه چه سوالاتی انتخاب شوند ندارد. هنگامی که مقدار آن `true` باشد، PrairieLearn ترتیب سوالات درون هر بخش (Zone) را برای هر نمونه ارزیابی تصادفی‌سازی می‌کند. هنگامی که مقدار آن `false` باشد، ترتیب نسبی سوالات انتخاب‌شده از فایل `infoAssessment.json` حفظ می‌شود. خود بخش‌ها همیشه ترتیب پیکربندی‌شده خود را حفظ می‌کنند، بنابراین سوالات فقط درون یک بخش یکسان می‌توانند موقعیت نسبی خود را نسبت به یکدیگر تغییر دهند.
 
-If `shuffleQuestions` is omitted, it defaults to `false` for `Homework` assessments and `true` for `Exam` assessments.
+اگر `shuffleQuestions` قید نشود، مقدار پیش‌فرض آن برای ارزیابی‌های `Homework` برابر با `false` و برای ارزیابی‌های `Exam` برابر با `true` است.
 
-When shuffling is enabled for a `Homework` assessment, PrairieLearn also uses each question's course-wide number rather than a number based on its position in the assessment. `#427`, for example, refers to the same course question wherever it appears, giving students and course staff a consistent reference. Varying question order across assessment instances can also make analyses of question difficulty and student behavior less dependent on question position.
+هنگامی که برزدن (تصادفی‌سازی) برای یک ارزیابی `Homework` فعال باشد، PrairieLearn همچنین به جای شماره مبتنی بر موقعیت سوال در ارزیابی، از شماره سراسری سوال در دوره استفاده می‌کند. برای مثال، `#427` در هر کجا که ظاهر شود به همان سوال در دوره اشاره دارد، که این امر به دانشجویان و کادر آموزشی یک مرجع پایدار و یکپارچه ارائه می‌دهد. متغیر بودن ترتیب سوالات در بین نمونه‌های ارزیابی همچنین می‌تواند تحلیل‌های مربوط به سختی سوال و رفتار دانشجو را کمتر وابسته به موقعیت سوال کند.
 
-## Question specification
+## مشخصات سوالات {: #question-specification }
 
-An assessment is broken down in to a list of zones, like this:
+یک ارزیابی به فهرستی از بخش‌ها (Zones) تفکیک می‌شود، مانند این:
 
 ```json title="infoAssessment.json"
 {
@@ -157,36 +157,33 @@ An assessment is broken down in to a list of zones, like this:
 }
 ```
 
-| Zone Property              | Type    | Description                                                                                                                                           |
+| ویژگی بخش | نوع | توضیحات |
 | -------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `title`                    | string  | The title of the zone. (Optional; default: none)                                                                                                      |
-| `questions`                | array   | The list of slots for questions and question alternatives within the zone. (Required; no default)                                                     |
-| `numberChoose`             | integer | Number of questions to select for each student from this zone. (Optional; default: select all)                                                        |
-| `maxPoints`                | number  | Limit on the number of points that can be earned from this zone. (Optional; default: sum of question max points)                                      |
-| `bestQuestions`            | integer | Only this many questions in the zone will count towards the total points (highest-point questions will count). (Optional; default: use all questions) |
-| [`lockpoint`](#lockpoints) | boolean | Creates a one-way barrier at this zone; crossing it makes all earlier zones read-only. (Optional; default: `false`)                                   |
-| `allowRealTimeGrading`     | boolean | Whether to grade questions in this zone in real time (Exams only). (Optional; default: `true`)                                                        |
-| `comment`                  | string  | Free‑form comment for the zone. (Optional; default: none)                                                                                             |
+| `title` | string | عنوان بخش. (اختیاری؛ پیش‌فرض: ندارد) |
+| `questions` | array | فهرست جایگاه‌ها برای سوالات و گزینه‌های جایگزین سوال درون بخش. (الزامی؛ بدون پیش‌فرض) |
+| `numberChoose` | integer | تعداد سوالاتی که باید برای هر دانشجو از این بخش انتخاب شود. (اختیاری؛ پیش‌فرض: انتخاب همه) |
+| `maxPoints` | number | سقف تعداد امتیازاتی که می‌توان از این بخش کسب کرد. (اختیاری؛ پیش‌فرض: مجموع حداکثر امتیازات سوالات) |
+| `bestQuestions` | integer | فقط این تعداد سوال در این بخش در مجموع امتیازات محاسبه خواهند شد (سوالات با بالاترین امتیاز محاسبه می‌شوند). (اختیاری؛ پیش‌فرض: استفاده از تمام سوالات) |
+| [`lockpoint`](#lockpoints) | boolean | یک مانع یک‌طرفه در این بخش ایجاد می‌کند؛ عبور از آن، تمام بخش‌های قبلی را فقط‌خواندنی می‌کند. (اختیاری؛ پیش‌فرض: `false`) |
+| `allowRealTimeGrading` | boolean | آیا سوالات این بخش به‌صورت آنی نمره‌دهی شوند یا خیر (فقط آزمون‌ها / Exams). (اختیاری؛ پیش‌فرض: `true`) |
+| `comment` | string | یادداشت دلخواه برای بخش. (اختیاری؛ پیش‌فرض: ندارد) |
 
-Zone specification details are in the [format specification for `infoAssessment.json`](../schemas/infoAssessment.md)
+جزئیات مشخصات بخش در [مشخصات قالب `infoAssessment.json`](../schemas/infoAssessment.md) آمده است:
 
-- Each zone appears in the given order in the assessment. Zone titles are optional and are displayed to the student if present.
+- هر بخش به ترتیب داده‌شده در ارزیابی ظاهر می‌شود. عناوین بخش‌ها اختیاری هستند و در صورت وجود به دانشجو نمایش داده می‌شوند.
+- درون هر بخش، ترتیب سوالات بر اساس [نوع ارزیابی و گزینه `shuffleQuestions`](#question-order-randomization) تصادفی‌سازی می‌شود.
+- اگر بخشی دارای `maxPoints` باشد، آنگاه از امتیازاتی که برای پاسخ به سوالات این بخش تعلق می‌گیرد، حداکثر `maxPoints` در کل امتیازات محاسبه خواهد شد.
+- اگر بخشی دارای `bestQuestions` باشد، آنگاه از سوالات این بخش، تنها `bestQuestions` سوال با بیشترین تعداد امتیازات کسب‌شده در مجموع امتیازات محاسبه خواهند شد.
 
-- Within each zone the question order is randomized based on [the assessment type and the `shuffleQuestions` option](#question-order-randomization).
+## گزینه‌های جایگزین سوال {: #question-alternatives }
 
-- If a zone has `maxPoints`, then, of the points that are awarded for answering questions in this zone, at most `maxPoints` will count toward the total points.
-
-- If a zone has `bestQuestions`, then, of the questions in this zone, only `bestQuestions` with the highest number of awarded points will count toward the total points.
-
-## Question alternatives
-
-Each zone has a list of `questions`. An entry in this list can be a single question:
+هر بخش دارای فهرستی از `questions` است. یک ورودی در این فهرست می‌تواند یک سوال منفرد باشد:
 
 ```json
 { "id": "hardQV1", "points": 10 }
 ```
 
-Or an entry can contain a _question alternative list_:
+یا یک ورودی می‌تواند شامل یک _فهرست گزینه‌های جایگزین سوال_ (Question alternative list) باشد:
 
 ```json
 {
@@ -196,38 +193,38 @@ Or an entry can contain a _question alternative list_:
 }
 ```
 
-If a question alternative list is specified, some of these questions are first selected at random for each student, and then random variants of those questions are generated. Question alternatives inherit the points of their parent group, if specified.
+اگر فهرست گزینه‌های جایگزین سوال مشخص شده باشد، ابتدا برخی از این سوالات به صورت تصادفی برای هر دانشجو انتخاب می‌شوند و سپس گونه‌های تصادفی آن سوالات تولید می‌گردند. گزینه‌های جایگزین سوال، در صورت تعیین، امتیازات گروه والد خود را به ارث می‌برند.
 
-| Slot property          | Type            | Description                                                                                                                                                                                                                                                                                                                                                      |
+| ویژگی جایگاه | نوع | توضیحات |
 | ---------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `autoPoints`           | number or array | The number of points for the autograding portion of this question (or for each question in this alternative list if `alternatives` is set). Can be a number (e.g., `10`) or, for Exam-type assessments only, can be a declining list of points (e.g., `[10, 8, 4]`) for partial credit. (Optional; default: zero)                                                |
-| `manualPoints`         | number          | The number of points for the manual grading portion of this question (or for each question in this alternative list if `alternatives` is set). (Optional; default: zero)                                                                                                                                                                                         |
-| `points`               | number or array | The number of points for this question (or for each question in this alternative list if `alternatives` is set). Can be a number (e.g., `10`) or, for Exam-type assessments only, can be a declining list of points (e.g., `[10, 8, 4]`) for partial credit. (Required if `autoPoints` and `manualPoints` are not set, can't be specified otherwise; no default) |
-| `maxAutoPoints`        | number          | The maximum points available for the autograding portion of this question (or for each question in this alternative list if `alternatives` is set) on a Homework that allows multiple attempts for more points. May only be specified in Homework-type assessments, and only if `autoPoints` is specified. (Optional; default: same as `autoPoints`)             |
-| `maxPoints`            | number          | The maximum points available for this question (or for each question in this alternative list if `alternatives` is set) on a Homework that allows multiple attempts for more points. May only be specified in Homework-type assessments, and only if `points` is specified. (Optional; default: same as `points`)                                                |
-| `id`                   | string          | The question ID if this slot contains just one question (can’t be specified with `alternatives`). (Optional; default: none)                                                                                                                                                                                                                                      |
-| `alternatives`         | array           | The list of question alternatives if this slot contains multiple alternative questions (can’t be specified with `id`). (Optional; default: none)                                                                                                                                                                                                                 |
-| `numberChoose`         | integer         | If `alternatives` are specified, the number of them to select. (Optional; default: select all).                                                                                                                                                                                                                                                                  |
-| `triesPerVariant`      | integer         | The maximum number of attempts allowed for each question variant (on Homeworks). (Optional; default `1`)                                                                                                                                                                                                                                                         |
-| `allowRealTimeGrading` | boolean         | Whether to allow real-time grading for this question (Exams only). (Optional; default `true`)                                                                                                                                                                                                                                                                    |
-| `forceMaxPoints`       | boolean         | Whether to force all students to receive maximum points. See [Regrading](regrading.md). (Optional; default `false`)                                                                                                                                                                                                                                              |
-| `preferences`          | object          | Override values for the question's [preferences](../question/preferences.md). Keys must match the preference names defined in the question's `info.json`. Changes apply only to newly created question variants. (Optional; default: use question defaults)                                                                                                      |
+| `autoPoints` | number یا array | تعداد امتیازات بخش نمره‌دهی خودکار این سوال (یا برای هر سوال در این فهرست جایگزین‌ها اگر `alternatives` تنظیم شده باشد). می‌تواند یک عدد باشد (مثلاً `10`) یا، فقط برای ارزیابی‌های نوع Exam، می‌تواند یک فهرست کاهشی از امتیازات باشد (مثلاً `[10, 8, 4]`) برای نمره بخشی (Partial credit). (اختیاری؛ پیش‌فرض: صفر) |
+| `manualPoints` | number | تعداد امتیازات بخش نمره‌دهی دستی این سوال (یا برای هر سوال در این فهرست جایگزین‌ها اگر `alternatives` تنظیم شده باشد). (اختیاری؛ پیش‌فرض: صفر) |
+| `points` | number یا array | تعداد امتیازات این سوال (یا برای هر سوال در این فهرست جایگزین‌ها اگر `alternatives` تنظیم شده باشد). می‌تواند یک عدد باشد (مثلاً `10`) یا، فقط برای ارزیابی‌های نوع Exam، می‌تواند یک فهرست کاهشی از امتیازات باشد (مثلاً `[10, 8, 4]`) برای نمره بخشی. (اگر `autoPoints` و `manualPoints` تنظیم نشده باشند الزامی است، در غیر این صورت قابل تعیین نیست؛ بدون پیش‌فرض) |
+| `maxAutoPoints` | number | حداکثر امتیاز در دسترس برای بخش نمره‌دهی خودکار این سوال (یا برای هر سوال در این فهرست جایگزین‌ها اگر `alternatives` تنظیم شده باشد) در یک Homework که اجازه تلاش‌های چندگانه برای کسب امتیاز بیشتر را می‌دهد. فقط در ارزیابی‌های نوع Homework، و تنها در صورتی که `autoPoints` مشخص شده باشد، قابل تعیین است. (اختیاری؛ پیش‌فرض: همان `autoPoints`) |
+| `maxPoints` | number | حداکثر امتیاز در دسترس برای این سوال (یا برای هر سوال در این فهرست جایگزین‌ها اگر `alternatives` تنظیم شده باشد) در یک Homework که اجازه تلاش‌های چندگانه برای کسب امتیاز بیشتر را می‌دهد. فقط در ارزیابی‌های نوع Homework، و تنها در صورتی که `points` مشخص شده باشد، قابل تعیین است. (اختیاری؛ پیش‌فرض: همان `points`) |
+| `id` | string | شناسه سوال اگر این جایگاه فقط شامل یک سوال باشد (همراه با `alternatives` قابل تعیین نیست). (اختیاری؛ پیش‌فرض: ندارد) |
+| `alternatives` | array | فهرست گزینه‌های جایگزین سوال اگر این جایگاه شامل چندین سوال جایگزین باشد (همراه با `id` قابل تعیین نیست). (اختیاری؛ پیش‌فرض: ندارد) |
+| `numberChoose` | integer | در صورت تعیین `alternatives`، تعداد مواردی از آن‌ها که باید انتخاب شوند. (اختیاری؛ پیش‌فرض: انتخاب همه). |
+| `triesPerVariant` | integer | حداکثر تعداد تلاش‌های مجاز برای هر گونه از سوال (در Homeworks). (اختیاری؛ پیش‌فرض: `1`) |
+| `allowRealTimeGrading` | boolean | آیا نمره‌دهی آنی برای این سوال مجاز باشد یا خیر (فقط Exams). (اختیاری؛ پیش‌فرض: `true`) |
+| `forceMaxPoints` | boolean | آیا همه دانشجویان به اجبار حداکثر امتیاز را دریافت کنند یا خیر. بخش [نمره‌دهی مجدد](regrading.md) را ببینید. (اختیاری؛ پیش‌فرض: `false`) |
+| `preferences` | object | مقادیر بازنویسی (Override) برای [ترجیحات (Preferences)](../question/preferences.md) سوال. کلیدها باید با نام ترجیحات تعریف‌شده در `info.json` سوال مطابقت داشته باشند. تغییرات فقط بر گونه‌های جدید ایجادشده از سوال اعمال می‌شوند. (اختیاری؛ پیش‌فرض: استفاده از مقادیر پیش‌فرض سوال) |
 
-Slot specification details are in the [format specification for `infoAssessment.json`](../schemas/infoAssessment.md)
+جزئیات مشخصات جایگاه (Slot) در [مشخصات قالب `infoAssessment.json`](../schemas/infoAssessment.md) آمده است.
 
-## Question points for `Homework` assessments
+## امتیازات سوال برای ارزیابی‌های `Homework` {: #question-points-for-homework-assessments }
 
-Assessments with `"type": "Homework"` are designed to allow students to repeatedly practice different variants of questions (that is, different random values in the question) until they achieve mastery. The assumption here is that any student should be able to receive full points for a homework question if they work long enough on it. See [Question scoring details for `Homework` assessments](#question-scoring-details-for-homework-assessments) for details on the exact scoring algorithm.
+ارزیابی‌های با `"type": "Homework"` به‌گونه‌ای طراحی شده‌اند که به دانشجویان اجازه دهند گونه‌های مختلف سوالات (یعنی مقادیر تصادفی مختلف در سوال) را مکرراً تمرین کنند تا به تسلط برسند. فرض در اینجا این است که هر دانشجویی در صورت صرف وقت کافی باید بتواند نمره کامل یک سوال تکلیف را دریافت کند. برای جزئیات مربوط به الگوریتم دقیق نمره‌دهی، بخش [جزئیات نمره‌دهی سوال برای ارزیابی‌های `Homework`](#question-scoring-details-for-homework-assessments) را ببینید.
 
-Each question is assigned a set number of _auto points_ (points that are automatically assigned by an internal or external grader) and _manual points_ (points that are [assigned manually by a human grader](../manualGrading/index.md)).
+به هر سوال تعداد مشخصی از _امتیازات خودکار_ (امتیازاتی که به‌طور خودکار توسط یک نمره‌دهنده داخلی یا خارجی تعیین می‌شوند) و _امتیازات دستی_ (امتیازاتی که [به‌طور دستی توسط یک مصحح انسانی](../manualGrading/index.md) اختصاص می‌یابند) تعلق می‌گیرد.
 
-Auto-grading points are set using the `autoPoints` value, which must be a single number and which corresponds to the initial value of a correct attempt. For example, if we have `"autoPoints": 3` then a correct answer is worth 3 points, while a 50%-correct answer is worth 1.5 points.
+امتیازات نمره‌دهی خودکار با استفاده از مقدار `autoPoints` تعیین می‌شوند که باید یک عدد منفرد باشد و متناظر با ارزش اولیه یک تلاش صحیح است. برای مثال، اگر `"autoPoints": 3` داشته باشیم، یک پاسخ کاملاً صحیح ۳ امتیاز ارزش دارد، در حالی که یک پاسخ با ۵۰٪ صحت، ۱.۵ امتیاز خواهد داشت.
 
-If a student answers a question incorrectly, a new question variant is generated with new random numbers and the student can try again. There is no penalty for incorrect answers and students can try as many times as they like. Also see the `triesPerVariant` option in [Limiting the number of attempts for each question](#limiting-the-number-of-attempts-for-each-question).
+اگر دانشجویی به یک سوال پاسخ نادرست بدهد، یک گونه جدید از سوال با اعداد تصادفی جدید تولید می‌شود و دانشجو می‌تواند دوباره تلاش کند. هیچ جریمه‌ای برای پاسخ‌های نادرست وجود ندارد و دانشجویان می‌توانند هر چند بار که مایلند تلاش کنند. همچنین گزینه `triesPerVariant` را در بخش [محدود کردن تعداد تلاش‌ها برای هر سوال](#limiting-the-number-of-attempts-for-each-question) ببینید.
 
-To encourage students to solve the same question correctly more than once (to emphasize mastery), a question can have `maxAutoPoints` set to a value that is more than `autoPoints`. In this case a student can get credit for multiple correct solutions, each for a different randomized variant, until reaching `maxAutoPoints`. For example, if we have `"autoPoints": 3` and `"maxAutoPoints": 9` then the student could solve three different variants of the question correctly and receive 3 points for each of them. After this the student can continue to solve the question for practice, but they will not receive any more points for it. If `maxAutoPoints` is not specified then the question acts as if `maxAutoPoints` is equal to `autoPoints`. The use of `maxAutoPoints` means that the question has a total value of `maxAutoPoints` points, so in the previous example this is effectively a 9-point question (from `maxAutoPoints`) even though `autoPoints` is set to 3. To receive full points for the question the student will have to answer it correctly more than once.
+برای ترغیب دانشجویان به حل صحیح یک سوال برای بیش از یک بار (جهت تاکید بر تسلط کامل)، یک سوال می‌تواند دارای `maxAutoPoints` با مقداری بیشتر از `autoPoints` باشد. در این حالت دانشجو می‌تواند برای چندین پاسخ صحیح، هر کدام برای یک گونه تصادفی متفاوت، امتیاز دریافت کند تا زمانی که به `maxAutoPoints` برسد. برای مثال، اگر `"autoPoints": 3` و `"maxAutoPoints": 9` داشته باشیم، دانشجو می‌تواند سه گونه مختلف از سوال را به‌درستی حل کرده و برای هر کدام ۳ امتیاز دریافت کند. پس از این، دانشجو می‌تواند به حل سوال برای تمرین ادامه دهد، اما امتیاز بیشتری برای آن دریافت نخواهد کرد. اگر `maxAutoPoints` مشخص نشود، سوال به‌گونه‌ای عمل می‌کند که گویی `maxAutoPoints` برابر با `autoPoints` است. استفاده از `maxAutoPoints` به این معنی است که سوال دارای ارزش کلی به میزان `maxAutoPoints` امتیاز است، بنابراین در مثال قبلی، این سوال در عمل یک سوال ۹ امتیازی است (از روی `maxAutoPoints`) هرچند `autoPoints` روی ۳ تنظیم شده است. برای دریافت نمره کامل سوال، دانشجو باید بیش از یک بار به آن پاسخ صحیح بدهد.
 
-By default, when using `maxAutoPoints`, PrairieLearn provides an incentive for students to answer a specific question correctly multiple times in a row. This is done by increasing the value of each submission for every consecutive correct answer, while setting it back to the original value if the answer is incorrect or partially correct. So, for example, if `autoPoints` is 3 and `maxAutoPoints` is 30, then the first correct answer is worth 3 points. If the next submission is also fully correct, it will be worth 6 points; a following answer is worth 9 points if correct — for a total of 3+6+9=18 points earned; and so on. If any answer is incorrect or partially correct, the value earned for a new correctly-solved variant is reset to 3 points. To disable this behavior and keep the question value at a constant value of 3, set `"constantQuestionValue": true` in the assessment settings, like this:
+به‌طور پیش‌فرض، هنگام استفاده از `maxAutoPoints`، پلتفرم PrairieLearn انگیزه‌ای برای دانشجویان فراهم می‌کند تا به یک سوال خاص چندین بار متوالی پاسخ صحیح دهند. این کار با افزایش ارزش هر پاسخ ارسالی به ازای هر پاسخ صحیح متوالی انجام می‌شود، در حالی که در صورت نادرست یا تا حدی صحیح بودن پاسخ، ارزش آن به مقدار اولیه بازنشانی می‌گردد. بنابراین، برای مثال، اگر `autoPoints` برابر ۳ و `maxAutoPoints` برابر ۳۰ باشد، اولین پاسخ صحیح ۳ امتیاز ارزش دارد. اگر پاسخ ارسالی بعدی نیز کاملاً صحیح باشد، ۶ امتیاز ارزش خواهد داشت؛ پاسخ بعدی در صورت صحیح بودن ۹ امتیاز ارزش دارد — در مجموع ۳+۶+۹=۱۸ امتیاز کسب می‌شود؛ و به همین ترتیب. اگر هر پاسخی نادرست یا تا حدی صحیح باشد، ارزش کسب‌شده برای یک گونه جدیدِ حل‌شده به ۳ امتیاز بازنشانی می‌شود. برای غیرفعال کردن این رفتار و ثابت نگه داشتن ارزش سوال در مقدار ثابت ۳، تنظیم `"constantQuestionValue": true` را در تنظیمات ارزیابی قرار دهید، مانند زیر:
 
 ```json title="infoAssessment.json"
 {
@@ -240,125 +237,125 @@ By default, when using `maxAutoPoints`, PrairieLearn provides an incentive for s
 }
 ```
 
-When using `maxAutoPoints`, the number of correct answers needed to obtain the full points available for a question can vary depending on how many consecutive correct answers the student is able to submit. If we use `"constantQuestionValue": true` then the question value never changes and so the number of correct answers needed is just `maxAutoPoints / autoPoints`. However, in the default case when `constantQuestionValue` is false, repeated correct answers will allow a student to reach the `maxAutoPoints` more quickly. For example, with `autoPoints` of 3 and `maxAutoPoints` of 30, a student who answers the question correctly just 4 times in a row will receive the full 3+6+9+12=30 points. This means that a student who has achieved mastery can quickly complete the question. In contrast, a student who is struggling with the question may have to answer it correctly up to 30/3=10 times if they make repeated mistakes along the way to keep resetting the question value back to 3.
+هنگام استفاده از `maxAutoPoints`، تعداد پاسخ‌های صحیح مورد نیاز برای کسب نمره کامل یک سوال می‌تواند بسته به اینکه دانشجو چه تعداد پاسخ صحیح متوالی می‌تواند ارسال کند، متغیر باشد. اگر از `"constantQuestionValue": true` استفاده کنیم، ارزش سوال هرگز تغییر نمی‌کند و بنابراین تعداد پاسخ‌های صحیح مورد نیاز صرفاً `maxAutoPoints / autoPoints` است. با این حال، در حالت پیش‌فرض که `constantQuestionValue` نادرست (`false`) است، پاسخ‌های صحیح مکرر به دانشجو اجازه می‌دهد تا سریع‌تر به `maxAutoPoints` برسد. برای مثال، با `autoPoints` برابر ۳ و `maxAutoPoints` برابر ۳۰، دانشجویی که فقط ۴ بار متوالی به سوال پاسخ درست دهد، امتیاز کامل ۳+۶+۹+۱۲=۳۰ را کسب خواهد کرد. این بدان معناست که دانشجویی که به تسلط دست یافته است می‌تواند به سرعت سوال را تکمیل کند. در مقابل، دانشجویی که با سوال دست‌وپنجه نرم می‌کند ممکن است در صورتی که در طول مسیر اشتباهات مکرری مرتکب شود که ارزش سوال را مدام به ۳ بازنشانی کند، مجبور شود تا ۳۰/۳=۱۰ بار به آن پاسخ صحیح بدهد.
 
-Manual grading points are set using the `manualPoints` value. It is acceptable to use only one of `autoPoints` or `manualPoints`, in which case the other part of the points will be assigned a value of 0. Note that manual points are only applied to a question once, regardless of the number of submissions or variants the student answers.
+امتیازات نمره‌دهی دستی با استفاده از مقدار `manualPoints` تنظیم می‌شوند. استفاده از تنها یکی از مقادیر `autoPoints` یا `manualPoints` بلامانع است که در این صورت بخش دیگر امتیازات دارای مقدار ۰ خواهد بود. توجه داشته باشید که امتیازات دستی، صرف‌نظر از تعداد ارسال‌ها یا گونه‌هایی که دانشجو پاسخ می‌دهد، فقط یک بار بر روی یک سوال اعمال می‌شوند.
 
-A question may also set a value to `points` instead of `autoPoints` and `manualPoints`. If this option is used, questions with a `gradingMethod` set to `Manual` will be assigned only manual points, while questions with other grading methods will be assigned only auto points. To avoid ambiguity, it is an error to use both `points` and `autoPoints`, or `points` and `manualPoints`, in the same question. If `points` is used, then `maxPoints` should be used instead of `maxAutoPoints`.
+یک سوال همچنین می‌تواند به جای `autoPoints` و `manualPoints` مقداری را برای `points` تنظیم کند. در صورت استفاده از این گزینه، به سوالاتی با `gradingMethod` برابر با `Manual` فقط امتیاز دستی تعلق می‌گیرد، در حالی که به سوالات با سایر روش‌های نمره‌دهی فقط امتیاز خودکار اختصاص می‌یابد. برای جلوگیری از ابهام، استفاده هم‌زمان از `points` و `autoPoints`، یا `points` و `manualPoints` در یک سوال یکسان خطا محسوب می‌شود. در صورت استفاده از `points`، باید از `maxPoints` به جای `maxAutoPoints` استفاده شود.
 
-## Question points for `Exam` assessments
+## امتیازات سوال برای ارزیابی‌های `Exam` {: #question-points-for-exam-assessments }
 
-Assessments with `"type": "Exam"` are designed to test students' knowledge of course material. Students can retry questions for reduced points, so long as real-time grading is allowed (the default). See [Question scoring details for `Exam` assessments](#question-scoring-details-for-exam-assessments) for details on the exact scoring algorithm.
+ارزیابی‌های با `"type": "Exam"` برای سنجش دانش دانشجویان از مطالب درسی طراحی شده‌اند. دانشجویان می‌توانند تا زمانی که نمره‌دهی آنی مجاز باشد (حالت پیش‌فرض)، سوالات را برای دریافت امتیاز کمتر مجدداً امتحان کنند. برای جزئیات مربوط به الگوریتم دقیق نمره‌دهی، بخش [جزئیات نمره‌دهی سوال برای ارزیابی‌های `Exam`](#question-scoring-details-for-exam-assessments) را ببینید.
 
-Each question is assigned a set number of _auto points_ (points that are automatically assigned by an internal or external grader) and _manual points_ (points that are [assigned manually by a human grader](../manualGrading/index.md)).
+به هر سوال تعداد مشخصی از _امتیازات خودکار_ (امتیازاتی که به‌طور خودکار توسط یک نمره‌دهنده داخلی یا خارجی تعیین می‌شوند) و _امتیازات دستی_ (امتیازاتی که [به‌طور دستی توسط یک مصحح انسانی](../manualGrading/index.md) اختصاص می‌یابند) تعلق می‌گیرد.
 
-Exam questions only ever generate a single random variant of the question, but students may be able to make multiple attempts to answer the question (assuming that the default of `allowRealTimeGrading` is used so that students can know whether their answers are incorrect and need to be reattempted). For each question, auto-grading points are set using the `autoPoints` value, which is a list of values like [10, 7, 5]. This would mean that a correct answer on the first attempt is worth 10 points, a correct answer on the second attempt is worth 7 points, and so on. If `autoPoints` is set to a single value rather than a list then only a single attempt is allowed for that number of points.
+سوالات آزمون فقط یک گونه تصادفی از سوال را تولید می‌کنند، اما دانشجویان ممکن است بتوانند چندین تلاش برای پاسخ به سوال انجام دهند (با این فرض که از حالت پیش‌فرض `allowRealTimeGrading` استفاده شده باشد تا دانشجویان بدانند آیا پاسخ‌هایشان نادرست است و نیاز به تلاش مجدد دارد یا خیر). برای هر سوال، امتیازات نمره‌دهی خودکار با استفاده از مقدار `autoPoints` تنظیم می‌شوند که فهرستی از مقادیر مانند `[10, 7, 5]` است. این به این معنی است که پاسخ صحیح در تلاش اول ۱۰ امتیاز، پاسخ صحیح در تلاش دوم ۷ امتیاز و به همین ترتیب ارزش دارد. اگر `autoPoints` به جای یک فهرست روی یک مقدار منفرد تنظیم شود، آنگاه تنها یک تلاش برای آن مقدار امتیاز مجاز خواهد بود.
 
-If a student receives partial credit for an answer then they receive correspondingly reduced points. For example, with [10, 7, 5] `autoPoints`, a 50%-correct submission on the first attempt would be worth 5 points. The exact details of how points are awarded are described in [Question scoring details for `Exam` assessments](#question-scoring-details-for-exam-assessments). The principles of this scoring system are that students should be incentivized to answer questions correctly as soon as possible, and that students should never lose points by attempting a question again.
+اگر دانشجویی برای یک پاسخ نمره بخشی (Partial credit) دریافت کند، متناسب با آن امتیاز کمتری دریافت خواهد کرد. برای مثال، با `autoPoints` برابر `[10, 7, 5]`، یک پاسخ ۵۰٪ صحیح در تلاش اول ۵ امتیاز ارزش دارد. جزئیات دقیق نحوه اعطای امتیازات در بخش [جزئیات نمره‌دهی سوال برای ارزیابی‌های `Exam`](#question-scoring-details-for-exam-assessments) شرح داده شده است. اصول این سیستم نمره‌دهی بر این پایه استوار است که دانشجویان باید تشویق شوند تا در سریع‌ترین زمان ممکن به سوالات پاسخ صحیح دهند، و اینکه دانشجو هرگز نباید با تلاش مجدد برای یک سوال امتیاز از دست بدهد.
 
-Manual grading points are set using the `manualPoints` value. It is acceptable to use only one of `autoPoints` or `manualPoints`, in which case the other part of the points will be assigned a value of 0.
+امتیازات نمره‌دهی دستی با استفاده از مقدار `manualPoints` تنظیم می‌شوند. استفاده از تنها یکی از مقادیر `autoPoints` یا `manualPoints` مجاز است که در این صورت بخش دیگر امتیازات دارای مقدار ۰ خواهد بود.
 
-A question may also set a value to `points` instead of `autoPoints` and `manualPoints`. If this option is used, questions with a `gradingMethod` set to `Manual` will be assigned only manual points, while questions with other grading methods will be assigned only auto points. To avoid ambiguity, it is an error to use both `points` and `autoPoints`, or `points` and `manualPoints`, in the same question. If `points` is used, then `maxPoints` should be used instead of `maxAutoPoints`.
+یک سوال همچنین می‌تواند مقداری را برای `points` به جای `autoPoints` و `manualPoints` تنظیم کند. در صورت استفاده از این گزینه، به سوالاتی با `gradingMethod` برابر با `Manual` فقط امتیاز دستی تعلق می‌گیرد، در حالی که به سوالات با سایر روش‌های نمره‌دهی فقط امتیاز خودکار اختصاص می‌یابد. برای جلوگیری از ابهام، استفاده هم‌زمان از `points` و `autoPoints`، یا `points` و `manualPoints` در یک سوال یکسان خطا است. در صورت استفاده از `points`، باید از `maxPoints` به جای `maxAutoPoints` استفاده شود.
 
-## Question scoring details for `Homework` assessments
+## جزئیات نمره‌دهی سوال برای ارزیابی‌های `Homework` {: #question-scoring-details-for-homework-assessments }
 
-This section describes in detail how repeated attempts are scored for `Homework` questions, assuming that the question has `autoPoints`. See [Question points for `Homework` assessments](#question-points-for-homework-assessments) for a high-level overview. Scoring for `manualPoints` is handled separately.
+این بخش به تفصیل نحوه نمره‌دهی تلاش‌های مکرر را برای سوالات `Homework`، با فرض اینکه سوال دارای `autoPoints` باشد، شرح می‌دهد. برای یک دید کلی سطح بالا، بخش [امتیازات سوال برای ارزیابی‌های `Homework`](#question-points-for-homework-assessments) را ببینید. نمره‌دهی برای `manualPoints` به‌طور جداگانه مدیریت می‌شود.
 
-The two important question configuration settings are:
+دو تنظیم مهم پیکربندی سوال عبارتند از:
 
-- **`autoPoints`** is the number of points that the student receives for a submission that is fully correct.
-- **`maxAutoPoints`** is the maximum number of points that the student can receive for a question, regardless of how many times they answer it correctly.
+- **`autoPoints`** تعداد امتیازاتی است که دانشجو برای یک پاسخ ارسالی کاملاً صحیح دریافت می‌کند.
+- **`maxAutoPoints`** حداکثر تعداد امتیازاتی است که دانشجو می‌تواند برای یک سوال دریافت کند، صرف‌نظر از اینکه چند بار به آن پاسخ صحیح بدهد.
 
-The basic idea is that students should receive `autoPoints` each time they solve the question successfully, up to a maximum of `maxAutoPoints`. When partial credit is awarded, a student receives partial points for the question, but only if they are getting closer to a correct answer. For example, if a student repeatedly answers a question with 50% correct answers then they will receive 50% points for the first such answer, but they will not be able to build up points to reach `maxAutoPoints`. They will need to answer the question 100% correctly to be able to advance their points past the 50% mark.
+ایده اساسی این است که دانشجویان هر بار که سوال را با موفقیت حل می‌کنند، باید تا سقف `maxAutoPoints` امتیازِ `autoPoints` دریافت نمایند. هنگامی که نمره بخشی اعطا می‌شود، دانشجو امتیازات جزئی برای سوال دریافت می‌کند، اما تنها در صورتی که به پاسخ صحیح نزدیک‌تر شده باشد. برای مثال، اگر دانشجویی مکرراً به یک سوال با پاسخ‌های ۵۰٪ صحیح جواب دهد، برای اولین پاسخ از این دست ۵۰٪ امتیاز دریافت می‌کند، اما قادر نخواهد بود امتیازات را برای رسیدن به `maxAutoPoints` انباشته کند. او باید به سوال ۱۰۰٪ صحیح پاسخ دهد تا بتواند امتیازات خود را از مرز ۵۰٪ فراتر ببرد.
 
-The exact details of how PrairieLearn awards points are as follows. First, a number of variables are computed internally by PrairieLearn as the student answers the question:
+جزئیات دقیق نحوه اعطای امتیاز توسط PrairieLearn به شرح زیر است. ابتدا، تعدادی متغیر هم‌زمان با پاسخ‌گویی دانشجو به سوال، به‌طور داخلی توسط PrairieLearn محاسبه می‌شوند:
 
-- **Submission percentage score** is the score (between 0% and 100%) that the student receives for any given submission attempt, as evaluated by the question grading specification.
-- **Best current score** is the highest submission percentage score the student has received so far. If the student has already achieved 100% for a submission at least once, it is the highest submission percentage score the student has received since last achieving 100% for a submission. This is initialized to zero.
-- **Question value** is the current maximum number of points that the question is worth. This starts at `autoPoints` and increases by `autoPoints` for each consecutive correct submission. This is initialized to `autoPoints`.
-- **Question points** is the total number of points earned by the student for the question. This will never decrease. This is initialized to zero.
+- **درصد نمره پاسخ ارسالی (Submission percentage score)** نمره‌ای است (بین ۰٪ تا ۱۰۰٪) که دانشجو برای هر تلاش ارسالِ مشخص، طبق ارزیابی مشخصات نمره‌دهی سوال دریافت می‌کند.
+- **بهترین نمره فعلی (Best current score)** بالاترین درصد نمره پاسخ ارسالی است که دانشجو تاکنون دریافت کرده است. اگر دانشجو حداقل یک بار نمره ۱۰۰٪ را برای یک ارسال کسب کرده باشد، این مقدار برابر با بالاترین درصد نمره پاسخی است که دانشجو از زمان آخرین کسب ۱۰۰٪ دریافت کرده است. مقدار اولیه این متغیر صفر است.
+- **ارزش سوال (Question value)** حداکثر تعداد امتیازات فعلی است که سوال می‌ارزد. این مقدار از `autoPoints` شروع می‌شود و به ازای هر پاسخ صحیح متوالی به اندازه `autoPoints` افزایش می‌یابد. مقدار اولیه این متغیر برابر با `autoPoints` است.
+- **امتیاز سوال (Question points)** مجموع امتیازاتی است که دانشجو برای سوال کسب کرده است. این مقدار هرگز کاهش نخواهد یافت. مقدار اولیه این متغیر صفر است.
 
-When a student submits an answer to a question, the submission is first checked for validity. For example, the `pl-number-input` element considers a non-numeric input to be invalid. If the submission is valid then it is next determined whether it should be graded. A submission is only graded if explicitly requested by the student using the "Save & Grade" button, or if it is the last submission when the assessment is closed.
+هنگامی که دانشجو پاسخی را برای یک سوال ارسال می‌کند، ابتدا معتبر بودن پاسخ ارسالی بررسی می‌شود. برای مثال، المان `pl-number-input` یک ورودی غیرعددی را نامعتبر تلقی می‌کند. اگر پاسخ معتبر باشد، سپس تعیین می‌شود که آیا باید نمره‌دهی شود یا خیر. یک پاسخ ارسالی تنها در صورتی نمره‌دهی می‌شود که صراحتاً توسط دانشجو با استفاده از دکمه «Save & Grade» درخواست شده باشد، یا اینکه آخرین پاسخ ارسالی در زمان بسته شدن ارزیابی باشد.
 
-For each graded answer submission made by a student, the scoring algorithm is as follows:
+برای هر پاسخ ارسالیِ نمره‌دهی‌شده توسط دانشجو، الگوریتم نمره‌دهی به شرح زیر است:
 
-1. If the `submission percentage score` is more than `best current score`, add `(submission percentage score - best current score) / 100 * question value` to `question points`, capping `question points` at `maxAutoPoints`.
-2. If the `submission percentage score` is 100%, then reset `best current score` to zero. Otherwise, if the `submission percentage score` is more than `best current score`, then set `best current score` to `submission percentage score`.
-3. If the `submission percentage score` is 100% and `constantQuestionValue` is not set to true, then increase `question value` by `autoPoints`. Otherwise, set `question value` to `autoPoints`.
+1. اگر `submission percentage score` بیشتر از `best current score` باشد، مقدار `(submission percentage score - best current score) / 100 * question value` را به `question points` اضافه کن، با این شرط که `question points` از سقف `maxAutoPoints` فراتر نرود.
+2. اگر `submission percentage score` برابر ۱۰۰٪ باشد، `best current score` را به صفر بازنشانی کن. در غیر این صورت، اگر `submission percentage score` بیشتر از `best current score` باشد، آنگاه `best current score` را برابر با `submission percentage score` قرار بده.
+3. اگر `submission percentage score` برابر ۱۰۰٪ باشد و `constantQuestionValue` روی true تنظیم نشده باشد، `question value` را به اندازه `autoPoints` افزایش بده. در غیر این صورت، `question value` را برابر با `autoPoints` قرار بده.
 
-As an example, suppose a student makes nine submissions of varying degrees of correctness to a question. Assume the question has `autoPoints` set to 4 and `maxAutoPoints` set to 16. The student's submissions are as follows:
+به عنوان مثال، فرض کنید یک دانشجو ۹ پاسخ ارسالی با درجات مختلفی از درستی به یک سوال ارسال می‌کند. فرض کنید مقدار `autoPoints` سوال روی ۴ و مقدار `maxAutoPoints` روی ۱۶ تنظیم شده باشد. ارسال‌های دانشجو به شرح زیر است:
 
-| Submission number | Submission perc. score | Best current score | Question value | Question points | Comment                                                                                                                                          |
+| شماره ارسال | درصد نمره ارسال | بهترین نمره فعلی | ارزش سوال | امتیاز سوال | توضیحات |
 | ----------------- | ---------------------- | ------------------ | -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Init              | -                      | 0                  | 4              | 0               | Initial values                                                                                                                                   |
-| 1                 | 50%                    | 50%                | 4              | 2               | (50% - 0%) \* 4 = 2 points awarded                                                                                                               |
-| 2                 | 80%                    | 80%                | 4              | 3.2             | (80% - 50%) \* 4 = 1.2 points awarded                                                                                                            |
-| 3                 | 20%                    | 80%                | 4              | 3.2             | No improvement in score, so no points awarded or deducted                                                                                        |
-| 4                 | 100%                   | 0%                 | 8              | 4               | (100% - 80%) \* 4 = 0.8 points awarded, `best current score` reset to 0%, `question value` increased to 8                                        |
-| 5                 | 50%                    | 50%                | 4              | 8               | (50% - 0%) \* 8 = 4 points awarded, `question value` reset to 4                                                                                  |
-| 6                 | 0%                     | 50%                | 4              | 8               | No improvement in score, so no points awarded or deducted                                                                                        |
-| 7                 | 90%                    | 90%                | 4              | 9.6             | (90% - 50%) \* 4 = 1.6 points awarded or deducted                                                                                                |
-| 8                 | 100%                   | 0%                 | 8              | 10              | (100% - 90%) \* 4 = 0.4 points awarded, `best current score` reset to 0%, `question value` increased to 8                                        |
-| 9                 | 100%                   | 0%                 | 12             | 16              | 100% \* 8 = 8 points awarded, but points are capped by `maxAutoPoints` of 16, `best current score` reset to 0%, `question value` increased to 12 |
+| Init | - | 0 | 4 | 0 | مقادیر اولیه |
+| 1 | 50% | 50% | 4 | 2 | (50% - 0%) \* 4 = 2 امتیاز اعطا شد |
+| 2 | 80% | 80% | 4 | 3.2 | (80% - 50%) \* 4 = 1.2 امتیاز اعطا شد |
+| 3 | 20% | 80% | 4 | 3.2 | بهبودی در نمره حاصل نشد، بنابراین امتیازی اضافه یا کسر نشد |
+| 4 | 100% | 0% | 8 | 4 | (100% - 80%) \* 4 = 0.8 امتیاز اعطا شد، `best current score` به 0% بازنشانی شد، `question value` به 8 افزایش یافت |
+| 5 | 50% | 50% | 4 | 8 | (50% - 0%) \* 8 = 4 امتیاز اعطا شد، `question value` به 4 بازنشانی شد |
+| 6 | 0% | 50% | 4 | 8 | بهبودی در نمره حاصل نشد، بنابراین امتیازی اضافه یا کسر نشد |
+| 7 | 90% | 90% | 4 | 9.6 | (90% - 50%) \* 4 = 1.6 امتیاز اعطا شد |
+| 8 | 100% | 0% | 8 | 10 | (100% - 90%) \* 4 = 0.4 امتیاز اعطا شد، `best current score` به 0% بازنشانی شد، `question value` به 8 افزایش یافت |
+| 9 | 100% | 0% | 12 | 16 | 100% \* 8 = 8 امتیاز اعطا شد، اما امتیاز به سقف `maxAutoPoints` برابر با 16 محدود شد، `best current score` به 0% بازنشانی شد، `question value` به 12 افزایش یافت |
 
-After the nine submissions above the student has achieved maximum points for the question. They can continue to answer the question for additional practice, but they cannot earn any more points for it.
+پس از ۹ ارسال فوق، دانشجو حداکثر امتیاز را برای سوال به دست آورده است. او می‌تواند برای تمرین بیشتر به پاسخ دادن به سوال ادامه دهد، اما نمی‌تواند امتیاز بیشتری برای آن کسب کند.
 
-## Question scoring details for `Exam` assessments
+## جزئیات نمره‌دهی سوال برای ارزیابی‌های `Exam` {: #question-scoring-details-for-exam-assessments }
 
-This section describes in detail how repeated attempts are scored for `Exam` questions, assuming that the question has `autoPoints` set to a list of values. See [Question points for `Exam` assessments](#question-points-for-exam-assessments) for a high-level overview. Scoring for `manualPoints` is handled separately.
+این بخش به تفصیل نحوه نمره‌دهی تلاش‌های مکرر را برای سوالات `Exam`، با فرض اینکه `autoPoints` روی فهرستی از مقادیر تنظیم شده باشد، شرح می‌دهد. برای یک دید کلی سطح بالا، بخش [امتیازات سوال برای ارزیابی‌های `Exam`](#question-points-for-exam-assessments) را ببینید. نمره‌دهی برای `manualPoints` به‌طور جداگانه مدیریت می‌شود.
 
-The important question configuration setting is:
+تنظیم مهم پیکربندی سوال عبارت است از:
 
-- **`autoPoints`** is a list of points, with the `n`-th entry being the number of points that a student receives for a fully correct submission on the `n`-th attempt at the question. If `autoPoints` is set to a single value rather than a list then only a single attempt is allowed.
+- **`autoPoints`** فهرستی از امتیازات است که ورودی `n`-ام آن تعداد امتیازاتی است که دانشجو برای یک پاسخ ارسالی کاملاً صحیح در `n`-امین تلاش برای سوال دریافت می‌کند. اگر `autoPoints` به جای یک فهرست روی یک مقدار منفرد تنظیم شود، تنها یک تلاش مجاز خواهد بود.
 
-The basic idea is that `autoPoints` is set to a decreasing sequence of points, such as `[10, 7, 5, 2]`. In this case, a correct answer on the first attempt is worth 10 points, a correct answer on the second attempt is worth 7 points, and so on. If the student does not answer the question correctly after four attempts, they will receive 0 points for the question and cannot attempt it again.
+ایده اساسی این است که `autoPoints` روی یک دنباله نزولی از امتیازات، مانند `[10, 7, 5, 2]`، تنظیم شود. در این حالت، پاسخ صحیح در تلاش اول ۱۰ امتیاز، پاسخ صحیح در تلاش دوم ۷ امتیاز و به همین ترتیب ارزش دارد. اگر دانشجو پس از چهار تلاش به سوال پاسخ صحیح ندهد، ۰ امتیاز برای سوال دریافت می‌کند و نمی‌تواند دوباره آن را امتحان کند.
 
-The details of how scoring works are made more complex by the fact that a student may receive partial credit for any given submission attempt. PrairieLearn uses a scoring system that has four key properties, assuming that `autoPoints` is a list of decreasing values:
+جزئیات نحوه عملکرد نمره‌دهی به دلیل این واقعیت که دانشجو ممکن است برای هر تلاش نمره بخشی (Partial credit) دریافت کند، پیچیده‌تر می‌شود. پلتفرم PrairieLearn از یک سیستم نمره‌دهی استفاده می‌کند که با فرض نزولی بودن فهرست مقادیر `autoPoints`، دارای چهار ویژگی کلیدی است:
 
-1. A student can never lose points by attempting a question again.
-2. If a student submits an answer with a higher score than their previous best answer, they will always receive some additional points for it.
-3. Taking more attempts to answer correctly will always be worth less points than answering in fewer attempts, so students are always incentivized to answer questions correctly as soon as possible.
-4. The total number of submission attempts that a student can make is limited by the number of entries in `autoPoints`.
+1. دانشجو هرگز نمی‌تواند با تلاش مجدد برای یک سوال امتیاز از دست بدهد.
+2. اگر دانشجو پاسخی با نمره بالاتر از بهترین پاسخ قبلی خود ارسال کند، همیشه امتیاز اضافی برای آن دریافت خواهد کرد.
+3. انجام تلاش‌های بیشتر برای پاسخ صحیح همیشه ارزش امتیازی کمتری نسبت به پاسخ‌گویی در تلاش‌های کمتر خواهد داشت، بنابراین دانشجویان همیشه ترغیب می‌شوند تا در سریع‌ترین زمان ممکن به سوالات پاسخ صحیح دهند.
+4. تعداد کل تلاش‌های ارسالی که دانشجو می‌تواند انجام دهد با تعداد ورودی‌های موجود در `autoPoints` محدود می‌شود.
 
-The exact details of how PrairieLearn awards points are as follows. First, a number of variables are computed internally by PrairieLearn as the student answers the question:
+جزئیات دقیق نحوه اعطای امتیازات توسط PrairieLearn به شرح زیر است. ابتدا، تعدادی متغیر هم‌زمان با پاسخ‌گویی دانشجو به سوال، به‌طور داخلی توسط PrairieLearn محاسبه می‌شوند:
 
-- **Submission percentage score** is the score (between 0% and 100%) that the student receives for any given submission attempt, as evaluated by the question grading specification.
-- **Best current score** is the highest submission percentage score the student has received so far. This is initialized to zero.
-- **Question value** is the current maximum number of points that the question is worth. This is equal to `autoPoints[n]` for the `n`-th attempt at the question.
-- **Question points** is the total number of points earned by the student for the question. This will never decrease. This is initialized to zero.
+- **درصد نمره پاسخ ارسالی (Submission percentage score)** نمره‌ای است (بین ۰٪ تا ۱۰۰٪) که دانشجو برای هر تلاش ارسالِ مشخص، طبق ارزیابی مشخصات نمره‌دهی سوال دریافت می‌کند.
+- **بهترین نمره فعلی (Best current score)** بالاترین درصد نمره پاسخ ارسالی است که دانشجو تاکنون دریافت کرده است. مقدار اولیه این متغیر صفر است.
+- **ارزش سوال (Question value)** حداکثر تعداد امتیازات فعلی است که سوال می‌ارزد. این مقدار برابر با `autoPoints[n]` برای `n`-امین تلاش روی سوال است.
+- **امتیاز سوال (Question points)** مجموع امتیازاتی است که دانشجو برای سوال کسب کرده است. این مقدار هرگز کاهش نخواهد یافت. مقدار اولیه این متغیر صفر است.
 
-When a student submits an answer to a question, the submission is first checked for validity. For example, the `pl-number-input` element considers a non-numeric input to be invalid. If the submission is valid then it is next determined whether it should be graded. A submission is only graded if explicitly requested by the student using the "Save & Grade" button, or if it is the last submission when the assessment is closed.
+هنگامی که دانشجو پاسخی را برای یک سوال ارسال می‌کند، ابتدا معتبر بودن ارسال بررسی می‌شود. برای مثال، المان `pl-number-input` یک ورودی غیرعددی را نامعتبر تلقی می‌کند. اگر ارسال معتبر باشد، سپس تعیین می‌شود که آیا باید نمره‌دهی شود یا خیر. یک پاسخ ارسالی تنها در صورتی نمره‌دهی می‌شود که صراحتاً توسط دانشجو با استفاده از دکمه «Save & Grade» درخواست شده باشد، یا اینکه آخرین ارسال در زمان بسته شدن ارزیابی باشد.
 
-For the `n`-th graded answer submission made by a student, the scoring algorithm is as follows:
+برای `n`-امین پاسخ ارسالی نمره‌دهی‌شده توسط یک دانشجو، الگوریتم نمره‌دهی به صورت زیر است:
 
-1. Set the `question value` to `autoPoints[n]`.
-2. If the `submission percentage score` is more than `best current score`, add `(submission percentage score - best current score) / 100 * question value` to `question points`.
-3. If the `submission percentage score` is more than `best current score`, then set `best current score` to `submission percentage score`.
-4. If the `submission percentage score` is 100% and there are no manual points, or `n` is the last attempt, then prohibit further submissions to the question.
+1. مقدار `question value` را برابر با `autoPoints[n]` قرار بده.
+2. اگر `submission percentage score` بیشتر از `best current score` باشد، مقدار `(submission percentage score - best current score) / 100 * question value` را به `question points` اضافه کن.
+3. اگر `submission percentage score` بیشتر از `best current score` باشد، آنگاه `best current score` را برابر با `submission percentage score` قرار بده.
+4. اگر `submission percentage score` برابر ۱۰۰٪ باشد و هیچ امتیاز دستی وجود نداشته باشد، یا اینکه `n` آخرین تلاش باشد، ارسال‌های بعدی برای این سوال را ممنوع کن.
 
-As an example, suppose a student makes 4 submissions of varying degrees of correctness to a question which has `autoPoints` set to `[10, 7, 5, 2]`. The student's submissions are as follows:
+به عنوان مثال، فرض کنید یک دانشجو ۴ پاسخ ارسالی با درجات مختلفی از درستی به سوالی ارسال می‌کند که `autoPoints` آن روی `[10, 7, 5, 2]` تنظیم شده است. ارسال‌های دانشجو به شرح زیر است:
 
-| Submission number | Submission perc. score | Best current score | Question value | Question points | Comment                                                   |
+| شماره ارسال | درصد نمره ارسال | بهترین نمره فعلی | ارزش سوال | امتیاز سوال | توضیحات |
 | ----------------- | ---------------------- | ------------------ | -------------- | --------------- | --------------------------------------------------------- |
-| Init              | -                      | 0                  | -              | 0               | Initial values                                            |
-| 1                 | 50%                    | 50%                | 10             | 5               | (50% - 0%) \* 10 = 5 points awarded                       |
-| 2                 | 20%                    | 50%                | 7              | 5               | No improvement in score, so no points awarded or deducted |
-| 3                 | 80%                    | 80%                | 5              | 6.5             | (80% - 50%) \* 5 = 1.5 points awarded                     |
-| 4                 | 70%                    | 80%                | 2              | 6.5             | No improvement in score, so no points awarded or deducted |
+| Init | - | 0 | - | 0 | مقادیر اولیه |
+| 1 | 50% | 50% | 10 | 5 | (50% - 0%) \* 10 = 5 امتیاز اعطا شد |
+| 2 | 20% | 50% | 7 | 5 | بهبودی در نمره حاصل نشد، بنابراین امتیازی اضافه یا کسر نشد |
+| 3 | 80% | 80% | 5 | 6.5 | (80% - 50%) \* 5 = 1.5 امتیاز اعطا شد |
+| 4 | 70% | 80% | 2 | 6.5 | بهبودی در نمره حاصل نشد، بنابراین امتیازی اضافه یا کسر نشد |
 
-After the four submissions above the student has achieved 6.5 points for the question, for an overall score of 65% (6.5/10). They can no longer make submission attempts to the question.
+پس از ۴ ارسال فوق، دانشجو ۶.۵ امتیاز برای سوال کسب کرده است که معادل نمره کل ۶۵٪ (6.5/10) است. او دیگر نمی‌تواند تلاشی برای ارسال پاسخ به این سوال انجام دهد.
 
-## Assessment instances, question selection, and question order
+## نمونه‌های ارزیابی، انتخاب سوال، و ترتیب سوالات {: #assessment-instances-question-selection-and-question-order }
 
-PrairieLearn distinguishes between _assessments_ and _assessment instances_. An _assessment_ is determined by the configuration in an `assessments/` directory, and is something like "Midterm 1". Given an assessment, PrairieLearn needs to select the random list of questions for each student (or group of students, for group assessments), and it is this selection that is the _assessment instance_ for the student/group. There is only one copy of each assessment, but every student/group has their own assessment instance.
+پلتفرم PrairieLearn میان _ارزیابی‌ها_ (Assessments) و _نمونه‌های ارزیابی_ (Assessment instances) تفاوت قائل می‌شود. یک _ارزیابی_ توسط پیکربندی موجود در دایرکتوری `assessments/` مشخص می‌شود و چیزی شبیه "Midterm 1" است. با در دست داشتن یک ارزیابی، PrairieLearn باید فهرست تصادفی سوالات را برای هر دانشجو (یا گروهی از دانشجویان، برای ارزیابی‌های گروهی) انتخاب کند، و همین انتخاب است که _نمونه ارزیابی_ را برای آن دانشجو/گروه شکل می‌دهد. تنها یک نسخه از هر ارزیابی وجود دارد، اما هر دانشجو/گروه دارای نمونه ارزیابی اختصاصی خود است.
 
-The specific questions assigned to a particular assessment instance are chosen in three steps:
+سوالات خاص اختصاص‌یافته به یک نمونه ارزیابی مشخص در سه مرحله انتخاب می‌شوند:
 
-1. For each entry in the zone `questions` array, either take the single question in that entry or randomly select some of the questions from the list of question alternatives to give the _selected questions_. If `numberChoose` is specified, randomly select that many questions from the list of alternatives (defaults to selecting all alternatives).
+1. برای هر ورودی در آرایه `questions` بخش، یا تک‌سوال موجود در آن ورودی را در نظر بگیر یا به صورت تصادفی تعدادی از سوالات را از فهرست گزینه‌های جایگزین سوال انتخاب کن تا _سوالات انتخاب‌شده_ (Selected questions) به دست آیند. اگر `numberChoose` مشخص شده باشد، به همان تعداد سوال به صورت تصادفی از فهرست گزینه‌های جایگزین انتخاب کن (پیش‌فرض، انتخاب تمام گزینه‌های جایگزین است).
 
-2. For each zone, concatenate the _selected questions_ from each `questions` entry to form the total list of _available zone questions_. If `numberChoose` is specified for the zone, randomly select that many questions from the available zone questions to give the _zone questions_ (defaults to selecting all of the available zone questions). If shuffling is enabled, randomly shuffle the order of the _zone questions_.
+2. برای هر بخش، _سوالات انتخاب‌شده_ از هر ورودی `questions` را به یکدیگر متصل (Concatenate) کن تا فهرست کل _سوالات در دسترس بخش_ (Available zone questions) تشکیل شود. اگر `numberChoose` برای بخش مشخص شده باشد، به همان تعداد سوال را به صورت تصادفی از سوالات در دسترس بخش انتخاب کن تا _سوالات بخش_ (Zone questions) به دست آیند (پیش‌فرض، انتخاب تمام سوالات در دسترس بخش است). اگر برزدن (Shuffling) فعال باشد، ترتیب _سوالات بخش_ را به صورت تصادفی بر بزن.
 
-   The selection tries to stratify / spread out the selection between the different questions equally.
+   این انتخاب تلاش می‌کند تا انتخاب بین سوالات مختلف را به صورت یکنواخت لایه‌بندی و توزیع کند (Stratify / Spread out).
 
    ```json
    {
@@ -375,23 +372,23 @@ The specific questions assigned to a particular assessment instance are chosen i
    }
    ```
 
-   When `numberChoose` is set to 3, it will try to select one question from each group (spreading out the selection). Thus, one of the two alternatives in the first question, one of the two alternatives in the second question, and the third question will be selected. The algorithm will never select both `q1` and `q2` with `numberChoose = 3`.
+   هنگامی که `numberChoose` روی ۳ تنظیم شده باشد، سیستم تلاش خواهد کرد یک سوال از هر گروه انتخاب کند (توزیع یکنواخت انتخاب). بنابراین، یکی از دو گزینه جایگزین در سوال اول، یکی از دو گزینه جایگزین در سوال دوم، و سوال سوم انتخاب خواهند شد. الگوریتم با `numberChoose = 3` هرگز هم‌زمان `q1` و `q2` را انتخاب نخواهد کرد.
 
-3. Concatenate the _zone questions_ from each zone to form the total set of _assessment questions_. This set of questions forms the _assessment instance_ for this student/group.
+3. _سوالات بخش_ از هر بخش را به یکدیگر متصل کن تا مجموعه کل _سوالات ارزیابی_ شکل گیرد. این مجموعه سوالات، _نمونه ارزیابی_ را برای این دانشجو/گروه تشکیل می‌دهد.
 
-Each zone appears in the given order in the assessment (this is not randomized for each assessment instance). Within each zone the question order is randomized per-instance for Exams, but not randomized for Homeworks (but see the [`shuffleQuestions` option](#question-order-randomization)).
+هر بخش به همان ترتیبی که در ارزیابی تعریف شده ظاهر می‌شود (این ترتیب برای هر نمونه ارزیابی تصادفی نمی‌شود). درون هر بخش، ترتیب سوالات برای آزمون‌ها (Exams) به ازای هر نمونه ارزیابی تصادفی‌سازی می‌شود، اما برای تکالیف (Homeworks) تصادفی‌سازی نمی‌شود (البته [گزینه `shuffleQuestions`](#question-order-randomization) را ببینید).
 
-## Updating assessments
+## به‌روزرسانی ارزیابی‌ها {: #updating-assessments }
 
-The rules for updating assessment instances differ between `Homework` and `Exam` assessments.
+قوانین به‌روزرسانی نمونه‌های ارزیابی بین ارزیابی‌های `Homework` و `Exam` تفاوت دارد.
 
-**`Exam` assessment updates:** Exam assessment instances are generated when the student starts the exam, and they are never automatically deleted, regenerated, or updated, even when the original assessment is changed in some way. This is a safety mechanism to avoid having students' assessments changed during an exam. However, if you want to force the regeneration of assessment instances then you can do so by deleting assessment instances in the "Students" tab. While writing an assessment you might need to do this many times. Once an assessment is live, you should of course be very careful about doing this (basically, don't do it on a production server once an assessment is underway).
+**به‌روزرسانی‌های ارزیابی `Exam`:** نمونه‌های ارزیابی آزمون زمانی تولید می‌شوند که دانشجو آزمون را شروع می‌کند، و هرگز به‌طور خودکار حذف، بازتولید یا به‌روزرسانی نمی‌شوند، حتی زمانی که ارزیابی اصلی به نحوی تغییر کند. این یک سازوکار ایمنی است تا از تغییر ارزیابی‌های دانشجویان در حین برگزاری آزمون جلوگیری شود. با این حال، اگر می‌خواهید تولید مجدد نمونه‌های ارزیابی را تحمیل کنید، می‌توانید این کار را با حذف نمونه‌های ارزیابی در برگه "Students" انجام دهید. در حین نوشتن و طراحی یک ارزیابی ممکن است بارها نیاز به انجام این کار داشته باشید. هنگامی که یک ارزیابی فعال (Live) شد، البته باید در انجام این کار بسیار محتاط باشید (اساساً پس از شروع ارزیابی، این کار را روی سرور پروداکشن انجام ندهید).
 
-**`Homework` assessment updates:** New questions added to Homeworks will be automatically integrated into student homeworks currently in progress. Updates to `maxPoints` or `maxBonusPoints` will take effect the next time a student grades a question. A student's "points" and "percentage score" will never decrease.
+**به‌روزرسانی‌های ارزیابی `Homework`:** سوالات جدید اضافه‌شده به تکالیف به‌طور خودکار در تکالیف در حال انجام دانشجویان ادغام می‌شوند. به‌روزرسانی‌های `maxPoints` یا `maxBonusPoints` دفعه بعدی که دانشجو سوالی را نمره‌دهی می‌کند اعمال خواهند شد. «امتیازات» و «درصد نمره» دانشجو هرگز کاهش نخواهد یافت.
 
-## Assessment points
+## امتیازات ارزیابی {: #assessment-points }
 
-A student's percentage score will be determined by the number of points they have obtained, divided by the value of `maxPoints` for the assessment (subject to the rules associated to [`credit`](../assessment/accessControl.md#credit) in assessment access rules).
+درصد نمره یک دانشجو با تقسیم تعداد امتیازاتی که به دست آورده است بر مقدار `maxPoints` ارزیابی تعیین می‌شود (مشروط به قوانین مربوط به [`credit`](../assessment/accessControl.md#credit) در قوانین کنترل دسترسی ارزیابی).
 
 ```json title="infoAssessment.json"
 {
@@ -401,23 +398,23 @@ A student's percentage score will be determined by the number of points they hav
 }
 ```
 
-In the assessment configuration, the `maxPoints` determines the number of points a student is required to obtain to get a score of 100%. The percentage score will thus be computed based on the points the student obtained divided by the value of `maxPoints`. If not provided, `maxPoints` is computed based on the maximum number of points that can be obtained from all questions in all zones.
+در پیکربندی ارزیابی، `maxPoints` تعیین‌کننده تعداد امتیازاتی است که دانشجو برای کسب نمره ۱۰۰٪ باید به دست آورد. بنابراین، درصد نمره بر اساس امتیازات کسب‌شده توسط دانشجو تقسیم بر مقدار `maxPoints` محاسبه خواهد شد. در صورت عدم تعیین، `maxPoints` بر اساس حداکثر تعداد امتیازاتی که می‌توان از تمام سوالات در همه بخش‌ها کسب کرد، محاسبه می‌شود.
 
-By default, once a student obtains enough points to reach the value of `maxPoints`, any further points do not affect the assessment score. However, if a value is set for `maxBonusPoints` and `credit` is set to 100, the student can obtain additional points, up to a total of `maxPoints + maxBonusPoints`. The percentage is still based on `maxPoints`, so the use of `maxBonusPoints` allows students to obtain a percentage above 100%, either by completing additional questions, or by receiving additional bonus points in [manual grading](../manualGrading/index.md). If `maxBonusPoints` is set, but `maxPoints` is not provided, then `maxPoints` will be computed by subtracting `maxBonusPoints` from the maximum number of points in all questions.
+به‌طور پیش‌فرض، هنگامی که دانشجو امتیاز کافی برای رسیدن به مقدار `maxPoints` را کسب کند، هرگونه امتیاز بیشتر تاثیری بر نمره ارزیابی نخواهد داشت. با این حال، اگر مقداری برای `maxBonusPoints` تنظیم شده باشد و `credit` برابر با ۱۰۰ باشد، دانشجو می‌تواند امتیازات بیشتری تا سقف `maxPoints + maxBonusPoints` کسب کند. درصد نمره همچنان بر اساس `maxPoints` محاسبه می‌شود، بنابراین استفاده از `maxBonusPoints` به دانشجویان اجازه می‌دهد تا با تکمیل سوالات بیشتر یا با دریافت امتیازات تشویقی اضافی در [نمره‌دهی دستی](../manualGrading/index.md)، درصدی بالاتر از ۱۰۰٪ به دست آورند. اگر `maxBonusPoints` تنظیم شده باشد اما `maxPoints` مشخص نشده باشد، آنگاه `maxPoints` با کسر `maxBonusPoints` از حداکثر تعداد امتیازات کل سوالات محاسبه خواهد شد.
 
-The choice of using `maxBonusPoints` or a `credit` value above 100 is based on instructor's choice. Additional points based on `maxBonusPoints` are intended to be credited based on extra work, while `credit` above 100 is to be awarded for early completion. It is possible to combine them, and use them together in the same assessment. If `maxBonusPoints` is set while the `credit` is above 100, then the percentage is based on both `maxBonusPoints` and `credit` (see [`credit`](../assessment/accessControl.md#credit) for details).
+انتخاب استفاده از `maxBonusPoints` یا مقدار `credit` بالاتر از ۱۰۰ بر اساس نظر مدرس صورت می‌گیرد. امتیازات اضافی بر اساس `maxBonusPoints` برای پاداش دادن به کار اضافی در نظر گرفته شده‌اند، در حالی که `credit` بالای ۱۰۰ برای تکمیل زودهنگام اعطا می‌شود. امکان ترکیب آن‌ها و استفاده هم‌زمان از هر دو در یک ارزیابی وجود دارد. اگر `maxBonusPoints` در شرایطی تنظیم شود که `credit` بالای ۱۰۰ باشد، آنگاه درصد نمره بر اساس هر دو مورد `maxBonusPoints` و `credit` محاسبه می‌شود (برای جزئیات بیشتر بخش [`credit`](../assessment/accessControl.md#credit) را ببینید).
 
-## Multiple-instance versus single-instance assessments
+## ارزیابی‌های چند‌نمونه‌ای در برابر تک‌نمونه‌ای {: #multiple-instance-versus-single-instance-assessments }
 
-By default, all assessments are _single instance_, meaning that each student has exactly one instance of the assessment that they can complete, and once they have completed that assessment instance then they cannot do the assessment again. This is the expected behavior for homeworks, quizzes, exams, etc.
+به‌طور پیش‌فرض، همه ارزیابی‌ها _تک‌نمونه‌ای_ (Single instance) هستند، به این معنی که هر دانشجو دقیقاً یک نمونه از ارزیابی دارد که می‌تواند آن را تکمیل کند، و پس از اتمام آن نمونه ارزیابی، دیگر نمی‌تواند ارزیابی را دوباره انجام دهد. این رفتار مورد انتظار برای تکالیف، آزمونک‌ها (Quizzes)، آزمون‌ها و غیره است.
 
-For practice exams it is often desirable to make a _multiple instance_ assessment by setting the option `"multipleInstance": true`. This will allow students to create new assessment instances and try the whole assessment repeatedly. This setting may be used in cases where students are expected to get multiple attempts for the same assessments, either for no credit (i.e., for practice only), or where credit applies to the attempt with the highest overall score.
+برای آزمون‌های تمرینی اغلب مطلوب است که با تنظیم گزینه `"multipleInstance": true` یک ارزیابی _چندنکته‌ای/چند‌نمونه‌ای_ (Multiple instance) ایجاد شود. این کار به دانشجویان اجازه می‌دهد تا نمونه‌های ارزیابی جدیدی ایجاد کرده و کل ارزیابی را مکرراً امتحان کنند. این تنظیم ممکن است در مواردی استفاده شود که انتظار می‌رود دانشجویان چندین تلاش برای ارزیابی‌های مشابه داشته باشند، چه بدون دریافت نمره (یعنی صرفاً برای تمرین)، و چه در حالتی که نمره به تلاشی با بالاترین نمره کلی تعلق گیرد.
 
-Note that this setting is not suitable in scenarios where multiple attempts are created in different environments. For example, if students write an exam for credit, and are then allowed to re-attempt the same exam without credit for practice, or where the score used in the course is a weighted average of the attempts, then the multiple-instance option is not a valid approach. In such cases, a better option is a separate assessment (possibly with the same questions) for the original exam and for the practice version or re-attempt. The practice version itself may be suitable for multiple instances, but not the original exam.
+توجه داشته باشید که این تنظیم برای سناریوهایی که در آن تلاش‌های چندگانه در محیط‌های متفاوتی ایجاد می‌شوند مناسب نیست. برای مثال، اگر دانشجویان امتحانی را برای نمره بنویسند و سپس اجازه داشته باشند همان امتحان را بدون نمره برای تمرین دوباره امتحان کنند، یا در حالتی که نمره مورد استفاده در دوره میانگین وزنی تلاش‌ها باشد، گزینه چند‌نمونه‌ای رویکرد معتبری نیست. در چنین مواردی، گزینه بهتر یک ارزیابی مجزا (احتمالاً با همان سوالات) برای آزمون اصلی و برای نسخه تمرینی یا تلاش مجدد است. نسخه تمرینی به خودی خود ممکن است برای چند‌نمونه‌ای مناسب باشد، اما آزمون اصلی خیر.
 
-## Enabling group work for collaborative assessments
+## فعال‌سازی کار گروهی برای ارزیابی‌های مشارکتی {: #enabling-group-work-for-collaborative-assessments }
 
-By default, assessment instances are tied to only one user. By using the `groups` configuration, multiple students will be able to work on the same assessment instance.
+به‌طور پیش‌فرض، نمونه‌های ارزیابی تنها به یک کاربر متصل هستند. با استفاده از پیکربندی `groups`، چندین دانشجو قادر خواهند بود بر روی یک نمونه ارزیابی یکسان کار کنند.
 
 ```json title="infoAssessment.json"
 {
@@ -434,40 +431,40 @@ By default, assessment instances are tied to only one user. By using the `groups
 }
 ```
 
-### Groups configuration
+### پیکربندی گروه‌ها {: #groups-configuration }
 
-The `groups` object supports the following properties:
+شیء `groups` از ویژگی‌های زیر پشتیبانی می‌کند:
 
-| Attribute            | Type    | Default | Description                                                                                                                      |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | -------------------- | ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `minMembers`         | integer | -       | The minimum number of students in a group.                                                                                       |
-| `maxMembers`         | integer | -       | The maximum number of students in a group.                                                                                       |
-| `roles`              | array   | `[]`    | Array of custom user roles in a group. See [Enabling custom group roles](#enabling-custom-group-roles).                          |
-| `studentPermissions` | object  | `{}`    | Student permissions for group management. See below.                                                                             |
-| `rolePermissions`    | object  | `{}`    | Role-based permissions for group assessments. See [Adding permissions for an assessment](#adding-permissions-for-an-assessment). |
+| `minMembers` | integer | - | حداقل تعداد دانشجویان در یک گروه. |
+| `maxMembers` | integer | - | حداکثر تعداد دانشجویان در یک گروه. |
+| `roles` | array | `[]` | آرایه‌ای از نقش‌های سفارشی کاربران در یک گروه. بخش [فعال‌سازی نقش‌های سفارشی گروه](#enabling-custom-group-roles) را ببینید. |
+| `studentPermissions` | object | `{}` | مجوزهای دانشجو برای مدیریت گروه. در زیر را ببینید. |
+| `rolePermissions` | object | `{}` | مجوزهای مبتنی بر نقش برای ارزیابی‌های گروهی. بخش [افزودن مجوزها برای یک ارزیابی](#adding-permissions-for-an-assessment) را ببینید. |
 
-The presence of the `groups` object indicates that group work is enabled for the assessment; remove the property to disable group work.
+حضور شیء `groups` نشان‌دهنده فعال بودن کار گروهی برای ارزیابی است؛ برای غیرفعال کردن کار گروهی این ویژگی را حذف کنید.
 
-### Student permissions
+### مجوزهای دانشجو {: #student-permissions }
 
-The `studentPermissions` object controls what students can do to manage their groups:
+شیء `studentPermissions` کنترل می‌کند که دانشجویان برای مدیریت گروه‌های خود چه کارهایی می‌توانند انجام دهند:
 
-| Attribute        | Type    | Default | Description                                                                                                |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | ---------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------- |
-| `canCreateGroup` | boolean | `true`  | Allow students to create groups.                                                                           |
-| `canJoinGroup`   | boolean | `true`  | Allow students to join other groups by join code.                                                          |
-| `canLeaveGroup`  | boolean | `true`  | Allow students to leave groups.                                                                            |
-| `canNameGroup`   | boolean | `true`  | Allow students to choose a group name when creating a group. If set to false, a default name will be used. |
+| `canCreateGroup` | boolean | `true` | به دانشجویان اجازه ایجاد گروه می‌دهد. |
+| `canJoinGroup` | boolean | `true` | به دانشجویان اجازه می‌دهد با کد عضویت به گروه‌های دیگر بپیوندند. |
+| `canLeaveGroup` | boolean | `true` | به دانشجویان اجازه ترک گروه‌ها را می‌دهد. |
+| `canNameGroup` | boolean | `true` | به دانشجویان اجازه می‌دهد هنگام ایجاد گروه نامی برای آن انتخاب کنند. اگر روی false تنظیم شود، یک نام پیش‌فرض استفاده خواهد شد. |
 
-??? note "Legacy defaults"
+??? note "پیش‌فرض‌های قدیمی (Legacy defaults)"
 
-    The previous legacy defaults were `canCreateGroup: false`, `canJoinGroup: false`, `canLeaveGroup: false`, `canNameGroup: true`.
+    پیش‌فرض‌های قدیمی قبلی عبارت بودند از: `canCreateGroup: false`، `canJoinGroup: false`، `canLeaveGroup: false`، `canNameGroup: true`.
 
-Note that changing an assessment from individual to group-based or vice versa after students have started working on it will cause student work to be lost.
+توجه داشته باشید که تغییر یک ارزیابی از حالت انفرادی به گروهی یا بالعکس پس از اینکه دانشجویان شروع به کار روی آن کرده باشند، باعث از دست رفتن کار دانشجویان خواهد شد.
 
-??? note "Legacy group properties"
+??? note "ویژگی‌های قدیمی گروه (Legacy group properties)"
 
-    The legacy format for enabling group work uses `groupWork: true` along with other top-level properties:
+    قالب قدیمی برای فعال‌سازی کار گروهی از `groupWork: true` به همراه سایر ویژگی‌های سطح بالا (Root level) استفاده می‌کند:
 
     ```json title="infoAssessment.json"
     {
@@ -481,21 +478,21 @@ Note that changing an assessment from individual to group-based or vice versa af
     }
     ```
 
-    | Attribute                | Type    | Default | Description                                                                                                |
+    | ویژگی | نوع | پیش‌فرض | توضیحات |
     | ------------------------ | ------- | ------- | ---------------------------------------------------------------------------------------------------------- |
-    | `groupWork`              | boolean | false   | Enable the group work for the assessment.                                                                  |
-    | `groupMaxSize`           | integer | -       | The maximum size of a group (default: no maximum).                                                         |
-    | `groupMinSize`           | integer | -       | The minimum size of a group (default: no minimum).                                                         |
-    | `studentGroupCreate`     | boolean | false   | Allow students to create groups.                                                                           |
-    | `studentGroupChooseName` | boolean | true    | Allow students to choose a group name when creating a group. If set to false, a default name will be used. |
-    | `studentGroupJoin`       | boolean | false   | Allow students to join other groups by join code.                                                          |
-    | `studentGroupLeave`      | boolean | false   | Allow students to leave groups.                                                                            |
+    | `groupWork` | boolean | false | فعال‌سازی کار گروهی برای ارزیابی. |
+    | `groupMaxSize` | integer | - | حداکثر اندازه یک گروه (پیش‌فرض: بدون حداکثر). |
+    | `groupMinSize` | integer | - | حداقل اندازه یک گروه (پیش‌فرض: بدون حداقل). |
+    | `studentGroupCreate` | boolean | false | به دانشجویان اجازه ایجاد گروه می‌دهد. |
+    | `studentGroupChooseName` | boolean | true | به دانشجویان اجازه می‌دهد هنگام ساخت گروه یک نام انتخاب کنند. اگر روی false تنظیم شود، از نام پیش‌فرض استفاده خواهد شد. |
+    | `studentGroupJoin` | boolean | false | به دانشجویان اجازه می‌دهد با کد عضویت به گروه‌های دیگر بپیوندند. |
+    | `studentGroupLeave` | boolean | false | به دانشجویان اجازه می‌دهد گروه‌ها را ترک کنند. |
 
-### Managing groups
+### مدیریت گروه‌ها {: #managing-groups }
 
-Instructors can manage groups on the "Groups" tab of an assessment. This page allows instructors to create individual groups, delete existing groups, and add or remove users from groups.
+مدرسان می‌توانند گروه‌ها را در برگه "Groups" یک ارزیابی مدیریت کنند. این صفحه به مدرسان اجازه می‌دهد گروه‌های تکی بسازند، گروه‌های موجود را حذف کنند، و کاربران را به گروه‌ها اضافه کرده یا از آن‌ها حذف نمایند.
 
-To create groups in bulk, upload a CSV file in the following format:
+برای ایجاد گروه‌ها به صورت عمده و یکجا، یک فایل CSV را با قالب زیر بارگذاری کنید:
 
 ```csv
 group_name,uid
@@ -505,37 +502,37 @@ groupB,three@example.com
 groupB,four@example.com
 ```
 
-The assessment's "Downloads" tab has an `<assessment>_groups.csv` file that contains the current group memberships. This can be used to copy group memberships from one assessment to another. The same file can also be exported from the "Groups" tab by using "Actions" > "Export CSV".
+برگه "Downloads" ارزیابی دارای یک فایل `<assessment>_groups.csv` است که شامل اعضای فعلی گروه‌هاست. این فایل می‌تواند برای کپی کردن عضویت‌های گروهی از یک ارزیابی به ارزیابی دیگر مورد استفاده قرار گیرد. همین فایل را می‌توان از برگه "Groups" با استفاده از مسیر "Actions" > "Export CSV" نیز خروجی (Export) گرفت.
 
-Alternatively, the "Assign randomly" button can be used to randomly assign students to groups based on a desired minimum/maximum group size.
+همچنین، دکمه "Assign randomly" می‌تواند برای تخصیص تصادفی دانشجویان به گروه‌ها بر اساس حداقل/حداکثر اندازه گروهِ مورد نظر استفاده شود.
 
-### Student options for group work
+### گزینه‌های دانشجو برای کار گروهی {: #student-options-for-group-work }
 
-![Student perspective for joining a group](groupwork_student_perspective_join.png)
+![دیدگاه دانشجو برای پیوستن به گروه](groupwork_student_perspective_join.png)
 
-If an instructor does not assign a student to a group, the student will need to join one before opening their assessment instance. They can either create a new one or join an existing group via a join code, which they can get from another classmate.
+اگر مدرس دانشجویی را به یک گروه اختصاص ندهد، دانشجو باید پیش از باز کردن نمونه ارزیابی خود به یک گروه بپیوندد. او می‌تواند یا یک گروه جدید ایجاد کند یا از طریق یک کد عضویت که می‌تواند آن را از هم‌کلاسی دیگری دریافت کند، به یک گروه موجود ملحق شود.
 
-When calculating a student's grade for a group assessment, PrairieLearn will always use the score of their group's assessment instance.
+هنگام محاسبه نمره دانشجو برای یک ارزیابی گروهی، PrairieLearn همیشه از نمره نمونه ارزیابی گروه او استفاده خواهد کرد.
 
-!!! info
+!!! info "اطلاعات"
 
-    Students cannot see each other's edits in real-time.
+    دانشجویان نمی‌توانند ویرایش‌های یکدیگر را به صورت آنی (Real-time) مشاهده کنند.
 
-![Student view of assessment with groupwork enabled](groupwork_student_perspective_assessment.png)
+![نمای ارزیابی برای دانشجو با فعال بودن کار گروهی](groupwork_student_perspective_assessment.png)
 
-Students are able to see their groupmates' UIDs, which can become a point of contact to communicate with each other outside PrairieLearn. They are also able to leave their group to join a different one.
+دانشجویان قادرند شناسه کاربری (UID) هم‌گروهی‌های خود را ببینند که می‌تواند نقطه‌ای برای تماس و برقراری ارتباط با یکدیگر در خارج از PrairieLearn باشد. آن‌ها همچنین می‌توانند گروه خود را ترک کرده و به گروه دیگری بپیوندند.
 
-### Enabling custom group roles
+### فعال‌سازی نقش‌های سفارشی گروه {: #enabling-custom-group-roles }
 
-By default, students working in collaborative group assessments can view and submit every question. However, instructors can define **custom group roles**, which can be assigned different permissions to facilitate role-based teamwork. Assessments can be configured to allow or restrict some operations to students with specific roles, such as:
+به‌طور پیش‌فرض، دانشجویانی که در ارزیابی‌های گروهی مشارکتی کار می‌کنند می‌توانند تمام سوالات را مشاهده و ارسال کنند. با این حال، مدرسان می‌توانند **نقش‌های سفارشی گروه** (Custom group roles) را تعریف کنند که می‌توان مجوزهای متفاوتی را به آن‌ها اختصاص داد تا کار تیمی مبتنی بر نقش تسهیل شود. ارزیابی‌ها می‌توانند به‌گونه‌ای پیکربندی شوند که برخی عملیات را برای دانشجویان دارای نقش‌های خاص مجاز یا محدود کنند، مانند:
 
-- Submitting specific questions
-- Viewing specific questions
-- Assigning group roles for other students
+- ارسال سوالات خاص
+- مشاهده سوالات خاص
+- تعیین نقش‌های گروهی برای سایر دانشجویان
 
-Although in most cases each student is expected to take one role, students are allowed to take on multiple roles in some narrow scenarios, such as when users leave and join groups after assessments have started.
+اگرچه در بیشتر موارد انتظار می‌رود هر دانشجو یک نقش بر عهده بگیرد، اما در برخی سناریوهای خاص، مانند زمانی که کاربران پس از شروع ارزیابی از گروه خارج شده یا به آن می‌پیوندند، دانشجویان مجاز به بر عهده گرفتن چندین نقش هستند.
 
-To opt in to custom group roles, roles must be defined in the `groups.roles` array of the `infoAssessment.json` file. For example:
+برای استفاده از نقش‌های سفارشی گروه، نقش‌ها باید در آرایه `groups.roles` در فایل `infoAssessment.json` تعریف شوند. برای مثال:
 
 ```json title="infoAssessment.json"
 {
@@ -567,15 +564,15 @@ To opt in to custom group roles, roles must be defined in the `groups.roles` arr
 }
 ```
 
-| Attribute    | Type    | Default | Description                                                                  |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | ------------ | ------- | ------- | ---------------------------------------------------------------------------- |
-| `name`       | string  | -       | The name of the role.                                                        |
-| `minMembers` | integer | 0       | The minimum required number of students holding this role in the assessment. |
-| `maxMembers` | integer | -       | The maximum required number of students holding this role in the assessment. |
+| `name` | string | - | نام نقش. |
+| `minMembers` | integer | 0 | حداقل تعداد دانشجویان مورد نیاز دارای این نقش در ارزیابی. |
+| `maxMembers` | integer | - | حداکثر تعداد دانشجویان مورد نیاز دارای این نقش در ارزیابی. |
 
-??? note "Legacy group roles format"
+??? note "قالب قدیمی نقش‌های گروه (Legacy group roles format)"
 
-    The legacy format for defining custom group roles uses `groupRoles` at the root level:
+    قالب قدیمی برای تعریف نقش‌های سفارشی گروه از `groupRoles` در سطح ریشه استفاده می‌کند:
 
     ```json title="infoAssessment.json"
     {
@@ -603,23 +600,23 @@ To opt in to custom group roles, roles must be defined in the `groups.roles` arr
     }
     ```
 
-    | Attribute        | Type    | Default | Description                                                                  |
+    | ویژگی | نوع | پیش‌فرض | توضیحات |
     | ---------------- | ------- | ------- | ---------------------------------------------------------------------------- |
-    | `name`           | string  | -       | The name of the role.                                                        |
-    | `minimum`        | integer | 0       | The minimum required number of students holding this role in the assessment. |
-    | `maximum`        | integer | -       | The maximum required number of students holding this role in the assessment. |
-    | `canAssignRoles` | boolean | false   | Allow students with this role to assign roles to other students.             |
+    | `name` | string | - | نام نقش. |
+    | `minimum` | integer | 0 | حداقل تعداد دانشجویان مورد نیاز دارای این نقش در ارزیابی. |
+    | `maximum` | integer | - | حداکثر تعداد دانشجویان مورد نیاز دارای این نقش در ارزیابی. |
+    | `canAssignRoles` | boolean | false | به دانشجویان دارای این نقش اجازه می‌دهد نقش‌هایی را به سایر دانشجویان اختصاص دهند. |
 
-Students typically select their roles before starting an assessment, but they can change their roles mid-assessment if needed. As a safeguard against invalid role configurations, PrairieLearn prevents students from viewing questions if a group's role configuration does not meet the instructor's specification.
+دانشجویان معمولاً نقش‌های خود را قبل از شروع ارزیابی انتخاب می‌کنند، اما در صورت نیاز می‌توانند نقش‌های خود را در میانه ارزیابی تغییر دهند. به عنوان یک اقدام حفاظتی در برابر پیکربندی‌های نامعتبر نقش، PrairieLearn در صورتی که پیکربندی نقش‌های یک گروه با مشخصات تعیین‌شده توسط مدرس مطابقت نداشته باشد، از مشاهده سوالات توسط دانشجویان جلوگیری می‌کند.
 
-#### Adding permissions for an assessment
+#### افزودن مجوزها برای یک ارزیابی {: #adding-permissions-for-an-assessment }
 
-Permissions can be configured in two places:
+مجوزها را می‌توان در دو بخش پیکربندی کرد:
 
-1. **Assessment-level defaults** using `groups.rolePermissions`
-2. **Zone or question-level overrides** using `canView` and `canSubmit`
+1. **پیش‌فرض‌های سطح ارزیابی** با استفاده از `groups.rolePermissions`
+2. **بازنویسی‌های سطح بخش یا سوال** با استفاده از `canView` و `canSubmit`
 
-The `groups.rolePermissions` object defines default permissions for the entire assessment:
+شیء `groups.rolePermissions` مجوزهای پیش‌فرض را برای کل ارزیابی تعریف می‌کند:
 
 ```json title="infoAssessment.json"
 {
@@ -639,15 +636,15 @@ The `groups.rolePermissions` object defines default permissions for the entire a
 }
 ```
 
-| Attribute        | Type            | Default | Description                                                      |
+| ویژگی | نوع | پیش‌فرض | توضیحات |
 | ---------------- | --------------- | ------- | ---------------------------------------------------------------- |
-| `canAssignRoles` | Array of string | `[]`    | The names of roles that can assign other users to roles.         |
-| `canView`        | Array of string | -       | The names of roles that can view questions in this assessment.   |
-| `canSubmit`      | Array of string | -       | The names of roles that can submit questions in this assessment. |
+| `canAssignRoles` | Array of string | `[]` | نام نقش‌هایی که می‌توانند کاربران دیگر را به نقش‌ها اختصاص دهند. |
+| `canView` | Array of string | - | نام نقش‌هایی که می‌توانند سوالات این ارزیابی را مشاهده کنند. |
+| `canSubmit` | Array of string | - | نام نقش‌هایی که می‌توانند سوالات این ارزیابی را ارسال کنند. |
 
-Setting either `canView` or `canSubmit` to `[]` (empty array) means that **no role** can view or submit that part of the assessment, respectively. If either attribute is not set, it means that **every role** has the permission associated to the attribute, i.e., any student with any role can view or submit that part of the assessment.
+تنظیم `canView` یا `canSubmit` به `[]` (آرایه خالی) به این معنی است که به ترتیب **هیچ نقشی** نمی‌تواند آن بخش از ارزیابی را مشاهده یا ارسال کند. اگر هر یک از این صفت‌ها تنظیم نشود، به این معنی است که **تمام نقش‌ها** مجوز مرتبط با آن صفت را دارند، یعنی هر دانشجویی با هر نقشی می‌تواند آن بخش از ارزیابی را مشاهده یا ارسال کند.
 
-Permissions defined at a higher level are propagated down the assessment hierarchy (assessment ⇾ zone ⇾ question), but permissions defined at lower levels will override those from the higher level. For example:
+مجوزهای تعریف‌شده در سطوح بالاتر در سلسله‌مراتب ارزیابی به سطوح پایین‌تر منتشر می‌شوند (ارزیابی ⇾ بخش ⇾ سوال)، اما مجوزهای تعریف‌شده در سطوح پایین‌تر، موارد به ارث رسیده از سطوح بالاتر را بازنویسی (Override) خواهند کرد. برای مثال:
 
 ```json title="infoAssessment.json"
 {
@@ -671,45 +668,45 @@ Permissions defined at a higher level are propagated down the assessment hierarc
 }
 ```
 
-In the example above, question 1 can be viewed by students in Manager, Reflector or Recorder roles, but only students with a Recorder role can submit an answer, as per the default roles defined in the assessment level (for viewing) and the zone level (for editing). Question 2 can only be viewed and submitted by a Recorder, while question 3 can only be viewed and submitted by a Reflector. Question 4 overrides the default settings by using the `null` special value, and allows students in any role to view the question, though only students with the Recorder role can submit an answer.
+در مثال بالا، سوال 1 می‌تواند توسط دانشجویان در نقش‌های Manager، Reflector یا Recorder مشاهده شود، اما تنها دانشجویان با نقش Recorder می‌توانند پاسخی ارسال کنند، طبق نقش‌های پیش‌فرض تعریف‌شده در سطح ارزیابی (برای مشاهده) و سطح بخش (برای ارسال پاسخ). سوال 2 تنها می‌تواند توسط یک Recorder مشاهده و ارسال شود، در حالی که سوال 3 تنها می‌تواند توسط یک Reflector مشاهده و ارسال گردد. سوال 4 با استفاده از مقدار ویژه `null`، تنظیمات پیش‌فرض را بازنویسی می‌کند و به دانشجویان با هر نقشی اجازه مشاهده سوال را می‌دهد، اگرچه تنها دانشجویان با نقش Recorder می‌توانند پاسخی ارسال کنند.
 
-#### Assigning roles to students
+#### تخصیص نقش‌ها به دانشجویان {: #assigning-roles-to-students }
 
-When students join a group, they are automatically assigned a role. Students can always view the roles of other students in the group, both before and during an assessment. Students can click "View role info" to see more information about the assessment's group roles.
+هنگامی که دانشجویان به یک گروه می‌پیوندند، به‌طور خودکار نقشی به آن‌ها اختصاص می‌یابد. دانشجویان همیشه می‌توانند نقش‌های سایر دانشجویان گروه را هم پیش از شروع و هم در حین ارزیابی مشاهده کنند. دانشجویان می‌توانند روی "View role info" کلیک کنند تا اطلاعات بیشتری درباره نقش‌های گروهی ارزیابی مشاهده نمایند.
 
-![Joining a group assessment with custom group roles](grouproles_join.png)
+![پیوستن به یک ارزیابی گروهی با نقش‌های سفارشی گروه](grouproles_join.png)
 
-When expanded, group assessments display information about each role, such as the min/max number of assignments and whether a role can assign other roles.
+هنگامی که این بخش باز می‌شود، ارزیابی‌های گروهی اطلاعات مربوط به هر نقش، مانند حداقل/حداکثر تعداد انتساب‌ها و اینکه آیا یک نقش می‌تواند نقش‌های دیگر را تعیین کند یا خیر، نمایش می‌دهند.
 
-![Group info from student perspective](grouproles_groupinfo.png)
+![اطلاعات گروه از دیدگاه دانشجو](grouproles_groupinfo.png)
 
-Any student with an assigner role can view additional controls to change the roles of other users in the group. Students with assigner roles can re-assign group roles both before and during an assessment.
+هر دانشجویی که دارای نقش تعیین‌کننده (Assigner role) باشد می‌تواند کنترل‌های بیشتری را برای تغییر نقش‌های سایر کاربران در گروه مشاهده کند. دانشجویان دارای نقش‌های تعیین‌کننده می‌توانند نقش‌های گروه را هم پیش از شروع و هم در طول ارزیابی مجدداً تعیین کنند.
 
-![Group role assignment controls](grouproles_assign_roles.png)
+![کنترل‌های تخصیص نقش گروه](grouproles_assign_roles.png)
 
-#### Restrictions based on role permissions
+#### محدودیت‌ها بر اساس مجوزهای نقش {: #restrictions-based-on-role-permissions }
 
-When an instructor restricts the viewing of a question to certain roles, users without those roles will be unable to view that question.
+هنگامی که یک مدرس مشاهده یک سوال را به نقش‌های خاصی محدود می‌کند، کاربرانی که آن نقش‌ها را ندارند قادر به مشاهده آن سوال نخواهند بود.
 
-![Question cannot be viewed due to group role](grouproles_view_question.png)
+![عدم امکان مشاهده سوال به دلیل نقش گروهی](grouproles_view_question.png)
 
-Additionally, when an instructor restricts the submitting of a question to certain roles, users without those roles will be unable to submit that question.
+علاوه بر این، هنگامی که یک مدرس ارسال یک سوال را به نقش‌های خاصی محدود می‌کند، کاربرانی که آن نقش‌ها را ندارند قادر به ارسال پاسخ برای آن سوال نخواهند بود.
 
-![Question cannot be submitted due to group role](grouproles_submit_question.png)
+![عدم امکان ارسال سوال به دلیل نقش گروهی](grouproles_submit_question.png)
 
-When a role configuration is invalid, which may occur when a user leaves the group or a new user joins the group, students become unable to see any questions until the roles are reviewed. Users with both assigner and non-assigner roles can view these errors. A user with an assigner role is then expected to update the roles to fix the inconsistencies.
+هنگامی که پیکربندی نقش‌ها نامعتبر باشد، که ممکن است زمانی رخ دهد که کاربری گروه را ترک کند یا کاربر جدیدی به گروه ملحق شود، دانشجویان تا زمان بازبینی نقش‌ها قادر به دیدن هیچ سوالی نخواهند بود. کاربران دارای هر دو نوع نقش‌های تعیین‌کننده و غیرتعیین‌کننده می‌توانند این خطاها را مشاهده کنند. سپس از کاربری با نقش تعیین‌کننده انتظار می‌رود که نقش‌ها را برای برطرف کردن تناقضات به‌روزرسانی کند.
 
-![Group configuration errors](grouproles_invalid_config_errors.png)
+![خطاهای پیکربندی گروه](grouproles_invalid_config_errors.png)
 
-## Forcing students to complete questions in-order
+## ملزم‌کردن دانشجویان به تکمیل سوالات به ترتیب {: #forcing-students-to-complete-questions-in-order }
 
-!!! warning
+!!! warning "هشدار"
 
-    We **strongly** discourage the use of this option during high-stakes exams, as it can be very detrimental to student success. See below for more details.
+    ما استفاده از این گزینه را در طول آزمون‌های سرنوشت‌ساز و حساس (High-stakes exams) **اکیداً** منع می‌کنیم، زیرا می‌تواند برای موفقیت دانشجو بسیار مضر باشد. برای جزئیات بیشتر به بخش زیر مراجعه کنید.
 
-Certain assessments might be designed to be done linearly, where each question assumes that the student has completed and understood the previous question (e.g., lab worksheets). By default, PrairieLearn allows students to complete questions in any order that they like, but assessments can be configured to not allow students to view future unsolved questions.
+برخی ارزیابی‌ها ممکن است به‌گونه‌ای طراحی شده باشند که به صورت خطی انجام شوند، جایی که هر سوال فرض می‌کند دانشجو سوال قبلی را کامل کرده و متوجه شده است (مثلاً کاربرگ‌های آزمایشگاه). به‌طور پیش‌فرض، PrairieLearn به دانشجویان اجازه می‌دهد تا سوالات را به هر ترتیبی که مایلند تکمیل کنند، اما ارزیابی‌ها را می‌توان به‌گونه‌ای پیکربندی کرد که به دانشجویان اجازه ندهند سوالات حل‌نشده آینده را مشاهده نمایند.
 
-To enable these features, set `advanceScorePerc` for any question to a number between 0 and 100. An example of what this looks like is below, with boilerplate attributes omitted:
+برای فعال‌سازی این قابلیت‌ها، `advanceScorePerc` را برای هر سوال روی عددی بین ۰ تا ۱۰۰ تنظیم کنید. مثالی از نحوه انجام این کار در زیر نشان داده شده است که در آن ویژگی‌های استاندارد حذف شده‌اند:
 
 ```json title="infoAssessment.json"
 {
@@ -727,11 +724,11 @@ To enable these features, set `advanceScorePerc` for any question to a number be
 }
 ```
 
-Each question blocks all later questions until its `advanceScorePerc` is met. In the above example, `q1` blocks all later questions until the student has scored at least 50% on it. Then `q2` blocks all later questions until the student has a perfect score on it. Once a student gets past `q2`, both `q3` and `q4` are immediately available because `q3` does not do any blocking. Finally, `q4` blocks the remaining `q5` until the student has an 80% score on it. The `advanceScorePerc` attribute on `q5` is irrelevant because there are no questions after it.
+هر سوال تمام سوالات بعدی را تا زمانی که شرط `advanceScorePerc` آن برآورده نشود مسدود می‌کند. در مثال بالا، `q1` تمام سوالات بعدی را مسدود می‌کند تا زمانی که دانشجو حداقل نمره ۵۰٪ را روی آن به دست آورد. سپس `q2` تمام سوالات بعدی را مسدود می‌کند تا زمانی که دانشجو نمره کامل را روی آن کسب کند. هنگامی که دانشجو از `q2` عبور کند، هر دو سوال `q3` و `q4` فوراً در دسترس قرار می‌گیرند زیرا `q3` هیچ مسدودسازی انجام نمی‌دهد. در نهایت، `q4` سوال باقی‌مانده `q5` را مسدود می‌کند تا زمانی که دانشجو نمره ۸۰٪ روی آن کسب نماید. صفت `advanceScorePerc` روی `q5` بی‌اثر است زیرا هیچ سوالی پس از آن وجود ندارد.
 
-The relevant score for comparing to `advanceScorePerc` is the student's _highest submission score_ for the question, not their percentage score on the question overall. For example, suppose `q1` above has `"points": [10, 4, 2, 1]`. Then a student who makes a 50%-correct submission on their second attempt will unblock the question, even though they only score 2 points out of 10 on the question (50% of the 4-point second-chance value). The submission score used for `advanceScorePerc` is the one based on autograding components of the question and [manual grading](../manualGrading/index.md) scores are not considered. For this reason a question that is purely manually graded should not have an `advanceScorePerc` set on it.
+نمره مد نظر برای مقایسه با `advanceScorePerc`، _بالاترین نمره پاسخ ارسالی_ دانشجو برای سوال است، نه درصد نمره کلی او روی سوال. برای مثال، فرض کنید `q1` در بالا دارای `"points": [10, 4, 2, 1]` باشد. در این صورت دانشجویی که در تلاش دوم خود پاسخی با ۵۰٪ صحت ارسال می‌کند، قفل سوال را باز خواهد کرد، حتی اگر تنها ۲ امتیاز از ۱۰ امتیاز سوال را کسب کرده باشد (۵۰٪ از ارزش ۴ امتیازیِ فرصت دوم). نمره پاسخ ارسالی مورد استفاده برای `advanceScorePerc` نمره‌ای است که بر اساس مؤلفه‌های نمره‌دهی خودکار سوال به دست می‌آید و نمرات [نمره‌دهی دستی](../manualGrading/index.md) در نظر گرفته نمی‌شوند. به همین دلیل سوالی که کاملاً به صورت دستی نمره‌دهی می‌شود نباید دارای `advanceScorePerc` باشد.
 
-An `advanceScorePerc` can also be set on the `zone` or `assessment` level, which will act as a default for all questions in that zone or assessment. For example, the following configuration is equivalent to the above:
+مقدار `advanceScorePerc` را می‌توان در سطح `zone` یا `assessment` نیز تنظیم کرد که به عنوان پیش‌فرضی برای تمام سوالات آن بخش یا ارزیابی عمل خواهد کرد. برای مثال، پیکربندی زیر معادل مورد بالا است:
 
 ```json title="infoAssessment.json"
 {
@@ -750,23 +747,23 @@ An `advanceScorePerc` can also be set on the `zone` or `assessment` level, which
 }
 ```
 
-In the example above, `q2` and `q5` will have an `advanceScorePerc` of 100 because the zone-level attribute is used as a default.
+در مثال بالا، `q2` و `q5` دارای `advanceScorePerc` برابر ۱۰۰ خواهند بود زیرا صفت سطح بخش به عنوان پیش‌فرض استفاده می‌شود.
 
-!!! note
+!!! note "نکته"
 
-    An `advanceScorePerc` of 0 is equivalent to not having the attribute at all.
+    مقدار `advanceScorePerc` برابر ۰ معادل نداشتن این ویژگی است.
 
-For assessments that randomize the order of questions as seen by students, the `advanceScorePerc` restrictions apply for each student using the question order that they were given. If a specific question order is desired then see [Changing question-order randomization](#question-order-randomization).
+برای ارزیابی‌هایی که ترتیب سوالات را به صورت تصادفی به دانشجویان نشان می‌دهند، محدودیت‌های `advanceScorePerc` برای هر دانشجو با استفاده از ترتیب سوالاتی که به او اختصاص یافته است اعمال می‌شود. اگر ترتیب خاصی از سوالات مد نظر است، بخش [تغییر تصادفی‌سازی ترتیب سوالات](#question-order-randomization) را ببینید.
 
-If a student uses all of their attempts on a question and cannot submit any more attempts, that question will automatically unblock, no matter what score they earned on it. This is to prevent students from getting permanently stuck on an assessment, unable to receive further credit.
+اگر دانشجویی تمام تلاش‌های خود را برای یک سوال مصرف کند و نتواند تلاش دیگری ارسال کند، آن سوال صرف‌نظر از نمره‌ای که دانشجو در آن کسب کرده است، به‌طور خودکار از حالت مسدود خارج خواهد شد. این کار به منظور جلوگیری از گیر افتادن دائمی دانشجویان در یک ارزیابی و عدم توانایی در دریافت امتیازات بعدی صورت می‌گیرد.
 
-### :warning: Warning about in-order questions and high-stakes exams
+### :warning: هشدار درباره سوالات ترتیبی و آزمون‌های سرنوشت‌ساز و حساس {: #warning-about-in-order-questions-and-high-stakes-exams }
 
-The `advanceScorePerc` attribute is intended to be used in [group work](#enabling-group-work-for-collaborative-assessments) and assessment types which are indirectly supported, such as worksheets (see [multiple instance assessments](#multiple-instance-versus-single-instance-assessments)). In the interest of allowing students to best demonstrate their knowledge of course material, we **strongly** discourage the use of this feature in high-stakes exams where the student cannot receive help from course staff.
+صفت `advanceScorePerc` برای استفاده در [کار گروهی](#enabling-group-work-for-collaborative-assessments) و انواع ارزیابی‌هایی که به صورت غیرمستقیم پشتیبانی می‌شوند، مانند کاربرگ‌ها (بخش [ارزیابی‌های چند‌نمونه‌ای](#multiple-instance-versus-single-instance-assessments) را ببینید)، طراحی شده است. به منظور فراهم ساختن بهترین امکان برای دانشجویان جهت اثبات دانش خود از مطالب درسی، ما استفاده از این ویژگی را در آزمون‌های سرنوشت‌ساز و حساسی که دانشجو نمی‌تواند کمکی از کادر آموزشی دریافت کند، **اکیداً** منع می‌کنیم.
 
-## Lockpoints
+## نقاط قفل (Lockpoints) {: #lockpoints }
 
-Lockpoints let you create one-way barriers between zones. Set `"lockpoint": true` on a zone where students must explicitly confirm moving forward. Once crossed, all questions in earlier zones become read-only: students can still view prior work and submissions, but cannot submit new answers there.
+نقاط قفل (Lockpoints) به شما اجازه می‌دهند موانع یک‌طرفه‌ای را بین بخش‌ها ایجاد کنید. در بخشی که دانشجویان باید صراحتاً رفتن به جلو را تایید کنند، مقدار `"lockpoint": true` را تنظیم کنید. پس از عبور، تمام سوالات بخش‌های قبلی فقط‌خواندنی می‌شوند: دانشجویان همچنان می‌توانند کارها و پاسخ‌های ارسالی قبلی خود را مشاهده کنند، اما نمی‌توانند پاسخ جدیدی در آن‌ها ارسال نمایند.
 
 ```json title="infoAssessment.json"
 {
@@ -794,62 +791,62 @@ Lockpoints let you create one-way barriers between zones. Set `"lockpoint": true
 }
 ```
 
-In this configuration, students initially have access only to "Conceptual questions." After working through them, they can cross the first lockpoint to unlock "Applied questions," which makes "Conceptual questions" read-only. A second lockpoint then gates "Advanced questions" the same way.
+در این پیکربندی، دانشجویان در ابتدا تنها به بخش "Conceptual questions" دسترسی دارند. پس از حل و گذر از آن‌ها، می‌توانند از اولین نقطه قفل عبور کنند تا قفل بخش "Applied questions" باز شود که این کار باعث می‌شود بخش "Conceptual questions" فقط‌خواندنی گردد. سپس دومین نقطه قفل، بخش "Advanced questions" را به همان ترتیب مسدود و کنترل می‌کند.
 
-Lockpoints are crossed sequentially. If multiple lockpoints are configured, students must cross them in zone order. Zones without `"lockpoint": true` between lockpoint zones become accessible as soon as the preceding lockpoint is crossed. For example, if zones 2 and 4 have lockpoints but zone 3 does not, crossing the zone 2 lockpoint unlocks both zone 2 and zone 3.
+نقاط قفل به صورت متوالی طی می‌شوند. اگر چندین نقطه قفل پیکربندی شده باشد، دانشجویان باید به ترتیب بخش‌ها از آن‌ها عبور کنند. بخش‌های فاقد `"lockpoint": true` که بین بخش‌های دارای نقطه قفل قرار دارند، به محض عبور از نقطه قفلِ قبلی قابل دسترسی خواهند بود. برای مثال، اگر بخش‌های ۲ و ۴ دارای نقطه قفل باشند اما بخش ۳ نقطه قفل نداشته باشد، عبور از نقطه قفل بخش ۲ باعث باز شدن هم‌زمان بخش‌های ۲ و ۳ می‌شود.
 
-Lockpoints and `advanceScorePerc` work together: students still must satisfy any in-order gating before they can cross the next lockpoint.
+نقاط قفل و `advanceScorePerc` با یکدیگر کار می‌کنند: دانشجویان همچنان باید پیش از عبور از نقطه قفل بعدی، هرگونه کنترل ترتیبی را برآورده سازند.
 
-In group assessments, lockpoints are shared by the group. Any member can cross a lockpoint, and the resulting read-only state applies to everyone in that group.
+در ارزیابی‌های گروهی، نقاط قفل بین اعضای گروه مشترک هستند. هر عضوی می‌تواند از یک نقطه قفل عبور کند و وضعیت فقط‌خواندنی حاصل بر همه افراد آن گروه اعمال می‌شود.
 
-Students can finish the assessment at any time, even if some lockpoints are not crossed.
+دانشجویان می‌توانند در هر زمان ارزیابی را به پایان برسانند، حتی اگر از برخی نقاط قفل عبور نکرده باشند.
 
-Lockpoints do not make workspaces read-only. They control question submission access, not workspace container access.
+نقاط قفل، محیط‌های کاری (Workspaces) را فقط‌خواندنی نمی‌کنند. آن‌ها دسترسی به ارسال پاسخ سوال را کنترل می‌کنند، نه دسترسی به کانتینر محیط کاری.
 
-!!! warning "Adding lockpoints to active assessments"
+!!! warning "افزودن نقاط قفل به ارزیابی‌های فعال"
 
-    To avoid surprising students, configure lockpoints before students begin an assessment. Adding lockpoints after students have already started may lock zones they were previously working in until they cross the new lockpoint.
+    برای جلوگیری از غافلگیری دانشجویان، نقاط قفل را قبل از شروع ارزیابی توسط دانشجویان پیکربندی کنید. اضافه کردن نقاط قفل پس از اینکه دانشجویان از قبل ارزیابی را آغاز کرده‌اند ممکن است بخش‌هایی را که قبلاً در آن کار می‌کردند تا زمان عبور از نقطه قفل جدید قفل کند.
 
-## Auto-closing Exam assessments
+## بستن خودکار ارزیابی‌های Exam {: #auto-closing-exam-assessments }
 
-By default, Exam assessments will auto-close after six hours of inactivity by the student. This generally means that you don't need to explicitly close exams that students accidentally did not close when they were done. If you want to prevent auto-closing then you can set `"autoClose": false` as a top-level option in the `infoAssessment.json` file.
+به‌طور پیش‌فرض، ارزیابی‌های Exam پس از شش ساعت عدم فعالیت توسط دانشجو به‌طور خودکار بسته می‌شوند. این عموماً بدان معناست که نیازی نیست آزمون‌هایی را که دانشجویان پس از اتمام کار تصادفاً نبسته‌اند، صراحتاً ببندید. اگر می‌خواهید از بستن خودکار جلوگیری کنید، می‌توانید `"autoClose": false` را به عنوان یک گزینه سطح بالا در فایل `infoAssessment.json` تنظیم نمایید.
 
-## Issue reporting
+## گزارش اشکال {: #issue-reporting }
 
-To allow students to report issues with questions (incorrect answers, unclear wording, etc.), set the `"allowIssueReporting": true` property in the `infoAssessment.json` file, or set it to `false` to disallow reporting. This option defaults to `true`.
+برای اینکه به دانشجویان اجازه داده شود اشکالات مربوط به سوالات (پاسخ‌های نادرست، متن مبهم و غیره) را گزارش دهند، ویژگی `"allowIssueReporting": true` را در فایل `infoAssessment.json` تنظیم کنید، یا آن را روی `false` قرار دهید تا گزارش‌دهی غیرفعال شود. پیش‌فرض این گزینه `true` است.
 
-When issue reporting is allowed, students see a button labeled "Report an error in this question" and they can submit a short text form.
+هنگامی که گزارش اشکال مجاز باشد، دانشجویان دکمه‌ای با برچسب "Report an error in this question" مشاهده می‌کنند و می‌توانند یک فرم متنی کوتاه را ارسال نمایند.
 
 ![Report an issue button](assessment-report1.png) ![Describe the issue](assessment-report2.png)
 
-Course staff see any reported issues show up on the "Issues" tab.
+کادر آموزشی دوره، اشکالات گزارش‌شده را در برگه "Issues" مشاهده خواهند کرد.
 
 ![Issue report](assessment-report3.png)
 
-## Assessment tools
+## ابزارهای ارزیابی {: #assessment-tools }
 
-Assessment tools provide students with utilities they can use while working on questions. Tools can be configured at the assessment level or overridden per zone.
+ابزارهای ارزیابی به دانشجویان امکاناتی ارائه می‌دهند که می‌توانند هنگام کار بر روی سوالات از آن‌ها استفاده کنند. ابزارها می‌توانند در سطح ارزیابی پیکربندی شوند یا برای هر بخش به صورت جداگانه بازنویسی گردند.
 
-### Available tools
+### ابزارهای در دسترس {: #available-tools }
 
-| Tool                        | Description                                                                       |
+| ابزار | توضیحات |
 | --------------------------- | --------------------------------------------------------------------------------- |
-| [`calculator`](#calculator) | A calculator with Basic, Scientific, and Advanced presets and persistent history. |
+| [`calculator`](#calculator) | ماشین‌حسابی با پیش‌تنظیم‌های Basic، Scientific و Advanced و تاریخچه پایدار. |
 
-#### Calculator
+#### ماشین‌حساب (Calculator) {: #calculator }
 
-The calculator tool supports expression evaluation and persistent history. By default, it uses the unrestricted Advanced preset, which supports assignments and the evaluation of integrals and derivatives. Instructors can choose a restricted Basic or Scientific preset in the assessment settings or in `infoAssessment.json`. Zone overrides are also available in the question editor.
+ابزار ماشین‌حساب از ارزیابی عبارات ریاضی و تاریخچه پایدار پشتیبانی می‌کند. به‌طور پیش‌فرض، این ابزار از پیش‌تنظیم بدون محدودیت Advanced استفاده می‌کند که از انتساب مقادیر به متغیرها و محاسبه انتگرال‌ها و مشتق‌ها پشتیبانی می‌کند. مدرسان می‌توانند یک پیش‌تنظیم محدودتر مانند Basic یا Scientific را در تنظیمات ارزیابی یا در `infoAssessment.json` انتخاب نمایند. بازنویسی‌های سطح بخش نیز در ویرایشگر سوال در دسترس هستند.
 
-| Property  | Type    | Description                                                              |
+| ویژگی | نوع | توضیحات |
 | --------- | ------- | ------------------------------------------------------------------------ |
-| `enabled` | boolean | Whether the calculator is enabled. (default: `false`)                    |
-| `type`    | string  | Calculator preset: `"basic"`, `"scientific"`, or `"advanced"` (default). |
+| `enabled` | boolean | آیا ماشین‌حساب فعال است یا خیر. (پیش‌فرض: `false`) |
+| `type` | string | پیش‌تنظیم ماشین‌حساب: `"basic"`، `"scientific"` یا `"advanced"` (پیش‌فرض). |
 
-- **Basic**: arithmetic, parentheses, fractions, percentages, and the previous answer (the `ans` button). Letter input and constants such as π and e are unavailable.
-- **Scientific**: all Basic operations plus powers, roots, logarithms, trigonometric and inverse trigonometric functions, absolute value, π, e, and the deg/rad toggle.
-- **Advanced**: an unrestricted calculator with alphabet and function panels.
+- **Basic**: محاسبات حسابی، پرانتزها، کسرها، درصدها، و پاسخ قبلی (دکمه `ans`). ورودی حروف و ثابت‌هایی مانند π و e در دسترس نیستند.
+- **Scientific**: تمام عملیات Basic به همراه توان، ریشه، لگاریتم، توابع مثلثاتی و معکوس مثلثاتی، قدر مطلق، π، e، و دکمه تعویض حالت درجه/رادیان (deg/rad).
+- **Advanced**: یک ماشین‌حساب بدون محدودیت همراه با پنل‌های الفبا و توابع پیشرفته.
 
-Basic and Scientific each provide a single keypad panel. Both reject integrals, sums, assignments, and arbitrary variables and functions, whether typed or pasted. Custom panel combinations and fine-grained function settings are not currently supported.
+هر یک از حالت‌های Basic و Scientific یک پنل صفحه‌کلید تک‌بخشی ارائه می‌دهند. هر دوی آن‌ها انتگرال‌ها، سیگماها، انتساب به متغیرها، و توابع و متغیرهای دلخواه را، چه تایپ شوند و چه پیست گردند، رد می‌کنند. ترکیب سفارشی پنل‌ها و تنظیمات دقیق توابع در حال حاضر پشتیبانی نمی‌شود.
 
 ```json title="infoAssessment.json"
 {
@@ -859,11 +856,11 @@ Basic and Scientific each provide a single keypad panel. Both reject integrals, 
 }
 ```
 
-When the calculator is enabled, use the **Calculator** button to preview the selected preset without saving your changes.
+هنگامی که ماشین‌حساب فعال است، از دکمه **Calculator** برای پیش‌نمایش پیش‌تنظیم انتخاب‌شده بدون ذخیره تغییرات استفاده کنید.
 
-### Enabling tools for an entire assessment
+### فعال‌سازی ابزارها برای کل ارزیابی {: #enabling-tools-for-an-entire-assessment }
 
-To enable a tool for all questions in an assessment, add a `tools` property to the `infoAssessment.json` file:
+برای فعال‌سازی یک ابزار برای تمام سوالات یک ارزیابی، ویژگی `tools` را به فایل `infoAssessment.json` اضافه کنید:
 
 ```json title="infoAssessment.json"
 {
@@ -875,9 +872,9 @@ To enable a tool for all questions in an assessment, add a `tools` property to t
 }
 ```
 
-### Overriding tools per zone
+### بازنویسی ابزارها بر اساس هر بخش {: #overriding-tools-per-zone }
 
-Zone-level tool settings override the assessment-level settings on a per-tool basis. For example, you can enable the calculator for the entire assessment but disable it in a specific zone:
+تنظیمات ابزار در سطح بخش، تنظیمات سطح ارزیابی را برای هر ابزار بازنویسی می‌کنند. برای مثال، می‌توانید ماشین‌حساب را برای کل ارزیابی فعال کنید اما در یک بخش خاص آن را غیرفعال سازید:
 
 ```json title="infoAssessment.json"
 {
@@ -905,29 +902,29 @@ Zone-level tool settings override the assessment-level settings on a per-tool ba
 }
 ```
 
-In this example, the calculator is disabled in "Part 1: No calculator" (zone-level override) but remains enabled in "Part 2: Calculator allowed" (inherits from the assessment-level configuration). Because "Part 2: Calculator allowed" has a [lockpoint](#lockpoints), students will have to complete all questions in "Part 1: No calculator" before they can attempt any questions in "Part 2: Calculator allowed".
+در این مثال، ماشین‌حساب در بخش "Part 1: No calculator" غیرفعال است (بازنویسی سطح بخش) اما در "Part 2: Calculator allowed" فعال باقی می‌ماند (از پیکربندی سطح ارزیابی به ارث می‌رسد). از آنجا که "Part 2: Calculator allowed" دارای یک [نقطه قفل](#lockpoints) است، دانشجویان باید تمام سوالات "Part 1: No calculator" را قبل از اینکه بتوانند سوالی را در "Part 2: Calculator allowed" امتحان کنند، کامل نمایند.
 
-!!! warning
+!!! warning "هشدار"
 
-    It is highly recommended to use [lockpoints](#lockpoints) when configuring tools per zone. If you do not use lockpoints, students may access tools from other zones by keeping a browser tab open with the other zone's question open.
+    اکیداً توصیه می‌شود هنگام پیکربندی ابزارها بر اساس هر بخش از [نقاط قفل](#lockpoints) استفاده کنید. اگر از نقاط قفل استفاده نکنید، دانشجویان ممکن است با باز نگه داشتن یک تب مرورگر روی سوال بخش دیگر، به ابزارهای بخش‌های دیگر دسترسی پیدا کنند.
 
-## Access control
+## کنترل دسترسی {: #access-control }
 
-See the [Assessment access control page](../assessment/accessControl.md) for details.
+برای جزئیات بیشتر، [صفحه کنترل دسترسی ارزیابی](../assessment/accessControl.md) را ببینید.
 
-By default, an assessment is only accessible to course staff. To allow students to access the assessment, configure `accessControl` on the assessment **Access** page or in the assessment's `infoAssessment.json` file.
+به‌طور پیش‌فرض، یک ارزیابی تنها برای کادر آموزشی دوره قابل دسترسی است. برای اینکه به دانشجویان اجازه دسترسی به ارزیابی داده شود، ویژگی `accessControl` را در صفحه **Access** ارزیابی یا در فایل `infoAssessment.json` ارزیابی پیکربندی کنید.
 
-Access control options can also be used to control the open/close dates of assessments and apply penalties for late submissions. Once again, see [Assessment access control page](../assessment/accessControl.md) for details and examples.
+گزینه‌های کنترل دسترسی همچنین می‌توانند برای کنترل تاریخ‌های باز و بسته شدن ارزیابی‌ها و اعمال جریمه برای ارسال‌های دیرهنگام استفاده شوند. بار دیگر، برای جزئیات و مثال‌ها [صفحه کنترل دسترسی ارزیابی](../assessment/accessControl.md) را ببینید.
 
-## Adding text and links to assessments
+## افزودن متن و پیوندها به ارزیابی‌ها {: #adding-text-and-links-to-assessments }
 
-You can add a `text` property to your `infoAssessment.json`, which can be used to provide additional instructions, formula sheets, etc. The following mustache template variables are available:
+شما می‌توانید ویژگی `text` را به فایل `infoAssessment.json` خود اضافه کنید که می‌تواند برای ارائه دستورالعمل‌های تکمیلی، برگه‌های فرمول و غیره استفاده شود. متغیرهای الگوی Mustache زیر در دسترس هستند:
 
-| Variable                       | Description                                    |
+| متغیر | توضیحات |
 | ------------------------------ | ---------------------------------------------- |
-| `client_files_course`          | URL path to course-level client files          |
-| `client_files_course_instance` | URL path to course instance-level client files |
-| `client_files_assessment`      | URL path to assessment-level client files      |
+| `client_files_course` | مسیر URL به فایل‌های کلاینت سطح دوره |
+| `client_files_course_instance` | مسیر URL به فایل‌های کلاینت سطح دوره تحصیلی (Course instance) |
+| `client_files_assessment` | مسیر URL به فایل‌های کلاینت سطح ارزیابی |
 
 ```json title="infoAssessment.json"
 {
@@ -935,35 +932,35 @@ You can add a `text` property to your `infoAssessment.json`, which can be used t
 }
 ```
 
-!!! note "Legacy syntax"
+??? note "سینتکس قدیمی (Legacy syntax)"
 
-    For backward compatibility, `camelCase` names with EJS syntax (`<%= clientFilesCourse %>`, `<%= clientFilesCourseInstance %>`, `<%= clientFilesAssessment %>`) are supported. Prefer the use of the `snake_case` mustache template variables (`{{ client_files_course }}`, `{{ client_files_course_instance }}`, `{{ client_files_assessment }}`) instead.
+    برای سازگاری با نسخه‌های پیشین، نام‌های `camelCase` با سینتکس EJS مانند (`<%= clientFilesCourse %>`، `<%= clientFilesCourseInstance %>`، `<%= clientFilesAssessment %>`) پشتیبانی می‌شوند. ترجیحاً به جای آن‌ها از متغیرهای الگوی Mustache با قالب `snake_case` مانند (`{{ client_files_course }}`, `{{ client_files_course_instance }}`, `{{ client_files_assessment }}`) استفاده کنید.
 
-See the [`clientFiles` and `serverFiles`](../clientServerFiles.md) page for details about making files available to users.
+برای جزئیات مربوط به در دسترس قرار دادن فایل‌ها برای کاربران، صفحه [`clientFiles` و `serverFiles`](../clientServerFiles.md) را ببینید.
 
-## Student-attached personal notes
+## یادداشت‌های شخصی پیوست‌شده توسط دانشجو {: #student-attached-personal-notes }
 
-By default, students can attach files to assessments as personal notes, either by uploading them or by pasting the file contents as text. This can be done on the assessment overview page, or on individual question pages. These files can be viewed by the student anytime they can view the assessment.
+به‌طور پیش‌فرض، دانشجویان می‌توانند فایل‌هایی را به عنوان یادداشت‌های شخصی، چه از طریق بارگذاری و چه از طریق چسباندن محتوای فایل به عنوان متن، به ارزیابی‌ها پیوست کنند. این کار می‌تواند در صفحه نمای کلی ارزیابی یا در صفحات سوالات تکی انجام شود. این فایل‌ها در هر زمانی که دانشجو بتواند ارزیابی را مشاهده کند، توسط او قابل مشاهده خواهند بود.
 
-The purpose of this is to allow students to take extra notes during exams, for later review. For example, if a student has a Matlab script that they used to solve a question, they could attach it to that question, so they can review it later.
+هدف از این کار این است که به دانشجویان اجازه داده شود در طول امتحانات برای مرور بعدی یادداشت‌های اضافی بردارند. برای مثال، اگر دانشجویی یک اسکریپت متلب دارد که برای حل یک سوال استفاده کرده است، می‌تواند آن را به آن سوال پیوست کند تا بعداً بتواند آن را مرور نماید.
 
-Although we do not recommend this for regular exams, personal notes can be disabled by setting `"allowPersonalNotes": false` as a top-level option in the `infoAssessment.json` file. Note that this setting does not delete notes that were uploaded before the option is set, but prevents any access or modifications to them.
+اگرچه ما این کار را برای آزمون‌های معمولی توصیه نمی‌کنیم، اما یادداشت‌های شخصی را می‌توان با تنظیم `"allowPersonalNotes": false` به عنوان یک گزینه سطح بالا در فایل `infoAssessment.json` غیرفعال کرد. توجه داشته باشید که این تنظیم یادداشت‌هایی را که قبل از اعمال گزینه بارگذاری شده‌اند حذف نمی‌کند، بلکه از هرگونه دسترسی یا اصلاح آن‌ها جلوگیری به عمل می‌آورد.
 
-One particular use case for disabling personal notes can be the upload of a "formula sheet" through a separate pre-exam assessment. These uploads should take place as a regular file upload so that they can be reviewed by course staff. The assessment can then be configured so that submissions are accessible during the exam. Disabling personal notes for the "formula sheet" assessment ensures that students cannot attach any other information that they can access during an exam.
+یک کاربرد خاص برای غیرفعال کردن یادداشت‌های شخصی می‌تواند بارگذاری یک «برگه فرمول» از طریق یک ارزیابی مجزای پیش از امتحان باشد. این بارگذاری‌ها باید به عنوان یک بارگذاری معمولی فایل انجام شوند تا توسط کادر آموزشی قابل بررسی باشند. سپس ارزیابی را می‌توان به‌گونه‌ای پیکربندی کرد که پاسخ‌های ارسالی در طول امتحان قابل دسترسی باشند. غیرفعال کردن یادداشت‌های شخصی برای ارزیابی «برگه فرمول» تضمین می‌کند که دانشجویان نتوانند اطلاعات دیگری را که در طول امتحان قابل دسترسی است پیوست کنند.
 
-## Disabling real-time grading
+## غیرفعال‌کردن نمره‌دهی آنی {: #disabling-real-time-grading }
 
-PrairieLearn is designed to give students immediate feedback on their work. However, if you wish to more closely replicate a paper exam experience, you can prevent students from grading their work as they go (what we call "real-time grading").
+پلتفرم PrairieLearn به‌گونه‌ای طراحی شده است که بازخورد فوری به دانشجویان در مورد کارشان ارائه دهد. با این حال، اگر مایلید تجربه آزمون کتبی و کاغذی را با دقت بیشتری شبیه‌سازی کنید، می‌توانید از نمره‌دهی کار دانشجویان هم‌زمان با پیشروی آن‌ها جلوگیری نمایید (چیزی که ما آن را «نمره‌دهی آنی» یا real-time grading می‌نامیم).
 
-!!! note
+!!! note "نکته"
 
-    Real-time grading cannot be disabled for `Homework` assessments, as immediate feedback is a core part of the homework experience. The instructions below only apply to `Exam` assessments.
+    نمره‌دهی آنی را نمی‌توان برای ارزیابی‌های `Homework` غیرفعال کرد، زیرا بازخورد فوری بخش اصلی تجربه تکلیف است. دستورالعمل‌های زیر تنها برای ارزیابی‌های `Exam` کاربرد دارند.
 
-!!! warning
+!!! warning "هشدار"
 
-    Students generally expect and benefit from having immediate feedback, so this setting should only be enabled if you have a specific reason for it.
+    دانشجویان عموماً انتظار بازخورد فوری را دارند و از آن بهره‌مند می‌شوند، بنابراین این تنظیم تنها در صورتی باید فعال شود که دلیل مشخصی برای آن داشته باشید.
 
-Real-time grading can be disabled for an entire assessment:
+نمره‌دهی آنی را می‌توان برای کل یک ارزیابی غیرفعال کرد:
 
 ```json title="infoAssessment.json"
 {
@@ -971,7 +968,7 @@ Real-time grading can be disabled for an entire assessment:
 }
 ```
 
-It can also be disabled for specific zones, alternative pools, or questions by adding `"allowRealTimeGrading": false` to the relevant part of the `infoAssessment.json` file. For example, the following configuration disables real-time grading for the second zone only:
+همچنین می‌توان آن را برای بخش‌ها، مجموعه‌های جایگزین یا سوالات خاص با اضافه کردن `"allowRealTimeGrading": false` به بخش مربوطه در فایل `infoAssessment.json` غیرفعال کرد. برای مثال، پیکربندی زیر نمره‌دهی آنی را تنها برای بخش دوم غیرفعال می‌کند:
 
 ```json title="infoAssessment.json"
 {
@@ -993,31 +990,31 @@ It can also be disabled for specific zones, alternative pools, or questions by a
 }
 ```
 
-Disabling real-time grading changes a number of things about the student experience:
+غیرفعال کردن نمره‌دهی آنی چندین مورد را در تجربه کاربری دانشجو تغییر می‌دهد:
 
-- Only the "Save" button will be available on questions; the "Save & Grade" button won't be shown.
-- The "Grade saved answers" button on the assessment overview will only be shown if at least some questions have real-time grading enabled, and when clicked, it will only grade those questions.
-- Score information won't be shown for questions that have real-time grading disabled.
+- تنها دکمه "Save" در سوالات در دسترس خواهد بود؛ دکمه "Save & Grade" نمایش داده نمی‌شود.
+- دکمه "Grade saved answers" در نمای کلی ارزیابی تنها در صورتی نشان داده خواهد شد که حداقل برخی سوالات نمره‌دهی آنیِ فعال داشته باشند، و در صورت کلیک، تنها آن سوالات نمره‌دهی خواهند شد.
+- اطلاعات نمره برای سوالاتی که نمره‌دهی آنی در آن‌ها غیرفعال است نمایش داده نخواهد شد.
 
-If a [time limit](../assessment/accessControl.md#time-limits) is used and runs out, the assessment will auto-grade any saved answers. Student visibility after closure is controlled by the [After completion](../assessment/accessControl.md#after-completion) settings.
+اگر یک [محدودیت زمانی](../assessment/accessControl.md#time-limits) تعیین شده باشد و زمان به پایان برسد، ارزیابی به‌طور خودکار هر پاسخ ذخیره‌شده را نمره‌دهی می‌کند. مشاهده ارزیابی توسط دانشجو پس از بسته شدن، توسط تنظیمات [پس از اتمام](../assessment/accessControl.md#after-completion) کنترل می‌شود.
 
-??? note
+??? note "نکته"
 
-    When real-time grading is disabled, submissions will still be parsed, and students will be informed of invalid submissions when they click the "Save" button. This includes any element-specific validation (e.g., checking for blank answers, or checking if numeric inputs have numeric values), as well as [question-specific custom parse functionality](../question/server.md#step-4-parse). As usual, invalid submissions do not count towards limited attempts.
+    هنگامی که نمره‌دهی آنی غیرفعال است، پاسخ‌های ارسالی همچنان تجزیه (Parse) خواهند شد و هنگامی که دانشجویان روی دکمه "Save" کلیک کنند، از ارسال‌های نامعتبر مطلع می‌شوند. این شامل هرگونه اعتبارسنجی ویژه المان (مانند بررسی پاسخ‌های خالی یا بررسی اینکه آیا ورودی‌های عددی دارای مقادیر عددی هستند یا خیر)، و همچنین [قابلیت سفارشی تجزیه پاسخ در سوال](../question/server.md#step-4-parse) می‌شود. طبق روال معمول، ارسال‌های نامعتبر به عنوان تلاش‌های محدود به شمار نمی‌آیند.
 
-    Students will not be prevented from completing the assessment with invalid submissions should they choose to do so, or if they run out of time before crafting a valid submission. However, invalid submissions will not trigger any auto-grading process, and will by default cause the student to get a zero on the whole question (even if there are elements in the submission with valid answers). Manual grading is still available for these submissions.
+    در صورتی که دانشجویان تصمیم بگیرند ارزیابی را با ارسال‌های نامعتبر به پایان برسانند، یا اگر قبل از ایجاد یک ارسال معتبر زمانشان تمام شود، از این کار ممانعت به عمل نخواهد آمد. با این حال، ارسال‌های نامعتبر هیچ فرایند نمره‌دهی خودکاری را فعال نمی‌کنند و به‌طور پیش‌فرض باعث می‌شوند دانشجو برای کل سوال نمره صفر بگیرد (حتی اگر المان‌هایی با پاسخ‌های معتبر در آن ارسال وجود داشته باشد). نمره‌دهی دستی همچنان برای این ارسال‌ها امکان‌پذیر است.
 
-## Limiting the number of attempts for each question
+## محدود کردن تعداد تلاش‌ها برای هر سوال {: #limiting-the-number-of-attempts-for-each-question }
 
-The number of times each student will be allowed to attempt each question can be set in different ways, depending on the type of question and assessment.
+تعداد دفعاتی که هر دانشجو مجاز است هر سوال را امتحان کند، می‌تواند بسته به نوع سوال و ارزیابی، به روش‌های متفاوتی تنظیم شود.
 
-For assessments with type "Exam", each student will only be presented with a single variant of each question. The number of attempts will be determined by the `points` or `autoPoints` setting: if there is a single value there will be a single attempt at the question; if it is set to a list of points, then there will be one attempt for each value in that list. In other words, the number of attempts is determined based on the number of values in the list of points.
+برای ارزیابی‌های با نوع "Exam"، به هر دانشجو تنها یک گونه منفرد از هر سوال ارائه می‌شود. تعداد تلاش‌ها توسط تنظیم `points` یا `autoPoints` تعیین می‌شود: اگر یک مقدار منفرد وجود داشته باشد، یک تلاش برای سوال وجود خواهد داشت؛ اگر روی فهرستی از امتیازات تنظیم شده باشد، به ازای هر مقدار در آن فهرست یک تلاش وجود خواهد داشت. به عبارت دیگر، تعداد تلاش‌ها بر اساس تعداد مقادیر موجود در فهرست امتیازات تعیین می‌شود.
 
-For assessments with type "Homework", students will be presented with an unlimited number of attempts for each question. By default, every new attempt corresponds to a different variant of the question, unless:
+برای ارزیابی‌های با نوع "Homework"، به دانشجویان تعداد نامحدودی تلاش برای هر سوال ارائه خواهد شد. به‌طور پیش‌فرض، هر تلاش جدید متناظر با یک گونه متفاوت از سوال است، مگر اینکه:
 
-- the question is set to [`"singleVariant": true` in the question configuration file](../question/overview.md#non-randomized-questions). In this case, students will get unlimited attempts for the same variant.
+- سوال در [فایل پیکربندی سوال روی `"singleVariant": true` تنظیم شده باشد](../question/overview.md#non-randomized-questions). در این حالت، دانشجویان تلاش‌های نامحدودی برای همان گونه یکسان دریافت خواهند کرد.
 
-- the `triesPerVariant` setting is set as below. In this case, the student will have the set number of attempts to correctly answer the question. Once the student answers the question correctly, or the number of tries per variant is exhausted, the student will be given the option to try a new variant.
+- تنظیم `triesPerVariant` به صورت زیر مشخص شده باشد. در این حالت، دانشجو تعداد تلاش‌های مشخص‌شده را برای پاسخ صحیح به سوال خواهد داشت. هنگامی که دانشجو به سوال پاسخ صحیح دهد، یا تعداد تلاش‌ها به ازای هر گونه به پایان برسد، به دانشجو این گزینه داده می‌شود که یک گونه جدید را امتحان کند.
 
   ```json title="infoAssessment.json"
   {
@@ -1033,13 +1030,13 @@ For assessments with type "Homework", students will be presented with an unlimit
   }
   ```
 
-## Limiting the rate at which answers can be graded
+## محدود کردن نرخ نمره‌دهی به پاسخ‌ها {: #limiting-the-rate-at-which-answers-can-be-graded }
 
-Practice is important in learning and there should be room for mistakes and learning from them. Immediate feedback can help as it can give feedback despite the limited human resources. However, to prevent mindless trial-and-error problem-solving, controlling resubmissions can be an effective tool ([Ihantola et al., Review of Recent Systems for Automatic Assessment of Programming Assignments](https://dl.acm.org/doi/pdf/10.1145/1930464.1930480)).
+تمرین در یادگیری امری حیاتی است و باید فضایی برای اشتباه کردن و یادگیری از آن‌ها وجود داشته باشد. بازخورد فوری می‌تواند کمک‌کننده باشد چرا که با وجود محدودیت منابع انسانی، بازخورد سریعی ارائه می‌دهد. با این حال، برای جلوگیری از حل مسئله به شیوه آزمون و خطای کورکورانه، کنترل ارسال‌های مجدد می‌تواند ابزاری موثر باشد ([.Ihantola et al، بررسی سیستم‌های نوین برای ارزیابی خودکار تکالیف برنامه‌نویسی](https://dl.acm.org/doi/pdf/10.1145/1930464.1930480)).
 
-One way to limit the amount of feedback provided to students is to limit the rate at which graded submissions are allowed. This can be done by using the `gradeRateMinutes` setting. If set, this value indicates how long a student needs to wait after grading a question to resubmit a new answer to the same question for grading. Students are still able to save a submission, but are not able to grade until either the waiting time has elapsed, or when they close the assessment. By default, this value is set to 0, which means that there is no limit.
+یک راه برای محدود کردن میزان بازخورد ارائه‌شده به دانشجویان، محدود کردن نرخی است که در آن پاسخ‌های ارسالی نمره‌دهی می‌شوند. این کار می‌تواند با استفاده از تنظیم `gradeRateMinutes` انجام گیرد. در صورت تنظیم، این مقدار نشان می‌دهد که یک دانشجو پس از نمره‌دهی یک سوال، چه مدت باید منتظر بماند تا بتواند پاسخ جدیدی را برای همان سوال جهت نمره‌دهی ارسال کند. دانشجویان همچنان قادر به ذخیره یک پاسخ ارسالی هستند، اما تا زمانی که زمان انتظار سپری نشود یا زمانی که ارزیابی را ببندند، نمی‌توانند آن را نمره‌دهی کنند. به‌طور پیش‌فرض، این مقدار روی ۰ تنظیم شده است که به معنای عدم وجود محدودیت است.
 
-The `gradeRateMinutes` value can be set for each specific question in the assessment. It can also be set for a zone or the full assessment, in which case it will apply individually to each question in the zone or assessment. In other words, if the assessment has a grading rate set, once a student submits an answer for grading in one question, they have to wait to submit new answers to that question, but they are able to grade other questions in the meantime.
+مقدار `gradeRateMinutes` می‌تواند برای هر سوال خاص در ارزیابی تنظیم شود. همچنین می‌تواند برای یک بخش یا کل ارزیابی مشخص شود که در این صورت به‌طور جداگانه برای هر سوال در آن بخش یا ارزیابی اعمال خواهد شد. به عبارت دیگر، اگر برای ارزیابی نرخ نمره‌دهی تعیین شده باشد، هنگامی که دانشجو پاسخی را برای نمره‌دهی در یک سوال ارسال می‌کند، باید برای ارسال پاسخ‌های جدید به آن سوال منتظر بماند، اما در این فاصله می‌تواند سوالات دیگر را نمره‌دهی کند.
 
 ```json title="infoAssessment.json"
 {
@@ -1056,20 +1053,20 @@ The `gradeRateMinutes` value can be set for each specific question in the assess
 }
 ```
 
-## Honor code
+## مرام‌نامه اخلاقی {: #honor-code }
 
-By default, `Exam` assessments require students to certify their identity and pledge an honor code before starting the assessment:
+به‌طور پیش‌فرض، ارزیابی‌های `Exam` از دانشجویان می‌خواهند که قبل از شروع ارزیابی هویت خود را تایید کرده و به یک مرام‌نامه اخلاقی متعهد شوند:
 
-- I certify that I am `name` and I am allowed to take this assessment.
-- I pledge on my honor that I will not give or receive any unauthorized assistance on this assessment and that all work will be my own.
+- من گواهی می‌دهم که `name` هستم و مجاز به شرکت در این ارزیابی می‌باشم.
+- من با شرف خود متعهد می‌شوم که هیچ‌گونه کمک غیرمجازی در این ارزیابی ارائه ندهم یا دریافت نکنم و تمام کارها حاصل تلاش خودم باشد.
 
-To disable this requirement, set `"requireHonorCode": false` as a top-level option in the `infoAssessment.json` file.
+برای غیرفعال کردن این الزام، `"requireHonorCode": false` را به عنوان یک گزینه سطح بالا در فایل `infoAssessment.json` تنظیم کنید.
 
-The text of the honor code was based on the University of Maryland's [Honor Pledge](https://studentconduct.umd.edu/you/students/honor-pledge) and the University of Rochester's [Honor Pledge for Exams](https://www.rochester.edu/college/honesty/instructors/pledge.html). This is a "modified" honor code ([McCabe et al., 2002](https://doi.org/10.1023/A:1014893102151)), as opposed to "traditional" codes that typically also require students to report any violations of the honor code they observe.
+متن مرام‌نامه اخلاقی بر اساس [تعهدنامه اخلاقی (Honor Pledge)](https://studentconduct.umd.edu/you/students/honor-pledge) دانشگاه مریلند و [تعهدنامه اخلاقی برای آزمون‌ها](https://www.rochester.edu/college/honesty/instructors/pledge.html) در دانشگاه روچستر تدوین شده است. این یک مرام‌نامه اخلاقی «تعدیل‌شده» است ([.McCabe et al، 2002](https://doi.org/10.1023/A:1014893102151))، در مقایسه با مرام‌نامه‌های «سنتی» که معمولاً دانشجویان را ملزم می‌کنند تا هرگونه نقض مرام‌نامه اخلاقی را که مشاهده می‌کنند نیز گزارش دهند.
 
-The honor code can be customized by setting `honorCode` in the `infoAssessment.json` file. This field supports Markdown syntax for formatting; HTML is not supported. This field can also accept Mustache templating to include the user's name by using `{{user_name}}`.
+مرام‌نامه اخلاقی می‌تواند با تنظیم `honorCode` در فایل `infoAssessment.json` سفارشی‌سازی شود. این فیلد از سینتکس Markdown برای قالب‌بندی پشتیبانی می‌کند؛ HTML پشتیبانی نمی‌شود. این فیلد همچنین می‌تواند از قالب‌بندی Mustache با استفاده از `{{user_name}}` برای درج نام کاربر استفاده کند.
 
-For example:
+برای مثال:
 
 ```json title="infoAssessment.json"
 {
@@ -1077,13 +1074,13 @@ For example:
 }
 ```
 
-## Question titles
+## عناوین سوالات {: #question-titles }
 
-Question titles can help students identify and discuss questions, but may contain topic names or other context intended only for staff. For this reason, `Homework` assessments show question titles to students by default, while `Exam` assessments hide them by default.
+عناوین سوالات می‌توانند به دانشجویان در شناسایی و بحث پیرامون سوالات کمک کنند، اما ممکن است حاوی نام مباحث یا زمینه‌های دیگری باشند که تنها برای کادر آموزشی در نظر گرفته شده‌اند. به همین دلیل، ارزیابی‌های `Homework` به‌طور پیش‌فرض عناوین سوالات را به دانشجویان نشان می‌دهند، در حالی که ارزیابی‌های `Exam` به‌طور پیش‌فرض آن‌ها را پنهان می‌کنند.
 
-This behavior can be overridden by setting `showQuestionTitles` as a top-level option in the `infoAssessment.json` file.
+این رفتار می‌تواند با تنظیم `showQuestionTitles` به عنوان یک گزینه سطح بالا در فایل `infoAssessment.json` بازنویسی شود.
 
-For example:
+برای مثال:
 
 ```json title="infoAssessment.json"
 {
@@ -1091,18 +1088,18 @@ For example:
 }
 ```
 
-## Linking to assessments
+## پیوند دادن به ارزیابی‌ها {: #linking-to-assessments }
 
-Some instructors may wish to publish links that point students directly to their assessments on PrairieLearn. These links may be published in course web pages, LMS systems like Compass or Canvas, or sent to students via email or other messaging platforms. Instructors should note that the URL listed on the browser points to the instructor view of an assessment, which is typically not accessible to students.
+برخی از مدرسان ممکن است مایل باشند پیوندهایی را منتشر کنند که دانشجویان را مستقیماً به ارزیابی‌هایشان در PrairieLearn هدایت کند. این پیوندها ممکن است در صفحات وب درس، سامانه‌های مدیریت یادگیری (LMS) مانند Compass یا Canvas منتشر شوند، یا از طریق ایمیل یا سایر پلتفرم‌های پیام‌رسان برای دانشجویان ارسال گردند. مدرسان باید توجه داشته باشند که URL نمایش‌داده‌شده در نوار مرورگر به نمای مدرسِ ارزیابی اشاره دارد که معمولاً برای دانشجویان قابل دسترسی نیست.
 
-The "Settings" tab of each assessment contains such a link that can be provided directly to students. This link brings students directly to that assessment, and if self-enrollment is enabled, it will enroll them automatically in the course if they are not yet enrolled.
+برگه "Settings" هر ارزیابی حاوی چنین پیوندی است که می‌تواند مستقیماً در اختیار دانشجویان قرار گیرد. این پیوند دانشجویان را مستقیماً به آن ارزیابی می‌برد، و اگر ثبت‌نام خودکار فعال باشد، در صورتی که هنوز در درس ثبت‌نام نکرده باشند، آن‌ها را به‌طور خودکار در درس ثبت‌نام خواهد کرد.
 
-## Client fingerprint tracking and changes
+## ردیابی و تغییرات اثرانگشت کلاینت {: #client-fingerprint-tracking-and-changes }
 
-While a student is working on an assessment, PrairieLearn tracks the user's IP address, session ID, and user agent (this includes the operating system, browser application, and version). These attributes together make up a client fingerprint. The fingerprints are then recorded during events while accessing the assessment instance. For example, when a student views a question, a record of the client fingerprint is saved along with the view event.
+در حین اینکه دانشجو بر روی یک ارزیابی کار می‌کند، PrairieLearn آدرس IP کاربر، شناسه نشست (Session ID)، و عامل کاربر (User Agent - که شامل سیستم‌عامل، برنامه مرورگر و نسخه آن است) را ردیابی می‌کند. این ویژگی‌ها در مجموع یک اثرانگشت کلاینت (Client fingerprint) را تشکیل می‌دهند. سپس اثرانگشت‌ها در طول رویدادها هنگام دسترسی به نمونه ارزیابی ثبت می‌شوند. برای مثال، هنگامی که دانشجو سوالی را مشاهده می‌کند، رکوردی از اثرانگشت کلاینت همراه با رویداد مشاهده ذخیره می‌شود.
 
-While an assessment is open and active, each time the client fingerprint is recorded, PrairieLearn checks it against the previous client fingerprint used to access that assessment. PrairieLearn will track and display how many times the fingerprint has changed during the course of the assessment. You can see the number of times a fingerprint changed on the Students tab of an assessment. You can also see more detailed information about the client fingerprint by accessing the student's assessment instance and reviewing the Fingerprint column of the event log.
+تا زمانی که یک ارزیابی باز و فعال است، هر بار که اثرانگشت کلاینت ثبت می‌شود، PrairieLearn آن را با اثرانگشت قبلی کلاینت که برای دسترسی به آن ارزیابی استفاده شده بود مقایسه می‌کند. پلتفرم PrairieLearn تعداد دفعات تغییر اثرانگشت در طول دوره ارزیابی را ردیابی کرده و نمایش می‌دهد. شما می‌توانید تعداد دفعات تغییر اثرانگشت را در برگه Students یک ارزیابی مشاهده کنید. همچنین می‌توانید با دسترسی به نمونه ارزیابی دانشجو و بررسی ستون Fingerprint در گزارش رویدادها (Event log)، اطلاعات دقیق‌تری درباره اثرانگشت کلاینت به دست آورید.
 
-Some fingerprint changes may occur naturally during the course of an assessment, such as a computer connecting to a different Wi-Fi access point or a student changing locations while working on homework. However, a high number of changes in an exam-like environment, while the assessment is in progress, could be a possible indication of collusion between students. In particular, many fingerprint changes could be an indication that multiple users were accessing the exam simultaneously, such as one student in the exam room and a second student outside. In such a case, the exact pattern of fingerprints in the assessment instance log will be helpful in determining whether there is indeed an academic integrity issue.
+برخی تغییرات اثرانگشت ممکن است به‌طور طبیعی در طول دوره یک ارزیابی رخ دهند، مانند اتصال رایانه به یک نقطه دسترسی Wi-Fi متفاوت یا جابجایی مکانی دانشجو هنگام انجام تکالیف. با این حال، تعداد بالای تغییرات در یک محیط شبیه به آزمون، در حالی که ارزیابی در جریان است، می‌تواند نشانه‌ای از تبانی احتمالی میان دانشجویان باشد. به‌ویژه، تغییرات زیاد اثرانگشت می‌تواند نشان‌دهنده این باشد که چندین کاربر به‌طور هم‌زمان به آزمون دسترسی داشته‌اند، مانند حضور یک دانشجو در اتاق آزمون و دانشجوی دوم در بیرون. در چنین حالتی، الگوی دقیق اثرانگشت‌ها در گزارش ثبت رویدادهای نمونه ارزیابی در تشخیص اینکه آیا واقعاً مشکلی در زمینه سلامت و امانت‌داری آکادمیک رخ داده است یا خیر، مفید خواهد بود.
 
-The fingerprint change counter is only updated while the assessment is open and active. Once the assessment is closed, fingerprints are still tracked, but the count of fingerprint changes is no longer updated since, once the assessment is closed, students will only be able to access the assessment for review, with no new submissions. Access through different devices or browsers at this point does not commonly raise a concern of possible misconduct.
+شمارنده تغییرات اثرانگشت تنها زمانی به‌روزرسانی می‌شود که ارزیابی باز و فعال باشد. پس از بسته شدن ارزیابی، اثرانگشت‌ها همچنان ردیابی می‌شوند، اما شمارش تغییرات اثرانگشت دیگر به‌روزرسانی نمی‌شود، زیرا پس از بسته شدن ارزیابی، دانشجویان تنها برای مرور قادر به دسترسی به ارزیابی خواهند بود و ارسال پاسخ جدیدی وجود نخواهد داشت. دسترسی از طریق دستگاه‌ها یا مرورگرهای مختلف در این مرحله معمولاً نگرانی از بابت تخلف احتمالی ایجاد نمی‌کند.

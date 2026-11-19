@@ -1,44 +1,44 @@
-# FAQ (Frequently Asked Questions)
+# پرسش‌های متداول (FAQ)
 
-Have a question or issue that wasn't listed here, but you think it should be?
+سوال یا مشکلی دارید که در اینجا فهرست نشده است، اما فکر می‌کنید باید باشد؟
 
-Consider **[adding the question or issue](https://github.com/PrairieLearn/PrairieLearn/edit/master/docs/faq.md)** to the FAQ.
+می‌توانید **[سوال یا مشکل را اضافه کنید](https://github.com/PrairieLearn/PrairieLearn/edit/master/docs/faq.md)** به این بخش پرسش‌های متداول.
 
-## How do I let a student continue working on an exam or take the exam again?
+## چگونه به یک دانشجو اجازه دهم به کار روی آزمون ادامه دهد یا دوباره در آزمون شرکت کند؟
 
-There are three different ways to let a student re-attempt or continue an exam:
+سه روش مختلف برای اینکه به دانشجو اجازه دهید دوباره در آزمون تلاش کند یا آن را ادامه دهد وجود دارد:
 
-1. **Continue working on the same copy of the exam:** Two things are needed: (1) Make sure the assessment is "Open" by going to the "Students" tab. If the exam is "Closed" then click the pencil icon in the "Remaining" column to re-open it. (2) Make sure the student has access to the exam. This is automatic if they are using a PrairieTest session and have a new reservation, otherwise they will need a [student-specific access override](assessment/accessControl.md#add-an-override).
+1. **ادامه کار روی همان نسخه از آزمون:** دو مورد لازم است: (۱) با رفتن به تب «Students» مطمئن شوید ارزیابی «Open» (باز) است. اگر آزمون «Closed» (بسته) است، روی آیکون مداد در ستون «Remaining» کلیک کنید تا مجدداً باز شود. (۲) اطمینان حاصل کنید دانشجو به آزمون دسترسی دارد. اگر آن‌ها از یک جلسه PrairieTest استفاده می‌کنند و رزرو جدیدی دارند، این کار خودکار است؛ در غیر این صورت به یک [لغو دسترسی ویژه دانشجو (access override)](assessment/accessControl.md#add-an-override) نیاز خواهند داشت.
 
-2. **Start a new randomized version of the exam:** Two things are needed: (1) Delete the student's existing copy of the exam by selecting it on the "Students" tab and choosing "Delete" from the "Actions" menu above the table. (2) Make sure the student has access to the exam. If they are using PrairieTest they need to sign up for a new reservation, or outside a PrairieTest environment they will need a [student-specific access override](assessment/accessControl.md#add-an-override).
+2. **شروع یک نسخه تصادفی جدید از آزمون:** دو مورد لازم است: (۱) نسخه موجود آزمون دانشجو را با انتخاب آن در تب «Students» و انتخاب «Delete» از منوی «Actions» بالای جدول، حذف کنید. (۲) مطمئن شوید دانشجو به آزمون دسترسی دارد. اگر از PrairieTest استفاده می‌کنند باید برای رزرو جدید ثبت‌نام کنند، و در خارج از محیط PrairieTest به یک [لغو دسترسی ویژه دانشجو](assessment/accessControl.md#add-an-override) نیاز دارند.
 
-3. **Make a custom retry exam with a different selection of questions on it:** This is normally used if many students are going to take a second-chance exam. You can copy the original exam to a new assessment in PrairieLearn (use the "Copy" button on the "Settings" tab for the assessment) and adjust the question selection and access controls as appropriate.
+3. **ایجاد یک آزمون مجدد سفارشی با انتخاب متفاوتی از سوالات:** این حالت معمولاً زمانی استفاده می‌شود که دانشجویان زیادی قرار است در آزمون فرصت مجدد شرکت کنند. می‌توانید آزمون اصلی را در یک ارزیابی جدید در PrairieLearn کپی کنید (از دکمه «Copy» در تب «Settings» ارزیابی استفاده کنید) و انتخاب سوالات و کنترل‌های دسترسی را بر حسب نیاز تنظیم نمایید.
 
-## How do I submit an answer on behalf of a student?
+## چگونه از طرف یک دانشجو پاسخ ارسال کنم؟
 
-In some situations, a student may not be able to submit an answer to a question, for example because of technical difficulties or accessibility needs. In these cases, it may be appropriate for an instructor or TA to submit the answer on the student's behalf. This may be done even if the access control rules block the student from submitting directly. Follow these steps:
+در برخی موقعیت‌ها، ممکن است دانشجو به دلیل مشکلات فنی یا نیازهای دسترسی‌پذیری قادر به ارسال پاسخ برای یک سوال نباشد. در این موارد، ممکن است لازم باشد مدرس یا دستیار آموزشی (TA) پاسخ را از طرف دانشجو ارسال کند. این کار حتی اگر قوانین کنترل دسترسی مانع از ارسال مستقیم توسط دانشجو شوند نیز امکان‌پذیر است. مراحل زیر را دنبال کنید:
 
-1. Open the assessment in **Staff view** and select the **Students** tab.
-2. Find the student's assessment instance and check its status in the **Remaining** column. If it is **Closed**, click the pencil icon in that column. In the **Re-open instance** dialog, choose **Re-open without time limit**, and click **Set**.
-3. Open the user menu in the top-right corner. Enter the student's UID as the effective user and click **Change UID**.
-4. In the same menu, under **View as &lt;student name&gt;**, select **Student view without access restrictions**.
-5. Open the corresponding instance question(s) and submit the answer as the student would.
-6. When you are finished, open the top-right user menu and return to **Staff view**.
-7. If you reopened the instance and need to close it again, return to the assessment's **Students** tab, select the student's instance, and choose **Actions &rarr; Grade & close**.
+1. ارزیابی را در نمای کادر آموزشی (**Staff view**) باز کرده و تب **Students** را انتخاب کنید.
+2. نمونه ارزیابی (assessment instance) دانشجو را پیدا کرده و وضعیت آن را در ستون **Remaining** بررسی کنید. اگر وضعیت آن **Closed** است، روی آیکون مداد در آن ستون کلیک کنید. در کادر گفتگوی **Re-open instance**، گزینه **Re-open without time limit** را انتخاب کرده و روی **Set** کلیک کنید.
+3. منوی کاربر را در گوشه بالا سمت راست باز کنید. شناسه کاربر (UID) دانشجو را به عنوان کاربر مؤثر (effective user) وارد کرده و روی **Change UID** کلیک کنید.
+4. در همان منو، در بخش **View as &lt;student name&gt;**، گزینه **Student view without access restrictions** را انتخاب کنید.
+5. سوال(های) نمونه مربوطه را باز کرده و پاسخ را همان‌گونه که دانشجو ارسال می‌کرد، ثبت کنید.
+6. پس از اتمام، منوی کاربر در بالا سمت راست را باز کرده و به **Staff view** بازگردید.
+7. اگر نمونه را مجدداً باز کرده بودید و نیاز است دوباره آن را ببندید، به تب **Students** در ارزیابی بازگردید، نمونه مربوط به دانشجو را انتخاب کرده و گزینه **Actions &rarr; Grade & close** را انتخاب نمایید.
 
-For [workspace questions](workspaces/index.md), this procedure also works if the student saved code in the workspace but never clicked **Save** or **Save & Grade** in PrairieLearn. Open the student's existing question and click **Save** or **Save & Grade** to submit the files currently saved in their workspace. Saving files in the workspace editor alone does not create a PrairieLearn submission.
+برای [سوالات محیط کاری (Workspace)](workspaces/index.md)، این روش در صورتی که دانشجو کد را در محیط کاری ذخیره کرده باشد اما هرگز روی **Save** یا **Save & Grade** در PrairieLearn کلیک نکرده باشد نیز کارآمد است. سوال موجود دانشجو را باز کرده و روی **Save** یا **Save & Grade** کلیک کنید تا فایل‌هایی که در حال حاضر در محیط کاری آن‌ها ذخیره شده است، ارسال شوند. صرفاً ذخیره کردن فایل‌ها در ویرایشگر محیط کاری یک پاسخ ارسالی (submission) در PrairieLearn ایجاد نمی‌کند.
 
-This submits the workspace's current files, which may have changed since the exam ended; it does not recover a snapshot from the exam deadline. Review the submitted files to confirm that the intended code was captured.
+این کار فایل‌های فعلی محیط کاری را ارسال می‌کند که ممکن است از زمان پایان آزمون تغییر کرده باشند؛ این عمل تصویری لحظه‌ای (snapshot) از مهلت آزمون را بازیابی نمی‌کند. فایل‌های ارسال‌شده را بررسی کنید تا مطمئن شوید کد مدنظر ثبت شده است.
 
-!!! warning "Overriding access rules"
+!!! warning "نادیده گرفتن قوانین دسترسی"
 
-    Note that submitting an answer using this mode will override access rules like early/late submission. The student's submission will be graded using 100% credit, even if the submission is late.
+    توجه داشته باشید که ارسال پاسخ با استفاده از این حالت، قوانین دسترسی مانند ارسال زودهنگام/دیرهنگام را نادیده می‌گیرد (override می‌کند). پاسخ ارسالی دانشجو با نمره کامل ۱۰۰٪ نمره‌دهی خواهد شد، حتی اگر ارسال پس از مهلت مقرر (دیرهنگام) باشد.
 
-## How do I give students access to view their exams after they are over?
+## چگونه به دانشجویان اجازه دهم پس از پایان آزمون‌ها، آن‌ها را مشاهده کنند؟
 
-With modern access control, configure [After completion](assessment/accessControl.md#after-completion) visibility for the assessment or for the relevant PrairieTest exam.
+در سیستم کنترل دسترسی مدرن، قابلیت مشاهده [پس از اتمام (After completion)](assessment/accessControl.md#after-completion) را برای ارزیابی یا برای آزمون مربوطه در PrairieTest پیکربندی کنید.
 
-With legacy access control, you can add an [access rule](assessment/accessControlLegacy.md) like this:
+در کنترل دسترسی قدیمی (legacy)، می‌توانید یک [قاعده دسترسی (access rule)](assessment/accessControlLegacy.md) به این صورت اضافه کنید:
 
 ```json title="infoAssessment.json"
 {
@@ -51,60 +51,60 @@ With legacy access control, you can add an [access rule](assessment/accessContro
 }
 ```
 
-Students who took the exam will then have public access to their exams after the `startDate` until the end of the course instance, while students who did not take the exam will not be able to view it. Students will not be able to answer questions for further credit (due to `"active": false`), but they will be able to see the entire exam in exactly the same state as when they were doing the exam originally. Because students have public access to the exam, it should be assumed that all the questions will be posted to websites such as Chegg and Course Hero. To let students see their exams with some additional security, consider only allowing [limited access post-exam under controlled conditions](faq.md#should-students-be-able-to-review-their-exams-after-they-are-over) (although this requires in-person access by students and doesn't work online).
+سپس دانشجویانی که در آزمون شرکت کرده‌اند، پس از `startDate` تا پایان دوره (course instance) به آزمون‌های خود دسترسی عمومی خواهند داشت، در حالی که دانشجویانی که در آزمون شرکت نکرده‌اند قادر به مشاهده آن نخواهند بود. دانشجویان به دلیل (`"active": false`) نمی‌توانند برای دریافت نمره بیشتر به سوالات پاسخ دهند، اما می‌توانند کل آزمون را دقیقاً در همان وضعیتی که هنگام برگزاری آزمون بود مشاهده کنند. از آنجا که دانشجویان دسترسی عمومی به آزمون دارند، باید این فرض را در نظر گرفت که تمام سوالات در وب‌سایت‌هایی مانند Chegg و Course Hero منتشر خواهند شد. برای اینکه به دانشجویان اجازه دهید آزمون‌های خود را با امنیت بیشتری مشاهده کنند، می‌توانید فقط [دسترسی محدود پس از آزمون تحت شرایط کنترل‌شده](faq.md#should-students-be-able-to-review-their-exams-after-they-are-over) را مجاز کنید (اگرچه این کار نیازمند دسترسی حضوری دانشجویان است و به صورت آنلاین کار نمی‌کند).
 
-Note that when granting access via `"active": false`, students can still access and modify files in any [workspaces](workspaces/index.md) associated with questions on the assessment. However, they will not be able to submit any changed workspace files for grading.
+توجه داشته باشید که هنگام اعطای دسترسی از طریق `"active": false`، دانشجویان همچنان می‌توانند به فایل‌های موجود در هر [محیط کاری (workspace)](workspaces/index.md) مرتبط با سوالات ارزیابی دسترسی داشته و آن‌ها را تغییر دهند. با این حال، آن‌ها قادر نخواهند بود هیچ فایل تغییریافته‌ای را در محیط کاری برای نمره‌دهی ارسال کنند.
 
-## How can question pool development be managed over semesters?
+## چگونه می‌توان توسعه بانک سوالات را در طول ترم‌های تحصیلی مدیریت کرد؟
 
-Writing and maintaining a large pool of questions is a lot of work. There are many strategies for managing this process. The approach taken by the TAM 2XX courses (Introductory Mechanics sequence) at Illinois is:
+طراحی و نگهداری یک بانک سوال بزرگ کار بسیار پرزحمتی است. استراتژی‌های متعددی برای مدیریت این فرآیند وجود دارد. رویکرد اتخاذشده توسط دوره‌های TAM 2XX (سلسله دروس مقدمه‌ای بر مکانیک) در دانشگاه ایلینوی به شرح زیر است:
 
-1. Homework questions are always re-used semester-to-semester. It is assumed that solutions to these will be posted by students on the internet, so they are strictly for practice. Students do get credit for homeworks, but it assumed that any student who puts in the effort will get 100%.
-2. Some questions in the pool are [tagged](question/overview.md#metadata-infojson) as "secret". These questions are only used on exams. Exams consist of a few homework questions, as well as secret questions on that topic. Secret questions are re-used for multiple semesters. Exams are only administered until highly secure conditions in a testing center or similar environment.
-3. Every semester a small number of secret questions are written, and some older secret questions are moved to homeworks. This keeps the secret pool reasonably fresh and grows the homework pool over time. It also ensures that homework and exam questions are truly comparable in topics and difficulty.
-4. For homeworks, the [`maxPoints`](assessment/configuration.md#question-specification) option is used so that students don't need to complete all homework questions to get 100% on the homework. This allows the homework to be quite long, and to be partially for credit and partially as a set of extra questions that students can practice.
-5. Homeworks can be accessed for 100% credit until the due date, for 80% credit for a week after that, and for 0% credit (but students can still practice the questions) for the rest of the semester.
+1. سوالات تکالیف همواره ترم به ترم مجدداً استفاده می‌شوند. فرض بر این است که پاسخ این سوالات توسط دانشجویان در اینترنت قرار خواهد گرفت، بنابراین آن‌ها صرفاً برای تمرین هستند. دانشجویان برای تکالیف نمره می‌گیرند، اما فرض بر این است که هر دانشجویی که تلاش لازم را به خرج دهد، نمره ۱۰۰٪ را کسب خواهد کرد.
+2. برخی از سوالات موجود در بانک سوالات به عنوان «محرمانه» (secret) [برچسب‌گذاری می‌شوند](question/overview.md#metadata-infojson). این سوالات فقط در آزمون‌ها استفاده می‌شوند. آزمون‌ها شامل چند سوال از تکالیف و همچنین سوالات محرمانه در همان مبحث هستند. سوالات محرمانه برای چندین ترم مجدداً استفاده می‌شوند. آزمون‌ها فقط تحت شرایط بسیار امن در یک مرکز آزمون یا محیطی مشابه برگزار می‌شوند.
+3. در هر ترم تعداد کمی سوال محرمانه جدید طراحی می‌شود و برخی از سوالات محرمانه قدیمی‌تر به تکالیف منتقل می‌شوند. این کار باعث می‌شود بانک سوالات محرمانه به اندازه کافی به‌روز بماند و بانک تکالیف نیز به مرور زمان رشد کند. همچنین تضمین می‌کند که سوالات تکالیف و آزمون از نظر مباحث و سطح دشواری کاملاً قابل مقایسه باشند.
+4. برای تکالیف، از گزینه [`maxPoints`](assessment/configuration.md#question-specification) استفاده می‌شود تا دانشجویان برای کسب ۱۰۰٪ نمره تکلیف نیازی به تکمیل تمام سوالات نداشته باشند. این ویژگی اجازه می‌دهد تکلیف نسبتاً طولانی باشد و بخشی از آن دارای نمره و بخشی دیگر مجموعه‌ای از سوالات اضافه باشد که دانشجویان بتوانند با آن‌ها تمرین کنند.
+5. تکالیف تا تاریخ سررسید با ۱۰۰٪ نمره، تا یک هفته پس از آن با ۸۰٪ نمره، و برای بقیه ترم با ۰٪ نمره (دانشجویان همچنان می‌توانند سوالات را تمرین کنند) در دسترس هستند.
 
-As an exception to the above strategy, during the COVID-19 semesters all exams were given remotely under conditions that were not as secure as the in-person CBTF. For this reason, all secret questions used on these exams are considered to be immediately "burned" and moved to the homework pool.
+به عنوان استثنایی بر استراتژی فوق، در طول ترم‌های دوران کووید-۱۹، همه آزمون‌ها به صورت از راه دور و تحت شرایطی برگزار شدند که به اندازه CBTF حضوری امن نبودند. به همین دلیل، تمام سوالات محرمانه استفاده‌شده در این آزمون‌ها بلافاصله «لو رفته» (burned) تلقی شدند و به بانک تکالیف انتقال یافتند.
 
-## Should students be able to review their exams after they are over?
+## آیا دانشجویان باید بتوانند پس از پایان آزمون‌ها، آن‌ها را بازبینی کنند؟
 
-Different instructors have different opinions regarding post-exam student access to questions because of the tradeoffs involved. For example, post-exam review allows students to ensure their work is graded correctly and learn from their specific mistakes. On the other hand, releasing questions publicly generally means that new exams need to be written and validated every semester, which takes resources away from other course activities and can lead instructors to use fewer, higher-stakes exams and to avoid the use of strategies such as second-chance exams.
+مدرسان مختلف به دلیل مصالحه‌ها و معایب و مزایای دخیل (trade-offs)، نظرات متفاوتی در مورد دسترسی دانشجویان به سوالات پس از آزمون دارند. برای نمونه، بازبینی پس از آزمون به دانشجویان امکان می‌دهد از نمره‌دهی صحیح کار خود مطمئن شوند و از اشتباهات خاص خود درس بگیرند. از سوی دیگر، انتشار عمومی سوالات معمولاً به این معناست که در هر ترم باید آزمون‌های جدیدی طراحی و اعتبارسنجی شوند که این امر منابع را از سایر فعالیت‌های آموزشی دور می‌کند و می‌تواند مدرسان را به سمت استفاده از آزمون‌های کمتر با حساسیت بالاتر و پرهیز از استراتژی‌هایی مانند آزمون‌های فرصت مجدد سوق دهد.
 
-Three strategies that courses adopt in practice are:
+سه استراتژی که دوره‌ها در عمل اتخاذ می‌کنند عبارتند از:
 
-1. Students cannot review exam contents after the exam. This allows exam questions to be re-used semester-to-semester, but is unpopular with students and hinders them from conducting a detailed post-exam analysis of the questions and their performance.
-2. Complete open access post-exam. This is popular with students and easy to implement, but requires a large effort by instructors to write and test new exam questions every semester.
-3. Limited access post-exam under controlled conditions. For example, the TAM 2XX courses (Introductory Mechanics sequence) at Illinois allow students to review their exams inside the secure [Computer-Based Testing Facility (CBTF)](https://cbtf.illinois.edu/) during exam review sessions with TAs. This is moderately popular with students ([Chang et al., 2020](https://doi.org/10.18260/1-2--34321)) and still allows exam questions to be reused. A modified form of this method is to have TAs review exams with students during office hours, on the TAs' computers. This is the approach that was used by the TAM 2XX courses prior to the CBTF-based review system.
+1. دانشجویان پس از آزمون نمی‌توانند محتوای آن را مرور کنند. این کار امکان استفاده مجدد از سوالات را ترم به ترم فراهم می‌کند، اما نزد دانشجویان محبوب نیست و مانع از تحلیل دقیق سوالات و عملکردشان پس از آزمون می‌شود.
+2. دسترسی کاملاً باز پس از آزمون. این روش نزد دانشجویان محبوب بوده و پیاده‌سازی آن آسان است، اما به تلاش زیادی از سوی مدرسان برای طراحی و آزمایش سوالات جدید آزمون در هر ترم نیاز دارد.
+3. دسترسی محدود پس از آزمون تحت شرایط کنترل‌شده. به عنوان مثال، دروس TAM 2XX در دانشگاه ایلینوی به دانشجویان اجازه می‌دهند آزمون‌های خود را در داخل محیط امن [مرکز آزمون‌های رایانه‌ای (CBTF)](https://cbtf.illinois.edu/) در جلسات مرور آزمون با دستیاران آموزشی مرور کنند. این روش تا حدی نزد دانشجویان محبوب است ([Chang et al., 2020](https://doi.org/10.18260/1-2--34321)) و همچنان امکان استفاده مجدد از سوالات آزمون را فراهم می‌کند. شکل تغییریافته‌ای از این روش این است که دستیاران آموزشی در ساعات اداری (office hours)، آزمون‌ها را همراه با دانشجویان روی رایانه خود دستیار مرور کنند. این رویکردی بود که پیش از سیستم مرور مبتنی بر CBTF در دروس TAM 2XX استفاده می‌شد.
 
-Note that if exams are taken online, such as during the COVID-19 semesters, then we should assume that the questions are publicly available and so there is little reason not to have open access post-exam.
+توجه داشته باشید که اگر آزمون‌ها به صورت آنلاین برگزار شوند (مانند ترم‌های کووید-۱۹)، در این صورت باید فرض کنیم سوالات به صورت عمومی در دسترس قرار دارند و دلیلی ندارد دسترسی آزاد پس از آزمون داده نشود.
 
-## How can I view student answers to all variants of a Homework question?
+## چگونه می‌توانم پاسخ‌های دانشجو به همه متغیرها (variants) یک سوال تکلیف را مشاهده کنم؟
 
-The PrairieLearn interface only shows the most recent `variant` (a particular randomized instance) of a question to students, along with any submissions to that specific variant.
+رابط کاربری PrairieLearn به دانشجویان فقط جدیدترین `variant` (یک نمونه تصادفی‌سازی‌شده خاص) از یک سوال را به همراه پاسخ‌های ارسالی به همان نمونه نشان می‌دهد.
 
-Instructors can see all past variants for students by going to the "Log" table on the view of a student's assessment instance (go to an assessment, then "Students" tab, then "Details" for a student, the scroll down to "Log"). In the Log table there is a column called "Student question" that shows a numbered list of the student views of the question, like `S-1#1`, `S-1#2`, `S-1#3`, etc. These are the first, second, third variants of that question that the student was given. Clicking those numbered links will show the specific variants, along with student answers to them.
+مدرسان می‌توانند تمام متغیرهای قبلی دانشجو را با مراجعه به جدول «Log» در صفحه مشاهده نمونه ارزیابی دانشجو ببینند (به ارزیابی بروید، سپس تب «Students»، سپس «Details» برای یک دانشجو، و سپس به پایین و به بخش «Log» اسکرول کنید). در جدول لاگ ستونی به نام «Student question» وجود دارد که فهرستی شماره‌گذاری‌شده از نماهای دانشجو از سوال را نشان می‌دهد، مانند `S-1#1`، `S-1#2`، `S-1#3` و غیره. این‌ها متغیرهای اول، دوم و سوم آن سوال هستند که به دانشجو داده شده است. کلیک روی این پیوندهای شماره‌گذاری‌شده، متغیرهای خاص را همراه با پاسخ‌های دانشجو به آن‌ها نمایش می‌دهد.
 
-The raw history of student answers can also be accessed in the "Data" column of the Log table, from the "XXX_all_submissions.csv" file on the "Downloads" tab, and via the [PrairieLearn API](api.md).
+تاریخچه خام پاسخ‌های دانشجویان همچنین در ستون «Data» از جدول Log، از طریق فایل «XXX_all_submissions.csv» در تب «Downloads» و از طریق [API سامانه PrairieLearn](api.md) قابل دسترسی است.
 
-## How do I give a student access to homeworks or an exam after the semester is over?
+## چگونه پس از پایان ترم به یک دانشجو دسترسی به تکالیف یا آزمون بدهم؟
 
-You need to give the student access to both the course instance itself for the completed semester and the specific assessments within that course instance.
+باید هم به خود دوره (course instance) برای ترم سپری‌شده و هم به ارزیابی‌های مشخص درون آن دوره به دانشجو دسترسی بدهید.
 
-For example, suppose Fall 2017 is the completed semester, and it is now Spring 2018. We have one student (`student@example.com`) that needs to take the final exam from Fall 2017 in February 2018. We will extend the Fall 2017 course instance and final exam access to include February 2018, but only for `student@example.com`.
+برای مثال، فرض کنید پاییز ۲۰۱۷ ترم تمام‌شده است و اکنون در بهار ۲۰۱۸ هستیم. ما یک دانشجو (`student@example.com`) داریم که باید در فوریه ۲۰۱۸ در آزمون نهایی پاییز ۲۰۱۷ شرکت کند. ما دسترسی به دوره پاییز ۲۰۱۷ و آزمون نهایی را تا فوریه ۲۰۱۸ تمدید خواهیم کرد، اما صرفاً برای `student@example.com`.
 
-First, for the course instance, create a extension for the student:
+ابتدا، برای دوره، یک مهلت تمدید (extension) برای دانشجو ایجاد کنید:
 
-1. Go to the course instance's **Publishing** page (Admin → Publishing)
-2. Click **Add extension** to create a new extension
-3. Enter the student's UID and set the new end date to February 28th, 2018.
-4. Save the extension
+1. به صفحه انتشار (**Publishing**) دوره بروید (Admin → Publishing).
+2. روی **Add extension** کلیک کنید تا یک تمدید جدید ایجاد شود.
+3. شناسه کاربری (UID) دانشجو را وارد کرده و تاریخ پایان جدید را ۲۸ فوریه ۲۰۱۸ قرار دهید.
+4. تمدید را ذخیره کنید.
 
-This will allow the student to access the course instance beyond the original end date.
+این کار به دانشجو امکان می‌دهد پس از تاریخ پایان اولیه به دوره دسترسی داشته باشد.
 
-Second, use the assessment **Access** page to add a [student-specific access override](assessment/accessControl.md#add-an-override) for `student@example.com` with the February 2018 access window.
+دوم، از صفحه **Access** ارزیابی برای افزودن یک [لغو دسترسی ویژه دانشجو](assessment/accessControl.md#add-an-override) برای `student@example.com` با بازه دسترسی فوریه ۲۰۱۸ استفاده کنید.
 
-If you're using legacy access control with `allowAccess`, edit the assessment's `infoAssessment.json` to add a section for `student@example.com`:
+اگر از کنترل دسترسی قدیمی با `allowAccess` استفاده می‌کنید، فایل `infoAssessment.json` ارزیابی را ویرایش کنید تا بخشی برای `student@example.com` اضافه شود:
 
 ```json title="infoAssessment.json"
 {
@@ -124,23 +124,15 @@ If you're using legacy access control with `allowAccess`, edit the assessment's 
 }
 ```
 
-See [Legacy access control](assessment/accessControlLegacy.md) for more details.
+برای جزئیات بیشتر به بخش [کنترل دسترسی قدیمی (Legacy)](assessment/accessControlLegacy.md) مراجعه کنید.
 
-## Why does a user have the role of None?
+## چرا نقش یک کاربر برابر با None است؟
 
-Users with a role of `None` at one point added the course and later removed themselves.
-All data for anyone who ever did anything in the course
--- even if they drop the course -- will be retained but with this indication.
-Their information is also included within the aggregation of assessment
-statistics.
+کاربرانی با نقش `None` در مقطعی درس را اضافه کرده و بعداً خود را حذف کرده‌اند. تمام داده‌های هر فردی که تا به حال کاری در درس انجام داده است — حتی اگر درس را حذف کرده باشد — حفظ خواهد شد اما با این نشانگر نمایش داده می‌شود. اطلاعات آن‌ها همچنین در تجمیع آمار ارزیابی‌ها گنجانده می‌شود.
 
-## Why is the exam closed if it is not past the end date?
+## چرا آزمون بسته شده است با اینکه از تاریخ پایان نگذشته است؟
 
-As a built-in security measure, assessments are automatically closed after 6 hours
-of inactivity by the student. Once an assessment is closed, the student is
-unable to provide new submissions. This is regardless of whether the end date
-specified in an access control is reached. If the examination is a take-home exam,
-then the feature can be disabled by specifying in the `infoAssessment.json`:
+به عنوان یک تدبیر امنیتی داخلی، ارزیابی‌ها پس از ۶ ساعت عدم فعالیت توسط دانشجو به طور خودکار بسته می‌شوند. به محض بسته شدن ارزیابی، دانشجو دیگر قادر به ارسال پاسخ‌های جدید نیست. این امر مستقل از آن است که آیا تاریخ پایان تعیین‌شده در کنترل دسترسی فرا رسیده است یا خیر. اگر آزمون یک آزمون در خانه (take-home) است، این قابلیت را می‌توان با مشخص کردن مورد زیر در `infoAssessment.json` غیرفعال کرد:
 
 ```json title="infoAssessment.json"
 {
@@ -148,24 +140,22 @@ then the feature can be disabled by specifying in the `infoAssessment.json`:
 }
 ```
 
-See [Auto-closing Exam assessments](assessment/configuration.md#auto-closing-exam-assessments)
-for more details.
+برای جزئیات بیشتر به [بسته شدن خودکار ارزیابی‌های آزمون](assessment/configuration.md#auto-closing-exam-assessments) مراجعه کنید.
 
-## How can we provide a cheat sheet for exams held in a testing center?
+## چگونه می‌توانیم برای آزمون‌های برگزارشده در مرکز آزمون، برگه فرمول یا تقلب ارائه دهیم؟
 
-To make a cheatsheet available to students, place the cheatsheet inside either:
+برای در دسترس قرار دادن برگه فرمول/تقلب برای دانشجویان، آن را در یکی از این دو مکان قرار دهید:
 
-- `clientFilesCourse` folder
-  - Good if the cheatsheet will be used on other exams.
-  - Located where the `infoCourse.json` file is.
-- `clientFilesAssessment` folder
-  - Useful if the cheatsheet should only be available for that specific assessment.
-  - Located where the `infoAssessment.json` file can be found.
+- پوشه `clientFilesCourse`
+  - در صورتی مناسب است که برگه در سایر آزمون‌ها نیز استفاده شود.
+  - در همان جایی قرار دارد که فایل `infoCourse.json` قرار دارد.
+- پوشه `clientFilesAssessment`
+  - در صورتی کاربرد دارد که برگه فقط باید برای همان ارزیابی خاص در دسترس باشد.
+  - در همان جایی قرار دارد که فایل `infoAssessment.json` یافت می‌شود.
 
-Next, within the `infoAssessment.json` for the exam, add the `text` entry with
-the following:
+سپس، در فایل `infoAssessment.json` آزمون، ورودی `text` را به صورت زیر اضافه کنید:
 
-For cheatsheets in `clientFilesCourse`, use:
+برای برگه‌ها در `clientFilesCourse`، از کد زیر استفاده کنید:
 
 ```json title="infoAssessment.json"
 {
@@ -173,7 +163,7 @@ For cheatsheets in `clientFilesCourse`, use:
 }
 ```
 
-Otherwise, for cheatsheets in `clientFilesAssessment`, use:
+در غیر این صورت، برای برگه‌ها در `clientFilesAssessment`، از کد زیر استفاده کنید:
 
 ```json title="infoAssessment.json"
 {
@@ -181,11 +171,11 @@ Otherwise, for cheatsheets in `clientFilesAssessment`, use:
 }
 ```
 
-To learn more about where files are stored, please see [clientFiles and serverFiles](clientServerFiles.md).
+برای کسب اطلاعات بیشتر درباره محل ذخیره فایل‌ها، لطفاً به بخش [فایل‌های کلاینت و سرور (clientFiles و serverFiles)](clientServerFiles.md) مراجعه کنید.
 
-## How can I reference material in `clientFilesQuestion` from the `server.py`?
+## چگونه می‌توانم از `server.py` به محتوای موجود در `clientFilesQuestion` ارجاع دهم؟
 
-Functions in `server.py` are called with the question path as the current working directory, so you can access files in `clientFilesQuestion` using relative paths. For example, if you have a file named `data.csv` in `clientFilesQuestion`, you can access it from `server.py` using:
+توابع در `server.py` در حالی فراخوانی می‌شوند که مسیر سوال به عنوان دایرکتوری کاری فعلی تنظیم شده است، بنابراین می‌توانید با استفاده از مسیرهای نسبی به فایل‌های درون `clientFilesQuestion` دسترسی داشته باشید. برای مثال، اگر فایلی به نام `data.csv` در `clientFilesQuestion` دارید، می‌توانید از `server.py` با دستور زیر به آن دسترسی داشته باشید:
 
 ```python
 def generate(data):
@@ -193,33 +183,25 @@ def generate(data):
         # do something with the file
 ```
 
-See the [documentation about accessing files from `server.py` question code](./clientServerFiles.md#accessing-files-from-serverpy-question-code) for details.
+برای جزئیات بیشتر به [مستندات دسترسی به فایل‌ها از کد سوال server.py](./clientServerFiles.md#accessing-files-from-serverpy-question-code) مراجعه کنید.
 
-## Why is my QID invalid?
+## چرا شناسه سوال (QID) من نامعتبر است؟
 
-QID stands for the **Q**uestion **Id**entifier given to the folder that contains
-the question information -- e.g. `info.json`, `question.html`, and `server.py`
-(optional) -- in `questions/`. QIDs can be invalid if they are spelled incorrectly
-or simply are not present in the directory. On sync, these issues are picked up
-and displayed as an error.
+عبارت QID مخفف **Q**uestion **Id**entifier (شناسه سوال) است که به پوشه حاوی اطلاعات سوال در `questions/` (مانند `info.json`، `question.html` و `server.py` اختیاری) داده می‌شود. شناسه‌های QID در صورت غلط املایی یا عدم وجود در دایرکتوری ممکن است نامعتبر باشند. هنگام همگام‌سازی (sync)، این مشکلات شناسایی شده و به صورت خطا نمایش داده می‌شوند:
 
 ```bash
 Error: invalid QID: "question_name"
 ```
 
-To resolve this issue, first check the name of the folder inside `questions/`
-and, then, check the question name listed in `infoAssessments.json`. Either
-rename the folder or change the name listed in assessments to be the same.
+برای رفع این مشکل، ابتدا نام پوشه درون `questions/` را بررسی کرده و سپس نام سوال فهرست‌شده در `infoAssessments.json` را بررسی کنید. یا پوشه را تغییر نام دهید یا نام ذکرشده در ارزیابی‌ها را تغییر دهید تا یکسان شوند.
 
-See [Directory Structure](question/overview.md#directory-structure) for more details.
+برای جزئیات بیشتر به بخش [ساختار دایرکتوری](question/overview.md#directory-structure) مراجعه کنید.
 
-## Why do I have a Syntax Error in my JSON file?
+## چرا در فایل JSON من خطای نگارشی (Syntax Error) وجود دارد؟
 
-During the sync process, all `.json` files are validated. If any syntax issues
-arise, then an error message will be triggered.
+در طول فرآیند همگام‌سازی، تمام فایل‌های `.json` اعتبارسنجی می‌شوند. در صورت بروز هرگونه مشکل نحوی، پیام خطایی صادر خواهد شد.
 
-The most common error is there is a missing a comma after the prior entry
-in a `infoAssessment.json` file. As a result, an unexpected token would be found.
+شایع‌ترین خطا فراموش کردن یک کاما (ویرگول انگلیسی) پس از ورودی قبلی در فایل `infoAssessment.json` است. در نتیجه یک توکن غیرمنتظره پیدا خواهد شد:
 
 ```bash
 Error: Error in JSON file format: file.json (line 55, column 17)
@@ -228,7 +210,7 @@ SyntaxError: Unexpected token '{' at 55:17
                 {"id": "question_name", "points": [2, 1]},
 ```
 
-For example, this error would be triggered under:
+به عنوان مثال، این خطا در وضعیت زیر رخ می‌دهد:
 
 ```json title="infoAssessment.json"
 {
@@ -259,86 +241,71 @@ For example, this error would be triggered under:
 }
 ```
 
-See [Question Specification](assessment/configuration.md#question-specification) for more details.
+برای جزئیات بیشتر به بخش [مشخصات سوال](assessment/configuration.md#question-specification) مراجعه کنید.
 
-## Why is the UUID used in multiple questions?
+## چرا UUID در چندین سوال استفاده شده است؟
 
-While writing PrairieLearn questions, it is very common to copy an existing
-question and slightly modify for new purposes. Often times, we forget to update
-the `uuid` that is in the `info.json` file associated with a `v3` question.
-As a result, we'll end up receiving a duplication error when we try to sync
-the question base to the website.
+هنگام نوشتن سوالات PrairieLearn، بسیار متداول است که یک سوال موجود را کپی کرده و آن را کمی برای اهداف جدید تغییر دهیم. در بسیاری از مواقع، فراموش می‌کنیم `uuid` موجود در فایل `info.json` مربوط به سوال `v3` را به‌روزرسانی کنیم. در نتیجه، هنگام تلاش برای همگام‌سازی پایگاه سوالات با وب‌سایت، خطای تکراری بودن دریافت خواهیم کرد:
 
 ```bash
 Error message: Error: UUID 7a323f4c-cafd-40b2-8576-7db18e3f439b is used in
 multiple questions: question_name_uuid_original, question_name_uuid_duplicate
 ```
 
-Generating a new UUID via <https://www.uuidgenerator.net/> and substituting it
-in new question's `info.json` will resolve this issue. That said, care must be
-taken to avoid changing the existing question's UUID that the new question was
-derived from. Modifying the UUID for an existing question being used by students
-will create a new variant of the question.
+تولید یک UUID جدید از طریق <https://www.uuidgenerator.net/> و جایگزین کردن آن در `info.json` سوال جدید، این مشکل را برطرف می‌کند. با این حال، باید مراقب باشید که UUID سوال موجودی که سوال جدید از آن مشتق شده است را تغییر ندهید. تغییر دادن UUID برای سوال موجودی که دانشجویان در حال استفاده از آن هستند، متغیر (variant) جدیدی از سوال ایجاد خواهد کرد.
 
-See [UUIDs in JSON files](uuid.md) for more details.
+برای اطلاعات بیشتر به [UUIDها در فایل‌های JSON](uuid.md) مراجعه کنید.
 
-## What steps do I have to take to access the parameter object in an external grader?
+## برای دسترسی به شیء پارامترها در یک مصحح خارجی (External Grader) چه اقداماتی باید انجام دهم؟
 
-By default, the external grader will receive a JSON dump of all values inside the `data` object called
-`data.json`. This file is located at:
+به طور پیش‌فرض، مصحح خارجی یک خروجی JSON از تمام مقادیر داخل شیء `data` به نام `data.json` دریافت می‌کند. این فایل در مسیر زیر قرار دارد:
 
 ```sh
 /grader/data/data.json
 ```
 
-To access the JSON data, read in the file within the testing framework.
+برای دسترسی به داده‌های JSON، فایل را در چارچوب آزمون (testing framework) خود بخوانید.
 
-See [The Grading Process section in Externally graded questions](externalGrading.md#the-grading-process) for more details on the default external grader file system.
+برای جزئیات بیشتر درباره سیستم فایل پیش‌فرض مصحح خارجی، به بخش [فرآیند نمره‌دهی در سوالات نمره‌دهی‌شده با مصحح خارجی](externalGrading.md#the-grading-process) مراجعه کنید.
 
-## Why can't I launch PrairieLearn with docker?
+## چرا نمی‌توانم PrairieLearn را با داکر (Docker) اجرا کنم؟
 
-When previewing content within a local copy of PrairieLearn, the web version
-is powered by a Docker container. At the end of a session, closing out of
-either the web browser or the terminal that launched the Docker container
-will **not** stop PrairieLearn from running. Therefore, when relaunching the
-Docker version of PrairieLearn, the existing port may already be taken.
-For example, we would have:
+هنگام پیش‌نمایش محتوا در یک نسخه محلی PrairieLearn، نسخه وب توسط یک کانتینر داکر اجرا می‌شود. در پایان جلسه کاری، بستن مرورگر وب یا ترمینالی که کانتینر داکر را اجرا کرده است، اجرای PrairieLearn را متوقف **نخواهد کرد**. بنابراین هنگام اجرای مجدد نسخه داکر PrairieLearn، ممکن است پورت مورد نظر قبلاً اشغال شده باشد. برای مثال، چنین خطایی دریافت می‌کنیم:
 
 ```bash
 docker: Error response from daemon: driver failed programming external connectivity on endpoint pedantic_mayer (cf92f23baa5c5fffc37c8d83990b2a3597143a2d4d518c9e62e3231d7521ceef): Bind for 0.0.0.0:3000 failed: port is already allocated.
 ```
 
-To address this, there are a variety of different ways. In particular, we have:
+برای رفع این مشکل روش‌های مختلفی وجود دارد، به‌ویژه:
 
-- Restart docker
-  - Click the Whale icon in the taskbar and select "Restart".
-- Restart your computer.
-- Stop the process in terminal with ++ctrl+c++ and, then,
-  close the terminal application.
+- راه‌اندازی مجدد داکر (Restart docker)
+  - روی آیکون نهنگ در نوار وظیفه (taskbar) کلیک کرده و «Restart» را انتخاب کنید.
+- راه‌اندازی مجدد رایانه (Restart your computer).
+- توقف فرآیند در ترمینال با کلیدهای ++ctrl+c++ و سپس بستن برنامه ترمینال.
 
-## Why do special characters like `<` and `>` break my question display?
+## چرا کاراکترهای ویژه مانند `<` و `>` نمایش سوال من را با مشکل مواجه می‌کنند؟
 
-The HTML specification disallows inserting special characters onto the page (i.e. `<`, `>`, `&`), and using these characters in your question, for example with inline code, may break rendering. To fix this, either escape the characters (`&lt;`, `&gt;`, `&amp;`, more with [this escaping tool](https://www.freeformatter.com/html-entities.html)), or load code snippets from external files into `pl-code` with `source-file-name` attribute. For more information, see the [`pl-code` element documentation](elements/pl-code.md). Additionally, you may use the `<markdown>` tag which will correctly escape any special characters.
+استاندارد HTML درج مستقیم کاراکترهای ویژه در صفحه (یعنی `<`، `>`، `&`) را مجاز نمی‌داند و استفاده از این کاراکترها در سوال شما (مثلاً با کد درون‌خطی) ممکن است رندرینگ را با مشکل مواجه کند. برای حل این مشکل، یا کاراکترها را گریزدهی (escape) کنید (`&lt;`، `&gt;`، `&amp;`، برای موارد بیشتر از [این ابزار گریزدهی](https://www.freeformatter.com/html-entities.html) استفاده کنید)، یا قطعه‌کدها را از فایل‌های خارجی با استفاده از ویژگی `source-file-name` درون `pl-code` بارگذاری کنید. برای اطلاعات بیشتر، [مستندات المان `pl-code`](elements/pl-code.md) را ببینید. علاوه بر این، می‌توانید از تگ `<markdown>` استفاده کنید که کاراکترهای ویژه را به درستی گریزدهی می‌کند.
 
-## Why can't I connect to PrairieLearn with Docker Toolbox?
+## چرا نمی‌توانم با Docker Toolbox به PrairieLearn متصل شوم؟
 
-Docker Toolbox is no longer supported. [Docker Community Edition](https://www.docker.com/community-edition) is required to [run PrairieLearn locally](installing.md).
+ابزار Docker Toolbox دیگر پشتیبانی نمی‌شود. برای [اجرای محلی PrairieLearn](installing.md) به [Docker Community Edition](https://www.docker.com/community-edition) نیاز است.
 
-## How can I make a block that can be re-used in many questions?
+## چگونه می‌توانم بلوکی بسازم که در سوالات متعدد قابل استفاده مجدد باشد؟
 
-If you have a block of text that you want to re-use in many questions, possibly with a few parameters substituted into it, you can use the [`<pl-template>` element](./elements/pl-template.md). This element allows you to define a template in one place and then use it in many questions.
+اگر بلوکی از متن دارید که می‌خواهید در چندین سوال مجدداً استفاده کنید (احتمالاً با چند پارامتر که درون آن جایگزین می‌شوند)، می‌توانید از [المان `<pl-template>`](./elements/pl-template.md) استفاده کنید. این المان به شما امکان می‌دهد قالبی را در یک جا تعریف کرده و سپس در سوالات متعددی از آن استفاده نمایید.
 
-!!! danger
+!!! danger "خطر"
 
-    Elements that accept and/or grade student input used within this element will not work correctly with `<pl-template>`. Templates should only contain other decorative elements.
+    المان‌هایی که ورودی دانشجو را می‌پذیرند و/یا نمره‌دهی می‌کنند، در صورت استفاده درون این المان به درستی با `<pl-template>` کار نخواهند کرد. قالب‌ها فقط باید شامل المان‌های تزئینی و نمایشی دیگر باشند.
 
-## How can I hide the correct answer when students see their grading results?
+## چگونه می‌توانم پاسخ صحیح را هنگام مشاهده نتایج نمره‌دهی توسط دانشجویان پنهان کنم؟
 
-Questions can specify the `showCorrectAnswer: false` property in `info.json` to hide the correct answer box entirely. For more information on this option, see [the documentation for question info.json files](question/overview.md#metadata-infojson).
+سوالات می‌توانند ویژگی `showCorrectAnswer: false` را در `info.json` مشخص کنند تا جعبه پاسخ صحیح کاملاً پنهان شود. برای اطلاعات بیشتر درباره این گزینه، به [مستندات فایل‌های info.json سوال](question/overview.md#metadata-infojson) مراجعه کنید.
 
-For more granular control, some elements in PL have their own options for specifying whether to hide individual correct answers (for example, `pl-checkbox` has a `hide-answer-panel` attribute). Not all element types offer this as an attribute (e.g., `pl-multiple-choice` currently does not). However, to hide the correct answer for any kind of element, you can surround the particular graded pl-element with `pl-hide-in-panel` in the `question.html` file.
+برای کنترل دقیق‌تر، برخی المان‌ها در PrairieLearn گزینه‌های اختصاصی خود را دارند تا تعیین کنند آیا پاسخ‌های صحیح انفرادی پنهان شوند یا خیر (مثلاً `pl-checkbox` دارای ویژگی `hide-answer-panel` است). همه انواع المان‌ها این ویژگی را ارائه نمی‌دهند (مثلاً `pl-multiple-choice` در حال حاضر این ویژگی را ندارد). با این حال، برای پنهان کردن پاسخ صحیح برای هر نوع المانی، می‌توانید المان نمره‌دار خاص را در فایل `question.html` درون `pl-hide-in-panel` قرار دهید.
 
-For example:
+برای مثال:
 
 ```xml
 <pl-hide-in-panel answer="true">
@@ -346,38 +313,38 @@ For example:
 </pl-hide-in-panel>
 ```
 
-For more information on this granular technique, see [the documentation for pl-hide-in-panel](elements/pl-hide-in-panel.md).
+برای اطلاعات بیشتر درباره این روش دقیق، [مستندات pl-hide-in-panel](elements/pl-hide-in-panel.md) را ببینید.
 
-## I forgot to set `"credit":100` and now my students all have 0%. How do I fix this?
+## من فراموش کردم `"credit":100` را تنظیم کنم و اکنون نمره تمام دانشجویانم ۰٪ است. چگونه این را برطرف کنم؟
 
-PrairieLearn legacy access rules default to zero-credit so leaving off the credit means that students will accumulate points, but their percentage score will stay at 0%. To correct this, you should add `"credit":100` to [the appropriate access rule](assessment/accessControlLegacy.md#credit). The next time that a student answers a question their percentage score will be recalculated to be the correct value (as if they'd had full credit all along).
+قوانین کنترل دسترسی قدیمی در PrairieLearn به طور پیش‌فرض اعتبار صفر در نظر می‌گیرند؛ بنابراین حذف مقدار نمره/اعتبار به این معناست که دانشجویان امتیاز جمع می‌کنند، اما نمره درصدی آن‌ها روی ۰٪ باقی می‌ماند. برای رفع این مشکل، باید `"credit":100` را به [قاعده دسترسی مربوطه](assessment/accessControlLegacy.md#credit) اضافه کنید. دفعه بعدی که دانشجو به یک سوال پاسخ دهد، نمره درصدی او به مقدار صحیح مجدداً محاسبه خواهد شد (گویی از همان ابتدا اعتبار کامل داشته است).
 
-To fix student scores without requiring them to answer another question you can:
+برای اصلاح نمرات دانشجویان بدون نیاز به اینکه آن‌ها سوال دیگری را پاسخ دهند، می‌توانید:
 
-1. Download the `<Assessment-Name>_instances.csv` file from the "Downloads" tab.
-2. Edit the `"Score (%)"` column to reflect the new percentage scores. This would normally be "Points / Max points \* 100".
-3. Rename the `"Score (%)"` column to `"score_perc"` and delete all columns except `"uid"`, `"instance"`, and `"score_perc"`.
-4. Upload the new scores by selecting "Upload total scores" from the "Upload" menu on the "Students" tab.
+1. فایل `<Assessment-Name>_instances.csv` را از تب «Downloads» دانلود کنید.
+2. ستون `"Score (%)"` را برای نمایش نمرات درصدی جدید ویرایش کنید. این مقدار معمولاً برابر است با «Points / Max points \* 100».
+3. نام ستون `"Score (%)"` را به `"score_perc"` تغییر دهید و تمام ستون‌ها به جز `"uid"`، `"instance"` و `"score_perc"` را حذف کنید.
+4. نمرات جدید را با انتخاب «Upload total scores» از منوی «Upload» در تب «Students» بارگذاری نمایید.
 
-Changing total scores via CSV download/upload should only be done after the assessment is over and students are not working on it anymore, to avoid any risk of overwriting scores while students are answering more questions.
+تغییر نمرات کل از طریق دانلود/آپلود CSV فقط باید پس از پایان ارزیابی و زمانی که دانشجویان دیگر روی آن کار نمی‌کنند انجام شود، تا از هرگونه خطر بازنویسی نمرات در حالی که دانشجویان به سوالات بیشتری پاسخ می‌دهند جلوگیری شود.
 
-## I updated my question, but students are still seeing the old version. How can I get students to see the new version?
+## من سوالم را به‌روزرسانی کردم، اما دانشجویان هنوز نسخه قدیمی را می‌بینند. چگونه می‌توانم کاری کنم که دانشجویان نسخه جدید را ببینند؟
 
-Some changes in question files do not take effect for students that have already started working on a variant. These include, but are not limited to: changes in the value of correct answers, added or removed graded elements, changes in element type (e.g., replacing string input with integer input), changes in the `answers-name` option for graded elements, some other changes in element settings (e.g., multiple choice answers), changes in file names for gradable files, or updates to the `generate` function in `server.py`.
+برخی تغییرات در فایل‌های سوال برای دانشجویانی که قبلاً کار روی یک نمونه متغیر (variant) را شروع کرده‌اند، اعمال نمی‌شوند. این موارد شامل (اما نه محدود به) این موارد هستند: تغییر در مقدار پاسخ‌های صحیح، افزودن یا حذف المان‌های نمره‌دار، تغییر در نوع المان (مثلاً جایگزینی ورودی متنی با ورودی عدد صحیح)، تغییر در گزینه `answers-name` برای المان‌های نمره‌دار، برخی تغییرات دیگر در تنظیمات المان (مانند گزینه‌های سوال چهارگزینه‌ای)، تغییر در نام فایل‌های قابل نمره‌دهی، یا به‌روزرسانی‌های تابع `generate` در `server.py`.
 
-You are highly encouraged to avoid changes such as the ones above to questions where students have already started working through the question. However, if such a change is necessary, you can reset variants for Homework assessments in one of two ways. Both options require course instance editor permissions:
+اکیداً توصیه می‌شود از اعمال تغییراتی نظیر موارد بالا در سوالاتی که دانشجویان قبلاً کار روی آن‌ها را آغاز کرده‌اند خودداری کنید. با این حال، اگر چنین تغییری ضروری باشد، می‌توانید متغیرهای ارزیابی‌های تکالیف (Homework) را به یکی از دو روش زیر بازنشانی (reset) کنید. هر دو گزینه به مجوزهای ویرایشگر دوره (course instance editor) نیاز دارند:
 
-- To reset all variants for a particular assessment question, go to the assessment's "Questions" tab and click the question's row (outside the question title link) to open its details panel. Click "Reset question variants" at the bottom of the panel, then confirm in the dialog. The button is available when you are viewing the assessment, outside edit mode. This will invalidate _every_ variant that has been created so far and that has not yet been completed, and students will be given a new one the next time they load the question.
+- برای بازنشانی همه متغیرها برای یک سوال ارزیابی خاص، به تب «Questions» ارزیابی بروید و روی سطر سوال (خارج از لینک عنوان سوال) کلیک کنید تا پنل جزئیات آن باز شود. روی «Reset question variants» در پایین پنل کلیک کرده و سپس در کادر گفتگو تأیید کنید. این دکمه هنگام مشاهده ارزیابی، خارج از حالت ویرایش در دسترس است. این کار _تمام_ متغیرهایی را که تاکنون ایجاد شده و هنوز تکمیل نشده‌اند باطل می‌کند و دفعه بعد که دانشجویان سوال را بارگذاری کنند، متغیر جدیدی به آن‌ها داده خواهد شد.
 
-- To reset the variants for an individual student (or a small subset of students), go to the assessment page, select the "Students" tab, click on the assessment for the individual student (or group, for group assessments), then on the Questions list click "Action" on the relevant question, then "Reset question variants" and confirm in the dialog. This will invalidate the variants only for the specific student or group.
+- برای بازنشانی متغیرها برای یک دانشجو به صورت انفرادی (یا زیرمجموعه کوچکی از دانشجویان)، به صفحه ارزیابی بروید، تب «Students» را انتخاب کنید، روی ارزیابی دانشجو (یا گروه، در ارزیابی‌های گروهی) کلیک کنید، سپس در فهرست Questions روی «Action» در سوال مربوطه کلیک کرده، گزینه «Reset question variants» را بزنید و در کادر گفتگو تأیید کنید. این کار متغیرها را فقط برای همان دانشجو یا گروه خاص باطل می‌کند.
 
-Neither of these options will affect the score a student may already have obtained in any previous variants. However, any work a student may have started on an open variant but not yet submitted will be lost.
+هیچ‌یک از این دو گزینه بر نمره‌ای که دانشجو قبلاً در هر یک از متغیرهای قبلی کسب کرده است تأثیری نخواهد گذاشت. با این حال، هر کاری که دانشجو روی یک متغیر باز شروع کرده باشد اما هنوز ارسال نکرده باشد از دست خواهد رفت.
 
-Resetting question variants is not supported for Exam assessments. For exams and other summative assessments where students may have been negatively impacted by such a change, you are encouraged to consider [giving students credit for issues such as these](assessment/regrading.md).
+بازنشانی متغیرهای سوال برای ارزیابی‌های آزمون (Exam) پشتیبانی نمی‌شود. برای آزمون‌ها و سایر ارزیابی‌های جمع‌بندی‌کننده که دانشجویان ممکن است تحت تأثیر منفی چنین تغییری قرار گرفته باشند، توصیه می‌شود [اعطای نمره به دانشجویان برای چنین مسائلی](assessment/regrading.md) را مد نظر قرار دهید.
 
-## When I open some CSV downloads, some data is in the wrong columns
+## هنگام باز کردن برخی فایل‌های CSV دانلودشده، بعضی داده‌ها در ستون‌های اشتباهی قرار دارند
 
-When loading some assessment download files, such as `*_all_submissions.csv`, in Excel, you may notice data appearing in the wrong column or wrapping incorrectly. This typically happens because Excel has a maximum cell size of 32,767 characters and does not always correctly parse complex CSV data, particularly when fields contain JSON or special characters. While the `Params` column is the most likely culprit, other columns such as true answers, submitted answers, or feedback may also be affected. To work with these files, you can use Pandas in Python to clean or restructure the data for easier processing in Excel. For example:
+هنگام بارگذاری برخی از فایل‌های دانلودی ارزیابی مانند `*_all_submissions.csv` در نرم‌افزار اکسل (Excel)، ممکن است متوجه شوید که داده‌ها در ستون اشتباه نمایش داده می‌شوند یا خط‌شکنی آن‌ها نادرست است. این موضوع معمولاً به این دلیل رخ می‌دهد که اکسل دارای حداکثر اندازه سلول ۳۲٬۷۶۷ کاراکتر است و همیشه داده‌های پیچیده CSV را به درستی تجزیه (parse) نمی‌کند، به ویژه زمانی که فیلدها شامل JSON یا کاراکترهای ویژه باشند. اگرچه ستون `Params` محتمل‌ترین مقصر است، ستون‌های دیگری مانند پاسخ‌های صحیح (true answers)، پاسخ‌های ارسالی (submitted answers) یا بازخوردها (feedback) نیز ممکن است تحت تأثیر قرار گیرند. برای کار با این فایل‌ها، می‌توانید از کتابخانه Pandas در پایتون جهت پاکسازی یا ساختاردهی مجدد داده‌ها برای پردازش آسان‌تر در اکسل استفاده کنید. برای مثال:
 
 ```python
 import pandas as pd
@@ -393,9 +360,9 @@ df2.to_csv("PREFIX_all_submissions_no_params.csv", index=False)
 df.to_excel("PREFIX_all_submissions.xlsx", index=False)
 ```
 
-## I have files that should be included both in the workspace and in the tests. How do I store these files to avoid duplication?
+## فایل‌هایی دارم که باید هم در محیط کاری (Workspace) و هم در آزمون‌ها (Tests) گنجانده شوند. چگونه این فایل‌ها را ذخیره کنم تا از تکرار جلوگیری شود؟
 
-In these cases, you can store your files in the `tests` directory for the question and reference them from the workspace by adding them to the `_workspace_files` list. For example, suppose we want to include `xyz.c` and `xyz.h` in both the workspace home folder, and in `/grade/tests` in the autograder. To do this, save these files to `[QUESTION DIRECTORY]/tests`, and in `server.py`, include the following lines:
+در این موارد، می‌توانید فایل‌های خود را در دایرکتوری `tests` سوال ذخیره کرده و با افزودن آن‌ها به لیست `_workspace_files`، از محیط کاری به آن‌ها ارجاع دهید. به عنوان مثال، فرض کنید می‌خواهیم `xyz.c` و `xyz.h` را هم در پوشه اصلی محیط کاری و هم در `/grade/tests` در مصحح خودکار قرار دهیم. برای این کار، این فایل‌ها را در `[QUESTION DIRECTORY]/tests` ذخیره کرده و در `server.py` خطوط زیر را بگنجانید:
 
 ```python
 def generate(data):
@@ -405,28 +372,28 @@ def generate(data):
     ]
 ```
 
-## When uploading grades via CSV, the upload process cannot match some group names. Why?
+## هنگام بارگذاری نمرات از طریق CSV، فرآیند بارگذاری نمی‌تواند برخی نام‌های گروه را تطبیق دهد. چرا؟
 
-The [manual grading documentation](./manualGrading/index.md#manual-grading-using-file-uploads) lists a process for manual grading using CSV files, that involves downloading a CSV file, changing the score/feedback in the file locally (via Excel or other tools), then uploading the changed file. However, when a group assessment includes group names comprised of numeric values with leading zeros or strings that can be interpreted as dates, Excel may change the group name to match its own representation of these values (e.g., by removing leading zeros). This causes the upload process to fail to recognize the group name.
+در [مستندات نمره‌دهی دستی](./manualGrading/index.md#manual-grading-using-file-uploads) فرآیندی برای نمره‌دهی دستی با استفاده از فایل‌های CSV آمده است که شامل دانلود یک فایل CSV، تغییر دادن نمره/بازخورد به صورت محلی در فایل (از طریق اکسل یا سایر ابزارها)، و سپس بارگذاری مجدد فایل تغییریافته است. با این حال، زمانی که یک ارزیابی گروهی شامل نام‌های گروهی متشکل از مقادیر عددی با صفرهای پیشرو (leading zeros) یا رشته‌هایی باشد که می‌توانند به عنوان تاریخ تفسیر شوند، اکسل ممکن است نام گروه را مطابق با نمایش پیش‌فرض خود از این مقادیر تغییر دهد (مثلاً با حذف صفرهای ابتدایی). این امر باعث می‌شود فرآیند بارگذاری در شناسایی نام گروه با شکست مواجه شود.
 
-There are a few possible ways to address these cases:
+چند روش ممکن برای حل این موارد وجود دارد:
 
-- Instead of opening the CSV file directly on Excel, you can import it to a blank new workbook, ensuring the group name column uses the "Text" data type. More details can be found in [the Microsoft Support page](https://support.microsoft.com/en-us/office/keeping-leading-zeros-and-large-numbers-1bf7b935-36e1-4985-842f-5dfa51f85fe7).
+- به جای باز کردن مستقیم فایل CSV در اکسل، می‌توانید آن را به یک کتاب‌کار (workbook) خالی جدید وارد (import) کنید و مطمئن شوید که نوع داده ستون نام گروه روی "Text" تنظیم شده است. جزئیات بیشتر را می‌توان در [صفحه پشتیبانی مایکروسافت](https://support.microsoft.com/en-us/office/keeping-leading-zeros-and-large-numbers-1bf7b935-36e1-4985-842f-5dfa51f85fe7) یافت.
 
-- If the number of groups with this issue is relatively small, you can manually edit the CSV file to update the group name to the proper name. Note that you need to ensure Excel interprets the name you input as a string. One way to ensure this is to [add an apostrophe in front of the group name](https://support.microsoft.com/en-us/office/stop-automatically-changing-numbers-to-dates-452bd2db-cc96-47d1-81e4-72cec11c4ed8) when setting it on Excel, e.g., `'0123`.
+- اگر تعداد گروه‌های دارای این مشکل نسبتاً کم است، می‌توانید فایل CSV را به صورت دستی ویرایش کنید تا نام گروه به نام صحیح به‌روزرسانی شود. توجه داشته باشید که باید مطمئن شوید اکسل نام واردشده را به عنوان یک رشته تفسیر می‌کند. یک روش برای اطمینان از این موضوع [افزودن یک آپاستروف در ابتدای نام گروه](https://support.microsoft.com/en-us/office/stop-automatically-changing-numbers-to-dates-452bd2db-cc96-47d1-81e4-72cec11c4ed8) هنگام تعیین آن در اکسل است؛ برای مثال: `'0123`.
 
-- Alternatively, you can remove the `group_name` column altogether. While the column is used to match a row to a specific submission, if the column is not found, the row can be identified with other columns such as the `submission_id`.
+- به عنوان راه حل دیگر، می‌توانید ستون `group_name` را به طور کامل حذف کنید. اگرچه این ستون برای تطبیق یک سطر با پاسخ ارسالی خاصی استفاده می‌شود، در صورت پیدا نشدن این ستون، سطر را می‌توان با ستون‌های دیگر مانند `submission_id` شناسایی کرد.
 
-One way to avoid this problem is to remove the ability for students to specify their own group names. This can be done by [setting `"studentGroupChooseName": false`](./assessment/configuration.md#enabling-group-work-for-collaborative-assessments) in the assessment configuration. When this option is set, all student-created groups are named with a default pattern of `groupXXX`, where `XXX` is an integer number. This pattern does not typically cause issues with spreadsheet applications.
+یک راه برای اجتناب از این مشکل، غیرفعال کردن امکان تعیین نام گروه توسط دانشجویان است. این کار را می‌توان با [تنظیم `"studentGroupChooseName": false`](./assessment/configuration.md#enabling-group-work-for-collaborative-assessments) در پیکربندی ارزیابی انجام داد. هنگامی که این گزینه تنظیم شود، همه گروه‌های ایجادشده توسط دانشجویان با الگوی پیش‌فرض `groupXXX` نام‌گذاری می‌شوند که در آن `XXX` یک عدد صحیح است. این الگو معمولاً در برنامه‌های صفحه‌گسترده مشکلی ایجاد نمی‌کند.
 
-## I have a custom element or inputs in my question. Students always see a warning when leaving the page, even when they have not made any changes. How can I fix this?
+## من یک المان سفارشی یا ورودی‌هایی در سوالم دارم. دانشجویان هنگام خروج از صفحه همیشه هشداری را مشاهده می‌کنند، حتی زمانی که هیچ تغییری ایجاد نکرده‌اند. چگونه می‌توانم این را برطرف کنم؟
 
-This happens because PrairieLearn tracks changes to all input elements included in the question form, and shows a warning if any of them have changed when the student tries to leave the page. This tracking is based on the values of these input elements when the question is first loaded. If you have custom elements or inputs that are initialized by JavaScript code lazily (e.g., using async scripts or timeouts), PrairieLearn may not be able to capture their initial values correctly, leading to false positives when checking for changes.
+این اتفاق به این دلیل می‌افتد که PrairieLearn تغییرات تمام المان‌های ورودی موجود در فرم سوال را ردیابی می‌کند و در صورتی که هنگام تلاش دانشجو برای خروج از صفحه، هر یک از آن‌ها تغییر کرده باشد، هشداری نمایش می‌دهد. این ردیابی بر اساس مقادیر این المان‌های ورودی در هنگام بارگذاری اولیه سوال است. اگر المان‌ها یا ورودی‌های سفارشی دارید که توسط کدهای جاوااسکریپت با تأخیر (lazy) مقداردهی اولیه می‌شوند (مثلاً با استفاده از اسکریپت‌های غیرهمگام یا تایم‌اوت‌ها)، ممکن است PrairieLearn نتواند مقادیر اولیه آن‌ها را به درستی ثبت کند که این امر هنگام بررسی تغییرات منجر به مثبت کاذب (هشدار اشتباه) می‌شود.
 
-There are two ways to address this issue:
+دو روش برای رفع این مشکل وجود دارد:
 
-- If you do not want PrairieLearn to track changes to specific input elements, you can add the `data-skip-unload-check="true"` attribute to those elements. This will exclude them from the change tracking mechanism. Note that, in these cases, students will not be warned about unsaved changes to these elements.
+- اگر نمی‌خواهید PrairieLearn تغییرات المان‌های ورودی خاصی را ردیابی کند، می‌توانید ویژگی `data-skip-unload-check="true"` را به آن المان‌ها اضافه کنید. این کار آن‌ها را از مکانیزم ردیابی تغییرات مستثنی می‌کند. توجه داشته باشید که در این موارد، به دانشجویان در مورد تغییرات ذخیره‌نشده این المان‌ها هشداری داده نخواهد شد.
 
-- If you want PrairieLearn to defer the initial value capture until after your custom code has run, you can add the `data-deferred-initial-value="true"` attribute to specific input elements. This will tell PrairieLearn to wait until the value attribute of these inputs has been set by your code for the first time before capturing their initial values. For this functionality to work, your code must ensure that the input value attributes are set within a reasonable time after the question is loaded, and that they are always updated exactly once before the student starts interacting with the question.
+- اگر می‌خواهید PrairieLearn ثبت مقدار اولیه را تا پس از اجرای کد سفارشی شما به تعویق بیندازد، می‌توانید ویژگی `data-deferred-initial-value="true"` را به المان‌های ورودی خاص اضافه کنید. این کار به PrairieLearn اعلام می‌کند که قبل از ثبت مقادیر اولیه، منتظر بماند تا ویژگی value این ورودی‌ها برای اولین بار توسط کد شما تنظیم شود. برای کارکرد این قابلیت، کد شما باید تضمین کند که ویژگی‌های value ورودی‌ها در زمان معقولی پس از بارگذاری سوال تنظیم می‌شوند و همیشه دقیقاً یک بار قبل از شروع تعامل دانشجو با سوال به‌روزرسانی می‌گردند.
 
-Note that this functionality expects affected input elements (either untracked or deferred) to have unique names within the question form, preferably with type `hidden`. Particular care should be taken when using this functionality with custom elements that may have multiple instances in the same question, to ensure that each instance uses a unique input name that will not overlap with other copies of the element.
+توجه داشته باشید که این قابلیت انتظار دارد المان‌های ورودی تحت تأثیر (چه ردگیری‌نشده و چه با تأخیر) نام‌های منحصربه‌فردی در فرم سوال داشته باشند، ترجیحاً با نوع `hidden`. هنگام استفاده از این قابلیت با المان‌های سفارشی که ممکن است چندین نمونه از آن‌ها در یک سوال وجود داشته باشد، باید مراقبت ویژه‌ای به عمل آید تا اطمینان حاصل شود هر نمونه از یک نام ورودی منحصربه‌فرد استفاده می‌کند که با سایر نسخه‌های المان تداخل نداشته باشد.

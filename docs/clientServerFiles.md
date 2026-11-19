@@ -1,64 +1,64 @@
-# `clientFiles` and `serverFiles`
+# فایل‌های کلاینت (`clientFiles`) و سرور (`serverFiles`)
 
-There are multiple locations within each course where files can be stored for access from the client or server. These can be used for code libraries used in questions, images embedded within questions, formula sheets available during exams, or online textbooks for reference during exams.
+در هر درس مکان‌های متعددی وجود دارد که در آن‌ها می‌توان فایل‌ها را برای دسترسی از سوی کلاینت (کاربر) یا سرور ذخیره کرد. از این فایل‌ها می‌توان برای کتابخانه‌های کدی مورد استفاده در سوالات، تصاویر تعبیه‌شده در سوالات، برگه‌های فرمول در دسترس در طول امتحانات، یا کتاب‌های درسی آنلاین جهت ارجاع در حین آزمون استفاده نمود.
 
-`ClientFiles` directories contain files that are accessible from the client web browser. This is appropriate for files that a student should have access to, such as a static image, reference webpages, or formula sheets, or for code libraries used on the client.
+دایرکتوری‌های `clientFiles` حاوی فایل‌هایی هستند که از مرورگر وب کلاینت قابل دسترسی می‌باشند. این دایرکتوری‌ها برای فایل‌هایی مناسب هستند که دانشجو باید به آن‌ها دسترسی داشته باشد، مانند تصاویر ایستا، صفحات وب مرجع یا برگه‌های فرمول، یا برای کتابخانه‌های کدی که در سمت کلاینت اجرا می‌شوند.
 
-`ServerFiles` directories are only accessible from code running on the server, so are useful for libraries that can solve questions or generate random question instances. Files in a `serverFiles` directory cannot be directly accessed by the student's web browser.
+دایرکتوری‌های `serverFiles` تنها از کدهای در حال اجرا بر روی سرور قابل دسترسی هستند، بنابراین برای کتابخانه‌هایی مفیدند که می‌توانند سوالات را حل کنند یا نمونه‌های تصادفی سوال را تولید نمایند. فایل‌های موجود در دایرکتوری `serverFiles` مستقیماً توسط مرورگر وب دانشجو قابل دسترسی نیستند.
 
-See an [example of how to use `serverFilesCourse`](python-grader/index.md#example-usage-of-serverfilescourse-for-static-data) in a Python autograder.
+یک [نمونه از نحوه استفاده از `serverFilesCourse`](python-grader/index.md#example-usage-of-serverfilescourse-for-static-data) در یک نمره‌دهنده خودکار پایتون را مشاهده کنید.
 
-## Directory layout
+## ساختار دایرکتوری‌ها
 
-A `clientFiles*` subdirectory can be associated with the course, a question, a course instance, or an assessment, as shown below. The `serverFilesCourse` subdirectory is associated with the course as a whole.
+یک زیردایرکتوری `clientFiles*` می‌تواند به درس، یک سوال، یک دوره (Course Instance) یا یک ارزیابی (آزمون) اختصاص یابد، همان‌طور که در زیر نشان داده شده است. زیردایرکتوری `serverFilesCourse` به کل درس به عنوان یک کل اختصاص دارد.
 
 ```bash
 exampleCourse
-+-- clientFilesCourse                     # client files for the entire course
++-- clientFilesCourse                     # فایل‌های کلاینت برای کل درس
 |   +-- library.js
-+-- serverFilesCourse                     # server files for the entire course
++-- serverFilesCourse                     # فایل‌های سرور برای کل درس
 |   `-- secret1.js
 +-- questions
 |   `-- fossilFuels
-|       +-- clientFilesQuestion           # client files for the fossilFuels question
+|       +-- clientFilesQuestion           # فایل‌های کلاینت برای سوال fossilFuels
 |       |   `-- power-station.jpg
 `-- courseInstances
     `-- Fa16
-       +-- clientFilesCourseInstance      # client files for the Fall 2016 course instance
+       +-- clientFilesCourseInstance      # فایل‌های کلاینت برای دوره پاییز ۲۰۱۶ (Fa16)
        |   `-- Fa16_rules.pdf
        `-- assessments
            `-- hw01
-               `-- clientFilesAssessment  # client files for the Homework 1 assessment
+               `-- clientFilesAssessment  # فایل‌های کلاینت برای ارزیابی تکلیف ۱ (hw01)
                    `-- formulaSheet.pdf
 ```
 
-## Access control
+## کنترل دسترسی (Access Control)
 
-Each different `clientFiles*` directory is accessible under the same [access control rules](assessment/accessControl.md) for the course instances and assessments. That is, `clientFilesCourse` is accessible to any student who has access to some course instance, while `clientFilesQuestion`, `clientFilesCourseInstance`, and `clientFilesAssessment` are accessible to students with access to the corresponding question, course instance, or assessment.
+هر دایرکتوری مختلف از `clientFiles*` تحت همان [قوانین کنترل دسترسی](assessment/accessControl.md) مربوط به دوره‌ها و آزمون‌ها قابل دسترسی است. به این معنا که `clientFilesCourse` برای هر دانشجویی که به دوره‌ای از درس دسترسی دارد در دسترس است، در حالی که `clientFilesQuestion`، `clientFilesCourseInstance` و `clientFilesAssessment` تنها برای دانشجویانی در دسترس هستند که به سوال، دوره یا آزمون متناظر دسترسی دارند.
 
-## Giving students access to client files
+## اعطای دسترسی به فایل‌های کلاینت به دانشجویان
 
-To give students access to a file, place the file in the appropriate `clientFiles*` directory. For example, to include an image in a question, place the image in the `clientFilesQuestion` directory for that question. If the image is used in multiple questions, it can be placed in the `clientFilesCourse` directory for the course. To make a formula sheet available during an exam, place the formula sheet in the `clientFilesAssessment` directory for that exam.
+برای اینکه به دانشجویان امکان دسترسی به یک فایل را بدهید، فایل را در دایرکتوری `clientFiles*` مناسب قرار دهید. برای مثال، جهت گنجاندن یک تصویر در یک سوال، تصویر را در دایرکتوری `clientFilesQuestion` مربوط به آن سوال قرار دهید. اگر تصویر در چندین سوال استفاده می‌شود، می‌توان آن را در دایرکتوری `clientFilesCourse` درس قرار داد. برای در دسترس قرار دادن برگه فرمول در طول امتحان، برگه فرمول را در دایرکتوری `clientFilesAssessment` مربوط به آن آزمون بگذارید.
 
-To allow students to see the contents of a file from a question, you can make a reference to the file using one of the following methods:
+برای اینکه به دانشجویان اجازه دهید محتویات یک فایل را از طریق یک سوال مشاهده کنند، می‌توانید با استفاده از یکی از روش‌های زیر به فایل ارجاع دهید:
 
-1. The `pl-figure` element can be used to display an image from `clientFilesQuestion` or `clientFilesCourse` in a question. For example, if the image is named `power-station.jpg`, you may save it in `clientFilesQuestion` and then include, in your `question.html` file:
+1. المان `pl-figure` می‌تواند برای نمایش یک تصویر از `clientFilesQuestion` یا `clientFilesCourse` در یک سوال استفاده شود. به عنوان مثال، اگر نام تصویر `power-station.jpg` است، می‌توانید آن را در `clientFilesQuestion` ذخیره کرده و سپس در فایل `question.html` خود درج کنید:
 
    ```html
    <pl-figure file-name="power-station.jpg" alt="Power Station"></pl-figure>
    ```
 
-   See the [`pl-figure` documentation](./elements/pl-figure.md) for details.
+   برای جزئیات بیشتر به [مستندات `pl-figure`](./elements/pl-figure.md) مراجعه کنید.
 
-2. The `pl-file-download` element can be used to provide a link for students to download a file from `clientFilesQuestion` or `clientFilesCourse`. For example, to give students access to a starting code file, you may save it in `clientFilesQuestion` and then include, in your `question.html` file:
+2. المان `pl-file-download` می‌تواند برای ارائه پیوندی به دانشجویان جهت دانلود فایلی از `clientFilesQuestion` یا `clientFilesCourse` به کار رود. به عنوان مثال، جهت اعطای دسترسی به دانشجویان به یک فایل کد اولیه (starting code)، می‌توانید آن را در `clientFilesQuestion` ذخیره کرده و سپس در فایل `question.html` خود درج کنید:
 
    ```html
    <pl-file-download file-name="starting-code.py"></pl-file-download>
    ```
 
-   This element can also be used to provide a link for static PDF files or web pages. See the [`pl-file-download` documentation](./elements/pl-file-download.md) for details.
+   این المان همچنین می‌تواند برای ارائه پیوند دانلود فایل‌های ایستا PDF یا صفحات وب استفاده شود. برای جزئیات به [مستندات `pl-file-download`](./elements/pl-file-download.md) مراجعه کنید.
 
-3. To include stylesheets and scripts from `clientFilesCourse` or `clientFilesQuestion` in your question, you can add them as dependencies in the question configuration file. For example, to include a stylesheet named `styles.css` from `clientFilesCourse`, you can add the following to your `info.json` file:
+3. برای گنجاندن شیوه‌نامه‌ها (CSS) و اسکریپت‌ها از `clientFilesCourse` یا `clientFilesQuestion` در سوال خود، می‌توانید آن‌ها را به عنوان وابستگی‌ها در فایل پیکربندی سوال اضافه کنید. به عنوان مثال، برای گنجاندن یک شیوه‌نامه با نام `styles.css` از `clientFilesCourse`، می‌توانید قطعه زیر را به فایل `info.json` خود اضافه کنید:
 
    ```json
    {
@@ -66,11 +66,11 @@ To allow students to see the contents of a file from a question, you can make a 
    }
    ```
 
-   See [the question dependencies documentation](./question/overview.md#question-dependencies) for more details on how to include client files as dependencies.
+   برای جزئیات بیشتر درباره نحوه گنجاندن فایل‌های کلاینت به عنوان وابستگی، به [مستندات وابستگی‌های سوال](./question/overview.md#question-dependencies) مراجعه فرمایید.
 
-4. Some elements have special support for files in these directories. For example, the `pl-file-editor` element allows a custom mode to be stored in `clientFilesCourse` or `clientFilesQuestion`, and specified using the `ace-mode` attribute. See the [`pl-file-editor` documentation](./elements/pl-file-editor.md#editor-modes) for details.
+4. برخی المان‌ها پشتیبانی ویژه‌ای از فایل‌های موجود در این دایرکتوری‌ها دارند. به عنوان مثال، المان `pl-file-editor` اجازه می‌دهد حالت سفارشی ویرایشگر (custom mode) در `clientFilesCourse` یا `clientFilesQuestion` ذخیره شده و با ویژگی `ace-mode` مشخص شود. برای جزئیات به [مستندات `pl-file-editor`](./elements/pl-file-editor.md#editor-modes) مراجعه کنید.
 
-5. To provide these files in more advanced contexts, such as CSS references, audio/video tracks, or embedded objects, you can use the patterns `{{ options.client_files_course_url }}/filename.ext` and `{{ options.client_files_question_url }}/filename.ext` to get the URL for a file in `clientFilesCourse` or `clientFilesQuestion`, respectively. For example, to include an image from `clientFilesQuestion` as the background for a block, you can add the following to your question's `question.html` file:
+5. برای ارائه این فایل‌ها در بسترهای پیشرفته‌تر مانند ارجاعات درون CSS، ترک‌های صوتی/تصویری یا اشیای تعبیه‌شده (embedded objects)، می‌توانید از الگوهای `{{ options.client_files_course_url }}/filename.ext` و `{{ options.client_files_question_url }}/filename.ext` برای دریافت URL فایلی در `clientFilesCourse` یا `clientFilesQuestion` استفاده کنید. برای مثال، برای قرار دادن تصویری از `clientFilesQuestion` به عنوان تصویر پس‌زمینه یک بلوک، می‌توانید قطعه زیر را در فایل `question.html` سوال خود درج کنید:
 
    ```html
    <div style="background-image: url('{{ options.client_files_question_url }}/power-station.jpg')">
@@ -78,26 +78,26 @@ To allow students to see the contents of a file from a question, you can make a 
    </div>
    ```
 
-!!! warning
+!!! warning "هشدار"
 
-    A common pattern used in the past was to use a relative link like `clientFilesQuestion/filename.ext` to access files in `clientFilesQuestion`. This pattern is not officially supported and may not work in all contexts, so you are highly encouraged to replace it with the `{{ options.client_files_question_url }}/filename.ext` pattern instead.
+    یک الگوی رایج در گذشته استفاده از پیوند نسبی مانند `clientFilesQuestion/filename.ext` برای دسترسی به فایل‌ها در `clientFilesQuestion` بود. این الگو رسماً پشتیبانی نمی‌شود و ممکن است در تمام بسترها کار نکند، بنابراین اکیداً توصیه می‌شود که آن را با الگوی `{{ options.client_files_question_url }}/filename.ext` جایگزین نمایید.
 
-Files in `clientFilesCourseInstance` and `clientFilesAssessment` (as well as `clientFilesCourse`) can be provided to students using the assessment text, which is rendered in the student's assessment overview page. These can be rendered using the `{{ client_files_course_instance }}/filename.ext`, `{{ client_files_assessment }}/filename.ext`, and `{{ client_files_course }}/filename.ext` patterns, which will render the URLs for files in the corresponding `clientFiles*` directory. More details can be found in the [assessment text documentation](assessment/configuration.md#adding-text-and-links-to-assessments).
+فایل‌های موجود در `clientFilesCourseInstance` و `clientFilesAssessment` (و همچنین `clientFilesCourse`) را می‌توان با استفاده از متن آزمون (assessment text) که در صفحه مرور آزمون دانشجو رندر می‌شود، در اختیار دانشجویان قرار داد. این فایل‌ها با استفاده از الگوهای `{{ client_files_course_instance }}/filename.ext`، `{{ client_files_assessment }}/filename.ext` و `{{ client_files_course }}/filename.ext` رندر می‌شوند که آدرس‌های URL مربوط به فایل‌ها در دایرکتوری متناظر `clientFiles*` را تولید می‌کنند. جزئیات بیشتر را می‌توان در [مستندات متن آزمون](assessment/configuration.md#adding-text-and-links-to-assessments) مطالعه کرد.
 
-## Accessing files from `server.py` question code
+## دسترسی به فایل‌ها از کد سوال `server.py`
 
-From within `server.py` question code, you can access files from these special directories using the following special values:
+از درون کد سوال در `server.py`، می‌توانید با استفاده از مقادیر ویژه زیر به فایل‌های این دایرکتوری‌های خاص دسترسی داشته باشید:
 
-| Directory                 | Variable                                        |
+| دایرکتوری | متغیر |
 | ------------------------- | ----------------------------------------------- |
-| question directory itself | `data["options"]["question_path"]`              |
-| `clientFilesQuestion`     | `data["options"]["client_files_question_path"]` |
-| `clientFilesCourse`       | `data["options"]["client_files_course_path"]`   |
-| `serverFilesCourse`       | `data["options"]["server_files_course_path"]`   |
+| خود دایرکتوری سوال | `data["options"]["question_path"]` |
+| `clientFilesQuestion` | `data["options"]["client_files_question_path"]` |
+| `clientFilesCourse` | `data["options"]["client_files_course_path"]` |
+| `serverFilesCourse` | `data["options"]["server_files_course_path"]` |
 
-The options for `clientFilesCourse` and `serverFilesCourse` are also available if you are developing custom elements.
+گزینه‌های مربوط به `clientFilesCourse` و `serverFilesCourse` در صورتی که در حال توسعه المان‌های سفارشی باشید نیز در دسترس هستند.
 
-So, for example, if your question generation code requires a data file named `data.csv` that is stored in the `serverFilesCourse` directory, you can access it using the following code:
+بنابراین، برای مثال، اگر کد تولید سوال شما به یک فایل داده با نام `data.csv` نیاز دارد که در دایرکتوری `serverFilesCourse` ذخیره شده است، می‌توانید با استفاده از کد زیر به آن دسترسی پیدا کنید:
 
 ```python
 import os
@@ -107,30 +107,30 @@ def generate(data):
     data_file_path = os.path.join(
         data["options"]["server_files_course_path"], "data.csv"
     )
-    # Now you can read from data_file_path to access the contents of data.csv
+    # اکنون می‌توانید از data_file_path برای دسترسی به محتویات data.csv بخوانید
 ```
 
-??? note "Using relative paths"
+??? note "استفاده از مسیرهای نسبی"
 
-    Although `data["options"]["question_path"]` provides an absolute path to the question directory, the code is executed with the question directory as the current working directory, so you can also access files in the question directory using relative paths. Similarly, you can access files in `clientFilesQuestion` using relative paths, as the directory is guaranteed to be a subdirectory of the question directory. However, `clientFilesCourse` and `serverFilesCourse` are not subdirectories of the question directory and are not guaranteed to be found in any specific location relative to the question directory, so you must use the absolute paths provided in `data["options"]` to access files in those directories.
+    اگرچه `data["options"]["question_path"]` یک مسیر مطلق به دایرکتوری سوال فراهم می‌کند، اما کد با دایرکتوری سوال به عنوان دایرکتوری کاری جاری (current working directory) اجرا می‌شود، بنابراین می‌توانید با استفاده از مسیرهای نسبی نیز به فایل‌های درون دایرکتوری سوال دسترسی پیدا کنید. به طور مشابه، می‌توانید با استفاده از مسیرهای نسبی به فایل‌های درون `clientFilesQuestion` دسترسی داشته باشید، زیرا این دایرکتوری تضمین شده است که زیردایرکتوری‌ای از دایرکتوری سوال باشد. با این حال، `clientFilesCourse` و `serverFilesCourse` زیردایرکتوری‌های دایرکتوری سوال نیستند و تضمینی وجود ندارد که در مکان خاصی نسبت به دایرکتوری سوال قرار گرفته باشند، بنابراین برای دسترسی به فایل‌های موجود در آن دایرکتوری‌ها باید حتماً از مسیرهای مطلقی که در `data["options"]` ارائه شده‌اند استفاده کنید.
 
-If your `serverFilesCourse` file contains Python code, your `server.py` code can import that code as a module without the need to update the Python path. The `serverFilesCourse` directory is automatically added to the Python path when executing `server.py` code, so you can simply import the module as if it were in the same directory. For example, if you have a file named `course_utils.py` in `serverFilesCourse`, you can import it in `server.py` using:
+اگر فایل موجود در `serverFilesCourse` شما حاوی کدهای پایتون باشد، کد `server.py` شما می‌تواند آن کد را بدون نیاز به به‌روزرسانی مسیر پایتون (Python path) به عنوان یک ماژول ایمپورت کند. دایرکتوری `serverFilesCourse` هنگام اجرای کد `server.py` به طور خودکار به مسیر پایتون اضافه می‌شود، بنابراین می‌توانید به سادگی ماژول را همانند این که در همان دایرکتوری قرار دارد ایمپورت کنید. برای مثال، اگر فایلی به نام `course_utils.py` در `serverFilesCourse` دارید، می‌توانید آن را در `server.py` با دستور زیر ایمپورت کنید:
 
 ```python
 import course_utils
 ```
 
-If you are rendering HTML content in a `render()` function in `server.py` (or a custom element), you can also use the following prefixes to get the URLs for files in `clientFilesCourse` and `clientFilesQuestion`:
+اگر در حال رندر محتوای HTML در یک تابع `render()` در `server.py` (یا یک المان سفارشی) هستید، می‌توانید از پیشوندهای زیر نیز برای به دست آوردن آدرس‌های URL فایل‌ها در `clientFilesCourse` و `clientFilesQuestion` استفاده نمایید:
 
-| Directory                                                                | Prefix                                                 |
+| دایرکتوری | پیشوند |
 | ------------------------------------------------------------------------ | ------------------------------------------------------ |
-| `clientFilesQuestion`                                                    | `data["options"]["client_files_question_url"]`         |
-| `clientFilesCourse`                                                      | `data["options"]["client_files_course_url"]`           |
-| [dynamic files](./question/server.md#generating-dynamic-files-with-file) | `data["options"]["client_files_question_dynamic_url"]` |
+| `clientFilesQuestion` | `data["options"]["client_files_question_url"]` |
+| `clientFilesCourse` | `data["options"]["client_files_course_url"]` |
+| [فایل‌های پویا](./question/server.md#generating-dynamic-files-with-file) | `data["options"]["client_files_question_dynamic_url"]` |
 
-## Accessing files from external graders
+## دسترسی به فایل‌ها از نمره‌دهنده‌های خارجی
 
-Questions using external grading can also have access to content in `serverFilesCourse`. To access these files, the question configuration must explicitly include these files or directories in the external grading configuration in `info.json`. For example, to give an external grader access to a file named `data.csv` in `serverFilesCourse`, you can add the following to your `info.json` file:
+سوالاتی که از نمره‌دهی خارجی استفاده می‌کنند نیز می‌توانند به محتوای `serverFilesCourse` دسترسی داشته باشند. برای دسترسی به این فایل‌ها، پیکربندی سوال باید صراحتاً این فایل‌ها یا دایرکتوری‌ها را در پیکربندی نمره‌دهی خارجی در `info.json` بگنجاند. برای مثال، به منظور اعطای دسترسی به نمره‌دهنده خارجی به فایلی به نام `data.csv` در `serverFilesCourse`، می‌توانید قطعه زیر را به فایل `info.json` خود اضافه کنید:
 
 ```json
 {
@@ -140,11 +140,11 @@ Questions using external grading can also have access to content in `serverFiles
 }
 ```
 
-More details can be found in the [external grading documentation](externalGrading.md#configuring-and-enabling-external-grader-support).
+جزئیات بیشتر را می‌توان در [مستندات نمره‌دهی خارجی](externalGrading.md#configuring-and-enabling-external-grader-support) مشاهده کرد.
 
-## Accessing files from workspaces
+## دسترسی به فایل‌ها از محیط‌های کاری (Workspaces)
 
-Questions that use workspaces can also be configured to include files from question directories or `serverFilesCourse`. To access these files, you must add them to the `data["params"]["_workspace_files"]` field in `server.py`. For example, to give a workspace access to a file named `data.csv` in `serverFilesCourse` and a file named `config.json` in `clientFilesQuestion`, you can add the following code to your `server.py`:
+سوالاتی که از محیط‌های کاری استفاده می‌کنند نیز می‌توانند به گونه‌ای پیکربندی شوند که شامل فایل‌هایی از دایرکتوری‌های سوال یا `serverFilesCourse` باشند. برای دسترسی به این فایل‌ها، باید آن‌ها را به فیلد `data["params"]["_workspace_files"]` در `server.py` اضافه نمایید. به عنوان مثال، برای اعطای دسترسی به یک محیط کاری به فایلی به نام `data.csv` در `serverFilesCourse` و فایلی به نام `config.json` در `clientFilesQuestion`، می‌توانید کد زیر را به `server.py` خود اضافه کنید:
 
 ```python
 def generate(data):
@@ -154,4 +154,4 @@ def generate(data):
     ]
 ```
 
-For more details, see the [workspaces documentation](./workspaces/index.md#creating-files-in-the-workspace-home-directory).
+برای جزئیات بیشتر، به [مستندات محیط‌های کاری](./workspaces/index.md#creating-files-in-the-workspace-home-directory) مراجعه نمایید.

@@ -1,25 +1,25 @@
 # PrairieLearn
 
-PrairieLearn is an online problem-driven learning system for creating homeworks and tests. It allows questions to be written using arbitrary HTML, JavaScript, and Python, thus enabling very powerful questions that can randomize and autograde themselves, and can access client- and server-side libraries to handle tasks such as graphical drawing, symbolic algebra, and student code compilation and execution.
+پریری‌لرن (PrairieLearn) یک سامانه یادگیری مسئله‌محور آنلاین برای ایجاد تکالیف و آزمون‌ها است. این سامانه امکان نگارش سوالات با استفاده از HTML، JavaScript و Python دلخواه را فراهم می‌کند؛ بنابراین امکان طراحی سوالات بسیار قدرتمندی را میسر می‌سازد که می‌توانند به صورت تصادفی تولید شوند، به صورت خودکار نمره‌دهی گردند و به کتابخانه‌های سمت کلاینت و سرور برای انجام وظایفی چون رسم گرافیکی، جبر نمادین، و کامپایل و اجرای کد دانشجویان دسترسی داشته باشند.
 
-[![Image build status](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/images.yml/badge.svg)](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/images.yml)
-[![Test build status](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/test.yml/badge.svg)](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/test.yml)
+[![وضعیت بیلد ایمیج](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/images.yml/badge.svg)](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/images.yml)
+[![وضعیت بیلد تست](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/test.yml/badge.svg)](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/test.yml)
 
-Paid hosting and support: [https://www.prairielearn.com/](https://www.prairielearn.com/)
+میزبانی تجاری و پشتیبانی: [https://www.prairielearn.com/](https://www.prairielearn.com/)
 
-## Why PrairieLearn?
+## چرا پریری‌لرن؟
 
-- [x] **Homework and Exam Support** - Compose your questions into homework sets and exams. [Learn more](./assessment/overview.md)
-- [x] **Randomized, custom questions** - Questions variants can be generated and autograded using a Python script, with easily customizable partial credit rules. [Learn more](./question/overview.md/#grading-student-answers)
-- [x] **Custom HTML-based questions** - Create questions using arbitrary HTML, CSS, and JavaScript. [Learn more](question/overview.md/#html-questionhtml)
-- [x] **Rich standard library of question elements** - Include graphs, symbolic algebra, common question types, and more. [Learn more](./elements/index.md)
-- [x] **Flexible access controls** - Granular control over who can access course content, student submissions, etc. [Learn more](./assessment/accessControl.md)
-- [x] **Support for code autograding** - Run student code in a sandbox, with support for C, C++, Java, Python, etc. [Learn more](./externalGrading.md)
+- [x] **پشتیبانی از تکالیف و آزمون‌ها** - سوالات خود را در قالب مجموعه‌های تکلیفی و آزمون‌ها سازمان‌دهی کنید. [اطلاعات بیشتر](./assessment/overview.md)
+- [x] **سوالات تصادفی و سفارشی** - انواع مختلف (واریانت‌های) سوال می‌توانند با استفاده از اسکریپت پایتون ایجاد و به صورت خودکار نمره‌دهی شوند، به همراه قواعد نمره بخشی (Partial credit) با قابلیت شخصی‌سازی آسان. [اطلاعات بیشتر](./question/overview.md/#grading-student-answers)
+- [x] **سوالات سفارشی بر پایه HTML** - طراحی سوالات با استفاده از کدهای دلخواه HTML، CSS و JavaScript. [اطلاعات بیشتر](question/overview.md/#html-questionhtml)
+- [x] **کتابخانه استاندارد غنی از المان‌های سوال** - شامل نمودارها، جبر نمادین، انواع سوالات رایج و موارد دیگر. [اطلاعات بیشتر](./elements/index.md)
+- [x] **کنترل‌های دسترسی انعطاف‌پذیر** - کنترل دقیق روی این‌که چه کسی به محتوای دوره، پاسخ‌های ارسالی دانشجویان و غیره دسترسی داشته باشد. [اطلاعات بیشتر](./assessment/accessControl.md)
+- [x] **پشتیبانی از نمره‌دهی خودکار کد** - اجرای کدهای دانشجویان در یک محیط ایزوله (Sandbox)، با پشتیبانی از C، C++، Java، Python و غیره. [اطلاعات بیشتر](./externalGrading.md)
 
-You can view a comprehensive list of features on the [PrairieLearn homepage](https://www.prairielearn.com/).
+می‌توانید فهرست کاملی از ویژگی‌ها را در [صفحه اصلی پریری‌لرن](https://www.prairielearn.com/) مشاهده کنید.
 
-## Getting started
+## شروع به کار
 
-- [Request a course space](requestCourse/index.md)
-- [Concepts](./concepts/index.md)
-- [Getting started](getting-started/index.md)
+- [درخواست فضای درس](requestCourse/index.md)
+- [مفاهیم](./concepts/index.md)
+- [شروع به کار](getting-started/index.md)

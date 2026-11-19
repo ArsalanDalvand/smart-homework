@@ -1,22 +1,22 @@
-# Legacy assessment access control
+# کنترل دسترسی قدیمی آزمون
 
-!!! warning "Legacy access control"
+!!! warning "کنترل دسترسی قدیمی (Legacy access control)"
 
-    This page documents the legacy `allowAccess` format. New assessments should use [`accessControl`](accessControl.md). Existing assessments can continue to use `allowAccess` until they are migrated. When you are ready to migrate, see [Migrating from legacy access control](accessControl.md#migrating-from-legacy-access-control).
+    این صفحه قالب قدیمی `allowAccess` را مستند می‌کند. آزمون‌های جدید باید از [`accessControl`](accessControl.md) استفاده کنند. آزمون‌های موجود می‌توانند تا زمان مهاجرت، همچنان به استفاده از `allowAccess` ادامه دهند. هنگامی که آماده مهاجرت هستید، به بخش [مهاجرت از کنترل دسترسی قدیمی](accessControl.md#migrating-from-legacy-access-control) مراجعه کنید.
 
-By default, assessments are only accessible to [course staff](../course/index.md#course-staff). To control access to assessments, the `allowAccess` option is used in the `infoAssessment.json` files.
+به‌طور پیش‌فرض، ارزیابی‌ها فقط برای [کادر آموزشی درس](../course/index.md#course-staff) قابل دسترسی هستند. برای کنترل دسترسی به ارزیابی‌ها، از گزینه `allowAccess` در فایل‌های `infoAssessment.json` استفاده می‌شود.
 
-## Access control checks
+## بررسی‌های کنترل دسترسی {: #access-control-checks }
 
-In PrairieLearn there are two types of checks that determine whether a student has access to an assessment:
+در پریری‌لرن (PrairieLearn) دو نوع بررسی وجود دارد که تعیین می‌کنند آیا دانشجو به یک ارزیابی دسترسی دارد یا خیر:
 
-1. First, the **course instance** must be published to the student, and the student must be enrolled in the course instance. The `publishing` configuration in [infoCourseInstance.json](../courseInstance/index.md#publishing-controls) alongside [publishing extensions](../courseInstance/index.md#publishing-extensions) can be used to publish the course instance. Students are able to view the course instance as long as they are enrolled and the course instance is published. This does not by itself grant them access to any assessments in the course instance.
+1. اول، **دوره تحصیلی (Course instance)** باید برای دانشجو منتشر شده باشد و دانشجو باید در آن دوره ثبت‌نام کرده باشد. پیکربندی `publishing` در [infoCourseInstance.json](../courseInstance/index.md#publishing-controls) در کنار [افزونه‌های انتشار](../courseInstance/index.md#publishing-extensions) می‌تواند برای انتشار دوره تحصیلی استفاده شود. دانشجویان تا زمانی که ثبت‌نام کرده باشند و دوره تحصیلی منتشر شده باشد، قادر به مشاهده دوره تحصیلی هستند. این موضوع به‌خودی‌خود به آن‌ها دسترسی به هیچ‌یک از ارزیابی‌های درون دوره تحصیلی را اعطا نمی‌کند.
 
-2. Second, a student must also have access to the specific **assessment**. This access is granted with the `allowAccess` rules in [infoAssessment.json](../assessment/overview.md). Even if a student has been granted access to an assessment, however, they will only be able to actually access it if they also have access to the course instance (see previous item).
+2. دوم، دانشجو باید به آن **ارزیابی (آزمون)** خاص نیز دسترسی داشته باشد. این دسترسی با قوانین `allowAccess` در [infoAssessment.json](../assessment/overview.md) اعطا می‌شود. با این حال، حتی اگر به دانشجو دسترسی به یک ارزیابی داده شده باشد، آن‌ها تنها در صورتی قادر به دسترسی واقعی به آن خواهند بود که به دوره تحصیلی نیز دسترسی داشته باشند (مورد قبلی را ببینید).
 
-## `allowAccess` format
+## ساختار `allowAccess` {: #allowaccess-format }
 
-The general format of `allowAccess` is:
+ساختار کلی `allowAccess` به صورت زیر است:
 
 <!-- prettier-ignore -->
 ```json
@@ -35,66 +35,66 @@ The general format of `allowAccess` is:
 }
 ```
 
-Each `accessRule` is an object that specifies a set of circumstances under which the assessment is accessible to students. If any of the access rules gives access, then the assessment is accessible. Each access rule can have one or more restrictions as follows:
+هر `accessRule` یک شیء است که مجموعه‌ای از شرایط را مشخص می‌کند که تحت آن‌ها ارزیابی برای دانشجویان قابل دسترسی است. اگر هر یک از قوانین دسترسی اجازه دسترسی بدهد، آن‌گاه ارزیابی قابل دسترسی خواهد بود. هر قانون دسترسی می‌تواند یک یا چند محدودیت به شرح زیر داشته باشد:
 
-| Access restriction        | Meaning                                                                                                                                    | Example                                                    |
+| محدودیت دسترسی | معنی | مثال |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
-| `uids`                    | Require one of the UIDs in the array to access.                                                                                            | `"uids": ["student1@example.com", "student2@example.com"]` |
-| [`startDate`](#dates)     | Only allow access after this date.                                                                                                         | `"startDate": "2015-01-19T00:00:01"`                       |
-| [`endDate`](#dates)       | Only allow access before this date.                                                                                                        | `"endDate": "2015-05-13T23:59:59"`                         |
-| [`mode`](#server-modes)   | Only allow access from this server mode. By default, the mode is Public, unless `examUuid` is provided, in which case the default is Exam. | `"mode": "Exam"`                                           |
-| [`password`](#passwords)  | Password required to start an assessment. Typically used for proctored exams.                                                              | `"password": "mysecret"`                                   |
-| [`examUuid`](#exam-uuids) | PrairieTest UUID for the exam that students must register for.                                                                             | `"examUuid": "5719ebfe-ad20-42b1-b0dc-c47f0f714871"`       |
+| `uids` | برای دسترسی، داشتن یکی از شناسه‌های کاربری (UIDs) موجود در آرایه الزامی است. | `"uids": ["student1@example.com", "student2@example.com"]` |
+| [`startDate`](#dates) | فقط اجازه دسترسی پس از این تاریخ داده می‌شود. | `"startDate": "2015-01-19T00:00:01"` |
+| [`endDate`](#dates) | فقط اجازه دسترسی پیش از این تاریخ داده می‌شود. | `"endDate": "2015-05-13T23:59:59"` |
+| [`mode`](#server-modes) | فقط اجازه دسترسی از این حالت سرور داده می‌شود. به‌طور پیش‌فرض، حالت سرور Public است، مگر اینکه `examUuid` مشخص شده باشد که در آن صورت پیش‌فرض Exam خواهد بود. | `"mode": "Exam"` |
+| [`password`](#passwords) | رمز عبور لازم برای شروع ارزیابی. معمولاً برای آزمون‌های تحت نظارت (Proctored) استفاده می‌شود. | `"password": "mysecret"` |
+| [`examUuid`](#exam-uuids) | شناسه PrairieTest UUID برای آزمونی که دانشجویان باید در آن ثبت‌نام کنند. | `"examUuid": "5719ebfe-ad20-42b1-b0dc-c47f0f714871"` |
 
-Each access rule will only grant access if all the restrictions are satisfied.
+هر قانون دسترسی تنها در صورتی دسترسی را اعطا خواهد کرد که تمام محدودیت‌ها برآورده شوند.
 
-In summary, `allowAccess` uses the algorithm:
+به‌طور خلاصه، `allowAccess` از این الگوریتم استفاده می‌کند:
 
 ```text
 each accessRule is True if (restriction1 AND restriction2 AND restriction3)
 allowAccess is True if (accessRule1 OR accessRule2 OR accessRule3)
 ```
 
-If all the restrictions are satisfied, then there are a variety of effects that can be applied to the assessment, listed below:
+اگر تمام محدودیت‌ها برآورده شوند، اثرات (Effects) گوناگونی وجود دارند که می‌توانند بر روی ارزیابی اعمال شوند و در زیر فهرست شده‌اند:
 
-| Access effect                                                       | Meaning                                                                                                    | Example                              |
+| اثر دسترسی | معنی | مثال |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| [`active`](#active-assessments)                                     | Whether the student can create a new assessment instance and submit answers to questions (default `true`). | `"active": false`                    |
-| [`credit`](#credit)                                                 | Maximum credit as percentage of full credit (can be more than 100).                                        | `"credit": 100`                      |
-| [`showClosedAssessment`](#showinghiding-closed-assessments)         | Whether to allow viewing of assessment contents when closed (default `true`).                              | `"showClosedAssessment": false`      |
-| [`showClosedAssessmentScore`](#showinghiding-all-score-information) | Whether to allow viewing of the score of a closed assessment (default `true`).                             | `"showClosedAssessmentScore": false` |
-| [`timeLimitMin`](#time-limits)                                      | Time limit in minutes to complete an assessment (only for assessments with type: Exam).                    | `"timeLimitMin": 60`                 |
+| [`active`](#active-assessments) | آیا دانشجو می‌تواند یک نمونه ارزیابی جدید ایجاد کرده و پاسخ‌ها را برای سوالات ارسال کند یا خیر (پیش‌فرض `true`). | `"active": false` |
+| [`credit`](#credit) | حداکثر نمره به صورت درصدی از نمره کامل (می‌تواند بیشتر از ۱۰۰ باشد). | `"credit": 100` |
+| [`showClosedAssessment`](#showinghiding-closed-assessments) | آیا امکان مشاهده محتوای ارزیابی پس از بسته شدن مجاز است یا خیر (پیش‌فرض `true`). | `"showClosedAssessment": false` |
+| [`showClosedAssessmentScore`](#showinghiding-all-score-information) | آیا امکان مشاهده نمره یک ارزیابی بسته شده مجاز است یا خیر (پیش‌فرض `true`). | `"showClosedAssessmentScore": false` |
+| [`timeLimitMin`](#time-limits) | محدودیت زمانی بر حسب دقیقه برای تکمیل ارزیابی (تنها برای ارزیابی‌هایی با نوع Exam). | `"timeLimitMin": 60` |
 
-If multiple access rules are satisfied then the highest `credit` value is taken from them. Access rules without an explicit `credit` value have credit of 0, meaning they allow viewing of the assessment but not doing questions for credit.
+اگر چندین قانون دسترسی برآورده شوند، بالاترین مقدار `credit` از میان آن‌ها در نظر گرفته می‌شود. قوانین دسترسی فاقد مقدار صریح `credit` دارای نمره (اعتبار) برابر با ۰ هستند؛ بدین معنا که اجازه مشاهده ارزیابی را می‌دهند اما پاسخ دادن به سوالات نمره‌ای به همراه نخواهد داشت.
 
-Access rules can also contain the deprecated `role` property. This is now ignored and has no effect. Any access rules containing a `role` of `TA` or `Instructor` should be deleted. Course staff are now managed on the ["Staff" tab](../course/index.md#course-staff).
+قوانین دسترسی همچنین می‌توانند شامل ویژگی منسوخ‌شده `role` باشند. این ویژگی اکنون نادیده گرفته می‌شود و هیچ اثری ندارد. هرگونه قانون دسترسی شامل `role` با مقدار `TA` یا `Instructor` باید حذف شود. کادر آموزشی درس اکنون در [برگه "Staff"](../course/index.md#course-staff) مدیریت می‌شوند.
 
-## Dates
+## تاریخ‌ها {: #dates }
 
-All dates are specified in the format "YYYY-MM-DDTHH:MM:SS" using 24-hour times (this is the [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) profile of [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)). All times are in the [timezone of the course instance](../courseInstance/index.md#timezone).
+تمام تاریخ‌ها در قالب "YYYY-MM-DDTHH:MM:SS" و با استفاده از زمان ۲۴ ساعته مشخص می‌شوند (این مشخصه پروفایل [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) از استاندارد [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) است). تمام زمان‌ها بر اساس [منطقه زمانی دوره تحصیلی](../courseInstance/index.md#timezone) هستند.
 
-If you want to include full days, then it is generally best to start at 1 second after midnight, and end at 1 second before midnight. This avoids any confusion around the meaning of times exactly at midnight. For example, start at `2015-04-05T00:00:01` and end at `2015-04-07T23:59:59` for the 3-day window from April 5th to April 7th inclusive.
+اگر می‌خواهید روزها را به‌طور کامل در بر بگیرید، معمولاً بهتر است زمان شروع را ۱ ثانیه پس از نیمه‌شب و پایان را ۱ ثانیه قبل از نیمه‌شب تعیین کنید. این کار از هرگونه ابهام درباره مفهوم ساعت‌های دقیقاً در نیمه‌شب جلوگیری می‌کند. به عنوان مثال، برای یک بازه ۳ روزه شامل ۵ آوریل تا ۷ آوریل به‌صورت کامل، زمان را از `2015-04-05T00:00:01` شروع کرده و در `2015-04-07T23:59:59` پایان دهید.
 
-## Server modes
+## حالت‌های سرور {: #server-modes }
 
-Each user accesses the PrairieLearn server in a _mode_, as listed below. This can be used to restrict access to assessments based on the current mode. The mode of an access rule has the following effect:
+هر کاربر به سرور PrairieLearn در یک *حالت (Mode)* دسترسی پیدا می‌کند، همان‌طور که در زیر فهرست شده است. از این ویژگی می‌توان برای محدود کردن دسترسی به ارزیابی‌ها بر اساس حالت فعلی استفاده کرد. حالت یک قانون دسترسی اثر زیر را دارد:
 
-| Mode     | When is access allowed?                                                                                                                                                                                       |
+| حالت (Mode) | چه زمانی دسترسی مجاز است؟ |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Public` | Access is normally allowed, but is blocked when the student is checked in on PrairieTest, either in a testing center or in a course-managed session. This is the default mode.                                |
-| `Exam`   | Access is normally blocked, and is only allowed when the student is checked in on PrairieTest, either in a testing center or in a course-managed session. This mode is used when the `examUuid` is specified. |
+| `Public` | دسترسی معمولاً مجاز است، اما زمانی که دانشجو در PrairieTest پذیرش (Check-in) شده باشد، چه در مرکز آزمون و چه در یک جلسه تحت مدیریت درس، مسدود می‌شود. این حالت پیش‌فرض است. |
+| `Exam` | دسترسی معمولاً مسدود است و تنها زمانی مجاز است که دانشجو در PrairieTest پذیرش (Check-in) شده باشد، چه در مرکز آزمون و چه در یک جلسه تحت مدیریت درس. این حالت زمانی استفاده می‌شود که `examUuid` مشخص شده باشد. |
 
-In general usage it is best to keep the default Public mode for any homework (assessments that students should do at home or without special access control), and to use exam mode, by setting the `"examUuid"`, for exams with access controlled by PrairieTest. This will make it so that exams are only accessible in a testing center or a controlled course session, and homework is _not_ accessible during exams.
+در کاربردهای عمومی، بهتر است حالت پیش‌فرض Public برای هر تکلیف (ارزیابی‌هایی که دانشجویان باید در خانه یا بدون کنترل دسترسی ویژه انجام دهند) حفظ شود، و برای آزمون‌هایی که دسترسی آن‌ها توسط PrairieTest کنترل می‌شود، با تنظیم `"examUuid"` از حالت آزمون (Exam) استفاده شود. این امر باعث می‌شود که آزمون‌ها فقط در یک مرکز آزمون یا یک جلسه کنترل‌شده درس قابل دسترسی باشند و تکالیف در طول آزمون‌ها *غیرقابل دسترسی* باشند.
 
-## Credit
+## نمره (Credit) {: #credit }
 
-When the available credit is less than 100%, the percentage score is calculated as `min(credit, points / maxPoints * 100)`. However, the student's percentage score will never decrease, so if they've already earned a higher percentage score then they will keep it. For example, if `credit = 80` and `maxPoints = 10`, then when a student has `points = 8` then they will have a percentage score of 80%, and when they have `points = 9` or `points = 10` they will still have a percentage score of 80%.
+هنگامی که نمره موجود (Available credit) کمتر از ۱۰۰٪ باشد، نمره درصدی به‌صورت `min(credit, points / maxPoints * 100)` محاسبه می‌شود. با این حال، نمره درصدی دانشجو هرگز کاهش نمی‌یابد؛ بنابراین اگر آن‌ها قبلاً نمره درصدی بالاتری کسب کرده باشند، آن را حفظ خواهند کرد. به عنوان مثال، اگر `credit = 80` و `maxPoints = 10` باشد، هنگامی که دانشجو `points = 8` دارد، نمره درصدی او ۸۰٪ خواهد بود، و زمانی که `points = 9` یا `points = 10` داشته باشد نیز همچنان نمره درصدی ۸۰٪ خواهد داشت.
 
-When the available credit is more than 100%, then the percentage score is calculated as `points / maxPoints * 100` when `points < maxPoints`. However, if `points = maxPoints` then the percentage score is taken to be the credit value. For example, if `credit = 120` then the student will see their percentage score rise towards 100% as their `points` increase towards `maxPoints`, and then when their `points` reaches `maxPoints` their percentage score will suddenly jump to 120%. If [`maxBonusPoints`](../assessment/configuration.md#assessment-points) is used, and the student is able to obtain points above `maxPoints`, then the student's percentage score will be based on this credit as a percentage, i.e., their score will be computed as `credit * points / maxPoints`. For example, if `maxPoints = 10`, `maxBonusPoints = 2`, `credit = 120` and the student obtained 11 points, their score will be `120 * 11 / 10 = 132%`.
+هنگامی که نمره موجود بیشتر از ۱۰۰٪ باشد، زمانی که `points < maxPoints` است، نمره درصدی به‌صورت `points / maxPoints * 100` محاسبه می‌شود. با این حال، اگر `points = maxPoints` باشد، نمره درصدی برابر با مقدار credit در نظر گرفته می‌شود. به عنوان مثال، اگر `credit = 120` باشد، دانشجو با افزایش `points` به سمت `maxPoints`، افزایش نمره درصدی خود را تا ۱۰۰٪ مشاهده خواهد کرد و سپس با رسیدن `points` به `maxPoints`، نمره درصدی او ناگهان به ۱۲۰٪ جهش می‌کند. اگر از [`maxBonusPoints`](../assessment/configuration.md#assessment-points) استفاده شود و دانشجو بتواند امتیازی بالاتر از `maxPoints` کسب کند، نمره درصدی دانشجو بر اساس این credit به صورت درصدی محاسبه خواهد شد؛ یعنی نمره آن‌ها به‌صورت `credit * points / maxPoints` محاسبه می‌شود. برای مثال، اگر `maxPoints = 10`، `maxBonusPoints = 2` و `credit = 120` باشد و دانشجو ۱۱ امتیاز کسب کرده باشد، نمره او برابر با `120 * 11 / 10 = 132%` خواهد بود.
 
-## Time limits
+## محدودیت‌های زمانی {: #time-limits }
 
-For students taking remote exams it can be helpful to have an enforced time limit. This can be done with an access rule like:
+برای دانشجویانی که در آزمون‌های از راه دور شرکت می‌کنند، اعمال یک محدودیت زمانی اجباری می‌تواند مفید باشد. این کار را می‌توان با یک قانون دسترسی مانند زیر انجام داد:
 
 ```json
 {
@@ -109,32 +109,32 @@ For students taking remote exams it can be helpful to have an enforced time limi
 }
 ```
 
-The above example will give students 90 minutes for this exam, and they must start (and complete) within the date limits. If a student starts the exam close enough to `endDate` such that the remaining time to `endDate` is less than `timeLimitMin`, then the exam's countdown timer will be initialized with the remaining time to `endDate` (minus a 1-minute buffer), not `timeLimitMin`. See the following diagram for an illustration of this.
+مثال بالا ۹۰ دقیقه زمان برای این آزمون به دانشجویان می‌دهد، و آن‌ها باید در بازه زمانی تاریخی مشخص‌شده آزمون را شروع (و تمام) کنند. اگر دانشجویی آزمون را آن‌قدر نزدیک به `endDate` شروع کند که زمان باقی‌مانده تا `endDate` کمتر از `timeLimitMin` باشد، زمان‌سنج شمارش معکوس آزمون با زمان باقی‌مانده تا `endDate` (منهای ۱ دقیقه بافر زمانی) مقداردهی اولیه خواهد شد، نه با `timeLimitMin`. برای مشاهده تصویری این موضوع، به نمودار زیر توجه کنید.
 
-![Time limit illustrations](./exam_timer.svg)
+![تصویر محدودیت زمانی](./exam_timer.svg)
 
-!!! note
+!!! note "یادداشت"
 
-    Time limits should not be set for exams in a testing center or course session managed by PrairieTest. Instead, such exams should set `"examUuid"` to the value associated to the PrairieTest exam, in which case `timeLimitMin` will have no effect and the time limits will be enforced by PrairieTest.
+    محدودیت زمانی نباید برای آزمون‌های برگزار شده در یک مرکز آزمون یا جلسه درسی مدیریت‌شده توسط PrairieTest تنظیم شود. در عوض، چنین آزمون‌هایی باید `"examUuid"` را با مقدار مرتبط با آزمون PrairieTest تنظیم کنند؛ در این حالت `timeLimitMin` هیچ اثری نخواهد داشت و محدودیت‌های زمانی توسط PrairieTest اعمال می‌شوند.
 
-### Time limit adjustments for open assessments
+### تنظیم محدودیت زمانی برای ارزیابی‌های باز {: #time-limit-adjustments-for-open-assessments }
 
-Changes to the time limits in the `infoAssessment.json` file only take effect before an assessment is started. Once a student opens an assessment and creates an instance, the time limit for that assessment will be set based on the time limit rules at the time the assessment started. In some scenarios, instructors or proctors may need to change the time limit allotted to individual students or for all students with an open assessment instance. This change could be due to errors in the original configuration, unexpected events (e.g., power outages or scheduling problems), or concessions.
+تغییرات اعمال‌شده بر محدودیت‌های زمانی در فایل `infoAssessment.json` تنها پیش از شروع ارزیابی اثرگذار هستند. هنگامی که دانشجو یک ارزیابی را باز کرده و نمونه‌ای (Instance) ایجاد می‌کند، محدودیت زمانی برای آن ارزیابی بر اساس قوانین محدودیت زمانی در زمان شروع ارزیابی تعیین می‌شود. در برخی سناریوها، مدرسان یا مراقبان آزمون ممکن است نیاز داشته باشند محدودیت زمانی اختصاص داده شده به تک‌تک دانشجویان یا تمام دانشجویان دارای نمونه ارزیابی باز را تغییر دهند. این تغییر می‌تواند به دلیل اشتباهات در پیکربندی اولیه، رویدادهای غیرمنتظره (مانند قطعی برق یا مشکلات زمان‌بندی) یا تسهیلات ویژه (Concessions) باشد.
 
-On the Staff View for the assessment, select the Students tab. This tab will show a list of all students that have started the assessment. The "Remaining" column will include one of the following values:
+در نمای کادر آموزشی (Staff View) برای ارزیابی، برگه Students را انتخاب کنید. این برگه فهرستی از تمام دانشجویانی که ارزیابی را شروع کرده‌اند نمایش می‌دهد. ستون "Remaining" یکی از مقادیر زیر را شامل می‌شود:
 
-- The value "Closed" indicates that the student has already finished the assessment, that their time ran out, or ([for exam assessments with `autoClose` set as `true`](../assessment/configuration.md#auto-closing-exam-assessments)) that the student was inactive for over six hours. Students do not have the ability to submit answers for these assessments.
-- The value "Open (no time limit)" indicates that the assessment is open and has no time limit (other than the `autoClose` setting listed above). Students are able to submit answers for these assessments.
-- The value "Expired" indicates that the student's time limit has run out, but the assessment was not yet closed. This may be due to the student having closed the assessment without selecting the Finished button, or because the time limit was recently changed and the student's browser has not yet updated its time limit. Students will get a message that their timer has run out as soon as they try to open the assessment, and will be unable to submit further answers.
-- A value indicating a number of minutes indicates the remaining time until the exam is automatically closed. Students are able to submit answers until this time expires. Note that this time is computed when the page is loaded, so to get an updated time, the page must be refreshed.
+- مقدار "Closed" نشان می‌دهد که دانشجو ارزیابی را به پایان رسانده است، زمان او تمام شده است، یا ([برای ارزیابی‌های آزمون با `autoClose` تنظیم‌شده روی `true`](../assessment/configuration.md#auto-closing-exam-assessments)) دانشجو بیش از شش ساعت غیرفعال بوده است. دانشجویان امکان ارسال پاسخ برای این ارزیابی‌ها را ندارند.
+- مقدار "Open (no time limit)" نشان می‌دهد که ارزیابی باز است و محدودیت زمانی ندارد (به جز تنظیم `autoClose` ذکر شده در بالا). دانشجویان قادر به ارسال پاسخ برای این ارزیابی‌ها هستند.
+- مقدار "Expired" نشان می‌دهد که محدودیت زمانی دانشجو به پایان رسیده است، اما ارزیابی هنوز بسته نشده است. این موضوع ممکن است به دلیل بستن ارزیابی توسط دانشجو بدون انتخاب دکمه Finished باشد، یا به این دلیل که محدودیت زمانی اخیراً تغییر کرده و مرورگر دانشجو هنوز محدودیت زمانی خود را به‌روزرسانی نکرده است. دانشجویان به محض تلاش برای باز کردن ارزیابی، پیامی مبنی بر اتمام زمان‌سنج دریافت خواهند کرد و قادر به ارسال پاسخ‌های بیشتر نخواهند بود.
+- مقداری که نشان‌دهنده تعدادی دقیقه است، زمان باقی‌مانده تا بسته شدن خودکار آزمون را نشان می‌دهد. دانشجویان می‌توانند تا زمانی که این مهلت به پایان برسد، پاسخ ارسال کنند. توجه داشته باشید که این زمان هنگام بارگذاری صفحه محاسبه می‌شود، بنابراین برای دریافت زمان به‌روز، صفحه باید تازه‌سازی (Refresh) شود.
 
-A pencil icon is presented inside the "Remaining" column for each student, which should allow proctors to modify the time limit for a student. For instances with no time limit, this action allows the proctor to set the total time limit (based on the time the student started the assessment) or the remaining time (from the current time). For instances with a set time limit, in addition to these two options, the action also allows the instructor to add or subtract time from the current limit, or to remove the time limit. An option to set the time limit as Expired is also available, which will cause the timer to be set to the current time, and in effect block any further submissions by the student. Changing the time limit will re-open an assessment if it has been closed already.
+یک نماد مداد در داخل ستون "Remaining" برای هر دانشجو نمایش داده می‌شود که به مراقبان آزمون اجازه می‌دهد محدودیت زمانی یک دانشجو را تغییر دهند. برای نمونه‌های بدون محدودیت زمانی، این عمل به مراقب اجازه می‌دهد محدودیت زمانی کل (بر اساس زمانی که دانشجو ارزیابی را شروع کرده است) یا زمان باقی‌مانده (از زمان فعلی) را تعیین کند. برای نمونه‌های دارای محدودیت زمانی تعیین‌شده، علاوه بر این دو گزینه، این عمل به مدرس اجازه می‌دهد زمان را به محدودیت فعلی اضافه یا از آن کم کند، یا محدودیت زمانی را حذف نماید. گزینه‌ای نیز برای تنظیم محدودیت زمانی به صورت Expired موجود است که باعث می‌شود زمان‌سنج روی زمان فعلی تنظیم شود و در نتیجه هرگونه ارسال پاسخ بعدی توسط دانشجو مسدود گردد. تغییر محدودیت زمانی در صورتی که ارزیابی قبلاً بسته شده باشد، آن را دوباره باز خواهد کرد.
 
-It is also possible to change the time limit for all instances at once: with no instances selected, choose **Actions → Change time limit** above the table (to change the time limit for only some students, select their instances first). It is advisable that any changes done to all instances take into consideration students with different time limits (e.g., students with accessibility concessions). One option available for changing the time limit is the option to add/subtract a specific percentage from the current total time limit for all students. This option allows proctors to maintain the concession percentage for students with a differential time limit.
+همچنین امکان تغییر محدودیت زمانی برای تمام نمونه‌ها به‌طور هم‌زمان وجود دارد: در حالی که هیچ نمونه‌ای انتخاب نشده است، گزینه **Actions → Change time limit** را در بالای جدول انتخاب کنید (برای تغییر محدودیت زمانی تنها برای برخی از دانشجویان، ابتدا نمونه‌های آن‌ها را انتخاب کنید). توصیه می‌شود هر تغییری که برای تمام نمونه‌ها انجام می‌شود، دانشجویان با محدودیت‌های زمانی متفاوت (مثلاً دانشجویان دارای تسهیلات ویژه دسترسی‌پذیری) را در نظر بگیرد. یکی از گزینه‌های موجود برای تغییر محدودیت زمانی، امکان افزودن/کاستن درصدی مشخص از محدودیت زمانی کل فعلی برای همه دانشجویان است. این گزینه به مراقبان آزمون اجازه می‌دهد درصد تسهیلات را برای دانشجویانی که محدودیت زمانی متفاوتی دارند حفظ نمایند.
 
-## Passwords
+## رمزهای عبور {: #passwords }
 
-Remote or online exams sometimes use a “proctor password” to control access to Exams. This can be enabled with an access rule like:
+آزمون‌های از راه دور یا آنلاین گاهی از «رمز عبور مراقب» (Proctor password) برای کنترل دسترسی به آزمون‌ها استفاده می‌کنند. این ویژگی را می‌توان با یک قانون دسترسی مانند زیر فعال کرد:
 
 ```json
 {
@@ -149,11 +149,11 @@ Remote or online exams sometimes use a “proctor password” to control access 
 }
 ```
 
-Before a student can do the exam, a proctor will need to type the phrase `mysecret` into the password field on the exam start page. Alternatively, the proctor may provide this phrase to students during the session.
+پیش از آنکه دانشجو بتواند آزمون را انجام دهد، یک مراقب باید عبارت `mysecret` را در فیلد رمز عبور در صفحه شروع آزمون وارد کند. همچنین مراقب می‌تواند این عبارت را در طول جلسه در اختیار دانشجویان قرار دهد.
 
-## Exam UUIDs
+## شناسه‌های Exam UUID {: #exam-uuids }
 
-To require that students take a particular exam in a testing center or a course-managed PrairieTest session, the `examUuid` should be set to the UUID value from PrairieTest. For example:
+برای الزام دانشجویان به شرکت در یک آزمون خاص در مرکز آزمون یا یک جلسه PrairieTest مدیریت‌شده توسط درس، مقدار `examUuid` باید روی مقدار UUID دریافتی از PrairieTest تنظیم شود. برای مثال:
 
 ```json
 {
@@ -166,13 +166,13 @@ To require that students take a particular exam in a testing center or a course-
 }
 ```
 
-Note that in this case the `startDate` and `endDate` should _NOT_ be specified. These will be automatically determined by PrairieTest and should not be set in PrairieLearn.
+توجه داشته باشید که در این حالت مقادیر `startDate` و `endDate` نباید مشخص شوند. این مقادیر به‌طور خودکار توسط PrairieTest تعیین می‌شوند و نباید در PrairieLearn تنظیم گردند.
 
-## Showing/hiding closed assessments
+## نمایش/پنهان‌سازی ارزیابی‌های بسته شده {: #showinghiding-closed-assessments }
 
-When using [time limits](#time-limits), an assessment will "close" when the time limit runs out. Similarly, in [exam mode](#server-modes) for assessments with [real-time grading disabled](../assessment/configuration.md#disabling-real-time-grading), once the student hits "Finish assessment", the assessment will "close". When an assessment closes, it automatically grades all saved answers and compute the new total score. By default, at this point students can still view the entire exam, see which questions they got correct/incorrect, and look at the questions themselves.
+هنگام استفاده از [محدودیت‌های زمانی](#time-limits)، یک ارزیابی پس از اتمام محدودیت زمانی "بسته" (Close) خواهد شد. به‌طور مشابه، در [حالت آزمون (Exam mode)](#server-modes) برای ارزیابی‌هایی که [نمره‌دهی آنی در آن‌ها غیرفعال شده است](../assessment/configuration.md#disabling-real-time-grading)، زمانی که دانشجو دکمه "Finish assessment" را می‌زند، ارزیابی بسته می‌شود. هنگامی که یک ارزیابی بسته می‌شود، تمام پاسخ‌های ذخیره‌شده را به‌طور خودکار تصحیح کرده و نمره کل جدید را محاسبه می‌کند. به‌طور پیش‌فرض، در این مرحله دانشجویان همچنان می‌توانند کل آزمون را مشاهده کنند، ببینند کدام سوالات را درست/نادرست پاسخ داده‌اند و خود سوالات را ببینند.
 
-To block students from viewing closed assessment details, set `"showClosedAssessment": false` in the `allowAccess` rule, like this:
+برای مسدود کردن امکان مشاهده جزئیات ارزیابی بسته شده توسط دانشجویان، مقدار `"showClosedAssessment": false` را در قانون `allowAccess` مانند زیر تنظیم کنید:
 
 ```json
 {
@@ -192,13 +192,13 @@ To block students from viewing closed assessment details, set `"showClosedAssess
 }
 ```
 
-Note that the `showClosedAssessment` statement is listed twice above, once while the assessment is in progress (`startDate` to `endDate`) and once in a second rule that will take effect after the `endDate`. The additional `"active": false` restriction prevents students from starting the exam after the `endDate`.
+توجه داشته باشید که عبارت `showClosedAssessment` در بالا دو بار درج شده است؛ یک بار در زمان جریان داشتن ارزیابی (`startDate` تا `endDate`) و یک بار در قانون دوم که پس از `endDate` اعمال خواهد شد. محدودیت اضافی `"active": false` از شروع آزمون توسط دانشجویان پس از `endDate` جلوگیری می‌کند.
 
-## Showing/hiding all score information
+## نمایش/پنهان‌سازی تمام اطلاعات نمره {: #showinghiding-all-score-information }
 
-When setting `showClosedAssessment` to `false` students will still by default still be able to see their assessment score immediately after submitting the exam.
+هنگام تنظیم `showClosedAssessment` روی `false`، دانشجویان همچنان به‌طور پیش‌فرض می‌توانند بلافاصله پس از ارسال آزمون، نمره ارزیابی خود را مشاهده کنند.
 
-To block students from viewing closed assessment scores, set `"showClosedAssessmentScore": false` in the `allowAccess` rule, like this:
+برای مسدود کردن امکان مشاهده نمرات ارزیابی بسته شده توسط دانشجویان، مقدار `"showClosedAssessmentScore": false` را در قانون `allowAccess` مانند زیر تنظیم کنید:
 
 ```json
 {
@@ -220,25 +220,25 @@ To block students from viewing closed assessment scores, set `"showClosedAssessm
 }
 ```
 
-Note that the `showClosedAssessment` and `showClosedAssessmentScore` statements are listed twice above, once while the assessment is in progress (`startDate` to `endDate`) and once in a second rule that will take effect after the `endDate`. The additional `"active": false` restriction prevents students from starting the exam after the `endDate`.
+توجه داشته باشید که عبارات `showClosedAssessment` و `showClosedAssessmentScore` در بالا دو بار درج شده‌اند؛ یک بار در زمان جریان داشتن ارزیابی (`startDate` تا `endDate`) و یک بار در قانون دوم که پس از `endDate` اعمال خواهد شد. محدودیت اضافی `"active": false` از شروع آزمون توسط دانشجویان پس از `endDate` جلوگیری می‌کند.
 
-The `showClosedAssessmentScore` access rule restriction is often used in conjunction with [disabling real-time grading](../assessment/configuration.md#disabling-real-time-grading) and setting `"showClosedAssessment": false`. It may also be used in assessments with [manual grading](../manualGrading/index.md), to hide the assessment grade until all students have been graded.
+محدودیت قانون دسترسی `showClosedAssessmentScore` اغلب در ترکیب با [غیرفعال‌سازی نمره‌دهی آنی](../assessment/configuration.md#disabling-real-time-grading) و تنظیم `"showClosedAssessment": false` استفاده می‌شود. همچنین ممکن است در ارزیابی‌های دارای [نمره‌دهی دستی](../manualGrading/index.md) برای پنهان کردن نمره ارزیابی تا زمان نمره‌دهی به تمام دانشجویان به کار رود.
 
-## Active assessments
+## ارزیابی‌های فعال {: #active-assessments }
 
-The `active` access rule restriction is useful for allowing students to see what assessments they have coming up. It should also be used when [returning exams to students](../faq.md#how-do-i-give-students-access-to-view-their-exams-after-they-are-over).
+محدودیت قانون دسترسی `active` برای این مفید است که دانشجویان بتوانند ارزیابی‌های آینده خود را مشاهده کنند. این ویژگی همچنین هنگام [بازگرداندن آزمون‌ها به دانشجویان](../faq.md#how-do-i-give-students-access-to-view-their-exams-after-they-are-over) باید استفاده شود.
 
-By default, the `active` property in an access rule is `true`. This means that, if there is an access rule that applies at a particular time/context, students can start the assessment, create new assessment instances, and submit answers to questions.
+به‌طور پیش‌فرض، ویژگی `active` در یک قانون دسترسی برابر با `true` است. این بدان معناست که اگر یک قانون دسترسی در زمان/زمینه خاصی اعمال شود، دانشجویان می‌توانند ارزیابی را شروع کنند، نمونه‌های جدید ارزیابی ایجاد نمایند و پاسخ‌های خود را به سوالات ارسال کنند.
 
-If there is no applicable access rule at a particular time/context, students will not be able to view the assessment, and it won't appear on their Assessments page. They will only be able to see their grade for the assessment in the gradebook.
+اگر در زمان/زمینه خاصی هیچ قانون دسترسی قابل اعمالی وجود نداشته باشد، دانشجویان قادر به مشاهده ارزیابی نخواهند بود و در صفحه Assessments (ارزیابی‌ها) آن‌ها نمایش داده نمی‌شود. آن‌ها فقط قادر خواهند بود نمره خود را برای آن ارزیابی در دفتر نمرات (Gradebook) مشاهده نمایند.
 
-If `active` is set to `false` in an access rule, students will still be able to see the assessment on the Assessments page, but they cannot start the assessment, create a new assessment instance, or submit answers to questions. If an assessment is currently not active but will be in the future, students can see when the assessment will become active by looking at the `Available credit` column on the Assessments page.
+اگر مقدار `active` در یک قانون دسترسی روی `false` تنظیم شود، دانشجویان همچنان قادر به دیدن ارزیابی در صفحه Assessments خواهند بود، اما نمی‌توانند ارزیابی را شروع کنند، نمونه جدیدی از ارزیابی بسازند یا پاسخ‌هایی به سوالات ارسال کنند. اگر ارزیابی در حال حاضر فعال نباشد اما در آینده فعال شود، دانشجویان می‌توانند با نگاه کردن به ستون `Available credit` در صفحه Assessments، زمان فعال شدن ارزیابی را مشاهده کنند.
 
-If `active` is set to `false` in an access rule, the available `credit` cannot be set to any value other than 0 (the default value).
+اگر `active` در یک قانون دسترسی روی `false` تنظیم شده باشد، مقدار نمره موجود (`credit`) نمی‌تواند مقداری به جز ۰ (مقدار پیش‌فرض) داشته باشد.
 
-Note that when `"active": false` is used to allow students to review their work after they've finished the assessment, students can still access and modify files in any [workspaces](../workspaces/index.md) associated with questions on the assessment. However, they will not be able to submit any changed workspace files for grading.
+توجه داشته باشید هنگامی که از `"active": false` استفاده می‌شود تا به دانشجویان اجازه داده شود کار خود را پس از اتمام ارزیابی مرور کنند، دانشجویان همچنان می‌توانند به فایل‌های موجود در هر [محیط کاری (Workspace)](../workspaces/index.md) مرتبط با سوالات آن ارزیابی دسترسی داشته باشند و آن‌ها را تغییر دهند. با این حال، آن‌ها قادر نخواهند بود فایل‌های تغییریافته محیط کاری را برای نمره‌دهی ارسال کنند.
 
-An example of the `active` access rule restriction is shown below:
+نمونه‌ای از محدودیت قانون دسترسی `active` در زیر نشان داده شده است:
 
 ```json
 {
@@ -258,11 +258,11 @@ An example of the `active` access rule restriction is shown below:
 }
 ```
 
-In the example above, from January 1st to February 15th, students can see the assessment on the Assessments page but cannot begin the assessment. They will see a message saying that the assessment will be available on February 16th. The first access rule applies on February 16th, and since `active` is `true` (by default), students can start the assessment and submit answers to questions on that day.
+در مثال بالا، از ۱ ژانویه تا ۱۵ فوریه، دانشجویان می‌توانند ارزیابی را در صفحه Assessments ببینند اما نمی‌توانند آن را آغاز کنند. آن‌ها پیامی مشاهده خواهند کرد مبنی بر اینکه ارزیابی در ۱۶ فوریه در دسترس خواهد بود. اولین قانون دسترسی در ۱۶ فوریه اعمال می‌شود و از آنجا که `active` (به‌طور پیش‌فرض) `true` است، دانشجویان می‌توانند ارزیابی را در آن روز شروع کرده و پاسخ سوالات را ارسال کنند.
 
-## Example access rules
+## نمونه قوانین دسترسی {: #example-access-rules }
 
-### Exam example
+### مثال آزمون {: #exam-example }
 
 ```json
 {
@@ -282,11 +282,11 @@ In the example above, from January 1st to February 15th, students can see the as
 }
 ```
 
-The above `allowAccess` directive means that this assessment is available under two different circumstances and always for full credit. First, there are two specific students who have access to take the exam on Sept 12th. Second, any student can access this assessment from Sept 7th to Sept 10th. Note that exception rules are typically listed first, so that they take priority when access is determined. Also note that because the second rule does not overlap the first one, the two specific students listed in the first rule also have access to the exam during the range set in the second rule.
+دستور `allowAccess` بالا به این معنی است که این ارزیابی تحت دو شرایط مختلف و همواره با نمره کامل در دسترس است. اول، دو دانشجوی مشخص وجود دارند که در ۱۲ سپتامبر به شرکت در آزمون دسترسی دارند. دوم، هر دانشجویی می‌تواند از ۷ تا ۱۰ سپتامبر به این ارزیابی دسترسی داشته باشد. توجه داشته باشید که قوانین استثناء معمولاً در ابتدا ذکر می‌شوند تا هنگام تعیین دسترسی، اولویت داشته باشند. همچنین توجه داشته باشید از آنجا که قانون دوم با قانون اول هم‌پوشانی ندارد، دو دانشجوی مشخص فهرست‌شده در قانون اول در بازه زمانی تعیین‌شده در قانون دوم نیز به آزمون دسترسی دارند.
 
-### Exam with remote students example
+### مثال آزمون با دانشجویان از راه دور {: #exam-with-remote-students-example }
 
-**See [Remote Exams](remoteExams.md) for more detailed examples.**
+**برای نمونه‌های دقیق‌تر، [آزمون‌های از راه دور](remoteExams.md) را ببینید.**
 
 ```json
 {
@@ -306,11 +306,11 @@ The above `allowAccess` directive means that this assessment is available under 
 }
 ```
 
-The above `allowAccess` directive is appropriate for an exam being taken by on-campus students in a testing center (or a course-managed PrairieTest session) and by remote students. First, anyone (i.e., on-campus students) can access the assessment in a testing center (the `"examUuid"` rule) for full credit. Second, a defined set of students (remote students) can take the exam for full credit on Sept 10th. For the off-campus students we set a time limit (50 minutes). For on-campus students no time limit should be given because the time limit is enforced by PrairieTest.
+دستور `allowAccess` بالا برای آزمونی مناسب است که توسط دانشجویان حضوری در یک مرکز آزمون (یا جلسه مدیریت‌شده توسط درس در PrairieTest) و توسط دانشجویان از راه دور داده می‌شود. اول، هر فردی (یعنی دانشجویان حضوری) می‌تواند با نمره کامل در یک مرکز آزمون به ارزیابی دسترسی پیدا کند (قانون `"examUuid"`). دوم، یک دسته مشخص از دانشجویان (دانشجویان از راه دور) می‌توانند در تاریخ ۱۰ سپتامبر با نمره کامل در آزمون شرکت کنند. برای دانشجویان غیرحضوری یک محدودیت زمانی (۵۰ دقیقه) تنظیم شده است. برای دانشجویان حضوری نباید محدودیت زمانی تعیین شود، زیرا محدودیت زمانی توسط PrairieTest اعمال می‌شود.
 
-The student's access will expire if they exceed the `timeLimitMin` minute duration of the exam or go past the configured `endDate` - whichever comes first. Time limits are visible to the student during the exam; endDate configurations are not. If the student tries to load an assessment page when the access rules no longer apply, they will receive an "Access denied" message.
+دسترسی دانشجو در صورتی که مدت زمان `timeLimitMin` دقیقه‌ای آزمون به پایان برسد یا از تاریخ `endDate` پیکربندی‌شده فراتر رود - هر کدام که زودتر رخ دهد - منقضی خواهد شد. محدودیت‌های زمانی در طول آزمون برای دانشجو قابل مشاهده هستند؛ اما پیکربندی‌های endDate نمایش داده نمی‌شوند. اگر دانشجو تلاش کند صفحه‌ای از ارزیابی را زمانی بارگذاری کند که دیگر قوانین دسترسی اعمال نمی‌شوند، پیام "Access denied" (دسترسی غیرمجاز) دریافت خواهد کرد.
 
-### Homework example
+### مثال تکلیف {: #homework-example }
 
 ```json
 {
@@ -341,21 +341,21 @@ The student's access will expire if they exceed the `timeLimitMin` minute durati
 }
 ```
 
-This `allowAccess` directive is suitable for a `Homework` assessment. Students can see that the homework exists before Oct 12th, but because it is `"active": false` they won't be able to see the questions or start the homework. They can start the homework anytime from Oct 12th onwards, and the homework goes through four different stages: (1) they will earn a bonus 10% if they complete the homework with full points before Oct 15th, (2) they get full credit until the due date of Oct 18th, (3) they can complete the homework up to a week late (Oct 25th) for 80% credit, and (4) they will be able to see the homework and submit answers for feedback, but not earn more points, at any time after that. The homework visibility will also be limited by the [course instance publishing configuration](../courseInstance/index.md#publishing-controls), so the homework won't be accessible in any way outside the course instance date range.
+این دستور `allowAccess` برای ارزیابی نوع `Homework` (تکلیف) مناسب است. دانشجویان می‌توانند قبل از ۱۲ اکتبر وجود تکلیف را ببینند، اما از آنجا که `"active": false` است، قادر به مشاهده سوالات یا شروع تکلیف نخواهند بود. آن‌ها می‌توانند تکلیف را در هر زمانی از ۱۲ اکتبر به بعد شروع کنند، و تکلیف چهار مرحله مختلف را طی می‌کند: (۱) اگر تکلیف را با امتیاز کامل قبل از ۱۵ اکتبر تکمیل کنند، ۱۰٪ نمره تشویقی (بونس) کسب خواهند کرد، (۲) تا تاریخ مهلت تحویل در ۱۸ اکتبر نمره کامل را دریافت می‌کنند، (۳) می‌توانند تکلیف را تا یک هفته با تاخیر (۲۵ اکتبر) برای ۸۰٪ نمره تکمیل کنند، و (۴) در هر زمانی پس از آن قادر خواهند بود تکلیف را ببینند و پاسخ‌ها را برای دریافت بازخورد ارسال کنند، اما امتیاز بیشتری کسب نخواهند کرد. نمایان بودن تکلیف همچنین توسط [پیکربندی انتشار دوره تحصیلی](../courseInstance/index.md#publishing-controls) محدود می‌شود؛ بنابراین تکلیف به هیچ وجه خارج از محدوده تاریخی دوره تحصیلی قابل دسترسی نخواهد بود.
 
-## Preview access control
+## پیش‌نمایش کنترل دسترسی {: #preview-access-control }
 
-Click on your user in the top right corner to see the role picker dropdown. This will allow you to preview the access control for different roles and users. The picker will have additional options depending on the page you are on.
+برای مشاهده منوی کشویی انتخاب نقش (Role picker)، روی نام کاربری خود در گوشه بالا سمت راست کلیک کنید. این بخش به شما امکان می‌دهد کنترل دسترسی را برای نقش‌ها و کاربران مختلف پیش‌نمایش کنید. این منوی انتخاب، بسته به صفحه‌ای که در آن هستید، گزینه‌های بیشتری خواهد داشت.
 
-![The role picker dropdown](role_picker.png){ width=100% style="max-width: 400px" }
+![منوی کشویی انتخاب نقش](role_picker.png){ width=100% style="max-width: 400px" }
 
-This feature allows you to preview a course as yourself but with different roles and restrictions:
+این قابلیت به شما امکان می‌دهد دوره را در قالب خودتان اما با نقش‌ها و محدودیت‌های متفاوتی پیش‌نمایش کنید:
 
-- "Staff view": Default view.
-- "Student view": Simulates the student view.
-- "Student view without access restrictions": Simulates the student view without taking into account any access control.
+- "Staff view" (نمای کادر آموزشی): نمای پیش‌فرض.
+- "Student view" (نمای دانشجو): نمای دانشجو را شبیه‌سازی می‌کند.
+- "Student view without access restrictions" (نمای دانشجو بدون محدودیت‌های دسترسی): نمای دانشجو را بدون در نظر گرفتن هرگونه کنترل دسترسی شبیه‌سازی می‌کند.
 
-You can also change to a different effective user to see the course as they would. After entering a UID and clicking "Change UID", you can switch between two additional views:
+شما همچنین می‌توانید کاربر مؤثر (Effective user) را به کاربر دیگری تغییر دهید تا دوره را همان‌طور که او می‌بیند مشاهده نمایید. پس از وارد کردن یک UID و کلیک روی "Change UID"، می‌توانید بین دو نمای دیگر جابه‌جا شوید:
 
-- "Student view": Simulates the view of a specific user.
-- "Student view without access restrictions": Simulates the view of a specific user without taking into account any access control.
+- "Student view": نمای یک کاربر خاص را شبیه‌سازی می‌کند.
+- "Student view without access restrictions": نمای یک کاربر خاص را بدون در نظر گرفتن هرگونه کنترل دسترسی شبیه‌سازی می‌کند.

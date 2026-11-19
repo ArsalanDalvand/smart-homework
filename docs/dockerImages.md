@@ -1,73 +1,73 @@
-# Docker images
+# ایمیج‌های داکر (Docker images)
 
-PrairieLearn relies on Docker containers to provide isolated environments for student work and grading. These containers allow student submissions, such as coding and scripting, to be executed in an environment that has access to a limited set of data, and does not interfere with other students, course data or PrairieLearn functionality. There are two types of containers currently used in PrairieLearn: [external graders](./externalGrading.md), used for grading student submissions, and [workspaces](./workspaces/index.md), which allow students to interact with a guided user interface.
+سامانه PrairieLearn برای فراهم کردن محیط‌های ایزوله برای کار دانشجویان و نمره‌دهی، به کانتینرهای داکر (Docker containers) متکی است. این کانتینرها به پاسخ‌های ارسالی دانشجویان (مانند کدنویسی و اسکریپت‌نویسی) اجازه می‌دهند در محیطی اجرا شوند که به مجموعه محدودی از داده‌ها دسترسی دارد و با سایر دانشجویان، داده‌های درس یا عملکردهای PrairieLearn تداخلی ایجاد نمی‌کند. در حال حاضر دو نوع کانتینر در PrairieLearn استفاده می‌شود: [نمره‌دهنده‌های خارجی (External Graders)](./externalGrading.md) که برای نمره‌دهی به پاسخ‌های ارسالی دانشجویان استفاده می‌شوند، و [محیط‌های کاری (Workspaces)](./workspaces/index.md) که به دانشجویان امکان می‌دهند با یک رابط کاربری تعاملی کار کنند.
 
-Docker containers are created from [container images](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/), which are standardized packages that include all files, binaries, libraries, and configurations needed to run a container. PrairieLearn provides and maintains a set of default images that can be used without additional configuration:
+کانتینرهای داکر از روی [ایمیج‌های کانتینر (Container images)](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/) ساخته می‌شوند؛ بسته‌های استانداردی که شامل تمامی فایل‌ها، فایل‌های باینری، کتابخانه‌ها و پیکربندی‌های لازم برای اجرای یک کانتینر هستند. سامانه PrairieLearn مجموعه‌ای از ایمیج‌های پیش‌فرض را ارائه و نگهداری می‌کند که بدون نیاز به پیکربندی اضافی قابل استفاده هستند:
 
-- For external grading, graders are provided for [Python](./python-grader/index.md), [C/C++](./c-grader/index.md), [Java](./java-grader/index.md) and [R](https://github.com/PrairieLearn/PrairieLearn/blob/master/graders/r/README.md).
-- For workspaces, [multiple images are available](./workspaces/index.md#maintained-workspace-images) depending on the environment and programming language to be used.
+- برای نمره‌دهی خارجی، نمره‌دهنده‌هایی برای [پایتون (Python)](./python-grader/index.md)، [سی/سی‌پلاس‌پلاس (C/C++)](./c-grader/index.md)، [جاوا (Java)](./java-grader/index.md) و [R](https://github.com/PrairieLearn/PrairieLearn/blob/master/graders/r/README.md) ارائه شده است.
+- برای محیط‌های کاری، [چندین ایمیج متنوع در دسترس است](./workspaces/index.md#maintained-workspace-images) که بر اساس محیط کاری و زبان برنامه‌نویسی مورد استفاده انتخاب می‌شوند.
 
-Instructors are encouraged to use one of the maintained images, to ensure all security updates and new functionality can be accessed in your questions. Questions may use their own images, though, provided these images allow the question configuration to provide the appropriate functionality needed for external grading and workspaces.
+به مدرسان توصیه می‌شود از ایمیج‌های نگهداری‌شده (رسمی) استفاده کنند تا اطمینان حاصل شود که تمام به‌روزرسانی‌های امنیتی و قابلیت‌های جدید در سوالات آنها قابل دسترسی است. با این حال، سوالات می‌توانند از ایمیج‌های اختصاصی خود نیز استفاده کنند، به شرط آنکه این ایمیج‌ها به پیکربندی سوال اجازه دهند قابلیت‌های مناسب مورد نیاز برای نمره‌دهی خارجی و محیط‌های کاری را فراهم سازد.
 
-## Supported registries
+## رجیستری‌های پشتیبانی‌شده (Supported registries)
 
-Custom images must be publicly accessible without authentication and hosted on one of these registries:
+ایمیج‌های سفارشی باید به صورت عمومی و بدون نیاز به احراز هویت در دسترس باشند و در یکی از رجیستری‌های زیر میزبانی شوند:
 
-| Registry                                          | Image example                                 |
+| رجیستری (Registry) | نمونه ایمیج (Image example) |
 | ------------------------------------------------- | --------------------------------------------- |
-| Docker Hub (`docker.io`)                          | `docker.io/org/image:tag`                     |
-| GitHub Container Registry (`ghcr.io`)             | `ghcr.io/org/image:tag`                       |
-| Quay (`quay.io`)                                  | `quay.io/org/image:tag`                       |
+| Docker Hub (`docker.io`) | `docker.io/org/image:tag` |
+| GitHub Container Registry (`ghcr.io`) | `ghcr.io/org/image:tag` |
+| Quay (`quay.io`) | `quay.io/org/image:tag` |
 | GitLab Container Registry (`registry.gitlab.com`) | `registry.gitlab.com/group/project/image:tag` |
-| Amazon ECR Public (`public.ecr.aws`)              | `public.ecr.aws/alias/image:tag`              |
+| Amazon ECR Public (`public.ecr.aws`) | `public.ecr.aws/alias/image:tag` |
 
-Docker Hub also supports the shorthand `org/image:tag`, which is equivalent to `docker.io/org/image:tag`, and the hostnames `index.docker.io` and `registry-1.docker.io`. For other registries, include the hostname, as in `ghcr.io/org/image:tag`.
+داکر هاب (Docker Hub) همچنین از نگارش کوتاه `org/image:tag` که معادل `docker.io/org/image:tag` است و نام‌های میزبان `index.docker.io` و `registry-1.docker.io` پشتیبانی می‌کند. برای سایر رجیستری‌ها، نام میزبان را قید کنید؛ مانند `ghcr.io/org/image:tag`.
 
-Custom registry domains, subdomains of the listed hosts, and explicit registry ports are not supported.
+دامنه‌های رجیستری سفارشی، زیردامنه‌های میزبان‌های ذکرشده و پورت‌های صریح رجیستری پشتیبانی نمی‌شوند.
 
-## Custom variations of maintained images
+## نسخه‌های سفارشی از ایمیج‌های نگهداری‌شده
 
-Some questions may require additional customization of existing images, such as the installation of OS dependencies, Python packages, or configuration of OS-level settings. In such cases, instructors may create custom images based on the existing images. This may be done by following these steps:
+برخی از سوالات ممکن است به سفارشی‌سازی‌های اضافی بر روی ایمیج‌های موجود نیاز داشته باشند؛ مانند نصب وابستگی‌های سیستم‌عامل، بسته‌های پایتون، یا پیکربندی تنظیمات در سطح سیستم‌عامل. در چنین مواردی، مدرسان می‌توانند ایمیج‌های سفارشی بر پایه ایمیج‌های موجود ایجاد کنند. این کار را می‌توان با دنبال کردن مراحل زیر انجام داد:
 
-1. Install [Docker Desktop](https://docs.docker.com/desktop/) in your environment.
-2. Create a [Docker Hub](https://hub.docker.com/) account, if you don't yet have one.
+1. نرم‌افزار [Docker Desktop](https://docs.docker.com/desktop/) را در محیط خود نصب کنید.
+2. اگر حساب [Docker Hub](https://hub.docker.com/) ندارید، یک حساب کاربری ایجاد کنید.
 
-   This step should be done by a user that will maintain a long-term association with the course in question, such as a permanent faculty member or support staff, not a teaching assistant or sessional instructor. This will simplify any future updates to custom images, if they become necessary. If multiple users are expected to get access to push these images, you may consider the use of [access tokens](https://docs.docker.com/security/access-tokens/) or [teams](https://docs.docker.com/admin/organization/manage-a-team/).
+   این مرحله باید توسط کاربری انجام شود که ارتباط بلندمدت با درس مورد نظر دارد؛ مانند یکی از اعضای هیئت علمی دائمی یا کادر پشتیبانی، نه یک دستیار آموزشی یا مدرس موقت. این کار به‌روزرسانی‌های آینده ایمیج‌های سفارشی را در صورت نیاز ساده‌تر می‌کند. اگر قرار است چندین کاربر دسترسی ارسال (Push) این ایمیج‌ها را داشته باشند، می‌توانید استفاده از [توکن‌های دسترسی](https://docs.docker.com/security/access-tokens/) یا [تیم‌ها (Teams)](https://docs.docker.com/admin/organization/manage-a-team/) را در نظر بگیرید.
 
-3. Create a new directory to hold the information for your image. You may create it in your course repository if you wish to share this with other staff members in your course.
-4. In the directory above, create a file named [`Dockerfile`](https://docs.docker.com/reference/dockerfile/) (without an extension), and set its contents to the set of instructions to be used for the image you are creating. For example, to create a custom version of `prairielearn/workspace-vscode-python` with the `datascience` Python package, the file may look like:
+3. یک دایرکتوری جدید برای نگهداری اطلاعات ایمیج خود ایجاد کنید. اگر مایلید این اطلاعات را با سایر کادر درس به اشتراک بگذارید، می‌توانید آن را در مخزن درس خود بسازید.
+4. در دایرکتوری فوق، فایلی به نام [`Dockerfile`](https://docs.docker.com/reference/dockerfile/) (بدون پسوند) ایجاد کنید و محتوای آن را با دستورالعمل‌های مورد نیاز برای ایمیجی که می‌سازید تنظیم نمایید. به عنوان مثال، برای ایجاد یک نسخه سفارشی از `prairielearn/workspace-vscode-python` به همراه بسته پایتون `datascience`، فایل می‌تواند به این شکل باشد:
 
    ```dockerfile
    FROM prairielearn/workspace-vscode-python
    RUN uv pip install datascience
    ```
 
-5. In a terminal, change to the directory that contains the `Dockerfile` above and build the new image (replacing `yourdockerhubaccount` with your Docker Hub account name, and `yourimagename` with an image name of your choice):
+5. در یک ترمینال، به دایرکتوری حاوی `Dockerfile` فوق بروید و ایمیج جدید را بسازید (مقدار `yourdockerhubaccount` را با نام حساب داکر هاب خود و `yourimagename` را با نام ایمیج انتخابی خود جایگزین کنید):
 
    ```bash
    docker build --platform linux/amd64 -t yourdockerhubaccount/yourimagename .
    ```
 
-   Note that the production environment used by PrairieLearn requires a `linux/amd64` platform for images. As such it is necessary that images are built using this platform, as listed in the `--platform` argument in the command above. This is particularly relevant for users of ARM-based architectures such as Apple Silicon or Windows on Arm systems, since these systems default to `linux/arm64` instead.
+   توجه داشته باشید که محیط عملیاتی مورد استفاده PrairieLearn برای ایمیج‌ها به معماری پلتفرم `linux/amd64` نیاز دارد. بنابراین ضروری است که ایمیج‌ها با استفاده از این پلتفرم ساخته شوند، همان‌طور که در آرگومان `--platform` در دستور بالا مشخص شده است. این موضوع به ویژه برای کاربرانی با معماری‌های مبتنی بر ARM مانند Apple Silicon یا سیستم‌های Windows on Arm اهمیت دارد، زیرا این سیستم‌ها به صورت پیش‌فرض از `linux/arm64` استفاده می‌کنند.
 
-6. Once the build process completes, push the image to the Docker Hub registry (again replacing `yourdockerhubaccount` and `yourimagename` as needed):
+6. پس از اتمام فرایند ساخت، ایمیج را به رجیستری Docker Hub ارسال (Push) کنید (مجدداً `yourdockerhubaccount` و `yourimagename` را متناسب با نیاز خود تغییر دهید):
 
    ```bash
    docker push yourdockerhubaccount/yourimagename
    ```
 
-7. Change the settings for the question that needs the custom image to use the image name you set above.
-8. In your course's "Sync" page, under "Docker images", find the image name above and click on "Sync".
+7. تنظیمات سوالی را که به ایمیج سفارشی نیاز دارد تغییر دهید تا از نام ایمیجی که در بالا تنظیم کرده‌اید استفاده کند.
+8. در صفحه "Sync" درس خود، در بخش "Docker images"، نام ایمیج بالا را پیدا کرده و روی "Sync" کلیک کنید.
 
-Note that the process above _will not_ cause the image above to be automatically updated if there are changes or additional features to the original image. It is your responsibility to periodically update your custom image by repeating steps 5-8 above.
+توجه داشته باشید که فرایند فوق در صورت اعمال تغییرات یا قابلیت‌های جدید در ایمیج اصلی، باعث به‌روزرسانی خودکار ایمیج ساخته‌شده _نخواهد شد_. به‌روزرسانی دوره‌ای ایمیج سفارشی‌تان با تکرار مراحل ۵ تا ۸ بالا بر عهده شماست.
 
-### Testing custom images locally
+### آزمایش محلی ایمیج‌های سفارشی
 
-For simple custom images that only include one or two extra packages or libraries, following the steps above and testing the image in production may be sufficient to ensure that it works as expected. Similarly, simple changes like updating package versions can be achieved by updating the files from step 4 above, then re-running steps 5-8.
+برای ایمیج‌های سفارشی ساده که تنها شامل یک یا دو بسته یا کتابخانه اضافی هستند، دنبال کردن مراحل بالا و آزمایش ایمیج در محیط عملیاتی ممکن است برای اطمینان از عملکرد صحیح آن کافی باشد. به‌طور مشابه، تغییرات ساده مانند به‌روزرسانی نسخه‌های بسته‌ها را می‌توان با به‌روزرسانی فایل‌های مرحله ۴ بالا و سپس اجرای مجدد مراحل ۵ تا ۸ انجام داد.
 
-However, for more complex images or more elaborate changes to existing custom images, it is advisable to test the image in a [local PrairieLearn environment](./installing.md#support-for-external-graders-and-workspaces) before pushing it to the production environment. In this scenario, it is important to ensure that the updated version of the image is restricted to the local environment, and that the production environment is not updated with the new image version until testing is complete. While avoiding an image sync (step 8 above) is often enough to prevent this, this may be difficult to ensure in practice, especially if multiple users are working on the same course.
+با این حال، برای ایمیج‌های پیچیده‌تر یا اعمال تغییرات گسترده‌تر در ایمیج‌های سفارشی موجود، توصیه می‌شود قبل از ارسال ایمیج به محیط عملیاتی، آن را در یک [محیط محلی PrairieLearn](./installing.md#support-for-external-graders-and-workspaces) آزمایش کنید. در این سناریو، مهم است که اطمینان حاصل شود نسخه به‌روزرسانی‌شده ایمیج به محیط محلی محدود می‌ماند و محیط عملیاتی تا زمان اتمام آزمایش با نسخه جدید ایمیج به‌روزرسانی نمی‌شود. اگرچه عدم همگام‌سازی ایمیج (مرحله ۸ بالا) اغلب برای جلوگیری از این امر کافی است، اما تضمین آن در عمل ممکن است دشوار باشد، به ویژه اگر چندین کاربر روی یک درس کار کنند.
 
-By default, a local installation of PrairieLearn will pull the latest version of the grader/workspace image every time it is used. However, it is possible to change PrairieLearn's configuration to use the local version of an image. This can be done by creating a `config.json` file in any directory of your choice with the following content:
+به صورت پیش‌فرض، نصب محلی PrairieLearn هر بار که از یک ایمیج نمره‌دهنده/محیط کاری استفاده می‌شود، آخرین نسخه آن را دریافت (Pull) می‌کند. با این حال، می‌توان پیکربندی PrairieLearn را تغییر داد تا از نسخه محلی یک ایمیج استفاده کند. این کار را می‌توان با ایجاد یک فایل `config.json` در هر دایرکتوری دلخواه با محتوای زیر انجام داد:
 
 ```json title="config.json"
 {
@@ -76,21 +76,21 @@ By default, a local installation of PrairieLearn will pull the latest version of
 }
 ```
 
-Then, map this configuration file when [running PrairieLearn](./installing.md#support-for-external-graders-and-workspaces):
+سپس هنگام [اجرای PrairieLearn](./installing.md#support-for-external-graders-and-workspaces)، این فایل پیکربندی را نگاشت (Map) کنید:
 
 ```sh
 docker run -it --rm -p 3000:3000 \
-  -v "/path/to/config.json:/PrairieLearn/config.json" `# Replace the path with your config.json directory` \
-  `# Include all other options here...` \
+  -v "/path/to/config.json:/PrairieLearn/config.json" `# مسیر را با دایرکتوری config.json خود جایگزین کنید` \
+  `# سایر گزینه‌ها را در اینجا قرار دهید...` \
   prairielearn/prairielearn
 ```
 
-!!! note
+!!! note "نکته"
 
-    With the configuration above, the local PrairieLearn environment will use the local version of any grader or workspace image when it is needed. This means it is your responsibility to ensure the local version of any image you use is up-to-date, by calling `docker pull IMAGENAME` for any images you are using, including provided and custom images.
+    با پیکربندی فوق، محیط محلی PrairieLearn در صورت نیاز از نسخه محلی هر ایمیج نمره‌دهنده یا محیط کاری استفاده خواهد کرد. این بدان معناست که به‌روز نگه داشتن نسخه محلی هر ایمیجی که استفاده می‌کنید، از طریق اجرای دستور `docker pull IMAGENAME` برای تمام ایمیج‌های مورد استفاده (شامل ایمیج‌های ارائه‌شده و سفارشی)، بر عهده شماست.
 
-!!! note "Testing natively on macOS"
+!!! note "آزمایش به صورت بومی در macOS"
 
-    The configuration reference has a section on [running natively on macOS](./dev-guide/configJson.md#running-natively-on-macos). You will run into permissions errors if you don't do this. This does not apply to users running PrairieLearn via Docker.
+    بخش مرجع پیکربندی شامل قسمتی در مورد [اجرا به صورت بومی در macOS](./dev-guide/configJson.md#running-natively-on-macos) است. در صورت عدم رعایت آن، با خطاهای دسترسی (Permissions errors) مواجه خواهید شد. این موضوع برای کاربرانی که PrairieLearn را از طریق داکر اجرا می‌کنند اعمال نمی‌شود.
 
-Once the configuration above is set, you can modify the `Dockerfile` and related files, then run step 5 from the list above. You can then test the questions that use your custom image to ensure they work as expected. Once you are satisfied that the questions work as expected, proceed with steps 6-8 above. If you made any changes in your questions to account for the changes in the image, make sure your questions are properly synchronized with the production environment as well.
+پس از اعمال پیکربندی بالا، می‌توانید `Dockerfile` و فایل‌های مرتبط را ویرایش کرده و سپس مرحله ۵ از فهرست بالا را اجرا کنید. سپس می‌توانید سوالاتی را که از ایمیج سفارشی شما استفاده می‌کنند آزمایش نمایید تا از عملکرد صحیح آن‌ها مطمئن شوید. هنگامی که از عملکرد درست سوالات اطمینان یافتید، مراحل ۶ تا ۸ را انجام دهید. در صورتی که برای هماهنگی با تغییرات ایمیج در سوالات خود تغییری ایجاد کرده‌اید، اطمینان حاصل کنید که سوالات شما نیز به درستی با محیط عملیاتی همگام‌سازی شده‌اند.

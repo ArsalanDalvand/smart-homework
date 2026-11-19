@@ -1,39 +1,39 @@
-# Instructor guide
+# راهنمای مدرس
 
-This section of the documentation is the reference for everything an instructor does in PrairieLearn. If you're brand-new, start with [Getting started](../getting-started/index.md).
+این بخش از مستندات، مرجعی برای تمام کارهایی است که یک مدرس در پریری‌لرن (PrairieLearn) انجام می‌دهد. اگر به تازگی با این سامانه آشنا شده‌اید، از [شروع به کار](../getting-started/index.md) آغاز کنید.
 
-## Returning each semester
+## بازگشت در هر نیم‌سال تحصیلی
 
-If you've taught with PrairieLearn before, here is a quick checklist to get you back up to speed:
+اگر قبلاً با پریری‌لرن تدریس کرده‌اید، در اینجا یک چک‌لیست سریع برای آماده‌سازی مجدد آورده شده است:
 
-1. **Copy your previous course instance** by opening last term's course instance, navigating to "Instance settings", and clicking **Make a copy**.
-2. **Update dates** in the new instance, including publishing dates and assessment access rules.
-3. **Update your course staff** for the new term.
+1. **کپی کردن دوره قبلی (Course Instance)** با باز کردن دوره ترم گذشته، رفتن به بخش «Instance settings» و کلیک روی **Make a copy**.
+2. **به‌روزرسانی تاریخ‌ها** در دوره جدید، از جمله تاریخ‌های انتشار و قوانین دسترسی به ارزیابی‌ها.
+3. **به‌روزرسانی کادر آموزشی درس** برای ترم جدید.
 
-## Configure the content of your course
+## پیکربندی محتوای درس شما
 
-There are four major concepts you will need to configure in your course:
+چهار مفهوم اصلی وجود دارد که باید در درس خود پیکربندی کنید:
 
-- [Courses](../course/index.md) — course-wide settings: assessment sets, modules, topics, tags, course staff, sharing.
-- [Course instances](../courseInstance/index.md) — one term: publishing, self-enrollment, timezone, LMS, instance staff.
-- [Assessments](../assessment/overview.md) — one homework or exam: zones, points, access control, manual grading config.
-- [Questions](../question/overview.md) — the building blocks: elements, randomization, grading, resources, student interaction.
+- [درس‌ها (Courses)](../course/index.md) — تنظیمات کلی درس: مجموعه‌های ارزیابی (Assessment Sets)، پودمان‌ها (Modules)، مباحث (Topics)، برچسب‌ها (Tags)، کادر آموزشی درس، اشتراک‌گذاری.
+- [دوره‌ها (Course Instances)](../courseInstance/index.md) — مربوط به یک ترم خاص: انتشار، ثبت‌نام توسط خود دانشجو (Self-enrollment)، منطقه زمانی، سیستم مدیریت یادگیری (LMS)، کادر آموزشی دوره.
+- [ارزیابی‌ها (Assessments)](../assessment/overview.md) — یک تکلیف یا آزمون: بخش‌ها (Zones)، امتیازها، کنترل دسترسی، پیکربندی نمره‌دهی دستی.
+- [سوالات (Questions)](../question/overview.md) — بلوک‌های سازنده: المان‌ها (Elements)، تصادفی‌سازی، نمره‌دهی، منابع، تعامل دانشجو.
 
-!!! tip
+!!! tip "نکته"
 
-    For a refresher of what these aspects are, see the [PrairieLearn concepts](../concepts/index.md).
+    برای یادآوری و مرور این مفاهیم، به [مفاهیم پریری‌لرن](../concepts/index.md) مراجعه کنید.
 
-## Reference
+## مرجع
 
-- [Running locally](../installing.md): learn how to run PrairieLearn locally on your machine.
-- [Access control](../assessment/accessControl.md): learn how to control when and where students can access your course content.
-- [Element catalog](../elements/index.md): a reference for all elements available for use in questions.
-- [Code autograders](../externalGrading.md): learn how to automatically grade student code.
-  - [Python](../python-grader/index.md)
+- [اجرای محلی](../installing.md): یاد بگیرید چگونه پریری‌لرن را به صورت محلی بر روی رایانه خود اجرا کنید.
+- [کنترل دسترسی](../assessment/accessControl.md): یاد بگیرید چگونه زمان و مکان دسترسی دانشجویان به محتوای درس را کنترل کنید.
+- [کاتالوگ المان‌ها](../elements/index.md): مرجعی برای تمامی المان‌های موجود جهت استفاده در سوالات.
+- [نمره‌دهنده‌های خودکار کد](../externalGrading.md): یاد بگیرید چگونه کدهای دانشجویان را به طور خودکار نمره‌دهی کنید.
+  - [پایتون (Python)](../python-grader/index.md)
   - [C / C++](../c-grader/index.md)
-  - [Java](../java-grader/index.md)
-- [FAQ](../faq.md): find answers to common questions.
-- [Workspaces](../workspaces/index.md): learn about workspaces, which provide students with a coding environment.
-- [LMS integration](../lmsIntegrationInstructor.md): learn how to send grades to your LMS.
-- [Manual grading](../manualGrading/index.md): learn how to manually grade student responses.
-- [Editing and syncing course content](../sync.md): understand tradeoffs between in-browser editing and local editing.
+  - [جاوا (Java)](../java-grader/index.md)
+- [پرسش‌های متداول (FAQ)](../faq.md): پاسخ پرسش‌های متداول را بیابید.
+- [محیط‌های کاری (Workspaces)](../workspaces/index.md): با محیط‌های کاری که محیط کدنویسی را برای دانشجویان فراهم می‌کنند آشنا شوید.
+- [یکپارچه‌سازی با LMS](../lmsIntegrationInstructor.md): یاد بگیرید چگونه نمرات را به سیستم مدیریت یادگیری (LMS) خود ارسال کنید.
+- [نمره‌دهی دستی](../manualGrading/index.md): یاد بگیرید چگونه پاسخ‌های ارسالی دانشجویان را به صورت دستی نمره‌دهی کنید.
+- [ویرایش و همگام‌سازی محتوای درس](../sync.md): تفاوت‌ها و مزایا/معایب ویرایش در مرورگر در مقایسه با ویرایش محلی را بشناسید.

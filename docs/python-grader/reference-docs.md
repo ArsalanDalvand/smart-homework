@@ -1,6 +1,6 @@
-# Reference Documentation
+# مستندات مرجع
 
-More high-level information about the Python grader can be found in the [Python Autograder](../python-grader/index.md) documentation.
+اطلاعات سطح بالاتر درباره نمره‌دهنده پایتون را می‌توانید در مستندات [نمره‌دهنده خودکار Python](../python-grader/index.md) بیابید.
 
 <!-- prettier-ignore -->
 ::: code_feedback

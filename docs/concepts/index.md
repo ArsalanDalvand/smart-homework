@@ -1,35 +1,35 @@
-# Concepts
+# مفاهیم
 
-PrairieLearn is extremely flexible and powerful, but this flexibility can appear opaque at first. This document provides an overview of the key concepts in PrairieLearn, and how they fit together.
+پریری‌لرن (PrairieLearn) فوق‌العاده انعطاف‌پذیر و قدرتمند است، اما این انعطاف‌پذیری ممکن است در ابتدا مبهم به نظر برسد. این سند، مروری کلی بر مفاهیم کلیدی در پریری‌لرن و نحوه ارتباط و هماهنگی آن‌ها با یکدیگر ارائه می‌دهد.
 
-## High-level overview
+## نمای کلی سطح بالا
 
-A [**course**](../course/index.md) in PrairieLearn is composed of **course instances** and **questions**. Each [course instance](../courseInstance/index.md) is an offering of a course in a particular semester/term. For example, a course "CS 225" might have instances "Spring 2022" and "Fall 2022".
+یک [**درس**](../course/index.md) در پریری‌لرن از **دوره‌ها (Course Instances)** و **سوالات** تشکیل شده است. هر [دوره](../courseInstance/index.md) ارائه یک درس در یک ترم/نیم‌سال تحصیلی مشخص است. برای مثال، درسی با عنوان «CS 225» می‌تواند دوره‌هایی مانند «بهار ۲۰۲۲» و «پاییز ۲۰۲۲» داشته باشد.
 
-The course itself contains:
+خود درس شامل موارد زیر است:
 
-- A list of questions (i.e. a question bank)
-- A list of course instances
+- فهرستی از سوالات (یعنی یک بانک سوال)
+- فهرستی از دوره‌ها
 
-Each course instance contains:
+هر دوره شامل موارد زیر است:
 
-- All assessments for that term, for example, Homework 1, Homework 2, and Exam 1
+- تمام ارزیابی‌های مربوط به آن ترم؛ برای مثال، تکلیف ۱، تکلیف ۲ و آزمون ۱
 
-Each assessment contains:
+هر ارزیابی شامل موارد زیر است:
 
-- A list of questions used in that assessment (taken from the course)
+- فهرستی از سوالات استفاده‌شده در آن ارزیابی (که از درس گرفته شده‌اند)
 
-### Concept Map
+### نقشه مفاهیم
 
 ![Concept map](./concept-map-example.d2){pad="0" scale="1"}
 
-### Questions
+### سوالات
 
-[**Questions**](../question/overview.md) are all independent, and a given question can be used on many different assessments across many different course instances. They are written in HTML (as a [Mustache template](https://mustache.github.io/mustache.5.html)) and use [elements](../elements/index.md) to accept student input. Python code can be used to generate random parameters and grade questions. Every time a question is shown to a student with randomly generated parameters, that is called a **variant** of the question.
+[**سوالات**](../question/overview.md) همگی مستقل هستند و یک سوال مشخص را می‌توان در ارزیابی‌های مختلف و در طول دوره‌های گوناگون مورد استفاده قرار داد. سوالات با HTML (به‌صورت یک [قالب Mustache](https://mustache.github.io/mustache.5.html)) نوشته می‌شوند و از [المان‌ها](../elements/index.md) برای دریافت ورودی دانشجو استفاده می‌کنند. از کد پایتون می‌توان برای تولید پارامترهای تصادفی و نمره‌دهی به سوالات استفاده کرد. هر بار که سوالی با پارامترهای تولیدشده به‌صورت تصادفی به یک دانشجو نمایش داده می‌شود، به آن یک **نمونه (Variant)** از سوال می‌گویند.
 
-![An example homework question](./hw-question.png)
+![نمونه‌ای از یک سوال تکلیف](./hw-question.png)
 
-#### Example `question.html`
+#### نمونه `question.html`
 
 ```html title="question.html"
 <pl-question-panel>
@@ -39,7 +39,7 @@ Each assessment contains:
 <pl-number-input answers-name="y" label="$y =$"></pl-number-input>
 ```
 
-#### Example `server.py`
+#### نمونه `server.py`
 
 ```python title="server.py"
 def generate(data):
@@ -52,11 +52,11 @@ def generate(data):
         data["correct_answers"]["y"] = 3 * data["params"]["x"]
 ```
 
-??? example "Question with custom partial credit & feedback"
+??? example "سوال با نمره بخشی و بازخورد سفارشی"
 
-    This is the same question that now gives intermediate student feedback and partial credit. This question is more complex and flexible, but this complexity is completely opt-in if you don't need it.
+    این همان سوال قبلی است که اکنون بازخورد مرحله‌ای و نمره بخشی (Partial credit) به دانشجو ارائه می‌دهد. این سوال پیچیده‌تر و انعطاف‌پذیرتر است، اما در صورت عدم نیاز، استفاده از این پیچیدگی کاملاً اختیاری است.
 
-    === "Example `question.html`"
+    === "نمونه `question.html`"
 
         ```html title="question.html"
         <pl-question-panel>
@@ -67,7 +67,7 @@ def generate(data):
         <pl-submission-panel> {{feedback.y}} </pl-submission-panel>
         ```
 
-    === "Example `server.py`"
+    === "نمونه `server.py`"
 
         ```python title="server.py"
         def generate(data):
@@ -95,69 +95,69 @@ def generate(data):
                 data["feedback"]["y"] = "Your value for $y$ is larger than $x$, but incorrect."
         ```
 
-#### External Graders
+#### نمره‌دهنده‌های خارجی (External Graders)
 
-For coding questions, you can use an [**external grader**](../externalGrading.md) to grade a submission instead of a `server.py` file. This lets you grade student-submitted code in a sandboxed environment. There are currently external graders for C, C++, Java, Python, and more. You can also make a custom external grader for any language.
+برای سوالات برنامه‌نویسی، می‌توانید به جای فایل `server.py` از یک [**نمره‌دهنده خارجی**](../externalGrading.md) برای نمره‌دهی به پاسخ ارسالی (Submission) استفاده کنید. این قابلیت به شما امکان می‌دهد کدهای ارسالی دانشجویان را در یک محیط ایزوله (Sandbox) نمره‌دهی کنید. در حال حاضر نمره‌دهنده‌های خارجی برای C، C++، Java، Python و زبان‌های دیگر موجود هستند. همچنین می‌توانید برای هر زبانی یک نمره‌دهنده خارجی سفارشی بسازید.
 
-#### Workspaces
+#### محیط‌های کاری (Workspaces)
 
-You can use [**workspaces**](../workspaces/index.md) to provide an in-browser development environment. Workspaces ensure all students are using a consistent environment and can provide a code editor with syntax highlighting, autocompletion, and other features. Workspaces provide a seamless coding experience for students when used with an external autograder. Workspaces use [Docker](https://docker.com) images to ensure a consistent environment, with premade workspace for popular languages (e.g. Python, C++). Workspaces based on custom Docker images are also supported.
+می‌توانید از [**محیط‌های کاری**](../workspaces/index.md) برای ارائه یک محیط توسعه درون مرورگر استفاده کنید. محیط‌های کاری تضمین می‌کنند که همه دانشجویان از محیطی یکسان استفاده می‌کنند و می‌توانند ویرایشگر کدی به همراه برجسته‌سازی نحو (Syntax Highlighting)، تکمیل خودکار کد و سایر ویژگی‌ها فراهم آورند. محیط‌های کاری هنگام استفاده همراه با یک نمره‌دهنده خودکار خارجی، تجربه کدنویسی یکپارچه‌ای برای دانشجویان به ارمغان می‌آورند. محیط‌های کاری برای اطمینان از یکنواختی محیط از ایمیج‌های [Docker](https://docker.com) استفاده می‌کنند، و محیط‌های کاری از پیش آماده‌شده‌ای برای زبان‌های پرکاربرد (مانند Python، C++) ارائه می‌دهند. همچنین محیط‌های کاری مبتنی بر ایمیج‌های سفارشی داکر نیز پشتیبانی می‌شوند.
 
-![Screenshot of a JupyterLab workspace](./workspace.png)
-Both of these features can be setup by modifying the `info.json` file for the question.
+![تصویر یک محیط کاری JupyterLab](./workspace.png)
+هر دوی این ویژگی‌ها را می‌توان با ویرایش فایل `info.json` مربوط به سوال تنظیم و پیکربندی کرد.
 
-### Elements
+### المان‌ها (Elements)
 
-Questions can use [**elements**](../elements/index.md) to accept student input, display diagrams, control how questions are displayed, and more. You can use built-in elements for common questions types, including numerical inputs, multiple choice, and more. If you require more flexibility, you can create reusable [**custom elements**](../devElements.md) that can be tailored to your course to create more complex questions.
+سوالات می‌توانند از [**المان‌ها**](../elements/index.md) برای دریافت ورودی دانشجو، نمایش نمودارها، کنترل نحوه نمایش سوالات و موارد دیگر استفاده کنند. می‌توانید از المان‌های توکار برای انواع سوالات متداول، از جمله ورودی‌های عددی، چندگزینه‌ای و موارد دیگر استفاده نمایید. اگر به انعطاف‌پذیری بیشتری نیاز دارید، می‌توانید [**المان‌های سفارشی**](../devElements.md) قابل‌استفاده مجدد بسازید که متناسب با درس شما جهت ایجاد سوالات پیچیده‌تر سفارشی‌سازی شده‌اند.
 
-=== "Integer input element"
+=== "المان ورودی عدد صحیح"
 
-    ![Integer input element](../elements/pl-integer-input.png)
+    ![المان ورودی عدد صحیح](../elements/pl-integer-input.png)
 
-=== "HTML for element"
+=== "HTML برای المان"
 
     ```html title="question.html"
     <pl-integer-input answers-name="int_value" label="$y =$"></pl-integer-input>
     ```
 
-You can view a list of all the available elements in the [elements documentation](../elements/index.md).
+می‌توانید فهرستی از تمامی المان‌های موجود را در [مستندات المان‌ها](../elements/index.md) مشاهده کنید.
 
-### Assessments
+### ارزیابی‌ها (Assessments)
 
-A course's questions are composed together to create homework and exam [**assessments**](../assessment/overview.md) in a course instance. Homeworks are formative assessments designed for mastery learning: they give unlimited retries with different variants, and incentivize repeated correct answers. Exams are summative assessments designed to measure learning: they give limited attempts with the same variant, and incentivize getting the correct answer on the first try.
+سوالات یک درس با یکدیگر ترکیب می‌شوند تا [**ارزیابی‌های**](../assessment/overview.md) تکالیف و آزمون‌ها را در یک دوره ایجاد کنند. تکالیف، ارزیابی‌های تکوینی (Formative) هستند که برای یادگیری در حد تسلط طراحی شده‌اند: آن‌ها امکان تلاش مجدد نامحدود با نمونه‌های متفاوت را فراهم می‌کنند و پاسخ‌های صحیح مکرر را تشویق می‌نمایند. آزمون‌ها، ارزیابی‌های پایانی/تراکمی (Summative) هستند که برای سنجش یادگیری طراحی شده‌اند: آن‌ها تلاش‌های محدودی با همان نمونه ارائه می‌دهند و رسیدن به پاسخ درست در اولین تلاش را ترغیب می‌کنند.
 
-![Homework Assessment](./hw-assessment.png)
+![ارزیابی تکلیف](./hw-assessment.png)
 
-Assessments are organized into **assessment sets** based on the type of assessment (e.g. `Homework`, `Quiz`, `Exam`). Optionally, each assessment can be a part of a **module** (e.g. `Introduction`, `Review`, `Linked Lists`). Your assessments can then be shown to students grouped by module or by assessment set.
+ارزیابی‌ها بر اساس نوع ارزیابی (مانند `Homework`، `Quiz`، `Exam`) در **مجموعه‌های ارزیابی (Assessment Sets)** سازمان‌دهی می‌شوند. به‌صورت اختیاری، هر ارزیابی می‌تواند بخشی از یک **ماژول** باشد (مانند `Introduction`، `Review`، `Linked Lists`). سپس ارزیابی‌های شما را می‌توان به‌صورت گروه‌بندی‌شده بر اساس ماژول یا بر اساس مجموعه ارزیابی به دانشجویان نمایش داد.
 
-=== "Assessments (Set Grouping)"
+=== "ارزیابی‌ها (گروه‌بندی بر اساس مجموعه)"
 
-    ![Assessments grouped by set](./set-grouping.png)
+    ![ارزیابی‌های گروه‌بندی‌شده بر اساس مجموعه](./set-grouping.png)
 
-=== "Assessments (Module Grouping)"
+=== "ارزیابی‌ها (گروه‌بندی بر اساس ماژول)"
 
-    ![Assessments grouped by module](./module-grouping.png)
+    ![ارزیابی‌های گروه‌بندی‌شده بر اساس ماژول](./module-grouping.png)
 
-### JSON configuration files
+### فایل‌های پیکربندی JSON
 
-Each item in PrairieLearn (questions, assessments, etc.) has associated metadata that describes the item. This metadata is stored in JSON files and describes the relationships between items, the item's properties, and other information. These metadata files are used to generate the user interface for editing and viewing the items, as well as the interface for students to complete them.
+هر آیتم در پریری‌لرن (سوالات، ارزیابی‌ها و غیره) دارای فراداده‌های (Metadata) مرتبطی است که آن آیتم را توصیف می‌کنند. این فراداده در فایل‌های JSON ذخیره می‌شود و روابط میان آیتم‌ها، ویژگی‌های آیتم و سایر اطلاعات را تشریح می‌کند. این فایل‌های فراداده برای تولید رابط کاربری جهت ویرایش و مشاهده آیتم‌ها و همچنین رابط کاربری دانشجویان برای تکمیل آن‌ها استفاده می‌شوند.
 
-| Item            | Configuration file        |
+| آیتم            | فایل پیکربندی             |
 | --------------- | ------------------------- |
 | Course          | `infoCourse.json`         |
 | Course Instance | `infoCourseInstance.json` |
 | Assessment      | `infoAssessment.json`     |
 | Question        | `info.json`               |
 
-## Next steps
+## گام‌های بعدی
 
-Now that you have an understanding of the key concepts in PrairieLearn, you can learn more about how to [:star: get started :star:](../getting-started/index.md) creating your course.
+اکنون که با مفاهیم کلیدی پریری‌لرن آشنا شدید، می‌توانید درباره نحوه [:star: شروع کار :star:](../getting-started/index.md) جهت ایجاد درس خود اطلاعات بیشتری کسب کنید.
 
-You can also:
+همچنین می‌توانید:
 
-- learn more about [courses](../course/index.md) or [course instances](../courseInstance/index.md)
-- learn more about [questions](../question/overview.md), [elements](../elements/index.md), or [custom elements](../devElements.md)
-- learn more about [assessments](../assessment/overview.md)
-- learn more about [external grading](../externalGrading.md) or [workspaces](../workspaces/index.md)
-- learn how to [develop locally](../installing.md)
-- learn more about the workflow for [syncing content](../sync.md) to PrairieLearn
+- درباره [درس‌ها](../course/index.md) یا [دوره‌ها](../courseInstance/index.md) بیشتر بیاموزید
+- درباره [سوالات](../question/overview.md)، [المان‌ها](../elements/index.md) یا [المان‌های سفارشی](../devElements.md) اطلاعات بیشتری کسب کنید
+- درباره [ارزیابی‌ها](../assessment/overview.md) بیشتر بخوانید
+- درباره [نمره‌دهی خارجی](../externalGrading.md) یا [محیط‌های کاری](../workspaces/index.md) اطلاعات بیشتری به دست آورید
+- با نحوه [توسعه به صورت محلی](../installing.md) آشنا شوید
+- درباره جریان کاری [همگام‌سازی محتوا](../sync.md) با پریری‌لرن بیشتر بدانید

@@ -1,76 +1,76 @@
-# Running natively
+# اجرای مستقیم (Native)
 
-This page describes the procedure to install and run PrairieLearn fully natively without using Docker. Certain features, such as external graders and workspaces, still require Docker. PrairieLearn supports native execution on macOS, Linux, and Windows inside [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install).
+این صفحه روش نصب و اجرای پِری‌لرن (PrairieLearn) را به‌صورت کاملاً مستقیم (Native) و بدون استفاده از Docker شرح می‌دهد. برخی از ویژگی‌ها، مانند نمره‌دهنده‌های خارجی و محیط‌های کاری، همچنان به Docker نیاز دارند. پِری‌لرن از اجرای مستقیم در macOS، Linux و Windows درون [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install) پشتیبانی می‌کند.
 
-## Installation
+## نصب
 
-- Install the prerequisites:
+- پیش‌نیازها را نصب کنید:
   - [Git](https://git-scm.com)
   - [Node.js 24](https://nodejs.org)
-  - [pnpm 12.17 or newer in the 12.x series](https://pnpm.io)
-  - [uv](https://docs.astral.sh/uv/) (Python version manager and package installer)
+  - [نسخه 12.17 یا جدیدتر از سری 12.x از pnpm](https://pnpm.io)
+  - [uv](https://docs.astral.sh/uv/) (مدیر نسخه و ابزار نصب پکیج‌های پایتون)
   - [PostgreSQL 17](https://www.postgresql.org)
-  - [Redis 7](https://redis.io) or [Valkey](https://valkey.io)
+  - [Redis 7](https://redis.io) یا [Valkey](https://valkey.io)
   - [Graphviz](https://graphviz.org)
   - [d2](https://d2lang.com)
   - [pgvector](https://github.com/pgvector/pgvector)
 
-Most of these prerequisites can be installed using the package manager of your OS:
+اکثر این پیش‌نیازها را می‌توان با استفاده از پکیج‌منیجر (Package Manager) سیستم‌عامل خود نصب کرد:
 
-=== "Ubuntu (including WSL2)"
+=== "Ubuntu (شامل WSL2)"
 
-    On Ubuntu, use `apt` for the main prerequisites:
+    در اوبونتو، از `apt` برای پیش‌نیازهای اصلی استفاده کنید:
 
     ```sh
     sudo apt update
     sudo apt install git gcc g++ make libc6-dev graphviz libgraphviz-dev redis postgresql-common
-    # Configure Postgres repository
+    # پیکربندی مخزن Postgres
     sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
     sudo apt install postgresql-17 postgresql-17-pgvector
-    # Optional; needed only for some example questions that use LaTeX
+    # اختیاری؛ تنها برای برخی از سوالات نمونه که از LaTeX استفاده می‌کنند لازم است
     sudo apt install texlive texlive-latex-extra texlive-fonts-extra dvipng
     ```
 
-    Make sure you start Postgres:
+    مطمئن شوید که Postgres را اجرا کرده‌اید:
 
     ```sh
     sudo systemctl start postgresql.service
     ```
 
-    > If the command above shows an error like `System has not been booted with systemd as init system` or `Failed to connect to bus`, the command above can be replaced with:
+    > اگر دستور بالا خطایی مانند `System has not been booted with systemd as init system` یا `Failed to connect to bus` نشان داد، می‌توان دستور بالا را با دستور زیر جایگزین کرد:
     >
     > ```sh
     > sudo service postgresql start
     > ```
 
-    Install `uv` using the standalone installer:
+    ابزار `uv` را با استفاده از نصاب مستقل نصب کنید:
 
     ```sh
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    source $HOME/.local/bin/env  # Add uv to PATH for current shell
+    source $HOME/.local/bin/env  # افزودن uv به متغیر PATH برای شل فعلی
     ```
 
-    Node.js 24 is not available in the default Ubuntu repositories -- you can install it through [nvm](https://github.com/nvm-sh/nvm).
+    نسخه Node.js 24 در مخازن پیش‌فرض اوبونتو موجود نیست؛ می‌توانید آن را از طریق [nvm](https://github.com/nvm-sh/nvm) نصب کنید:
 
     ```sh
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-    source ~/.bashrc # or your shell's equivalent
+    source ~/.bashrc # یا معادل آن در شل مورد استفاده شما
     nvm install 24
     ```
 
-    Install pnpm:
+    نصب pnpm:
 
     ```sh
     npm install -g 'pnpm@^12.17.0'
     ```
 
-    d2 can be installed through the install script:
+    ابزار d2 را می‌توان از طریق اسکریپت نصب، نصب کرد:
 
     ```sh
     curl -fsSL https://d2lang.com/install.sh | sh -s --
     ```
 
-    The pgvector Postgres extension can be enabled with the following script:
+    اکستنشن pgvector برای Postgres را می‌توان با اسکریپت زیر فعال کرد:
 
     ```sh
     sudo -u postgres psql postgres -c "CREATE EXTENSION IF NOT EXISTS vector;"
@@ -78,65 +78,65 @@ Most of these prerequisites can be installed using the package manager of your O
 
 === "macOS"
 
-    On macOS, ensure you have installed the XCode command line tools:
+    در macOS، اطمینان حاصل کنید که ابزارهای خط فرمان Xcode را نصب کرده‌اید:
 
     ```sh
     xcode-select --install
     ```
 
-    The main prerequisites can be installed with [Homebrew](http://brew.sh/):
+    پیش‌نیازهای اصلی را می‌توان با [Homebrew](http://brew.sh/) نصب کرد:
 
     ```sh
     brew install git graphviz postgresql@17 redis uv d2 node pgvector
 
-    # Optional; needed only for some example questions that use LaTeX
+    # اختیاری؛ تنها برای برخی از سوالات نمونه که از LaTeX استفاده می‌کنند لازم است
     brew install texlive
     ```
 
-    You may want to start up the `postgresql` server on boot, and add binaries to your path:
+    ممکن است بخواهید سرور `postgresql` در زمان بوت سیستم اجرا شود و باینری‌ها به path شما اضافه گردند:
 
     ```sh
     brew services start postgresql@17
     brew link postgresql@17
     ```
 
-    Install pnpm:
+    نصب pnpm:
 
     ```sh
     npm install -g 'pnpm@^12.17.0'
     ```
 
-- Clone the latest code:
+- کلون کردن آخرین نسخه کد:
 
   ```sh
   git clone https://github.com/PrairieLearn/PrairieLearn.git
   cd PrairieLearn
   ```
 
-- Install Python dependencies (this will automatically create a virtual environment at `.venv` if needed):
+- نصب وابستگی‌های پایتون (در صورت نیاز، این دستور به‌طور خودکار یک محیط مجازی در `.venv` ایجاد می‌کند):
 
   ```sh
   make python-deps
   ```
 
-  ??? note "Error on pygraphviz for newer versions of gcc"
+  ??? note "خطا در نصب pygraphviz برای نسخه‌های جدیدتر gcc"
 
-      For some newer versions of gcc, the `pygraphviz` package may fail to install. If you encounter this error, you can try this command:
+      در برخی از نسخه‌های جدیدتر gcc، ممکن است نصب پکیج `pygraphviz` با شکست مواجه شود. در صورت بروز این خطا، می‌توانید این دستور را امتحان کنید:
 
       ```sh
       CFLAGS="-Wno-error=incompatible-pointer-types" make python-deps
       ```
 
-      This error should only happen the first time you install pygraphviz. For following calls to `make python-deps`, you should not need to set the `CFLAGS` environment variable.
+      این خطا تنها باید در اولین باری که pygraphviz را نصب می‌کنید رخ دهد. برای دفعات بعدی اجرای `make python-deps`، نیازی به تنظیم متغیر محیطی `CFLAGS` نخواهد بود.
 
-- Install all dependencies and transpile local packages:
+- نصب تمام وابستگی‌ها و ترنسپایل کردن پکیج‌های محلی:
 
   ```sh
   make deps
   make e2e-deps
   ```
 
-  The above command installs everything. Alternatively, you can run each step individually:
+  دستور بالا همه چیز را نصب می‌کند. در غیر این صورت، می‌توانید هر مرحله را به‌صورت جداگانه اجرا نمایید:
 
   ```sh
   pnpm install
@@ -145,7 +145,7 @@ Most of these prerequisites can be installed using the package manager of your O
   make e2e-deps
   ```
 
-- Make sure the `postgres` database user exists and is a superuser (these might error if the user already exists):
+- مطمئن شوید که کاربر پایگاه داده `postgres` وجود دارد و دسترسی superuser دارد (اگر کاربر از قبل وجود داشته باشد، ممکن است این دستورات خطا دهند که مشکلی نیست):
 
   ```sh
   sudo -u postgres createdb postgres
@@ -153,13 +153,13 @@ Most of these prerequisites can be installed using the package manager of your O
   sudo -u postgres psql postgres -c "ALTER USER postgres WITH SUPERUSER;"
   ```
 
-- Ensure that your local `postgres` installation allows for local connections to bypass password authentication. First find the authentication configuration file with the command:
+- اطمینان حاصل کنید که نصب محلی `postgres` شما امکان دور زدن احراز هویت با رمز عبور را برای اتصال‌های محلی فراهم می‌کند. ابتدا با دستور زیر فایل پیکربندی احراز هویت را پیدا کنید:
 
   ```sh
   sudo -u postgres psql postgres -c "SHOW hba_file;"
   ```
 
-  The command above will list the path to a file named `pg_hba.conf` or something equivalent. As either root or the `postgres` user, edit the file listed by the command above, such that lines that correspond to localhost connections are set up with the `trust` method (do not change the other lines). If the last two lines already say "trust", no modifications are needed. This will typically be shown as:
+  دستور بالا مسیر فایلی به نام `pg_hba.conf` یا معادل آن را لیست می‌کند. با کاربر root یا کاربر `postgres`، فایل نمایش‌داده‌شده توسط دستور فوق را ویرایش کنید، به نحوی که خطوط مربوط به اتصالات localhost با روش `trust` تنظیم شده باشند (سایر خطوط را تغییر ندهید). اگر دو خط آخر از قبل حاوی "trust" هستند، نیازی به اعمال تغییرات نیست. این بخش معمولاً به این صورت نمایش داده می‌شود:
 
   ```text
   # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -170,9 +170,9 @@ Most of these prerequisites can be installed using the package manager of your O
   host    all             all             ::1/128                 trust
   ```
 
-  You may need to restart the PostgreSQL server after changing the file above.
+  پس از تغییر فایل بالا، ممکن است لازم باشد سرور PostgreSQL را ری‌استارت کنید.
 
-- Configure PostgreSQL to use the UTC timezone:
+- پیکربندی PostgreSQL برای استفاده از منطقه زمانی UTC:
 
   ```sh
   sudo -u postgres psql postgres -c "ALTER SYSTEM SET timezone = 'UTC';"
@@ -180,11 +180,11 @@ Most of these prerequisites can be installed using the package manager of your O
   sudo -u postgres psql postgres -c "SHOW timezone;"
   ```
 
-  The last command should return `UTC`.
+  دستور آخر باید مقدار `UTC` را برگرداند.
 
-## Configuration
+## پیکربندی
 
-If you have your own [PrairieLearn course repository](../requestCourse/index.md), you will need to create the file `PrairieLearn/config.json` with the path of your local course repository. If you need support for the in-browser file editor or file uploads, you should set `filesRoot`. If you need support for workspaces, you should provide a path to a directory into which temporary files will be saved. Here is a sample configuration:
+اگر [مخزن درس پِری‌لرن](../requestCourse/index.md) اختصاصی خود را دارید، باید فایل `PrairieLearn/config.json` را با مسیر مخزن درس محلی خود بسازید. اگر به پشتیبانی از ویرایشگر فایل درون مرورگر یا آپلود فایل نیاز دارید، باید `filesRoot` را تنظیم کنید. اگر به پشتیبانی از محیط‌های کاری نیاز دارید، باید مسیری را به یک دایرکتوری که فایل‌های موقت در آن ذخیره می‌شوند ارائه دهید. در اینجا یک نمونه پیکربندی آورده شده است:
 
 ```json title="config.json"
 {
@@ -195,8 +195,8 @@ If you have your own [PrairieLearn course repository](../requestCourse/index.md)
 }
 ```
 
-More information about the `config.json` can be found in the [server configuration](./configJson.md) documentation.
+اطلاعات بیشتر درباره `config.json` را می‌توانید در مستندات [پیکربندی سرور](./configJson.md) بیابید.
 
-## Development
+## توسعه
 
-More information on the development workflow can be found in the [development quickstart](./quickstart.md) documentation.
+اطلاعات بیشتر درباره جریان کاری توسعه را می‌توانید در مستندات [شروع سریع توسعه](./quickstart.md) پیدا کنید.
