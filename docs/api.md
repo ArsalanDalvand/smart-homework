@@ -1,137 +1,137 @@
-# API
+# رابط برنامه‌نویسی کاربردی (API)
 
-PrairieLearn contains a limited API for use by instructors that allows programmatic access to assessments, assessment instances, and submissions.
+سامانه PrairieLearn شامل یک API محدود برای استفاده مدرسان است که امکان دسترسی برنامه‌نویسی‌شده به ارزیابی‌ها، نمونه‌های ارزیابی (Assessment Instances) و پاسخ‌های ارسالی (Submissions) را فراهم می‌کند.
 
-## API Authentication
+## احراز هویت در API
 
-PrairieLearn uses personal access tokens for the API. To generate a personal access token, click on your name in the nav bar and click "Settings". Under the section entitled "Personal Access Tokens", you can generate tokens for yourself. These tokens give you all the permissions that your normal user account has.
+سامانه PrairieLearn از توکن‌های دسترسی شخصی (Personal Access Tokens) برای API استفاده می‌کند. برای ایجاد یک توکن دسترسی شخصی، روی نام خود در نوار ناوبری کلیک کرده و گزینه "Settings" (تنظیمات) را انتخاب کنید. در بخش "Personal Access Tokens"، می‌توانید برای خود توکن ایجاد کنید. این توکن‌ها تمامی دسترسی‌ها و مجوزهای حساب کاربری عادی شما را به همراه دارند.
 
-Provide your token via the `Private-Token` header:
+توکن خود را از طریق هدر `Private-Token` ارسال کنید:
 
 ```sh
 curl -H "Private-Token: TOKEN" https://us.prairielearn.com/pl/api/v1/<REST_OF_PATH>
 ```
 
-## Endpoint HTTP methods
+## متدهای HTTP نقاط پایانی (Endpoints)
 
-API endpoints require either a [`GET` request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET) or a [`POST` request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST). A `GET` request retrieves information from PrairieLearn, such as gradebook information. A `POST` request asks PrairieLearn to perform an action, such as syncing a course GitHub repository. For `GET` requests, you can follow the format in the above example.
+نقاط پایانی API نیازمند یک [درخواست `GET`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET) یا یک [درخواست `POST`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST) هستند. یک درخواست `GET` اطلاعاتی مانند داده‌های دفتر نمرات را از PrairieLearn بازیابی می‌کند. یک درخواست `POST` از PrairieLearn می‌خواهد که عملیاتی مانند همگام‌سازی مخزن GitHub درس را انجام دهد. برای درخواست‌های `GET` می‌توانید از قالبی مشابه با مثال بالا پیروی کنید.
 
-Here is an example of using `curl` for a `POST` request:
+در اینجا یک مثال از استفاده از `curl` برای یک درخواست `POST` آورده شده است:
 
 ```sh
 curl -H "Private-Token: TOKEN" -X POST https://us.prairielearn.com/pl/api/v1/<REST_OF_PATH>
 ```
 
-## Example access script
+## نمونه اسکریپت دسترسی
 
-An example script that will download all API data for a course instance is at [`api_download.py`](https://github.com/PrairieLearn/PrairieLearn/blob/master/contrib/api_download.py). You can use it like this:
+یک نمونه اسکریپت که تمام داده‌های API را برای یک دوره (Course Instance) دانلود می‌کند در فایل [`api_download.py`](https://github.com/PrairieLearn/PrairieLearn/blob/master/contrib/api_download.py) قرار دارد. می‌توانید آن را به این صورت اجرا کنید:
 
 ```sh
 python api_download.py --token 9a6932a1-e356-4ddc-ad82-4cf30ad896ac --course-instance-id 29832 --output-dir tam212fa18
 ```
 
-The `token` is your personal access token described above. The `course-instance-id` can be obtained by navigating to your course instance in the PrairieLearn web interface and extracting the ID from the URL.
+مقدار `token` توکن دسترسی شخصی شما است که در بالا توضیح داده شد. مقدار `course-instance-id` را می‌توانید با رفتن به دوره خود در رابط کاربری وب PrairieLearn و استخراج شناسه عددی آن از URL به دست آورید.
 
-## Endpoints
+## نقاط پایانی (Endpoints)
 
-All API endpoints are located at `/pl/api/v1/`. If you're running on production PrairieLearn, that means the API is at <https://us.prairielearn.com/pl/api/v1>. If you're running it locally at port 3000, the API is accessible via <http://localhost:3000/pl/api/v1/>.
+تمامی نقاط پایانی API در مسیر `/pl/api/v1/` قرار دارند. اگر از نسخه عملیاتی (Production) PrairieLearn استفاده می‌کنید، این بدان معناست که API در آدرس <https://us.prairielearn.com/pl/api/v1> در دسترس است. اگر آن را به صورت محلی روی پورت ۳۰۰۰ اجرا می‌کنید، API از طریق <http://localhost:3000/pl/api/v1/> در دسترس خواهد بود.
 
-In the endpoint list below, path components starting with a colon like `:course_instance_id` should be replaced with the integer IDs.
+در فهرست نقاط پایانی زیر، بخش‌هایی از مسیر که با دونقطه شروع می‌شوند مانند `:course_instance_id` باید با شناسه‌های عددی صحیح (Integer IDs) جایگزین شوند.
 
-### Course instances
+### دوره‌های درسی (Course instances)
 
-#### Get single course instance
+#### دریافت یک دوره درسی مشخص
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id
 ```
 
-#### Get gradebook for course instance
+#### دریافت دفتر نمرات برای یک دوره درسی
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/gradebook
 ```
 
-#### Get access rules for course instance
+#### دریافت قوانین دسترسی برای یک دوره درسی
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/course_instance_access_rules
 ```
 
-#### List assessments for course instance
+#### فهرست کردن ارزیابی‌های یک دوره درسی
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/assessments
 ```
 
-### Assessments
+### ارزیابی‌ها (Assessments)
 
-#### Get single assessment
+#### دریافت یک ارزیابی مشخص
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/assessments/:assessment_id
 ```
 
-#### List access rules for assessment
+#### فهرست کردن قوانین دسترسی برای یک ارزیابی
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/assessments/:assessment_id/assessment_access_rules
 ```
 
-#### List assessment instances for assessment
+#### فهرست کردن نمونه‌های ارزیابی برای یک ارزیابی
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/assessments/:assessment_id/assessment_instances
 ```
 
-### Assessment instances
+### نمونه‌های ارزیابی (Assessment instances)
 
-#### Get single assessment instance
+#### دریافت یک نمونه ارزیابی مشخص
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/assessment_instances/:assessment_instance_id
 ```
 
-#### List instance questions for assessment instance
+#### فهرست کردن سوالات نمونه برای یک نمونه ارزیابی
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/assessment_instances/:assessment_instance_id/instance_questions
 ```
 
-#### List submissions for assessment instance
+#### فهرست کردن پاسخ‌های ارسالی برای یک نمونه ارزیابی
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/assessment_instances/:assessment_instance_id/submissions
 ```
 
-#### Get event log for assessment instance
+#### دریافت وقایع‌نگاری (Event log) برای یک نمونه ارزیابی
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/assessment_instances/:assessment_instance_id/log
 ```
 
-### Submissions
+### پاسخ‌های ارسالی (Submissions)
 
-#### Get single submission
+#### دریافت یک پاسخ ارسالی مشخص
 
 ```text
 GET /pl/api/v1/course_instances/:course_instance_id/submissions/:submission_id
 ```
 
-### Course sync
+### همگام‌سازی درس (Course sync)
 
-#### Start a course sync
+#### شروع همگام‌سازی درس
 
 ```text
 POST /pl/api/v1/course/:course_id/sync
 ```
 
-Returns a `job_sequence_id` that can be used to check on the sync job's status.
+یک `job_sequence_id` برمی‌گرداند که می‌توان از آن برای بررسی وضعیت فرایند همگام‌سازی استفاده کرد.
 
-#### Check course sync status
+#### بررسی وضعیت همگام‌سازی درس
 
 ```text
 GET /pl/api/v1/course/:course_id/sync/:job_sequence_id
 ```
 
-Returns the status and output of the sync job.
+وضعیت و خروجی لاگ فرایند همگام‌سازی را برمی‌گرداند.

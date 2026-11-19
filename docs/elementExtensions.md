@@ -1,14 +1,14 @@
-# Element extensions developer guide
+# راهنمای توسعه‌دهندگان اکستنشن‌های المان
 
-Extensions are a way to add custom logic and extra complexity to already existing elements. Each element has the ability to load relevant extensions and as such, extensions should be custom tailored to one specific element.
+اکستنشن‌ها (Extensions) روشی برای افزودن منطق سفارشی و قابلیت‌های پیچیده‌تر به المان‌های موجود هستند. هر المان این قابلیت را دارد که اکستنشن‌های مرتبط را بارگذاری کند، از این رو اکستنشن‌ها باید به صورت اختصاصی برای یک المان خاص طراحی شوند.
 
-## Extension anatomy
+## ساختار اکستنشن (Extension anatomy)
 
-Extensions can be defined in a course only, and are located in `[course directory]/elementExtensions`. This folder is organized such that elements are contained as subfolders, and extensions are then contained inside the element folders. For example, if you had an extension `exampleExtension` that extended `exampleElement`, the folder structure would be: `[course directory]/elementExtensions/exampleElement/exampleExtension`.
+اکستنشن‌ها فقط در سطح یک درس قابل تعریف هستند و در مسیر `[course directory]/elementExtensions` قرار می‌گیرند. این پوشه به گونه‌ای سازمان‌دهی شده است که المان‌ها به صورت زیرپوشه در آن قرار دارند و سپس اکستنشن‌ها داخل پوشه هر المان قرار می‌گیرند. برای مثال، اگر اکستنشنی به نام `exampleExtension` داشته باشید که المان `exampleElement` را گسترش می‌دهد، ساختار پوشه به صورت `[course directory]/elementExtensions/exampleElement/exampleExtension` خواهد بود.
 
-Each extension needs only an `info.json` containing metadata about the element, and can contain optional information like Python scripts, CSS styles, and clientside JavaScript files.
+هر اکستنشن تنها به یک فایل `info.json` حاوی متادیتا درباره المان نیاز دارد و می‌تواند شامل اطلاعات اختیاری مانند اسکریپت‌های پایتون، استایل‌های CSS و فایل‌های جاوااسکریپت سمت کلاینت باشد.
 
-The `info.json` file is structurally similar to the element info file and may contain the following fields:
+فایل `info.json` از نظر ساختاری شبیه به فایل info المان است و ممکن است شامل فیلدهای زیر باشد:
 
 ```json title="info.json"
 {
@@ -29,26 +29,26 @@ The `info.json` file is structurally similar to the element info file and may co
 }
 ```
 
-See the [reference for `infoElementExtension.json`](./schemas/infoElementExtension.md) for more information about what can be added to this file.
+برای اطلاعات بیشتر درباره مواردی که می‌توان به این فایل اضافه کرد، به [مرجع `infoElementExtension.json`](./schemas/infoElementExtension.md) مراجعه کنید.
 
-### Python Controller
+### کنترلر پایتون (Python Controller)
 
-The main Python controller script has no general structure and is instead defined by the element that is being extended. Any global functions and variables are available for use by the host element.
+اسکریپت اصلی کنترلر پایتون ساختار از پیش‌تعیین‌شده‌ای ندارد و در عوض توسط المانی که در حال گسترش است تعریف می‌شود. هرگونه تابع و متغیر سراسری (Global) برای استفاده توسط المان میزبان در دسترس خواهد بود.
 
-A host element can call the `load_extension()` function to load one specific extension, or `load_all_extensions()` to load everything that is available. These are defined in the freeform `prairielearn` module.
+یک المان میزبان می‌تواند تابع `load_extension()` را برای بارگذاری یک اکستنشن خاص، یا تابع `load_all_extensions()` را برای بارگذاری تمام اکستنشن‌های در دسترس فراخوانی کند. این توابع در ماژول `prairielearn` تعریف شده‌اند.
 
-A two-way flow of logic and information exists between elements and their extensions.
+یک جریان دوطرفه از منطق و داده بین المان‌ها و اکستنشن‌های آنها وجود دارد.
 
-#### Importing an Extension From an Element
+#### ایمپورت کردن یک اکستنشن از داخل یک المان
 
-Loading extension Python scripts returns a named tuple of all globally defined functions and variables. Loading all extensions will return a dictionary mapping the extension name to its named tuple. For example, if an extension were to define the following in their controller:
+بارگذاری اسکریپت‌های پایتون اکستنشن، یک تاپل نام‌دار (Named tuple) شامل تمام توابع و متغیرهای تعریف‌شده سراسری را برمی‌گرداند. بارگذاری تمام اکستنشن‌ها، یک دیکشنری برمی‌گرداند که نام هر اکستنشن را به تاپل نام‌دار آن نگاشت می‌کند. به عنوان مثال، اگر یک اکستنشن در کنترلر خود موارد زیر را تعریف کند:
 
 ```python
 def my_cool_function():
     return "hello, world!"
 ```
 
-The host element could then call this by running the following:
+المان میزبان می‌تواند با اجرای کد زیر آن را فراخوانی کند:
 
 ```python
 import prairielearn as pl
@@ -60,12 +60,12 @@ def render(element_html, data):
     return contents
 ```
 
-This small example above will render `"hello world!"` to the question page. Note that when loading all extensions with `load_all_extensions()`, modules are returned in ascending alphabetical order.
+این مثال کوچک بالا، متن `"hello world!"` را در صفحه سوال رندر می‌کند. توجه داشته باشید که هنگام بارگذاری تمام اکستنشن‌ها با استفاده از `load_all_extensions()`، ماژول‌ها به ترتیب صعودی الفبایی بازگردانده می‌شوند.
 
-#### Importing a Host Element From an Extension
+#### ایمپورت کردن المان میزبان از داخل یک اکستنشن
 
-Extensions can also import files from their host element with the `load_host_script()` function. This can be used to obtain helper functions, class definitions, constant variables, etc.
-If the host element were to contain, for example:
+اکستنشن‌ها همچنین می‌توانند فایل‌ها را با استفاده از تابع `load_host_script()` از المان میزبان خود ایمپورت کنند. این کار می‌تواند برای دریافت توابع کمکی، تعاریف کلاس‌ها، متغیرهای ثابت و غیره استفاده شود.
+به عنوان مثال، اگر المان میزبان شامل کد زیر باشد:
 
 ```python
 import prairielearn as pl
@@ -79,7 +79,7 @@ def render(element_html, data):
     return contents
 ```
 
-The extension could then access `STATIC_VARIABLE` by importing the host script:
+اکستنشن می‌تواند با ایمپورت اسکریپت میزبان به `STATIC_VARIABLE` دسترسی پیدا کند:
 
 ```python hl_lines="3"
 import prairielearn as pl
@@ -91,25 +91,25 @@ def my_cool_function():
     return host_element.STATIC_VARIABLE
 ```
 
-### Extension Dependencies
+### وابستگی‌های اکستنشن (Extension Dependencies)
 
-Similar to how questions and elements may require client-side assets (as described in the [element developer guide](./devElements.md#element-dependencies)), extensions may also require client-side JavaScript and CSS. The different properties are summarized here. Note that script dependencies may be set as either static or dynamic dependencies, while styles may only be set as static dependencies.
+مشابه روشی که سوالات و المان‌ها ممکن است به دارایی‌های سمت کلاینت نیاز داشته باشند (همان‌طور که در [راهنمای توسعه‌دهندگان المان](./devElements.md#element-dependencies) توضیح داده شده است)، اکستنشن‌ها نیز ممکن است به جاوااسکریپت و CSS سمت کلاینت نیاز داشته باشند. ویژگی‌های مختلف در اینجا خلاصه شده است. توجه داشته باشید که وابستگی‌های اسکریپت را می‌توان به صورت وابستگی‌های استاتیک یا داینامیک تنظیم کرد، در حالی که استایل‌ها فقط می‌توانند به عنوان وابستگی‌های استاتیک تنظیم شوند.
 
-| Property                   | Description                                                                                                                                     |
+| ویژگی (Property) | توضیحات |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nodeModulesStyles`        | The styles required by this extension, relative to `[PrairieLearn directory]/node_modules`.                                                     |
-| `nodeModulesScripts`       | The scripts required by this extension, relative to `[PrairieLearn directory]/node_modules`.                                                    |
-| `extensionStyles`          | The styles required by this element relative to the extension's directory, `[course directory]/elementExtensions/element-name/extension-name`.  |
-| `extensionScripts`         | The scripts required by this element relative to the extension's directory, `[course directory]/elementExtensions/element-name/extension-name`. |
-| `clientFilesCourseStyles`  | The styles required by this extension relative to `[course directory]/clientFilesCourse`.                                                       |
-| `clientFilesCourseScripts` | The scripts required by this extension relative to `[course directory]/clientFilesCourse`.                                                      |
+| `nodeModulesStyles` | استایل‌های مورد نیاز این اکستنشن، به صورت نسبی نسبت به `[PrairieLearn directory]/node_modules`. |
+| `nodeModulesScripts` | اسکریپت‌های مورد نیاز این اکستنشن، به صورت نسبی نسبت به `[PrairieLearn directory]/node_modules`. |
+| `extensionStyles` | استایل‌های مورد نیاز این المان، به صورت نسبی نسبت به پوشه اکستنشن، `[course directory]/elementExtensions/element-name/extension-name`. |
+| `extensionScripts` | اسکریپت‌های مورد نیاز این المان، به صورت نسبی نسبت به پوشه اکستنشن، `[course directory]/elementExtensions/element-name/extension-name`. |
+| `clientFilesCourseStyles` | استایل‌های مورد نیاز این اکستنشن، به صورت نسبی نسبت به `[course directory]/clientFilesCourse`. |
+| `clientFilesCourseScripts` | اسکریپت‌های مورد نیاز این اکستنشن، به صورت نسبی نسبت به `[course directory]/clientFilesCourse`. |
 
-Note that any element extension assets declared in `dependencies` will always be loaded, regardless of whether their Python controller was loaded or not. As such, it is recommended that, when suitable, extensions make use of `dynamicDependencies` to load scripts only when necessary, based on the context/usage of the element.
+توجه داشته باشید که دارایی‌های اعلام‌شده اکستنشن المان در `dependencies` همیشه بارگذاری خواهند شد، صرف‌نظر از اینکه کنترلر پایتون آنها بارگذاری شده باشد یا خیر. به همین دلیل، توصیه می‌شود که اکستنشن‌ها در صورت امکان از `dynamicDependencies` استفاده کنند تا اسکریپت‌ها فقط در صورت لزوم و بر اساس زمینه و نحوه استفاده از المان بارگذاری شوند.
 
-!!! warning
+!!! warning "هشدار"
 
-    Keep in mind that node module dependencies should be avoided, as they may be updated without warning, which in some cases may break your extension. More information can be found in the [element developer guide](./devElements.md#using-node-dependencies-in-element-code).
+    به یاد داشته باشید که باید از وابستگی‌های node_modules خودداری شود، زیرا ممکن است بدون اطلاع قبلی به‌روزرسانی شوند و در برخی موارد اکستنشن شما را با خطا مواجه کنند. اطلاعات بیشتر را می‌توانید در [راهنمای توسعه‌دهندگان المان](./devElements.md#using-node-dependencies-in-element-code) بیابید.
 
-### Other Client Files
+### سایر فایل‌های کلاینت (Other Client Files)
 
-Other files available to the client may also be loaded, such as images or any downloadable content. These client files should be placed in `clientFilesExtension` in the extension directory, and the full URL to that folder is given to the host extension in `data["options"]["client_files_extensions_url"][extension_name]`. If this path is needed by the extension itself, it may be passed as an argument to a defined extension function.
+سایر فایل‌های در دسترس کلاینت، مانند تصاویر یا هرگونه محتوای قابل دانلود نیز می‌توانند بارگذاری شوند. این فایل‌های کلاینت باید در پوشه `clientFilesExtension` در دایرکتوری اکستنشن قرار گیرند، و URL کامل به آن پوشه در `data["options"]["client_files_extensions_url"][extension_name]` به اکستنشن میزبان داده می‌شود. اگر این مسیر توسط خود اکستنشن مورد نیاز باشد، می‌توان آن را به عنوان آرگومان به تابع تعریف‌شده اکستنشن ارسال کرد.

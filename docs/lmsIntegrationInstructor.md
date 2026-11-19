@@ -1,106 +1,101 @@
-# LMS integration for instructors
+# یکپارچه‌سازی با سامانه مدیریت یادگیری (LMS) برای مدرسان
 
-PrairieLearn can connect to Learning Management Systems (LMSes) using [LTI 1.3](https://www.1edtech.org/standards/lti) technology. This allows for assignment linking and grade syncing.
+سامانه PrairieLearn می‌تواند با استفاده از فناوری [LTI 1.3](https://www.1edtech.org/standards/lti) به سامانه‌های مدیریت یادگیری (LMS) متصل شود. این قابلیت امکان پیوند دادن تکالیف و همگام‌سازی نمرات را فراهم می‌کند.
 
-PrairieLearn LTI 1.3 integration is primarily designed and documented for Canvas. Support for other LMS platforms will be coming in the future.
+یکپارچه‌سازی LTI 1.3 در PrairieLearn اساساً برای سامانه Canvas طراحی و مستندسازی شده است. پشتیبانی از سایر پلتفرم‌های LMS در آینده اضافه خواهد شد.
 
-## Make sure you have the right permissions
+## اطمینان از داشتن دسترسی‌های لازم
 
-Linking a PrairieLearn course instance with a Canvas course requires the following permissions:
+پیوند دادن یک دوره PrairieLearn با یک درس در Canvas به مجوزها و دسترسی‌های زیر نیاز دارد:
 
-- Canvas
-  - Teacher or Designer
-- PrairieLearn Course
-  - Editor
-- PrairieLearn Course Instance
-  - [Student Data Editor](course/index.md#course-staff)
+- در Canvas:
+  - مدرس (Teacher) یا طراح (Designer)
+- در درس PrairieLearn:
+  - ویرایشگر (Editor)
+- در دوره PrairieLearn (Course Instance):
+  - [ویرایشگر داده‌های دانشجو (Student Data Editor)](course/index.md#course-staff)
 
-To check this, in PrairieLearn go to the "Staff" tab and make sure that the "Student data access" column has an "Editor" badge for the appropriate course instance, in the row corresponding to your name. If you don't have student data editor permissions, add them or ask the course owner to do so.
+برای بررسی این موضوع، در PrairieLearn به برگه "Staff" (کادر آموزشی) بروید و اطمینان حاصل کنید که در ستون "Student data access" برای دوره مربوطه، در ردیف نام شما نشان "Editor" وجود دارد. اگر دسترسی ویرایشگر داده‌های دانشجو را ندارید، آن را اضافه کنید یا از مالک درس بخواهید این کار را انجام دهد.
 
-## Setting up your Canvas course for PrairieLearn
+## آماده‌سازی درس Canvas برای PrairieLearn
 
-The first step is to enable PrairieLearn in your Canvas course. In your Canvas course,
-go to "Settings" in the left-hand menu, then choose the "Navigation" tab and find
-PrairieLearn in the list of hidden items. Drag PrairieLearn to the top visible list and
-click Save. When the page reloads, you should see PrairieLearn in your Canvas course left menu.
+گام نخست، فعال‌سازی PrairieLearn در درس Canvas شما است. در درس Canvas خود،
+به بخش "Settings" (تنظیمات) در منوی سمت چپ بروید، سپس برگه "Navigation" (ناوبری) را انتخاب کرده و PrairieLearn را در فهرست موارد پنهان پیدا کنید.
+PrairieLearn را بکشید و در بالای فهرست موارد قابل مشاهده رها کنید و روی دکمه Save کلیک نمایید.
+پس از بارگذاری مجدد صفحه، باید پیوند PrairieLearn را در منوی سمت چپ درس Canvas خود مشاهده کنید.
 
-!!! note
+!!! note "نکته"
 
-    If PrairieLearn does not appear under Settings → Navigation in your Canvas course:
+    اگر PrairieLearn در درس Canvas شما در مسیر Settings ← Navigation نمایش داده نمی‌شود:
 
-    1. Confirm you have a Teacher or Designer role (only these roles can enable navigation items).
-    2. Check with a Canvas administrator that the PrairieLearn LTI 1.3 tool has been configured at your institution.
-      - If it is already installed, the admin may still need to enable or expose the tool for your sub‑account or specifically for your course so it appears in Navigation.
-      - If it has never been installed, a Canvas administrator must coordinate installation with the PrairieLearn team.
-    3. After installation/enabling, revisit Settings → Navigation to move PrairieLearn into the active (visible) list and Save.
+    ۱. مطمئن شوید که نقش Teacher یا Designer دارید (تنها این نقش‌ها می‌توانند آیتم‌های ناوبری را فعال کنند).
+    ۲. با مدیر سیستم Canvas مؤسسه خود بررسی کنید که آیا ابزار LTI 1.3 سامانه PrairieLearn در مؤسسه شما پیکربندی شده است یا خیر.
+      - اگر از قبل نصب شده است، ممکن است مدیر سیستم همچنان نیاز داشته باشد ابزار را برای زیرحساب (Sub-account) شما یا به طور اختصاصی برای درس شما فعال/نمایان کند تا در Navigation ظاهر شود.
+      - اگر تا به حال نصب نشده است، مدیر Canvas باید فرایند نصب را با تیم PrairieLearn هماهنگ کند.
+    ۳. پس از نصب/فعال‌سازی، مجدداً به بخش Settings ← Navigation مراجعه کرده و PrairieLearn را به فهرست فعال (قابل مشاهده) منتقل کرده و Save را بزنید.
 
-    Canvas administrators who need to configure the integration can contact <support@prairielearn.com>.
+    مدیران Canvas که نیاز به پیکربندی این یکپارچه‌سازی دارند می‌توانند با <support@prairielearn.com> تماس بگیرند.
 
-The next step is to set up a connection between the Canvas course and a PrairieLearn course
-instance. As a Canvas Teacher, click the PrairieLearn left menu link. You will be presented
-a page to select a course instance to link.
+گام بعدی برقراری اتصال بین درس Canvas و یک دوره (Course Instance) در PrairieLearn است. به عنوان مدرس در Canvas، روی پیوند PrairieLearn در منوی سمت چپ کلیک کنید. صفحه‌ای به شما نمایش داده می‌شود تا دوره مورد نظر را برای اتصال انتخاب نمایید.
 
-If students click the left menu PrairieLearn link before you have connected a course instance,
-they will see a 'come back later' message. After a course instance is connected, the link will
-take them into your course instance.
+اگر دانشجویان قبل از اینکه شما دوره‌ای را متصل کرده باشید روی پیوند PrairieLearn در منوی سمت چپ کلیک کنند، پیام «بعداً مراجعه کنید» (come back later) را خواهند دید. پس از برقراری اتصال دوره، این پیوند آنها را مستقیماً به دوره درسی شما هدایت خواهد کرد.
 
-Canvas courses must be "Published" for certain integration functionality, like grade reporting, to work.
+درس‌های Canvas باید برای عملکرد برخی از قابلیت‌های یکپارچه‌سازی مانند گزارش نمرات، در وضعیت "Published" (منتشر شده) باشند.
 
-## "LMS connections" tab in your PrairieLearn course instance
+## برگه "LMS connections" در دوره درسی PrairieLearn
 
-Use the "LMS connections" tab in your course instance to manage all LMS connections.
+از برگه "LMS connections" در دوره درسی خود برای مدیریت تمامی اتصالات LMS استفاده کنید.
 
-### Linking assessments
+### پیوند دادن ارزیابی‌ها (Linking assessments)
 
-To be able to send grades from PrairieLearn to Canvas, you first need to link the PrairieLearn
-assessment with a Canvas assignment. There are two ways to do this:
+برای اینکه بتوانید نمرات را از PrairieLearn به Canvas ارسال کنید، ابتدا باید ارزیابی PrairieLearn را با یک تکلیف (Assignment) در Canvas پیوند دهید. برای این کار دو روش وجود دارد:
 
-1. **Create a new Canvas assignment for the PrairieLearn assessment.** In PrairieLearn, go to your course instance and then the "LMS connections" tab. Click the "Link assignment" button and then the "Create a new assignment" button. This will create a new Canvas assignment and link it to the PrairieLearn assessment.
-2. **Link an existing Canvas assignment.** If you already have a Canvas assignment that you want to link to a PrairieLearn assessment, there is a multistep procedure:
-   1. In PrairieLearn, go to the assessment, then the "Settings" tab, and copy the "Student link".
-   2. In Canvas, go to the Assignments page. Next to your assignment click the three-dots menu and select "Edit". Change the "Submission Type" to "External Tool" and set the "External Tool URL" to the student link that you copied above from PrairieLearn. Check "Load This Tool In A New Tab". Save the assignment changes.
-   3. In PrairieLearn, go to your course instance and then the "LMS connections" tab. Click the "Link assignment" button and then the "Pick from existing" button. Select the Canvas assignment and click "Link assignment".
+۱. **ایجاد یک تکلیف جدید در Canvas برای ارزیابی PrairieLearn:** در PrairieLearn، به دوره درسی خود رفته و سپس برگه "LMS connections" را باز کنید. روی دکمه "Link assignment" و سپس دکمه "Create a new assignment" کلیک کنید. این کار یک تکلیف جدید در Canvas ایجاد کرده و آن را به ارزیابی PrairieLearn متصل می‌کند.
+۲. **پیوند دادن به یک تکلیف موجود در Canvas:** اگر از قبل تکلیفی در Canvas دارید که می‌خواهید آن را به یک ارزیابی PrairieLearn پیوند دهید، مراحل زیر را دنبال کنید:
+   ۱. در PrairieLearn به ارزیابی مورد نظر بروید، سپس به برگه "Settings" رفته و "Student link" را کپی کنید.
+   ۲. در Canvas، به صفحه تکالیف (Assignments) بروید. در کنار تکلیف مورد نظر، روی منوی سه‌نقطه کلیک کرده و "Edit" را انتخاب نمایید. گزینه "Submission Type" را به "External Tool" تغییر دهید و "External Tool URL" را با پیوند دانشجویی که در مرحله قبل از PrairieLearn کپی کردید تنظیم کنید. گزینه "Load This Tool In A New Tab" را تیک بزنید. تغییرات تکلیف را ذخیره کنید.
+   ۳. در PrairieLearn، به دوره درسی خود و سپس به برگه "LMS connections" بروید. روی دکمه "Link assignment" و سپس دکمه "Pick from existing" کلیک کنید. تکلیف Canvas مورد نظر را انتخاب کرده و روی "Link assignment" کلیک نمایید.
 
-### Sending grades from PrairieLearn to Canvas
+### ارسال نمرات از PrairieLearn به Canvas
 
-To send grades you first need to link the PrairieLearn assessment with a Canvas assignment, as described above. After doing this, go to your course instance's "LMS connections" tab, and then click "Send grades" for the linked assessment. Grades are always sent as percentage scores out of 100. These are the percentage "Score" values that PrairieLearn shows on the "Gradebook" page and the "Students" tab inside each assessment. Canvas will scale those percentages to the total points configured in the Canvas assignment.
+برای ارسال نمرات، همان‌طور که در بالا توضیح داده شد ابتدا باید ارزیابی PrairieLearn را به یک تکلیف Canvas متصل کنید. پس از انجام این کار، به برگه "LMS connections" در دوره درسی خود بروید و برای ارزیابی متصل‌شده روی "Send grades" کلیک کنید. نمرات همیشه به صورت نمرات درصدی از ۱۰۰ ارسال می‌شوند. این مقادیر، همان درصد "Score" هستند که PrairieLearn در صفحه "Gradebook" و برگه "Students" در داخل هر ارزیابی نمایش می‌دهد. سامانه Canvas این درصدها را متناسب با کل امتیازات تعیین‌شده برای تکلیف در Canvas تغییر مقیاس می‌دهد.
 
-If you receive errors about students not being found in the course, check that your Canvas course is published before sending grades.
+اگر خطاهایی مبنی بر پیدا نشدن دانشجویان در درس دریافت کردید، بررسی کنید که درس Canvas شما قبل از ارسال نمرات منتشر (Published) شده باشد.
 
-### Unlinking assessments
+### لغو پیوند ارزیابی‌ها (Unlinking assessments)
 
-You can unlink a single PrairieLearn assessment from Canvas. This can be helpful if you want to link it to a different Canvas assignment. Unlinking does not change any grades in Canvas or PrairieLearn.
+شما می‌توانید پیوند یک ارزیابی تکی PrairieLearn را از Canvas قطع کنید. این ویژگی زمانی مفید است که بخواهید آن را به تکلیف متفاوتی در Canvas متصل کنید. لغو پیوند هیچ نمره‌ای را در Canvas یا PrairieLearn تغییر نمی‌دهد.
 
-To do this, go to your course instance in PrairieLearn, then the "LMS connections" tab. For the assessment you want to unlink, select the dropdown arrow on the right of the "Send grades" button and select "Unlink assignment".
+برای انجام این کار، در PrairieLearn به دوره درسی خود و سپس برگه "LMS connections" بروید. برای ارزیابی‌ای که می‌خواهید پیوند آن را لغو کنید، روی فلش کشویی سمت راست دکمه "Send grades" کلیک کرده و گزینه "Unlink assignment" را انتخاب نمایید.
 
-## Exporting Canvas-compatible CSV files
+## خروجی گرفتن فایل‌های CSV سازگار با Canvas
 
-If your institution does not use LTI 1.3, or if you prefer to upload grades manually, PrairieLearn can generate CSV files formatted for Canvas's gradebook import. These files include the column headers and "Points Possible" row that Canvas expects.
+اگر مؤسسه شما از LTI 1.3 استفاده نمی‌کند، یا اگر ترجیح می‌دهید نمرات را به صورت دستی بارگذاری کنید، PrairieLearn می‌تواند فایل‌های CSV قالب‌بندی‌شده برای درون‌ریزی (Import) در دفترچه نمرات Canvas تولید کند. این فایل‌ها شامل سرستون‌ها و ردیف "Points Possible" مورد انتظار Canvas هستند.
 
-Canvas CSV exports are available from two places:
+خروجی‌های CSV سامانه Canvas از دو بخش در دسترس هستند:
 
-- **Gradebook page** — export scores for multiple assessments at once.
-- **Assessment Downloads page** — export scores or points for a single assessment.
+- **صفحه Gradebook (دفتر نمرات)** — خروجی گرفتن هم‌زمان نمرات چندین ارزیابی.
+- **صفحه Assessment Downloads (دانلودهای ارزیابی)** — خروجی گرفتن نمرات یا امتیازات برای یک ارزیابی واحد.
 
-### Matching PrairieLearn students to Canvas students
+### تطبیق دانشجویان PrairieLearn با دانشجویان Canvas
 
-By default, the CSV export leaves identity columns (ID, SIS User ID, SIS Login ID, Section) empty. To have Canvas correctly associate rows with students, upload a Canvas gradebook CSV so PrairieLearn can fill in those columns with the values Canvas expects.
+به طور پیش‌فرض، فایل خروجی CSV ستون‌های هویتی (ID، SIS User ID، SIS Login ID، Section) را خالی می‌گذارد. برای اینکه Canvas بتواند ردیف‌ها را به درستی به دانشجویان مرتبط سازد، یک فایل CSV دفترچه نمرات Canvas را آپلود کنید تا PrairieLearn بتواند این ستون‌ها را با مقادیر مورد انتظار Canvas پر کند.
 
-#### How to export a gradebook from Canvas
+#### نحوه خروجی گرفتن از دفترچه نمرات در Canvas
 
-1. In your Canvas course, go to **Grades**.
-2. Click **Export** (or **Export Entire Gradebook**) to download the CSV file.
+۱. در درس Canvas خود، به بخش **Grades** (نمرات) بروید.
+۲. روی **Export** (یا **Export Entire Gradebook**) کلیک کنید تا فایل CSV دانلود شود.
 
-#### Exporting grades with matched identity values
+#### خروجی گرفتن نمرات با مقادیر هویتی تطبیق‌یافته
 
-1. Open the Canvas CSV export dialog in PrairieLearn (from either the Gradebook page or the Assessment Downloads page).
-2. In the **Canvas gradebook import** section, upload the CSV file you exported from Canvas.
-3. PrairieLearn will automatically match students and show a summary of how many were matched, ambiguous, and unmatched.
-4. If any students are ambiguous or unmatched, expand the detail sections below the summary to see which students are affected. You will be able to correctly assign the grades during the import step within Canvas.
-5. Click **Download** to generate the CSV with the matched identity columns.
+۱. کادر گفتگوی خروجی CSV برای Canvas را در PrairieLearn باز کنید (از صفحه Gradebook یا صفحه Assessment Downloads).
+۲. در بخش **Canvas gradebook import**، فایل CSV را که از Canvas دانلود کرده‌اید آپلود کنید.
+۳. سامانه PrairieLearn به طور خودکار دانشجویان را تطبیق می‌دهد و خلاصه‌ای از تعداد دانشجویان تطبیق‌یافته، مبهم و تطبیق‌نیافته را نمایش می‌دهد.
+۴. اگر دانشجوی مبهم یا تطبیق‌نیافته‌ای وجود دارد، بخش‌های جزئیات را در زیر خلاصه باز کنید تا ببینید کدام دانشجویان تحت تأثیر قرار گرفته‌اند. شما می‌توانید نمرات را در مرحله درون‌ریزی در Canvas به درستی اختصاص دهید.
+۵. روی **Download** کلیک کنید تا فایل CSV با ستون‌های هویتی تطبیق‌داده‌شده ایجاد شود.
 
-!!! note
+!!! note "نکته"
 
-    - Unmatched PrairieLearn students will appear in the export with empty identity columns.
-    - Unmatched Canvas students are not included in the export because no related PrairieLearn student record could be found.
-    - Matching is optional — the CSV can be exported without uploading a Canvas gradebook file. In this case, identity columns will be empty.
+    - دانشجویان PrairieLearn که تطبیق داده نشده‌اند با ستون‌های هویتی خالی در فایل خروجی ظاهر می‌شوند.
+    - دانشجویان Canvas که تطبیق داده نشده‌اند در فایل خروجی گنجانده نمی‌شوند زیرا هیچ رکوردی از آنها در PrairieLearn پیدا نشده است.
+    - تطبیق اختیاری است — فایل CSV را می‌توان بدون آپلود فایل دفترچه نمرات Canvas نیز خروجی گرفت. در این حالت، ستون‌های هویتی خالی خواهند بود.
