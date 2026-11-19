@@ -1,55 +1,55 @@
-# Course instance configuration
+# پیکربندی دوره
 
-A _course instance_ corresponds to a single offering of a [course](../course/index.md), such as "Fall 2016", or possibly "Fall 2016, Section 1". Each time you teach a course in a new semester or section, you should create a new course instance.
+یک _دوره (Course instance)_ متناظر با یک بار ارائه یک [درس](../course/index.md) است، مانند «Fall 2016» یا احتمالاً «Fall 2016, Section 1». هر بار که درسی را در یک نیم‌سال یا گروه جدید تدریس می‌کنید، باید یک دوره جدید ایجاد نمایید.
 
-## Creating or copying a course instance
+## ایجاد یا کپی کردن یک دوره
 
-To create a new course instance from the PrairieLearn web interface:
+برای ایجاد یک دوره جدید از طریق رابط کاربری وب PrairieLearn:
 
-1. Navigate to the **Course instances** tab of your course. In the top right, click the **Add course instance** button.
+1. به تب **Course instances** در درس خود بروید. در گوشه بالا سمت راست، روی دکمه **Add course instance** کلیک کنید.
 
-If you want to reuse assessments and settings from a previous semester, you can copy an existing course instance instead of creating one from scratch:
+اگر می‌خواهید از ارزیابی‌ها و تنظیمات یک نیم‌سال قبلی مجدداً استفاده کنید، می‌توانید به جای ایجاد یک دوره از ابتدا، یک دوره موجود را کپی کنید:
 
-1. Open the course instance you want to copy (e.g., your "Fall 2024" instance).
-2. Go to the **Settings** tab (under the "Instance settings" section of the sidebar), scroll to the bottom, and click **Make a copy of this course instance**.
+1. دوره‌ای را که می‌خواهید کپی کنید باز نمایید (مثلاً دوره «Fall 2024» خود را).
+2. به تب **Settings** (زیر بخش «Instance settings» در نوار کناری) بروید، به انتهای صفحه بروید و روی **Make a copy of this course instance** کلیک کنید.
 
 !!! note
 
-    Any time you edit or add an `infoCourseInstance.json` file on a local copy of PrairieLearn, you need to click the “Load from disk” button in the page header so that the local PrairieLearn server reloads the changes.
+    هر بار که فایل `infoCourseInstance.json` را در یک نسخه محلی PrairieLearn ویرایش یا اضافه می‌کنید، باید روی دکمه «Load from disk» در بالای صفحه کلیک کنید تا سرور محلی PrairieLearn تغییرات را مجدداً بارگذاری کند.
 
-## Directory layout
+## ساختار پوشه‌ها
 
-A course instance like `Fa16` is contained in one directory and has a configuration file (`infoCourseInstance.json`) and a subdirectory (`assessments`) containing a list of [assessments](../assessment/overview.md). The `assessments` directory should always exist, but may be empty if no assessments have been added. A course instance may be located in the root `courseInstances` directory, or any subfolder that is not a courseInstance itself.
+یک دوره مانند `Fa16` در یک دایرکتوری قرار دارد و شامل یک فایل پیکربندی (`infoCourseInstance.json`) و یک زیرپوشه (`assessments`) شامل فهرستی از [ارزیابی‌ها](../assessment/overview.md) است. پوشه `assessments` همیشه باید وجود داشته باشد، اما اگر ارزیابی‌ای اضافه نشده باشد ممکن است خالی باشد. یک دوره می‌تواند در پوشه ریشه `courseInstances` یا هر زیرپوشه‌ای که خود یک دوره نیست، قرار گیرد.
 
 ```bash
 exampleCourse
 `-- courseInstances
-    +-- Fa16                          # Fall 2016 course instance
-    |   +-- infoCourseInstance.json   # configuration file (see below)
+    +-- Fa16                          # دوره پاییز ۲۰۱۶
+    |   +-- infoCourseInstance.json   # فایل پیکربندی (به زیر مراجعه کنید)
     |   +-- assessments
-    |   |   +-- hw01                  # first homework for Fa16
-    |   |   |   `-- ...               # files for Homework 1
-    |   |   `-- hw02                  # second homework for Fa16
-    |   |       `-- ...               # files for Homework 2
+    |   |   +-- hw01                  # اولین تکلیف برای Fa16
+    |   |   |   `-- ...               # فایل‌های تکلیف ۱
+    |   |   `-- hw02                  # دومین تکلیف برای Fa16
+    |   |       `-- ...               # فایل‌های تکلیف ۲
     |   +-- clientFilesCourseInstance # (1)!
-    |   |   `-- Fa16_rules.pdf        # files for Fall 2016
+    |   |   `-- Fa16_rules.pdf        # فایل‌های پاییز ۲۰۱۶
     `-- Sp17
-        +-- infoCourseInstance.json   # Spring 2017 configuration
+        +-- infoCourseInstance.json   # پیکربندی بهار ۲۰۱۷
         +-- assessments
-        |   `-- ...                   # Spring 2017 assessments
+        |   `-- ...                   # ارزیابی‌های بهار ۲۰۱۷
         +-- clientFilesCourseInstance # (2)!
-        |   `-- ...                   # files for Spring 2017
+        |   `-- ...                   # فایل‌های بهار ۲۰۱۷
 ```
 
-1. See [clientFiles and serverFiles](../clientServerFiles.md) for information on the `clientFilesCourseInstance` directory.
+1. برای اطلاعات بیشتر درباره دایرکتوری `clientFilesCourseInstance` به [clientFiles و serverFiles](../clientServerFiles.md) مراجعه کنید.
 
-2. See [clientFiles and serverFiles](../clientServerFiles.md) for information on the `clientFilesCourseInstance` directory.
+2. برای اطلاعات بیشتر درباره دایرکتوری `clientFilesCourseInstance` به [clientFiles و serverFiles](../clientServerFiles.md) مراجعه کنید.
 
-See an [example `courseInstances` directory](https://github.com/PrairieLearn/PrairieLearn/blob/master/exampleCourse/courseInstances) in the PrairieLearn example course.
+به [یک نمونه دایرکتوری `courseInstances`](https://github.com/PrairieLearn/PrairieLearn/blob/master/exampleCourse/courseInstances) در درس نمونه PrairieLearn مراجعه نمایید.
 
 ## `infoCourseInstance.json`
 
-This file specifies basic information about the course instance:
+این فایل اطلاعات پایه‌ای در مورد دوره را مشخص می‌کند:
 
 ```json title="infoCourseInstance.json"
 {
@@ -62,11 +62,11 @@ This file specifies basic information about the course instance:
 }
 ```
 
-See the [reference for `infoCourseInstance.json`](../schemas/infoCourseInstance.md) for more information about what can be added to this file.
+برای اطلاعات بیشتر درباره آنچه می‌تواند به این فایل اضافه شود، به [مرجع `infoCourseInstance.json`](../schemas/infoCourseInstance.md) مراجعه کنید.
 
-## Publishing controls
+## کنترل‌های انتشار
 
-The course instance `publishing` configuration determines when the course instance is available to students. Course staff always have access regardless of publishing settings. The example below makes the course instance available to students between the start (Jan 19th) and end (May 13th) of the semester:
+پیکربندی `publishing` در دوره مشخص می‌کند که دوره چه زمانی در دسترس دانشجویان قرار می‌گیرد. کادر آموزشی درس صرف‌نظر از تنظیمات انتشار، همیشه دسترسی دارند. مثال زیر دوره را در فاصله بین شروع (۱۹ ژانویه) و پایان (۱۳ مه) نیم‌سال در دسترس دانشجویان قرار می‌دهد:
 
 ```json title="infoCourseInstance.json"
 {
@@ -77,23 +77,23 @@ The course instance `publishing` configuration determines when the course instan
 }
 ```
 
-Both `startDate` and `endDate` must be specified together. This can be edited on the **Publishing** page (Course Instance → Instance settings → Publishing).
+هر دو مقدار `startDate` و `endDate` باید با هم مشخص شوند. این مورد را می‌توان در صفحه **Publishing** ویرایش کرد (Course Instance → Instance settings → Publishing).
 
-### Publishing extensions
+### تمدیدهای انتشار
 
-You can extend the end date of the course instance to particular students by creating a publishing extension through the UI (Course Instance -> Settings -> Publishing -> Extensions).
+می‌توانید با ایجاد یک تمدید انتشار از طریق رابط کاربری (Course Instance -> Settings -> Publishing -> Extensions)، تاریخ پایان دوره را برای دانشجویان خاصی تمدید کنید.
 
-!!! warning "`allowAccess` is deprecated"
+!!! warning "`allowAccess` منسوخ شده است"
 
-    The previous system, `allowAccess`, allowed you to (1) list UIDs in the JSON file, (2) change the start date for certain students and (3) set the end date to a date _before_ the overall end date. The new system does not support these features.
+    سیستم قبلی، یعنی `allowAccess`، به شما امکان می‌داد (۱) شناسه‌های UID را در فایل JSON فهرست کنید، (۲) تاریخ شروع را برای دانشجویان خاصی تغییر دهید و (۳) تاریخ پایان را روی تاریخی _قبل_ از تاریخ پایان کلی قرار دهید. سیستم جدید از این ویژگی‌ها پشتیبانی نمی‌کند.
 
-### Controlling access by institution
+### کنترل دسترسی بر اساس موسسه
 
-By default, only students that belong to the course's institution can access the course instance. You can use the `institution` property to allow access from other institutions. It can be set to `"Any"` to allow access from all institutions, or to a specific institution name, such as `"UIUC"`, or for LTI 1.1-linked courses, to `"LTI"`. For instance, you can use the following rule to allow students from any institution to access the course instance between the specified dates:
+به‌طور پیش‌فرض، فقط دانشجویانی که متعلق به مؤسسه درس هستند می‌توانند به دوره دسترسی داشته باشند. می‌توانید از ویژگی `institution` برای مجاز کردن دسترسی از سایر مؤسسات استفاده کنید. این ویژگی می‌تواند روی `"Any"` تنظیم شود تا دسترسی از همه مؤسسات مجاز باشد، یا روی نام یک مؤسسه خاص، مانند `"UIUC"`، یا برای دوره‌های متصل به LTI 1.1، روی `"LTI"` تنظیم گردد. برای مثال، می‌توانید از قانون زیر استفاده کنید تا به دانشجویان هر مؤسسه‌ای اجازه دهید بین تاریخ‌های مشخص‌شده به دوره دسترسی پیدا کنند:
 
-!!! warning "Deprecated"
+!!! warning "منسوخ شده"
 
-    The `institution` property in `allowAccess` is deprecated. Use the `selfEnrollment.restrictToInstitution` setting instead. See [enrollment controls](#enrollment-controls) for details.
+    ویژگی `institution` در `allowAccess` منسوخ شده است. به جای آن از تنظیم `selfEnrollment.restrictToInstitution` استفاده کنید. برای جزئیات به [کنترل‌های ثبت‌نام](#کنترل‌های-ثبت‌نام) مراجعه نمایید.
 
 ```json title="infoCourseInstance.json"
 {
@@ -107,19 +107,19 @@ By default, only students that belong to the course's institution can access the
 }
 ```
 
-### Migrating from `allowAccess`
+### مهاجرت از `allowAccess`
 
 !!! note
 
-    Most users will not need to migrate from `allowAccess` to publishing manually. Copying or creating a course instance in the UI will automatically switch to the new publishing system. If you would like to migrate manually, you can follow the steps below.
+    بیشتر کاربران نیازی به مهاجرت دستی از `allowAccess` به سیستم انتشار نخواهند داشت. کپی کردن یا ایجاد یک دوره در رابط کاربری به‌طور خودکار به سیستم انتشار جدید منتقل می‌شود. اگر مایلید به‌صورت دستی مهاجرت کنید، می‌توانید مراحل زیر را دنبال نمایید.
 
-!!! warning "LTI 1.1 courses should not migrate"
+!!! warning "دوره‌های LTI 1.1 نباید مهاجرت کنند"
 
-    Courses using LTI 1.1 should not migrate to the new publishing system. LTI 1.1 requires an `allowAccess` rule with `"institution": "LTI"` to function properly.
+    دوره‌هایی که از LTI 1.1 استفاده می‌کنند نباید به سیستم انتشار جدید مهاجرت کنند. LTI 1.1 برای عملکرد صحیح به یک قانون `allowAccess` با `"institution": "LTI"` نیاز دارد.
 
-To migrate from `allowAccess` to publishing extensions:
+برای مهاجرت از `allowAccess` به تمدیدهای انتشار:
 
-??? example "Sample old `allowAccess` configuration"
+??? example "نمونه پیکربندی قدیمی `allowAccess`"
 
     ```json title="infoCourseInstance.json"
     {
@@ -140,7 +140,7 @@ To migrate from `allowAccess` to publishing extensions:
     }
     ```
 
-1. Find the allowAccess rule that contains no other settings (`uids`, `institution`). Create a new `publishing` section in your `infoCourseInstance.json` file, containing the start and end dates for your term.
+1. قانونی از allowAccess را پیدا کنید که هیچ تنظیم دیگری ندارد (فاقد `uids`، `institution`). یک بخش جدید `publishing` در فایل `infoCourseInstance.json` خود بسازید که شامل تاریخ‌های شروع و پایان ترم شما باشد.
 
    ```json title="infoCourseInstance.json"
    {
@@ -151,15 +151,15 @@ To migrate from `allowAccess` to publishing extensions:
    }
    ```
 
-2. For allowAccess rules with the `uids` field set, note down the UIDs and `endDate` of the rule. Then, delete the `allowAccess` property from your `infoCourseInstance.json` file, and sync your course.
+2. برای قوانین allowAccess که فیلد `uids` در آن‌ها تنظیم شده است، شناسه‌های UID و `endDate` آن قانون را یادداشت کنید. سپس، ویژگی `allowAccess` را از فایل `infoCourseInstance.json` خود حذف کرده و درس خود را همگام‌سازی (Sync) نمایید.
 
-3. Navigate to `Course Instance -> Settings -> Publishing -> Extensions` in the UI. In the publishing extensions section, for each rule you had previously, add an extension that will replace it, filling in the UIDs and `endDate`. Extensions are automatically saved and applied.
+3. در رابط کاربری به مسیر `Course Instance -> Settings -> Publishing -> Extensions` بروید. در بخش تمدیدهای انتشار، برای هر قانونی که قبلاً داشتید، یک تمدید جایگزین اضافه کنید و UIDها و `endDate` را وارد نمایید. تمدیدها به‌طور خودکار ذخیره و اعمال می‌شوند.
 
-??? example "Adding an extension"
+??? example "افزودن تمدید"
 
-    ![Modal adding an extension for the students in the sample configuration](./publishing-page-add-extension.png)
+    ![مودال افزودن یک تمدید برای دانشجویان در پیکربندی نمونه](./publishing-page-add-extension.png)
 
-??? example "New `publishing` configuration"
+??? example "پیکربندی جدید `publishing`"
 
     ```json title="infoCourseInstance.json"
     {
@@ -170,25 +170,25 @@ To migrate from `allowAccess` to publishing extensions:
     }
     ```
 
-    ![The migrated publishing configuration](./publishing-page-example-with-extensions.png)
+    ![پیکربندی مهاجرت‌یافته انتشار](./publishing-page-example-with-extensions.png)
 
-## Enrollment controls
+## کنترل‌های ثبت‌نام
 
-Students can enroll in a course instance through a few different ways:
+دانشجویان می‌توانند از چند روش مختلف در یک دوره ثبت‌نام کنند:
 
-1. They can use a URL specific to the course instance or [to one of its assessments](../assessment/configuration.md#linking-to-assessments). You can find the "student link" on the "Settings" tab of the course instance. This link points students to the list of assessments associated to the course instance, enrolling them automatically in the course instance if they are not yet enrolled.
+1. آن‌ها می‌توانند از یک نشانی اینترنتی (URL) ویژه آن دوره یا [یکی از ارزیابی‌های آن](../assessment/configuration.md#linking-to-assessments) استفاده کنند. می‌توانید «student link» (لینک دانشجو) را در تب «Settings» دوره بیابید. این لینک دانشجویان را به فهرست ارزیابی‌های مرتبط با دوره هدایت می‌کند و اگر هنوز ثبت‌نام نکرده باشند، آن‌ها را به‌طور خودکار در دوره ثبت‌نام می‌نماید.
 
-2. They can use a self-enrollment code. You can find the enrollment code on the "Settings" tab of the course instance after enabling "Use enrollment code for self-enrollment". Students can enroll in a course by clicking on the "Add course" button on their PrairieLearn homepage and entering the enrollment code.
+2. آن‌ها می‌توانند از یک کد ثبت‌نام خودکار استفاده کنند. پس از فعال‌سازی «Use enrollment code for self-enrollment»، می‌توانید کد ثبت‌نام را در تب «Settings» دوره پیدا کنید. دانشجویان می‌توانند با کلیک روی دکمه «Add course» در صفحه اصلی PrairieLearn خود و وارد کردن کد ثبت‌نام، در دوره ثبت‌نام نمایند.
 
-3. They can be invited to a course instance by an instructor. Instructors can invite students to a course instance by visiting the "Students" tab of the course instance and clicking the "Invite" button. Invites will show up on the student's PrairieLearn homepage.
+3. آن‌ها می‌توانند توسط یک مدرس به دوره دعوت شوند. مدرسان می‌توانند با مراجعه به تب «Students» در دوره و کلیک روی دکمه «Invite»، دانشجویان را به دوره دعوت کنند. دعوت‌نامه‌ها در صفحه اصلی PrairieLearn دانشجو نمایش داده خواهند شد.
 
-### Enrollment security
+### امنیت ثبت‌نام
 
-There are a few settings that can be changed to control who can enroll in a course instance, and when they can enroll.
+چندین تنظیم وجود دارد که می‌توان برای کنترل اینکه چه کسانی می‌توانند در یک دوره ثبت‌نام کنند و چه زمانی می‌توانند ثبت‌نام کنند، آن‌ها را تغییر داد.
 
-#### Institution restrictions
+#### محدودیت‌های مؤسسه
 
-By default, only students that belong to the course's institution can access the course instance. If you want to allow all students to be able to enroll in the course instance, not just those in the same institution as the course instance, you can set the `restrictToInstitution` property to `false` in the `selfEnrollment` section of `infoCourseInstance.json`.
+به‌طور پیش‌فرض، فقط دانشجویانی که متعلق به مؤسسه درس هستند می‌توانند به دوره دسترسی داشته باشند. اگر می‌خواهید به همه دانشجویان اجازه دهید بتوانند در دوره ثبت‌نام کنند (نه فقط کسانی که در همان مؤسسه دوره هستند)، می‌توانید ویژگی `restrictToInstitution` را در بخش `selfEnrollment` در فایل `infoCourseInstance.json` روی `false` تنظیم کنید.
 
 ```json title="infoCourseInstance.json"
 {
@@ -198,13 +198,13 @@ By default, only students that belong to the course's institution can access the
 }
 ```
 
-#### Rotating enrollment codes
+#### چرخش کدهای ثبت‌نام
 
-If an enrollment code was spread to students outside of your course, you may want to revoke it. You can do this by clicking "Generate new self-enrollment link" on the "Settings" tab of the course instance. This will generate a new self-enrollment link and self-enrollment code and deactivate the old one.
+اگر یک کد ثبت‌نام در بین دانشجویان خارج از کلاس شما پخش شد، ممکن است بخواهید آن را باطل کنید. می‌توانید این کار را با کلیک روی «Generate new self-enrollment link» در تب «Settings» دوره انجام دهید. این کار یک لینک ثبت‌نام خودکار و کد ثبت‌نام خودکار جدید تولید کرده و کد قبلی را غیرفعال می‌کند.
 
-#### Disabling self-enrollment after a certain date
+#### غیرفعال کردن ثبت‌نام خودکار پس از یک تاریخ مشخص
 
-If you want to disable self-enrollment after a certain date, you can set the `beforeDate` property to the date you want to disable self-enrollment on in the `selfEnrollment` section of `infoCourseInstance.json`. After this date, students will not be able to enroll themselves in the course instance, but they can still be invited.
+اگر می‌خواهید ثبت‌نام خودکار را پس از یک تاریخ معین غیرفعال کنید، می‌توانید ویژگی `beforeDate` را در بخش `selfEnrollment` در فایل `infoCourseInstance.json` روی تاریخی تنظیم کنید که می‌خواهید ثبت‌نام خودکار در آن غیرفعال شود. پس از این تاریخ، دانشجویان دیگر قادر به ثبت‌نام خودکار در دوره نخواهند بود، اما همچنان می‌توان آن‌ها را دعوت کرد.
 
 ```json title="infoCourseInstance.json"
 {
@@ -214,13 +214,13 @@ If you want to disable self-enrollment after a certain date, you can set the `be
 }
 ```
 
-!!! tip "Recommended use case"
+!!! tip "مورد کاربرد پیشنهادی"
 
-    You might want to set this setting to the University-imposed deadline for students to add courses.
+    شاید بخواهید این تنظیم را روی مهلت تعیین‌شده توسط دانشگاه برای حذف و اضافه دروس توسط دانشجویان تنظیم نمایید.
 
-#### Completely disabling self-enrollment
+#### غیرفعال کردن کامل ثبت‌نام خودکار
 
-If you want to disable self-enrollment completely, you can set the `enabled` property to `false` in the `selfEnrollment` section of `infoCourseInstance.json`. This will mean that only invited students can enroll in the course instance, and a direct link or enrollment code is not sufficient to enroll.
+اگر می‌خواهید ثبت‌نام خودکار را به‌طور کامل غیرفعال کنید، می‌توانید ویژگی `enabled` را در بخش `selfEnrollment` در فایل `infoCourseInstance.json` روی `false` تنظیم نمایید. این بدان معنا خواهد بود که فقط دانشجویان دعوت‌شده می‌توانند در دوره ثبت‌نام کنند، و داشتن یک لینک مستقیم یا کد ثبت‌نام برای ثبت‌نام کافی نخواهد بود.
 
 ```json title="infoCourseInstance.json"
 {
@@ -230,25 +230,25 @@ If you want to disable self-enrollment completely, you can set the `enabled` pro
 }
 ```
 
-### Individual student management
+### مدیریت تک‌تک دانشجویان
 
-!!! warning "Not available with legacy access control"
+!!! warning "با سیستم کنترل دسترسی قدیمی در دسترس نیست"
 
-    Individual student management features are not available for courses using legacy access control (`allowAccess`). To use these features, you must [migrate to the new publishing system](#migrating-from-allowaccess).
+    ویژگی‌های مدیریت انفرادی دانشجویان برای دوره‌هایی که از سیستم کنترل دسترسی قدیمی (`allowAccess`) استفاده می‌کنند در دسترس نیست. برای استفاده از این ویژگی‌ها، باید [به سیستم انتشار جدید مهاجرت کنید](#مهاجرت-از-allowaccess).
 
-#### Inviting students
+#### دعوت از دانشجویان
 
-Students can be invited to a course instance by an instructor. Instructors can invite students to a course instance by visiting the "Students" tab of the course instance and clicking the "Invite" button. Invites will show up on the student's PrairieLearn homepage. If a student rejects an invitation, they can still join via a link to the course. However, the invitation will not show up on their homepage until they are re-invited. If an invited student accesses any link to the course (regardless of the current self-enrollment settings), they will automatically join the course.
+دانشجویان می‌توانند توسط یک مدرس به یک دوره دعوت شوند. مدرسان می‌توانند با مراجعه به تب «Students» در دوره و کلیک روی دکمه «Invite»، دانشجویان را به دوره دعوت کنند. دعوت‌نامه‌ها در صفحه اصلی PrairieLearn دانشجو نمایش داده خواهند شد. اگر دانشجویی یک دعوت‌نامه را رد کند، همچنان می‌تواند از طریق لینک به درس ملحق شود. با این حال، دعوت‌نامه در صفحه اصلی او نمایش داده نخواهد شد مگر اینکه مجدداً دعوت شود. اگر یک دانشجوی دعوت‌شده به هر لینکی از درس دسترسی پیدا کند (صرف‌نظر از تنظیمات فعلی ثبت‌نام خودکار)، به‌طور خودکار به درس ملحق خواهد شد.
 
-Note that invited students are not notified of their invitations. Instructors need to notify students using their own communication channels (e.g., email, LMS announcements, etc.), instructing students to visit PrairieLearn or the course instance self-enrollment link and accept the invitation.
+توجه داشته باشید که به دانشجویان دعوت‌شده درباره دعوت‌نامه‌شان پیامی فرستاده نمی‌شود. مدرسان باید با استفاده از کانال‌های ارتباطی خود (مانند ایمیل، اعلانات سامانه مدیریت یادگیری LMS، و غیره) به دانشجویان اطلاع دهند و از آن‌ها بخواهند به PrairieLearn یا لینک ثبت‌نام خودکار دوره مراجعه کرده و دعوت را بپذیرند.
 
-#### Blocking students
+#### مسدود کردن دانشجویان
 
-If you want to remove students from a course instance, you can do this by visiting the individual student page and clicking the "Block" button. They will immediately be removed from the course instance and will no longer be able to enroll themselves in the course instance. If you later click "Unblock" on their page, they will be immediately re-enrolled in the course instance.
+اگر می‌خواهید دانشجویانی را از یک دوره حذف کنید، می‌توانید این کار را با مراجعه به صفحه اختصاصی هر دانشجو و کلیک روی دکمه «Block» انجام دهید. آن‌ها بلافاصله از دوره حذف می‌شوند و دیگر قادر به ثبت‌نام خودکار در دوره نخواهند بود. اگر بعداً در صفحه آن‌ها روی «Unblock» کلیک کنید، بلافاصله مجدداً در دوره ثبت‌نام خواهند شد.
 
-## Assessment page organization
+## سازمان‌دهی صفحه ارزیابی‌ها
 
-Instructors can group assessments by course modules (topics, sections, or chapters in a course) or by assessment sets (homeworks, quizzes, exams, and so on). By default, all assessments in a course instance are grouped by `"Set"`. Setting the property `"groupAssessmentsBy"` to `"Module"` will group assessments together by module on the student assessments overview page.
+مدرسان می‌توانند ارزیابی‌ها را بر اساس ماژول‌های درس (موضوعات، بخش‌ها یا فصل‌های یک درس) یا بر اساس مجموعه‌های ارزیابی (تکالیف، کوییزها، آزمون‌ها و غیره) گروه‌بندی کنند. به‌طور پیش‌فرض، تمام ارزیابی‌ها در یک دوره بر اساس `"Set"` گروه‌بندی می‌شوند. تنظیم ویژگی `"groupAssessmentsBy"` روی `"Module"`، ارزیابی‌ها را بر اساس ماژول در صفحه نمای کلی ارزیابی‌های دانشجو در کنار یکدیگر گروه‌بندی می‌کند.
 
 ```json title="infoCourseInstance.json"
 {
@@ -256,11 +256,11 @@ Instructors can group assessments by course modules (topics, sections, or chapte
 }
 ```
 
-For more information about assessment modules, see [Course configuration](../course/index.md#assessment-modules).
+برای اطلاعات بیشتر درباره ماژول‌های ارزیابی، به [پیکربندی درس](../course/index.md#ماژول‌های-ارزیابی) مراجعه کنید.
 
-## Timezone
+## منطقه زمانی
 
-The default timezone for course instances is the timezone of the course. This can be changed with the `timezone` property in `infoCourseInstance.json`. For example:
+منطقه زمانی پیش‌فرض برای دوره‌ها، همان منطقه زمانی درس است. این مقدار را می‌توان با ویژگی `timezone` در `infoCourseInstance.json` تغییر داد. برای مثال:
 
 ```json title="infoCourseInstance.json"
 {
@@ -268,19 +268,19 @@ The default timezone for course instances is the timezone of the course. This ca
 }
 ```
 
-Allowable timezones are those in the TZ column in the [list of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), which is a display version of the [IANA Time Zone Database](https://www.iana.org/time-zones).
+مناطق زمانی مجاز مواردی هستند که در ستون TZ در [فهرست مناطق زمانی پایگاه داده tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) آمده‌اند که نسخه نمایشی از [پایگاه داده مناطق زمانی IANA](https://www.iana.org/time-zones) است.
 
-## Student labels
+## برچسب‌های دانشجو
 
-Student labels let you organize students with colored badges. Use them for sections, TA assignments, accommodations, or any other grouping. Each course instance can have up to 100 student labels. Label names cannot contain semicolons (`;`).
+برچسب‌های دانشجو به شما امکان می‌دهند دانشجویان را با نشان‌های رنگی سازمان‌دهی کنید. از آن‌ها برای گروه‌ها (Sections)، تکالیف دستیار آموزشی (TA assignments)، تسهیلات ویژه آموزشی (Accommodations)، یا هر گروه‌بندی دیگری استفاده کنید. هر دوره می‌تواند تا ۱۰۰ برچسب دانشجو داشته باشد. نام برچسب‌ها نمی‌تواند حاوی نقطه ویرگول (`;`) باشد.
 
-To review configured labels and their assigned students, go to **Students → Labels**. Users with student data viewer access can view that page. Users who have both course editor and student data editor access can create, rename, delete, and assign labels there by entering UIDs. Student data editors can also apply existing labels from the main Students page using batch actions, or from an individual student's page.
+برای مرور برچسب‌های پیکربندی‌شده و دانشجویان اختصاص‌یافته به آن‌ها، به مسیر **Students → Labels** بروید. کاربرانی که دسترسی بیننده داده‌های دانشجو (Student data viewer) دارند می‌توانند آن صفحه را مشاهده کنند. کاربرانی که هم دسترسی ویرایشگر درس (Course editor) و هم ویرایشگر داده‌های دانشجو (Student data editor) دارند، می‌توانند با وارد کردن شناسه‌های UID، برچسب‌ها را در آنجا ایجاد، تغییر نام، حذف و اختصاص دهند. ویرایشگران داده‌های دانشجو همچنین می‌توانند برچسب‌های موجود را از صفحه اصلی Students با استفاده از عملیات دسته‌جمعی (Batch actions)، یا از صفحه اختصاصی یک دانشجو اعمال نمایند.
 
-Labels appear in the student roster, gradebook, and student detail pages.
+برچسب‌ها در فهرست اسامی دانشجویان (Student roster)، دفتر نمرات (Gradebook)، و صفحات جزئیات دانشجو ظاهر می‌شوند.
 
-??? note "Defining labels in JSON"
+??? note "تعریف برچسب‌ها در JSON"
 
-    Labels can be defined in `infoCourseInstance.json`. Students must still be assigned to labels through the UI.
+    برچسب‌ها را می‌توان در `infoCourseInstance.json` تعریف کرد. با این حال دانشجویان همچنان باید از طریق رابط کاربری به برچسب‌ها اختصاص داده شوند.
 
     ```json title="infoCourseInstance.json"
     {
@@ -291,48 +291,48 @@ Labels appear in the student roster, gradebook, and student detail pages.
     }
     ```
 
-## LTI support
+## پشتیبانی از LTI
 
 !!! warning
 
-    LTI 1.1 support as described below is deprecated. We recommend using LTI 1.3 for all new course instances. See [the LTI 1.3 documentation](../lmsIntegrationInstructor.md) for more details.
+    پشتیبانی از LTI 1.1 به نحوی که در زیر توضیح داده شده، منسوخ گردیده است. ما توصیه می‌کنیم برای همه دوره‌های جدید از LTI 1.3 استفاده کنید. برای جزئیات بیشتر به [مستندات LTI 1.3](../lmsIntegrationInstructor.md) مراجعه فرمایید.
 
-### LTI Overview
+### نمای کلی LTI
 
-LTI, or Learning Tools Interoperability, is the ability for Learning Management Systems (LMSes) to link together. In our context, it means that sites like Coursera can link into assessments in PrairieLearn, give the student a PrairieLearn experience, and report the assessment score back to Coursera automatically.
+پروتکل LTI یا قابلیت همکاری ابزارهای یادگیری (Learning Tools Interoperability)، امکان پیوند سامانه‌های مدیریت یادگیری (LMSها) را به یکدیگر فراهم می‌کند. در زمینه کاری ما، این بدان معناست که سایت‌هایی مانند Coursera می‌توانند به ارزیابی‌ها در PrairieLearn پیوند داده شوند، تجربه کاری PrairieLearn را به دانشجو ارائه دهند، و نمره ارزیابی را به‌طور خودکار به Coursera گزارش کنند.
 
-PrairieLearn LTI support enables a new authentication source (that creates the user in PL and enrolls them in the appropriate course instance) with a grade reporting functionality. Everything else (course instance, assessment and question configuration and workflows) are the same. Assessment [access control](../assessment/accessControl.md) rules still apply for LTI-linked assessments.
+پشتیبانی LTI در PrairieLearn یک منبع احراز هویت جدید (که کاربر را در PL ایجاد کرده و در دوره مربوطه ثبت‌نام می‌کند) به همراه قابلیت گزارش نمره را فعال می‌سازد. سایر بخش‌ها (پیکربندی دوره، ارزیابی و سوالات و جریان‌های کاری) یکسان هستند. قوانین [کنترل دسترسی](../assessment/accessControl.md) به ارزیابی همچنان برای ارزیابی‌های متصل به LTI اعمال می‌شوند.
 
-### Enabling LTI support in a course instance
+### فعال‌سازی پشتیبانی LTI در یک دوره
 
-To point an LMS to use PrairieLearn LTI, you must first create a private LTI credential inside PrairieLearn. These credentials are then configured inside the LMS to connect to PrairieLearn.
+برای هدایت یک LMS به استفاده از PrairieLearn LTI، ابتدا باید یک اعتبارنامه (Credential) خصوصی LTI در داخل PrairieLearn ایجاد کنید. سپس این اعتبارنامه‌ها درون LMS پیکربندی می‌شوند تا به PrairieLearn متصل شوند.
 
-To create or manage LTI credentials for a course instance, instructors can visit the **Admin / LTI** page in the course instance.
+برای ایجاد یا مدیریت اعتبارنامه‌های LTI برای یک دوره، مدرسان می‌توانند به صفحه **Admin / LTI** در دوره مراجعه کنند.
 
-An LTI credential consists of 3 parts:
+یک اعتبارنامه LTI شامل ۳ بخش است:
 
-- Launch URL - _the URL to configure the LMS to link into PrairieLearn_
-- Consumer key - _a unique identifier for the LMS context_
-- Shared secret - _a password for the consumer key_
+- نشانی وب راه‌اندازی (Launch URL) - _نشانی URL برای پیکربندی LMS جهت اتصال به PrairieLearn_
+- کلید مصرف‌کننده (Consumer key) - _یک شناسه یکتا برای زمینه و بستر LMS_
+- رمز مشترک (Shared secret) - _یک رمز عبور برای کلید مصرف‌کننده_
 
-A single LMS course should use the same credential. If multiple courses need to link into the course instance, multiple LTI credentials can be created.
+یک درس منفرد در LMS باید از یک اعتبارنامه یکسان استفاده کند. اگر چندین درس نیاز به اتصال به دوره دارند، می‌توان چندین اعتبارنامه LTI ایجاد کرد.
 
-PrairieLearn logins via LTI are unique to their LMS course. For example, if an Illinois student is taking a Coursera LTI course they will have two different user accounts in PrairieLearn.
+ورودهای PrairieLearn از طریق LTI مختص به درس LMS آن‌هاست. برای مثال، اگر دانشجویی از ایلینوی در حال گذراندن یک درس LTI در Coursera باشد، دارای دو حساب کاربری متفاوت در PrairieLearn خواهد بود.
 
-It is also necessary to add an `allowAccess` rule in `infoCourseInstance.json` with `"institution": "LTI"`. See [controlling access by institution](#controlling-access-by-institution) for more details.
+همچنین لازم است یک قانون `allowAccess` در `infoCourseInstance.json` با `"institution": "LTI"` اضافه شود. برای جزئیات بیشتر به [کنترل دسترسی بر اساس مؤسسه](#کنترل-دسترسی-بر-اساس-موسسه) مراجعه کنید.
 
-### LTI linking into an assessment
+### اتصال LTI به یک ارزیابی
 
-LTI supports the concept of "deep linking", such that an assignment link inside the originating LMS can be followed directly into a specific assessment in PrairieLearn. For score reporting back to the LMS, PrairieLearn requires this linking. If a student follows an LTI link from the LMS that has not been configured yet in PrairieLearn, they will receive an error message.
+پروتکل LTI از مفهوم «پیوند عمیق» (Deep linking) پشتیبانی می‌کند، به‌طوری که پیوند یک تکلیف در داخل LMS مبدأ را می‌توان مستقیماً تا یک ارزیابی خاص در PrairieLearn دنبال کرد. برای گزارش نمره به LMS، PrairieLearn به این پیوند نیازمند است. اگر دانشجویی یک پیوند LTI را از LMS دنبال کند که هنوز در PrairieLearn پیکربندی نشده است، با یک پیام خطا مواجه خواهد شد.
 
-The first time an instructor (in the LMS context) follows a newly created LTI PrairieLearn link, they will be delivered to the **Admin / LTI** page. The LTI link targets section of the page will be populated with the new link information, and the PL course instance's assessments will be listed as a dropdown. These can also be edited at any time from the **Admin / LTI** page.
+اولین باری که یک مدرس (در محیط LMS) یک پیوند تازه ایجادشده LTI در PrairieLearn را باز می‌کند، به صفحه **Admin / LTI** هدایت می‌شود. بخش اهداف پیوند LTI در صفحه با اطلاعات پیوند جدید پر خواهد شد، و ارزیابی‌های دوره PL به‌صورت یک منوی کشویی فهرست می‌شوند. این موارد را می‌توان در هر زمان از صفحه **Admin / LTI** نیز ویرایش کرد.
 
-A course can use the same LTI credential to create multiple links to PrairieLearn, but each link must be configured in PL to an assessment. Multiple links can be created to the same assessment.
+یک درس می‌تواند از یک اعتبارنامه LTI برای ایجاد چندین پیوند به PrairieLearn استفاده کند، اما هر پیوند باید در PL به یک ارزیابی پیکربندی شود. چندین پیوند می‌توانند به یک ارزیابی یکسان متصل شوند.
 
-### Score reporting back to the LMS (LTI outcomes)
+### گزارش نمره به سامانه LMS (نتایج LTI)
 
-If the LTI link inside the LMS was configured to connect to the LMS gradebook then PrairieLearn scores will also be shown and updated in the LMS. This requires the student to have followed the link from the LMS into PrairieLearn when working on the assessment. LTI does not give PrairieLearn a way to update a score in the LMS gradebook for anything other than a linked assignment. i.e. PrairieLearn can't push other scores into the LMS; the request must originate from the LMS.
+اگر پیوند LTI در داخل LMS طوری پیکربندی شده باشد که به دفتر نمرات LMS متصل شود، نمرات PrairieLearn نیز در LMS نمایش داده شده و به‌روزرسانی خواهند شد. این امر مستلزم آن است که دانشجو هنگام کار بر روی ارزیابی، پیوند را از LMS به PrairieLearn دنبال کرده باشد. پروتکل LTI روشی در اختیار PrairieLearn قرار نمی‌دهد که نمره‌ای را در دفتر نمرات LMS برای مواردی غیر از تکلیف پیوند‌یافته به‌روزرسانی کند؛ یعنی PrairieLearn نمی‌تواند نمرات دیگر را به LMS ارسال (Push) کند؛ درخواست باید از LMS منشأ گرفته باشد.
 
-Scores are still shown to students and instructors in the normal places in PrairieLearn. The LTI outcomes functionality adds additional reporting back to the originating LMS.
+نمرات همچنان در بخش‌های معمول PrairieLearn به دانشجویان و مدرسان نمایش داده می‌شوند. قابلیت نتایج LTI (LTI outcomes)، گزارش‌دهی مضاعف به LMS مبدأ را اضافه می‌کند.
 
-Once the student's assessment instance is linked back to an LMS gradebook entry, any scoring activity on PrairieLearn will be reported back to the LMS. That includes students clicking grade, external grading systems reporting back to PrairieLearn, or instructors manually adjusting grades inside PrairieLearn. These grade updates can happen asynchronously and independently of the student interacting with PrairieLearn.
+هنگامی که نمونه ارزیابی (Assessment instance) دانشجو به یک ورودی دفتر نمرات LMS متصل شد، هرگونه فعالیت نمره‌دهی در PrairieLearn به LMS گزارش خواهد شد. این شامل کلیک دانشجو روی گزینه نمره‌دهی (Grade)، گزارش سیستم‌های نمره‌دهی خارجی به PrairieLearn، یا ویرایش دستی نمرات توسط مدرسان در داخل PrairieLearn می‌شود. این به‌روزرسانی‌های نمره می‌توانند به‌صورت ناهمگام و مستقل از تعامل دانشجو با PrairieLearn انجام شوند.

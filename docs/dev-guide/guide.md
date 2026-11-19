@@ -1,47 +1,47 @@
-# Developer Guide
+# راهنمای توسعه‌دهندگان
 
-This page outlines debugging and testing tips, best practices and style for coding, as well as details about various aspects of PrairieLearn (question rendering, database schemas, etc.).
+این صفحه نکاتی پیرامون دیباگ و تست، بهترین روش‌ها و شیوه‌نامه کدنویسی، و همچنین جزئیاتی درباره جنبه‌های گوناگون PrairieLearn (رندر سوالات، اسکیماهای پایگاه داده و غیره) را تشریح می‌کند.
 
-In general, we prefer simplicity. We standardize on JavaScript/TypeScript (Node.js) and SQL (PostgreSQL) as the languages of implementation and try to minimize the number of complex libraries or frameworks being used. The website is server-side generated pages with minimal client-side JavaScript.
+به طور کلی، ما سادگی را ترجیح می‌دهیم. ما از JavaScript/TypeScript (Node.js) و SQL (PostgreSQL) به عنوان زبان‌های پیاده‌سازی استاندارد استفاده می‌کنیم و تلاش داریم تعداد کتابخانه‌ها یا فریم‌ورک‌های پیچیده مورد استفاده را به حداقل برسانیم. این وب‌سایت شامل صفحاتی است که در سمت سرور رندر می‌شوند (server-side generated) و حداقل میزان جاوااسکریپت سمت کلاینت در آن به کار رفته است.
 
-## High level view
+## دید کلی و معماری سطح بالا
 
-![High level overview](./high-level.d2){pad="0" scale="1"}
+![دید کلی معماری سطح بالا](./high-level.d2){pad="0" scale="1"}
 
-- The questions and assessments for a course are stored in a git repository. This is synced into the database by the course instructor and database data is updated or added to represent the course. Students then interact with the course website by doing questions, with the results being stored in the database. The instructor can view the student results on the website and download CSV files with the data.
+- سوالات و ارزیابی‌های یک درس در یک مخزن Git ذخیره می‌شوند. این اطلاعات توسط مدرس درس با پایگاه داده همگام‌سازی (sync) می‌شود و داده‌های پایگاه داده برای نمایش درس به‌روزرسانی شده یا افزوده می‌شوند. سپس دانشجویان با حل سوالات با وب‌سایت درس تعامل دارند و نتایج در پایگاه داده ذخیره می‌شود. مدرس می‌تواند نتایج دانشجویان را در وب‌سایت مشاهده کرده و فایل‌های CSV حاوی داده‌ها را دانلود کند.
 
-- The majority of course content and configuration is done via plain text files in the git repository, which is the master source for this data.
+- بخش عمده محتوا و پیکربندی درس از طریق فایل‌های متنی ساده (plain text) در مخزن Git انجام می‌شود که منبع اصلی (master source) این داده‌ها است.
 
-- All student data is all stored in the database and is not pushed back into the git repository or disk at any point.
+- تمام داده‌های دانشجویان در پایگاه داده ذخیره می‌شوند و در هیچ نقطه‌ای به مخزن Git یا دیسک بازگردانده (push) نمی‌شوند.
 
-## Unit tests and integration tests
+## تست‌های واحد و تست‌های یکپارچگی
 
-- Integration tests are stored in the `apps/prairielearn/src/tests/` directory.
-- Unit tests are typically located next to the file under test, with the filename ending in `.test.ts`. For instance, tests for `foo.ts` would be in `foo.test.ts` in the same directory.
+- تست‌های یکپارچگی (Integration tests) در دایرکتوری `apps/prairielearn/src/tests/` نگهداری می‌شوند.
+- تست‌های واحد (Unit tests) معمولاً در کنار همان فایل تحت تست قرار دارند و نام فایل آن‌ها با `.test.ts` پایان می‌یابد. به عنوان مثال، تست‌های فایل `foo.ts` در همان دایرکتوری و با نام `foo.test.ts` خواهند بود.
 
-- See the [development quickstart guide](quickstart.md#testing) for information on how to run the test suite.
+- برای اطلاعات درباره نحوه اجرای مجموعه تست‌ها، [راهنمای شروع سریع توسعه](quickstart.md#testing) را مشاهده کنید.
 
-- The tests are run by GitHub Actions on every push to GitHub.
+- تست‌ها توسط GitHub Actions با هر push به GitHub اجرا می‌شوند.
 
-- The tests are mainly integration tests that start with a blank database, run the server to initialize the database, load the `testCourse`, and then emulate a client web browser that answers questions on assessments. If a test fails then it is often easiest to debug by recreating the error by doing questions yourself against a locally-running server.
+- تست‌ها عمدتاً تست‌های یکپارچگی هستند که با یک پایگاه داده خالی آغاز می‌شوند، سرور را برای مقداردهی اولیه پایگاه داده اجرا می‌کنند، `testCourse` را بارگذاری می‌نمایند و سپس یک مرورگر وب کلاینت را شبیه‌سازی می‌کنند که به سوالات در ارزیابی‌ها پاسخ می‌دهد. اگر تستی با شکست مواجه شود، اغلب ساده‌ترین راه برای دیباگ کردن این است که خطا را با حل شخصی سوالات روی یک سرور محلیِ در حال اجرا بازآفرینی کنید.
 
-- If the `PL_KEEP_TEST_DB` environment is set, the test database (normally `pltest_1`, `pltest_2`, etc.) won't be removed when testing ends. This allows you to inspect the state of the database whenever your testing ends. The database will get overwritten when you start a new test run.
+- اگر متغیر محیطی `PL_KEEP_TEST_DB` تنظیم شده باشد، پایگاه داده تست (که معمولاً `pltest_1`، `pltest_2` و غیره است) پس از پایان تست حذف نخواهد شد. این به شما امکان می‌دهد وضعیت پایگاه داده را پس از پایان تست بررسی کنید. این پایگاه داده با شروع یک اجرای جدید تست بازنویسی (overwrite) خواهد شد.
 
-## Debugging server-side JavaScript
+## دیباگ جاوااسکریپت سمت سرور
 
-- Use the [debug package](https://www.npmjs.com/package/debug) to help trace execution flow in JavaScript. To run the server with debugging output enabled:
+- از [پکیج debug](https://www.npmjs.com/package/debug) برای کمک به ردیابی جریان اجرا در جاوااسکریپت استفاده کنید. برای اجرای سرور با خروجی دیباگ فعال:
 
   ```sh
   DEBUG=* make dev
   ```
 
-- To just see debugging logs from PrairieLearn you can use:
+- برای مشاهده لاگ‌های دیباگ صرفاً از PrairieLearn می‌توانید از دستور زیر استفاده کنید:
 
   ```sh
   DEBUG=prairielearn:* make dev
   ```
 
-- To insert more debugging output, import `debug` and use it like this:
+- برای درج خروجی دیباگ بیشتر، `debug` را import کرده و به شکل زیر از آن استفاده نمایید:
 
   ```javascript
   import debugfn from 'debug';
@@ -52,21 +52,21 @@ In general, we prefer simplicity. We standardize on JavaScript/TypeScript (Node.
   debug('func()', 'param:', param);
   ```
 
-## Debugging client-side JavaScript
+## دیباگ جاوااسکریپت سمت کلاینت
 
-- Make sure you have the JavaScript Console open in your browser and reload the page.
+- مطمئن شوید که کنسول جاوااسکریپت (JavaScript Console) را در مرورگر خود باز کرده‌اید و صفحه را مجدداً بارگذاری (reload) کنید.
 
-## Debugging SQL and PL/pgSQL
+## دیباگ SQL و PL/pgSQL
 
-- Use the [`psql`](https://www.postgresql.org/docs/current/app-psql.html) command-line interface to test SQL separately. A default development PrairieLearn install uses the `postgres` database, so you should run:
+- از رابط خط فرمان [`psql`](https://www.postgresql.org/docs/current/app-psql.html) برای تست جداگانه SQL استفاده کنید. یک نصب پیش‌فرض توسعه PrairieLearn از پایگاه داده `postgres` استفاده می‌کند، بنابراین باید دستور زیر را اجرا نمایید:
 
   ```sh
   psql postgres
   ```
 
-- To debug syntax errors in a stored procedure, import it manually with `\i filename.sql` in `psql`.
+- برای دیباگ خطاهای نحو (syntax) در یک رویه ذخیره‌شده (stored procedure)، آن را به صورت دستی با دستور `\i filename.sql` درون `psql` وارد (import) کنید.
 
-- To follow execution flow in PL/pgSQL use `RAISE NOTICE`. This will log to the console when run from `psql` and to the server log file when run from within PrairieLearn. The syntax is:
+- برای دنبال کردن جریان اجرا در PL/pgSQL از `RAISE NOTICE` استفاده کنید. این دستور هنگام اجرا از طریق `psql` در کنسول، و هنگام اجرا از داخل PrairieLearn در فایل لاگ سرور ثبت می‌شود. نحو آن به شکل زیر است:
 
   ```sql
   RAISE NOTICE 'This is logging: % and %',
@@ -74,76 +74,76 @@ In general, we prefer simplicity. We standardize on JavaScript/TypeScript (Node.
   var2;
   ```
 
-- To manually run a function:
+- برای اجرای دستی یک تابع:
 
   ```sql
   SELECT
     the_sql_function (arg1, arg2);
   ```
 
-## HTML page generation
+## تولید صفحات HTML
 
-- [Express](http://expressjs.com) is used as the web framework.
+- از [Express](http://expressjs.com) به عنوان فریم‌ورک وب استفاده می‌شود.
 
-- All pages are server-side rendered, and we try and minimize the amount of client-side JavaScript. Client-side JS should use vanilla JavaScript/TypeScript where possible, but third-party libraries may be used when appropriate.
+- تمام صفحات در سمت سرور رندر می‌شوند (server-side rendered) و تلاش ما بر این است که میزان جاوااسکریپت سمت کلاینت را به حداقل برسانیم. جاوااسکریپت سمت کلاینت باید در صورت امکان از JavaScript/TypeScript خالص (vanilla) استفاده کند، اما کتابخانه‌های شخص ثالث نیز در صورت لزوم می‌توانند به کار گرفته شوند.
 
-- Each web page typically has all its files in a single directory, with the directory, the files, and the URL all named the same. Not all pages need all files. For a real-world example, consider the page where users can accept the PrairieLearn terms and conditions, located at [`apps/prairielearn/src/ee/pages/terms`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/src/ee/pages/terms). That directory contains the following files:
-  - [`terms.ts`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/src/ee/pages/terms/terms.ts): The main entry point for the page. It runs SQL queries and renders a template.
-  - [`terms.sql`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/src/ee/pages/terms/terms.sql): All SQL queries for the page.
-  - [`terms.html.ts`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/src/ee/pages/terms/terms.html.ts): The template for the page. Exports a function that returns an HTML document.
+- معمولاً تمام فایل‌های هر صفحه وب درون یک دایرکتوری مجزا قرار دارند، به طوری که نام دایرکتوری، فایل‌ها و URL همگی یکسان هستند. البته همه صفحات به تمامی این فایل‌ها نیاز ندارند. به عنوان یک نمونه واقعی، صفحه‌ای را در نظر بگیرید که کاربران می‌توانند شرایط و قوانین PrairieLearn را در آن بپذیرند و در مسیر [`apps/prairielearn/src/ee/pages/terms`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/src/ee/pages/terms) واقع شده است. این دایرکتوری شامل فایل‌های زیر است:
+  - [`terms.ts`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/src/ee/pages/terms/terms.ts): نقطه ورود اصلی برای صفحه. این فایل کوئری‌های SQL را اجرا کرده و قالب را رندر می‌کند.
+  - [`terms.sql`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/src/ee/pages/terms/terms.sql): تمام کوئری‌های SQL مخصوص این صفحه.
+  - [`terms.html.ts`](https://github.com/PrairieLearn/PrairieLearn/tree/master/apps/prairielearn/src/ee/pages/terms/terms.html.ts): قالب صفحه. تابعی را export می‌کند که یک سند HTML برمی‌گرداند.
 
-- When possible, prefer explicitly passing individual typed properties to templates instead of adding properties to `res.locals`. However, `res.locals` may be used for data coming from middlewares that will be used on many pages.
+- در صورت امکان، ترجیح داده می‌شود خصوصیات تایپ‌شده را به طور صریح به قالب‌ها ارسال کنید، به جای آنکه خصوصیات را به `res.locals` اضافه نمایید. با این حال، `res.locals` می‌تواند برای داده‌هایی که از میدلورها می‌آیند و در صفحات متعددی استفاده می‌شوند، به کار رود.
 
-- Use [`@prairielearn/html`](https://github.com/PrairieLearn/PrairieLearn/tree/master/packages/html) to generate HTML pages. This uses HTML tagged-template literals to generate HTML, which in turn makes it easy to get full type-checking.
+- از پکیج [`@prairielearn/html`](https://github.com/PrairieLearn/PrairieLearn/tree/master/packages/html) برای تولید صفحات HTML استفاده کنید. این پکیج از template literalهای برچسب‌دار HTML (tagged-template literals) برای تولید HTML استفاده می‌کند که به نوبه خود امکان بررسی کامل نوع (type-checking) را به سادگی فراهم می‌سازد.
 
-- Reused templates are stored in the `apps/prairielearn/src/components/` directory. These should generally accept an object with properties instead of being passed the full `res.locals` object.
+- قالب‌های با استفاده مجدد (Reused templates) در دایرکتوری `apps/prairielearn/src/components/` ذخیره می‌شوند. این قالب‌ها معمولاً به جای دریافت کامل شیء `res.locals`، باید یک شیء حاوی مشخصات را دریافت کنند.
 
-## HTML style
+## استایل و سبک HTML
 
-- Use [Bootstrap](http://getbootstrap.com) as the style. As of 2025-01-01 we are using Bootstrap 5.
+- از [Bootstrap](http://getbootstrap.com) به عنوان سبک و استایل استفاده کنید. از تاریخ 2025-01-01 ما از Bootstrap 5 استفاده می‌کنیم.
 
-- Local CSS rules go in `public/stylesheets/local.css`. Try to minimize use of this and use plain Bootstrap styling wherever possible.
+- قوانین CSS محلی در مسیر `public/stylesheets/local.css` قرار می‌گیرند. تلاش کنید استفاده از این فایل را به حداقل برسانید و تا جای ممکن از استایل‌دهی پیش‌فرض Bootstrap استفاده نمایید.
 
-- Buttons should use the `<button>` element when they take actions and the `<a>` element when they are simply links to other pages. We should not use `<a role="button">` to fake a button element. Buttons that do not submit a form should always start with `<button type="button" class="btn ...">`, where `type="button"` specifies that they don't submit.
+- دکمه‌ها در صورتی که عملیاتی انجام می‌دهند باید از المان `<button>` و هنگامی که صرفاً پیوندی به صفحات دیگر هستند از المان `<a>` استفاده کنند. ما نباید از `<a role="button">` برای جعل المان دکمه استفاده کنیم. دکمه‌هایی که فرمی را ارسال (submit) نمی‌کنند، همواره باید با `<button type="button" class="btn ...">` شروع شوند؛ که در آن `type="button"` مشخص می‌کند دکمه فرم را سابمیت نمی‌کند.
 
-## HTML accessibility
+## دسترسی‌پذیری HTML
 
-If you are adding anything more complex than a basic form page, the automated accessibility checks are likely not enough for checking accessibility. You should use [VoiceOver (macOS)](https://support.apple.com/guide/voiceover/welcome/mac) or [NVDA (Windows)](https://www.nvaccess.org/download/) to test the page. All our pages must conform to the [Web Content Accessibility Guidelines (WCAG) 2.1 AA standard](https://www.w3.org/TR/WCAG21/). Some common things to check for:
+اگر در حال افزودن چیزی پیچیده‌تر از یک صفحه فرم پایه هستید، بررسی‌های خودکار دسترسی‌پذیری احتمالاً برای بررسی کافی نخواهند بود. برای تست صفحه باید از [VoiceOver (macOS)](https://support.apple.com/guide/voiceover/welcome/mac) یا [NVDA (Windows)](https://www.nvaccess.org/download/) استفاده کنید. تمامی صفحات ما باید با [استاندارد دستورالعمل‌های دسترسی‌پذیری محتوای وب (WCAG) 2.1 سطح AA](https://www.w3.org/TR/WCAG21/) مطابقت داشته باشند. چند مورد متداول برای بررسی:
 
-- Are elements announced correctly?
-  - Do elements have appropriate `aria-label` / `alt` attributes?
-  - Are descriptions concise and accurate?
-  - Do menus, toolbars, and other UI elements have appropriate [ARIA roles](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles)?
-- Can a user navigate the page using only the keyboard?
-  - Tab should move between focusable elements.
-  - Space or Enter should activate buttons/links.
-  - Arrow keys should navigate within components like dropdowns and tables.
-  - Actions that require dragging with a mouse should have keyboard alternatives.
-- Is focus managed correctly?
-  - Is focus correctly trapped within modals and other dialogs?
-  - Is focus position retained during re-renders?
-- Are focus indicators visible?
-- Is the page layout logical and easy to understand?
-- Will users with visual impairments be able to use the page?
-  - Is there at least a 4.5:1 contrast ratio between text and background colors?
-  - Is there at least a 3:1 contrast ratio between UI elements and background colors?
-  - Is there appropriate spacing between elements?
+- آیا المان‌ها به درستی اعلام (خوانده) می‌شوند؟
+  - آیا المان‌ها دارای ویژگی‌های مناسب `aria-label` یا `alt` هستند؟
+  - آیا توضیحات مختصر و دقیق هستند؟
+  - آیا منوها، نوارهای ابزار و سایر المان‌های رابط کاربری نقش‌های مناسب [ARIA roles](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles) را دارند؟
+- آیا کاربر می‌تواند تنها با استفاده از صفحه‌کلید در صفحه پیمایش کند؟
+  - کلید Tab باید بین المان‌های با قابلیت فوکوس حرکت کند.
+  - کلیدهای Space یا Enter باید دکمه‌ها و پیوندها را فعال کنند.
+  - کلیدهای جهت‌نما (Arrow keys) باید درون کامپوننت‌هایی مانند منوهای کشویی (dropdowns) و جدول‌ها پیمایش کنند.
+  - اقداماتی که نیازمند کشیدن با ماوس (drag) هستند باید جایگزین‌های صفحه‌کلیدی داشته باشند.
+- آیا فوکوس به درستی مدیریت می‌شود؟
+  - آیا فوکوس به درستی درون مودال‌ها و سایر کادرهای محاوره‌ای محصور (trap) می‌شود؟
+  - آیا موقعیت فوکوس در هنگام رندرهای مجدد حفظ می‌شود؟
+- آیا نشانگرهای فوکوس قابل مشاهده هستند؟
+- آیا چیدمان صفحه منطقی و درک آن آسان است؟
+- آیا کاربران دارای اختلالات بینایی قادر به استفاده از صفحه خواهند بود؟
+  - آیا نسبت کنتراست بین متن و رنگ‌های پس‌زمینه حداقل 4.5:1 است؟
+  - آیا نسبت کنتراست بین المان‌های رابط کاربری و رنگ‌های پس‌زمینه حداقل 3:1 است؟
+  - آیا فاصله‌گذاری مناسبی بین المان‌ها وجود دارد؟
 
-## SQL usage
+## نحوه استفاده از SQL
 
-- [PostgreSQL](https://www.postgresql.org) v17 is used as the database.
+- از [PostgreSQL](https://www.postgresql.org) نسخه ۱۷ به عنوان پایگاه داده استفاده می‌شود.
 
-- The [PostgreSQL manual](https://www.postgresql.org/docs/manuals/) is an excellent reference.
+- [راهنمای PostgreSQL](https://www.postgresql.org/docs/manuals/) مرجعی بسیار عالی است.
 
-- Write raw SQL rather than using a [ORM library](https://en.wikipedia.org/wiki/Object-relational_mapping). This reduces the number of frameworks/languages needed.
+- به جای استفاده از [کتابخانه‌های ORM](https://en.wikipedia.org/wiki/Object-relational_mapping)، کدهای خام SQL بنویسید. این کار تعداد فریم‌ورک‌ها و زبان‌های مورد نیاز را کاهش می‌دهد.
 
-- Prefer implementing complex logic in TypeScript instead of inside queries.
+- ترجیح دهید منطق‌های پیچیده را به جای درون کوئری‌ها، در کدهای TypeScript پیاده‌سازی کنید.
 
-- Use the SQL convention of [`snake_case`](https://en.wikipedia.org/wiki/Snake_case) for names. Also use the same convention in JavaScript for names that are the same as in SQL, so the `question_id` variable in SQL is also called `question_id` in JavaScript code.
+- از قرارداد نام‌گذاری [`snake_case`](https://en.wikipedia.org/wiki/Snake_case) در SQL برای نام‌ها استفاده کنید. همچنین برای نام‌هایی در جاوااسکریپت که مشابه نام‌های موجود در SQL هستند از همین قرارداد استفاده نمایید؛ بنابراین متغیر `question_id` در SQL، در کد جاوااسکریپت نیز `question_id` نامیده می‌شود.
 
-- Use uppercase for SQL reserved words like `SELECT`, `FROM`, `AS`, etc.
+- از حروف بزرگ برای کلمات کلیدی رزرو شده SQL مانند `SELECT`، `FROM`، `AS` و غیره استفاده کنید.
 
-- SQL code should not be inline in JavaScript files. Instead, it should be in a separate `.sql` file, following the [`Yesql` concept](https://github.com/krisajenkins/yesql). Each `filename.js` file will normally have a corresponding `filename.sql` file in the same directory. The `.sql` file should look like:
+- کدهای SQL نباید به صورت درون‌خطی (inline) در فایل‌های جاوااسکریپت نوشته شوند. در عوض، باید در یک فایل مجزای `.sql` و مطابق با [مفهوم `Yesql`](https://github.com/krisajenkins/yesql) قرار گیرند. هر فایل `filename.js` معمولاً یک فایل متناظر `filename.sql` در همان دایرکتوری خواهد داشت. فایل `.sql` باید ساختاری شبیه به این داشته باشد:
 
   ```sql
   -- BLOCK select_question
@@ -163,7 +163,7 @@ If you are adding anything more complex than a basic form page, the automated ac
     *;
   ```
 
-From JavaScript, you can then do:
+سپس از طریق جاوااسکریپت می‌توانید به شکل زیر عمل کنید:
 
 ```javascript
 import { loadSqlEquiv, queryRow } from '@prairielearn/postgres';
@@ -175,7 +175,7 @@ const sql = loadSqlEquiv(import.meta.url);
 const question = await queryRow(sql.select_question, { question_id: 45 }, QuestionSchema);
 ```
 
-- To keep SQL code organized it is a good idea to use [CTEs (`WITH` queries)](https://www.postgresql.org/docs/current/static/queries-with.html). These are formatted like:
+- برای سازمان‌یافته نگه داشتن کدهای SQL، ایده بسیار خوبی است که از [عبارات CTE (کوئری‌های `WITH`)](https://www.postgresql.org/docs/current/static/queries-with.html) استفاده کنید. ساختار آن‌ها به این صورت است:
 
   ```sql
   WITH
@@ -194,13 +194,13 @@ const question = await queryRow(sql.select_question, { question_id: 45 }, Questi
     second_preliminary_table AS spt;
   ```
 
-## Database stored procedures (sprocs)
+## رویه‌های ذخیره‌شده پایگاه داده (sprocs)
 
 !!! warning
 
-    We are migrating away from the use of [sprocs](https://neon.com/postgresql/postgresql-plpgsql/postgresql-create-procedure). Prefer writing logic in TypeScript instead.
+    ما در حال مهاجرت و کنار گذاشتن استفاده از [sprocs](https://neon.com/postgresql/postgresql-plpgsql/postgresql-create-procedure) هستیم. ترجیحاً منطق برنامه را در TypeScript بنویسید.
 
-- Stored procedures are created by the files in `sprocs/`. To call a stored procedure from JavaScript, use code like:
+- رویه‌های ذخیره‌شده توسط فایل‌های موجود در `sprocs/` ایجاد می‌شوند. برای فراخوانی یک رویه ذخیره‌شده از داخل جاوااسکریپت، از کدی مانند زیر استفاده کنید:
 
   ```js
   const workspace_id = 1342;
@@ -208,63 +208,63 @@ const question = await queryRow(sql.select_question, { question_id: 45 }, Questi
   await sqldb.callAsync('workspaces_message_update', [workspace_id, message]);
   ```
 
-- The stored procedures are all contained in a separate [database schema](https://www.postgresql.org/docs/current/ddl-schemas.html) with a name like `server_2021-07-07T20:25:04.779Z_T75V6Y`. To see a list of the schemas use the `\dn` command in `psql`.
+- تمام رویه‌های ذخیره‌شده درون یک [اسکیمای مجزای پایگاه داده](https://www.postgresql.org/docs/current/ddl-schemas.html) با نامی مانند `server_2021-07-07T20:25:04.779Z_T75V6Y` قرار دارند. برای مشاهده فهرست اسکیماها از دستور `\dn` در `psql` استفاده کنید.
 
-- To be able to use the stored procedures from the `psql` command line it is necessary to get the most recent schema name using `\dn` and set the `search_path` to use this _quoted_ schema name and the `public` schema:
+- برای اینکه بتوانید از رویه‌های ذخیره‌شده در خط فرمان `psql` استفاده کنید، لازم است با استفاده از `\dn` نام جدیدترین اسکیما را به دست آورده و `search_path` را طوری تنظیم کنید که از نام این اسکیمای _داخل گیومه (quoted)_ و اسکیمای `public` استفاده کند:
 
   <!-- prettier-ignore -->
   ```sql
   set search_path to "server_2021-07-07T20:25:04.779Z_T75V6Y", public;
   ```
 
-- During startup, we initially have no non-public schema in use. We first run the migrations to update all tables in the `public` schema, then we call `sqldb.setRandomSearchSchemaAsync()` to activate a random per-execution schema, and we run the sproc creation code to generate all the stored procedures in this schema. This means that every invocation of PrairieLearn will have its own locally-scoped copy of the stored procedures which are the correct versions for its code. This lets us upgrade PrairieLearn servers one at a time, while old servers are still running with their own copies of their sprocs. When PrairieLearn first starts up it has `search_path = public`, but later it will have `search_path = "server_2021-07-07T20:25:04.779Z_T75V6Y",public` so that it will first search the random schema and then fall back to `public`. The naming convention for the random schema uses the local instance name, the date, and a random string. Note that schema names need to be quoted using double-quotations in `psql` because they contain characters such as hyphens.
+- در هنگام راه‌اندازی، در ابتدا هیچ اسکیمای غیر عمومی (non-public) در حال استفاده نیست. ما ابتدا مایگریشن‌ها را برای به‌روزرسانی تمام جدول‌ها در اسکیمای `public` اجرا می‌کنیم، سپس تابع `sqldb.setRandomSearchSchemaAsync()` را فراخوانی می‌نماییم تا یک اسکیمای تصادفی به ازای هر اجرا فعال شود، و کد ایجاد sproc را برای تولید تمام رویه‌های ذخیره‌شده در این اسکیما اجرا می‌کنیم. این بدان معناست که هر نمونه در حال اجرای PrairieLearn، نسخه محلی خود از رویه‌های ذخیره‌شده را خواهد داشت که دقیقاً نسخه صحیح منطبق با کد آن است. این ویژگی به ما اجازه می‌دهد سرورهای PrairieLearn را یکی یکی ارتقا دهیم، در حالی که سرورهای قدیمی همچنان با کپی‌های sprocs خود به کار ادامه می‌دهند. هنگامی که PrairieLearn برای اولین بار شروع به کار می‌کند، دارای `search_path = public` است، اما بعداً مقدار آن به `search_path = "server_2021-07-07T20:25:04.779Z_T75V6Y",public` تغییر می‌یابد تا ابتدا اسکیمای تصادفی را جستجو کرده و سپس در صورت لزوم به `public` رجوع کند. قرارداد نام‌گذاری اسکیمای تصادفی از نام نمونه محلی، تاریخ و یک رشته تصادفی تشکیل می‌شود. توجه داشته باشید که نام‌های اسکیما باید در `psql` با استفاده از دابل کوتیشن (`"`) نقل‌قول شوند، زیرا حاوی کاراکترهایی مانند خط تیره هستند.
 
-- For more details see `sprocs/array_and_number.sql` and comments in `server.js` near the call to `sqldb.setRandomSearchSchemaAsync()`.
+- برای جزئیات بیشتر به `sprocs/array_and_number.sql` و توضیحات درون `server.js` در نزدیکی فراخوانی `sqldb.setRandomSearchSchemaAsync()` مراجعه کنید.
 
-## Database schema (simplified overview)
+## اسکیمای پایگاه داده (نمای کلی و ساده‌شده)
 
-- The most important tables in the database are shown in the diagram below:
+- مهم‌ترین جداول موجود در پایگاه داده در نمودار زیر نشان داده شده‌اند:
 
-![Simplified database diagram](./simplified-models.d2)
+![نمودار ساده‌شده پایگاه داده](./simplified-models.d2)
 
-- Detailed descriptions of the format of each table are in the [list of database tables](https://github.com/PrairieLearn/PrairieLearn/blob/master/database/tables/).
+- توضیحات دقیق قالب هر جدول در [فهرست جداول پایگاه داده](https://github.com/PrairieLearn/PrairieLearn/blob/master/database/tables/) آورده شده است.
 
-- Each table has an `id` number that is used for cross-referencing. For example, each row in the `questions` table has an `id` and other tables will refer to this as a `question_id`. For legacy reasons, there are two exceptions to this rule:
-  - The `users` table has a `user_id` primary key instead of `id`.
+- هر جدول دارای یک شماره `id` است که برای ارجاع متقابل (cross-referencing) استفاده می‌شود. به عنوان مثال، هر ردیف در جدول `questions` دارای یک `id` است و جداول دیگر با نام `question_id` به آن ارجاع می‌دهند. به دلایل قدیمی و تاریخی (legacy)، دو استثنا برای این قاعده وجود دارد:
+  - جدول `users` به جای `id` دارای کلید اصلی `user_id` است.
 
-- Each user is stored as a single row in the `users` table.
+- هر کاربر به صورت یک ردیف در جدول `users` ذخیره می‌شود.
 
-- The `courses` table has one row for each course, like `TAM 212`.
+- جدول `courses` برای هر درس (مانند `TAM 212`) یک ردیف دارد.
 
-- The `course_instances` table has one row for each semester ("instance") of each course, with the `course_id` indicating which course it belongs to.
+- جدول `course_instances` برای هر نیم‌سال ("دوره یا Instance") از هر درس یک ردیف دارد که `course_id` مشخص می‌کند به کدام درس تعلق دارد.
 
-- Every question is a row in the `questions` table, and the `course_id` shows which course it belongs to. All the questions for a course can be thought of as the "question pool" for that course. This same pool is used for all semesters (all course instances).
+- هر سوال یک ردیف در جدول `questions` است و `course_id` نشان می‌دهد متعلق به کدام درس است. می‌توان همه سوالات یک درس را به عنوان "مخزن سوالات" (question pool) آن درس در نظر گرفت. همین مخزن برای تمام نیم‌سال‌ها (همه دوره‌های درس) استفاده می‌شود.
 
-- Assessments are stored in the `assessments` table and each assessment row has a `course_instance_id` to indicate which course instance (and hence which course) it belongs to. An assessment is something like "Homework 1" or "Exam 3". To determine this we can use the `assessment_set_id` and `number` of each assessment row.
+- ارزیابی‌ها در جدول `assessments` ذخیره می‌شوند و هر ردیف ارزیابی دارای یک `course_instance_id` است تا مشخص شود متعلق به کدام دوره درس (و در نتیجه کدام درس) است. یک ارزیابی مواردی مانند "تکلیف ۱" یا "آزمون ۳" است. برای تعیین این موضوع می‌توانیم از `assessment_set_id` و `number` در هر ردیف ارزیابی استفاده کنیم.
 
-- Each assessment has a list of questions associated with it. This list is stored in the `assessment_questions` table, where each row has a `assessment_id` and `question_id` to indicate which questions belong to which assessment. For example, there might be 20 different questions that are on "Exam 1", and it might be the case that each student gets 5 of these questions randomly selected.
+- هر ارزیابی دارای فهرستی از سوالات مرتبط با خود است. این فهرست در جدول `assessment_questions` ذخیره می‌شود که در آن هر ردیف دارای `assessment_id` و `question_id` است تا مشخص شود چه سوالاتی متعلق به کدام ارزیابی هستند. به عنوان مثال، ممکن است ۲۰ سوال مختلف در "آزمون ۱" وجود داشته باشد و قرار باشد برای هر دانشجو ۵ مورد از این سوالات به صورت تصادفی انتخاب شود.
 
-- Each student will have their own copy of an assessment, stored in the `assessment_instances` table with each row having a `user_id` and `assessment_id`. This is where the student's score for that assessment is stored.
+- هر دانشجو نسخه اختصاصی خود از یک ارزیابی را خواهد داشت که در جدول `assessment_instances` ذخیره می‌شود و هر ردیف آن دارای `user_id` و `assessment_id` است. نمره دانشجو برای آن ارزیابی در همین‌جا ذخیره می‌گردد.
 
-- The selection of questions that each student is given on each assessment is in the `instance_questions` table. Here each row has an `assessment_question_id` and an `assessment_instance_id` to indicate that the corresponding question is on that assessment instance. This row will also store the student's score on this particular question.
+- گزینش سوالاتی که به هر دانشجو در هر ارزیابی اختصاص داده می‌شود در جدول `instance_questions` قرار دارد. در اینجا هر ردیف دارای یک `assessment_question_id` و یک `assessment_instance_id` است تا نشان دهد سوال مربوطه در نمونه ارزیابی قرار دارد. این ردیف همچنین نمره دانشجو در این سوال خاص را ذخیره می‌کند.
 
-- Questions can randomize their parameters, so there are many possible variants of each question. These are stored in the `variants` table with an `instance_question_id` indicating which instance question the variant belongs to.
+- سوالات می‌توانند پارامترهای خود را تصادفی‌سازی کنند، بنابراین حالت‌ها یا گونه‌های (variants) متعددی برای هر سوال امکان‌پذیر است. این موارد در جدول `variants` ذخیره می‌شوند و `instance_question_id` مشخص می‌کند که این گونه متعلق به کدام سوال نمونه است.
 
-- For each variant of a question that a student sees they will have submitted zero or more `submissions` with a `variant_id` to show what it belongs to. The submissions row also contains information the submitted answer and whether it was correct.
+- برای هر گونه از یک سوال که دانشجو مشاهده می‌کند، او می‌تواند صفر یا چند پاسخ ارسالی (`submissions`) ثبت کرده باشد که با `variant_id` مشخص می‌شود متعلق به کدام است. ردیف submissions همچنین شامل اطلاعاتی پیرامون پاسخ ارسالی و صحیح بودن یا نبودن آن است.
 
-- The `assessment_tools` table stores tool configuration (e.g., calculator) for assessments. Each row references either a `zone_id` or an `assessment_id`, allowing tools to be configured at the assessment level or overridden per zone.
+- جدول `assessment_tools` پیکربندی ابزارها (مانند ماشین‌حساب) را برای ارزیابی‌ها ذخیره می‌کند. هر ردیف به یک `zone_id` یا یک `assessment_id` ارجاع دارد که امکان پیکربندی ابزارها در سطح ارزیابی یا بازنویسی (override) به ازای هر ناحیه (zone) را فراهم می‌سازد.
 
-??? tip "Schema and data exploration"
+??? tip "کاوش در اسکیما و داده‌ها"
 
-    The [`ms-ossdata.vscode-pgsql` VSCode extension](https://marketplace.visualstudio.com/items?itemName=ms-ossdata.vscode-pgsql) can help you explore the database schema and data in your editor.
+    افزونه [`ms-ossdata.vscode-pgsql` در VSCode](https://marketplace.visualstudio.com/items?itemName=ms-ossdata.vscode-pgsql) می‌تواند به شما در کاوش اسکیما و داده‌های پایگاه داده در ویرایشگرتان کمک کند.
 
     ![Setup Postgres VSCode](./postgres-vscode-setup.png)
 
     ![Using Postgres VSCode](./postgres-vscode-select-1000.png)
 
-??? tip "Cleaning out old schemas"
+??? tip "پاک‌سازی اسکیماهای قدیمی"
 
-    The following query will remove all schemas except `public`. You can then restart the server to recreate the sprocs.
+    کوئری زیر تمام اسکیماها به جز `public` را حذف می‌کند. سپس می‌توانید سرور را مجدداً راه‌اندازی کنید تا sprocs دوباره ساخته شوند.
 
     ```sql
     DO $$
@@ -284,15 +284,15 @@ const question = await queryRow(sql.select_question, { question_id: 45 }, Questi
     END $$;
     ```
 
-## Database schema (full data)
+## اسکیمای پایگاه داده (داده‌های کامل)
 
-- See the [list of database tables](https://github.com/PrairieLearn/PrairieLearn/blob/master/database/tables/), with the ER (entity relationship) diagram below:
+- به [فهرست جداول پایگاه داده](https://github.com/PrairieLearn/PrairieLearn/blob/master/database/tables/) و دیاگرام رابطه موجودیت (ER) در زیر مراجعه کنید:
 
-![Full database diagram](./models.d2){layout="elk"}
+![نمودار کامل پایگاه داده](./models.d2){layout="elk"}
 
-## Database schema conventions
+## قراردادهای نام‌گذاری اسکیمای پایگاه داده
 
-- Tables have plural names (e.g. `assessments`) and always have a primary key called `id`. The foreign keys pointing to this table are non-plural, like `assessment_id`. When referring to this use an abbreviation of the first letters of each word, like `ai` in this case. The only exceptions are `aset` for `assessment_sets` (to avoid conflicting with the SQL `AS` keyword), `top` for `topics`, and `tag` for `tags` (to avoid conflicts). This gives code like:
+- جداول نام‌های جمع دارند (مانند `assessments`) و همیشه کلید اصلی به نام `id` دارند. کلیدهای خارجی (Foreign keys) که به این جدول اشاره می‌کنند به صورت مفرد هستند، مانند `assessment_id`. هنگام ارجاع به این جداول، از مخفف حروف اول هر کلمه استفاده کنید، مانند `ai` در این مورد. تنها استثناها عبارتند از `aset` برای `assessment_sets` (جهت جلوگیری از تداخل با کلمه کلیدی `AS` در SQL)، `top` برای `topics`، و `tag` برای `tags` (جهت جلوگیری از تداخل). این موضوع به کدهایی مشابه زیر منتهی می‌شود:
 
   ```sql
   -- select all active assessment_instances for a given assessment
@@ -306,17 +306,17 @@ const question = await queryRow(sql.select_question, { question_id: 45 }, Questi
     AND ai.deleted_at IS NULL;
   ```
 
-- We (almost) never delete student data from the database. To avoid having rows with broken or missing foreign keys, course configuration tables (e.g. `assessments`) can't be actually deleted. Instead, they are "soft-deleted" by setting the `deleted_at` column to non-NULL. This means that when using any soft-deletable table we need to have a `WHERE deleted_at IS NULL` to get only the active rows.
+- ما (تقریباً) هرگز داده‌های دانشجویان را از پایگاه داده حذف نمی‌کنیم. برای جلوگیری از وجود ردیف‌هایی با کلیدهای خارجی شکسته یا مفقود، جداول پیکربندی درس (مانند `assessments`) در عمل حذف فیزیکی نمی‌شوند؛ بلکه با تنظیم ستون `deleted_at` روی مقداری غیر از NULL به صورت "نرم" حذف (soft-deleted) می‌شوند. این بدان معناست که هنگام استفاده از هر جدولی که از حذف نرم پشتیبانی می‌کند، باید شرط `WHERE deleted_at IS NULL` را قرار دهیم تا تنها ردیف‌های فعال دریافت شوند.
 
-## Database schema modification
+## اصلاح اسکیمای پایگاه داده
 
-See the [migrations documentation](./migrations/README.md).
+به [مستندات مایگریشن‌ها](./migrations/README.md) مراجعه کنید.
 
-## Database access
+## دسترسی به پایگاه داده
 
-- Database access is via the `@prairielearn/postgres` package. This wraps the [node-postgres](https://github.com/brianc/node-postgres) library.
+- دسترسی به پایگاه داده از طریق پکیج `@prairielearn/postgres` انجام می‌شود که پوششی (wrapper) روی کتابخانه [node-postgres](https://github.com/brianc/node-postgres) است.
 
-- For single queries we normally use the following pattern, which automatically uses connection pooling from node-postgres and safe variable interpolation with named parameters and [prepared statements](https://github.com/brianc/node-postgres/wiki/Parameterized-queries-and-Prepared-Statements):
+- برای کوئری‌های تکی، معمولاً از الگوی زیر استفاده می‌کنیم که به طور خودکار از ادغام اتصالات (connection pooling) کتابخانه node-postgres و درونیابی امن متغیرها با پارامترهای نام‌گذاری شده و [دستورات آماده (prepared statements)](https://github.com/brianc/node-postgres/wiki/Parameterized-queries-and-Prepared-Statements) بهره می‌برد:
 
   ```javascript
   const questions = await queryRows(
@@ -326,7 +326,7 @@ See the [migrations documentation](./migrations/README.md).
   );
   ```
 
-Where the corresponding `filename.sql` file contains:
+که در آن فایل متناظر `filename.sql` حاوی موارد زیر است:
 
 ```sql
 -- BLOCK select_questions_by_course
@@ -338,13 +338,13 @@ WHERE
   course_id = $course_id;
 ```
 
-- For queries where it would be an error to not return exactly one result row:
+- برای کوئری‌هایی که در آن‌ها عدم بازگشت دقیقاً یک ردیف نتیجه به عنوان خطا در نظر گرفته می‌شود:
 
   ```javascript
   const question = await queryRow(sql.block_name, QuestionSchema);
   ```
 
-- Use explicit row locking whenever modifying student data related to an assessment. This must be done within a transaction. The rule is that we lock either the variant (if there is no corresponding assessment instance) or the assessment instance (if we have one). It is fine to repeatedly lock the same row within a single transaction, so all functions involved in modifying elements of an assessment (e.g., adding a submission, grading, etc.) should call a locking function when they start. Locking can be performed with a query like:
+- هر زمان که داده‌های دانشجویی مربوط به یک ارزیابی را تغییر می‌دهید، از قفل‌گذاری صریح ردیف (explicit row locking) استفاده کنید. این کار حتماً باید درون یک تراکنش (transaction) انجام شود. قاعده کلی این است که ما یا گونه (variant) را قفل می‌کنیم (اگر نمونه ارزیابی متناظری وجود نداشته باشد) یا نمونه ارزیابی (assessment instance) را (اگر داشته باشیم). قفل‌گذاری مکرر یک ردیف در طول یک تراکنش بلامانع است؛ بنابراین تمام توابعی که در اصلاح المان‌های یک ارزیابی دخالت دارند (مانند افزودن پاسخ ارسالی، نمره‌دهی و غیره) باید در بدو شروع یک تابع قفل‌گذاری را فراخوانی کنند. قفل‌گذاری را می‌توان با کوئری مانند زیر انجام داد:
 
 ```sql
 SELECT
@@ -356,7 +356,7 @@ WHERE
 FOR NO KEY UPDATE;
 ```
 
-- To pass an array of parameters to SQL code, use the following pattern, which allows zero or more elements in the array. This replaces `$points_list` with `ARRAY[10, 5, 1]` in the SQL. It's required to specify the type of array in case it is empty:
+- برای ارسال آرایه‌ای از پارامترها به کد SQL، از الگوی زیر استفاده کنید که امکان ارسال صفر یا چند المان در آرایه را فراهم می‌سازد. این کار `$points_list` را در SQL با `ARRAY[10, 5, 1]` جایگزین می‌کند. تعیین نوع آرایه برای حالتی که خالی باشد الزامی است:
 
   ```javascript
   await sqldb.execute(sql.insert_assessment_question, {
@@ -372,7 +372,7 @@ FOR NO KEY UPDATE;
     ($points_list::INTEGER[]);
   ```
 
-- To use a JavaScript array for membership testing in SQL use `= ANY ($array)` (or its negative form `!= ALL ($array)`) like:
+- برای استفاده از یک آرایه جاوااسکریپت جهت تست عضویت در SQL، از `= ANY ($array)` (یا حالت منفی آن `!= ALL ($array)`) به صورت زیر استفاده کنید:
 
   ```javascript
   const questions = await sqldb.queryRows(
@@ -392,7 +392,7 @@ FOR NO KEY UPDATE;
     id = ANY ($id_list::BIGINT[]);
   ```
 
-- To pass a lot of data to SQL a useful pattern is to send a JSON object array and unpack it in SQL to the equivalent of a table. This is the pattern used by the "sync" code, such as [sprocs/sync_questions.sql](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/sprocs/sync_questions.sql). For example:
+- برای ارسال حجم زیادی از داده به SQL، یک الگوی مفید ارسال آرایه‌ای از اشیاء JSON و باز کردن (unpack) آن در SQL به معادل یک جدول است. این الگویی است که توسط کدهای "همگام‌سازی" (sync) استفاده می‌شود، مانند [sprocs/sync_questions.sql](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/sprocs/sync_questions.sql). برای مثال:
 
   ```javascript
   let data = [
@@ -414,7 +414,7 @@ FOR NO KEY UPDATE;
     jsonb_to_recordset($data) AS (a INTEGER, b TEXT);
   ```
 
-- To use a JSON object array in the above fashion, but where the order of rows is important, use `ROWS FROM () WITH ORDINALITY` to generate a row index like this:
+- برای استفاده از یک آرایه اشیاء JSON به شیوه بالا در حالتی که ترتیب ردیف‌ها اهمیت دارد، از `ROWS FROM () WITH ORDINALITY` برای تولید اندیس ردیف‌ها به شکل زیر استفاده کنید:
 
   ```sql
   -- BLOCK insert_data
@@ -428,15 +428,15 @@ FOR NO KEY UPDATE;
     (jsonb_to_recordset($data) AS (a INTEGER, b TEXT)) WITH ORDINALITY AS data (a, b, order_by);
   ```
 
-## Asynchronous control flow in JavaScript
+## جریان کنترل ناهمگام در جاوااسکریپت
 
-- New code in PrairieLearn should use `async`/`await` whenever possible.
+- کدهای جدید در PrairieLearn تا جای ممکن باید از `async`/`await` استفاده کنند.
 
-- Use the [async library](http://caolan.github.io/async/) for complex control flow or when mixing Promise-based and callback-based code.
+- از [کتابخانه async](http://caolan.github.io/async/) برای جریان‌های کنترل پیچیده یا در زمان ترکیب کدهای مبتنی بر Promise و مبتنی بر Callback استفاده کنید.
 
-## Using async route handlers with ExpressJS
+## استفاده از کنترل‌کننده‌های مسیر ناهمگام با ExpressJS
 
-- Express can't directly use async route handlers. Instead, we use [express-async-handler](https://www.npmjs.com/package/express-async-handler) like this:
+- فریم‌ورک Express نمی‌تواند به طور مستقیم از هندلرهای مسیر ناهمگام (async) استفاده کند. در عوض، ما از [express-async-handler](https://www.npmjs.com/package/express-async-handler) به شکل زیر استفاده می‌کنیم:
 
   ```javascript
   import asyncHandler from 'express-async-handler';
@@ -448,49 +448,49 @@ FOR NO KEY UPDATE;
   );
   ```
 
-## Security model
+## مدل امنیتی
 
-- We distinguish between [authentication and authorization](https://en.wikipedia.org/wiki/Authentication#Authorization). Authentication occurs as the first stage in server response and the authenticated user data is stored as `res.locals.authn_user`.
+- ما بین [احراز هویت (Authentication) و اعطای مجوز (Authorization)](https://en.wikipedia.org/wiki/Authentication#Authorization) تمایز قائل می‌شویم. احراز هویت به عنوان اولین مرحله در پاسخ سرور انجام می‌شود و داده‌های کاربر احراز هویت شده به صورت `res.locals.authn_user` ذخیره می‌گردند.
 
-- The authentication flow is:
-  1. We first redirect to a remote authentication service (e.g. SAML SSO, Google, Microsoft).
+- جریان احراز هویت به صورت زیر است:
+  1. ابتدا به یک سرویس احراز هویت راه دور (مانند SAML SSO، Google، Microsoft) تغییر مسیر می‌دهیم (redirect).
 
-  2. The remote authentication service redirects back to a callback URL, e.g. `/pl/oauth2callback` for Google. These endpoints confirm authentication, create the user in the `users` table if necessary, set a signed `pl_authn` cookie in the browser with the authenticated `user_id`, and then redirect to the main PL homepage. This cookie is set with the `HttpOnly` attribute, which prevents client-side JavaScript from reading the cookie.
+  2. سرویس احراز هویت راه دور کاربر را به یک URL فراخوانی بازگشتی (callback URL)، مثلاً `/pl/oauth2callback` برای گوگل بازمی‌گرداند. این نقاط انتهایی (endpoints) احراز هویت را تأیید کرده، در صورت نیاز کاربر را در جدول `users` ایجاد می‌کنند، یک کوکی امضاشده `pl_authn` با شناسه احراز هویت شده `user_id` در مرورگر تنظیم می‌نمایند و سپس به صفحه اصلی PL ریدایرکت می‌کنند. این کوکی با ویژگی `HttpOnly` تنظیم می‌شود که مانع از خواندن آن توسط جاوااسکریپت سمت کلاینت می‌گردد.
 
-  3. Every other page authenticates using the signed browser `pl_authn` cookie. This is read by [`middlewares/authn.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/middlewares/authn.ts) which checks the signature and then loads the user data from the DB using the `user_id`, storing it as `res.locals.authn_user`.
+  3. هر صفحه دیگری با استفاده از این کوکی امضاشده `pl_authn` در مرورگر احراز هویت می‌شود. این کوکی توسط [`middlewares/authn.ts`](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/middlewares/authn.ts) خوانده می‌شود که امضا را بررسی کرده و سپس داده‌های کاربر را با استفاده از `user_id` از دیتابیس بارگذاری می‌کند و آن را به عنوان `res.locals.authn_user` ذخیره می‌نماید.
 
-- Similar to unix, we distinguish between the real and effective user. The real user is stored as `res.locals.authn_user` and is the user that authenticated. The effective user is stored as `res.locals.user`. Only users with `role = TA` or higher can set an effective user that is different from their real user. Moreover, users with `role = TA` or higher can also set an effective `role` and `mode` that is different to the real values.
+- مشابه یونیکس، ما بین کاربر واقعی (real user) و کاربر مؤثر (effective user) تمایز قائل می‌شویم. کاربر واقعی در `res.locals.authn_user` ذخیره می‌شود و کاربری است که هویتش تأیید شده است. کاربر مؤثر در `res.locals.user` ذخیره می‌شود. تنها کاربرانی با نقش دستیار آموزشی (`role = TA`) یا بالاتر می‌توانند کاربر مؤثری متفاوت از کاربر واقعی خود تنظیم کنند. علاوه بر این، کاربران با `role = TA` یا بالاتر می‌توانند `role` و `mode` مؤثری متفاوت از مقادیر واقعی نیز مشخص نمایند.
 
-- Authorization occurs at multiple levels:
-  - The `course_instance` checks authorization based on the `authn_user`.
+- اعطای مجوز (Authorization) در سطوح متعددی رخ می‌دهد:
+  - دوره درس (`course_instance`) مجوز را بر اساس `authn_user` بررسی می‌کند.
 
-  - The `course_instance` authorization is checked against the effective `user`.
+  - مجوز دوره درس (`course_instance`) در برابر `user` مؤثر بررسی می‌شود.
 
-  - The `assessment` checks authorization based on the effective `user`, `role`, `mode`, and `date`.
+  - ارزیابی (`assessment`) مجوز را بر اساس `user`، `role`، `mode` و `date` مؤثر بررسی می‌کند.
 
-- All state-modifying requests must (normally) be POST and all associated data must be in the body. GET requests may use query parameters for viewing options only.
+- تمام درخواست‌هایی که وضعیت را تغییر می‌دهند (state-modifying) معمولاً باید از نوع POST باشند و همه داده‌های مرتبط باید درون بدنه (body) قرار گیرند. درخواست‌های GET ممکن است صرفاً برای گزینه‌های مشاهده (viewing options) از پارامترهای کوئری استفاده کنند.
 
-## Permission checking
+## بررسی سطوح دسترسی
 
-Almost every page is dealing with database data, so it is important to understand how to interact with the database securely and do proper permission checking.
+تقریباً تمامی صفحات با داده‌های پایگاه داده سر و کار دارند، بنابراین درک نحوه تعامل امن با پایگاه داده و انجام صحیح بررسی‌های سطح دسترسی بسیار حائز اهمیت است.
 
-### Role hierarchy
+### سلسله‌مراتب نقش‌ها
 
-There are 4 non-overlapping types of roles: "System roles", "Student course instance roles", "Instructor course instance roles", and "Course roles". Having a role higher in the hierarchy implies having all the permissions of the roles below it -- but it does not imply having any of the permissions in other columns.
+چهار نوع نقش بدون هم‌پوشانی وجود دارد: "نقش‌های سیستمی" (System roles)، "نقش‌های دوره درس دانشجو" (Student course instance roles)، "نقش‌های دوره درس مدرس" (Instructor course instance roles)، و "نقش‌های درس" (Course roles). داشتن نقشی بالاتر در این سلسله‌مراتب به معنای دارا بودن تمام مجوزهای نقش‌های پایین‌تر از آن است — اما به معنی داشتن مجوزهای موجود در ستون‌های دیگر نیست.
 
-![Role hierarchy](./role-hierarchy.png)
+![سلسله‌مراتب نقش‌ها](./role-hierarchy.png)
 
-### Safely interacting with the database
+### تعامل امن با پایگاه داده
 
 !!! note
 
-    This pattern is currently being rolled out as a gradual refactor of existing code on a model-by-model basis.
+    این الگو در حال حاضر به عنوان یک بازآفرینی (refactor) تدریجی کدهای موجود بر اساس مدل‌به‌مدل در حال اجرا است.
 
-For most API/POST handlers, we want to look up or modify data based on unvalidated query parameters or request body fields. It is easy to forget to validate these fields with the correct authorization levels. Route-specific role checks should normally live in middleware or the handler; model functions should focus on ownership and record-belonging checks. To help with this, we institute two checks:
+برای اکثر هندلرهای API/POST، ما می‌خواهیم داده‌ها را بر اساس پارامترهای کوئری یا فیلدهای بدنه درخواست که اعتبارسنجی نشده‌اند، جستجو یا ویرایش کنیم. فراموش کردن اعتبارسنجی این فیلدها با سطوح مجوز صحیح بسیار آسان رخ می‌دهد. بررسی‌های نقش اختصاصی مسیر معمولاً باید در میدلور یا در خود هندلر قرار داشته باشند؛ توابع مدل (model functions) باید بر بررسی مالکیت و تعلق رکورد تمرکز کنند. برای کمک به این امر، ما دو بررسی وضع کرده‌ایم:
 
-1. Model functions should accept full, typed row objects as parameters. Possession of this object implies the caller is authorized to read the record. For example, updates to the enrollment status should require the caller to pass in the full enrollment row object. We want to make it hard to update an enrollment status using just an enrollment ID (e.g. by sending a POST request to `/api/enrollments/<enrollment_id>/status`, and performing an unvalidated update with `req.params.enrollment_id`).
+1. توابع مدل باید اشیاء کامل و تایپ‌شده ردیف (full, typed row objects) را به عنوان پارامتر بپذیرند. در اختیار داشتن این شیء نشان می‌دهد که فراخواننده مجاز به خواندن رکورد است. به عنوان مثال، به‌روزرسانی وضعیت ثبت‌نام (enrollment status) باید فراخواننده را ملزم کند که شیء کامل ردیف ثبت‌نام را ارسال کند. ما می‌خواهیم به‌روزرسانی وضعیت ثبت‌نام صرفاً با استفاده از یک شناسه ثبت‌نام (مثلاً با ارسال یک درخواست POST به `/api/enrollments/<enrollment_id>/status` و انجام یک به‌روزرسانی اعتبارسنجی‌نشده با `req.params.enrollment_id`) دشوار باشد.
 
-2. Ownership-sensitive model functions should require the caller to pass in the context needed to prove ownership or record belonging. In the below example, the `selectEnrollment` function requires the caller to pass in the `courseInstance` and `authzData` parameters, so it can assert that the enrollment belongs to the user, and is in the correct course instance.
+2. توابع مدلی که نسبت به مالکیت حساس هستند باید فراخواننده را ملزم کنند بافتار (context) لازم برای اثبات مالکیت یا تعلق رکورد را ارسال کند. در مثال زیر، تابع `selectEnrollment` از فراخواننده می‌خواهد پارامترهای `courseInstance` و `authzData` را ارسال نماید تا بتواند اطمینان حاصل کند که ثبت‌نام متعلق به کاربر است و در دوره درس صحیح قرار دارد.
 
 ```typescript
 const enrollment = await selectEnrollment({
@@ -506,11 +506,11 @@ const enrollment = await selectEnrollment({
 });
 ```
 
-![Single role](./single-role-example.png)
+![نقش واحد](./single-role-example.png)
 
-!!! note "Sample model function"
+!!! note "نمونه تابع مدل"
 
-    This is a sample model function that demonstrates the pattern from `src/models/enrollment.ts`.
+    این یک نمونه تابع مدل است که الگوی مورد نظر را از مسیر `src/models/enrollment.ts` نشان می‌دهد.
 
     ```typescript
     export async function selectEnrollmentById({
@@ -538,11 +538,11 @@ const enrollment = await selectEnrollment({
     }
     ```
 
-In the above example, the `selectEnrollment` function requires the caller to pass in the `courseInstance` and `authzData` parameters, so it can assert that the enrollment belongs to the user, and is in the correct course instance. It will throw an error if the caller is not authorized to access the enrollment (or null if it was `selectOptionalEnrollment`). This also forced the caller to prove access to the course instance in order to read the enrollment record.
+در مثال بالا، تابع `selectEnrollment` فراخواننده را ملزم می‌کند تا پارامترهای `courseInstance` و `authzData` را ارسال کند تا بتواند تأیید کند که ثبت‌نام متعلق به کاربر بوده و در دوره درس صحیح قرار دارد. اگر فراخواننده مجاز به دسترسی به ثبت‌نام نباشد، خطایی صادر خواهد شد (یا اگر تابع `selectOptionalEnrollment` باشد، مقدار null برمی‌گرداند). این موضوع همچنین فراخواننده را وادار می‌کند تا دسترسی خود به دوره درس را جهت خواندن رکورد ثبت‌نام اثبات نماید.
 
-This is good, because in order to perform an update, you need to pass in a full row object, and a request body won't have enough information for this. Model functions that fetch rows require the caller to pass in the needed information to perform the correct authorization checks.
+این رویکرد بسیار مناسب است، زیرا برای انجام یک به‌روزرسانی باید یک شیء ردیف کامل را ارسال کنید و بدنه درخواست اطلاعات کافی برای این منظور نخواهد داشت. توابع مدلی که ردیف‌ها را واکشی می‌کنند، فراخواننده را ملزم به ارائه اطلاعات لازم جهت انجام صحیح بررسی‌های مجوز می‌نمایند.
 
-Once you have a full row object, you have asserted that the caller is authorized to _read_ the record. You will also need to assert that the caller is authorized to _write_ the record. In the below example, we set `requiredRole` to `['Student']`, so the caller must be a student to update the enrollment status.
+پس از اینکه شیء ردیف کامل را به دست آوردید، اثبات کرده‌اید که فراخواننده مجاز به _خواندن_ رکورد است. همچنین باید تأیید کنید که فراخواننده مجاز به _نوشتن_ روی رکورد نیز هست. در مثال زیر، ما `requiredRole` را روی `['Student']` تنظیم می‌کنیم، بنابراین فراخواننده برای به‌روزرسانی وضعیت ثبت‌نام حتماً باید دانشجو باشد.
 
 ```typescript
 await updateEnrollmentStatus({
@@ -555,11 +555,11 @@ await updateEnrollmentStatus({
 });
 ```
 
-In this example, instructors are not allowed to join a course instance for the student. The model function would note that the `requiredRole` parameter is `['Student']`, but the current user is an instructor, so it would throw an error.
+در این مثال، مدرسان مجاز نیستند به جای دانشجو به یک دوره درس بپیوندند. تابع مدل متوجه می‌شود که پارامتر `requiredRole` برابر `['Student']` است، اما کاربر فعلی مدرس است، بنابراین یک خطا ایجاد خواهد کرد.
 
-### Bypassing authorization checks
+### دور زدن بررسی‌های مجوز
 
-In some cases, you may not have access to `authzData`, e.g. if you are pulling data from a queue, or deep in internal code. In this case, you can use the `dangerousFullSystemAuthz` function to build a dummy `authzData` object that allows you to perform the action as the system. This should be used sparingly.
+در برخی موارد، ممکن است به `authzData` دسترسی نداشته باشید؛ مثلاً اگر داده‌ها را از یک صف (queue) دریافت می‌کنید یا در عمق کدهای داخلی سیستم قرار دارید. در این حالت، می‌توانید از تابع `dangerousFullSystemAuthz` برای ساخت یک شیء صوری `authzData` استفاده کنید که به شما امکان می‌دهد عملیات را با دسترسی سیستم اجرا نمایید. از این تابع باید با احتیاط فراوان و به ندرت استفاده شود.
 
 ```typescript
 await updateEnrollmentStatus({
@@ -571,9 +571,9 @@ await updateEnrollmentStatus({
 });
 ```
 
-### Multiple roles
+### نقش‌های چندگانه
 
-In some cases, you may want to allow the user to perform the action if they have any of the required roles. For example, if you are updating an enrollment status, you may want to allow the user to perform the action if they have the `Viewer` role, but you may also want to allow the user to perform the action if they have the `Student Data Viewer` role. This is a common pattern where when performing an action in the context of a course instance, you check if they have `Previewer` in the course, or `Student Data Viewer` in the course instance.
+در برخی موارد، ممکن است بخواهید به کاربر اجازه دهید در صورت داشتن هر یک از نقش‌های مورد نیاز، عملیات را انجام دهد. به عنوان مثال، اگر در حال به‌روزرسانی وضعیت ثبت‌نام هستید، ممکن است بخواهید به کاربر اجازه دهید در صورت داشتن نقش `Viewer` عملیات را انجام دهد، اما همچنین بخواهید در صورت داشتن نقش `Student Data Viewer` نیز قادر به انجام آن باشد. این یک الگوی متداول است که هنگام انجام عملیاتی در بافتار یک دوره درس، بررسی می‌کنید آیا کاربر در درس نقش `Previewer` دارد یا در دوره درس نقش `Student Data Viewer`.
 
 ```typescript
 await updateEnrollmentStatus({
@@ -583,28 +583,28 @@ await updateEnrollmentStatus({
 });
 ```
 
-![Multiple roles](./multiple-role-example.png)
+![نقش‌های چندگانه](./multiple-role-example.png)
 
-### Exceptions to the pattern
+### استثناهای این الگو
 
-Model functions for course instances and courses are a notable exception to the pattern.
+توابع مدل برای دوره‌های درس و خود درس‌ها یک استثنای بارز در این الگو محسوب می‌شوند.
 
-The only way to obtain a full row object for a course instance or course is typically through `res.locals.authz_data`.
+تنها راه برای به دست آوردن شیء ردیف کامل برای یک دوره درس یا درس معمولاً از طریق `res.locals.authz_data` است.
 
-Thus, the `select*` functions are not authenticated. Using these is a red flag in most cases, as you should be able to pick information from `res.locals.authz_data` to perform the action.
+بنابراین، توابع `select*` احراز هویت شده نیستند. استفاده از این توابع در اکثر موارد یک هشدار جدی (red flag) تلقی می‌شود، زیرا شما باید بتوانید اطلاعات لازم را از `res.locals.authz_data` برای انجام عملیات بردارید.
 
-Alternatively, if you want to check if you _might_ be authorized to perform an action, you can use `buildAuthzData` with the a course/instance ID to get an `authzData` object that you can use for data-modifying actions.
+از طرف دیگر، اگر می‌خواهید بررسی کنید که آیا _احتمالاً_ مجاز به انجام یک عمل هستید یا خیر، می‌توانید از `buildAuthzData` همراه با شناسه درس/دوره استفاده کنید تا شیء `authzData` را دریافت کرده و از آن برای عملیات تغییر داده بهره بگیرید.
 
-## State-modifying POST requests
+## درخواست‌های POST تغییر‌دهنده وضعیت
 
 ??? note
 
-    This section is outdated. It is now preferred to do the following things:
+    این بخش قدیمی شده است. اکنون ترجیح داده می‌شود موارد زیر انجام شوند:
 
-    1. Use a Zod schema to validate the request body.
-    2. Call model functions instead of directly executing SQL (see above).
+    1. استفاده از یک اسکیمای Zod برای اعتبارسنجی بدنه درخواست.
+    2. فراخوانی توابع مدل به جای اجرای مستقیم SQL (به موارد بالا مراجعه شود).
 
-- Use the [Post/Redirect/Get](https://en.wikipedia.org/wiki/Post/Redirect/Get) pattern for all state modification. This means that the initial GET should render the page with a `<form>` that has no `action` set, so it will submit back to the current page. This should be handled by a POST handler that performs the state modification and then issues a redirect back to the same page as a GET:
+- از الگوی [Post/Redirect/Get](https://en.wikipedia.org/wiki/Post/Redirect/Get) برای تمامی تغییرات وضعیت استفاده کنید. این بدان معناست که درخواست اولیه GET باید صفحه را به همراه یک `<form>` بدون مقدار `action` رندر کند تا فرم دوباره به همان صفحه جاری سابمیت شود. این حالت باید توسط یک هندلر POST پردازش شود که تغییر وضعیت را اعمال کرده و سپس یک تغییر مسیر (redirect) به همان صفحه به صورت یک درخواست GET صادر می‌کند:
 
   ```javascript
   router.post(
@@ -623,9 +623,9 @@ Alternatively, if you want to check if you _might_ be authorized to perform an a
   );
   ```
 
-- To defeat [CSRF (Cross-Site Request Forgery)](https://en.wikipedia.org/wiki/Cross-site_request_forgery) we use the [Encrypted Token Pattern](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html). This stores an [HMAC-authenticated token](https://en.wikipedia.org/wiki/Hash-based_message_authentication_code) inside the POST data.
+- برای خنثی‌سازی حملات [CSRF (جعل درخواست بین‌سایتی)](https://en.wikipedia.org/wiki/Cross-site_request_forgery) ما از [الگوی توکن رمزنگاری‌شده (Encrypted Token Pattern)](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) استفاده می‌کنیم. این الگو یک [توکن احراز هویت‌شده با HMAC](https://en.wikipedia.org/wiki/Hash-based_message_authentication_code) را درون داده‌های POST ذخیره می‌کند.
 
-- All data modifying requests should come from `form` elements like:
+- تمام درخواست‌های تغییر‌دهنده داده باید از المان‌های `form` مانند زیر ارسال شوند:
 
   ```html
   <form name="enroll-form" method="POST">
@@ -636,11 +636,11 @@ Alternatively, if you want to check if you _might_ be authorized to perform an a
   </form>
   ```
 
-- The `res.locals.__csrf_token` variable is set and checked by early-stage middleware, so no explicit action is needed on each page.
+- متغیر `res.locals.__csrf_token` توسط میدلورهای مراحل اولیه تنظیم و بررسی می‌شود، بنابراین هیچ اقدام صریحی در هر صفحه لازم نیست.
 
-## Logging errors
+## ثبت لاگ خطاها
 
-- We use [Winston](https://github.com/winstonjs/winston) for logging to the console and to files:
+- ما از [Winston](https://github.com/winstonjs/winston) برای ثبت لاگ در کنسول و فایل‌ها استفاده می‌کنیم:
 
   ```javascript
   import { logger } from '@prairielearn/logger';
@@ -652,98 +652,98 @@ Alternatively, if you want to check if you _might_ be authorized to perform an a
   logger.verbose('This is a verbose message');
   ```
 
-- All `logger` functions have a mandatory first argument that is a string, and an optional second argument that is an object containing useful information. It is important to always provide a string as the first argument.
+- تمامی توابع `logger` دارای یک آرگومان اول اجباری از نوع رشته (string) و یک آرگومان دوم اختیاری هستند که شیئی حاوی اطلاعات مفید است. مهم است که همیشه یک رشته به عنوان آرگومان اول ارائه شود.
 
-## TypeScript versions
+## نسخه‌های TypeScript
 
-Builds and type checks use TypeScript 7 through `pnpm tsc`. The `@typescript/native` dependency is an npm alias for the official `typescript` package.
+فرایندهای ساخت (Builds) و بررسی نوع (type checks) از TypeScript 7 از طریق `pnpm tsc` استفاده می‌کنند. وابستگی `@typescript/native` یک نام مستعار npm (alias) برای بسته رسمی `typescript` است.
 
-ESLint and other tools that use the TypeScript compiler API still need TypeScript 6. The `typescript` dependency is an alias for `@typescript/typescript6`, which preserves `import ... from 'typescript'` and provides `pnpm tsc6` for workflows that need the older compiler. Keep this alias when updating TypeScript; replacing it with TypeScript 7 would break API consumers. See the [TypeScript 7 release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0) for the side-by-side setup.
+ابزار ESLint و سایر ابزارهایی که از کامپایلر API تایپ‌اسکریپت استفاده می‌کنند، همچنان به TypeScript 6 نیاز دارند. وابستگی `typescript` یک نام مستعار برای `@typescript/typescript6` است که دستور `import ... from 'typescript'` را حفظ کرده و دستور `pnpm tsc6` را برای جریان‌های کاری نیازمند به کامپایلر قدیمی‌تر فراهم می‌سازد. هنگام به‌روزرسانی TypeScript این نام مستعار را حفظ کنید؛ جایگزینی آن با TypeScript 7 سازگاری مصرف‌کنندگان API را می‌شکند. برای پیکربندی هم‌زمان (side-by-side) به [یادداشت‌های انتشار TypeScript 7](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0) مراجعه کنید.
 
-## Coding style
+## شیوه‌نامه کدنویسی
 
-[Oxlint](https://oxc.rs/docs/guide/usage/linter) and [ESLint](https://eslint.org/) (for HTML files and one type-aware rule) are used to enforce consistent code conventions, and [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) and [Prettier](https://prettier.io/) (for SQL and shell scripts) are used for formatting. See `oxlint.config.mts`, `eslint.config.mjs`, `.oxfmtrc.json`, and `.prettierrc.json` in the root of the PrairieLearn repository, and the shared rules in `packages/oxlint-config`, to view our specific configuration. The repo includes an [`.editorconfig`](https://editorconfig.org/) file that most editors will detect and use to automatically configure things like indentation. If your editor doesn't natively support an EditorConfig file, there are [plugins](https://editorconfig.org/#download) available for most other editors.
+از [Oxlint](https://oxc.rs/docs/guide/usage/linter) و [ESLint](https://eslint.org/) (برای فایل‌های HTML و یک قاعده آگاه از نوع) جهت اعمال قراردادهای یکپارچه کد، و از [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) و [Prettier](https://prettier.io/) (برای SQL و اسکریپت‌های شل) برای قالب‌بندی (formatting) استفاده می‌شود. برای مشاهده پیکربندی خاص ما، به فایل‌های `oxlint.config.mts`، `eslint.config.mjs`، `.oxfmtrc.json` و `.prettierrc.json` در ریشه مخزن PrairieLearn و قواعد مشترک در `packages/oxlint-config` مراجعه کنید. این مخزن حاوی یک فایل [`.editorconfig`](https://editorconfig.org/) است که بیشتر ویرایشگرها آن را شناسایی کرده و برای پیکربندی خودکار مواردی مانند تورفتگی (indentation) به کار می‌برند. اگر ویرایشگر شما به صورت پیش‌فرض از فایل EditorConfig پشتیبانی نمی‌کند، [پلاگین‌هایی](https://editorconfig.org/#download) برای اکثر ویرایشگرهای دیگر در دسترس هستند.
 
-For Python files, [ruff](https://docs.astral.sh/ruff/) is used for autoformatting and enforcing code conventions, and [Pyright](https://github.com/microsoft/pyright) is used for static typechecking. See `pyproject.toml` in the root of the PrairieLearn repository to view our specific configuration. We encourage all new Python code to include type hints for use with the static typechecker, as this makes it easier to read, review, and verify contributions.
+برای فایل‌های پایتون، از [ruff](https://docs.astral.sh/ruff/) جهت قالب‌بندی خودکار و اعمال قراردادهای کدنویسی، و از [Pyright](https://github.com/microsoft/pyright) برای بررسی ایستا نوع (static typechecking) استفاده می‌شود. برای مشاهده پیکربندی ما به `pyproject.toml` در ریشه مخزن PrairieLearn مراجعه کنید. ما توصیه می‌کنیم تمام کدهای جدید پایتون شامل راهنماهای نوع (type hints) باشند تا با بررسی‌کننده ایستای نوع استفاده شوند، زیرا این کار خواندن، بازبینی و راستی‌آزمایی مشارکت‌ها را آسان‌تر می‌کند.
 
-To lint the code, use `make lint`. This is also run by the CI tests.
+برای لینت کردن کد، از دستور `make lint` استفاده کنید. این کار توسط تست‌های CI نیز اجرا می‌شود.
 
-To automatically fix lint and formatting errors, run `make format`.
+برای رفع خودکار خطاهای لینت و قالب‌بندی، دستور `make format` را اجرا نمایید.
 
-To format all changed files (staged + unstaged + untracked) compared to HEAD, run `make format-changed`. This is faster than formatting the entire codebase.
+برای قالب‌بندی تمام فایل‌های تغییر‌یافته (staged + unstaged + untracked) در مقایسه با HEAD، دستور `make format-changed` را اجرا کنید. این کار سریع‌تر از قالب‌بندی کل پایگاه کد است.
 
-## Question-rendering control flow
+## جریان کنترل رندر سوال
 
-- The core files involved in question rendering are [lib/question-render.ts](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/question-render.ts), [lib/question-render.sql](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/question-render.sql), and [components/QuestionContainer.tsx](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/components/QuestionContainer.tsx).
+- فایل‌های هسته‌ای درگیر در رندر سوال عبارتند از [lib/question-render.ts](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/question-render.ts)، [lib/question-render.sql](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/lib/question-render.sql)، و [components/QuestionContainer.tsx](https://github.com/PrairieLearn/PrairieLearn/blob/master/apps/prairielearn/src/components/QuestionContainer.tsx).
 
-- The above files are all called/included by each of the top-level pages that needs to render a question (e.g., `pages/instructorQuestionPreview`, `pages/studentInstanceQuestion`, etc.). Unfortunately the control-flow is complicated because we need to call `lib/question-render.ts` during page data load, store the data it generates, and then later include the `components/QuestionContainer.html.ts` template to actually render this data.
+- فایل‌های فوق همگی توسط هر یک از صفحات سطح بالا که نیاز به رندر سوال دارند (مانند `pages/instructorQuestionPreview`، `pages/studentInstanceQuestion` و غیره) فراخوانی/گنجانده می‌شوند. متأسفانه جریان کنترل پیچیده است زیرا ما باید `lib/question-render.ts` را در هنگام بارگذاری داده‌های صفحه فراخوانی کنیم، داده‌های تولیدشده را ذخیره نماییم و سپس بعداً قالب `components/QuestionContainer.html.ts` را برای رندر واقعی این داده‌ها اضافه کنیم.
 
-- For example, the exact control-flow for `pages/instructorQuestion` is:
-  1. The top-level page `pages/instructorQuestion/instructorQuestion.js` code calls `lib/question-render.getAndRenderVariant()`.
+- برای نمونه، جریان دقیق کنترل برای `pages/instructorQuestion` به این صورت است:
+  1. کد صفحه سطح بالای `pages/instructorQuestion/instructorQuestion.js` تابع `lib/question-render.getAndRenderVariant()` را فراخوانی می‌کند.
 
-  2. `getAndRenderVariant()` inserts data into `res.locals` for later use by `components/QuestionContainer.html.ts`.
+  2. تابع `getAndRenderVariant()` داده‌ها را در `res.locals` برای استفاده‌های بعدی توسط `components/QuestionContainer.html.ts` قرار می‌دهد.
 
-  3. The top-level page code renders the top-level template `pages/instructorQuestion/instructorQuestion.html.ts`, which then includes `components/QuestionContainer.html.ts`.
+  3. کد صفحه سطح بالا قالب سطح بالای `pages/instructorQuestion/instructorQuestion.html.ts` را رندر می‌کند که سپس `components/QuestionContainer.html.ts` را در بر می‌گیرد.
 
-  4. `components/QuestionContainer.html.ts` renders the data that was earlier generated by `lib/question-render.ts`.
+  4. قالب `components/QuestionContainer.html.ts` داده‌هایی را که قبلاً توسط `lib/question-render.ts` تولید شده بودند رندر می‌کند.
 
-## Question open status
+## وضعیت باز بودن سوال
 
-- There are three levels at which “open” status is tracked, as follows. If `open = false` for any object then it will block the creation of new objects below it. For example, to create a new submission the corresponding variant, instance_question, and assessment_instance must all be open.
+- وضعیت "باز بودن" (open) در سه سطح مطابق جدول زیر ردیابی می‌شود. اگر مقدار `open = false` برای هر شیئی باشد، مانع از ایجاد اشیاء جدید زیرمجموعه آن خواهد شد. به عنوان مثال، برای ایجاد یک پاسخ ارسالی (submission) جدید، گونه (variant)، سوال نمونه (instance_question) و نمونه ارزیابی (assessment_instance) متناظر همگی باید باز باشند.
 
-  | Variable                   | Allow new `instance_questions` | Allow new `variants` | Allow new `submissions` |
+  | متغیر | امکان ایجاد `instance_questions` جدید | امکان ایجاد `variants` جدید | امکان ایجاد `submissions` جدید |
   | -------------------------- | ------------------------------ | -------------------- | ----------------------- |
   | `assessment_instance.open` | ✓                              | ✓                    | ✓                       |
   | `instance_question.open`   |                                | ✓                    | ✓                       |
   | `variant.open`             |                                |                      | ✓                       |
 
-## Errors in question handling
+## خطاها در مدیریت سوال
 
-- We distinguish between two different types of student errors:
-  1. The answer might be not be gradable (`submission.gradable = false`). This could be due to a missing answer, an invalid format (e.g., entering a string in a numeric input), or a answer that doesn't pass some basic check (e.g., a code submission that didn't compile). This can be discovered during either the parsing or grading phases. In such a case the `submission.format_errors` object should store information on what was wrong to allow the student to correct their answer. A submission with `gradable = false` will not cause any updating of points for the question. That is, it acts like a saved-but-not-graded submission, in that it is recorded but has no impact on the question. If `gradable = false` then the `score` and `feedback` will not be displayed to the student.
+- ما بین دو نوع مختلف از خطاهای دانشجو تمایز قائل می‌شویم:
+  1. پاسخ ممکن است قابل نمره‌دهی نباشد (`submission.gradable = false`). این حالت می‌تواند به دلیل پاسخ خالی، فرمت نامعتبر (مثلاً وارد کردن رشته در ورودی عددی) یا پاسخی باشد که یک بررسی پایه‌ای را پشت سر نمی‌گذارد (مثلاً ارسال کدی که کامپایل نمی‌شود). این موضوع می‌تواند در طول فاز تجزیه (parsing) یا فاز نمره‌دهی (grading) کشف شود. در چنین شرایطی شیء `submission.format_errors` باید اطلاعاتی را درباره ایراد کار ذخیره کند تا دانشجو بتواند پاسخ خود را تصحیح نماید. پاسخ ارسالی با `gradable = false` باعث هیچ‌گونه به‌روزرسانی نمره برای سوال نمی‌شود؛ به این معنا که مانند یک پاسخ ارسالی ذخیره‌شده-اما-نمره‌داده‌نشده عمل می‌کند، بدین صورت که ثبت شده اما اثری بر سوال ندارد. اگر `gradable = false` باشد، `score` و `feedback` به دانشجو نمایش داده نخواهند شد.
 
-  2. The answer might be gradable but incorrect. In this case `submission.gradable = true` but `submission.score = 0` (or less than 1 for a partial score). If desired, the `submission.feedback` object can be set to give information to the student on what was wrong with their answer. This is not necessary, however. If `submission.feedback` is set then it will be shown to the student along with their `submission.score` as soon as the question is graded.
+  2. پاسخ ممکن است قابل نمره‌دهی اما نادرست باشد. در این حالت `submission.gradable = true` اما `submission.score = 0` (یا کمتر از ۱ برای نمره جزئی) است. در صورت تمایل، شیء `submission.feedback` می‌تواند تنظیم شود تا اطلاعاتی را در مورد اشکال پاسخ به دانشجو ارائه دهد. با این حال، این امر ضروری نیست. اگر `submission.feedback` تنظیم شده باشد، به محض نمره‌دهی سوال به همراه `submission.score` به دانشجو نمایش داده خواهد شد.
 
-- There are three levels of errors that can occur during the creation, answering, and grading of a question:
+- سه سطح خطا وجود دارد که ممکن است در طول فرآیند ایجاد، پاسخ‌گویی و نمره‌دهی یک سوال رخ دهد:
 
-  | Error level     | Caused                                                           | Stored                                                                                    | Reported                             | Effect                                                                                                                                                                     |
+  | سطح خطا | علت | محل ذخیره | نحوه گزارش | اثر |
   | --------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | System errors   | Internal PrairieLearn errors                                     | On-disk logs                                                                              | Error page                           | Operation is blocked. Data is not saved to the database.                                                                                                                   |
-  | Question errors | Errors in question code                                          | `issues` table                                                                            | Issue panels on the question page    | `variant.broken_at != null` or `submission.broken == true`. Operation completes, but future operations are blocked.                                                        |
-  | Student errors  | Invalid data submitted by the student (unparsable or ungradable) | `submission.gradable` set to `false` and details are stored in `submission.format_errors` | Inside the rendered submission panel | The submission is not assigned a score and no further action is taken (e.g., points are changed for the instance question). The student can resubmit to correct the error. |
+  | خطاهای سیستمی (System errors) | خطاهای داخلی PrairieLearn | لاگ‌های روی دیسک (On-disk logs) | صفحه خطا | عملیات مسدود می‌شود. داده‌ها در پایگاه داده ذخیره نمی‌شوند. |
+  | خطاهای سوال (Question errors) | خطا در کد سوال | جدول `issues` | پنل‌های Issue در صفحه سوال | `variant.broken_at != null` یا `submission.broken == true`. عملیات به پایان می‌رسد، اما عملیات بعدی مسدود می‌شوند. |
+  | خطاهای دانشجو (Student errors) | ارسال داده‌های نامعتبر توسط دانشجو (غیرقابل تجزیه یا غیرقابل نمره‌دهی) | `submission.gradable` روی `false` تنظیم شده و جزئیات در `submission.format_errors` ذخیره می‌شود | درون پنل رندرشده پاسخ ارسالی | به پاسخ ارسالی نمره‌ای اختصاص داده نمی‌شود و اقدام دیگری صورت نمی‌گیرد (مثلاً نمرات سوال نمونه تغییر نمی‌کند). دانشجو می‌تواند برای اصلاح خطا مجدداً ارسال کند. |
 
-- The important variables involved in tracking question errors are:
+- متغیرهای مهم دخیل در ردیابی خطاهای سوال عبارتند از:
 
-  | Variable                   | Error level    | Description                                                                                                                                                                                        |
+  | متغیر | سطح خطا | توضیحات |
   | -------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `variant.broken_at`        | Question error | Set to `NOW()` if there were question code errors in generating the variant. Such a variant will not have `render()` functions called, but will instead be displayed as `This question is broken`. |
-  | `submission.broken`        | Question error | Set to `true` if there question code errors in parsing or grading the variant. After `submission.broken` is `true`, no further actions will be taken with the submission.                          |
-  | `issues` table             | Question error | Rows are inserted to record the details of the errors that caused `variant.broken != null` or `submission.broken == true` to be set to `true`.                                                     |
-  | `submission.gradable`      | Student error  | Whether this submission can be given a score. Set to `false` if format errors in the `submitted_answer` were encountered during either parsing or grading.                                         |
-  | `submission.format_errors` | Student error  | Details on any errors during parsing or grading. Should be set to something meaningful if `gradable = false` to explain what was wrong with the submitted answer.                                  |
-  | `submission.graded_at`     | None           | NULL if grading has not yet occurred, otherwise a timestamp.                                                                                                                                       |
-  | `submission.score`         | None           | Final score for the submission. Only used if `gradable = true` and `graded_at` is not NULL.                                                                                                        |
-  | `submission.feedback`      | None           | Feedback generated during grading. Only used if `gradable = true` and `graded_at` is not NULL.                                                                                                     |
+  | `variant.broken_at` | خطای سوال | اگر در هنگام تولید گونه (variant) خطایی در کد سوال رخ داده باشد، روی `NOW()` تنظیم می‌شود. برای چنین گونه‌ای توابع `render()` فراخوانی نخواهند شد، بلکه پیام `This question is broken` نمایش داده می‌شود. |
+  | `submission.broken` | خطای سوال | اگر در هنگام تجزیه (parsing) یا نمره‌دهی (grading) گونه خطایی در کد سوال رخ دهد، روی `true` تنظیم می‌شود. پس از `true` شدن `submission.broken`، هیچ اقدام دیگری در رابطه با این پاسخ ارسالی انجام نخواهد شد. |
+  | جدول `issues` | خطای سوال | ردیف‌هایی اضافه می‌شوند تا جزئیات خطاهایی را که باعث شدند `variant.broken != null` یا `submission.broken == true` روی `true` تنظیم شوند، ثبت کنند. |
+  | `submission.gradable` | خطای دانشجو | مشخص می‌کند که آیا می‌توان به این پاسخ ارسالی نمره‌ای اختصاص داد یا خیر. اگر خطاهای فرمت در `submitted_answer` در حین تجزیه یا نمره‌دهی مشاهده شود، روی `false` تنظیم می‌شود. |
+  | `submission.format_errors` | خطای دانشجو | جزئیات هرگونه خطا در طول تجزیه یا نمره‌دهی. اگر `gradable = false` باشد، باید روی مقداری معنادار تنظیم شود تا توضیح دهد چه ایرادی در پاسخ ارسالی وجود داشته است. |
+  | `submission.graded_at` | هیچ‌کدام | اگر هنوز نمره‌دهی انجام نشده باشد برابر NULL است، در غیر این صورت یک برچسب زمانی (timestamp) خواهد بود. |
+  | `submission.score` | هیچ‌کدام | نمره نهایی برای پاسخ ارسالی. تنها در صورتی استفاده می‌شود که `gradable = true` بوده و `graded_at` برابر NULL نباشد. |
+  | `submission.feedback` | هیچ‌کدام | بازخورد تولیدشده در طول نمره‌دهی. تنها در صورتی استفاده می‌شود که `gradable = true` بوده و `graded_at` برابر NULL نباشد. |
 
-- Note that `submission.format_errors` stores information about student errors, while the `issues` table stores information about question code errors.
+- توجه داشته باشید که `submission.format_errors` اطلاعات مربوط به خطاهای دانشجو را ذخیره می‌کند، در حالی که جدول `issues` اطلاعات خطاهای کد سوال را ثبت می‌نماید.
 
-- The question flow is shown in the diagram below:
+- چرخه حیات و جریان سوال در نمودار زیر نشان داده شده است:
 
-![Question lifecycle flowchart](./question-flow.d2)
+![فلوچارت چرخه حیات سوال](./question-flow.d2)
 
-## Assertions
+## اعتبارسنجی‌ها و بررسی‌ها (Assertions)
 
-Depending on the context, we use different types of assertions.
+بسته به بافتار و زمینه استفاده، ما از انواع مختلفی از اعتبارسنجی‌ها (assertions) استفاده می‌کنیم:
 
-- In tests, we use the exported helpers from `vitest`, e.g. `assert.ok` or `assert.isDefined`.
-- In server code, to enforce invariants (e.g. something that should never happen), we use `assert` from `node:assert`.
-- For asserting results on the client, or in utility functions, e.g. a `.querySelector`, `.pop`, etc., consider using the `!` operator to assert that a value is not `null` or `undefined`.
+- در تست‌ها، از توابع کمکی خروجی‌گرفته‌شده از `vitest` مانند `assert.ok` یا `assert.isDefined` استفاده می‌کنیم.
+- در کدهای سمت سرور، برای اعمال ناورداها (invariants - مواردی که هرگز نباید رخ دهند)، از `assert` مربوط به `node:assert` استفاده می‌کنیم.
+- برای اعتبارسنجی نتایج در سمت کلاینت، یا در توابع کمکی (مانند `.querySelector`، `.pop` و غیره)، استفاده از عملگر `!` را در نظر بگیرید تا مشخص شود که یک مقدار `null` یا `undefined` نیست.
 
-## JavaScript equality operator
+## عملگر برابری در جاوااسکریپت
 
-You should almost always use the `===` operator for comparisons; this is enforced with an oxlint rule.
+شما تقریباً همیشه باید از عملگر `===` برای مقایسه‌ها استفاده کنید؛ این مورد توسط یک قانون oxlint الزامی شده است.
 
-The only case where the `==` operator is frequently useful is for comparing entity IDs that may be coming from the client/database/etc. These may be either strings or numbers depending on where they're coming from or how they're fetched. To make it abundantly clear that IDs are being compared, you should use the `idsEqual` utility:
+تنها موردی که عملگر `==` در آن مکرراً مفید واقع می‌شود، مقایسه شناسه‌های موجودیت‌ها (entity IDs) است که ممکن است از کلاینت/پایگاه داده و غیره آمده باشند. این مقادیر بسته به منبع یا نحوه واکشی ممکن است رشته یا عدد باشند. برای اینکه کاملاً مشخص و شفاف باشد شناسه‌ها در حال مقایسه هستند، باید از تابع کمکی `idsEqual` استفاده نمایید:
 
 ```js
 import { idsEqual } from './lib/id';
@@ -752,4 +752,4 @@ console.log(idsEqual(12345, '12345'));
 // > true
 ```
 
-"Modern" queries that use Zod validation will automatically coerce all IDs to strings. If you're confident that data on both sides of the comparison is coming from a Zod-validated query, you can use the `===` operator directly.
+کوئری‌های "مدرن" که از اعتبارسنجی Zod استفاده می‌کنند، به طور خودکار تمام شناسه‌ها را به رشته تبدیل (coerce) می‌کنند. اگر مطمئن هستید که داده‌ها در هر دو طرف مقایسه از یک کوئری اعتبارسنجی‌شده با Zod می‌آیند، می‌توانید مستقیماً از عملگر `===` استفاده کنید.
