@@ -67,12 +67,8 @@ docker run -it -p 3080:3000 \
 ---
 
 ## 👨‍💻 توسعه‌دهنده و نگه‌دارنده
-
-این پروژه به صورت متن‌باز توسعه یافته و توسط **ارسلان دالوند** مدیریت و پشتیبانی می‌شود:
-
-- **توسعه‌دهنده اصلی:** ارسلان دالوند (Arsalan Dalvand)
 - **وابستگی سازمانی:** دانشکده ریاضی، دانشگاه علم و صنعت ایران (IUST)
-- **پست الکترونیکی سازمانی:** [arsalan_dalvand@mathdep.iust.ac.ir](mailto:arsalan_dalvand@mathdep.iust.ac.ir)
+- **پست الکترونیکی:** [arsalan_dalvand@mathdep.iust.ac.ir](mailto:arsalan_dalvand@mathdep.iust.ac.ir)
 - **تلگرام جهت ارتباط و بازخورد:** [@b_7vat4r](https://t.me/b_7vat4r)
 - **مخزن رسمی گیتهاب:** [https://github.com/ArsalanDalvand/smart-learning](https://github.com/ArsalanDalvand/smart-learning)
 
@@ -90,7 +86,6 @@ docker run -it -p 3080:3000 \
 - **Complete Persian Localization & RTL Optimization:** Modern UX adhering to web typography and academic workflow standards.
 
 ### Maintainer & Author:
-- **Lead Developer:** Arsalan Dalvand
 - **Institution:** Department of Mathematics, Iran University of Science and Technology (IUST)
 - **Email:** `arsalan_dalvand@mathdep.iust.ac.ir`
 - **Telegram:** [@b_7vat4r](https://t.me/b_7vat4r)
