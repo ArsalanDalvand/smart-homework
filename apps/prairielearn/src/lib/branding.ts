@@ -29,10 +29,12 @@ export const platformBranding = {
 
   // Contact & Links
   portalName: env.PL_PORTAL_NAME || 'پرتال و پایگاه اطلاع‌رسانی',
-  portalUrl: env.PL_PORTAL_URL || 'https://github.com/ArsalanDalvand/smart-learning',
-  repoUrl: env.PL_REPO_URL || 'https://github.com/ArsalanDalvand/smart-learning',
+  portalUrl: env.PL_PORTAL_URL || 'https://github.com/ArsalanDalvand/smart-homework',
+  repoUrl: env.PL_REPO_URL || 'https://github.com/ArsalanDalvand/smart-homework',
   supportEmail: env.PL_SUPPORT_EMAIL || 'support@prairielearn.ir',
   docsUrl: env.PL_DOCS_URL || 'https://docs.prairielearn.com',
+  licenseUrl: env.PL_LICENSE_URL || 'https://github.com/ArsalanDalvand/smart-homework/blob/master/LICENSE',
+  licenseName: 'GNU AGPLv3',
 
   // Developer & Maintainer
   developer: {
@@ -40,13 +42,14 @@ export const platformBranding = {
     email: env.PL_DEVELOPER_EMAIL || 'arsalan_dalvand@mathdep.iust.ac.ir',
     telegram: env.PL_DEVELOPER_TELEGRAM || '@b_7vat4r',
     telegramUrl: 'https://t.me/b_7vat4r',
-    role: 'توسعه‌دهنده اصلی و نگه‌دارنده پروژه',
+    role: 'توسعه‌دهنده نسخه بومی و نگه‌دارنده پروژه',
     affiliation: 'دانشکده ریاضی، دانشگاه علم و صنعت ایران (IUST)',
   },
 
   // Copyright & Meta
   copyrightYear: env.PL_COPYRIGHT_YEAR || '۱۴۰۵',
-  copyrightText: env.PL_COPYRIGHT_TEXT || 'تمامی حقوق محفوظ است',
+  upstreamAttribution:
+    'بر پایه نرم‌افزار متن‌باز PrairieLearn (حق کپی‌رایت برای PrairieLearn, Inc. و هیئت امنای دانشگاه ایلینوی محفوظ است) تحت مجوز GNU AGPLv3',
   defaultLocale: 'fa',
   direction: 'rtl',
   fontFamily: 'var(--font-persian)',

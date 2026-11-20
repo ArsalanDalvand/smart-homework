@@ -51,8 +51,8 @@
 
 ```bash
 # ۱. کلون کردن مخزن
-git clone https://github.com/ArsalanDalvand/smart-learning.git
-cd smart-learning
+git clone https://github.com/ArsalanDalvand/smart-homework.git
+cd smart-homework
 
 # ۲. اجرای کانتینر سامانه
 docker run -it -p 3080:3000 \
@@ -67,16 +67,20 @@ docker run -it -p 3080:3000 \
 ---
 
 ## 👨‍💻 توسعه‌دهنده و نگه‌دارنده
+
+این پروژه به صورت متن‌باز توسعه یافته و توسط **ارسلان دالوند** مدیریت و پشتیبانی می‌شود:
+
+- **توسعه‌دهنده اصلی و سفارشی‌ساز:** ارسلان دالوند (Arsalan Dalvand)
 - **وابستگی سازمانی:** دانشکده ریاضی، دانشگاه علم و صنعت ایران (IUST)
 - **پست الکترونیکی:** [arsalan_dalvand@mathdep.iust.ac.ir](mailto:arsalan_dalvand@mathdep.iust.ac.ir)
 - **تلگرام جهت ارتباط و بازخورد:** [@b_7vat4r](https://t.me/b_7vat4r)
-- **مخزن رسمی گیتهاب:** [https://github.com/ArsalanDalvand/smart-learning](https://github.com/ArsalanDalvand/smart-learning)
+- **مخزن رسمی گیتهاب:** [https://github.com/ArsalanDalvand/smart-homework](https://github.com/ArsalanDalvand/smart-homework)
 
 ---
 
 ## 🌐 English Overview
 
-**Smart Learning & Automated Assessment Platform** is an advanced, fully localized, problem-driven education and online examination engine based on the Mastery Learning philosophy.
+**Smart Homework & Automated Assessment Platform** is an advanced, fully localized, problem-driven education and online examination engine based on the Mastery Learning philosophy.
 
 ### Key Highlights:
 - **Parametric Problem Generation:** Server-side Python logic generates dynamic mathematical and computational problem variants per attempt.
@@ -86,13 +90,23 @@ docker run -it -p 3080:3000 \
 - **Complete Persian Localization & RTL Optimization:** Modern UX adhering to web typography and academic workflow standards.
 
 ### Maintainer & Author:
+- **Lead Developer & Customizer:** Arsalan Dalvand
 - **Institution:** Department of Mathematics, Iran University of Science and Technology (IUST)
 - **Email:** `arsalan_dalvand@mathdep.iust.ac.ir`
 - **Telegram:** [@b_7vat4r](https://t.me/b_7vat4r)
-- **Repository:** [https://github.com/ArsalanDalvand/smart-learning](https://github.com/ArsalanDalvand/smart-learning)
+- **Repository:** [https://github.com/ArsalanDalvand/smart-homework](https://github.com/ArsalanDalvand/smart-homework)
 
 ---
 
-## 📄 مجوز (License)
+## 📄 مجوز و حقوق کپی‌رایت (License & Attribution)
 
-این پروژه تحت مجوز نرم‌افزار آزاد **GNU Affero General Public License v3.0 (AGPLv3)** منتشر شده است.
+این پروژه، نسخه‌ای سفارشی‌سازی‌شده، بومی‌سازی‌شده (فارسی و تقویم شمسی) و توسعه‌یافته بر پایه نرم‌افزار آزاد **PrairieLearn** است.
+
+- **پروژه پایه (Upstream):** پلتفرم متن‌باز PrairieLearn
+- **حقوق کپی‌رایت پایه:**
+  - Copyright &copy; 2021-present PrairieLearn, Inc.
+  - Portions copyright &copy; 2013-2021 University of Illinois Board of Trustees.
+- **تغییرات و بومی‌سازی (Modifications):**
+  - Copyright &copy; 2026 Arsalan Dalvand (Iran University of Science and Technology - IUST)
+- **پروانه نرم‌افزار:** این سامانه به طور کامل تحت مجوز نرم‌افزار آزاد **GNU Affero General Public License v3.0 (AGPLv3)** منتشر شده و سورس‌کد کامل آن در دسترس عموم قرار دارد.
+- **محدودیت ماژول‌های EE:** ماژول‌های موجود در دایرکتوری `src/ee` متعلق به بخش تجاری PrairieLearn بوده و استفاده از آنها در محیط‌های عملیاتی تجاری (Production) نیازمند رعایت لایسنس اختصاصی شرکت سازنده است. سامانه در حالت پیش‌فرض بر پایه نسخه آزاد جامعه متن‌باز (Community Edition) اجرا می‌شود.

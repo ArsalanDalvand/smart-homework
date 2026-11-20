@@ -221,9 +221,14 @@ function LoginPageContainer({
               </div>
             </a>
             <div class="d-flex align-items-center gap-2">
-              <a href="/pl/request_course" class="btn btn-outline-primary btn-sm fw-medium">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm fw-medium"
+                data-bs-toggle="modal"
+                data-bs-target="#courseRequestWarningModal"
+              >
                 <i class="fas fa-plus-circle me-1"></i> ${uiStrings.landing.requestCourseBtn}
-              </a>
+              </button>
               <button
                 type="button"
                 class="btn btn-light btn-sm fw-medium border text-secondary"
@@ -325,9 +330,14 @@ function LoginPageContainer({
                       }
                     </div>
                     <div class="d-flex flex-wrap gap-2 mt-3 pt-2 border-top border-success-subtle">
-                      <a href="/pl/request_course" class="btn btn-success btn-sm fw-medium shadow-xs">
+                      <button
+                        type="button"
+                        class="btn btn-success btn-sm fw-medium shadow-xs"
+                        data-bs-toggle="modal"
+                        data-bs-target="#courseRequestWarningModal"
+                      >
                         <i class="fas fa-plus-circle me-1"></i> ${uiStrings.landing.requestCourseBtn}
-                      </a>
+                      </button>
                       <button
                         type="button"
                         class="btn btn-outline-success btn-sm fw-medium"
@@ -408,9 +418,14 @@ function LoginPageContainer({
                   <div class="pt-3 border-top text-center mt-3">
                     <small class="text-muted d-block mb-2">${uiStrings.landing.loginFooterHelp}</small>
                     <div class="d-flex justify-content-center gap-3">
-                      <a href="/pl/request_course" class="text-decoration-none small text-primary fw-medium">
+                      <button
+                        type="button"
+                        class="btn btn-link p-0 text-decoration-none small text-primary fw-medium border-0 align-baseline"
+                        data-bs-toggle="modal"
+                        data-bs-target="#courseRequestWarningModal"
+                      >
                         ${uiStrings.landing.requestCourseBtn}
-                      </a>
+                      </button>
                       <span class="text-muted">•</span>
                       <a
                         href="#"
@@ -475,12 +490,87 @@ function LoginPageContainer({
           }
           document.addEventListener('DOMContentLoaded', () => {
             setAuthMode('${initialTab}');
+            if (window.location.search.includes('service=request_course')) {
+              setTimeout(() => {
+                const modalEl = document.getElementById('courseRequestWarningModal');
+                if (modalEl && window.bootstrap) {
+                  new window.bootstrap.Modal(modalEl).show();
+                }
+              }, 250);
+            }
           });
         </script>
 
+        ${CourseRequestWarningModal()}
         ${SupportModal()}
       </body>
     </html>
+  `;
+}
+
+function CourseRequestWarningModal() {
+  return html`
+    <div
+      class="modal fade"
+      id="courseRequestWarningModal"
+      tabindex="-1"
+      aria-labelledby="courseRequestWarningModalLabel"
+      aria-hidden="true"
+      dir="rtl"
+      style="font-family: var(--font-persian);"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+          <div class="modal-header bg-warning-subtle text-warning-emphasis border-bottom border-warning-subtle py-3 px-4">
+            <h5 class="modal-title fw-bold fs-6 d-flex align-items-center gap-2 m-0" id="courseRequestWarningModalLabel">
+              <i class="fas fa-exclamation-triangle fs-5 text-warning"></i>
+              <span>ورود یا ثبت‌نام الزامی است</span>
+            </h5>
+            <button
+              type="button"
+              class="btn-close ms-0 me-auto"
+              data-bs-dismiss="modal"
+              aria-label="بستن"
+            ></button>
+          </div>
+          <div class="modal-body p-4 text-secondary lh-lg">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="bg-primary-subtle text-primary p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                <i class="fas fa-chalkboard-teacher fs-4"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold text-dark mb-1">درخواست ایجاد درس یا دوره آموزشی</h6>
+                <small class="text-muted">مخصوص اساتید، مدرسان و طراحان دوره</small>
+              </div>
+            </div>
+            <p class="mb-2 text-dark fw-medium">
+              استاد یا متقاضی گرامی؛
+            </p>
+            <p class="small text-secondary mb-0">
+              برای ثبت درخواست دوره جدید و اتصال به مخزن اختصاصی، ابتدا لازم است در سامانه <strong>ثبت‌نام</strong> فرمایید یا در صورت داشتن حساب، <strong>وارد شوید</strong>. پس از ورود موفق، فرم ایجاد درس بلافاصله در اختیار شما قرار خواهد گرفت.
+            </p>
+          </div>
+          <div class="modal-footer bg-light border-0 py-3 px-4 d-flex justify-content-end gap-2">
+            <button
+              type="button"
+              class="btn btn-primary btn-sm px-3 fw-medium"
+              data-bs-dismiss="modal"
+              onclick="setAuthMode('login'); document.getElementById('login-form-pane')?.scrollIntoView({ behavior: 'smooth' });"
+            >
+              <i class="fas fa-sign-in-alt me-1"></i> ورود به حساب
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-success btn-sm px-3 fw-medium"
+              data-bs-dismiss="modal"
+              onclick="setAuthMode('register'); document.getElementById('register-form-pane')?.scrollIntoView({ behavior: 'smooth' });"
+            >
+              <i class="fas fa-user-plus me-1"></i> ایجاد حساب کاربری (ثبت‌نام)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `;
 }
 

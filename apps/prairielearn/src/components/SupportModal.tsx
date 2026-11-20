@@ -59,6 +59,9 @@ export function SupportModal() {
             ${uiStrings.support.portalAction}
           </a>
         </div>
+        <div class="mt-3 p-2 bg-light-subtle rounded border text-muted small text-center" style="font-size: 0.8rem;">
+          این سامانه بر پایه پلتفرم متن‌باز <strong>PrairieLearn</strong> (&copy; PrairieLearn, Inc. و هیئت امنای دانشگاه ایلینوی) تحت مجوز <a href="${platformBranding.licenseUrl}" target="_blank" rel="noreferrer" class="text-secondary text-decoration-underline">${platformBranding.licenseName}</a> توسعه یافته و توسط ${platformBranding.developer.name} سفارشی‌سازی و بومی‌سازی شده است.
+        </div>
       </div>
     `,
     footer: html`

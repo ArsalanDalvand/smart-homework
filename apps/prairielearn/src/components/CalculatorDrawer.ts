@@ -38,7 +38,7 @@ export function CalculatorDrawerToggle({
       >
       در فایل <code>infoAssessment.json</code> وجود دارد و به صورت پیش‌فرض غیرفعال هستند. لطفاً
       <a
-        href="https://github.com/ArsalanDalvand/smart-learning/discussions"
+        href="https://github.com/ArsalanDalvand/smart-homework/discussions"
         target="_blank"
         rel="noopener noreferrer"
         >نظرات و پیشنهادات خود را ارسال نمایید</a

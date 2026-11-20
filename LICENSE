@@ -4,6 +4,11 @@ Portions copyright (c) 2013-present by contributors other than PrairieLearn, Inc
 Portions copyright (c) 2015 Alberto Fernandez Medina
 Portions copyright (c) 2012-2019 Zhixin Wen
 
+Modifications and Persian Localization (c) 2026 Arsalan Dalvand <arsalan_dalvand@mathdep.iust.ac.ir>
+Faculty of Mathematics, Iran University of Science and Technology (IUST).
+Modified to add Solar Hijri (Shamsi) calendar integration, full Persian (RTL) localization,
+and institutional university assessment features, released under the GNU Affero General Public License (AGPLv3).
+
 Portions of this software are licensed as follows:
 
 * All content that resides under the "apps/prairielearn/src/ee/" directory of this repository, if that directory exists, is part of the PrairieLearn Enterprise Edition (EE) and is licensed as described in "apps/prairielearn/src/ee/LICENSE".
