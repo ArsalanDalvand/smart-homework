@@ -42,7 +42,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Tags',
+        pageTitle: 'برچسب‌های درس',
         navContext: {
           type: 'instructor',
           page: 'course_admin',

@@ -84,9 +84,9 @@ function InstructorCourseAdminInstancesInner({
         onHide={() => setShowCreateModal(false)}
       />
 
-      <div className="card mb-4">
+      <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
         <div className="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-          <h1>Course instances</h1>
+          <h1 className="h4 mb-0">ترم‌ها و دوره‌های ارائه شده</h1>
           {courseInstances.length > 0 && canCreateInstances && (
             <Button
               variant="light"
@@ -94,8 +94,8 @@ function InstructorCourseAdminInstancesInner({
               type="button"
               onClick={() => setShowCreateModal(true)}
             >
-              <i className="fa fa-plus" aria-hidden="true" />
-              <span className="d-none d-sm-inline">Add course instance</span>
+              <i className="fa fa-plus me-1" aria-hidden="true" />
+              <span className="d-none d-sm-inline">افزودن دوره جدید</span>
             </Button>
           )}
         </div>
@@ -103,15 +103,15 @@ function InstructorCourseAdminInstancesInner({
           <div className="table-responsive">
             <table
               className="table table-sm table-hover table-striped"
-              aria-label="Course instances"
+              aria-label="ترم‌ها و دوره‌های ارائه شده"
             >
               <thead>
                 <tr>
-                  <th>Long Name</th>
-                  <th>Short name</th>
-                  <th>Start date</th>
-                  <th>End date</th>
-                  <th>Students</th>
+                  <th>عنوان کامل دوره / ترم</th>
+                  <th>نام اختصاری (کد ترم)</th>
+                  <th>تاریخ شروع</th>
+                  <th>تاریخ پایان</th>
+                  <th>تعداد فراگیران</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +130,7 @@ function InstructorCourseAdminInstancesInner({
                       : '—';
                   return (
                     <tr key={row.id}>
-                      <td className="align-left">
+                      <td className="align-middle">
                         {row.sync_errors ? (
                           <SyncProblemButton type="error" output={row.sync_errors} />
                         ) : row.sync_warnings ? (
@@ -140,8 +140,8 @@ function InstructorCourseAdminInstancesInner({
                           {row.long_name}
                         </a>
                       </td>
-                      <td className="align-left">{row.short_name}</td>
-                      <td className="align-left">
+                      <td className="align-middle font-monospace" dir="ltr">{row.short_name}</td>
+                      <td className="align-middle" dir="ltr">
                         {startDate}
                         {isLegacyStartDate ? (
                           <OverlayTrigger
@@ -151,22 +151,22 @@ function InstructorCourseAdminInstancesInner({
                               props: {
                                 id: `popover-start-date-${row.id}`,
                               },
-                              header: 'Earliest access date',
+                              header: 'اولین تاریخ دسترسی',
                               body: popoverStartDateBody,
                             }}
                             rootClose
                           >
                             <Button
                               variant="ghost"
-                              className="btn-xs"
-                              aria-label="Information about start date"
+                              className="btn-xs ms-1"
+                              aria-label="اطلاعات درباره تاریخ شروع"
                             >
                               <i className="far fa-question-circle" aria-hidden="true" />
                             </Button>
                           </OverlayTrigger>
                         ) : null}
                       </td>
-                      <td className="align-left">
+                      <td className="align-middle" dir="ltr">
                         {endDate}
                         {isLegacyEndDate ? (
                           <OverlayTrigger
@@ -176,15 +176,15 @@ function InstructorCourseAdminInstancesInner({
                               props: {
                                 id: `popover-end-date-${row.id}`,
                               },
-                              header: 'Latest access date',
+                              header: 'آخرین تاریخ دسترسی',
                               body: popoverEndDateBody,
                             }}
                             rootClose
                           >
                             <Button
                               variant="ghost"
-                              className="btn-xs"
-                              aria-label="Information about end date"
+                              className="btn-xs ms-1"
+                              aria-label="اطلاعات درباره تاریخ پایان"
                             >
                               <i className="far fa-question-circle" aria-hidden="true" />
                             </Button>

@@ -108,18 +108,19 @@ export function CreateCourseInstanceModal({
       show={show}
       backdrop="static"
       size="lg"
+      dir="rtl"
       onHide={() => {
         createMutation.reset();
         reset();
         onHide();
       }}
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Create course instance</Modal.Title>
+      <Modal.Header closeButton style={{ fontFamily: 'var(--font-persian)' }}>
+        <Modal.Title>تعریف و افزودن دوره جدید (ترم)</Modal.Title>
       </Modal.Header>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onFormSubmit)}>
-          <Modal.Body>
+        <form onSubmit={handleSubmit(onFormSubmit)} style={{ fontFamily: 'var(--font-persian)' }}>
+          <Modal.Body className="text-end">
             {createMutation.isError && (
               <Alert variant="danger" dismissible onClose={() => createMutation.reset()}>
                 {createMutation.error.message}
@@ -128,23 +129,22 @@ export function CreateCourseInstanceModal({
 
             <div className="mb-3">
               <label className="form-label" htmlFor="create-long-name">
-                Long name
+                عنوان کامل دوره / ترم
               </label>
               <input
                 id="create-long-name"
                 type="text"
-                className={clsx('form-control', errors.long_name && 'is-invalid')}
+                placeholder="مثال: نیم‌سال اول ۱۴۰۵-۱۴۰۶ (Fall 2026)"
+                className={clsx('form-control text-end', errors.long_name && 'is-invalid')}
                 aria-describedby="create-long-name-help"
                 aria-invalid={!!errors.long_name}
                 aria-errormessage={errors.long_name ? 'create-long-name-error' : undefined}
                 {...register('long_name', {
-                  required: 'Long name is required',
+                  required: 'وارد کردن عنوان کامل الزامی است',
                 })}
               />
               <small id="create-long-name-help" className="form-text text-muted">
-                The full course instance name, such as &quot;Fall 2025&quot;. Users see it joined to
-                the course name, e.g. &quot;
-                {course.short_name} Fall 2025&quot;.
+                عنوان رسمی دوره یا ترم تحصیلی که برای دانشجویان نمایش داده می‌شود.
               </small>
               {errors.long_name && (
                 <div className="invalid-feedback" id="create-long-name-error">
@@ -155,17 +155,19 @@ export function CreateCourseInstanceModal({
 
             <div className="mb-3">
               <label className="form-label" htmlFor="create-short-name">
-                Short name
+                نام اختصاری / کد ترم (حروف انگلیسی)
               </label>
               <input
                 id="create-short-name"
                 type="text"
+                dir="ltr"
+                placeholder="Fall2026"
                 className={clsx('form-control font-monospace', errors.short_name && 'is-invalid')}
                 aria-describedby="create-short-name-help"
                 aria-invalid={!!errors.short_name}
                 aria-errormessage={errors.short_name ? 'create-short-name-error' : undefined}
                 {...register('short_name', {
-                  required: 'Short name is required',
+                  required: 'وارد کردن نام اختصاری الزامی است',
                   validate: (value) => {
                     const result = validateShortName(value);
                     return result.valid || result.message;
@@ -173,7 +175,7 @@ export function CreateCourseInstanceModal({
                 })}
               />
               <small id="create-short-name-help" className="form-text text-muted">
-                <CourseInstanceShortNameDescription />
+                کد یکتای ترم بدون فاصله (مانند Fall2026 یا 1405-1).
               </small>
               {errors.short_name && (
                 <div className="invalid-feedback" id="create-short-name-error">
@@ -184,10 +186,9 @@ export function CreateCourseInstanceModal({
 
             <hr />
 
-            <h3 className="h5">Publishing settings</h3>
+            <h3 className="h5">تنظیمات انتشار و دسترسی زمانی</h3>
             <p className="text-muted small">
-              Choose the initial publishing status for your new course instance. This can be changed
-              later.
+              بازه زمانی انتشار و دسترسی اولیه به این دوره را مشخص کنید (این تنظیمات بعداً نیز قابل تغییر است).
             </p>
 
             <CourseInstancePublishingForm
@@ -201,24 +202,24 @@ export function CreateCourseInstanceModal({
 
             <hr />
 
-            <h3 className="h5">Self-enrollment settings</h3>
+            <h3 className="h5">تنظیمات ثبت‌نام مستقیم فراگیران</h3>
             <p className="text-muted small">
-              Configure self-enrollment for your new course instance. This can be changed later.
+              امکان ثبت‌نام دانشجویان با کد دعوت یا تایید دستی کادر آموزشی.
             </p>
 
             <CourseInstanceSelfEnrollmentForm formId="create-course-instance" />
 
             <hr />
 
-            <h3 className="h5">Course instance permissions</h3>
+            <h3 className="h5">دسترسی‌ها و مجوزهای کادر آموزشی</h3>
             <p className="text-muted small">
-              Choose your initial permissions for this course instance. This can be changed later.
+              سطح دسترسی اولیه برای این دوره را مشخص کنید.
             </p>
 
             <CourseInstancePermissionsForm formId="create-course-instance" />
           </Modal.Body>
 
-          <Modal.Footer>
+          <Modal.Footer className="d-flex justify-content-between">
             <button
               type="button"
               className="btn btn-secondary"
@@ -229,10 +230,10 @@ export function CreateCourseInstanceModal({
                 onHide();
               }}
             >
-              Cancel
+              انصراف
             </button>
             <button type="submit" className="btn btn-primary" disabled={createMutation.isPending}>
-              {createMutation.isPending ? 'Creating...' : 'Create'}
+              {createMutation.isPending ? 'در حال ایجاد دوره...' : 'ایجاد و ثبت دوره'}
             </button>
           </Modal.Footer>
         </form>

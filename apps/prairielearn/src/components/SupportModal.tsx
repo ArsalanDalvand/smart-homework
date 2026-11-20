@@ -22,7 +22,7 @@ export function SupportModal() {
             description: uiStrings.support.docsDesc,
             href: platformBranding.docsUrl,
             action: uiStrings.support.docsAction,
-            icon: 'bi-book',
+            icon: 'bi-journal-text',
           })}
           ${SupportOptionCard({
             title: uiStrings.support.repoTitle,
@@ -32,6 +32,13 @@ export function SupportModal() {
             icon: 'bi-github',
           })}
           ${SupportOptionCard({
+            title: 'ارتباط مستقیم با توسعه‌دهنده',
+            description: `پشتیبانی فنی مستقیم، مشارکت در توسعه و ارسال بازخورد به ارسلان دالوند (${platformBranding.developer.affiliation})`,
+            href: platformBranding.developer.telegramUrl,
+            action: `پیام در تلگرام (${platformBranding.developer.telegram})`,
+            icon: 'bi-telegram',
+          })}
+          ${SupportOptionCard({
             title: uiStrings.support.contactTitle,
             description: uiStrings.support.contactDesc,
             href: `mailto:${platformBranding.supportEmail}`,
@@ -39,25 +46,23 @@ export function SupportModal() {
             icon: 'bi-envelope',
             newTab: false,
           })}
-          ${SupportOptionCard({
-            title: `ارتباط با توسعه‌دهنده (${platformBranding.developer.name})`,
-            description: `پشتیبانی فنی مستقیم، مشارکت و ارسال بازخورد via ${platformBranding.developer.email} (${platformBranding.developer.affiliation})`,
-            href: platformBranding.developer.telegramUrl,
-            action: `پیام در تلگرام (${platformBranding.developer.telegram})`,
-            icon: 'bi-telegram',
-          })}
-          ${SupportOptionCard({
-            title: platformBranding.portalName,
-            description: uiStrings.support.portalDesc,
-            href: platformBranding.portalUrl,
-            action: uiStrings.support.portalAction,
-            icon: 'bi-globe',
-          })}
+        </div>
+        <div class="mt-3 p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-globe text-primary fs-4"></i>
+            <div>
+              <strong>${platformBranding.portalName}</strong>
+              <div class="text-muted small">${uiStrings.support.portalDesc}</div>
+            </div>
+          </div>
+          <a href="${platformBranding.portalUrl}" target="_blank" rel="noreferrer" class="btn btn-outline-primary btn-sm flex-shrink-0">
+            ${uiStrings.support.portalAction}
+          </a>
         </div>
       </div>
     `,
     footer: html`
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">${uiStrings.common.close}</button>
+      <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">${uiStrings.common.close}</button>
     `,
   });
 }

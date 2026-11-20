@@ -79,7 +79,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Course Instances',
+        pageTitle: 'ترم‌ها و دوره‌های ارائه شده',
         navContext: {
           type: 'instructor',
           page: 'course_admin',

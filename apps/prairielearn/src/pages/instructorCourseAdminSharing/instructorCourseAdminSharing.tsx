@@ -58,7 +58,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Course sharing',
+        pageTitle: 'اشتراک‌گذاری درس',
         navContext: {
           type: 'instructor',
           page: 'course_admin',

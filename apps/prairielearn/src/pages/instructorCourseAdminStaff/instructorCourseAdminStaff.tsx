@@ -52,7 +52,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Staff',
+        pageTitle: 'کادر آموزشی و دسترسی‌ها',
         navContext: {
           type: 'instructor',
           page: 'course_admin',

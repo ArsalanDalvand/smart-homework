@@ -226,13 +226,13 @@ function CourseNav({
 
   return html`
     <div class="side-nav-header">
-      <p class="header-text">Course</p>
+      <p class="header-text">درس جاری</p>
       <button
         id="side-nav-toggler"
         type="button"
         data-bs-toggle="tooltip"
         data-bs-placement="right"
-        data-bs-title="${sideNavExpanded ? 'Collapse side nav' : 'Expand side nav'}"
+        data-bs-title="${sideNavExpanded ? 'بستن منوی کناری' : 'باز کردن منوی کناری'}"
         data-persist-toggle-state="${persistToggleState ? 'true' : 'false'}"
       >
         <i
@@ -303,7 +303,7 @@ function CourseInstanceNav({
   const courseInstanceSideNavPageTabs = sideNavPagesTabs.instance_admin;
   return html`
     <div class="side-nav-header">
-      <div class="header-text">Course instance</div>
+      <div class="header-text">ترم / دوره فعال</div>
     </div>
     <div class="side-nav-group mb-0">
       <div>
@@ -311,7 +311,7 @@ function CourseInstanceNav({
           <button
             type="button"
             class="btn dropdown-toggle border bg-white w-100 d-flex justify-content-between align-items-center mb-2"
-            aria-label="Change course instance"
+            aria-label="تغییر ترم یا دوره"
             aria-haspopup="true"
             aria-expanded="false"
             data-bs-toggle="dropdown"
@@ -326,7 +326,7 @@ function CourseInstanceNav({
               ${
                 resLocals.course_instance
                   ? truncateMiddle(resLocals.course_instance.short_name, 22)
-                  : 'Select...'
+                  : 'انتخاب نمایید...'
               }
             </span>
           </button>

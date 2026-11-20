@@ -49,7 +49,7 @@ export function CourseSyncs({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Course sync',
+    pageTitle: 'همگام‌سازی محتوای درس',
     navContext: {
       type: 'instructor',
       page: 'course_admin',
@@ -59,36 +59,36 @@ export function CourseSyncs({
       fullWidth: true,
     },
     content: html`
-      <h1 class="visually-hidden">Course Sync</h1>
-      <div class="card mb-4">
+      <h1 class="visually-hidden">همگام‌سازی محتوای درس</h1>
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h2>Repository status</h2>
+          <h2 class="h5 mb-0">وضعیت مخزن کدهای درس</h2>
         </div>
         <div class="table-responsive">
-          <table class="table table-sm" aria-label="Repository status">
+          <table class="table table-sm" aria-label="وضعیت مخزن کدهای درس">
             <tbody>
               <tr>
-                <th class="align-middle">Current commit hash</th>
-                <td colspan="2">${course.commit_hash ?? html`&mdash;`}</td>
+                <th class="align-middle w-25">شناسه آخرین کامیت (Commit Hash)</th>
+                <td colspan="2"><span class="font-monospace" dir="ltr">${course.commit_hash ?? html`&mdash;`}</span></td>
               </tr>
               <tr>
-                <th class="align-middle">Path on disk</th>
-                <td class="align-middle">${course.path}</td>
-                <td>
+                <th class="align-middle">مسیر پوشه روی دیسک سرور</th>
+                <td class="align-middle font-monospace" dir="ltr">${course.path}</td>
+                <td class="text-end">
                   <form name="confirm-form" method="POST">
                     <input type="hidden" name="__action" value="status" />
                     <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
                     <button type="submit" class="btn btn-sm btn-primary">
-                      <i class="fa fa-info-circle" aria-hidden="true"></i>
-                      Show server git status
+                      <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
+                      مشاهده وضعیت گیت سرور
                     </button>
                   </form>
                 </td>
               </tr>
               <tr>
-                <th class="align-middle">Remote repository</th>
-                <td class="align-middle">${course.repository ?? html`&mdash;`}</td>
-                <td>
+                <th class="align-middle">مخزن ریموت گیت‌هاب / گیت‌لب</th>
+                <td class="align-middle font-monospace" dir="ltr">${course.repository ?? html`&mdash;`}</td>
+                <td class="text-end">
                   ${
                     config.devMode
                       ? html`
@@ -96,11 +96,11 @@ export function CourseSyncs({
                             class="d-inline-block"
                             tabindex="0"
                             data-bs-toggle="tooltip"
-                            data-bs-title="Pulling from a remote repository is not supported in development mode."
+                            data-bs-title="دریافت از مخزن ریموت در حالت توسعه (Dev Mode) پشتیبانی نمی‌شود."
                           >
                             <button type="button" class="btn btn-sm btn-primary" disabled>
-                              <i class="fa fa-cloud-download-alt" aria-hidden="true"></i>
-                              Pull from remote git repository
+                              <i class="fa fa-cloud-download-alt me-1" aria-hidden="true"></i>
+                              دریافت تغییرات از مخزن ریموت (Git Pull)
                             </button>
                           </span>
                         `
@@ -109,8 +109,8 @@ export function CourseSyncs({
                             <input type="hidden" name="__action" value="pull" />
                             <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
                             <button type="submit" class="btn btn-sm btn-primary">
-                              <i class="fa fa-cloud-download-alt" aria-hidden="true"></i>
-                              Pull from remote git repository
+                              <i class="fa fa-cloud-download-alt me-1" aria-hidden="true"></i>
+                              دریافت تغییرات از مخزن ریموت (Git Pull)
                             </button>
                           </form>
                         `
@@ -118,35 +118,35 @@ export function CourseSyncs({
                 </td>
               </tr>
               <tr>
-                <th class="align-middle">Branch</th>
-                <td colspan="2">${course.branch}</td>
+                <th class="align-middle">شاخه فعال (Branch)</th>
+                <td colspan="2"><span class="font-monospace" dir="ltr">${course.branch}</span></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h2>Docker images</h2>
+          <h2 class="h5 mb-0">ایمیج‌های داکر داوری خودکار</h2>
         </div>
         ${ImageTable({ images, course, courseInstanceId, urlPrefix, __csrf_token })}
       </div>
 
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h2>Sync job history</h2>
+          <h2 class="h5 mb-0">تاریخچه عملیات همگام‌سازی</h2>
         </div>
         <div class="table-responsive">
-          <table class="table table-sm table-hover" aria-label="Sync job history">
+          <table class="table table-sm table-hover" aria-label="تاریخچه عملیات همگام‌سازی">
             <thead>
               <tr>
-                <th>Number</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>User</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>شماره</th>
+                <th>تاریخ و زمان</th>
+                <th>شرح عملیات</th>
+                <th>کاربر اجراکننده</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
               </tr>
             </thead>
             <tbody>
@@ -154,7 +154,7 @@ export function CourseSyncs({
                 (jobSequence) => html`
                   <tr>
                     <td>${jobSequence.number}</td>
-                    <td>
+                    <td dir="ltr" class="text-end">
                       ${
                         jobSequence.start_date == null
                           ? html`&mdash;`
@@ -162,14 +162,14 @@ export function CourseSyncs({
                       }
                     </td>
                     <td>${jobSequence.description}</td>
-                    <td>${jobSequence.user_uid ?? '(System)'}</td>
+                    <td>${jobSequence.user_uid ?? '(سیستم)'}</td>
                     <td>${JobStatusHtml({ status: jobSequence.status })}</td>
                     <td>
                       <a
                         href="${urlPrefix}/jobSequence/${jobSequence.id}"
                         class="btn btn-xs btn-info"
                       >
-                        Details
+                        جزئیات
                       </a>
                     </td>
                   </tr>
@@ -181,9 +181,9 @@ export function CourseSyncs({
         ${
           !showAllJobSequences && jobSequenceCount > jobSequences.length
             ? html`
-                <div class="card-footer">
-                  Showing ${jobSequences.length} of ${jobSequenceCount} sync jobs.
-                  <a href="?all" aria-label="View all sync jobs">View all</a>
+                <div class="card-footer text-muted small">
+                  نمایش ${jobSequences.length} از ${jobSequenceCount} عملیات همگام‌سازی.
+                  <a href="?all" aria-label="مشاهده تمامی عملیات همگام‌سازی" class="ms-1">مشاهده همه</a>
                 </div>
               `
             : ''
@@ -207,21 +207,21 @@ function ImageTable({
   __csrf_token: string;
 }) {
   if (images.length === 0) {
-    return html`<div class="card-body"><em>No questions are using Docker images.</em></div>`;
+    return html`<div class="card-body"><em>هیچ سوالی از ایمیج‌های داکر داوری استفاده نمی‌کند.</em></div>`;
   }
 
   return html`
     <div class="table-responsive">
-      <table class="table table-sm" aria-label="Docker images">
+      <table class="table table-sm" aria-label="ایمیج‌های داکر داوری خودکار">
         <thead>
           <tr>
-            <th>Image name</th>
-            <th>Tag</th>
-            <th>Digest</th>
-            <th>Image size</th>
-            <th>Last sync</th>
-            <th>Actions</th>
-            <th>Used by</th>
+            <th>نام ایمیج</th>
+            <th>تگ (Tag)</th>
+            <th>هش شناسه (Digest)</th>
+            <th>حجم ایمیج</th>
+            <th>آخرین همگام‌سازی</th>
+            <th>عملیات</th>
+            <th>مورد استفاده در</th>
           </tr>
         </thead>
         <tbody>
@@ -230,20 +230,20 @@ function ImageTable({
               <tr>
                 <td>
                   <div class="d-flex flex-row align-items-center">
-                    <span class="me-2">${image.image}</span>
+                    <span class="me-2 font-monospace" dir="ltr">${image.image}</span>
                     ${
                       image.invalid
-                        ? html`<span class="badge text-bg-danger">Invalid image name</span>`
+                        ? html`<span class="badge text-bg-danger">نام ایمیج نامعتبر است</span>`
                         : ''
                     }
                   </div>
                 </td>
-                <td>${image.tag}</td>
+                <td><span class="font-monospace" dir="ltr">${image.tag}</span></td>
                 <td>
                   ${
                     image.digest
                       ? html`
-                          <code class="mb-0" title="${image.digest}">
+                          <code class="mb-0" dir="ltr" title="${image.digest}">
                             ${
                               image.digest.length <= 24
                                 ? image.digest
@@ -254,11 +254,11 @@ function ImageTable({
                       : html`&mdash;`
                   }
                 </td>
-                <td>${(image.size ?? 0) > 0 ? filesize(image.size ?? 0) : ''}</td>
-                <td>
+                <td dir="ltr" class="text-end">${(image.size ?? 0) > 0 ? filesize(image.size ?? 0) : ''}</td>
+                <td dir="ltr" class="text-end">
                   ${
                     image.imageSyncNeeded
-                      ? html`<span class="text-warning">Not found in PL registry</span>`
+                      ? html`<span class="text-warning">در رجیستری محلی یافت نشد</span>`
                       : image.pushed_at
                         ? formatDate(image.pushed_at, course.display_timezone)
                         : html`&mdash;`
@@ -273,7 +273,7 @@ function ImageTable({
                             <input type="hidden" name="__action" value="syncImage" />
                             <input type="hidden" name="single_image" value="${image.image}" />
                             <button type="submit" class="btn btn-xs btn-primary">
-                              <i class="fa fa-sync" aria-hidden="true"></i> Sync
+                              <i class="fa fa-sync me-1" aria-hidden="true"></i> همگام‌سازی
                             </button>
                           </form>
                         `
@@ -290,7 +290,7 @@ function ImageTable({
                             image: image.image,
                             questions: image.external_grading_questions,
                             filterType: 'external_grading_image',
-                            label: 'External grader',
+                            label: 'داوری خودکار خارجی',
                           })}
                           ${QuestionUsageLink({
                             courseId: course.id,
@@ -298,7 +298,7 @@ function ImageTable({
                             image: image.image,
                             questions: image.workspace_questions,
                             filterType: 'workspace_image',
-                            label: 'Workspace',
+                            label: 'میزکار ابری',
                           })}
 
                           <button
@@ -307,15 +307,15 @@ function ImageTable({
                             data-bs-toggle="popover"
                             data-bs-container="body"
                             data-bs-html="true"
-                            data-bs-title="Questions using ${image.image}"
+                            data-bs-title="سوالات استفاده‌کننده از ${image.image}"
                             data-bs-content="${escapeHtml(
                               ListQuestionsPopover({ image, urlPrefix }),
                             )}"
                           >
-                            Show
+                            مشاهده
                           </button>
                         `
-                      : 'No questions'
+                      : 'هیچ سوالی'
                   }
                 </td>
               </tr>
@@ -332,8 +332,8 @@ function ImageTable({
                 <input type="hidden" name="__action" value="syncImages" />
                 <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
                 <button type="submit" class="btn btn-sm btn-primary">
-                  <i class="fa fa-sync" aria-hidden="true"></i>
-                  Sync all images to PrairieLearn
+                  <i class="fa fa-sync me-1" aria-hidden="true"></i>
+                  همگام‌سازی تمامی ایمیج‌ها با رجیستری محلی
                 </button>
               </form>
             </div>
@@ -370,7 +370,7 @@ function QuestionUsageLink({
           filter: { type: filterType, value: image },
         })}"
       >
-        ${questions.length} question${questions.length > 1 ? 's' : ''}
+        ${questions.length} سوال
       </a>
     </div>
   `;
@@ -388,7 +388,7 @@ function ListQuestionsPopover({ image, urlPrefix }: { image: ImageRow; urlPrefix
             `,
           )}
       </ul>
-      ${image.questions.length > 5 ? html`and ${image.questions.length - 5} more&hellip;` : ''}
+      ${image.questions.length > 5 ? html`و ${image.questions.length - 5} سوال دیگر&hellip;` : ''}
     </div>
   `;
 }

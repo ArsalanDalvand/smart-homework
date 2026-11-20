@@ -51,7 +51,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Assessment sets',
+        pageTitle: 'مجموعه‌های ارزیابی',
         navContext: {
           type: 'instructor',
           page: 'course_admin',

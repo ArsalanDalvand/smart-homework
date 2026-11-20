@@ -13,7 +13,7 @@ export function InstructorCourseAdminGettingStarted({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Getting started checklist',
+    pageTitle: 'چک‌لیست شروع به کار',
     navContext: {
       type: 'instructor',
       page: 'course_admin',
