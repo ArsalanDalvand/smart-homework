@@ -6,6 +6,7 @@ import type {
 } from '@prairielearn/migrations';
 
 import { PageLayout } from '../../components/PageLayout.js';
+import { uiStrings } from '../../lib/branding.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
 
 export function AdministratorBatchedMigrations({
@@ -19,16 +20,16 @@ export function AdministratorBatchedMigrations({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Batched migrations',
+    pageTitle: uiStrings.batchedMigrations.pageTitle,
     navContext: {
       type: 'administrator',
       page: 'admin',
       subPage: 'batchedMigrations',
     },
     content: html`
-      <div class="card">
+      <div class="card" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1>Batched migrations</h1>
+          <h1 class="h4 mb-0">${uiStrings.batchedMigrations.cardTitle}</h1>
         </div>
         ${
           hasBatchedMigrations
@@ -37,8 +38,8 @@ export function AdministratorBatchedMigrations({
                   <table class="table">
                     <thead>
                       <tr>
-                        <th>Filename</th>
-                        <th>Status</th>
+                        <th>${uiStrings.batchedMigrations.filename}</th>
+                        <th>${uiStrings.batchedMigrations.status}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -61,7 +62,7 @@ export function AdministratorBatchedMigrations({
                   </table>
                 </div>
               `
-            : html`<div class="card-body text-center text-secondary">No batched migrations</div>`
+            : html`<div class="card-body text-center text-secondary">${uiStrings.batchedMigrations.emptyText}</div>`
         }
       </div>
     `,
@@ -81,50 +82,50 @@ export function AdministratorBatchedMigration({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Batched migrations',
+    pageTitle: uiStrings.batchedMigrations.pageTitle,
     navContext: {
       type: 'plain',
       page: 'admin',
       subPage: 'batchedMigrations',
     },
     content: html`
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h1>Migration details</h1>
+          <h1 class="h4 mb-0">${uiStrings.batchedMigrations.detailsTitle}</h1>
         </div>
         <div class="table-responsive">
-          <table class="table table-sm two-column-description" aria-label="Migration details">
+          <table class="table table-sm two-column-description" aria-label="${uiStrings.batchedMigrations.detailsTitle}">
             <tbody>
               <tr>
-                <th>Filename</th>
+                <th class="w-25">${uiStrings.batchedMigrations.filename}</th>
                 <td><span class="font-monospace">${batchedMigration.filename}</span></td>
               </tr>
               <tr>
-                <th>Minimum value</th>
+                <th>${uiStrings.batchedMigrations.minValue}</th>
                 <td>${batchedMigration.min_value}</td>
               </tr>
               <tr>
-                <th>Maximum value</th>
+                <th>${uiStrings.batchedMigrations.maxValue}</th>
                 <td>${batchedMigration.max_value}</td>
               </tr>
               <tr>
-                <th>Status</th>
+                <th>${uiStrings.batchedMigrations.status}</th>
                 <td>${MigrationStatusBadge(batchedMigration.status)}</td>
               </tr>
               <tr>
-                <th>Created at</th>
-                <td>${batchedMigration.created_at.toUTCString()}</td>
+                <th>${uiStrings.batchedMigrations.createdAt}</th>
+                <td dir="ltr" class="text-end">${batchedMigration.created_at.toUTCString()}</td>
               </tr>
               <tr>
-                <th>Updated at</th>
-                <td>${batchedMigration.updated_at.toUTCString()}</td>
+                <th>${uiStrings.batchedMigrations.updatedAt}</th>
+                <td dir="ltr" class="text-end">${batchedMigration.updated_at.toUTCString()}</td>
               </tr>
               <tr>
-                <th>Started at</th>
-                <td>${batchedMigration.started_at?.toUTCString()}</td>
+                <th>${uiStrings.batchedMigrations.startedAt}</th>
+                <td dir="ltr" class="text-end">${batchedMigration.started_at?.toUTCString() ?? '—'}</td>
               </tr>
               <tr>
-                <th>Actions</th>
+                <th>${uiStrings.batchedMigrations.actions}</th>
                 <td>
                   <form method="POST">
                     <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
@@ -134,7 +135,7 @@ export function AdministratorBatchedMigration({
                       value="retry_failed_jobs"
                       class="btn btn-primary btn-sm"
                     >
-                      Retry failed jobs
+                      ${uiStrings.batchedMigrations.retryFailedJobs}
                     </button>
                   </form>
                 </td>
@@ -145,14 +146,14 @@ export function AdministratorBatchedMigration({
       </div>
 
       ${MigrationJobsCard({
-        title: 'Recent succeeded jobs',
+        title: uiStrings.batchedMigrations.recentSucceededJobs,
         jobs: recentSucceededJobs,
-        emptyText: 'No recent succeeded jobs',
+        emptyText: uiStrings.batchedMigrations.noRecentSucceededJobs,
       })}
       ${MigrationJobsCard({
-        title: 'Recent failed jobs',
+        title: uiStrings.batchedMigrations.recentFailedJobs,
         jobs: recentFailedJobs,
-        emptyText: 'No recent failed jobs',
+        emptyText: uiStrings.batchedMigrations.noRecentFailedJobs,
       })}
     `,
   });
@@ -161,19 +162,19 @@ export function AdministratorBatchedMigration({
 function MigrationStatusBadge(status: BatchedMigrationStatus) {
   switch (status) {
     case 'pending':
-      return html`<span class="badge text-bg-secondary">Pending</span>`;
+      return html`<span class="badge text-bg-secondary">${uiStrings.batchedMigrations.statusPending}</span>`;
     case 'paused':
-      return html`<span class="badge text-bg-secondary">Paused</span>`;
+      return html`<span class="badge text-bg-secondary">${uiStrings.batchedMigrations.statusPaused}</span>`;
     case 'running':
-      return html`<span class="badge text-bg-primary">Running</span>`;
+      return html`<span class="badge text-bg-primary">${uiStrings.batchedMigrations.statusRunning}</span>`;
     case 'finalizing':
-      return html`<span class="badge text-bg-primary">Finalizing</span>`;
+      return html`<span class="badge text-bg-primary">${uiStrings.batchedMigrations.statusFinalizing}</span>`;
     case 'failed':
-      return html`<span class="badge text-bg-danger">Failed</span>`;
+      return html`<span class="badge text-bg-danger">${uiStrings.batchedMigrations.statusFailed}</span>`;
     case 'succeeded':
-      return html`<span class="badge text-bg-success">Succeeded</span>`;
+      return html`<span class="badge text-bg-success">${uiStrings.batchedMigrations.statusSucceeded}</span>`;
     default:
-      return html`<span class="badge text-bg-warning">Unknown (${status})</span>`;
+      return html`<span class="badge text-bg-warning">نامشخص (${status})</span>`;
   }
 }
 
@@ -187,7 +188,7 @@ function MigrationJobsCard({
   emptyText: string;
 }) {
   return html`
-    <div class="card mb-4">
+    <div class="card mb-4" style="font-family: var(--font-persian);">
       <div class="card-header bg-primary text-white d-flex align-items-center">
         <span class="me-auto">${title}</span>
       </div>
@@ -199,8 +200,6 @@ function MigrationJobsCard({
                 if (job.started_at && job.finished_at) {
                   duration = job.finished_at.getTime() - job.started_at.getTime();
                 }
-                const attemptsLabel = job.attempts === 1 ? 'attempt' : 'attempts';
-                const attempts = `${job.attempts} ${attemptsLabel}`;
                 const summary = `${job.min_value} - ${job.max_value}`;
                 const hasData = job.data != null;
                 return html`
@@ -213,6 +212,7 @@ function MigrationJobsCard({
 
                               <pre
                                 class="mt-3 p-3 rounded bg-dark text-white"
+                                dir="ltr"
                               ><code>${JSON.stringify(job.data, null, 2)}</code></pre>
                             </details>
                           `
@@ -224,9 +224,10 @@ function MigrationJobsCard({
                             <span
                               class="text-muted text-small"
                               style="font-variant-numeric: tabular-nums;"
+                              dir="ltr"
                             >
                               #${job.id} ran at ${job.started_at.toUTCString()} for ${duration}ms
-                              &mdash; ${attempts}
+                              &mdash; ${job.attempts} تلاش
                             </span>
                           `
                         : null
@@ -240,3 +241,4 @@ function MigrationJobsCard({
     </div>
   `;
 }
+

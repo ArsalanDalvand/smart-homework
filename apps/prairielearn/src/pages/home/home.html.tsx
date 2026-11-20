@@ -109,13 +109,11 @@ function InstructorCoursesCard({ instructorCourses, urlPrefix }: InstructorCours
       <div className="card-header bg-primary text-white d-flex align-items-center">
         <h2>{uiStrings.home.instructorCoursesTitle}</h2>
         <a
-          href={platformBranding.repoUrl}
-          className="btn btn-light btn-sm ms-auto"
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`${urlPrefix}/request_course`}
+          className="btn btn-light btn-sm ms-auto d-inline-flex align-items-center gap-1 shadow-xs"
         >
-          <i className="fab fa-github me-sm-1" aria-hidden="true" />
-          <span className="d-none d-sm-inline">{uiStrings.home.githubRepoBtn}</span>
+          <i className="bi bi-plus-circle" aria-hidden="true" />
+          <span className="d-none d-sm-inline">{uiStrings.nav.requestCourse}</span>
         </a>
       </div>
 

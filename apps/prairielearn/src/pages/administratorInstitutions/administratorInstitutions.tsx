@@ -58,7 +58,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Institutions',
+        pageTitle: 'موسسات و دانشکده‌ها',
         navContext: {
           type: 'administrator',
           page: 'admin',

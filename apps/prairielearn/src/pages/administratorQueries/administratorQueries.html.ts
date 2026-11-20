@@ -18,7 +18,7 @@ export function AdministratorQueries({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Administrator Queries',
+    pageTitle: 'پرس‌وجوهای مدیریتی پایگاه‌داده',
     navContext: {
       type: 'administrator',
       page: 'admin',
@@ -28,12 +28,12 @@ export function AdministratorQueries({
       fullWidth: true,
     },
     content: html`
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h1>Queries</h1>
+          <h1 class="h4 mb-0">پرس‌وجوهای پایگاه‌داده (Database Queries)</h1>
         </div>
         <div class="table-responsive">
-          <table class="table table-sm table-hover table-striped" aria-label="Queries">
+          <table class="table table-sm table-hover table-striped" aria-label="پرس‌وجوهای پایگاه‌داده">
             <tbody>
               ${queries.map(
                 (query) => html`

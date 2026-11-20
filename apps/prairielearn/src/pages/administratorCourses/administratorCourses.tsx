@@ -41,7 +41,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Courses',
+        pageTitle: 'مدیریت درس‌ها و دوره‌ها',
         navContext: {
           type: 'administrator',
           page: 'admin',

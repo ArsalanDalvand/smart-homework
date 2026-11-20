@@ -40,6 +40,13 @@ export function SupportModal() {
             newTab: false,
           })}
           ${SupportOptionCard({
+            title: `ارتباط با توسعه‌دهنده (${platformBranding.developer.name})`,
+            description: `پشتیبانی فنی مستقیم، مشارکت و ارسال بازخورد via ${platformBranding.developer.email} (${platformBranding.developer.affiliation})`,
+            href: platformBranding.developer.telegramUrl,
+            action: `پیام در تلگرام (${platformBranding.developer.telegram})`,
+            icon: 'bi-telegram',
+          })}
+          ${SupportOptionCard({
             title: platformBranding.portalName,
             description: uiStrings.support.portalDesc,
             href: platformBranding.portalUrl,

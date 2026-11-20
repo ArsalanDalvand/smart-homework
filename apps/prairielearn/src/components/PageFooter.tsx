@@ -47,7 +47,16 @@ export function PageFooter() {
               <span>مخزن سامانه</span>
             </a>
             <span className="text-muted small">
-              &copy; {platformBranding.copyrightYear} {platformBranding.copyrightText}
+              &copy; {platformBranding.copyrightYear} {platformBranding.copyrightText} &mdash; توسعه‌یافته توسط{' '}
+              <a
+                href={platformBranding.developer.telegramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-secondary text-decoration-none fw-medium"
+                title={`${platformBranding.developer.name} (${platformBranding.developer.email})`}
+              >
+                ارسلان دالوند
+              </a>
             </span>
           </div>
         </div>

@@ -90,7 +90,7 @@ export function AdministratorFeature({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Features',
+    pageTitle: 'قابلیت‌ها و فلگ‌ها',
     navContext: {
       type: 'administrator',
       page: 'admin',

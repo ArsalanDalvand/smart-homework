@@ -359,9 +359,14 @@ function LoginPageContainer({
                     ${
                       isCourseRequestService
                         ? html`
-                            <div class="alert alert-primary py-2 px-3 small mb-3 border-0 bg-primary-subtle text-primary-emphasis">
-                              <i class="fas fa-info-circle me-1"></i>
-                              ${uiStrings.auth.courseRequestInstructorNotice}
+                            <div class="alert alert-warning py-3 px-3 mb-3 border-0 bg-warning-subtle text-warning-emphasis d-flex align-items-start gap-2 shadow-xs rounded-3 text-end" role="alert">
+                              <i class="fas fa-exclamation-triangle fs-4 text-warning flex-shrink-0 mt-1"></i>
+                              <div>
+                                <h3 class="h6 fw-bold mb-1 text-dark">${uiStrings.auth.courseRequestWarningHeader}</h3>
+                                <p class="small mb-0 text-secondary">
+                                  ${uiStrings.auth.courseRequestInstructorNotice}
+                                </p>
+                              </div>
                             </div>
                           `
                         : ''
@@ -373,7 +378,7 @@ function LoginPageContainer({
                       </div>
                       <h2 class="h5 fw-bold text-dark mb-1">${uiStrings.landing.loginCardTitle}</h2>
                       <p class="text-secondary small mb-3">
-                        ${service ? `دسترسی به بخش ${service}` : uiStrings.landing.loginCardSubtitle}
+                        ${isCourseRequestService ? 'جهت ثبت درخواست ایجاد درس یا دوره جدید' : service ? `دسترسی به بخش ${service}` : uiStrings.landing.loginCardSubtitle}
                       </p>
                     </div>
 
@@ -427,7 +432,12 @@ function LoginPageContainer({
         <!-- Cohesive Clean Footer -->
         <footer class="bg-white border-top py-3 mt-auto">
           <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2" style="max-width: 1140px;">
-            <span class="text-secondary small">${uiStrings.landing.footerCopyright}</span>
+            <span class="text-secondary small">
+              ${uiStrings.landing.footerCopyright} &mdash; توسعه‌یافته توسط
+              <a href="${platformBranding.developer.telegramUrl}" target="_blank" rel="noreferrer" class="text-secondary text-decoration-none fw-medium">
+                ${platformBranding.developer.name}
+              </a>
+            </span>
             <div class="d-flex gap-3 small">
               <a href="${platformBranding.docsUrl}" target="_blank" rel="noreferrer" class="text-secondary text-decoration-none">
                 <i class="fas fa-book me-1"></i> ${uiStrings.landing.footerDocsLink}

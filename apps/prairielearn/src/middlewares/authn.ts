@@ -165,6 +165,8 @@ export default asyncHandler(async (req, res, next) => {
     let query = '';
     if (req.path === '/pl/prairietest/auth') {
       query = '?service=PrairieTest';
+    } else if (req.originalUrl.includes('/request_course')) {
+      query = '?service=request_course';
     }
 
     const loginUrl = `/pl/login${query}`;

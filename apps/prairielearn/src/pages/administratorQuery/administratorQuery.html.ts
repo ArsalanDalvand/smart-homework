@@ -55,11 +55,11 @@ export function AdministratorQuery({
         )}"></script>
     `,
     content: html`
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1>Query: <span class="font-monospace">${queryFilename}</span></h1>
+          <h1 class="h5 mb-0">پرس‌وجو: <span class="font-monospace" dir="ltr">${queryFilename}</span></h1>
           <span class="ms-3">&mdash;</span>
-          <span class="ms-3">${info.description}</span>
+          <span class="ms-3 small">${info.description}</span>
         </div>
 
         <div class="card-body">
