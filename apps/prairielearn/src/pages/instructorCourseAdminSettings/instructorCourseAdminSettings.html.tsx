@@ -38,9 +38,9 @@ export function InstructorCourseAdminSettings({
   const disabled =
     !courseInfoExists || !authzData.has_course_permission_edit || course.example_course;
   return (
-    <div className="card mb-4">
+    <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-        <h1>General course settings</h1>
+        <h1 className="h4 mb-0">تنظیمات عمومی درس</h1>
         <GitHubButton gitHubLink={courseGHLink} />
       </div>
       <div className="card-body">
@@ -59,7 +59,7 @@ export function InstructorCourseAdminSettings({
           <input type="hidden" name="orig_hash" value={origHash} />
           <div className="mb-3">
             <label className="form-label" htmlFor="title">
-              Title
+              عنوان کامل درس
             </label>
             <input
               type="text"
@@ -71,12 +71,12 @@ export function InstructorCourseAdminSettings({
               required
             />
             <small className="form-text text-muted">
-              This is the official title of the course, as given in the course catalog.
+              عنوان رسمی و کامل درس مطابق با سرفصل و برنامه‌ریزی مصوب آموزشی.
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="short_name">
-              Short name
+              نام اختصاری (کد درس)
             </label>
             <input
               type="text"
@@ -85,16 +85,16 @@ export function InstructorCourseAdminSettings({
               name="short_name"
               defaultValue={course.short_name ?? ''}
               disabled={disabled}
+              dir="ltr"
               required
             />
             <small className="form-text text-muted">
-              The short name of the course. Often this is the course rubric and number (e.g., "MATH
-              101" or "PHYS 440").
+              شناسه یا کد اختصاری درس (مانند "MATH 101" یا "IUST-BP").
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="display_timezone">
-              Timezone
+              منطقه زمانی رسمی (Timezone)
             </label>
             <select
               className="form-select"
@@ -102,6 +102,7 @@ export function InstructorCourseAdminSettings({
               name="display_timezone"
               defaultValue={course.display_timezone}
               disabled={disabled}
+              dir="ltr"
             >
               {availableTimezones.map((tz) => (
                 <option key={tz.name} value={tz.name}>
@@ -110,20 +111,12 @@ export function InstructorCourseAdminSettings({
               ))}
             </select>
             <small className="form-text text-muted">
-              The allowable timezones are from the{' '}
-              <a
-                href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
-                target="_blank"
-                rel="noreferrer"
-              >
-                tz database
-              </a>
-              . It's best to use a city-based timezone that has the same times as you.
+              منطقه زمانی مرجع جهت ثبت زمان شروع و پایان آزمون‌ها و دوره‌ها.
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="institution">
-              Institution
+              دانشگاه / موسسه آموزشی
             </label>
             <input
               type="text"
@@ -134,65 +127,68 @@ export function InstructorCourseAdminSettings({
               disabled
             />
             <small className="form-text text-muted">
-              This is your academic institution (e.g., "University of Illinois").
+              دانشگاه یا موسسه آموزشی مالک این درس.
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="path">
-              Path
+              مسیر فایل‌های درس روی سرور
             </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control font-monospace"
               id="path"
               name="path"
               value={course.path}
               disabled
+              dir="ltr"
             />
             <small className="form-text text-muted">
-              The path where course files can be found.
+              محل ذخیره‌سازی فایل‌های پیکربندی و محتوای درس روی دیسک سرور.
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="repository">
-              Repository
+              مخزن گیت (Git Repository)
             </label>
             <span className="input-group">
               <input
                 type="text"
-                className="form-control"
+                className="form-control font-monospace"
                 id="repository"
                 name="repository"
                 value={course.repository ?? ''}
                 disabled
+                dir="ltr"
               />
               <button
                 type="button"
                 className="btn btn-sm btn-outline-secondary js-copy-button"
                 data-clipboard-text={course.repository}
-                aria-label="Copy repository"
+                aria-label="کپی آدرس مخزن"
                 disabled={!course.repository}
               >
                 <i className="bi bi-clipboard" />
               </button>
             </span>
             <small className="form-text text-muted">
-              The GitHub repository that can be used to sync course files.
+              آدرس مخزن گیت متصل به این درس جهت همگام‌سازی محتوا.
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="branch">
-              Branch
+              شاخه کاری گیت (Branch)
             </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control font-monospace"
               id="branch"
               name="branch"
               value={course.branch}
               disabled
+              dir="ltr"
             />
-            <small className="form-text text-muted">The git branch used for this course.</small>
+            <small className="form-text text-muted">شاخه فعال در مخزن گیت این درس.</small>
           </div>
           {githubAccess}
           <div className="form-check mb-3">
@@ -204,7 +200,7 @@ export function InstructorCourseAdminSettings({
               defaultChecked={course.show_getting_started}
             />
             <label className="form-check-label" htmlFor="show_getting_started">
-              Show the getting started checklist
+              نمایش راهنمای شروع سریع و چک‌لیست راه‌اندازی درس
             </label>
           </div>
           <div className="form-check mb-3">
@@ -221,19 +217,10 @@ export function InstructorCourseAdminSettings({
               disabled={!authzData.has_course_permission_own || course.example_course}
             />
             <label className="form-check-label" htmlFor="questions_receive_user_data">
-              Allow questions to access user identity
+              اجازه دسترسی کدهای سوال به مشخصات و هویت دانشجو
             </label>
             <div className="small text-muted">
-              When enabled, questions in this course can read the user's identity (and group
-              members). See the{' '}
-              <a
-                href="https://docs.prairielearn.com/question/server/#accessing-user-and-group-identity"
-                target="_blank"
-                rel="noreferrer"
-              >
-                documentation on exposing user identity
-              </a>
-              . Disabling this may break questions that rely on user identity.
+              در صورت فعال‌بودن، کدهای سوالات می‌توانند هویت دانشجو (نام و شناسه) را جهت شخصی‌سازی سوال دریافت نمایند.
             </div>
           </div>
           {aiQuestionGenerationCourseToggleEnabled && (
@@ -250,11 +237,11 @@ export function InstructorCourseAdminSettings({
                 className="form-check-label d-flex align-items-center"
                 htmlFor="ai_question_generation_toggle"
               >
-                Enable AI question generation
-                <span className="badge rounded-pill text-bg-success ms-2">Alpha preview</span>
+                فعال‌سازی دستیار هوش مصنوعی مولد سوال
+                <span className="badge rounded-pill text-bg-success ms-2">پیش‌نمایش آزمایشی</span>
               </label>
               <div className="small text-muted">
-                Generate questions with natural language using AI.
+                امکان طراحی و تولید هوشمند صورت و کدهای سوال با دستور متنی و پرامپت.
               </div>
             </div>
           )}
@@ -294,23 +281,23 @@ function CourseDirectoryMissingAlert({
   if (!coursePathExists) {
     return (
       <div className="alert alert-danger">
-        Course directory not found. You must{' '}
-        <a href={`${urlPrefix}/course_admin/syncs`}>sync your course</a>.
+        پوشه فایل‌های درس روی سرور یافت نشد. ابتدا باید{' '}
+        <a href={`${urlPrefix}/course_admin/syncs`}>درس را همگام‌سازی نمایید</a>.
       </div>
     );
   } else if (!courseInfoExists) {
     return (
       <form name="add-configuration-form" method="POST" className="alert alert-danger">
-        <code>infoCourse.json</code> is missing. You must{' '}
+        فایل پیکربندی <code>infoCourse.json</code> یافت نشد. برای تنظیمات درس باید{' '}
         <input type="hidden" name="__csrf_token" value={csrfToken} />
         <button
           name="__action"
           value="add_configuration"
           className="btn btn-link btn-link-inline mt-n1 p-0 border-0"
         >
-          create this file
-        </button>{' '}
-        to edit your course settings.
+          این فایل را ایجاد کنید
+        </button>
+        .
       </form>
     );
   }
@@ -340,8 +327,8 @@ function EditActions({
   if (!hasCoursePermissionEdit || exampleCourse) {
     return (
       <p className="mb-0">
-        <a href={`${urlPrefix}/${navPage}/file_view/infoCourse.json`}>View course configuration </a>
-        in <code>infoCourse.json</code>
+        <a href={`${urlPrefix}/${navPage}/file_view/infoCourse.json`}>مشاهده تنظیمات درس </a>
+        در فایل <code>infoCourse.json</code>
       </p>
     );
   }
@@ -356,10 +343,10 @@ function EditActions({
           name="__action"
           value="update_configuration"
         >
-          Save
+          ذخیره تغییرات
         </button>
         <button id="cancel-button" type="button" className="btn btn-secondary mb-2">
-          Cancel
+          انصراف
         </button>
       </div>
       <p className="mb-0">
@@ -367,9 +354,9 @@ function EditActions({
           data-testid="edit-course-configuration-link"
           href={`${urlPrefix}/${navPage}/file_edit/infoCourse.json`}
         >
-          Edit course configuration
+          ویرایش مستقیم فایل پیکربندی درس
         </a>{' '}
-        in <code>infoCourse.json</code>
+        در <code>infoCourse.json</code>
       </p>
     </div>
   );

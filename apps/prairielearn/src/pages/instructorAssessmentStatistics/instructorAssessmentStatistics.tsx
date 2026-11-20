@@ -174,7 +174,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Assessment Statistics',
+        pageTitle: 'آمار و ارقام آزمون',
         navContext: {
           type: 'instructor',
           page: 'assessment',

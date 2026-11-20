@@ -63,7 +63,7 @@ export function createQuestionsTableColumns({
   return columnHelper.columns([
     columnHelper.accessor('qid', {
       id: 'qid',
-      header: 'QID',
+      header: 'شناسه سوال (QID)',
       cell: (info) => {
         const question = info.row.original;
         const prefix = qidPrefix && question.share_publicly ? qidPrefix : '';
@@ -73,7 +73,7 @@ export function createQuestionsTableColumns({
             <CopyButton
               text={`${prefix}${question.qid}`}
               className="p-0 me-1"
-              ariaLabel="Copy QID"
+              ariaLabel="کپی شناسه سوال"
             />
             {run(() => {
               if (question.sync_errors) {
@@ -85,7 +85,8 @@ export function createQuestionsTableColumns({
               return null;
             })}
             <a
-              className="text-truncate"
+              className="text-truncate font-monospace"
+              dir="ltr"
               href={getQuestionPreviewUrl({
                 courseId,
                 courseInstanceId,
@@ -121,7 +122,7 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('title', {
       id: 'title',
-      header: 'Title',
+      header: 'عنوان سوال',
       cell: (info) => <div className="text-wrap">{info.getValue()}</div>,
       size: 300,
       maxSize: 500,
@@ -133,7 +134,7 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('topic', {
       id: 'topic',
-      header: 'Topic',
+      header: 'مبحث / موضوع',
       cell: (info) => <TopicBadge topic={info.getValue()} />,
       sortFn: (rowA, rowB) => {
         const topicA = rowA.original.topic;
@@ -149,7 +150,7 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('tags', {
       id: 'tag',
-      header: 'Tags',
+      header: 'برچسب‌ها',
       cell: (info) => (
         <div className="d-flex flex-wrap gap-1">
           <TagBadgeList tags={info.getValue()} />
@@ -178,16 +179,16 @@ export function createQuestionsTableColumns({
       ? [
           columnHelper.display({
             id: 'sharing_sets',
-            header: 'Sharing',
+            header: 'اشتراک‌گذاری',
             cell: (info) => {
               const question = info.row.original;
               return (
                 <span className="text-nowrap">
                   {question.share_publicly && (
-                    <span className="badge color-green3 me-1">Public</span>
+                    <span className="badge color-green3 me-1">عمومی</span>
                   )}
                   {question.share_source_publicly && (
-                    <span className="badge color-green3 me-1">Public source</span>
+                    <span className="badge color-green3 me-1">سورس عمومی</span>
                   )}
                   {question.sharing_sets?.map((s) => (
                     <span key={s.name} className="badge color-gray1 me-1">
@@ -200,8 +201,8 @@ export function createQuestionsTableColumns({
             enableSorting: false,
             filterFn: (row, _columnId, filter: MultiSelectFilterValue) => {
               const items: string[] = [];
-              if (row.original.share_publicly) items.push('Public');
-              if (row.original.share_source_publicly) items.push('Public source');
+              if (row.original.share_publicly) items.push('عمومی');
+              if (row.original.share_source_publicly) items.push('سورس عمومی');
               row.original.sharing_sets?.forEach((s) => {
                 if (s.name) items.push(s.name);
               });
@@ -229,7 +230,7 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('display_type', {
       id: 'display_type',
-      header: 'Version',
+      header: 'نسخه',
       cell: (info) => {
         const value = info.getValue();
         return <span className={`badge color-${value === 'v3' ? 'green1' : 'red1'}`}>{value}</span>;
@@ -243,7 +244,7 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('grading_method', {
       id: 'grading_method',
-      header: 'Grading Method',
+      header: 'روش تصحیح',
       cell: (info) => info.getValue(),
       filterFn: (row, _columnId, filter: MultiSelectFilterValue) => {
         const value = row.original.grading_method;
@@ -254,10 +255,10 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('external_grading_image', {
       id: 'external_grading_image',
-      header: 'External Grading Image',
+      header: 'ایمیج تصحیح خودکار',
       cell: (info) => {
         const value = info.getValue();
-        return value ? <code>{value}</code> : '—';
+        return value ? <code dir="ltr">{value}</code> : '—';
       },
       filterFn: (row, _columnId, filter: MultiSelectFilterValue) => {
         const value = row.original.external_grading_image;
@@ -268,10 +269,10 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('workspace_image', {
       id: 'workspace_image',
-      header: 'Workspace Image',
+      header: 'ایمیج محیط کار ابری',
       cell: (info) => {
         const value = info.getValue();
-        return value ? <code>{value}</code> : '—';
+        return value ? <code dir="ltr">{value}</code> : '—';
       },
       filterFn: (row, _columnId, filter: MultiSelectFilterValue) => {
         const value = row.original.workspace_image;
@@ -282,8 +283,8 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('single_variant', {
       id: 'single_variant',
-      header: 'Single variant',
-      cell: (info) => (info.getValue() ? 'Yes' : 'No'),
+      header: 'تک‌گونه',
+      cell: (info) => (info.getValue() ? 'بله' : 'خیر'),
       filterFn: (row, _columnId, filter: MultiSelectFilterValue<BooleanFilterOption>) => {
         return applyBooleanFilter(filter, row.original.single_variant);
       },
@@ -292,8 +293,8 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('partial_credit', {
       id: 'partial_credit',
-      header: 'Partial credit',
-      cell: (info) => (info.getValue() ? 'Yes' : 'No'),
+      header: 'نمره جزئی',
+      cell: (info) => (info.getValue() ? 'بله' : 'خیر'),
       filterFn: (row, _columnId, filter: MultiSelectFilterValue<BooleanFilterOption>) => {
         return applyBooleanFilter(filter, row.original.partial_credit);
       },
@@ -302,8 +303,8 @@ export function createQuestionsTableColumns({
 
     columnHelper.accessor('has_preferences', {
       id: 'has_preferences',
-      header: 'Has preferences',
-      cell: (info) => (info.getValue() ? 'Yes' : 'No'),
+      header: 'تنظیمات اختصاصی',
+      cell: (info) => (info.getValue() ? 'بله' : 'خیر'),
       filterFn: (row, _columnId, filter: MultiSelectFilterValue<BooleanFilterOption>) => {
         return applyBooleanFilter(filter, row.original.has_preferences);
       },
@@ -315,7 +316,7 @@ export function createQuestionsTableColumns({
       ? [
           columnHelper.group({
             id: 'referenced_assessments',
-            header: 'Referenced assessments',
+            header: 'آزمون‌های مرتبط',
             columns: columnHelper.columns(
               courseInstances.map((ci) =>
                 columnHelper.accessor(

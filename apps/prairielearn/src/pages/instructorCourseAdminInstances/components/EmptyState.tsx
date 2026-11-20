@@ -15,31 +15,30 @@ export function EmptyState({
 }) {
   return (
     <div className="my-4 card-body text-center" style={{ textWrap: 'balance' }}>
-      <p className="fw-bold">No course instances found.</p>
+      <p className="fw-bold">هیچ ترم یا دوره ارائه‌ای برای این درس یافت نشد.</p>
       <p className="mb-0">
-        A course instance contains the assessments and other configuration for a single offering of
-        a course.
+        یک دوره یا ترم ارائه، دربرگیرنده آزمون‌ها، تکالیف و تنظیمات آموزشی مربوط به یک دوره برگزاری درس است.
       </p>
       <p>
-        Learn more in the{' '}
+        جهت کسب اطلاعات بیشتر،{' '}
         <a href="https://docs.prairielearn.com/courseInstance/" target="_blank" rel="noreferrer">
-          course instance documentation
-        </a>
-        .
+          مستندات دوره‌ها و ترم‌های ارائه
+        </a>{' '}
+        را مطالعه فرمایید.
       </p>
       {courseExample ? (
-        <p>You can't add course instances to the example course.</p>
+        <p className="text-muted">امکان افزودن دوره به درس نمونه وجود ندارد.</p>
       ) : !canEditCourse ? (
-        <p>Course Editors can create new course instances.</p>
+        <p className="text-muted">تنها ویرایشگران و مدیران درس امکان ایجاد دوره‌های ارائه جدید را دارند.</p>
       ) : needToSync ? (
         <p>
-          You must <a href={`${urlPrefix}/course_admin/syncs`}>sync this course</a> before creating
-          a new course instance.
+          پیش از ایجاد دوره جدید، ابتدا باید{' '}
+          <a href={`${urlPrefix}/course_admin/syncs`}>درس را همگام‌سازی نمایید</a>.
         </p>
       ) : (
         <Button variant="primary" size="sm" type="button" onClick={onCreateClick}>
-          <i className="fa fa-plus" aria-hidden="true" />
-          <span className="d-none d-sm-inline">Add course instance</span>
+          <i className="fa fa-plus me-1" aria-hidden="true" />
+          <span className="d-none d-sm-inline">افزودن دوره ارائه جدید</span>
         </Button>
       )}
     </div>

@@ -757,7 +757,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Settings',
+        pageTitle: 'تنظیمات سوال',
         headContent: [compiledStylesheetTag('instructorQuestionSettings.css')],
         navContext: {
           type: 'instructor',

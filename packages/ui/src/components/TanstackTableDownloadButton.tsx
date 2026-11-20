@@ -126,23 +126,23 @@ export function TanstackTableDownloadButton<RowDataModel extends RowData>({
         data-bs-toggle="dropdown"
         aria-expanded="false"
         aria-haspopup="true"
-        aria-label={`Download ${pluralLabel} data in various formats`}
+        aria-label={`دانلود داده‌های ${pluralLabel} در قالب‌های مختلف`}
         className="btn btn-light btn-sm dropdown-toggle"
       >
         <i aria-hidden="true" className="pe-2 bi bi-download" />
-        <span className="d-none d-sm-inline">{isPending ? 'Preparing download…' : 'Download'}</span>
+        <span className="d-none d-sm-inline">{isPending ? 'در حال آماده‌سازی دانلود…' : 'دانلود'}</span>
       </button>
-      <ul className="dropdown-menu" role="menu" aria-label="Download options">
+      <ul className="dropdown-menu" role="menu" aria-label="گزینه‌های دانلود" dir="rtl" style={{ fontFamily: 'var(--font-persian)' }}>
         <li role="presentation">
           <button
             className="dropdown-item"
             type="button"
             role="menuitem"
-            aria-label={`Download all ${pluralLabel} as CSV file`}
+            aria-label={`دانلود تمامی ${pluralLabel} به صورت CSV`}
             disabled={isPending || allRows.rows.length === 0}
             onClick={() => downloadRowsAsCSV(allRows, `${filenameBase}.csv`)}
           >
-            All {pluralLabel} ({allRows.rows.length}) as CSV
+            تمامی {pluralLabel} ({allRows.rows.length}) به صورت CSV
           </button>
         </li>
         {(mapRowToJsonData || getJsonData) && (
@@ -151,11 +151,11 @@ export function TanstackTableDownloadButton<RowDataModel extends RowData>({
               className="dropdown-item"
               type="button"
               role="menuitem"
-              aria-label={`Download all ${pluralLabel} as JSON file`}
+              aria-label={`دانلود تمامی ${pluralLabel} به صورت JSON`}
               disabled={isPending || allRows.rows.length === 0}
               onClick={() => downloadRowsAsJSON(allRows.rows, `${filenameBase}.json`)}
             >
-              All {pluralLabel} ({allRows.rows.length}) as JSON
+              تمامی {pluralLabel} ({allRows.rows.length}) به صورت JSON
             </button>
           </li>
         )}
@@ -166,12 +166,11 @@ export function TanstackTableDownloadButton<RowDataModel extends RowData>({
                 className="dropdown-item"
                 type="button"
                 role="menuitem"
-                aria-label={`Download selected ${pluralLabel} as CSV file`}
+                aria-label={`دانلود ${selectedRows.rows.length === 1 ? singularLabel : pluralLabel} انتخاب‌شده به صورت CSV`}
                 disabled={isPending || selectedRows.rows.length === 0}
                 onClick={() => downloadRowsAsCSV(selectedRows, `${filenameBase}_selected.csv`)}
               >
-                Selected {selectedRows.rows.length === 1 ? singularLabel : pluralLabel} (
-                {selectedRows.rows.length}) as CSV
+                {selectedRows.rows.length === 1 ? singularLabel : pluralLabel} انتخاب‌شده ({selectedRows.rows.length}) به صورت CSV
               </button>
             </li>
             {(mapRowToJsonData || getJsonData) && (
@@ -180,14 +179,13 @@ export function TanstackTableDownloadButton<RowDataModel extends RowData>({
                   className="dropdown-item"
                   type="button"
                   role="menuitem"
-                  aria-label={`Download selected ${pluralLabel} as JSON file`}
+                  aria-label={`دانلود ${selectedRows.rows.length === 1 ? singularLabel : pluralLabel} انتخاب‌شده به صورت JSON`}
                   disabled={isPending || selectedRows.rows.length === 0}
                   onClick={() =>
                     downloadRowsAsJSON(selectedRows.rows, `${filenameBase}_selected.json`)
                   }
                 >
-                  Selected {selectedRows.rows.length === 1 ? singularLabel : pluralLabel} (
-                  {selectedRows.rows.length}) as JSON
+                  {selectedRows.rows.length === 1 ? singularLabel : pluralLabel} انتخاب‌شده ({selectedRows.rows.length}) به صورت JSON
                 </button>
               </li>
             )}
@@ -198,12 +196,11 @@ export function TanstackTableDownloadButton<RowDataModel extends RowData>({
             className="dropdown-item"
             type="button"
             role="menuitem"
-            aria-label={`Download filtered ${pluralLabel} as CSV file`}
+            aria-label={`دانلود ${pluralLabel} فیلترشده به صورت CSV`}
             disabled={isPending || filteredRows.rows.length === 0}
             onClick={() => downloadRowsAsCSV(filteredRows, `${filenameBase}_filtered.csv`)}
           >
-            Filtered {filteredRows.rows.length === 1 ? singularLabel : pluralLabel} (
-            {filteredRows.rows.length}) as CSV
+            {pluralLabel} فیلترشده ({filteredRows.rows.length}) به صورت CSV
           </button>
         </li>
         {(mapRowToJsonData || getJsonData) && (
@@ -212,12 +209,11 @@ export function TanstackTableDownloadButton<RowDataModel extends RowData>({
               className="dropdown-item"
               type="button"
               role="menuitem"
-              aria-label={`Download filtered ${pluralLabel} as JSON file`}
+              aria-label={`دانلود ${pluralLabel} فیلترشده به صورت JSON`}
               disabled={isPending || filteredRows.rows.length === 0}
               onClick={() => downloadRowsAsJSON(filteredRows.rows, `${filenameBase}_filtered.json`)}
             >
-              Filtered {filteredRows.rows.length === 1 ? singularLabel : pluralLabel} (
-              {filteredRows.rows.length}) as JSON
+              {pluralLabel} فیلترشده ({filteredRows.rows.length}) به صورت JSON
             </button>
           </li>
         )}

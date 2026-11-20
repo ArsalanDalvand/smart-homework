@@ -79,7 +79,7 @@ function ResizeHandle<RowDataModel extends RowData>({
 /**
  * Helper function to get aria-sort value
  */
-function getAriaSort(sortDirection: false | SortDirection) {
+function getAriaSort(sortDirection: false | SortDirection): 'ascending' | 'descending' | 'none' {
   switch (sortDirection) {
     case 'asc':
       return 'ascending';
@@ -87,6 +87,17 @@ function getAriaSort(sortDirection: false | SortDirection) {
       return 'descending';
     default:
       return 'none';
+  }
+}
+
+function getAriaSortPersian(sortDirection: false | SortDirection): string {
+  switch (sortDirection) {
+    case 'asc':
+      return 'صعودی';
+    case 'desc':
+      return 'نزولی';
+    default:
+      return 'نامرتب';
   }
 }
 
@@ -172,7 +183,7 @@ export function TanstackTableHeaderCell<RowDataModel extends RowData>({
             ? null
             : flexRender(header.column.columnDef.header, header.getContext())}
           {canSort && (
-            <span className="visually-hidden">, {getAriaSort(sortDirection)}, click to sort</span>
+            <span className="visually-hidden">، {getAriaSortPersian(sortDirection)}، جهت مرتب‌سازی کلیک کنید</span>
           )}
         </div>
 
@@ -186,8 +197,8 @@ export function TanstackTableHeaderCell<RowDataModel extends RowData>({
               <button
                 type="button"
                 className="btn btn-link text-muted p-0"
-                aria-label={`Sort ${columnName.toLowerCase()}, current sort is ${getAriaSort(sortDirection)}`}
-                title={`Sort ${columnName.toLowerCase()}`}
+                aria-label={`مرتب‌سازی ستون ${columnName}، حالت فعلی: ${getAriaSortPersian(sortDirection)}`}
+                title={`مرتب‌سازی بر اساس ${columnName}`}
                 onClick={header.column.getToggleSortingHandler()}
               >
                 <SortIcon sortMethod={sortDirection} />

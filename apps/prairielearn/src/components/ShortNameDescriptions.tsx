@@ -1,9 +1,9 @@
 export function QuestionShortNameDescription() {
   return (
     <>
-      A short unique identifier for this question, such as <code>add-vectors</code> or{' '}
-      <code>calculus/find-derivative</code>. Use only letters, numbers, dashes, underscores, and
-      dots, with no spaces. Use forward slashes to separate directories.
+      شناسه یکتا و کوتاه برای این سوال، مانند <code>add-vectors</code> یا{' '}
+      <code>calculus/find-derivative</code>. فقط از حروف انگلیسی، اعداد، خط فاصله (-)، زیرخط (_) و
+      نقطه بدون فاصله استفاده کنید. برای تفکیک پوشه‌ها از اسلش (/) استفاده نمایید.
     </>
   );
 }
@@ -11,10 +11,10 @@ export function QuestionShortNameDescription() {
 export function CourseInstanceShortNameDescription() {
   return (
     <>
-      A short unique identifier for this course instance, such as <code>Fa25</code> or{' '}
-      <code>W25b</code>. Use only letters, numbers, dashes, underscores, and dots, with no spaces.
-      Use forward slashes to separate directories. Add suffixes if there are multiple versions, like{' '}
-      <code>Fa19honors</code>.
+      شناسه یکتا و کوتاه برای این ترم یا دوره ارائه شده، مانند <code>Fa25</code> یا{' '}
+      <code>W25b</code>. فقط از حروف انگلیسی، اعداد، خط فاصله (-)، زیرخط (_) و نقطه بدون فاصله استفاده نمایید.
+      برای تفکیک پوشه‌ها از اسلش (/) استفاده کنید. در صورت وجود ویرایش‌های مختلف پسوند اضافه نمایید (مانند{' '}
+      <code>Fa19honors</code>).
     </>
   );
 }
@@ -22,9 +22,9 @@ export function CourseInstanceShortNameDescription() {
 export function AssessmentShortNameDescription() {
   return (
     <>
-      A short unique identifier for this assessment, such as <code>exam1-functions</code> or{' '}
-      <code>practice/derivatives</code>. Use only letters, numbers, dashes, underscores, and dots,
-      with no spaces. Use forward slashes to separate directories.
+      شناسه یکتا و کوتاه برای این ارزیابی، مانند <code>exam1-functions</code> یا{' '}
+      <code>practice/derivatives</code>. فقط از حروف انگلیسی، اعداد، خط فاصله (-)، زیرخط (_) و نقطه،
+      بدون فاصله استفاده کنید. برای تفکیک پوشه‌ها از اسلش (/) استفاده نمایید.
     </>
   );
 }

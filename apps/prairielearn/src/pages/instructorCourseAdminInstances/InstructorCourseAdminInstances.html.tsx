@@ -14,27 +14,17 @@ import { EmptyState } from './components/EmptyState.js';
 import type { InstructorCourseAdminInstanceRow } from './instructorCourseAdminInstances.shared.js';
 
 const accessRuleRecommendation = (
-  <p>
-    Course instance access rules are deprecated. It is recommended that you switch to the new
-    publishing system. You can do so by editing the <code>infoCourseInstance.json</code> file for
-    the course instance. For more information, see the{' '}
-    <a
-      href="https://docs.prairielearn.com/courseInstance/#migrating-from-allowaccess"
-      target="_blank"
-      rel="noreferrer"
-    >
-      documentation on migrating to publishing
-    </a>
-    .
+  <p className="mt-2 mb-0 small text-muted">
+    قوانین دسترسی قدیمی منسوخ شده‌اند. پیشنهاد می‌شود از سیستم جدید انتشار دوره‌ها استفاده نمایید.
+    جهت کسب اطلاعات بیشتر، مستندات سامانه را مطالعه فرمایید.
   </p>
 );
 
 const popoverStartDateBody = (
   <>
-    <p>
-      This date is the earliest <code>startDate</code> that appears in any <code>accessRule</code>{' '}
-      for the course instance. Course instances are listed in order from newest to oldest according
-      to this date.
+    <p className="mb-0">
+      این تاریخ، اولین <code>startDate</code> تعریف‌شده در قوانین دسترسی دوره است.
+      دوره‌ها بر اساس این تاریخ از جدیدترین به قدیمی‌ترین مرتب می‌شوند.
     </p>
     {accessRuleRecommendation}
   </>
@@ -42,10 +32,9 @@ const popoverStartDateBody = (
 
 const popoverEndDateBody = (
   <>
-    <p>
-      This date is the latest <code>endDate</code> that appears in any <code>accessRule</code> for
-      the course instance. If two course instances have the same &quot;Earliest Access Date,&quot;
-      then they are listed from newest to oldest according to this &quot;Latest Access Date.&quot;
+    <p className="mb-0">
+      این تاریخ، آخرین <code>endDate</code> تعریف‌شده در قوانین دسترسی دوره است.
+      در صورت یکسان بودن تاریخ شروع، دوره‌ها بر اساس این تاریخ مرتب می‌شوند.
     </p>
     {accessRuleRecommendation}
   </>

@@ -19,19 +19,19 @@ function StaffChanges({ row }: { row: ChangedRow }) {
   const action = row.action;
   switch (action) {
     case 'remove':
-      return <>Remove staff and all permissions</>;
+      return <>حذف از کادر آموزشی و لغو تمامی دسترسی‌ها</>;
     case 'add':
     case 'update':
       return (
         <ul className="mb-0 ps-3">
           {(row.action === 'add' || row.previousCourseRole !== row.courseRole) && (
             <li>
-              Course: {row.previousCourseRole ?? 'None'} → {row.courseRole}
+              محتوای درس: {row.previousCourseRole ?? 'بدون دسترسی'} ← {row.courseRole}
             </li>
           )}
           {row.courseInstanceChanges.map((change) => (
             <li key={change.courseInstanceId}>
-              {change.shortName}: {change.previousRole} → {change.role}
+              دوره {change.shortName}: {change.previousRole} ← {change.role}
             </li>
           ))}
         </ul>
@@ -75,11 +75,11 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
     try {
       csv = await file[0].text();
     } catch {
-      setFileError('Unable to read this file. Select it again and retry.');
+      setFileError('خواندن این فایل امکان‌پذیر نبود. لطفا مجددا فایل را انتخاب فرمایید.');
       return;
     }
     if (csv.trim().length === 0) {
-      setFileError('The CSV file is empty. Select a file with a header and staff data.');
+      setFileError('فایل CSV خالی است. فایلی حاوی سربرگ و مشخصات کادر آموزشی انتخاب فرمایید.');
       return;
     }
     setText(csv);
@@ -93,28 +93,29 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
       backdrop={pending ? 'static' : true}
       show
       onHide={pending ? () => {} : onHide}
+      dir="rtl"
     >
-      <Modal.Header closeButton={!pending}>
-        <Modal.Title id="staff-csv-import-title">Import staff CSV</Modal.Title>
+      <Modal.Header closeButton={!pending} style={{ fontFamily: 'var(--font-persian)' }}>
+        <Modal.Title id="staff-csv-import-title">ورود دسته‌جمعی کادر آموزشی از CSV</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ fontFamily: 'var(--font-persian)' }}>
         {sync.isSuccess ? (
           <Alert variant="success" className="mb-0">
-            Staff synchronized: {sync.data.add} added, {sync.data.update} updated,{' '}
-            {sync.data.remove} removed, {sync.data.unchanged} unchanged.
+            همگام‌سازی کادر آموزشی با موفقیت انجام شد: {sync.data.add} کاربر افزوده شد، {sync.data.update} بروزرسانی شد،{' '}
+            {sync.data.remove} حذف شد و {sync.data.unchanged} بدون تغییر ماند.
           </Alert>
         ) : (
           <>
             {!preview.data && (
               <>
                 <p>
-                  Export the current CSV, edit it, and upload it here. Missing users and instance
-                  columns are left unchanged. Use None to remove a permission. Leave every field
-                  after a UID blank to remove that staff record entirely.
+                  فایل CSV فعلی را از دکمه خروجی دریافت نموده، تغییرات لازم را در آن ویرایش کرده و در این بخش بارگذاری کنید.
+                  کاربران یا دوره‌هایی که در فایل نباشند دست نخورده باقی می‌مانند. از عبارت None برای سلب دسترسی استفاده نمایید.
+                  برای حذف کامل یک کاربر از کادر آموزشی، فیلدهای بعد از شناسه کاربری (UID) را خالی بگذارید.
                 </p>
                 <Form id="staff-csv-import" onSubmit={submit}>
                   <Form.Group controlId="staff-csv-file">
-                    <Form.Label>CSV file</Form.Label>
+                    <Form.Label>انتخاب فایل CSV کادر آموزشی</Form.Label>
                     <Form.Control
                       type="file"
                       accept=".csv,text/csv"
@@ -124,13 +125,13 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
                         errors.file || fileError ? 'staff-csv-file-error' : undefined
                       }
                       {...register('file', {
-                        required: 'Select a CSV file.',
+                        required: 'لطفا یک فایل CSV انتخاب فرمایید.',
                         validate: (files) =>
                           files.length === 0
-                            ? 'Select a CSV file.'
+                            ? 'لطفا یک فایل CSV انتخاب فرمایید.'
                             : files[0].size === 0
-                              ? 'The CSV file is empty. Select a file with a header and staff data.'
-                              : files[0].size <= 1024 * 1024 || 'CSV must be at most 1 MiB.',
+                              ? 'فایل CSV خالی است. فایلی حاوی اطلاعات معتبر انتخاب فرمایید.'
+                              : files[0].size <= 1024 * 1024 || 'حجم فایل CSV حداکثر می‌تواند ۱ مگابایت باشد.',
                         onChange: () => {
                           preview.reset();
                           sync.reset();
@@ -159,21 +160,21 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
             />
             {preview.data && (
               <div className="mt-3">
-                <h2 className="h5">Preview</h2>
+                <h2 className="h5">پیش‌نمایش تغییرات</h2>
                 <p>
-                  {preview.data.summary.add} added, {preview.data.summary.update} updated,{' '}
-                  {preview.data.summary.remove} removed, {preview.data.summary.unchanged} unchanged.
+                  {preview.data.summary.add} افزوده می‌شود، {preview.data.summary.update} بروزرسانی می‌شود،{' '}
+                  {preview.data.summary.remove} حذف می‌شود و {preview.data.summary.unchanged} بدون تغییر باقی می‌ماند.
                 </p>
                 {preview.data.removalEnrollments.length > 0 && (
                   <Alert variant="warning">
-                    Removing staff also deletes these enrollments:
+                    حذف این افراد از کادر آموزشی باعث لغو ثبت‌نام‌های زیر نیز می‌گردد:
                     <ul className="mb-0">
                       {preview.data.removalEnrollments.map((enrollment) => (
                         <li key={enrollment.enrollmentId}>
                           {uidByUserId.get(enrollment.userId!)}
                           {' — '}
                           {enrollment.shortName} ({enrollment.status})
-                          {enrollment.instanceDeleted && ' — deleted instance'}
+                          {enrollment.instanceDeleted && ' — دوره حذف‌شده'}
                         </li>
                       ))}
                     </ul>
@@ -181,30 +182,30 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
                 )}
                 <Accordion defaultActiveKey={['changed']} alwaysOpen>
                   <Accordion.Item eventKey="changed">
-                    <Accordion.Header>Users with changes ({changedRows.length})</Accordion.Header>
+                    <Accordion.Header>کاربران دارای تغییر ({changedRows.length})</Accordion.Header>
                     <Accordion.Body>
                       {changedRows.length === 0 ? (
-                        <p>No staff permissions will change.</p>
+                        <p>هیچ تغییری در دسترسی‌های کادر آموزشی اعمال نخواهد شد.</p>
                       ) : (
                         <div style={{ maxHeight: '350px', overflowY: 'auto' }}>
                           <Table size="sm" responsive>
                             <thead>
                               <tr>
-                                <th scope="col">UID</th>
-                                <th scope="col">Action</th>
-                                <th scope="col">Changes</th>
+                                <th scope="col">شناسه کاربری (UID)</th>
+                                <th scope="col">نوع عملیات</th>
+                                <th scope="col">شرح تغییرات</th>
                               </tr>
                             </thead>
                             <tbody>
                               {changedRows.map((row) => (
                                 <tr key={row.uid}>
-                                  <td>{row.uid}</td>
+                                  <td dir="ltr" className="text-end">{row.uid}</td>
                                   <td>
                                     {
                                       {
-                                        add: 'Add',
-                                        update: 'Update',
-                                        remove: 'Remove',
+                                        add: 'افزودن',
+                                        update: 'بروزرسانی',
+                                        remove: 'حذف',
                                       }[row.action]
                                     }
                                   </td>
@@ -222,20 +223,20 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
                   {unchangedRows.length > 0 && (
                     <Accordion.Item eventKey="unchanged">
                       <Accordion.Header>
-                        Users without changes ({unchangedRows.length})
+                        کاربران بدون تغییر ({unchangedRows.length})
                       </Accordion.Header>
                       <Accordion.Body>
                         <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
                           <Table size="sm" className="mb-0" responsive>
                             <thead>
                               <tr>
-                                <th scope="col">UID</th>
+                                <th scope="col">شناسه کاربری (UID)</th>
                               </tr>
                             </thead>
                             <tbody>
                               {unchangedRows.map((row) => (
                                 <tr key={row.uid}>
-                                  <td>{row.uid}</td>
+                                  <td dir="ltr" className="text-end">{row.uid}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -250,15 +251,15 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
           </>
         )}
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer style={{ fontFamily: 'var(--font-persian)' }}>
         <Button variant="secondary" disabled={pending} onClick={onHide}>
-          {sync.isSuccess ? 'Close' : 'Cancel'}
+          {sync.isSuccess ? 'بستن' : 'انصراف'}
         </Button>
         {!sync.isSuccess && (
           <>
             {!preview.data ? (
               <Button type="submit" form="staff-csv-import" disabled={pending} variant="primary">
-                {preview.isPending ? 'Generating preview…' : 'Preview changes'}
+                {preview.isPending ? 'در حال پردازش پیش‌نمایش…' : 'پیش‌نمایش تغییرات'}
               </Button>
             ) : (
               <Button
@@ -272,7 +273,7 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
                   setFileError(null);
                 }}
               >
-                Choose another file
+                انتخاب فایل دیگر
               </Button>
             )}
             {preview.data && (
@@ -283,7 +284,7 @@ export function StaffCsvImportModal({ onHide }: { onHide: () => void }) {
                   sync.mutate({ text, confirmationToken: preview.data.confirmationToken })
                 }
               >
-                {sync.isPending ? 'Synchronizing…' : 'Confirm sync'}
+                {sync.isPending ? 'در حال همگام‌سازی…' : 'تایید و اعمال همگام‌سازی'}
               </Button>
             )}
           </>

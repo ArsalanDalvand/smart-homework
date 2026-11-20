@@ -92,11 +92,11 @@ function AssessmentModuleRow({
           trackingId={module.trackingId}
           dragHandleProps={dragHandleProps}
           dragDisabled={dragDisabled}
-          editLabel={`Edit module ${module.name}`}
-          deleteLabel={`Delete module ${module.name}`}
+          editLabel={`ویرایش پودمان ${module.name}`}
+          deleteLabel={`حذف پودمان ${module.name}`}
           deleteDisabledReason={
             module.name === DEFAULT_ASSESSMENT_MODULE_NAME
-              ? 'The Default module is required and cannot be deleted.'
+              ? 'پودمان پیش‌فرض (Default) اجباری است و قابل حذف نمی‌باشد.'
               : null
           }
           onEdit={onEdit}
@@ -111,10 +111,10 @@ function AssessmentModuleRow({
         <button
           type="button"
           className="btn btn-sm btn-outline-secondary text-nowrap"
-          aria-label={`View ${module.assessments.length} assessment${module.assessments.length === 1 ? '' : 's'} in this module`}
+          aria-label={`مشاهده ارزیابی‌های مربوط به پودمان ${module.name}`}
           onClick={onShowUsage}
         >
-          View assessments
+          مشاهده آزمون‌ها
         </button>
       </td>
     </tr>
@@ -146,17 +146,17 @@ function AssessmentModulesTable({
       rows={reorderableRows}
       onReorder={(reorderedRows) => onReorder([...reorderedRows, ...implicitRows])}
     >
-      <table className="table table-sm table-hover table-striped" aria-label="Assessment modules">
+      <table className="table table-sm table-hover table-striped" aria-label="پودمان‌های ارزیابی">
         <thead>
           <tr>
             {allowEdit && (
               <th style={{ width: '1%' }}>
-                <span className="visually-hidden">Drag, Edit and Delete</span>
+                <span className="visually-hidden">جابجایی، ویرایش و حذف</span>
               </th>
             )}
-            <th className="col-3 pe-4">Name</th>
-            <th className="pe-4">Heading</th>
-            <th style={{ width: '1%' }}>Action</th>
+            <th className="col-3 pe-4">عنوان پودمان (کد)</th>
+            <th className="pe-4">سربرگ نمایشی برای دانشجویان</th>
+            <th style={{ width: '1%' }}>عملیات</th>
           </tr>
         </thead>
         <tbody>
@@ -174,7 +174,7 @@ function AssessmentModulesTable({
             <tr>
               <td colSpan={4}>
                 <button className="btn btn-sm btn-ghost" type="button" onClick={handleCreate}>
-                  <i className="fa fa-plus" aria-hidden="true" /> New module
+                  <i className="fa fa-plus me-1" aria-hidden="true" /> افزودن پودمان جدید
                 </button>
               </td>
             </tr>
@@ -316,22 +316,21 @@ function AssessmentModulesCard({
     <>
       <Form as={canEdit ? 'form' : 'div'} onSubmit={form.handleSubmit(handleSubmit)}>
         <fieldset disabled={saveMutation.isPending}>
-          <legend className="visually-hidden">Assessment modules</legend>
-          <div className="card mb-4">
+          <legend className="visually-hidden">پودمان‌های ارزیابی</legend>
+          <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
             <div className="card-header bg-primary text-white d-flex align-items-center">
-              <h1>Modules</h1>
+              <h1 className="h4 mb-0">پودمان‌های ارزیابی (Assessment Modules)</h1>
             </div>
 
             {requiresReload && (
               <Alert variant="warning" className="m-3">
-                Your changes were saved, but the updated modules could not be loaded. Reload the
-                page before making further changes.{' '}
+                تغییرات شما ذخیره شد اما بارگذاری مجدد پودمان‌ها با خطا مواجه شد. لطفا قبل از ایجاد تغییرات جدید، صفحه را بازخوانی فرمایید.{' '}
                 <button
                   type="button"
                   className="btn btn-link alert-link p-0 align-baseline"
                   onClick={() => window.location.reload()}
                 >
-                  Reload page
+                  بارگذاری مجدد صفحه
                 </button>
               </Alert>
             )}
@@ -344,7 +343,7 @@ function AssessmentModulesCard({
                   SYNC_JOB_FAILED: ({ message, jobSequenceId }) => (
                     <>
                       {message}{' '}
-                      <a href={getCourseEditErrorUrl(courseId, jobSequenceId)}>View job logs</a>
+                      <a href={getCourseEditErrorUrl(courseId, jobSequenceId)}>مشاهده لاگ عملیات</a>
                     </>
                   ),
                   UNKNOWN: ({ message }) => message,
@@ -355,9 +354,9 @@ function AssessmentModulesCard({
 
             {canEdit && duplicateNames.length > 0 && (
               <div className="alert alert-warning m-3" role="alert">
-                <i className="fa fa-exclamation-triangle" aria-hidden="true" />{' '}
-                <strong>Duplicate names detected:</strong> {duplicateNames.join(', ')}. Module names
-                must be unique; rename or remove the duplicates before saving.
+                <i className="fa fa-exclamation-triangle me-1" aria-hidden="true" />{' '}
+                <strong>نام‌های تکراری شناسایی شد:</strong> {duplicateNames.join(', ')}. عناوین پودمان‌ها
+                باید یکتا باشند؛ لطفا قبل از ذخیره، موارد تکراری را اصلاح فرمایید.
               </div>
             )}
 
@@ -373,28 +372,18 @@ function AssessmentModulesCard({
               />
             </div>
 
-            <div className="card-footer">
-              <small>
-                Modules can be used to group assessments by topic, chapter, section, or other
-                category. More information on modules can be found in the{' '}
-                <a
-                  href="https://docs.prairielearn.com/course/#assessment-modules"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  PrairieLearn documentation
-                </a>
-                .
-              </small>
+            <div className="card-footer text-muted small">
+              از پودمان‌ها می‌توان برای گروه‌بندی و دسته‌بندی ارزیابی‌ها بر اساس فصل، موضوع، پودمان آموزشی یا سرفصل‌های درسی استفاده نمود.
             </div>
           </div>
         </fieldset>
         {canEdit && (
           <StickySaveBar
             isSaving={saveMutation.isPending}
-            saveDisabledReason={duplicateNames.length > 0 ? 'Module names must be unique.' : null}
+            saveDisabledReason={duplicateNames.length > 0 ? 'عناوین پودمان‌ها باید یکتا باشند.' : null}
             visible={form.formState.isDirty}
             fullWidth
+            saveLabel="ذخیره پودمان‌ها"
             onCancel={() => {
               form.reset();
               saveMutation.reset();
@@ -405,13 +394,12 @@ function AssessmentModulesCard({
 
       {allowEdit && origHash === null && (
         <Alert variant="info">
-          You cannot edit assessment modules because the <code>infoCourse.json</code> file does not
-          exist.
+          امکان ویرایش پودمان‌ها وجود ندارد زیرا فایل <code>infoCourse.json</code> یافت نشد.
         </Alert>
       )}
 
       {!allowEdit && isExampleCourse && (
-        <Alert variant="info">You can't edit assessment modules in the example course.</Alert>
+        <Alert variant="info">ویرایش پودمان‌ها در درس نمونه امکان‌پذیر نیست.</Alert>
       )}
 
       <EditAssessmentModuleModal
@@ -429,7 +417,7 @@ function AssessmentModulesCard({
         }}
       />
 
-      <AssessmentUsageModal {...usageModal} entityLabel="module" />
+      <AssessmentUsageModal {...usageModal} entityLabel="پودمان" />
     </>
   );
 }

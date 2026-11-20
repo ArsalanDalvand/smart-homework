@@ -68,19 +68,21 @@ export function EditAssessmentModuleModal({
         reset();
         onExited();
       }}
+      dir="rtl"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{data?.mode === 'create' ? 'Add module' : 'Edit module'}</Modal.Title>
+      <Modal.Header closeButton style={{ fontFamily: 'var(--font-persian)' }}>
+        <Modal.Title>{data?.mode === 'create' ? 'افزودن پودمان جدید' : 'ویرایش پودمان'}</Modal.Title>
       </Modal.Header>
-      <form onSubmit={handleSubmit(onFormSubmit)}>
+      <form onSubmit={handleSubmit(onFormSubmit)} style={{ fontFamily: 'var(--font-persian)' }}>
         <Modal.Body>
           <div className="mb-3">
             <label className="form-label" htmlFor="module-name">
-              Name
+              عنوان پودمان (کد اختصاری)
             </label>
             <input
               id="module-name"
               type="text"
+              placeholder="مثال: Ch01, Intro, Advanced"
               defaultValue={data?.assessmentModule.name ?? ''}
               className={clsx('form-control', errors.name && 'is-invalid')}
               aria-invalid={errors.name ? true : undefined}
@@ -88,7 +90,7 @@ export function EditAssessmentModuleModal({
               aria-describedby={nameConflicts ? 'module-name-warning' : undefined}
               disabled={lockName}
               {...register('name', {
-                validate: (value) => value.trim().length > 0 || 'Module name is required',
+                validate: (value) => value.trim().length > 0 || 'وارد کردن عنوان پودمان الزامی است',
               })}
             />
             {errors.name && (
@@ -98,8 +100,8 @@ export function EditAssessmentModuleModal({
             )}
             <small className="form-text text-muted">
               {lockName
-                ? 'The Default module is required and cannot be renamed.'
-                : 'Short name for the module (preferably 1 to 3 words), e.g. "Introduction".'}
+                ? 'پودمان پیش‌فرض (Default) اجباری است و امکان تغییر نام آن وجود ندارد.'
+                : 'نام کوتاه و اختصاری برای پودمان (ترجیحا ۱ تا ۳ کلمه)، به عنوان مثال "مقدمه" یا "فصل اول".'}
             </small>
             {nameConflicts && (
               <div
@@ -107,24 +109,24 @@ export function EditAssessmentModuleModal({
                 className="alert alert-warning mt-2 mb-0 py-2"
                 role="alert"
               >
-                <i className="fa fa-exclamation-triangle" aria-hidden="true" /> This module has the
-                same name as another module.
+                <i className="fa fa-exclamation-triangle me-1" aria-hidden="true" /> یک پودمان دیگر با این نام وجود دارد.
               </div>
             )}
           </div>
           <div>
             <label className="form-label" htmlFor="module-heading">
-              Heading
+              سربرگ نمایشی برای دانشجویان
             </label>
             <input
               id="module-heading"
               type="text"
+              placeholder="مثال: فصل اول — مقدمات و مفاهیم پایه"
               defaultValue={data?.assessmentModule.heading ?? ''}
               className={clsx('form-control', errors.heading && 'is-invalid')}
               aria-invalid={errors.heading ? true : undefined}
               aria-errormessage={errors.heading ? 'module-heading-error' : undefined}
               {...register('heading', {
-                validate: (value) => value.trim().length > 0 || 'Module heading is required',
+                validate: (value) => value.trim().length > 0 || 'وارد کردن سربرگ نمایشی پودمان الزامی است',
               })}
             />
             {errors.heading && (
@@ -133,16 +135,16 @@ export function EditAssessmentModuleModal({
               </div>
             )}
             <small className="form-text text-muted">
-              Full name of the module, visible to students.
+              عنوان کامل پودمان که در بالای آزمون‌ها به دانشجویان نمایش داده می‌شود.
             </small>
           </div>
         </Modal.Body>
         <Modal.Footer>
           <button className="btn btn-secondary" type="button" onClick={onHide}>
-            Cancel
+            انصراف
           </button>
           <button className="btn btn-primary" type="submit">
-            {data?.mode === 'create' ? 'Add' : 'Ok'}
+            {data?.mode === 'create' ? 'افزودن پودمان' : 'تایید و ذخیره'}
           </button>
         </Modal.Footer>
       </form>

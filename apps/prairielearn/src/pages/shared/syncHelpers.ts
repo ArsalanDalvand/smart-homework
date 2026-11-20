@@ -25,7 +25,7 @@ const docker = new Docker();
 export async function gitStatus(locals: UntypedResLocals): Promise<string> {
   const serverJob = await createServerJob({
     type: 'git_status',
-    description: 'Show server git status',
+    description: 'نمایش وضعیت گیت در سرور (Git Status)',
     userId: locals.user.id,
     authnUserId: locals.authz_data.authn_user.id,
     courseId: locals.course.id,
@@ -206,7 +206,7 @@ export async function ecrUpdate(
 
   const serverJob = await createServerJob({
     type: 'images_sync',
-    description: 'Sync Docker images to PL registry',
+    description: 'همگام‌سازی ایمیج‌های داکر با رجیستری',
     userId: locals.user.id,
     authnUserId: locals.authz_data.authn_user.id,
     courseId: locals.course.id,

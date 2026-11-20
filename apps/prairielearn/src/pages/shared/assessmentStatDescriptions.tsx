@@ -12,233 +12,234 @@ interface StatDescription {
 export const STAT_DESCRIPTIONS: Record<string, StatDescription> = {
   MEAN_SCORE: {
     field: 'mean_question_score',
-    title: 'Mean (μ)',
-    non_html_title: 'Mean',
-    description: 'Mean score of a question is the average score for all students on the question.',
+    title: <bdi>میانگین (μ)</bdi>,
+    non_html_title: 'میانگین (μ)',
+    description: 'میانگین نمره: میانگین نمرات تمامی دانشجویان در این سوال.',
   },
   MEDIAN_SCORE: {
     field: 'median_question_score',
-    title: 'Median',
-    non_html_title: 'Median',
+    title: <bdi>میانه (Median)</bdi>,
+    non_html_title: 'میانه (Median)',
     description:
-      'Median score of a question is the score which separates the lower half and the upper half of students scores.',
+      'میانه نمره: نمره‌ای که نمرات دانشجویان را به دو نیمه مساوی بالا و پایین تقسیم می‌کند.',
   },
   VARIANCE: {
     field: 'question_score_variance',
-    title: 'SD (σ)',
-    non_html_title: 'SD',
-    description: 'This is the standard deviation of student scores on this question.',
+    title: <bdi>انحراف معیار (σ)</bdi>,
+    non_html_title: 'انحراف معیار (σ)',
+    description: 'انحراف معیار (σ): میزان پراکندگی نمرات دانشجویان در این سوال.',
   },
   DISCRIMINATION: {
     field: 'discrimination',
-    title: 'Discrim.',
-    non_html_title: 'Discrim.',
+    title: <bdi>ضریب تمیز</bdi>,
+    non_html_title: 'ضریب تمیز (Discrim)',
     description:
-      'Discrimination of a question is the correlation coefficient between the scores on the question and the total assessment scores.',
+      'ضریب تمیز (Discrimination): ضریب همبستگی بین نمرات این سوال و نمرات کل آزمون (تفکیک دانشجویان قوی از ضعیف).',
   },
   SOME_SUBMISSION_PERCENTAGE: {
     field: 'some_submission_perc',
-    title: 'Some sub. (%)',
-    non_html_title: 'Some sub. (%)',
+    title: <bdi>حداقل یک ارسال (%)</bdi>,
+    non_html_title: 'حداقل یک ارسال (%)',
     description:
-      '(some submission percentage): The percentage of students that submitted a valid, auto-gradable answer.',
+      'درصد حداقل یک ارسال: درصد دانشجویانی که حداقل یک پاسخ معتبر و قابل تصحیح خودکار ارسال نموده‌اند.',
   },
   SOME_PERFECT_SUBMISSION_PERCENTAGE: {
     field: 'some_perfect_submission_perc',
-    title: 'Some perfect sub. (%)',
-    non_html_title: 'Some perfect sub. (%)',
+    title: <bdi>ارسال با نمره ۱۰۰٪ (%)</bdi>,
+    non_html_title: 'ارسال با نمره ۱۰۰٪ (%)',
     description:
-      '(some perfect submission percentage): The percentage of students that submitted an answer that got full auto-graded credit.',
+      'درصد نمره کامل: درصد دانشجویانی که پاسخی با نمره کامل تصحیح خودکار ارسال کرده‌اند.',
   },
   SOME_NONZERO_SUBMISSION_PERCENTAGE: {
     field: 'some_nonzero_submission_perc',
-    title: 'Some nonzero sub. (%)',
-    non_html_title: 'Some nonzero sub. (%)',
+    title: <bdi>ارسال با نمره مثبت (%)</bdi>,
+    non_html_title: 'ارسال با نمره مثبت (%)',
     description:
-      '(some nonzero submission percentage): The percentage of students that submitted some answer that got some auto-graded credit.',
+      'درصد نمره مثبت: درصد دانشجویانی که پاسخی با نمره بزرگتر از صفر ثبت نموده‌اند.',
   },
   AVERAGE_FIRST_SUBMISSION_SCORE: {
     field: 'average_first_submission_score',
     title: (
-      <>
-        μ<sub>First Sub. Score</sub>
-      </>
+      <span dir="ltr">
+        μ<sub>ارسال اول</sub>
+      </span>
     ),
-    non_html_title: 'First sub. score average',
+    non_html_title: 'میانگین نمره ارسال اول',
     description:
-      '(first submission score average): The average auto-graded score on the first submission over students that had at least one submission.',
+      'میانگین نمره ارسال اول: میانگین نمرات تصحیح خودکار در اولین ارسال میان دانشجویانی که حداقل یک پاسخ ثبت کرده‌اند.',
   },
   FIRST_SUBMISSION_SCORE_VARIANCE: {
     field: 'first_submission_score_variance',
     title: (
-      <>
-        σ<sub>First Sub. Score</sub>
-      </>
+      <span dir="ltr">
+        σ<sub>ارسال اول</sub>
+      </span>
     ),
-    non_html_title: 'First sub. score SD',
+    non_html_title: 'انحراف معیار ارسال اول',
     description:
-      '(first submission score standard deviation): The standard deviation of first submission auto-graded scores.',
+      'انحراف معیار ارسال اول: انحراف معیار نمرات اولین ارسال تصحیح خودکار دانشجویان.',
   },
   FIRST_SUBMISSION_SCORE_HIST: {
     field: 'first_submission_score_hist',
-    title: 'First Sub. Score Hist.',
-    non_html_title: 'First Sub. Score Hist.',
+    title: <bdi>هیستوگرام ارسال اول</bdi>,
+    non_html_title: 'هیستوگرام ارسال اول',
     description:
-      '(first submission score histogram): The histogram of first submission auto-graded scores.',
+      'هیستوگرام ارسال اول: نمودار توزیع فراوانی نمرات اولین ارسال تصحیح خودکار.',
   },
   AVERAGE_LAST_SUBMISSION_SCORE: {
     field: 'average_last_submission_score',
     title: (
-      <>
-        μ<sub>Last Sub. Score</sub>
-      </>
+      <span dir="ltr">
+        μ<sub>ارسال آخر</sub>
+      </span>
     ),
-    non_html_title: 'Last Sub. Score Average',
+    non_html_title: 'میانگین نمره ارسال آخر',
     description:
-      '(last submission score average): The average auto-graded score on last submission over students that had at least one submission.',
+      'میانگین نمره ارسال آخر: میانگین نمرات تصحیح خودکار در آخرین ارسال میان دانشجویانی که حداقل یک پاسخ ثبت کرده‌اند.',
   },
   LAST_SUBMISSION_SCORE_VARIANCE: {
     field: 'last_submission_score_variance',
     title: (
-      <>
-        σ<sub>Last Sub. Score</sub>
-      </>
+      <span dir="ltr">
+        σ<sub>ارسال آخر</sub>
+      </span>
     ),
-    non_html_title: 'Last Sub. Score SD',
+    non_html_title: 'انحراف معیار ارسال آخر',
     description:
-      '(last submission score standard deviation): The standard deviation of last submission auto-graded scores.',
+      'انحراف معیار ارسال آخر: انحراف معیار نمرات آخرین ارسال تصحیح خودکار دانشجویان.',
   },
   LAST_SUBMISSION_SCORE_HIST: {
     field: 'last_submission_score_hist',
-    title: 'Last Sub. Score Hist.',
-    non_html_title: 'Last Sub. Score Hist.',
+    title: <bdi>هیستوگرام ارسال آخر</bdi>,
+    non_html_title: 'هیستوگرام ارسال آخر',
     description:
-      '(last submission score histogram): The histogram of last submission auto-graded scores.',
+      'هیستوگرام ارسال آخر: نمودار توزیع فراوانی نمرات آخرین ارسال تصحیح خودکار.',
   },
   AVERAGE_MAX_SUBMISSION_SCORE: {
     field: 'average_max_submission_score',
     title: (
-      <>
-        μ<sub>Max Sub. Score</sub>
-      </>
+      <span dir="ltr">
+        μ<sub>بهترین نمره</sub>
+      </span>
     ),
-    non_html_title: 'Max Sub. Score average',
+    non_html_title: 'میانگین بهترین نمره',
     description:
-      '(max submission score average): The average best-submission score over students that had at least one submission.',
+      'میانگین بهترین نمره: میانگین بالاترین نمره تصحیح خودکار کسب‌شده توسط هر دانشجو.',
   },
   MAX_SUBMISSION_SCORE_VARIANCE: {
     field: 'max_submission_score_variance',
     title: (
-      <>
-        σ<sub>Max Sub. Score</sub>
-      </>
+      <span dir="ltr">
+        σ<sub>بهترین نمره</sub>
+      </span>
     ),
-    non_html_title: 'Max Sub. Score SD',
+    non_html_title: 'انحراف معیار بهترین نمره',
     description:
-      '(max submission score standard deviation): The standard deviation of best-submission auto-graded scores.',
+      'انحراف معیار بهترین نمره: انحراف معیار بالاترین نمرات تصحیح خودکار.',
   },
   MAX_SUBMISSIONS_SCORE_HIST: {
     field: 'max_submission_score_hist',
-    title: 'Max Sub. Score Hist.',
-    non_html_title: 'Max Sub. Score Hist.',
+    title: <bdi>هیستوگرام بهترین نمره</bdi>,
+    non_html_title: 'هیستوگرام بهترین نمره',
     description:
-      '(max submission score histogram): The histogram of best-submission auto-graded scores.',
+      'هیستوگرام بهترین نمره: نمودار توزیع فراوانی بالاترین نمرات تصحیح خودکار هر دانشجو.',
   },
   AVERAGE_AVERAGE_SUBMISSION_SCORE: {
     field: 'average_average_submission_score',
     title: (
-      <>
-        μ<sub>Avg. Sub. Score</sub>
-      </>
+      <span dir="ltr">
+        μ<sub>میانگین ارسال‌ها</sub>
+      </span>
     ),
-    non_html_title: 'Avg. Sub. Score average',
+    non_html_title: 'میانگینِ میانگین ارسال‌ها',
     description:
-      '(average of submission score averages): The average of average submission auto-graded scores over students that had at least one submission.',
+      'میانگینِ میانگین ارسال‌ها: میانگین میانگین نمرات ارسال‌های هر دانشجو.',
   },
   AVERAGE_SUBMISSION_SCORE_VARIANCE: {
     field: 'average_submission_score_variance',
     title: (
-      <>
-        σ<sub>Avg. Sub. Score</sub>
-      </>
+      <span dir="ltr">
+        σ<sub>میانگین ارسال‌ها</sub>
+      </span>
     ),
-    non_html_title: 'Avg. Sub. Score SD',
+    non_html_title: 'انحراف معیار میانگین ارسال‌ها',
     description:
-      '(variance of submission score averages): The variance of average submission auto-graded scores over students that had at least one submission.',
+      'واریانس میانگین ارسال‌ها: واریانس میانگین نمرات ارسال‌های تصحیح خودکار دانشجویان.',
   },
   AVERAGE_SUBMISSION_SCORE_HIST: {
     field: 'average_submission_score_hist',
-    title: 'Avg. Sub. Score Hist.',
-    non_html_title: 'Avg. Sub. Score Hist.',
+    title: <bdi>هیستوگرام میانگین ارسال‌ها</bdi>,
+    non_html_title: 'هیستوگرام میانگین ارسال‌ها',
     description:
-      '(submission score averages histogram): The histogram of average submission auto-graded scores over students that had at least one submission.',
+      'هیستوگرام میانگین ارسال‌ها: نمودار توزیع فراوانی میانگین نمرات ارسال‌های هر دانشجو.',
   },
   SUBMISSION_SCORE_ARRAY_AVERAGES: {
     field: 'submission_score_array_averages',
     title: (
-      <>
-        μ<sub>Sub. Score Array</sub>
-      </>
+      <span dir="ltr">
+        μ<sub>دنباله نمرات</sub>
+      </span>
     ),
-    non_html_title: 'Sub. Score Array average',
+    non_html_title: 'میانگین دنباله نمرات ارسال',
     description:
-      '(submission score array): The average submission auto-graded scores (over students that had at least one submission) for the 1st submission, 2nd submission, etc. Submission score arrays are padded with zeros when some students have more submissions than others.',
+      'دنباله نمرات ارسال: میانگین نمرات تصحیح خودکار در ارسال اول، دوم، سوم و... به ازای دانشجویان.',
   },
   INCREMENTAL_SUBMISSION_SCORE_ARRAY_AVERAGES: {
     field: 'incremental_submission_score_array_averages',
     title: (
-      <>
-        μ<sub>Incr. Sub. Score Array</sub>
-      </>
+      <span dir="ltr">
+        μ<sub>رشد نمره ارسال</sub>
+      </span>
     ),
-    non_html_title: 'Incr. Sub. Score Array average',
+    non_html_title: 'میانگین رشد نمره در ارسال‌ها',
     description:
-      '(incremental submission score array): The average incremental submission auto-graded score gain (over students that had at least one submission) for the 1st submission, 2nd submission, etc. arr[n] = The incremental score gain from submitting the nth submission.',
+      'دنباله رشد نمره: میانگین افزایش نمره تصحیح خودکار در ارسال‌های متوالی (ارسال nام منهای ارسال‌های پیشین).',
   },
   INCREMENTAL_SUBMISSION_SCORE_POINTS_AVERAGES: {
     field: 'incremental_submission_points_array_averages',
     title: (
-      <>
-        μ<sub>Incr. Sub. Points Array</sub>
-      </>
+      <span dir="ltr">
+        μ<sub>امتیاز افزایشی</sub>
+      </span>
     ),
-    non_html_title: 'Incr. Sub. Points Array average',
+    non_html_title: 'میانگین امتیاز افزایشی در ارسال‌ها',
     description:
-      '(incremental submission points array): The average incremental submission auto-graded points gain (over students that had at least one submission) for the 1st submission, 2nd submission, etc. arr[n] = The incremental points gained by submitting the nth submission. Only available for exams.',
+      'دنباله امتیازات افزایشی: میانگین امتیاز اضافی کسب‌شده در ارسال‌های متوالی (مخصوص آزمون‌ها).',
   },
   AVERAGE_NUMBER_SUBMISSIONS: {
     field: 'average_number_submissions',
     title: (
-      <>
-        μ<sub>Num. Sub.</sub>
-      </>
+      <span dir="ltr">
+        μ<sub>تعداد ارسال‌ها</sub>
+      </span>
     ),
-    non_html_title: 'Num. Sub. average',
-    description: '(average number of submissions): The average number of auto-graded submissions.',
+    non_html_title: 'میانگین تعداد ارسال‌ها',
+    description:
+      'میانگین تعداد ارسال‌ها: میانگین دفعات تلاش و ارسال ثبت‌شده برای این سوال به ازای هر دانشجو.',
   },
   NUMBER_SUBMISSIONS_VARIANCE: {
     field: 'number_submissions_variance',
     title: (
-      <>
-        σ<sub>Num. Sub.</sub>
-      </>
+      <span dir="ltr">
+        σ<sub>تعداد ارسال‌ها</sub>
+      </span>
     ),
-    non_html_title: 'Num. Sub. SD',
+    non_html_title: 'انحراف معیار تعداد ارسال‌ها',
     description:
-      '(number of submissions standard deviation): The standard deviation of the number of auto-graded submissions.',
+      'انحراف معیار تعداد ارسال‌ها: انحراف معیار دفعات ارسال‌های ثبت‌شده توسط دانشجویان.',
   },
   NUMBER_SUBMISSIONS_HIST: {
     field: 'number_submissions_hist',
-    title: 'Num. Sub. Hist.',
-    non_html_title: 'Num. Sub. Hist.',
+    title: <bdi>هیستوگرام تعداد ارسال‌ها</bdi>,
+    non_html_title: 'هیستوگرام تعداد ارسال‌ها',
     description:
-      '(number of submissions histogram): The histogram of the number of auto-graded submissions.',
+      'هیستوگرام تعداد ارسال‌ها: نمودار توزیع فراوانی تعداد ارسال‌های ثبت‌شده توسط دانشجویان.',
   },
   QUINTILE_SCORES_AS_ARRAY: {
     field: 'quintile_question_scores',
-    title: 'Quintile Scores',
-    non_html_title: 'Quintile Scores',
+    title: <bdi>نمرات پنجک‌ها (Quintiles)</bdi>,
+    non_html_title: 'نمرات پنجک‌ها (Quintiles)',
     description:
-      'Quintiles show the average auto-graded scores on the question for students in the lowest 20% of the class, the next 20%, etc, where the quintiles are determined by total assessment score.',
+      'نمرات پنجک‌ها (Quintiles): میانگین نمرات تصحیح خودکار برای ۲۰٪ ضعیف‌ترین دانشجویان کلاس (چپ)، ۲۰٪ بعدی و... تا ۲۰٪ برتر کلاس (راست).',
   },
 };

@@ -97,26 +97,18 @@ export function PreferencesTable({
   }
 
   return (
-    <div className="card">
+    <div className="card" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-body">
-        <h2 className="h5 card-title mb-3">Preferences</h2>
+        <h2 className="h5 card-title mb-3">تنظیمات و متغیرهای اختصاصی (Preferences)</h2>
         <small className="text-muted d-block mb-3">
-          Configure{' '}
-          <a
-            href="https://docs.prairielearn.com/question/preferences/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            preferences
-          </a>{' '}
-          that can be specified when a question is used on an assessment. Values are available in{' '}
-          <code>server.py</code> and <code>question.html</code>.
+          تعریف متغیرهای اختصاصی سوال که می‌توانند هنگام استفاده از سوال در آزمون‌های مختلف تنظیم شوند.
+          این متغیرها در <code>server.py</code> و <code>question.html</code> در دسترس خواهند بود.
         </small>
 
         {fields.length === 0 && (
           <div className="border rounded p-4 text-center">
             <i className="bi bi-sliders fs-3 d-block mb-2 text-muted" aria-hidden="true" />
-            <div className="text-muted">No preferences configured</div>
+            <div className="text-muted">هیچ متغیر یا تنظیم اختصاصی ثبت نشده است</div>
             {canEdit && (
               <Button
                 variant="outline-primary"
@@ -125,7 +117,7 @@ export function PreferencesTable({
                 onClick={() => append({ name: '', type: 'string', default: '', enum: [] })}
               >
                 <i className="bi bi-plus-lg me-1" aria-hidden="true" />
-                Add preference
+                افزودن متغیر اختصاصی
               </Button>
             )}
           </div>
@@ -156,10 +148,10 @@ export function PreferencesTable({
               >
                 <div className="preferences-grid-header">
                   {canEdit && <div />}
-                  <div>Name</div>
-                  <div>Type</div>
-                  <div>Default</div>
-                  <div>Values</div>
+                  <div>نام متغیر</div>
+                  <div>نوع داده</div>
+                  <div>مقدار پیش‌فرض</div>
+                  <div>مقادیر مجاز (Enum)</div>
                   {canEdit && <div />}
                 </div>
                 <div ref={gridRef} className="preferences-grid-rows">
@@ -186,7 +178,7 @@ export function PreferencesTable({
                       onClick={() => append({ name: '', type: 'string', default: '', enum: [] })}
                     >
                       <i className="bi bi-plus-lg me-1" aria-hidden="true" />
-                      Add preference
+                      افزودن متغیر اختصاصی
                     </Button>
                   </div>
                 )}

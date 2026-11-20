@@ -104,19 +104,19 @@ export function InstructorAssessmentStatistics({
   // row itself).
   const statsLastUpdated =
     assessment.stats_last_updated == null
-      ? 'never'
+      ? 'تاکنون محاسبه نشده'
       : formatDate(assessment.stats_last_updated, courseInstance.display_timezone);
 
   return (
     <>
       <h1 className="visually-hidden">
-        {assessmentSet.name} {assessment.number} Statistics
+        آمار {assessmentSet.name} {assessment.number}
       </h1>
 
-      <h2 className="h4">Assessment statistics</h2>
+      <h2 className="h4">آمار و ارقام آزمون</h2>
       <div className="mb-4">
         <details open>
-          <summary>Score statistics</summary>
+          <summary>آمار نمرات</summary>
           {assessment.score_stat_number > 0 ? (
             <>
               <div className="card-body">
@@ -126,8 +126,8 @@ export function InstructorAssessmentStatistics({
                   data-xgrid={JSON.stringify(range(0, 110, 10))}
                   data-options={JSON.stringify({
                     ymin: 0,
-                    xlabel: 'score / %',
-                    ylabel: 'number of students',
+                    xlabel: 'نمره / درصد',
+                    ylabel: 'تعداد دانشجویان',
                   })}
                 />
               </div>
@@ -135,46 +135,46 @@ export function InstructorAssessmentStatistics({
               <div className="table-responsive">
                 <table
                   className="table table-sm table-hover"
-                  aria-label="Assessment score statistics"
+                  aria-label="آمار نمرات آزمون"
                 >
                   <tbody>
                     <tr>
-                      <td>Number of students</td>
+                      <td>تعداد شرکت‌کنندگان (دانشجویان)</td>
                       <td>{assessment.score_stat_number}</td>
                     </tr>
                     <tr>
-                      <td>Mean score</td>
+                      <td>میانگین نمرات</td>
                       <td>{Math.round(assessment.score_stat_mean)}%</td>
                     </tr>
                     <tr>
-                      <td>Standard deviation</td>
+                      <td>انحراف معیار (SD)</td>
                       <td>{Math.round(assessment.score_stat_std)}%</td>
                     </tr>
                     <tr>
-                      <td>Median score</td>
+                      <td>میانه نمرات</td>
                       <td>{Math.round(assessment.score_stat_median)}%</td>
                     </tr>
                     <tr>
-                      <td>Minimum score</td>
+                      <td>حداقل نمره</td>
                       <td>{Math.round(assessment.score_stat_min)}%</td>
                     </tr>
                     <tr>
-                      <td>Maximum score</td>
+                      <td>حداکثر نمره</td>
                       <td>{Math.round(assessment.score_stat_max)}%</td>
                     </tr>
                     <tr>
-                      <td>Number of 0%</td>
+                      <td>تعداد نمرات صفر (۰٪)</td>
                       <td>
                         {assessment.score_stat_n_zero} (
-                        {Math.round(assessment.score_stat_n_zero_perc)}% of{' '}
+                        {Math.round(assessment.score_stat_n_zero_perc)}٪ از{' '}
                         {assessment.score_stat_number})
                       </td>
                     </tr>
                     <tr>
-                      <td>Number of 100%</td>
+                      <td>تعداد نمرات کامل (۱۰۰٪)</td>
                       <td>
                         {assessment.score_stat_n_hundred} (
-                        {Math.round(assessment.score_stat_n_hundred_perc)}% of{' '}
+                        {Math.round(assessment.score_stat_n_hundred_perc)}٪ از{' '}
                         {assessment.score_stat_number})
                       </td>
                     </tr>
@@ -183,26 +183,27 @@ export function InstructorAssessmentStatistics({
               </div>
               <div className="card-footer">
                 <small>
-                  Download{' '}
+                  دریافت فایل داده‌های آماری:{' '}
                   <a
                     href={getAssessmentStatisticsDownloadUrl({
                       courseInstanceId: courseInstance.id,
                       assessmentId: assessment.id,
                       filename: filenames.scoreStatsCsvFilename,
                     })}
+                    dir="ltr"
                   >
                     {filenames.scoreStatsCsvFilename}
                   </a>
-                  . Data outside of the plotted range is included in the last bin.
+                  . داده‌های خارج از بازه نمودار در آخرین ستون محاسبه شده‌اند.
                 </small>
               </div>
             </>
           ) : (
-            <div className="card-body">No student data.</div>
+            <div className="card-body">هیچ داده‌ای از شرکت دانشجویان ثبت نشده است.</div>
           )}
         </details>
         <details>
-          <summary>Duration statistics</summary>
+          <summary>آمار مدت زمان پاسخگویی</summary>
           {assessment.score_stat_number > 0 ? (
             <>
               <div className="card-body">
@@ -216,8 +217,8 @@ export function InstructorAssessmentStatistics({
                   )}
                   data-options={JSON.stringify({
                     ymin: 0,
-                    xlabel: 'duration',
-                    ylabel: 'number of students',
+                    xlabel: 'مدت زمان',
+                    ylabel: 'تعداد دانشجویان',
                     xTickLabels: assessment.duration_stat_thresholds.map(durationLabel),
                   })}
                 />
@@ -226,23 +227,23 @@ export function InstructorAssessmentStatistics({
               <div className="table-responsive">
                 <table
                   className="table table-sm table-hover"
-                  aria-label="Assessment duration statistics"
+                  aria-label="آمار مدت زمان آزمون"
                 >
                   <tbody>
                     <tr>
-                      <td>Mean duration</td>
+                      <td>میانگین زمان پاسخگویی</td>
                       <td>{formatInterval(assessment.duration_stat_mean)}</td>
                     </tr>
                     <tr>
-                      <td>Median duration</td>
+                      <td>میانه زمان پاسخگویی</td>
                       <td>{formatInterval(assessment.duration_stat_median)}</td>
                     </tr>
                     <tr>
-                      <td>Minimum duration</td>
+                      <td>حداقل زمان پاسخگویی</td>
                       <td>{formatInterval(assessment.duration_stat_min)}</td>
                     </tr>
                     <tr>
-                      <td>Maximum duration</td>
+                      <td>حداکثر زمان پاسخگویی</td>
                       <td>{formatInterval(assessment.duration_stat_max)}</td>
                     </tr>
                   </tbody>
@@ -250,26 +251,27 @@ export function InstructorAssessmentStatistics({
               </div>
               <div className="card-footer">
                 <small>
-                  Download{' '}
+                  دریافت فایل داده‌های آماری:{' '}
                   <a
                     href={getAssessmentStatisticsDownloadUrl({
                       courseInstanceId: courseInstance.id,
                       assessmentId: assessment.id,
                       filename: filenames.durationStatsCsvFilename,
                     })}
+                    dir="ltr"
                   >
                     {filenames.durationStatsCsvFilename}
                   </a>
-                  . Data outside of the plotted range is included in the last bin.
+                  . داده‌های خارج از بازه نمودار در آخرین ستون محاسبه شده‌اند.
                 </small>
               </div>
             </>
           ) : (
-            <div className="card-body">No student data.</div>
+            <div className="card-body">هیچ داده‌ای از شرکت دانشجویان ثبت نشده است.</div>
           )}
         </details>
         <details>
-          <summary>Duration versus score</summary>
+          <summary>نمودار زمان پاسخگویی در برابر نمره</summary>
           {assessment.score_stat_number > 0 ? (
             <>
               <div className="card-body">
@@ -284,8 +286,8 @@ export function InstructorAssessmentStatistics({
                       (durationMs) => durationMs / SECOND_IN_MILLISECONDS,
                     ),
                     ygrid: range(0, 110, 10),
-                    xlabel: 'duration',
-                    ylabel: 'score / %',
+                    xlabel: 'مدت زمان',
+                    ylabel: 'نمره / درصد',
                     xTickLabels: assessment.duration_stat_thresholds.map(durationLabel),
                   })}
                 />
@@ -293,17 +295,16 @@ export function InstructorAssessmentStatistics({
 
               <div className="card-footer">
                 <small>
-                  Each point is one student assessment. Points beyond the plot range are plotted on
-                  the edge.
+                  هر نقطه بیانگر آزمون یک دانشجو است. نقاط خارج از محدوده در حاشیه نمودار ترسیم شده‌اند.
                 </small>
               </div>
             </>
           ) : (
-            <div className="card-body">No student data.</div>
+            <div className="card-body">هیچ داده‌ای از شرکت دانشجویان ثبت نشده است.</div>
           )}
         </details>
         <details>
-          <summary>Score statistics by date</summary>
+          <summary>آمار نمرات بر اساس تاریخ</summary>
           {assessment.score_stat_number > 0 ? (
             <>
               <div className="card-body">
@@ -322,8 +323,8 @@ export function InstructorAssessmentStatistics({
                   data-options={JSON.stringify({
                     ygrid: range(0, 110, 10),
                     xgrid: assessmentScoreHistogramByDate.length,
-                    xlabel: 'start date',
-                    ylabel: 'score / %',
+                    xlabel: 'تاریخ شروع',
+                    ylabel: 'نمره / درصد',
                     yTickLabels: range(100, -10, -10),
                     width: assessmentScoreHistogramByDate.length * 200,
                   })}
@@ -332,41 +333,41 @@ export function InstructorAssessmentStatistics({
 
               <div className="card-footer">
                 <small>
-                  Download{' '}
+                  دریافت فایل داده‌های آماری:{' '}
                   <a
                     href={getAssessmentStatisticsDownloadUrl({
                       courseInstanceId: courseInstance.id,
                       assessmentId: assessment.id,
                       filename: filenames.statsByDateCsvFilename,
                     })}
+                    dir="ltr"
                   >
                     {filenames.statsByDateCsvFilename}
                   </a>
                   .
                   <br />
-                  Each day shows a histogram of the scores on this assessment for that day. The
-                  widths are scaled relative to the maximum value across all bins and days. The
-                  thick black horizontal lines are the mean scores for each day.
+                  هر ستون روزانه یک هیستوگرام از نمرات کسب‌شده در آن روز را نمایش می‌دهد.
+                  خطوط افقی مشکی پررنگ، نشان‌دهنده میانگین نمرات در هر روز هستند.
                 </small>
               </div>
             </>
           ) : (
-            <div className="card-body">No student data.</div>
+            <div className="card-body">هیچ داده‌ای از شرکت دانشجویان ثبت نشده است.</div>
           )}
         </details>
       </div>
 
       <hr className="my-4" />
       <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
-        <h2 className="h4 mb-0">Question statistics</h2>
+        <h2 className="h4 mb-0">آمار و ارقام سوالات</h2>
         {hasCoursePermissionEdit ? (
           <div className="d-flex align-items-center gap-2">
-            <span className="text-muted small">Last calculated: {statsLastUpdated}</span>
+            <span className="text-muted small">آخرین محاسبه: {statsLastUpdated}</span>
             <form method="post" className="mb-0">
               <input type="hidden" name="__action" value="refresh_stats" />
               <input type="hidden" name="__csrf_token" value={csrfToken} />
               <button type="submit" className="btn btn-sm btn-primary text-nowrap">
-                <i className="fa fa-sync" aria-hidden="true" /> Recalculate
+                <i className="fa fa-sync" aria-hidden="true" /> محاسبه مجدد
               </button>
             </form>
           </div>
@@ -374,20 +375,20 @@ export function InstructorAssessmentStatistics({
       </div>
       <div className="mb-4">
         <details open>
-          <summary>Overall statistics</summary>
+          <summary>آمار کلی سوالات</summary>
           <div className="table-responsive">
             <table
               className="table table-sm table-hover tablesorter"
-              aria-label="Question statistics"
+              aria-label="آمار سوالات"
             >
               <thead>
                 <tr>
-                  <th className="text-center">Question</th>
-                  <th className="text-center">Mean score</th>
-                  <th className="text-center">Discrimination</th>
-                  <th className="text-center">Auto-graded Attempts</th>
-                  <th className="text-center">Quintiles</th>
-                  <th>Actions</th>
+                  <th className="text-center">سوال</th>
+                  <th className="text-center">میانگین نمره</th>
+                  <th className="text-center">ضریب تمیز</th>
+                  <th className="text-center">تلاش‌های تصحیح خودکار</th>
+                  <th className="text-center">پنجک‌ها</th>
+                  <th>عملیات</th>
                 </tr>
               </thead>
               <tbody>
@@ -454,7 +455,7 @@ export function InstructorAssessmentStatistics({
                             assessmentQuestionId: row.id,
                           })}
                         >
-                          Manual grading
+                          تصحیح دستی
                         </a>
                       ) : null}
                     </td>
@@ -464,52 +465,40 @@ export function InstructorAssessmentStatistics({
             </table>
           </div>
           <div className="card-footer">
-            <p>
-              Download{' '}
+            <p className="mb-2">
+              دریافت فایل داده‌های آماری:{' '}
               <a
                 href={getAssessmentStatisticsDownloadUrl({
                   courseInstanceId: courseInstance.id,
                   assessmentId: assessment.id,
                   filename: filenames.questionStatsCsvFilename,
                 })}
+                class="fw-bold"
+                dir="ltr"
               >
                 {filenames.questionStatsCsvFilename}
               </a>
             </p>
             <div className="small">
-              <ul>
-                <li>
-                  <strong>Mean score</strong> of a question is the average score for all students on
-                  the question. It is best to have a range of questions with different mean scores
-                  on the test, with some easy (mean score above 90%) and some hard (mean score below
-                  50%).
+              <ul className="mb-0">
+                <li className="mb-1">
+                  <strong>میانگین نمره:</strong> میانگین نمرات تمامی دانشجویان در این سوال. در یک آزمون متعادل، وجود سوالاتی با تنوع سختی (آسان با میانگین بالای ۹۰٪ و چالش‌برانگیز با میانگین زیر ۵۰٪) مطلوب است.
                 </li>
-                <li>
-                  <strong>Discrimination</strong> of a question is the correlation coefficient
-                  between the scores on the question and the total assessment scores. Discrimination
-                  values should be above 20%, unless a question is very easy (mean score above 95%),
-                  in which case it is acceptable to have lower discriminations. It is always better
-                  to have higher discriminations for all questions, and a range of discriminations
-                  is not desired.
+                <li className="mb-1">
+                  <strong>ضریب تمیز:</strong> ضریب همبستگی بین نمرات کسب‌شده در این سوال و نمره کل آزمون. این مقدار مطلوب است بالای ۲۰٪ باشد مگر برای سوالات بسیار ساده (میانگین بالای ۹۵٪). مقادیر بالاتر همواره بیانگر قدرت تفکیک بهتر دانشجویان قوی از ضعیف است.
                 </li>
-                <li>
-                  <strong>Auto-graded Attempts</strong> for a question is the average number of
-                  auto-graded attempts made per student at the question.
+                <li className="mb-1">
+                  <strong>تلاش‌های تصحیح خودکار:</strong> میانگین دفعات ارسال و تلاش خودکار دانشجویان برای حل سوال.
                 </li>
-                <li>
-                  <strong>Quintiles</strong> shows the average scores on the question for students
-                  in the lowest 20% of the class, the next 20%, etc, where the quintiles are
-                  determined by total assessment score. Good questions should have very low scores
-                  for the lowest quintile (the left-most), and very high scores for the highest
-                  quintile (the right-most). This is essentially a graphical representation of the
-                  discrimination.
+                <li className="mb-1">
+                  <strong>نمرات پنجک‌ها (Quintiles):</strong> میانگین نمرات سوال برای دانشجویان ۲۰٪ ضعیف‌تر (سمت چپ) تا ۲۰٪ برتر کلاس (سمت راست). در سوالات مطلوب، پنجک اول کمترین نمره و پنجک آخر بیشترین نمره را خواهد داشت.
                 </li>
               </ul>
             </div>
           </div>
         </details>
         <details>
-          <summary>Difficulty vs discrimination</summary>
+          <summary>نمودار سطح سختی در برابر تمیز سوالات</summary>
           {assessment.score_stat_number > 0 ? (
             <>
               <div className="card-body">
@@ -521,8 +510,8 @@ export function InstructorAssessmentStatistics({
                   data-options={JSON.stringify({
                     xgrid: range(0, 110, 10),
                     ygrid: range(0, 110, 10),
-                    xlabel: 'mean score / %',
-                    ylabel: 'discrimination / %',
+                    xlabel: 'میانگین نمره / درصد',
+                    ylabel: 'ضریب تمیز / درصد',
                     radius: 2,
                     topMargin: 30,
                     labels: rows.map((q) => q.assessment_question_number),
@@ -530,38 +519,30 @@ export function InstructorAssessmentStatistics({
                 />
               </div>
               <div className="card-footer small">
-                <ul>
-                  <li>
-                    <strong>Mean score</strong> of a question is the average score for all students
-                    on the question. It is best to have a range of questions with different mean
-                    scores on the test, with some easy (mean score above 90%) and some hard (mean
-                    score below 50%).
+                <ul className="mb-0">
+                  <li className="mb-1">
+                    <strong>میانگین نمره:</strong> میانگین نمرات تمامی دانشجویان در این سوال.
                   </li>
-                  <li>
-                    <strong>Discrimination</strong> of a question is the correlation coefficient
-                    between the scores on the question and the total assessment scores.
-                    Discrimination values should be above 20%, unless a question is very easy (mean
-                    score above 95%), in which case it is acceptable to have lower discriminations.
-                    It is always better to have higher discriminations for all questions, and a
-                    range of discriminations is not desired.
+                  <li className="mb-1">
+                    <strong>ضریب تمیز:</strong> ضریب همبستگی بین نمرات سوال و نمره نهایی آزمون جهت تفکیک دانشجویان.
                   </li>
                 </ul>
               </div>
             </>
           ) : (
-            <div className="card-body">No student data.</div>
+            <div className="card-body">هیچ داده‌ای از شرکت دانشجویان ثبت نشده است.</div>
           )}
         </details>
         <details>
-          <summary>Detailed statistics</summary>
+          <summary>آمار و ارقام تفصیلی سوالات</summary>
           <div className="table-responsive">
             <table
               className="table table-sm table-hover tablesorter table-bordered"
-              aria-label="Detailed question statistics"
+              aria-label="آمار و ارقام تفصیلی سوالات"
             >
               <thead>
                 <tr>
-                  <th className="text-center">Question</th>
+                  <th className="text-center">سوال</th>
                   {Object.keys(STAT_DESCRIPTIONS).map((stat) => {
                     if (
                       stat !== 'INCREMENTAL_SUBMISSION_SCORE_POINTS_AVERAGES' ||
@@ -754,10 +735,10 @@ export function InstructorAssessmentStatistics({
                       </>
                     ) : (
                       <td
-                        className="text-center"
+                        className="text-center text-muted"
                         colSpan={assessment.type === 'Homework' ? 21 : 22}
                       >
-                        Manually-graded question
+                        سوال با تصحیح دستی
                       </td>
                     )}
                   </tr>
@@ -766,32 +747,32 @@ export function InstructorAssessmentStatistics({
             </table>
           </div>
           <div className="card-footer">
-            <p>
-              Download{' '}
+            <p className="mb-2">
+              دریافت فایل داده‌های آماری:{' '}
               <a
                 href={getAssessmentStatisticsDownloadUrl({
                   courseInstanceId: courseInstance.id,
                   assessmentId: assessment.id,
                   filename: filenames.questionStatsCsvFilename,
                 })}
+                class="fw-bold"
+                dir="ltr"
               >
                 {filenames.questionStatsCsvFilename}
               </a>
             </p>
             <div className="small">
-              <ul>
+              <ul className="mb-3">
                 {Object.keys(STAT_DESCRIPTIONS).map((stat) => (
-                  <li key={stat}>
+                  <li key={stat} className="mb-1">
                     <strong>{STAT_DESCRIPTIONS[stat].title}: </strong>{' '}
                     {STAT_DESCRIPTIONS[stat].description}
                   </li>
                 ))}
               </ul>
-              <p className="mb-0">
-                In the case that a student takes this assessment multiple times (e.g., if this
-                assessment is a practice exam), we are calculating the above statistics by first
-                averaging over all assessment instances for each student, then averaging over
-                students.
+              <p className="mb-0 text-muted">
+                در صورتی که یک دانشجو این آزمون را چندین بار شرکت کرده باشد (برای مثال در آزمون‌های تمرینی)،
+                محاسبه آمار و ارقام فوق ابتدا با میانگین‌گیری از آزمون‌های هر دانشجو و سپس میانگین‌گیری بین کل دانشجویان صورت می‌پذیرد.
               </p>
             </div>
           </div>

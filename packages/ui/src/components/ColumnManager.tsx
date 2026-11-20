@@ -57,9 +57,9 @@ function ColumnLeafItem<RowDataModel extends RowData>({
           (!column.getCanPin() || !onPinningBoundary) && 'invisible',
         )}
         aria-label={
-          column.getIsPinned() ? `Unfreeze '${header}' column` : `Freeze '${header}'  column`
+          column.getIsPinned() ? `برداشتن پین ستون '${header}'` : `پین کردن ستون '${header}'`
         }
-        title={column.getIsPinned() ? 'Unfreeze column' : 'Freeze column'}
+        title={column.getIsPinned() ? 'برداشتن پین ستون' : 'پین کردن ستون'}
         data-bs-toggle="tooltip"
         onClick={() => onTogglePin(column.id)}
       >
@@ -290,9 +290,9 @@ export function ColumnManager<RowDataModel extends RowData>({
         id="column-manager"
         variant="tanstack-table"
       >
-        <i className="bi bi-view-list me-2" aria-hidden="true" /> View{' '}
+        <i className="bi bi-view-list me-2" aria-hidden="true" /> ستون‌ها{' '}
       </Dropdown.Toggle>
-      <Dropdown.Menu style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+      <Dropdown.Menu style={{ maxHeight: '60vh', overflowY: 'auto', fontFamily: 'var(--font-persian)' }} dir="rtl">
         {topContent && (
           <>
             {topContent}
@@ -302,7 +302,7 @@ export function ColumnManager<RowDataModel extends RowData>({
         {pinnedMenuColumns.length > 0 && (
           <>
             <div className="px-2 py-1 text-muted small" role="presentation">
-              Frozen columns
+              ستون‌های ثابت (پین‌شده)
             </div>
             <div role="group">
               {/* Only leaf columns can be pinned in the current implementation. */}
@@ -344,7 +344,7 @@ export function ColumnManager<RowDataModel extends RowData>({
               variant="secondary"
               size="sm"
               className="w-100"
-              aria-label="Reset all columns to default visibility and pinning"
+              aria-label="بازنشانی ستون‌ها به حالت پیش‌فرض"
               onClick={() => {
                 table.resetColumnVisibility();
                 table.resetColumnPinning();
@@ -353,7 +353,7 @@ export function ColumnManager<RowDataModel extends RowData>({
               }}
             >
               <i className="bi bi-arrow-counterclockwise me-2" aria-hidden="true" />
-              Reset view
+              بازنشانی ستون‌ها
             </Button>
           </div>
         )}

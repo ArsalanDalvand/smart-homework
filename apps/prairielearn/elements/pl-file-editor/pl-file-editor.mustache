@@ -23,31 +23,31 @@ $(function () {
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
              {{file_name}}
-             <button type="button" class="btn btn-sm btn-secondary settings-button" title="Editor settings" aria-label="Editor settings">
+             <button type="button" class="btn btn-sm btn-secondary settings-button" title="تنظیمات ویرایشگر کد" aria-label="تنظیمات ویرایشگر کد">
                  <i class="fas fa-cog"></i>
              </button>
          </div>
         <div class="editor"></div>
-        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" aria-labelledby="modal-{{uuid}}">
+        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" aria-labelledby="modal-{{uuid}}" dir="rtl" style="font-family: var(--font-persian)">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"  id="modal-{{uuid}}">Editor Settings</h5>
-                        <button type="button" class="btn-close close-settings-button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title" id="modal-{{uuid}}">تنظیمات ویرایشگر کد</h5>
+                        <button type="button" class="btn-close close-settings-button" data-bs-dismiss="modal" aria-label="بستن"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label" for="modal-{{uuid}}-themes">Editor Theme</label>
+                            <label class="form-label" for="modal-{{uuid}}-themes">پوسته و تم ویرایشگر (Theme)</label>
                             <select class="form-select" id="modal-{{uuid}}-themes">
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="modal-{{uuid}}-fontsize">Font Size</label>
+                            <label class="form-label" for="modal-{{uuid}}-fontsize">اندازه قلم (Font Size)</label>
                             <select class="form-select" id="modal-{{uuid}}-fontsize">
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="modal-{{uuid}}-keyboardHandler">Key Bindings</label>
+                            <label class="form-label" for="modal-{{uuid}}-keyboardHandler">کلیدهای میانبر (Key Bindings)</label>
                             <select class="form-select" id="modal-{{uuid}}-keyboardHandler">
                             </select>
                         </div>

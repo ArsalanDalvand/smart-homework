@@ -80,12 +80,12 @@ function TableCell<RowDataModel extends RowData>({
 
 const DefaultNoResultsState = (
   <TanstackTableEmptyState iconName="bi-search">
-    No results found matching your search criteria.
+    هیچ موردی منطبق با معیار جستجوی شما یافت نشد.
   </TanstackTableEmptyState>
 );
 
 const DefaultEmptyState = (
-  <TanstackTableEmptyState iconName="bi-eye-slash">No results found.</TanstackTableEmptyState>
+  <TanstackTableEmptyState iconName="bi-eye-slash">هیچ موردی یافت نشد.</TanstackTableEmptyState>
 );
 
 interface TanstackTableProps<RowDataModel extends RowData> {
@@ -476,7 +476,7 @@ export function TanstackTable<RowDataModel extends RowData>({
             >
               {table.getVisibleLeafColumns().length === 0 ? (
                 <TanstackTableEmptyState iconName="bi-eye-slash">
-                  No columns selected. Use the View menu to show columns.
+                  هیچ ستونی انتخاب نشده است. از منوی ستون‌ها برای نمایش ستون‌ها استفاده نمایید.
                 </TanstackTableEmptyState>
               ) : displayedCount === 0 ? (
                 totalCount > 0 ? (
@@ -633,11 +633,11 @@ export function TanstackTableCard<RowDataModel extends RowData>({
         </div>
         <div className="ms-auto d-flex align-items-center gap-1 text-muted text-nowrap">
           {onResetColumnFilters && (
-            <OverlayTrigger overlay={<Tooltip>Clear filters</Tooltip>}>
+            <OverlayTrigger overlay={<Tooltip>پاک کردن فیلترها</Tooltip>}>
               <button
                 type="button"
                 className="btn btn-link btn-sm text-muted p-0"
-                aria-label="Clear filters"
+                aria-label="پاک کردن فیلترها"
                 onClick={onResetColumnFilters}
               >
                 <i className="bi bi-x-circle" aria-hidden="true" />
@@ -646,7 +646,7 @@ export function TanstackTableCard<RowDataModel extends RowData>({
           )}
           {statusContent ?? (
             <>
-              Showing {displayedCount} of {totalCount}{' '}
+              نمایش {displayedCount} از {totalCount}{' '}
               {totalCount === 1 ? singularLabel : pluralLabel}
             </>
           )}

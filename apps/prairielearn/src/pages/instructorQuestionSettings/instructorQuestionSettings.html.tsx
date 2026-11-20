@@ -88,8 +88,7 @@ function AuthorLabel({ uid, name }: { uid: string; name?: string | null }) {
 function ImageRegistryHelp({ id }: { id: string }) {
   return (
     <small id={id} className="form-text text-muted">
-      {imageRegistryHelpText} For example, <code>docker.io/org/image:tag</code> for Docker Hub or{' '}
-      <code>ghcr.io/org/image:tag</code> for GHCR. {imageRegistryRestrictionsText}
+      از ایمیج‌های عمومی مخازن Docker Hub (مانند <code>docker.io</code>)، GHCR (مانند <code>ghcr.io</code>)، Quay، GitLab یا Amazon ECR Public استفاده کنید. به عنوان مثال: <code>docker.io/org/image:tag</code> یا <code>ghcr.io/org/image:tag</code>. دامنه‌های سفارشی رجیستری و پورت‌های صریح پشتیبانی نمی‌شوند.
     </small>
   );
 }
@@ -111,7 +110,7 @@ function AssessmentBadges({
   ) {
     return (
       <small className="text-muted text-center">
-        This question is not included in any assessments in this course instance.
+        این سوال در هیچ ارزیابی در این دوره گنجانده نشده است.
       </small>
     );
   }
@@ -136,11 +135,11 @@ function validateJsonObject(value: string): string | true {
   try {
     const parsed = JSON.parse(value);
     if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
-      return 'Must be a valid JSON object';
+      return 'باید یک شیء معتبر JSON باشد';
     }
     return true;
   } catch {
-    return 'Invalid JSON format';
+    return 'فرمت JSON نامعتبر است';
   }
 }
 
@@ -201,7 +200,7 @@ function getSharingControlState({
 function SharingMessageText({ message }: { message: SharingMessage }) {
   if (message === 'used-in-other-course') {
     return (
-      <> This question is publicly shared and used by another course, so it cannot be un-shared.</>
+      <> این سوال به صورت عمومی به اشتراک گذاشته شده و توسط درس دیگری در حال استفاده است، بنابراین امکان لغو اشتراک وجود ندارد.</>
     );
   }
 
@@ -209,29 +208,17 @@ function SharingMessageText({ message }: { message: SharingMessage }) {
   return (
     <>
       {' '}
-      This question is used in a publicly shared assessment. Copied assessments can link to publicly
-      shared questions or copy questions whose source is publicly shared.{' '}
+      این سوال در یک ارزیابی با اشتراک‌گذاری عمومی استفاده شده است.{' '}
       {isSharePubliclyMessage ? (
         <>
-          To un-share this question publicly, first check &quot;Share source publicly&quot; below.
-          You can also un-share the assessment or remove this question from the shared assessment.
+          برای لغو اشتراک‌گذاری عمومی این سوال، ابتدا گزینه «اشتراک‌گذاری سورس‌کد به صورت عمومی» را علامت بزنید.
+          همچنین می‌توانید آزمون را از حالت اشتراک خارج کرده یا این سوال را از آزمون بردارید.
         </>
       ) : (
         <>
-          To stop sharing this question&apos;s source, first re-check &quot;Share publicly&quot;
-          above. You can also un-share the assessment or remove this question from the shared
-          assessment.
+          برای متوقف کردن اشتراک‌گذاری سورس‌کد این سوال، ابتدا گزینه «اشتراک‌گذاری عمومی سوال» را مجدداً تیک بزنید.
         </>
-      )}{' '}
-      See the{' '}
-      <a
-        href="https://docs.prairielearn.com/contentSharing/#sharing-assessments"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        content sharing docs
-      </a>{' '}
-      for more details.
+      )}
     </>
   );
 }
@@ -457,40 +444,42 @@ export const InstructorQuestionSettingsForm = ({
         <input type="hidden" name="__action" value="update_question" />
         <input type="hidden" name="orig_hash" value={origHash} />
 
-        <div className="card">
+        <div className="card" style={{ fontFamily: 'var(--font-persian)' }}>
           <div className="card-body">
-            <h2 className="h5 card-title mb-3">General</h2>
+            <h2 className="h5 card-title mb-3">اطلاعات عمومی سوال</h2>
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label className="form-label" htmlFor="title">
-                  Title
+                  عنوان سوال
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   id="title"
+                  placeholder="مثال: محاسبه مساحت دایره"
                   disabled={!canEdit}
                   defaultValue={defaultValues.title}
                   {...register('title')}
                 />
                 <small className="form-text text-muted">
-                  The title of the question (e.g., "Add two numbers").
+                  عنوان یا نام نمایشی سوال برای مدرس و دانشجویان.
                 </small>
               </div>
               <div className="col-md-6 mb-3">
                 <label className="form-label" htmlFor="qid">
-                  QID
+                  شناسه سوال (QID)
                 </label>
                 <input
                   type="text"
                   className={clsx('form-control font-monospace', errors.qid && 'is-invalid')}
                   id="qid"
+                  dir="ltr"
                   disabled={!canEdit}
                   aria-invalid={!!errors.qid || undefined}
                   defaultValue={defaultValues.qid}
                   aria-errormessage={errors.qid ? 'qid-error' : undefined}
                   {...register('qid', {
-                    required: 'QID is required',
+                    required: 'وارد کردن شناسه سوال (QID) الزامی است',
                     validate: {
                       shortName: (value) => {
                         const result = validateShortName(value, defaultValues.qid);
@@ -498,7 +487,7 @@ export const InstructorQuestionSettingsForm = ({
                       },
                       duplicate: (value) => {
                         if (otherQids.has(value)) {
-                          return 'This QID is already in use';
+                          return 'این شناسه سوال (QID) قبلا ثبت شده است';
                         }
                         return true;
                       },
@@ -518,7 +507,7 @@ export const InstructorQuestionSettingsForm = ({
 
             <div className="mb-3">
               <label className="form-label" id="topic-label" htmlFor="topic">
-                Topic
+                مبحث / موضوع درس
               </label>
               {canEdit ? (
                 <ComboBox
@@ -526,7 +515,7 @@ export const InstructorQuestionSettingsForm = ({
                   name="topic"
                   items={topicItems}
                   value={selectedTopic}
-                  placeholder="Select a topic"
+                  placeholder="انتخاب مبحث درسی"
                   aria-labelledby="topic-label"
                   renderItem={(item) => (
                     <div className="preferences-combobox-item">
@@ -551,7 +540,7 @@ export const InstructorQuestionSettingsForm = ({
 
             <div className="mb-3">
               <label className="form-label" id="tags-label" htmlFor="tags">
-                Tags
+                برچسب‌ها
               </label>
               {canEdit ? (
                 <TagPicker
@@ -559,7 +548,7 @@ export const InstructorQuestionSettingsForm = ({
                   name="tags"
                   items={tagItems}
                   value={selectedTags}
-                  placeholder="Select tags"
+                  placeholder="انتخاب برچسب‌ها"
                   aria-labelledby="tags-label"
                   renderItem={(item) => (
                     <div className="preferences-combobox-item">
@@ -590,7 +579,7 @@ export const InstructorQuestionSettingsForm = ({
 
             <div className="mb-3">
               <label className="form-label" id="authors-label" htmlFor="authors">
-                Authors
+                طراحان و مولفان سوال
               </label>
               {canEdit ? (
                 <>
@@ -600,11 +589,11 @@ export const InstructorQuestionSettingsForm = ({
                   <TagPicker
                     id="authors"
                     aria-labelledby="authors-label"
-                    createButtonLabel="Add author"
+                    createButtonLabel="افزودن طراح"
                     inputValue={pendingAuthor}
                     items={authorItems}
                     value={selectedAuthors}
-                    placeholder="UID or ORCID URL"
+                    placeholder="شناسه کاربری (UID / ایمیل) یا آدرس ORCID"
                     disabled={initialAuthors === null}
                     tagClassName={() => 'badge color-gray1 fw-normal text-wrap text-break'}
                     renderTagContent={({ uid, name }) => <AuthorLabel uid={uid} name={name} />}
@@ -627,8 +616,7 @@ export const InstructorQuestionSettingsForm = ({
                 </div>
               )}
               <small className="form-text text-muted">
-                Credit the people who wrote this question by their UID or ORCID URL. Names are shown
-                for current course staff.{' '}
+                مشخصات و شناسه‌های افرادی که در طراحی این سوال مشارکت داشته‌اند.{' '}
                 {canEdit &&
                   initialAuthors !== null &&
                   !selectedAuthors.includes(currentUid.trim()) && (
@@ -642,7 +630,7 @@ export const InstructorQuestionSettingsForm = ({
                           });
                         }}
                       >
-                        Add myself
+                        افزودن نام خودم
                       </button>
                       .
                     </>
@@ -650,14 +638,14 @@ export const InstructorQuestionSettingsForm = ({
               </small>
               {canEdit && initialAuthors === null && (
                 <div className="form-text text-danger">
-                  Authors could not be loaded from info.json. Fix the file before editing authors.
+                  امکان بارگذاری مشخصات طراحان از info.json وجود نداشت.
                 </div>
               )}
             </div>
 
             {courseInstance && (
               <div className="mb-0">
-                <p className="form-label mb-1">Assessments</p>
+                <p className="form-label mb-1">آزمون‌های مرتبط</p>
                 <AssessmentBadges
                   assessmentsWithQuestion={assessmentsWithQuestion}
                   courseInstanceId={courseInstance.id}
@@ -667,12 +655,12 @@ export const InstructorQuestionSettingsForm = ({
           </div>
         </div>
 
-        <div className="card">
+        <div className="card" style={{ fontFamily: 'var(--font-persian)' }}>
           <div className="card-body">
-            <h2 className="h5 card-title mb-3">Question behavior</h2>
+            <h2 className="h5 card-title mb-3">رفتار و قوانین پاسخگویی سوال</h2>
             <div className="mb-3">
               <label className="form-label" htmlFor="grading_method">
-                Grading method
+                روش تصحیح نمره
               </label>
               <select
                 className="form-select"
@@ -681,12 +669,12 @@ export const InstructorQuestionSettingsForm = ({
                 defaultValue={defaultValues.grading_method}
                 {...register('grading_method')}
               >
-                <option value="Internal">Internal</option>
-                <option value="External">External</option>
-                <option value="Manual">Manual</option>
+                <option value="Internal">Internal (محاسبه داخلی در سرور)</option>
+                <option value="External">External (داوری خودکار با کانتینر داکر)</option>
+                <option value="Manual">Manual (تصحیح دستی توسط اساتید)</option>
               </select>
               <small className="form-text text-muted">
-                The grading method used for this question.
+                روش محاسبه و تعیین نمره در این سوال.
               </small>
             </div>
 
@@ -700,11 +688,10 @@ export const InstructorQuestionSettingsForm = ({
                 {...register('single_variant')}
               />
               <label className="form-check-label" htmlFor="single_variant">
-                Single variant
+                تک‌گونه (یک مدل مسئله برای هر دانشجو)
               </label>
               <div className="small text-muted">
-                If enabled, students will only be able to try a single variant of this question on
-                any given assessment.
+                در صورت فعال بودن، دانشجو در یک آزمون فقط یک گونه تصادفی از این سوال را دریافت می‌کند و با هربار تلاش مجدد، صورت سوال تغییر نخواهد کرد.
               </div>
             </div>
 
@@ -718,11 +705,10 @@ export const InstructorQuestionSettingsForm = ({
                 {...register('show_correct_answer')}
               />
               <label className="form-check-label" htmlFor="show_correct_answer">
-                Show correct answer
+                نمایش پاسخ صحیح پس از پایان فرصت‌ها
               </label>
               <div className="small text-muted">
-                If enabled, the correct answer panel will be shown after all submission attempts
-                have been exhausted.
+                در صورت فعال بودن، پس از اتمام تمامی تلاش‌های مجاز دانشجو، پنل و پاسخ صحیح کامل به او نمایش داده خواهد شد.
               </div>
             </div>
 
@@ -736,14 +722,11 @@ export const InstructorQuestionSettingsForm = ({
                 {...register('partial_credit')}
               />
               <label className="form-check-label" htmlFor="partial_credit">
-                Partial credit
+                نمره جزئی برای پاسخ‌های ناقص
               </label>
               <div className="small text-muted">
-                If enabled, the question will award partial points for fractional scores. For
-                example, if only some elements on the page are correct, the student receives a
-                proportional score. When disabled, the question awards only 0% or 100%. Only
-                auto-graded points are affected by this setting; manual grading and AI grading are
-                not affected.
+                در صورت فعال بودن، برای پاسخ‌های چندبخشی یا کدهایی که بخشی از تست‌ها را پاس کرده‌اند نمره متناسب لحاظ می‌شود.
+                در غیر این صورت تنها نمره صفر یا ۱۰۰ تعلق می‌گیرد.
               </div>
             </div>
           </div>
@@ -759,7 +742,7 @@ export const InstructorQuestionSettingsForm = ({
           errors={errors.preferences}
         />
 
-        <div className="card">
+        <div className="card" style={{ fontFamily: 'var(--font-persian)' }}>
           <div className="card-body">
             <div className="form-check">
               <input
@@ -781,33 +764,30 @@ export const InstructorQuestionSettingsForm = ({
                 }}
               />
               <label className="form-check-label h5 card-title mb-0" htmlFor="workspaceEnabled">
-                Workspace
+                محیط کدنویسی و توسعه ابری (Workspace)
               </label>
             </div>
-            <small className="text-muted ps-4 d-block mt-1">
-              Configure a{' '}
-              <a href="https://prairielearn.readthedocs.io/en/latest/workspaces/">
-                remote development environment
-              </a>{' '}
-              for students.
+            <small className="text-muted pe-4 d-block mt-1">
+              پیکربندی محیط کاربری ابری (شامل ادیتور یا ترمینال آنلاین) برای دانشجویان.
             </small>
             {workspaceEnabled && (
-              <div className="mt-3 ps-4" id="workspace-options">
+              <div className="mt-3 pe-4" id="workspace-options">
                 <div className="mb-3">
                   <label className="form-label" htmlFor="workspace_image">
-                    Image
+                    ایمیج داکر محیط کاری
                   </label>
                   <input
                     type="text"
-                    className={clsx('form-control', errors.workspace_image && 'is-invalid')}
+                    className={clsx('form-control font-monospace', errors.workspace_image && 'is-invalid')}
                     id="workspace_image"
+                    dir="ltr"
                     aria-describedby="workspace_image-help"
                     disabled={!canEdit}
                     aria-invalid={!!errors.workspace_image || undefined}
                     defaultValue={defaultValues.workspace_image}
                     aria-errormessage={errors.workspace_image ? 'workspace_image-error' : undefined}
                     {...register('workspace_image', {
-                      required: 'Image is required for workspace',
+                      required: 'وارد کردن نام ایمیج برای محیط کار ابری الزامی است',
                       validate: (value) =>
                         isSupportedImageRegistry(value.trim()) || imageRegistryErrorText,
                     })}
@@ -822,49 +802,48 @@ export const InstructorQuestionSettingsForm = ({
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="workspace_graded_files">
-                    Graded files
+                    فایل‌های تحویلی جهت داوری و تصحیح
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control font-monospace"
                     id="workspace_graded_files"
+                    dir="ltr"
                     disabled={!canEdit}
                     defaultValue={defaultValues.workspace_graded_files}
                     {...register('workspace_graded_files')}
                   />
                   <small className="form-text text-muted">
-                    The list of files or directories that will be copied out of the workspace
-                    container when saving a submission. You may enter multiple files or directories,
-                    separated by commas.
+                    فایل‌ها یا پوشه‌هایی که پس از ثبت پاسخ دانشجو از محیط ابری کپی شده و ذخیره می‌شوند (با کاما جدا کنید).
                   </small>
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="workspace_args">
-                    Arguments
+                    آرگومان‌های اجرای کانتینر
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control font-monospace"
                     id="workspace_args"
+                    dir="ltr"
                     disabled={!canEdit}
                     defaultValue={defaultValues.workspace_args}
                     {...register('workspace_args')}
                   />
                   <small className="form-text text-muted">
-                    Command line arguments to pass to the Docker container. Multiple arguments
-                    should be separated by spaces and escaped as necessary using the same format as
-                    a typical shell.
+                    آرگومان‌های خط فرمان ارسالی به کانتینر داکر که با فاصله جدا می‌شوند.
                   </small>
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="workspace_environment">
-                    Environment
+                    متغیرهای محیطی (JSON)
                   </label>
                   <textarea
-                    className={clsx('form-control', errors.workspace_environment && 'is-invalid')}
+                    className={clsx('form-control font-monospace', errors.workspace_environment && 'is-invalid')}
                     id="workspace_environment"
+                    dir="ltr"
                     disabled={!canEdit}
                     aria-invalid={!!errors.workspace_environment || undefined}
                     defaultValue={defaultValues.workspace_environment}
@@ -881,8 +860,7 @@ export const InstructorQuestionSettingsForm = ({
                     </div>
                   )}
                   <small className="form-text text-muted">
-                    Environment variables to set inside the workspace container. Variables must be
-                    specified as a JSON object (e.g. <code>{'{"key":"value"}'}</code>).
+                    متغیرهای محیطی کانتینر به صورت یک شیء معتبر JSON (مثلا <code>{'{"PORT":"8080"}'}</code>).
                   </small>
                 </div>
 
@@ -896,22 +874,23 @@ export const InstructorQuestionSettingsForm = ({
                     {...register('workspace_enable_networking')}
                   />
                   <label className="form-check-label" htmlFor="workspace_enable_networking">
-                    Enable networking
+                    دسترسی به شبکه و اینترنت
                   </label>
                   <div className="small text-muted">
-                    Whether the workspace should have network access. Access is disabled by default.
+                    آیا محیط ابری اجازه ارتباط با شبکه بیرونی را داشته باشد یا خیر (پیش‌فرض: غیرفعال).
                   </div>
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="workspace_port">
-                    Port
+                    پورت وب‌سرویس کانتینر
                   </label>
                   <input
                     type="number"
                     step="1"
-                    className={clsx('form-control', errors.workspace_port && 'is-invalid')}
+                    className={clsx('form-control font-monospace', errors.workspace_port && 'is-invalid')}
                     id="workspace_port"
+                    dir="ltr"
                     disabled={!canEdit}
                     aria-invalid={!!errors.workspace_port || undefined}
                     defaultValue={defaultValues.workspace_port}
@@ -920,7 +899,7 @@ export const InstructorQuestionSettingsForm = ({
                       validate: (value) => {
                         if (value === '') return true;
                         const n = Number(value);
-                        if (!Number.isInteger(n)) return 'Port must be an integer';
+                        if (!Number.isInteger(n)) return 'شماره پورت باید یک عدد صحیح باشد';
                         return true;
                       },
                     })}
@@ -931,19 +910,19 @@ export const InstructorQuestionSettingsForm = ({
                     </div>
                   )}
                   <small className="form-text text-muted">
-                    The port number used in the Docker image. If not provided, the default port for
-                    the image will be used.
+                    شماره پورت درونی وب‌سرویس. در صورت خالی بودن، پورت پیش‌فرض ایمیج استفاده می‌شود.
                   </small>
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="workspace_home">
-                    Home
+                    مسیر پوشه کاربری (Home)
                   </label>
                   <input
                     type="text"
-                    className={clsx('form-control', errors.workspace_home && 'is-invalid')}
+                    className={clsx('form-control font-monospace', errors.workspace_home && 'is-invalid')}
                     id="workspace_home"
+                    dir="ltr"
                     disabled={!canEdit}
                     aria-invalid={!!errors.workspace_home || undefined}
                     defaultValue={defaultValues.workspace_home}
@@ -956,14 +935,13 @@ export const InstructorQuestionSettingsForm = ({
                     </div>
                   )}
                   <small className="form-text text-muted">
-                    The home directory of the workspace container. If not provided, the default home
-                    directory for the image will be used.
+                    پوشه خانگی در کانتینر. در صورت عدم درج، مقدار پیش‌فرض ایمیج لحاظ خواهد شد.
                   </small>
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="workspace_rewrite_url">
-                    Workspace proxy URL handling
+                    نحوه پردازش URL در پراکسی محیط ابری
                   </label>
                   <Form.Select
                     id="workspace_rewrite_url"
@@ -971,16 +949,12 @@ export const InstructorQuestionSettingsForm = ({
                     defaultValue={defaultValues.workspace_rewrite_url}
                     {...register('workspace_rewrite_url')}
                   >
-                    <option value="null">Use default settings for image</option>
-                    <option value="true">Strip URL container prefix</option>
-                    <option value="false">Send URL without changes</option>
+                    <option value="null">استفاده از تنظیمات پیش‌فرض ایمیج</option>
+                    <option value="true">حذف پیشوند کانتینر از آدرس (Strip Prefix)</option>
+                    <option value="false">ارسال آدرس بدون تغییر (No Change)</option>
                   </Form.Select>
                   <small className="form-text text-muted">
-                    Workspace images can specify how URLs for container-specific resources should be
-                    handled by the workspace proxy. In particular, the container prefix (e.g.,{' '}
-                    <code>/pl/workspace/&lt;id&gt;/container/</code>) can be stripped from the URL
-                    before it is sent to the container. Unless you have a specific reason to change
-                    this setting, it is recommended to use the default settings.
+                    نحوه بازنویسی مسیر منابع درونی محیط کار ابری توسط پراکسی سامانه.
                   </small>
                 </div>
               </div>
@@ -988,10 +962,10 @@ export const InstructorQuestionSettingsForm = ({
           </div>
         </div>
 
-        <div className="card">
+        <div className="card" style={{ fontFamily: 'var(--font-persian)' }}>
           <div className="card-body">
             {isExternalGrading ? (
-              <h2 className="h5 card-title mb-0">External grading</h2>
+              <h2 className="h5 card-title mb-0">تصحیح خودکار با کانتینر داکر (External Grading)</h2>
             ) : (
               <div className="form-check">
                 <input
@@ -1006,30 +980,27 @@ export const InstructorQuestionSettingsForm = ({
                   className="form-check-label h5 card-title mb-0"
                   htmlFor="externalGradingEnabled"
                 >
-                  External grading
+                  تصحیح خودکار با کانتینر داکر (External Grading)
                 </label>
               </div>
             )}
-            <small className={clsx('text-muted d-block mt-1', !isExternalGrading && 'ps-4')}>
-              Configure{' '}
-              <a href="https://prairielearn.readthedocs.io/en/latest/externalGrading/">
-                grading using a Docker container
-              </a>
-              .
+            <small className={clsx('text-muted d-block mt-1', !isExternalGrading && 'pe-4')}>
+              پیکربندی داوری و تصحیح خودکار برنامه‌ها با کانتینر ایزوله داکر.
             </small>
             {(isExternalGrading || externalGradingEnabled) && (
               <div
-                className={clsx('mt-3', !isExternalGrading && 'ps-4')}
+                className={clsx('mt-3', !isExternalGrading && 'pe-4')}
                 id="external-grading-options"
               >
                 <div className="mb-3">
                   <label className="form-label" htmlFor="external_grading_image">
-                    Image
+                    ایمیج داکر داوری (Grader Image)
                   </label>
                   <input
                     type="text"
-                    className={clsx('form-control', errors.external_grading_image && 'is-invalid')}
+                    className={clsx('form-control font-monospace', errors.external_grading_image && 'is-invalid')}
                     id="external_grading_image"
+                    dir="ltr"
                     aria-describedby="external_grading_image-help"
                     disabled={!canEdit}
                     aria-invalid={!!errors.external_grading_image || undefined}
@@ -1038,7 +1009,7 @@ export const InstructorQuestionSettingsForm = ({
                       errors.external_grading_image ? 'external_grading_image-error' : undefined
                     }
                     {...register('external_grading_image', {
-                      required: 'Image is required for external grading',
+                      required: 'وارد کردن نام ایمیج برای داوری خودکار الزامی است',
                       validate: (value) =>
                         isSupportedImageRegistry(value.trim()) || imageRegistryErrorText,
                     })}
@@ -1053,53 +1024,53 @@ export const InstructorQuestionSettingsForm = ({
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="external_grading_entrypoint">
-                    Entrypoint
+                    نقطه ورود اجرای داوری (Entrypoint)
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control font-monospace"
                     id="external_grading_entrypoint"
+                    dir="ltr"
                     disabled={!canEdit}
                     defaultValue={defaultValues.external_grading_entrypoint}
                     {...register('external_grading_entrypoint')}
                   />
                   <small className="form-text text-muted">
-                    Program or command to run as the entrypoint to your grader. If not provided, the
-                    default entrypoint for the image will be used.
+                    دستور یا برنامه آغازین فرآیند داوری. در صورت خالی بودن، نقطه ورود پیش‌فرض ایمیج اجرا می‌شود.
                   </small>
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="external_grading_files">
-                    Server files
+                    فایل‌های سرور جهت داوری
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control font-monospace"
                     id="external_grading_files"
+                    dir="ltr"
                     disabled={!canEdit}
                     defaultValue={defaultValues.external_grading_files}
                     {...register('external_grading_files')}
                   />
                   <small className="form-text text-muted">
-                    The list of files or directories that will be copied from{' '}
-                    <code>course/serverFilesCourse</code> into the grading job. You may enter
-                    multiple files or directories, separated by commas.
+                    فایل‌ها یا پوشه‌هایی که از پوشه <code>serverFilesCourse</code> به فرآیند داوری کپی می‌شوند (با کاما جدا کنید).
                   </small>
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="external_grading_timeout">
-                    Timeout
+                    حداکثر زمان اجرای داوری (ثانیه)
                   </label>
                   <input
                     type="number"
                     step="1"
                     className={clsx(
-                      'form-control',
+                      'form-control font-monospace',
                       errors.external_grading_timeout && 'is-invalid',
                     )}
                     id="external_grading_timeout"
+                    dir="ltr"
                     disabled={!canEdit}
                     aria-invalid={!!errors.external_grading_timeout || undefined}
                     defaultValue={defaultValues.external_grading_timeout}
@@ -1110,11 +1081,11 @@ export const InstructorQuestionSettingsForm = ({
                       setValueAs: coerceToNumber,
                       min: {
                         value: 0,
-                        message: 'Timeout must be at least 0 seconds',
+                        message: 'زمان مجاز باید حداقل ۰ ثانیه باشد',
                       },
                       validate: (value) => {
                         if (value == null) return true;
-                        if (!Number.isInteger(value)) return 'Timeout must be an integer';
+                        if (!Number.isInteger(value)) return 'زمان باید یک عدد صحیح باشد';
                         return true;
                       },
                     })}
@@ -1125,20 +1096,21 @@ export const InstructorQuestionSettingsForm = ({
                     </div>
                   )}
                   <small className="form-text text-muted">
-                    The number of seconds after which the grading job will timeout.
+                    مدت زمانی که پس از سپری شدن آن، اجرای کدهای داوری متوقف (Timeout) می‌شود.
                   </small>
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="external_grading_environment">
-                    Environment
+                    متغیرهای محیطی داوری (JSON)
                   </label>
                   <textarea
                     className={clsx(
-                      'form-control',
+                      'form-control font-monospace',
                       errors.external_grading_environment && 'is-invalid',
                     )}
                     id="external_grading_environment"
+                    dir="ltr"
                     disabled={!canEdit}
                     aria-invalid={!!errors.external_grading_environment || undefined}
                     defaultValue={defaultValues.external_grading_environment}
@@ -1157,8 +1129,7 @@ export const InstructorQuestionSettingsForm = ({
                     </div>
                   )}
                   <small className="form-text text-muted">
-                    Environment variables to set inside the grading container. Variables must be
-                    specified as a JSON object (e.g. <code>{'{"key":"value"}'}</code>).
+                    متغیرهای محیطی کانتینر داوری در قالب یک شیء استاندارد JSON.
                   </small>
                 </div>
 
@@ -1172,11 +1143,10 @@ export const InstructorQuestionSettingsForm = ({
                     {...register('external_grading_enable_networking')}
                   />
                   <label className="form-check-label" htmlFor="external_grading_enable_networking">
-                    Enable networking
+                    دسترسی کانتینر داوری به شبکه و اینترنت
                   </label>
                   <div className="small text-muted">
-                    Whether the grading containers should have network access. Access is disabled by
-                    default.
+                    آیا کانتینر داور خودکار در حین اجرا اجازه دسترسی به اینترنت را دارد یا خیر (پیش‌فرض: غیرفعال جهت امنیت).
                   </div>
                 </div>
               </div>
@@ -1185,9 +1155,9 @@ export const InstructorQuestionSettingsForm = ({
         </div>
 
         {sharing.enabled && (
-          <div className="card">
+          <div className="card" style={{ fontFamily: 'var(--font-persian)' }}>
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">Sharing</h2>
+              <h2 className="h5 card-title mb-3">اشتراک‌گذاری و دسترسی آزاد</h2>
               {/* Hidden inputs preserve locked-on flags whose checkbox is disabled;
                   must mirror the disabled gate to avoid silently flipping the value. */}
               {sharePublicly && sharePubliclyDisabled && (
@@ -1199,7 +1169,7 @@ export const InstructorQuestionSettingsForm = ({
                 id="share_publicly"
                 name={sharePubliclyInput.name}
                 value="on"
-                label="Share publicly"
+                label="اشتراک‌گذاری عمومی سوال (Public)"
                 className="mb-1"
                 disabled={sharePubliclyDisabled}
                 checked={sharePublicly}
@@ -1208,7 +1178,7 @@ export const InstructorQuestionSettingsForm = ({
                 onBlur={sharePubliclyInput.onBlur}
               />
               <small id="share_publicly-description" className="form-text text-muted d-block mb-2">
-                Any course may import this question.
+                تمامی دروس و کاربران سامانه امکان مشاهده، درون‌ریزی و استفاده از این سوال را خواهند داشت.
                 {sharePubliclyMessage && <SharingMessageText message={sharePubliclyMessage} />}
               </small>
 
@@ -1221,7 +1191,7 @@ export const InstructorQuestionSettingsForm = ({
                 id="share_source_publicly"
                 name={shareSourcePubliclyInput.name}
                 value="on"
-                label="Share source publicly"
+                label="اشتراک‌گذاری سورس‌کد سوال (Public Source)"
                 className="mb-1"
                 disabled={shareSourcePubliclyDisabled}
                 checked={shareSourcePublicly}
@@ -1233,7 +1203,7 @@ export const InstructorQuestionSettingsForm = ({
                 id="share_source_publicly-description"
                 className="form-text text-muted d-block mb-3"
               >
-                The question's source is publicly shared.
+                کدهای منبع این سوال به صورت باز و عمومی در دسترس دیگران قرار می‌گیرد.
                 {shareSourcePubliclyMessage && (
                   <SharingMessageText message={shareSourcePubliclyMessage} />
                 )}
@@ -1241,12 +1211,11 @@ export const InstructorQuestionSettingsForm = ({
 
               <div>
                 <label id="sharing-sets-label" className="form-label" htmlFor="sharing_sets">
-                  Sharing sets
+                  مجموعه‌های اشتراک‌گذاری (Sharing Sets)
                 </label>
                 {sharing.sets.length === 0 ? (
                   <div className="small text-muted">
-                    No sharing sets are defined in this course. Create them on the{' '}
-                    <a href="../../course_admin/sharing">Course sharing</a> page.
+                    هیچ مجموعه اشتراک‌گذاری در این درس تعریف نشده است.
                   </div>
                 ) : (
                   <>
@@ -1263,7 +1232,7 @@ export const InstructorQuestionSettingsForm = ({
                           <span
                             key={name}
                             className="badge color-gray1"
-                            title="Cannot remove: a consuming course with access via this set uses this question."
+                            title="غیرقابل حذف: درسی که از طریق این دسته دسترسی دارد هم‌اکنون از این سوال استفاده می‌کند."
                           >
                             {name}
                           </span>
@@ -1281,7 +1250,7 @@ export const InstructorQuestionSettingsForm = ({
                           searchableText: s.name,
                         }))}
                       value={watchedSharingSets.filter((n) => !lockedSharingSetNamesSet.has(n))}
-                      placeholder="Select sharing sets"
+                      placeholder="انتخاب مجموعه‌های اشتراک‌گذاری"
                       aria-labelledby="sharing-sets-label"
                       disabled={!canEdit}
                       renderTagContent={(data) => data.name}
@@ -1297,15 +1266,7 @@ export const InstructorQuestionSettingsForm = ({
                       }}
                     />
                     <small className="form-text text-muted">
-                      Memberships can be removed if no course granted access via the{' '}
-                      <a
-                        href="https://docs.prairielearn.com/contentSharing/#sharing-sets"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        sharing set
-                      </a>{' '}
-                      uses this question.
+                      دسته‌هایی که به دروس مشخص اجازه استفاده اشتراکی از این سوال را می‌دهند.
                     </small>
                   </>
                 )}
@@ -1317,10 +1278,10 @@ export const InstructorQuestionSettingsForm = ({
                     publicLink={publicLink}
                     sharingMessage={
                       question.share_source_publicly
-                        ? "This question's source is publicly shared."
-                        : 'This question is publicly shared.'
+                        ? "سورس‌کد این سوال به صورت عمومی به اشتراک گذاشته شده است."
+                        : 'این سوال به صورت عمومی به اشتراک گذاشته شده است.'
                     }
-                    publicLinkMessage="The link that other instructors can use to view this question."
+                    publicLinkMessage="پیوند اختصاصی جهت مشاهده این سوال توسط سایر اساتید و مدرسان."
                   />
                 </div>
               ) : null}
@@ -1330,9 +1291,9 @@ export const InstructorQuestionSettingsForm = ({
       </form>
 
       {showTestsSection && (
-        <div className="card">
+        <div className="card" style={{ fontFamily: 'var(--font-persian)' }}>
           <div className="card-body">
-            <h2 className="h5 card-title mb-3">Tests</h2>
+            <h2 className="h5 card-title mb-3">تست‌ها و ارزیابی درستی عملکرد سوال</h2>
             <QuestionTestsForm
               questionTestPath={questionTest.path}
               csrfToken={questionTest.csrfToken}

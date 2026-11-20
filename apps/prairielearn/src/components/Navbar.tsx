@@ -68,16 +68,16 @@ export function Navbar({
 
     <nav
       class="container-fluid bg-primary visually-hidden-focusable"
-      aria-label="Skip link and accessibility guide"
+      aria-label="پیوند پرش و راهنمای دسترسی‌پذیری"
     >
-      <a href="#content" class="d-inline-flex p-2 m-2 text-white">Skip to main content</a>
+      <a href="#content" class="d-inline-flex p-2 m-2 text-white">پرش به محتوای اصلی</a>
       <a
         href="https://docs.prairielearn.com/student-guide/accessibility/"
         class="d-inline-flex p-2 m-2 text-white"
         target="_blank"
         rel="noreferrer"
       >
-        Accessibility guide
+        راهنمای دسترسی‌پذیری
       </a>
     </nav>
 

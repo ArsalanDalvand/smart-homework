@@ -395,14 +395,14 @@ function IssueReportButton({
 
   return html`
     <button
-      class="btn btn-sm btn-primary"
+      class="btn btn-sm btn-outline-danger w-100"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#issueCollapse"
       aria-expanded="false"
       aria-controls="issueCollapse"
     >
-      Report an issue with this question
+      <i class="fa fa-bug me-1"></i> گزارش اشکال در این سوال
     </button>
     <div class="collapse" id="issueCollapse">
       <form method="POST" class="mt-3">
@@ -411,14 +411,14 @@ function IssueReportButton({
             class="form-control"
             rows="5"
             name="description"
-            placeholder="Describe the issue"
+            placeholder="شرح اشکال و خطای مشاهده‌شده در سوال..."
             required
           ></textarea>
         </div>
         <input type="hidden" name="__variant_id" value="${variant.id}" />
         <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-        <button type="submit" class="btn btn-sm btn-warning" name="__action" value="report_issue">
-          Report issue
+        <button type="submit" class="btn btn-sm btn-danger" name="__action" value="report_issue">
+          ثبت گزارش اشکال
         </button>
       </form>
     </div>

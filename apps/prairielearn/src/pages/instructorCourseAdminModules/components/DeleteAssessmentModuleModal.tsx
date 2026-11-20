@@ -20,22 +20,21 @@ export function DeleteAssessmentModuleModal({
   const count = data?.assessments.length ?? 0;
 
   return (
-    <Modal show={show} onHide={onHide} onExited={onExited}>
-      <Modal.Header closeButton>
-        <Modal.Title>Delete module</Modal.Title>
+    <Modal show={show} onHide={onHide} onExited={onExited} dir="rtl">
+      <Modal.Header closeButton style={{ fontFamily: 'var(--font-persian)' }}>
+        <Modal.Title>حذف پودمان ارزیابی</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ fontFamily: 'var(--font-persian)' }}>
         {data && (
           <p className="mb-0">
-            Deleting <strong>{data.name}</strong> will move its {count} assessment
-            {count === 1 ? '' : 's'} to the <strong>Default</strong> module. This takes effect when
-            you save your changes.
+            با حذف پودمان <strong>{data.name}</strong>، تعداد {count} آزمون و تکلیف موجود در آن به پودمان{' '}
+            <strong>پیش‌فرض (Default)</strong> منتقل خواهند شد. این تغییر پس از کلیک روی دکمه ذخیره اعمال می‌شود.
           </p>
         )}
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer style={{ fontFamily: 'var(--font-persian)' }}>
         <button className="btn btn-secondary" type="button" onClick={onHide}>
-          Cancel
+          انصراف
         </button>
         <button
           className="btn btn-danger"
@@ -44,7 +43,7 @@ export function DeleteAssessmentModuleModal({
             if (data) onConfirm(data);
           }}
         >
-          Delete module
+          حذف پودمان
         </button>
       </Modal.Footer>
     </Modal>

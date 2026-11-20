@@ -43,9 +43,8 @@ export function InstructorQuestionPreview({
       questionRenderContext === 'manual_grading'
         ? html`
             <div class="alert alert-primary">
-              You are viewing this question as it will appear in the manual grading interface.
-              <a href="${normalPreviewUrl}" class="alert-link">Return to the normal view</a> when
-              you are done.
+              شما در حال مشاهده این سوال در قالب محیط تصحیح دستی هستید.
+              <a href="${normalPreviewUrl}" class="alert-link">بازگشت به نمای عادی</a> پس از اتمام بررسی.
             </div>
           `
         : ''
@@ -54,9 +53,8 @@ export function InstructorQuestionPreview({
       questionRenderContext === 'ai_grading'
         ? html`
             <div class="alert alert-primary">
-              You are viewing this question as it will appear to the AI grader.
-              <a href="${normalPreviewUrl}" class="alert-link">Return to the normal view</a> when
-              you are done.
+              شما در حال مشاهده این سوال در قالب تصحیح‌کننده هوش مصنوعی هستید.
+              <a href="${normalPreviewUrl}" class="alert-link">بازگشت به نمای عادی</a> پس از اتمام بررسی.
             </div>
           `
         : ''
@@ -65,7 +63,7 @@ export function InstructorQuestionPreview({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Question Preview',
+    pageTitle: 'پیش‌نمایش سوال',
     navContext: {
       type: 'instructor',
       page: 'question',
@@ -151,8 +149,8 @@ export function InstructorQuestionPreview({
               ? html`
                   <div class="card mb-3 js-readme-card overflow-hidden">
                     <div class="card-header d-flex align-items-center collapsible-card-header">
-                      <h2 class="me-auto">
-                        README <span class="small text-muted">(not visible to students)</span>
+                      <h2 class="me-auto h5 mb-0">
+                        راهنما و توضیحات سوال <span class="small text-muted">(مخصوص مدرسان، برای فراگیران مخفی است)</span>
                       </h2>
                       <button
                         type="button"
@@ -175,7 +173,7 @@ export function InstructorQuestionPreview({
                       <div
                         class="py-1 z-1 position-relative d-none justify-content-center bg-light js-expand-button-container"
                       >
-                        <button type="button" class="btn btn-sm btn-link">Expand</button>
+                        <button type="button" class="btn btn-sm btn-link">نمایش بیشتر</button>
                       </div>
                     </div>
                   </div>
@@ -202,11 +200,11 @@ export function InstructorQuestionPreview({
         >
           <div class="card mb-3">
             <div class="card-header bg-secondary text-white">
-              <h2>Student view placeholder</h2>
+              <h2 class="h6 mb-0">موقعیت نمایش اطلاعات دانشجو</h2>
             </div>
             <div class="card-body">
-              <div class="d-flex justify-content-center">
-                In student views this area is used for assessment and score info.
+              <div class="d-flex justify-content-center text-center small text-muted">
+                در صفحه آزمون فراگیر، این بخش برای نمایش زمان، وضعیت آزمون و نمره به کار می‌رود.
               </div>
             </div>
           </div>

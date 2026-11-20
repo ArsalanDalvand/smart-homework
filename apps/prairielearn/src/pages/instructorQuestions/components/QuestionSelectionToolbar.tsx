@@ -45,7 +45,7 @@ export function QuestionSelectionToolbar({
   const removeTagsModal = useModalState<SafeQuestionsPageData[]>();
   const deleteModal = useModalState<SafeQuestionsPageData[]>();
   const selectionLimitExceeded = selectedQuestions.length > MAX_BULK_QUESTION_SELECTION;
-  const selectionLimitMessage = `Select ${MAX_BULK_QUESTION_SELECTION} or fewer questions to use bulk actions`;
+  const selectionLimitMessage = `جهت انجام عملیات گروهی، حداکثر ${MAX_BULK_QUESTION_SELECTION} سوال را انتخاب کنید`;
 
   return (
     <>
@@ -60,37 +60,37 @@ export function QuestionSelectionToolbar({
               variant="link"
               onClick={() => trimSelection(MAX_BULK_QUESTION_SELECTION)}
             >
-              Trim selection to {MAX_BULK_QUESTION_SELECTION}
+              محدود کردن انتخاب به {MAX_BULK_QUESTION_SELECTION} سوال
             </Button>
           </>
         )}
         <DropdownButton
           as={ButtonGroup}
-          title="Manage questions"
+          title="مدیریت سوالات انتخاب‌شده"
           size="sm"
           variant="light"
           disabled={selectionLimitExceeded}
         >
           <Dropdown.Item onClick={() => addAssessmentModal.showWithData(selectedQuestions)}>
             <i className="bi bi-plus-square me-2" aria-hidden="true" />
-            Add to assessments
+            افزودن به آزمون‌ها
           </Dropdown.Item>
           <Dropdown.Item onClick={() => removeAssessmentModal.showWithData(selectedQuestions)}>
             <i className="bi bi-dash-square me-2" aria-hidden="true" />
-            Remove from assessments
+            حذف از آزمون‌ها
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item onClick={() => changeTopicModal.showWithData(selectedQuestions)}>
             <i className="bi bi-collection me-2" aria-hidden="true" />
-            Change topic
+            تغییر مبحث / موضوع
           </Dropdown.Item>
           <Dropdown.Item onClick={() => addTagsModal.showWithData(selectedQuestions)}>
             <i className="bi bi-bookmark-plus me-2" aria-hidden="true" />
-            Add tags
+            افزودن برچسب‌ها
           </Dropdown.Item>
           <Dropdown.Item onClick={() => removeTagsModal.showWithData(selectedQuestions)}>
             <i className="bi bi-bookmark-dash me-2" aria-hidden="true" />
-            Remove tags
+            حذف برچسب‌ها
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item
@@ -98,7 +98,7 @@ export function QuestionSelectionToolbar({
             onClick={() => deleteModal.showWithData(selectedQuestions)}
           >
             <i className="bi bi-trash3 me-2" aria-hidden="true" />
-            Delete
+            حذف سوالات
           </Dropdown.Item>
         </DropdownButton>
       </div>

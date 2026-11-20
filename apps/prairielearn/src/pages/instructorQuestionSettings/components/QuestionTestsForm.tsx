@@ -18,16 +18,18 @@ export function QuestionTestsForm({
         className="btn btn-sm btn-outline-primary"
         name="__action"
         value="test_once"
+        style={{ fontFamily: 'var(--font-persian)' }}
       >
-        Test once with full details
+        یک بار تست با نمایش تمامی جزئیات
       </button>
       <button
         type="submit"
         className="btn btn-sm btn-outline-primary"
         name="__action"
         value="test_100"
+        style={{ fontFamily: 'var(--font-persian)' }}
       >
-        Test 100 times with only results
+        ۱۰۰ بار تست سریع با خلاصه نتایج
       </button>
     </form>
   );

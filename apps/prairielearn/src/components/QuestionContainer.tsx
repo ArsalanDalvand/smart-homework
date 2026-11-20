@@ -991,12 +991,12 @@ function QuestionPanel({
                     <button
                       class="btn btn-sm btn-outline-light"
                       type="button"
-                      aria-label="Copy question"
+                      aria-label="کپی کردن سوال"
                       data-bs-toggle="modal"
                       data-bs-target="#copyQuestionModal"
                     >
                       <i class="fa fa-clone"></i>
-                      <span class="d-none d-sm-inline">Copy question</span>
+                      <span class="d-none d-sm-inline">کپی کردن سوال</span>
                     </button>
                   `
                 : ''
@@ -1011,15 +1011,15 @@ function QuestionPanel({
                         aria-expanded="false"
                         data-bs-toggle="dropdown"
                       >
-                        View&hellip;
+                        حالت نمایش&hellip;
                       </button>
-                      <ul class="dropdown-menu dropdown-menu-end">
+                      <ul class="dropdown-menu dropdown-menu-end" dir="rtl" style="font-family: var(--font-persian)">
                         ${
                           manualGradingPreviewUrl
                             ? html`
                                 <li>
                                   <a class="dropdown-item" href="${manualGradingPreviewUrl}">
-                                    Manual grading view
+                                    نمای تصحیح دستی (Manual Grading)
                                   </a>
                                 </li>
                               `
@@ -1030,7 +1030,7 @@ function QuestionPanel({
                             ? html`
                                 <li>
                                   <a class="dropdown-item" href="${aiGradingPreviewUrl}">
-                                    AI grading view
+                                    نمای داوری هوش مصنوعی (AI Grading)
                                   </a>
                                 </li>
                               `
@@ -1112,28 +1112,26 @@ function CopyQuestionModal({
   if (questionCopyTargets == null) return '';
   return Modal({
     id: 'copyQuestionModal',
-    title: 'Copy question',
+    title: 'کپی کردن سوال',
     formAction: questionCopyTargets.at(0)?.copy_url ?? '',
     formClass: 'js-copy-question-form',
     body:
       questionCopyTargets.length === 0
         ? html`
             <p>
-              You can't copy this question because you don't have editor permissions in any courses.
-              <a href="/pl/request_course">Request a course</a> if you don't have one already.
-              Otherwise, contact the owner of the course you expected to have access to.
+              شما دسترسی ویرایشگر در هیچ درسی ندارید، بنابراین امکان کپی این سوال وجود ندارد.
+              اگر درسی ندارید، می‌توانید <a href="/pl/request_course">درخواست ایجاد درس جدید</a> ثبت نمایید، یا با استاد و مالک درسی که قرار است به آن دسترسی داشته باشید تماس بگیرید.
             </p>
           `
         : html`
             <p>
-              This question can be copied to any course for which you have editor permissions.
-              Select one of your courses to copy this question.
+              این سوال می‌تواند به درسی که در آن دسترسی ویرایشگری دارید کپی شود. درس مقصد را انتخاب نمایید:
             </p>
             <select
               class="form-select"
               name="to_course_id"
               required
-              aria-label="Destination course"
+              aria-label="درس مقصد"
             >
               ${questionCopyTargets.map(
                 (course, index) => html`
@@ -1157,12 +1155,12 @@ function CopyQuestionModal({
       />
       <input type="hidden" name="question_id" value="${question.id}" />
       <input type="hidden" name="course_id" value="${course.id}" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
       ${
         questionCopyTargets.length > 0
           ? html`
               <button type="submit" name="__action" value="copy_question" class="btn btn-primary">
-                Copy question
+                کپی کردن سوال
               </button>
             `
           : ''

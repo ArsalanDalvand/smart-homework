@@ -60,7 +60,7 @@ router.get(
             subPage: 'questions',
           },
           courseOwners,
-          pageTitle: 'Questions',
+          pageTitle: 'بانک سوالات درس',
           requiredPermissions: 'Previewer',
         }),
       );
@@ -103,7 +103,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Questions',
+        pageTitle: 'بانک سوالات درس',
         navContext: {
           type: 'instructor',
           page: 'course_admin',
@@ -164,7 +164,7 @@ router.get(
             subPage: 'questions',
           },
           courseOwners,
-          pageTitle: 'Questions',
+          pageTitle: 'بانک سوالات درس',
           requiredPermissions: 'Previewer',
         }),
       );

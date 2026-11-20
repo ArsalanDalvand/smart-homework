@@ -49,7 +49,7 @@ export function InstructorQuestionStatistics({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Statistics',
+    pageTitle: 'آمار و ارقام سوال',
     navContext: {
       type: 'instructor',
       page: 'question',
@@ -63,21 +63,21 @@ export function InstructorQuestionStatistics({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h1>Detailed assessment statistics for question ${resLocals.question.qid}</h1>
+          <h1 class="h4 mb-0">آمار و ارقام تفصیلی آزمون‌ها برای سوال ${resLocals.question.qid}</h1>
         </div>
 
         <div class="table-responsive">
           <table
             class="table table-sm table-hover tablesorter table-bordered"
-            aria-label="Question statistics by assessment"
+            aria-label="آمار و ارقام سوال به تفکیک آزمون‌ها"
           >
             <thead>
               <tr>
-                <th class="text-center">Course Instance</th>
-                <th class="text-center">Assessment</th>
+                <th class="text-center">دوره / ترم</th>
+                <th class="text-center">آزمون</th>
                 ${Object.values(STAT_DESCRIPTIONS).map((stat) => {
                   return html`
-                    <th class="text-center" title="${stat.description}">
+                    <th class="text-center text-nowrap" title="${stat.description}">
                       ${renderHtml(stat.title)}
                     </th>
                   `;
@@ -284,32 +284,32 @@ export function InstructorQuestionStatistics({
         </div>
 
         <div class="card-footer">
-          <p>
-            Download
+          <p class="mb-2">
+            دریافت فایل داده‌های آماری:
             <a
               href="${resLocals.urlPrefix}/question/${
                 resLocals.question.id
               }/statistics/${questionStatsCsvFilename}"
+              class="fw-bold"
+              dir="ltr"
             >
               ${questionStatsCsvFilename}
             </a>
           </p>
           <div class="small">
-            <ul>
+            <ul class="mb-3">
               ${Object.keys(STAT_DESCRIPTIONS).map((stat) => {
                 return html`
-                  <li>
+                  <li class="mb-1">
                     <strong> ${renderHtml(STAT_DESCRIPTIONS[stat].title)}: </strong>
                     ${STAT_DESCRIPTIONS[stat].description}
                   </li>
                 `;
               })}
             </ul>
-            <p class="mb-0">
-              In the case that a student takes this assessment multiple times (e.g., if this
-              assessment is a practice exam), we are calculating the above statistics by first
-              averaging over all assessment instances for each student, then averaging over
-              students.
+            <p class="mb-0 text-muted">
+              در صورتی که یک دانشجو این آزمون را چندین بار شرکت کرده باشد (برای مثال در آزمون‌های تمرینی)،
+              محاسبه آمار و ارقام فوق ابتدا با میانگین‌گیری از آزمون‌های هر دانشجو و سپس میانگین‌گیری بین کل دانشجویان صورت می‌پذیرد.
             </p>
           </div>
         </div>

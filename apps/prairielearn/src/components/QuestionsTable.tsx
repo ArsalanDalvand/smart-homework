@@ -71,7 +71,7 @@ function SelectAllCheckbox({ table }: { table: TanstackTableCoreInstance<SafeQue
     <IndeterminateCheckbox
       checked={allSelected}
       indeterminate={table.getIsSomePageRowsSelected() && !allSelected}
-      aria-label="Select all questions"
+      aria-label="انتخاب تمامی سوالات"
       onChange={table.getToggleAllPageRowsSelectedHandler()}
     />
   );
@@ -300,9 +300,8 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
   const statusContent =
     rowSelectionEnabled && selectedCount > 0 ? (
       <>
-        Selected {selectedCount} of {displayedCount}{' '}
-        {displayedCount === 1 ? 'question' : 'questions'}
-        {isFiltered && ' (filtered)'}
+        انتخاب {selectedCount} از {displayedCount} سوال
+        {isFiltered && ' (فیلتر شده)'}
       </>
     ) : undefined;
 
@@ -324,17 +323,17 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
     }
 
     return (
-      <DropdownButton as={ButtonGroup} title="Add questions" size="sm" variant="light">
+      <DropdownButton as={ButtonGroup} title="افزودن سوال" size="sm" variant="light">
         {addQuestionUrl && (
           <Dropdown.Item as="a" href={addQuestionUrl}>
             <i className="bi bi-plus-lg me-2" aria-hidden="true" />
-            Create new question
+            طراحی و ایجاد سوال جدید
           </Dropdown.Item>
         )}
         {showAiGenerateQuestionButton && (
           <Dropdown.Item as="a" href={aiGenerateUrl}>
             <i className="bi bi-stars me-2" aria-hidden="true" />
-            Generate question with AI
+            تولید هوشمند سوال با هوش مصنوعی (AI)
           </Dropdown.Item>
         )}
         {importQuestionsUrl && (
@@ -342,7 +341,7 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
             {(addQuestionUrl || showAiGenerateQuestionButton) && <Dropdown.Divider />}
             <Dropdown.Item as="a" href={importQuestionsUrl}>
               <i className="bi bi-cloud-arrow-up me-2" aria-hidden="true" />
-              Import questions
+              ورود سوالات از فایل (QTI / ZIP)
             </Dropdown.Item>
           </>
         )}
@@ -365,14 +364,14 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
       <AppErrorAlert
         error={appError}
         className="mb-3"
-        render={{ UNKNOWN: ({ message }) => <>Error loading questions: {message}</> }}
+        render={{ UNKNOWN: ({ message }) => <>خطا در دریافت لیست سوالات: {message}</> }}
       />
       <TanstackTableCard
         table={table}
-        title="Questions"
+        title="بانک سوالات درس"
         className={appError ? undefined : 'h-100'}
-        singularLabel="question"
-        pluralLabel="questions"
+        singularLabel="سوال"
+        pluralLabel="سوال"
         downloadButtonOptions={{
           filenameBase: 'questions',
           hasSelection: rowSelectionEnabled,
@@ -411,29 +410,20 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
         }}
         headerButtons={headerButtons}
         globalFilter={{
-          placeholder: 'Search by QID, title...',
+          placeholder: 'جستجو بر اساس شناسه سوال (QID)، عنوان...',
         }}
         tableOptions={{
           filters,
           emptyState: (
             <TanstackTableEmptyState iconName="bi-file-earmark-code">
-              <div className="d-flex flex-column align-items-center gap-3">
+              <div className="d-flex flex-column align-items-center gap-3" style={{ fontFamily: 'var(--font-persian)' }}>
                 <div className="text-center">
-                  <h5 className="mb-2">No questions found</h5>
+                  <h5 className="mb-2">هیچ سوالی یافت نشد</h5>
                   <p className="text-muted mb-0" style={{ textWrap: 'balance' }}>
-                    A question is a problem or task that tests a student's understanding of a
-                    specific concept.
+                    سوالات، مسائل یا تمرین‌هایی هستند که میزان یادگیری و تسلط دانشجویان را در یک مفهوم خاص می‌سنجند.
                   </p>
                   <p className="text-muted">
-                    Learn more in the{' '}
-                    <a
-                      href="https://docs.prairielearn.com/question/overview/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      question documentation
-                    </a>
-                    .
+                    جهت کسب اطلاعات بیشتر، به بخش مستندات سوالات مراجعه فرمایید.
                   </p>
                 </div>
                 {(addQuestionUrl || importQuestionsUrl || showAiGenerateQuestionButton) && (
@@ -441,7 +431,7 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
                     {importQuestionsUrl && (
                       <a className="btn btn-primary" href={importQuestionsUrl}>
                         <i className="bi bi-cloud-arrow-up me-2" aria-hidden="true" />
-                        Import questions
+                        ورود سوالات از فایل
                       </a>
                     )}
                     {addQuestionUrl && (
@@ -452,13 +442,13 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
                         href={addQuestionUrl}
                       >
                         <i className="bi bi-plus-lg me-2" aria-hidden="true" />
-                        Add question
+                        طراحی سوال جدید
                       </a>
                     )}
                     {showAiGenerateQuestionButton && (
                       <a className="btn btn-outline-primary" href={aiGenerateUrl}>
                         <i className="bi bi-stars me-2" aria-hidden="true" />
-                        Generate with AI
+                        تولید هوشمند با AI
                       </a>
                     )}
                   </div>
@@ -468,7 +458,7 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
           ),
           noResultsState: (
             <TanstackTableEmptyState iconName="bi-search">
-              No questions found matching your search criteria.
+              هیچ سوالی منطبق با شرایط جستجو و فیلترهای انتخابی شما یافت نشد.
             </TanstackTableEmptyState>
           ),
         }}

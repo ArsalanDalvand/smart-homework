@@ -66,46 +66,42 @@ function GithubRepositoryAccessInner({
 
   return (
     <section className="mb-3" aria-labelledby="github-access-heading">
-      <h2 className="h6" id="github-access-heading">
-        Access to GitHub repository
+      <h2 className="h6 fw-bold" id="github-access-heading">
+        دسترسی به مخزن گیت‌هاب (GitHub Repository)
       </h2>
       {repositoryUrl && (
-        <p>
-          You can access this repository at{' '}
-          <a href={repositoryUrl} target="_blank" rel="noreferrer">
+        <p className="mb-2">
+          آدرس مخزن این درس در گیت‌هاب:{' '}
+          <a href={repositoryUrl} target="_blank" rel="noreferrer" dir="ltr" className="font-monospace">
             {repositoryUrl}
           </a>
-          .
         </p>
       )}
       {success && (
         <Alert variant="success" dismissible onClose={() => setSuccess(null)}>
           {success.invited ? (
             <>
-              An invitation for Admin access is ready for <strong>{success.username}</strong>.{' '}
+              دعوت‌نامه دسترسی مدیر (Admin) برای <strong>{success.username}</strong> ارسال شد.{' '}
               <a href={`${repositoryUrl}/invitations`} target="_blank" rel="noreferrer">
-                Accept the invitation on GitHub
+                پذیرش دعوت‌نامه در گیت‌هاب
               </a>{' '}
-              while signed in as that user to access the repository.
+              جهت فعال‌سازی دسترسی الزامی است.
             </>
           ) : (
             <>
-              <strong>{success.username}</strong> now has Admin access to this repository on GitHub.
+              کاربر <strong>{success.username}</strong> اکنون دسترسی مدیر به این مخزن را داراست.
             </>
           )}
         </Alert>
       )}
       {!isSupportedRepository ? (
-        <p className="mb-0">
-          PrairieLearn can only grant access to repositories in the PrairieLearn organization on
-          github.com. For repositories in another organization or on another hosting platform,
-          contact the repository administrator to request access.
+        <p className="mb-0 text-muted">
+          جهت اتصال به مخازن خارج از سازمان گیت‌هاب، لطفاً با مدیر سامانه تماس حاصل فرمایید.
         </p>
       ) : isOwner ? (
         <>
-          <p>
-            If you don't have access to the GitHub repository, as a course Owner you can grant
-            yourself or other people access.
+          <p className="mb-2">
+            در صورتی که به مخزن گیت‌هاب این درس دسترسی ندارید، به عنوان مالک درس می‌توانید به خود یا همکاران دسترسی اعطا فرمایید:
           </p>
           <Button
             type="button"
@@ -118,20 +114,19 @@ function GithubRepositoryAccessInner({
               setShowModal(true);
             }}
           >
-            Grant myself access
+            <i className="bi bi-person-plus me-1" /> اعطای دسترسی به خودم در گیت‌هاب
           </Button>
-          <p className="mb-0">
-            Once you have access, you can{' '}
+          <p className="mb-0 small text-muted">
+            پس از دریافت دسترسی، می‌توانید{' '}
             <a href={`${repositoryUrl}/settings/access`} target="_blank" rel="noreferrer">
-              grant other people access on GitHub
+              سایر همکاران و اساتید را نیز در گیت‌هاب اضافه نمایید
             </a>
             .
           </p>
         </>
       ) : (
-        <p className="mb-0">
-          If you don't have access to the GitHub repository, ask one of the course Owners (
-          <a href={staffUrl}>see Staff list</a>) to grant you access.
+        <p className="mb-0 text-muted">
+          در صورت عدم دسترسی به مخزن گیت‌هاب، از مالکان درس (<a href={staffUrl}>مشاهده لیست کادر آموزشی</a>) درخواست دسترسی نمایید.
         </p>
       )}
       <Modal
@@ -142,7 +137,7 @@ function GithubRepositoryAccessInner({
         }}
       >
         <Modal.Header closeButton={!grantMutation.isPending}>
-          <Modal.Title id="grant-github-access-title">Grant myself GitHub access</Modal.Title>
+          <Modal.Title id="grant-github-access-title">اعطای دسترسی به مخزن گیت‌هاب</Modal.Title>
         </Modal.Header>
         <Form
           noValidate
@@ -156,23 +151,22 @@ function GithubRepositoryAccessInner({
         >
           <Modal.Body>
             <p>
-              Enter your GitHub username to receive <strong>Admin</strong> access to this
-              repository.
+              نام کاربری گیت‌هاب خود را وارد نمایید تا دسترسی <strong>مدیر (Admin)</strong> به این مخزن برای شما ثبت شود.
             </p>
-            <p>
-              If you don't have a GitHub account,{' '}
+            <p className="small text-muted">
+              در صورتی که حساب گیت‌هاب ندارید، ابتدا یک{' '}
               <a href="https://github.com/signup" target="_blank" rel="noreferrer">
-                create a free account
-              </a>{' '}
-              first. You can find your username by clicking your profile picture in the top-right
-              corner of GitHub.
+                حساب کاربری در GitHub ایجاد کنید
+              </a>
+              . نام کاربری شما در پروفایل گیت‌هاب قابل مشاهده است.
             </p>
             <Form.Group controlId="github-username">
-              <Form.Label>GitHub username</Form.Label>
+              <Form.Label>نام کاربری گیت‌هاب (GitHub Username)</Form.Label>
               <Form.Control
                 type="text"
                 autoComplete="off"
                 spellCheck={false}
+                dir="ltr"
                 maxLength={GITHUB_USERNAME_MAX_LENGTH}
                 defaultValue=""
                 {...register('username', {
@@ -186,7 +180,7 @@ function GithubRepositoryAccessInner({
                 disabled={grantMutation.isPending}
               />
               <Form.Text id="github-username-help">
-                Enter your username, not your email address or profile URL.
+                تنها نام کاربری گیت‌هاب را بدون @ یا آدرس اینترنتی وارد فرمایید.
               </Form.Text>
               <Form.Control.Feedback type="invalid" id="github-username-error">
                 {errors.username?.message}
@@ -203,10 +197,10 @@ function GithubRepositoryAccessInner({
               disabled={grantMutation.isPending}
               onClick={() => setShowModal(false)}
             >
-              Cancel
+              انصراف
             </Button>
             <Button type="submit" disabled={grantMutation.isPending}>
-              {grantMutation.isPending ? 'Granting access…' : 'Grant access'}
+              {grantMutation.isPending ? 'در حال ثبت دسترسی…' : 'تخصیص دسترسی'}
             </Button>
           </Modal.Footer>
         </Form>

@@ -48,29 +48,31 @@ export function EditAssessmentSetsModal({
       onHide={onHide}
       onEntering={handleModalEntering}
       onExited={handleModalExited}
+      dir="rtl"
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton style={{ fontFamily: 'var(--font-persian)' }}>
         <Modal.Title>
-          {data?.mode === 'create' ? 'Add assessment set' : 'Edit assessment set'}
+          {data?.mode === 'create' ? 'افزودن دسته ارزیابی جدید' : 'ویرایش دسته ارزیابی'}
         </Modal.Title>
       </Modal.Header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ fontFamily: 'var(--font-persian)' }}>
         <Modal.Body>
           {assessmentSet ? (
             <>
               <div className="d-flex flex-column align-items-center mb-4">
                 <span className={`badge color-${assessmentSet.color}`}>
-                  {assessmentSet.abbreviation || 'Preview'}
+                  {assessmentSet.abbreviation || 'پیش‌نمایش'}
                 </span>
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="abbreviation">
-                  Abbreviation
+                  نشان اختصاری (مخفف)
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   id="abbreviation"
+                  placeholder="مثال: HW, Exam, Quiz"
                   value={assessmentSet.abbreviation}
                   required
                   onChange={({ currentTarget }) =>
@@ -83,12 +85,13 @@ export function EditAssessmentSetsModal({
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="name">
-                  Name
+                  عنوان دسته ارزیابی
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   id="name"
+                  placeholder="مثال: تکالیف هفتگی، کوئیزها، آزمون میان‌ترم"
                   value={assessmentSet.name}
                   aria-describedby={
                     show && assessmentSet.name && existingNames.has(assessmentSet.name)
@@ -109,19 +112,19 @@ export function EditAssessmentSetsModal({
                     className="alert alert-warning mt-2 mb-0 py-2"
                     role="alert"
                   >
-                    <i className="fa fa-exclamation-triangle" aria-hidden="true" /> This assessment
-                    set has the same name as another set.
+                    <i className="fa fa-exclamation-triangle me-1" aria-hidden="true" /> یک دسته ارزیابی دیگر با این نام وجود دارد.
                   </div>
                 )}
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="heading">
-                  Heading
+                  سربرگ دسته‌بندی
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   id="heading"
+                  placeholder="مثال: تکالیف سری اول"
                   value={assessmentSet.heading}
                   onChange={({ currentTarget }) =>
                     setAssessmentSet({
@@ -133,7 +136,7 @@ export function EditAssessmentSetsModal({
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="color">
-                  Color
+                  رنگ نشان دسته
                 </label>
                 <ColorPicker
                   id="color"
@@ -152,10 +155,10 @@ export function EditAssessmentSetsModal({
         </Modal.Body>
         <Modal.Footer>
           <button className="btn btn-secondary" type="button" onClick={onHide}>
-            Cancel
+            انصراف
           </button>
           <button className="btn btn-primary" type="submit">
-            {data?.mode === 'create' ? 'Add' : 'Ok'}
+            {data?.mode === 'create' ? 'افزودن دسته' : 'تایید و ذخیره'}
           </button>
         </Modal.Footer>
       </form>

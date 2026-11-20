@@ -61,12 +61,12 @@ export function StickySaveBar({
       disabled={isSaveDisabled}
     >
       <i className="bi bi-floppy" aria-hidden="true" />
-      {isSaving ? 'Saving...' : 'Save'}
+      {isSaving ? 'در حال ذخیره…' : 'ذخیره'}
     </button>
   );
 
   return (
-    <div className="pl-ui-sticky-save-bar">
+    <div className="pl-ui-sticky-save-bar" dir="rtl" style={{ fontFamily: 'var(--font-persian)' }}>
       {alert && (
         <Alert
           className="mb-0 rounded-0 border-start-0 border-end-0 border-bottom"
@@ -84,7 +84,7 @@ export function StickySaveBar({
           visible ? 'd-flex' : 'd-none',
         )}
       >
-        <div className="small text-muted">You have unsaved changes</div>
+        <div className="small text-muted">تغییرات ذخیره‌نشده دارید</div>
         <div className="d-flex gap-2">
           <button
             type="button"
@@ -92,7 +92,7 @@ export function StickySaveBar({
             disabled={isSaving}
             onClick={onCancel}
           >
-            Cancel
+            انصراف
           </button>
           {saveDisabledReason ? (
             <OverlayTrigger

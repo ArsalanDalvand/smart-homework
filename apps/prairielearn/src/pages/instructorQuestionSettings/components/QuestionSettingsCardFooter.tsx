@@ -19,12 +19,12 @@ function CopyQuestionPopover({
   onCancel: () => void;
 }) {
   return (
-    <form name="copy-question-form" method="POST">
+    <form name="copy-question-form" method="POST" dir="rtl" style={{ fontFamily: 'var(--font-persian)' }}>
       <input type="hidden" name="__action" value="copy_question" />
       <input type="hidden" name="__csrf_token" value={csrfToken} />
       <div className="mb-3">
         <label className="form-label" htmlFor="to-course-id-select">
-          The copied question will be added to the following course:
+          نسخه کپی‌شده سوال به این درس افزوده خواهد شد:
         </label>
         <select
           className="form-select"
@@ -40,12 +40,12 @@ function CopyQuestionPopover({
           ))}
         </select>
       </div>
-      <div className="text-end">
+      <div className="d-flex justify-content-between">
         <button type="button" className="btn btn-secondary" onClick={onCancel}>
-          Cancel
+          انصراف
         </button>
-        <button type="submit" className="btn btn-primary ms-2">
-          Submit
+        <button type="submit" className="btn btn-primary">
+          تایید و کپی
         </button>
       </div>
     </form>
@@ -68,22 +68,22 @@ function DeleteQuestionModal({
   onExited: () => void;
 }) {
   return (
-    <Modal show={show} onHide={onHide} onExited={onExited}>
-      <Modal.Header closeButton>
-        <Modal.Title>Delete question</Modal.Title>
+    <Modal show={show} onHide={onHide} onExited={onExited} dir="rtl">
+      <Modal.Header closeButton style={{ fontFamily: 'var(--font-persian)' }}>
+        <Modal.Title>حذف سوال</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ fontFamily: 'var(--font-persian)' }}>
         <p>
-          Are you sure you want to delete the question <strong>{qid}</strong>?
+          آیا از حذف دائمی سوال <strong dir="ltr">{qid}</strong> اطمینان دارید؟
         </p>
         {assessmentsWithQuestion.length > 0 && (
           <>
-            <p>It will also be removed from these assessments:</p>
+            <p>این سوال از آزمون‌ها و ارزیابی‌های زیر نیز حذف خواهد شد:</p>
             <ul className="list-group my-4">
               {assessmentsWithQuestion.map((aWithQ) => (
                 <li key={aWithQ.course_instance_id} className="list-group-item">
                   <div className="h6">
-                    {aWithQ.short_name} ({aWithQ.long_name ?? <i>Unknown</i>})
+                    {aWithQ.short_name} ({aWithQ.long_name ?? <i>ناشناس</i>})
                   </div>
                   {aWithQ.assessments.map((assessment) => (
                     <AssessmentBadge
@@ -98,15 +98,15 @@ function DeleteQuestionModal({
           </>
         )}
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer style={{ fontFamily: 'var(--font-persian)' }}>
         <form method="POST">
           <input type="hidden" name="__action" value="delete_question" />
           <input type="hidden" name="__csrf_token" value={csrfToken} />
           <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
-            Cancel
+            انصراف
           </button>
           <button type="submit" className="btn btn-danger">
-            Delete
+            حذف قطعی سوال
           </button>
         </form>
       </Modal.Footer>
@@ -146,20 +146,20 @@ export function QuestionSettingsCardFooter({
       node: (
         <>
           <div>
-            <div className="fw-semibold">View source on GitHub</div>
+            <div className="fw-semibold">مشاهده سورس‌کد در گیت‌هاب</div>
             <div className="text-muted small">
-              Open this question's source files in the course's repository.
+              باز کردن فایل‌های منبع این سوال در مخزن گیت درس.
             </div>
           </div>
           <a
             className="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2 ms-3"
             target="_blank"
             rel="noreferrer"
-            aria-label="View on GitHub"
+            aria-label="مشاهده در گیت‌هاب"
             href={questionGHLink}
           >
             <i className="bi bi-github" aria-hidden="true" />
-            View on GitHub
+            مشاهده در گیت‌هاب
           </a>
         </>
       ),
@@ -172,9 +172,9 @@ export function QuestionSettingsCardFooter({
       node: (
         <>
           <div>
-            <div className="fw-semibold">Make a copy of this question</div>
+            <div className="fw-semibold">ایجاد نسخه کپی از این سوال</div>
             <div className="text-muted small">
-              Create a duplicate of this question to use as a starting point.
+              یک نسخه رونوشت از این سوال ایجاد کنید تا به عنوان پیش‌نویس سوال جدید استفاده شود.
             </div>
           </div>
           <OverlayTrigger
@@ -183,7 +183,7 @@ export function QuestionSettingsCardFooter({
             show={showCopyPopover}
             popover={{
               props: { id: 'copyQuestionPopover' },
-              header: 'Copy this question',
+              header: 'کپی کردن این سوال',
               body: (
                 <CopyQuestionPopover
                   editableCourses={editableCourses}
@@ -200,7 +200,7 @@ export function QuestionSettingsCardFooter({
               className="btn btn-sm btn-outline-primary ms-3"
               id="copyQuestionButton"
             >
-              <i className="bi bi-copy me-1" aria-hidden="true" /> Make a copy
+              <i className="bi bi-copy me-1" aria-hidden="true" /> کپی سوال
             </button>
           </OverlayTrigger>
         </>
@@ -214,15 +214,15 @@ export function QuestionSettingsCardFooter({
       node: (
         <>
           <div>
-            <div className="fw-semibold">Delete this question</div>
-            <div className="text-muted small">Permanently remove this question.</div>
+            <div className="fw-semibold">حذف این سوال</div>
+            <div className="text-muted small">حذف دائمی این سوال و فایل‌های مرتبط با آن.</div>
           </div>
           <button
             type="button"
             className="btn btn-sm btn-outline-danger ms-3"
             onClick={() => deleteModalState.showWithData(null)}
           >
-            <i className="bi bi-trash me-1" aria-hidden="true" /> Delete
+            <i className="bi bi-trash me-1" aria-hidden="true" /> حذف سوال
           </button>
         </>
       ),
@@ -230,9 +230,9 @@ export function QuestionSettingsCardFooter({
   }
 
   return (
-    <div className="card">
+    <div className="card" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="card-body p-0">
-        <h2 className="h5 card-title mb-0 px-3 py-3">Manage question</h2>
+        <h2 className="h5 card-title mb-0 px-3 py-3">مدیریت و عملیات روی سوال</h2>
         {rows.map((row, index) => (
           <div
             key={row.key}

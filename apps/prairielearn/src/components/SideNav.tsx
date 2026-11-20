@@ -246,7 +246,7 @@ function CourseNav({
         <button
           type="button"
           class="btn dropdown-toggle border bg-white w-100 d-flex justify-content-between align-items-center mb-2"
-          aria-label="Change course"
+          aria-label="تغییر درس"
           aria-haspopup="true"
           aria-expanded="false"
           data-bs-toggle="dropdown"
@@ -267,7 +267,7 @@ function CourseNav({
           >
             <div class="d-flex justify-content-center">
               <div class="spinner-border spinner-border-sm" role="status">
-                <span class="visually-hidden">Loading courses...</span>
+                <span class="visually-hidden">در حال بارگذاری درس‌ها...</span>
               </div>
             </div>
           </div>
@@ -338,7 +338,7 @@ function CourseInstanceNav({
             >
               <div class="d-flex justify-content-center">
                 <div class="spinner-border spinner-border-sm" role="status">
-                  <span class="visually-hidden">Loading course instances...</span>
+                  <span class="visually-hidden">در حال بارگذاری ترم‌ها...</span>
                 </div>
               </div>
             </div>

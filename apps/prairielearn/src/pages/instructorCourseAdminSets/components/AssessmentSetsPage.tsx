@@ -54,11 +54,11 @@ function AssessmentSetRow({
         <ReorderableRowActionsCell
           trackingId={assessmentSet.trackingId}
           dragHandleProps={dragHandleProps}
-          editLabel={`Edit assessment set ${assessmentSet.name}`}
-          deleteLabel={`Delete assessment set ${assessmentSet.name}`}
+          editLabel={`ویرایش دسته ارزیابی ${assessmentSet.name}`}
+          deleteLabel={`حذف دسته ارزیابی ${assessmentSet.name}`}
           deleteDisabledReason={
             assessmentSet.assessments.length > 0
-              ? `This assessment set cannot be deleted because it is referenced by ${assessmentSet.assessments.length} assessment${assessmentSet.assessments.length === 1 ? '' : 's'}.`
+              ? `این دسته ارزیابی به دلیل استفاده در ${assessmentSet.assessments.length} ارزیابی دیگر، قابل حذف نیست.`
               : null
           }
           onEdit={onEdit}
@@ -76,10 +76,10 @@ function AssessmentSetRow({
         <button
           type="button"
           className="btn btn-sm btn-outline-secondary text-nowrap"
-          aria-label={`View ${assessmentSet.assessments.length} assessment${assessmentSet.assessments.length === 1 ? '' : 's'} using this set`}
+          aria-label={`مشاهده ارزیابی‌های مربوط به ${assessmentSet.name}`}
           onClick={onShowUsage}
         >
-          View assessments
+          مشاهده آزمون‌ها
         </button>
       </td>
     </tr>
@@ -105,20 +105,20 @@ function AssessmentSetsTable({
 }) {
   return (
     <ReorderableRowsContext rows={rows} onReorder={onReorder}>
-      <table className="table table-sm table-hover table-striped" aria-label="Assessment sets">
+      <table className="table table-sm table-hover table-striped" aria-label="مجموعه‌ها و دسته‌های ارزیابی">
         <thead>
           <tr>
             {allowEdit && (
               <th style={{ width: '1%' }}>
-                <span className="visually-hidden">Drag, Edit and Delete</span>
+                <span className="visually-hidden">جابجایی، ویرایش و حذف</span>
               </th>
             )}
             <th className="pe-4" style={{ width: '1%' }}>
-              Abbreviation
+              نشان اختصاری
             </th>
-            <th className="col-3 pe-4">Name</th>
-            <th className="pe-4">Heading</th>
-            <th style={{ width: '1%' }}>Action</th>
+            <th className="col-3 pe-4">عنوان دسته ارزیابی</th>
+            <th className="pe-4">سربرگ گروهبندی</th>
+            <th style={{ width: '1%' }}>عملیات</th>
           </tr>
         </thead>
 
@@ -138,7 +138,7 @@ function AssessmentSetsTable({
             <tr>
               <td colSpan={5}>
                 <button className="btn btn-sm btn-ghost" type="button" onClick={handleCreate}>
-                  <i className="fa fa-plus" aria-hidden="true" /> New assessment set
+                  <i className="fa fa-plus me-1" aria-hidden="true" /> افزودن دسته ارزیابی جدید
                 </button>
               </td>
             </tr>
@@ -238,16 +238,16 @@ export function AssessmentSetsPage({
         <input type="hidden" name="__csrf_token" value={csrfToken} />
         <input type="hidden" name="orig_hash" value={origHash ?? ''} />
         <input type="hidden" name="assessment_sets" value={JSON.stringify(assessmentSetsState)} />
-        <div className="card mb-4">
+        <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
           <div className="card-header bg-primary text-white d-flex align-items-center">
-            <h1>Assessment sets</h1>
+            <h1 className="h4 mb-0">مجموعه‌ها و دسته‌های ارزیابی (Assessment Sets)</h1>
           </div>
 
           {canEdit && duplicateNames.length > 0 && (
             <div className="alert alert-warning m-3" role="alert">
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" />{' '}
-              <strong>Duplicate names detected:</strong> {duplicateNames.join(', ')}. Only the last
-              assessment set with each name will be synced.
+              <i className="fa fa-exclamation-triangle me-1" aria-hidden="true" />{' '}
+              <strong>نام‌های تکراری شناسایی شد:</strong> {duplicateNames.join(', ')}. تنها آخرین
+              دسته ارزیابی با این نام همگام‌سازی و ذخیره خواهد شد.
             </div>
           )}
 
@@ -269,6 +269,7 @@ export function AssessmentSetsPage({
             isSaving={isSubmitting}
             visible={form.formState.isDirty}
             fullWidth
+            saveLabel="ذخیره تغییرات دسته‌ها"
             onCancel={() => form.reset()}
           />
         )}
@@ -280,7 +281,7 @@ export function AssessmentSetsPage({
         onSave={handleSave}
       />
 
-      <AssessmentUsageModal {...usageModalState} entityLabel="assessment set" />
+      <AssessmentUsageModal {...usageModalState} entityLabel="دسته ارزیابی" />
     </>
   );
 }
