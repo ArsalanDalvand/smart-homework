@@ -32,7 +32,7 @@ export const platformBranding = {
   portalUrl: env.PL_PORTAL_URL || 'https://github.com/ArsalanDalvand/PrairieLearn',
   repoUrl: env.PL_REPO_URL || 'https://github.com/ArsalanDalvand/PrairieLearn',
   supportEmail: env.PL_SUPPORT_EMAIL || 'support@prairielearn.ir',
-  docsUrl: env.PL_DOCS_URL || 'https://github.com/ArsalanDalvand/docs',
+  docsUrl: env.PL_DOCS_URL || 'https://docs.prairielearn.com',
 
   // Copyright & Meta
   copyrightYear: env.PL_COPYRIGHT_YEAR || '۱۴۰۵',
