@@ -32,18 +32,18 @@ export const platformBranding = {
   portalUrl: env.PL_PORTAL_URL || 'https://github.com/ArsalanDalvand/smart-homework',
   repoUrl: env.PL_REPO_URL || 'https://github.com/ArsalanDalvand/smart-homework',
   supportEmail: env.PL_SUPPORT_EMAIL || 'support@prairielearn.ir',
-  docsUrl: env.PL_DOCS_URL || 'https://github.com/ArsalanDalvand/smart-homework-docs',
+  docsUrl: env.PL_DOCS_URL || 'https://test.atomathix.ir/shared/7wXYh2lXsgeyqDe3cO-1g1DQTVWSzNJMTgE2e597-EM',
   licenseUrl: env.PL_LICENSE_URL || 'https://github.com/ArsalanDalvand/smart-homework/blob/master/LICENSE',
   licenseName: 'GNU AGPLv3',
 
   // Developer & Maintainer
   developer: {
-    name: env.PL_DEVELOPER_NAME || 'ارسلان دالوند (Arsalan Dalvand)',
+    name: env.PL_DEVELOPER_NAME || 'ارسلان دالوند',
     email: env.PL_DEVELOPER_EMAIL || 'arsalan_dalvand@mathdep.iust.ac.ir',
     telegram: env.PL_DEVELOPER_TELEGRAM || '@b_7vat4r',
     telegramUrl: 'https://t.me/b_7vat4r',
-    role: 'توسعه‌دهنده نسخه بومی و نگه‌دارنده پروژه',
-    affiliation: 'دانشکده ریاضی، دانشگاه علم و صنعت ایران (IUST)',
+    role: 'توسعه و نگه‌داری پروژه',
+    affiliation: 'دانشکده ریاضی، دانشگاه علم و صنعت ایران',
   },
 
   // Copyright & Meta
@@ -264,7 +264,7 @@ export const uiStrings = {
     loginCardTitle: 'ورود به حساب کاربری',
     loginCardSubtitle: 'جهت دسترسی به آزمون‌ها، تکالیف و دوره‌های آموزشی',
     quickDevLoginNotice: 'احراز هویت بدون رمز عبور جهت تست و بررسی امکانات',
-    footerCopyright: 'تمامی حقوق برای سامانه جامع ارزیابی و یادگیری هوشمند محفوظ است.',
+    footerCopyright: 'توسعه و نگه‌داری: ارسلان دالوند (دانشکده ریاضی، دانشگاه علم و صنعت ایران)',
     footerDocsLink: 'مستندات طراحان سوال',
     footerRepoLink: 'مخزن گیت‌هاب',
     footerSupportLink: 'پشتیبانی فنی',

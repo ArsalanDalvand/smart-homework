@@ -62,7 +62,7 @@ export function PageFooter() {
         <div className="row mt-2 pt-2 border-top">
           <div className="col-12 d-flex flex-wrap align-items-center justify-content-between text-muted small" style={{ fontSize: '0.78rem' }}>
             <span>
-              توسعه، بومی‌سازی و نگه‌داری: {' '}
+              توسعه و نگه‌داری: {' '}
               <a
                 href={platformBranding.developer.telegramUrl}
                 target="_blank"

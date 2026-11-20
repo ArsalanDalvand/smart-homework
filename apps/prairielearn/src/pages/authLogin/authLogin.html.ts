@@ -448,10 +448,11 @@ function LoginPageContainer({
         <footer class="bg-white border-top py-3 mt-auto">
           <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2" style="max-width: 1140px;">
             <span class="text-secondary small">
-              ${uiStrings.landing.footerCopyright} &mdash; توسعه‌یافته توسط
+              توسعه و نگه‌داری:
               <a href="${platformBranding.developer.telegramUrl}" target="_blank" rel="noreferrer" class="text-secondary text-decoration-none fw-medium">
                 ${platformBranding.developer.name}
               </a>
+              (${platformBranding.developer.affiliation})
             </span>
             <div class="d-flex gap-3 small">
               <a href="${platformBranding.docsUrl}" target="_blank" rel="noreferrer" class="text-secondary text-decoration-none">
