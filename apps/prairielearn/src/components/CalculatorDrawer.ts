@@ -15,34 +15,41 @@ export function CalculatorDrawerToggle({
 }: { showInfoPopover?: boolean } = {}): HtmlSafeString {
   // TODO: there might be more tools, which makes this card not calculator specific.
 
-  const toolsTitleContent = html`<div class="d-flex justify-content-between flex-nowrap">
-    Tools
-    <span class="badge color-green1">New</span>
+  const toolsTitleContent = html`<div class="d-flex justify-content-between flex-nowrap align-items-center" style="font-family: var(--font-persian);">
+    <span>ابزارها (Tools)</span>
+    <span class="badge color-green1">جدید</span>
   </div>`;
 
   const toolsPopoverContent = html`
-    Tools can be enabled
-    <a
-      href="https://docs.prairielearn.com/assessment/configuration/#enabling-tools-for-an-entire-assessment"
-      >per-assessment</a
-    >
-    or
-    <a href="https://docs.prairielearn.com/assessment/configuration/#overriding-tools-per-zone"
-      >per-zone</a
-    >
-    in <code>infoAssessment.json</code> and are disabled by default. Please give us
-    <a
-      href="https://github.com/PrairieLearn/PrairieLearn/discussions/14448"
-      target="_blank"
-      rel="noopener noreferrer"
-      >feedback</a
-    >!
+    <div dir="rtl" class="text-end" style="font-family: var(--font-persian); font-size: 0.85rem;">
+      امکان فعال‌سازی ابزارها به ازای
+      <a
+        href="https://docs.prairielearn.com/assessment/configuration/#enabling-tools-for-an-entire-assessment"
+        target="_blank"
+        rel="noopener noreferrer"
+        >کل آزمون</a
+      >
+      یا به ازای
+      <a
+        href="https://docs.prairielearn.com/assessment/configuration/#overriding-tools-per-zone"
+        target="_blank"
+        rel="noopener noreferrer"
+        >هر بخش (Zone)</a
+      >
+      در فایل <code>infoAssessment.json</code> وجود دارد و به صورت پیش‌فرض غیرفعال هستند. لطفاً
+      <a
+        href="https://github.com/ArsalanDalvand/smart-learning/discussions"
+        target="_blank"
+        rel="noopener noreferrer"
+        >نظرات و پیشنهادات خود را ارسال نمایید</a
+      >!
+    </div>
   `;
 
   return html`
-    <div class="card mb-4">
+    <div class="card mb-4" style="font-family: var(--font-persian);">
       <div class="card-header bg-secondary text-white d-flex align-items-center">
-        <span>Tools</span>
+        <span>ابزارهای آزمون</span>
         ${
           showInfoPopover
             ? html`
@@ -55,6 +62,7 @@ export function CalculatorDrawerToggle({
                   data-bs-title="${escapeHtml(toolsTitleContent)}"
                   data-bs-content="${escapeHtml(toolsPopoverContent)}"
                   data-bs-placement="auto"
+                  aria-label="راهنمای ابزارها"
                 >
                   <i class="bi bi-question-circle" aria-hidden="true"></i>
                 </button>
@@ -63,8 +71,8 @@ export function CalculatorDrawerToggle({
         }
       </div>
       <div class="card-body">
-        <button type="button" class="btn btn-outline-secondary w-100" id="calculatorDrawerToggle">
-          <i class="bi bi-calculator" aria-hidden="true"></i> Calculator
+        <button type="button" class="btn btn-outline-secondary w-100" id="calculatorDrawerToggle" style="font-family: var(--font-persian);">
+          <i class="bi bi-calculator me-1" aria-hidden="true"></i> ماشین‌حساب (Calculator)
         </button>
       </div>
     </div>
@@ -88,10 +96,11 @@ export function CalculatorDrawer({
       type="button"
       class="calculator-fab btn btn-secondary rounded-pill shadow align-items-center gap-1 mb-3 me-3"
       id="calculatorFab"
-      aria-label="Open calculator"
+      aria-label="باز کردن ماشین‌حساب"
+      style="font-family: var(--font-persian);"
     >
       <i class="bi bi-calculator" aria-hidden="true"></i>
-      <span> Calculator </span>
+      <span> ماشین‌حساب </span>
       <i class="bi bi-chevron-up"></i>
       <span class="calculator-fab-close" id="calculatorFabClose">
         <i class="bi bi-x-lg"></i>
@@ -100,7 +109,7 @@ export function CalculatorDrawer({
     <section
       class="calculator-drawer d-flex flex-column overflow-hidden"
       id="calculatorDrawer"
-      aria-label="Calculator"
+      aria-label="ماشین‌حساب"
       data-storage-key="${mode === 'full' ? storageKey : `${storageKey}-${mode}`}"
       data-calculator-mode="${mode}"
     >
@@ -109,24 +118,26 @@ export function CalculatorDrawer({
         type="button"
         class="calculator-drawer-header d-flex align-items-center justify-content-between flex-shrink-0 bg-secondary text-white user-select-none border-0 w-100"
         id="calculatorDrawerClose"
-        aria-label="Toggle calculator"
+        aria-label="تغییر وضعیت ماشین‌حساب"
+        style="font-family: var(--font-persian);"
       >
         <span class="fw-medium small">
-          <i class="bi bi-calculator" aria-hidden="true"></i> Calculator
+          <i class="bi bi-calculator me-1" aria-hidden="true"></i> ماشین‌حساب
         </span>
         <i class="bi bi-chevron-down"></i>
       </button>
       <div class="calculator-drawer-body overflow-auto flex-grow-1">
         <div
           class="d-flex align-items-center justify-content-between px-2 py-1 border border-bottom-0 bg-body-secondary"
+          style="font-family: var(--font-persian);"
         >
-          <span class="small text-body-secondary">History</span>
+          <span class="small text-body-secondary">تاریخچه محاسبات</span>
           <button
             type="button"
             class="btn-link link-danger small p-0 border-0 bg-transparent d-none"
             id="calculatorClearHistory"
           >
-            Clear all
+            پاک کردن تاریخچه
           </button>
         </div>
         <div
@@ -150,7 +161,7 @@ export function CalculatorDrawer({
                   data-bs-toggle="tooltip"
                   data-bs-placement="left"
                   data-bs-delay="300"
-                  data-bs-title="Copy to clipboard"
+                  data-bs-title="کپی در حافظه"
                 >
                   <i class="bi bi-clipboard"></i>
                 </button>
@@ -160,7 +171,7 @@ export function CalculatorDrawer({
                   data-bs-toggle="tooltip"
                   data-bs-placement="left"
                   data-bs-delay="300"
-                  data-bs-title="Insert into input"
+                  data-bs-title="درج در ورودی"
                 >
                   <i class="bi bi-box-arrow-in-down"></i>
                 </button>
@@ -180,7 +191,7 @@ export function CalculatorDrawer({
                   data-bs-toggle="tooltip"
                   data-bs-placement="left"
                   data-bs-delay="300"
-                  data-bs-title="Toggle deg/rad"
+                  data-bs-title="تغییر درجه / رادیان"
                 ></button>
                 <button
                   type="button"
@@ -189,7 +200,7 @@ export function CalculatorDrawer({
                   data-bs-toggle="tooltip"
                   data-bs-placement="left"
                   data-bs-delay="300"
-                  data-bs-title="Copy to clipboard"
+                  data-bs-title="کپی در حافظه"
                 >
                   <i class="bi bi-clipboard"></i>
                 </button>
@@ -199,7 +210,7 @@ export function CalculatorDrawer({
                   data-bs-toggle="tooltip"
                   data-bs-placement="left"
                   data-bs-delay="300"
-                  data-bs-title="Insert into input"
+                  data-bs-title="درج در ورودی"
                 >
                   <i class="bi bi-box-arrow-in-down"></i>
                 </button>
@@ -213,7 +224,7 @@ export function CalculatorDrawer({
             <math-field
               theme="light"
               id="calculator-input"
-              aria-label="Calculator input"
+              aria-label="ورودی ماشین‌حساب"
               class="pl-calculator-input flex-grow-1 force-light"
               autofocus="autofocus"
               placeholder="\\mathrm{Use\\ keyboard\\ or\\ buttons\\ below\\ to\\ start}"
@@ -228,7 +239,7 @@ export function CalculatorDrawer({
               data-bs-toggle="tooltip"
               data-bs-placement="left"
               data-bs-delay="300"
-              data-bs-title="Clear input"
+              data-bs-title="پاک کردن ورودی"
             >
               <i class="bi bi-x-lg"></i>
             </button>
@@ -240,7 +251,7 @@ export function CalculatorDrawer({
             <math-field
               theme="light"
               id="calculator-output"
-              aria-label="Calculator output"
+              aria-label="خروجی ماشین‌حساب"
               class="pl-calculator-output flex-grow-1 force-light"
               contenteditable="false"
               placeholder="\\mathrm{Output\\ will\\ be\\ displayed\\ here}"
@@ -254,7 +265,7 @@ export function CalculatorDrawer({
               data-bs-toggle="tooltip"
               data-bs-placement="left"
               data-bs-delay="300"
-              data-bs-title="Copy this output"
+              data-bs-title="کپی خروجی"
             >
               <i class="bi bi-clipboard"></i>
             </button>
@@ -266,7 +277,8 @@ export function CalculatorDrawer({
             <div
               class="btn-group btn-group-sm ${features.length <= 1 ? 'd-none' : ''}"
               role="group"
-              aria-label="Calculator keyboard subgroup panel"
+              aria-label="انتخاب بخش‌های صفحه‌کلید ماشین‌حساب"
+              style="font-family: var(--font-persian);"
             >
               ${features.map(
                 (feature, index) => html`
@@ -278,7 +290,19 @@ export function CalculatorDrawer({
                     data-panel="${feature}"
                     ${index === 0 ? 'checked' : ''}
                   />
-                  <label class="btn btn-outline-secondary" for="${feature}-btn">${feature}</label>
+                  <label class="btn btn-outline-secondary" for="${feature}-btn">${
+                    feature === 'basic'
+                      ? 'پایه‌ای'
+                      : feature === 'scientific'
+                        ? 'علمی'
+                        : feature === 'full'
+                          ? 'جامع'
+                          : feature === 'abc'
+                            ? 'حروف'
+                            : feature === 'func'
+                              ? 'توابع'
+                              : feature
+                  }</label>
                 `,
               )}
             </div>
@@ -288,14 +312,14 @@ export function CalculatorDrawer({
                 class="form-check form-switch d-flex align-items-center text-nowrap small ps-0"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
-                title="decimal or fractional"
+                title="نمایش اعشاری یا کسری"
               >
                 <span class="toggle-label">dec</span>
                 <input
                   class="form-check-input mx-1"
                   type="checkbox"
                   id="displayModeSwitch"
-                  aria-label="Toggle decimal or fractional display"
+                  aria-label="تغییر حالت نمایش اعشاری یا کسری"
                 />
                 <span class="toggle-label">frac</span>
               </div>
@@ -306,14 +330,14 @@ export function CalculatorDrawer({
                 } align-items-center text-nowrap small ps-0"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
-                title="radian or degree"
+                title="حالت رادیان یا درجه"
               >
                 <span class="toggle-label">rad</span>
                 <input
                   class="form-check-input mx-1"
                   type="checkbox"
                   id="angleModeSwitch"
-                  aria-label="Toggle radian or degree mode"
+                  aria-label="تغییر حالت زاویه بین رادیان و درجه"
                 />
                 <span class="toggle-label">deg</span>
               </div>
@@ -368,7 +392,7 @@ export function CalculatorDrawer({
                       name="backspace"
                       type="button"
                       class="btn btn-light"
-                      aria-label="Backspace"
+                      aria-label="پاک کردن نویسه (Backspace)"
                     >
                       <i class="bi bi-backspace"></i>
                     </button>
@@ -378,7 +402,7 @@ export function CalculatorDrawer({
                       name="shift"
                       type="button"
                       class="btn btn-light btn-wide"
-                      aria-label="Shift"
+                      aria-label="تغییر به حروف بزرگ (Shift)"
                     >
                       <i class="bi bi-arrow-up"></i>
                     </button>
@@ -388,14 +412,14 @@ export function CalculatorDrawer({
                     <button name="rbra" type="button" class="btn btn-light">]</button>
                     <button name="factorial" type="button" class="btn btn-light">$!$</button>
                     <button name="pi" type="button" class="btn btn-light">$\\pi$</button>
-                    <button name="left" type="button" class="btn btn-light" aria-label="Move left">
+                    <button name="left" type="button" class="btn btn-light" aria-label="حرکت نشانگر به چپ">
                       <i class="bi bi-arrow-left"></i>
                     </button>
                     <button
                       name="right"
                       type="button"
                       class="btn btn-light"
-                      aria-label="Move right"
+                      aria-label="حرکت نشانگر به راست"
                     >
                       <i class="bi bi-arrow-right"></i>
                     </button>
@@ -403,7 +427,7 @@ export function CalculatorDrawer({
                       name="calculate"
                       type="button"
                       class="btn btn-success btn-wide"
-                      aria-label="Calculate"
+                      aria-label="محاسبه (Enter)"
                     >
                       <i class="bi bi-arrow-return-left"></i>
                     </button>
@@ -420,7 +444,7 @@ export function CalculatorDrawer({
                   <button
                     type="button"
                     class="col-nav col-nav-left flex-shrink-0 align-items-center justify-content-center"
-                    aria-label="Scroll left"
+                    aria-label="پیمایش به چپ"
                   >
                     <i class="bi bi-chevron-left"></i>
                   </button>
@@ -487,7 +511,7 @@ export function CalculatorDrawer({
                   <button
                     type="button"
                     class="col-nav col-nav-right flex-shrink-0 align-items-center justify-content-center"
-                    aria-label="Scroll right"
+                    aria-label="پیمایش به راست"
                   >
                     <i class="bi bi-chevron-right"></i>
                   </button>
@@ -497,7 +521,7 @@ export function CalculatorDrawer({
                         name="backspace"
                         type="button"
                         class="btn btn-light"
-                        aria-label="Backspace"
+                        aria-label="پاک کردن نویسه (Backspace)"
                       >
                         <i class="bi bi-backspace"></i>
                       </button>
@@ -507,7 +531,7 @@ export function CalculatorDrawer({
                         name="calculate"
                         type="button"
                         class="btn btn-success"
-                        aria-label="Calculate"
+                        aria-label="محاسبه (Enter)"
                       >
                         <i class="bi bi-arrow-return-left"></i>
                       </button>
@@ -533,7 +557,7 @@ function CalculatorArithmeticKeyboard(feature: 'basic' | 'scientific' | 'full'):
           ? html`<button
                 type="button"
                 class="col-nav col-nav-left flex-shrink-0 align-items-center justify-content-center"
-                aria-label="Scroll left"
+                aria-label="پیمایش به چپ"
               >
                 <i class="bi bi-chevron-left"></i>
               </button>
@@ -597,7 +621,7 @@ function CalculatorArithmeticKeyboard(feature: 'basic' | 'scientific' | 'full'):
           ? html`<button
               type="button"
               class="col-nav col-nav-right flex-shrink-0 align-items-center justify-content-center"
-              aria-label="Scroll right"
+              aria-label="پیمایش به راست"
             >
               <i class="bi bi-chevron-right"></i>
             </button> `
@@ -613,16 +637,16 @@ function CalculatorArithmeticKeyboard(feature: 'basic' | 'scientific' | 'full'):
           ><button name="rpar" type="button" class="btn btn-light">)</button>
         </div>
         <div class="btn-row d-flex">
-          <button name="left" type="button" class="btn btn-light" aria-label="Move left">
+          <button name="left" type="button" class="btn btn-light" aria-label="حرکت نشانگر به چپ">
             <i class="bi bi-arrow-left"></i></button
-          ><button name="right" type="button" class="btn btn-light" aria-label="Move right">
+          ><button name="right" type="button" class="btn btn-light" aria-label="حرکت نشانگر به راست">
             <i class="bi bi-arrow-right"></i>
           </button>
         </div>
         <div class="btn-row d-flex">
-          <button name="backspace" type="button" class="btn btn-light" aria-label="Backspace">
+          <button name="backspace" type="button" class="btn btn-light" aria-label="پاک کردن نویسه (Backspace)">
             <i class="bi bi-backspace"></i></button
-          ><button name="calculate" type="button" class="btn btn-success" aria-label="Calculate">
+          ><button name="calculate" type="button" class="btn btn-success" aria-label="محاسبه (Enter)">
             <i class="bi bi-arrow-return-left"></i>
           </button>
         </div>
