@@ -31,7 +31,7 @@ export const platformBranding = {
   portalName: env.PL_PORTAL_NAME || 'پرتال و پایگاه اطلاع‌رسانی',
   portalUrl: env.PL_PORTAL_URL || 'https://github.com/ArsalanDalvand/smart-homework',
   repoUrl: env.PL_REPO_URL || 'https://github.com/ArsalanDalvand/smart-homework',
-  supportEmail: env.PL_SUPPORT_EMAIL || 'support@prairielearn.ir',
+  supportEmail: env.PL_SUPPORT_EMAIL || 'arsalan_dalvand@mathdep.iust.ac.ir',
   docsUrl: env.PL_DOCS_URL || 'https://test.atomathix.ir/shared/7wXYh2lXsgeyqDe3cO-1g1DQTVWSzNJMTgE2e597-EM',
   licenseUrl: env.PL_LICENSE_URL || 'https://github.com/ArsalanDalvand/smart-homework/blob/master/LICENSE',
   licenseName: 'GNU AGPLv3',
