@@ -5,6 +5,7 @@ import { Alert, Dropdown, Modal } from 'react-bootstrap';
 import { FormProvider, useForm } from 'react-hook-form';
 import ReactMarkdown from 'react-markdown';
 
+import { formatDate } from '@prairielearn/formatter';
 import { type AppError, getAppError } from '@prairielearn/trpc/client';
 import { OverlayTrigger, useModalState } from '@prairielearn/ui';
 import type { Timezone } from '@prairielearn/utils/timezone';
@@ -267,13 +268,13 @@ const CourseRequestTableRow = memo(
                 >
                   <thead>
                     <tr>
-                      <th>Number</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>User</th>
-                      <th>Status</th>
+                      <th>شماره</th>
+                      <th>تاریخ شروع</th>
+                      <th>تاریخ پایان</th>
+                      <th>کاربر</th>
+                      <th>وضعیت</th>
                       <th>
-                        <span className="visually-hidden">Details</span>
+                        <span className="visually-hidden">جزئیات</span>
                       </th>
                     </tr>
                   </thead>
@@ -282,8 +283,8 @@ const CourseRequestTableRow = memo(
                       return (
                         <tr key={job.id}>
                           <td>{job.number}</td>
-                          <td>{job.start_date.toISOString()}</td>
-                          <td>{job.finish_date?.toISOString()}</td>
+                          <td dir="ltr">{formatDate(job.start_date, 'Asia/Tehran')}</td>
+                          <td dir="ltr">{job.finish_date ? formatDate(job.finish_date, 'Asia/Tehran') : '—'}</td>
                           <td>{job.authn_user_name}</td>
                           <td>
                             <JobStatus status={job.status} />
@@ -293,7 +294,7 @@ const CourseRequestTableRow = memo(
                               href={getAdministratorJobSequenceUrl(job.id)}
                               className="btn btn-xs btn-info float-end"
                             >
-                              Details
+                              جزئیات
                             </a>
                           </td>
                         </tr>

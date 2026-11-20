@@ -54,9 +54,7 @@ export function SelectedQuestionList({
   const sortedQuestions = [...questions].sort((a, b) =>
     a.qid.localeCompare(b.qid, undefined, { numeric: true }),
   );
-  const heading = `${sortedQuestions.length} selected ${
-    sortedQuestions.length === 1 ? 'question' : 'questions'
-  }`;
+  const heading = `${sortedQuestions.length} سوال انتخاب‌شده`;
   const listItems = (
     <ul className="list-group list-group-flush mt-2 mb-0">
       {sortedQuestions.map((question) => {

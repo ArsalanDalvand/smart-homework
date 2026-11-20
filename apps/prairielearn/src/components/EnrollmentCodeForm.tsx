@@ -236,7 +236,7 @@ export function EnrollmentCodeForm({
         });
       } else {
         setError('root.serverError', {
-          message: 'No course found with this enrollment code',
+          message: 'دوره‌ای با این کد اختصاصی ثبت‌نام یافت نشد.',
         });
       }
     } else {
@@ -247,34 +247,35 @@ export function EnrollmentCodeForm({
         });
       } catch {
         setError('root.serverError', {
-          message: 'An error occurred while looking up the code. Please try again.',
+          message: 'خطایی در استعلام کد ثبت‌نام رخ داد. لطفاً مجدداً تلاش فرمایید.',
         });
       }
     }
   };
 
   // https://www.react-hook-form.com/faqs/#Howtosharerefusage
+  const codeValidationMessage = 'کد ثبت‌نام باید شامل ۱۰ کاراکتر (حروف یا اعداد) باشد';
   const { ref: ref1, ...code1Props } = register('code1', {
-    required: 'Code must be 10 alphanumeric characters',
+    required: codeValidationMessage,
     pattern: {
       value: /^[A-Z0-9]{3}$/,
-      message: 'Code must be 10 alphanumeric characters',
+      message: codeValidationMessage,
     },
     onChange: (e) => handleInputChange(e.target.value, 'code1'),
   });
   const { ref: ref2, ...code2Props } = register('code2', {
-    required: 'Code must be 10 alphanumeric characters',
+    required: codeValidationMessage,
     pattern: {
       value: /^[A-Z0-9]{3}$/,
-      message: 'Code must be 10 alphanumeric characters',
+      message: codeValidationMessage,
     },
     onChange: (e) => handleInputChange(e.target.value, 'code2'),
   });
   const { ref: ref3, ...code3Props } = register('code3', {
-    required: 'Code must be 10 alphanumeric characters',
+    required: codeValidationMessage,
     pattern: {
       value: /^[A-Z0-9]{4}$/,
-      message: 'Code must be 10 alphanumeric characters',
+      message: codeValidationMessage,
     },
     onChange: (e) => handleInputChange(e.target.value, 'code3'),
   });

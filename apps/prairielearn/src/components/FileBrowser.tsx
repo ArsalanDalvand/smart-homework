@@ -272,14 +272,14 @@ function FileBrowser({
   const { navPage, __csrf_token: csrfToken } = resLocals;
   const pageTitle =
     navPage === 'course_admin'
-      ? 'Course Files'
+      ? 'فایل‌های درس'
       : navPage === 'instance_admin'
-        ? 'Course Instance Files'
+        ? 'فایل‌های دوره / ترم'
         : navPage === 'assessment' || navPage === 'public_assessment'
-          ? 'Assessment Files'
+          ? 'فایل‌های آزمون'
           : navPage === 'question' || navPage === 'public_question'
-            ? `Files (${resLocals.question.qid})`
-            : 'Files';
+            ? `فایل‌های سوال (${resLocals.question.qid})`
+            : 'فایل‌ها';
 
   const breadcrumbPaths = run(() => {
     // We only include the root path if it's viewable on the current page.
@@ -380,8 +380,8 @@ function FileBrowserActions({
                 class="btn btn-sm btn-light ${fileInfo.canEdit ? '' : 'disabled'}"
                 href="${paths.urlPrefix}/file_edit/${encodedPath}"
               >
-                <i class="fa fa-edit"></i>
-                <span>Edit</span>
+                <i class="fa fa-edit me-1"></i>
+                <span>ویرایش</span>
               </a>
               <button
                 type="button"
@@ -390,12 +390,12 @@ function FileBrowserActions({
                 data-bs-container="body"
                 data-bs-html="true"
                 data-bs-placement="auto"
-                data-bs-title="Upload file"
+                data-bs-title="بارگذاری فایل"
                 data-bs-content="${escapeHtml(FileUploadForm({ file: fileInfo, csrfToken }))}"
                 ${fileInfo.canUpload ? '' : 'disabled'}
               >
-                <i class="fa fa-arrow-up"></i>
-                <span>Upload</span>
+                <i class="fa fa-arrow-up me-1"></i>
+                <span>بارگذاری</span>
               </button>
             `
       }
@@ -405,8 +405,8 @@ function FileBrowserActions({
           fileInfo.name,
         )}"
       >
-        <i class="fa fa-arrow-down"></i>
-        <span>Download</span>
+        <i class="fa fa-arrow-down me-1"></i>
+        <span>دانلود</span>
       </a>
       ${
         isReadOnly
@@ -419,14 +419,14 @@ function FileBrowserActions({
                 data-bs-container="body"
                 data-bs-html="true"
                 data-bs-placement="auto"
-                data-bs-title="Rename file"
+                data-bs-title="تغییر نام فایل"
                 data-bs-content="${escapeHtml(
                   FileRenameForm({ file: fileInfo, csrfToken, isViewingFile: true }),
                 )}"
                 ${fileInfo.canRename ? '' : 'disabled'}
               >
-                <i class="fa fa-i-cursor"></i>
-                <span>Rename</span>
+                <i class="fa fa-i-cursor me-1"></i>
+                <span>تغییر نام</span>
               </button>
               <button
                 type="button"
@@ -435,12 +435,12 @@ function FileBrowserActions({
                 data-bs-container="body"
                 data-bs-html="true"
                 data-bs-placement="auto"
-                data-bs-title="Confirm delete"
+                data-bs-title="تایید حذف فایل"
                 data-bs-content="${escapeHtml(FileDeleteForm({ file: fileInfo, csrfToken }))}"
                 ${fileInfo.canDelete ? '' : 'disabled'}
               >
-                <i class="far fa-trash-alt"></i>
-                <span>Delete</span>
+                <i class="far fa-trash-alt me-1"></i>
+                <span>حذف</span>
               </button>
             `
       }
@@ -467,7 +467,7 @@ function DirectoryBrowserActions({
             data-bs-container="body"
             data-bs-html="true"
             data-bs-placement="auto"
-            data-bs-title="Upload files"
+            data-bs-title="بارگذاری فایل‌ها"
             data-bs-content="${escapeHtml(
               FileUploadForm({
                 file: { id: `New${d.label}`, info: d.info, working_path: d.path },
@@ -476,8 +476,8 @@ function DirectoryBrowserActions({
             )}
           "
           >
-            <i class="fa fa-plus"></i>
-            <span>Add new ${d.label.toLowerCase()} files</span>
+            <i class="fa fa-plus me-1"></i>
+            <span>افزودن فایل‌های ${d.label}</span>
           </button>
         `,
       )}
@@ -489,7 +489,7 @@ function DirectoryBrowserActions({
         data-bs-container="body"
         data-bs-html="true"
         data-bs-placement="auto"
-        data-bs-title="Upload files"
+        data-bs-title="بارگذاری فایل‌ها"
         data-bs-content="${escapeHtml(
           FileUploadForm({
             file: { id: 'New', working_path: paths.workingPath },
@@ -497,8 +497,8 @@ function DirectoryBrowserActions({
           }),
         )}"
       >
-        <i class="fa fa-plus"></i>
-        <span>Add new files</span>
+        <i class="fa fa-plus me-1"></i>
+        <span>افزودن فایل‌های جدید</span>
       </button>
     </div>
   `;
@@ -554,8 +554,8 @@ function DirectoryBrowserBody({
       <table class="table table-sm table-hover" aria-label="Directories and files">
         <thead class="visually-hidden">
           <tr>
-            <th>File</th>
-            <th>Actions</th>
+            <th>نام فایل</th>
+            <th>عملیات</th>
           </tr>
         </thead>
         <tbody>
@@ -564,7 +564,7 @@ function DirectoryBrowserBody({
               <tr>
                 <td class="align-middle">
                   <div class="d-flex align-items-center">
-                    <i class="far fa-file-alt"></i>
+                    <i class="far fa-file-alt me-2"></i>
                     ${
                       f.sync_errors
                         ? SyncProblemButtonHtml({
@@ -599,8 +599,8 @@ function DirectoryBrowserBody({
                               }"
                               href="${paths.urlPrefix}/file_edit/${encodePath(f.path)}"
                             >
-                              <i class="fa fa-edit"></i>
-                              <span>Edit</span>
+                              <i class="fa fa-edit me-1"></i>
+                              <span>ویرایش</span>
                             </a>
                             <button
                               type="button"
@@ -610,13 +610,13 @@ function DirectoryBrowserBody({
                               data-bs-container="body"
                               data-bs-html="true"
                               data-bs-placement="auto"
-                              data-bs-title="Upload file"
+                              data-bs-title="بارگذاری فایل"
                               data-bs-content="
                   ${escapeHtml(FileUploadForm({ file: f, csrfToken }))}"
                               ${f.canUpload ? '' : 'disabled'}
                             >
-                              <i class="fa fa-arrow-up"></i>
-                              <span>Upload</span>
+                              <i class="fa fa-arrow-up me-1"></i>
+                              <span>بارگذاری</span>
                             </button>
                           `
                     }
@@ -628,8 +628,8 @@ function DirectoryBrowserBody({
                         f.path,
                       )}?attachment=${encodeURIComponent(f.name)}"
                     >
-                      <i class="fa fa-arrow-down"></i>
-                      <span>Download</span>
+                      <i class="fa fa-arrow-down me-1"></i>
+                      <span>دانلود</span>
                     </a>
                     ${
                       isReadOnly
@@ -642,15 +642,15 @@ function DirectoryBrowserBody({
                               data-bs-container="body"
                               data-bs-html="true"
                               data-bs-placement="auto"
-                              data-bs-title="Rename file"
+                              data-bs-title="تغییر نام فایل"
                               data-bs-content="${escapeHtml(
                                 FileRenameForm({ file: f, csrfToken, isViewingFile: false }),
                               )}"
                               data-testid="rename-file-button"
                               ${f.canRename ? '' : 'disabled'}
                             >
-                              <i class="fa fa-i-cursor"></i>
-                              <span>Rename</span>
+                              <i class="fa fa-i-cursor me-1"></i>
+                              <span>تغییر نام</span>
                             </button>
                             <button
                               type="button"
@@ -659,13 +659,13 @@ function DirectoryBrowserBody({
                               data-bs-container="body"
                               data-bs-html="true"
                               data-bs-placement="auto"
-                              data-bs-title="Confirm delete"
+                              data-bs-title="تایید حذف فایل"
                               data-bs-content="${escapeHtml(FileDeleteForm({ file: f, csrfToken }))}"
                               data-testid="delete-file-button"
                               ${f.canDelete ? '' : 'disabled'}
                             >
-                              <i class="far fa-trash-alt"></i>
-                              <span>Delete</span>
+                              <i class="far fa-trash-alt me-1"></i>
+                              <span>حذف</span>
                             </button>
                           `
                     }
@@ -678,7 +678,7 @@ function DirectoryBrowserBody({
             (d) => html`
               <tr>
                 <td colspan="2">
-                  <i class="fa fa-folder"></i>
+                  <i class="fa fa-folder me-2 text-warning"></i>
                   ${
                     d.canView
                       ? html`<a href="${paths.urlPrefix}/file_view/${encodePath(d.path)}"
@@ -705,12 +705,13 @@ function FileUploadForm({ file, csrfToken }: { file: FileUploadInfo; csrfToken: 
       method="POST"
       enctype="multipart/form-data"
       novalidate
+      style="font-family: var(--font-persian);"
     >
       ${file.info ? html`<div class="mb-3">${file.info}</div>` : ''}
 
       <div class="mb-3">
         <label class="form-label" for="attachFileInput-${file.id}"
-          >Choose ${file.path == null ? 'files' : 'file'}</label
+          >انتخاب ${file.path == null ? 'فایل‌ها' : 'فایل'}</label
         >
         <input
           type="file"
@@ -727,8 +728,8 @@ function FileUploadForm({ file, csrfToken }: { file: FileUploadInfo; csrfToken: 
           required
         />
         <small class="form-text text-muted">
-          Max file size: ${maxFileSizeFormatted}
-          ${file.path == null ? `per file (at most ${config.fileUploadMaxFiles} files)` : ''}
+          حداکثر حجم مجاز: ${maxFileSizeFormatted}
+          ${file.path == null ? `برای هر فایل (حداکثر ${config.fileUploadMaxFiles} فایل)` : ''}
         </small>
       </div>
 
@@ -741,9 +742,9 @@ function FileUploadForm({ file, csrfToken }: { file: FileUploadInfo; csrfToken: 
             : html`<input type="hidden" name="working_path" value="${file.working_path}" />`
         }
         <div class="text-end justify-content-end gap-2 d-flex flex-wrap">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">انصراف</button>
           <button type="submit" class="btn btn-primary">
-            Upload ${file.path == null ? 'files' : 'file'}
+            بارگذاری ${file.path == null ? 'فایل‌ها' : 'فایل'}
           </button>
         </div>
       </div>
@@ -753,14 +754,14 @@ function FileUploadForm({ file, csrfToken }: { file: FileUploadInfo; csrfToken: 
 
 function FileDeleteForm({ file, csrfToken }: { file: FileDeleteInfo; csrfToken: string }) {
   return html`
-    <form name="instructor-file-delete-form-${file.id}" method="POST">
-      <p>Are you sure you want to delete <strong>${file.name}</strong>?</p>
+    <form name="instructor-file-delete-form-${file.id}" method="POST" style="font-family: var(--font-persian);">
+      <p>آیا از حذف فایل <strong>${file.name}</strong> اطمینان دارید؟</p>
       <input type="hidden" name="__action" value="delete_file" />
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <input type="hidden" name="file_path" value="${file.path}" />
       <div class="text-end">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">Cancel</button>
-        <button type="submit" class="btn btn-primary">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">انصراف</button>
+        <button type="submit" class="btn btn-danger">حذف فایل</button>
       </div>
     </form>
   `;
@@ -783,23 +784,22 @@ function FileRenameForm({
       method="POST"
       class="needs-validation"
       novalidate
+      style="font-family: var(--font-persian);"
     >
       <input type="hidden" name="__action" value="rename_file" />
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <input type="hidden" name="working_path" value="${file.dir}" />
       ${isViewingFile ? html`<input type="hidden" name="was_viewing_file" value="true" />` : ''}
       <input type="hidden" name="old_file_name" value="${file.name}" />
-      <div class="container p-0 mb-4">
-        Use only letters, numbers, dashes, and underscores, with no spaces. A file extension is
-        recommended, delimited by a period. If you want to move the file to a different directory,
-        you can specify a relative path that is delimited by a forward slash and that includes
-        "<code>..</code>".
+      <div class="container p-0 mb-4 small text-muted">
+        تنها از حروف، ارقام، خط تیره (-) و زیرخط (_) بدون فاصله استفاده فرمایید. استفاده از پسوند فایل توصیه می‌شود. جهت انتقال فایل به پوشه دیگر می‌توانید مسیر نسبی با استفاده از / یا .. تعیین نمایید.
       </div>
       <div class="mb-3">
-        <label class="form-label" for="renameFileInput${file.id}">Path:</label>
+        <label class="form-label" for="renameFileInput${file.id}">نام یا مسیر جدید:</label>
         <input
           type="text"
-          class="form-control js-rename-input"
+          class="form-control js-rename-input font-monospace"
+          dir="ltr"
           id="renameFileInput${file.id}"
           name="new_file_name"
           value="${file.name}"
@@ -810,8 +810,8 @@ function FileRenameForm({
         />
       </div>
       <div class="text-end justify-content-end gap-2 d-flex flex-wrap">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">Cancel</button>
-        <button type="submit" class="btn btn-primary">Change</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">انصراف</button>
+        <button type="submit" class="btn btn-primary">اعمال تغییر نام</button>
       </div>
     </form>
   `;

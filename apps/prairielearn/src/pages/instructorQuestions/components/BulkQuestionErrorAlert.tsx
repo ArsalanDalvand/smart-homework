@@ -25,9 +25,9 @@ export function BulkQuestionErrorAlert({
       className="mt-3 mb-0"
       render={{
         SYNC_JOB_FAILED: syncJobFailedRenderer(urlPrefix),
-        INVALID_TOPIC: ({ topic }) => `Invalid topic: ${topic}`,
+        INVALID_TOPIC: ({ topic }) => `مبحث آموزشی نامعتبر است: ${topic}`,
         INVALID_TAGS: ({ tags }) =>
-          tags.length === 1 ? `Invalid tag: ${tags[0]}` : `Invalid tags: ${tags.join(', ')}`,
+          tags.length === 1 ? `برچسب نامعتبر است: ${tags[0]}` : `برچسب‌های نامعتبر: ${tags.join(', ')}`,
         QUESTIONS_USED_IN_OTHER_COURSES: ({ message, qids }) => (
           <>
             {message}

@@ -57,7 +57,7 @@ export function DeleteQuestionsModal({
     ...trpc.questions.deleteQuestions.mutationOptions(),
     onSuccess: async ({ deletedCount }) => {
       await invalidateQuestionsList();
-      onActionSuccess(`Deleted ${deletedCount} ${deletedCount === 1 ? 'question' : 'questions'}.`);
+      onActionSuccess(`${deletedCount} سوال با موفقیت حذف گردید.`);
       clearSelection();
       onHide();
     },
@@ -77,35 +77,35 @@ export function DeleteQuestionsModal({
       aria-labelledby="bulk-delete-questions-modal-title"
       onHide={onHide}
       onExited={() => mutation.reset()}
+      contentClassName="text-end"
+      dir="rtl"
+      style={{ fontFamily: 'var(--font-persian)' }}
     >
       <Modal.Header closeButton>
-        <Modal.Title id="bulk-delete-questions-modal-title">Delete selected questions</Modal.Title>
+        <Modal.Title id="bulk-delete-questions-modal-title">حذف سوالات انتخاب‌شده</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          Are you sure you want to delete{' '}
+          آیا از حذف{' '}
           <strong>
-            {selectedQuestions.length} {isPlural ? 'questions' : 'question'}
-          </strong>
-          ?
+            {selectedQuestions.length} سوال
+          </strong>{' '}
+          اطمینان دارید؟
         </p>
         {affectedAssessmentCount > 0 && (
           <Alert variant="info" className="mb-3">
             <strong>{affectedAssessmentCount}</strong>{' '}
-            {affectedAssessmentCount === 1 ? 'assessment' : 'assessments'} will be affected.
+            آزمون تحت تاثیر قرار خواهند گرفت.
             {emptiedZoneCount > 0 && (
               <>
                 {' '}
-                <strong>{emptiedZoneCount}</strong> empty{' '}
-                {emptiedZoneCount === 1 ? 'zone' : 'zones'} will be removed.
+                <strong>{emptiedZoneCount}</strong> بخش خالی حذف خواهد شد.
               </>
             )}
             {lockpointsMovedOrRemoved > 0 && (
               <>
                 {' '}
-                <strong>{lockpointsMovedOrRemoved}</strong>{' '}
-                {lockpointsMovedOrRemoved === 1 ? 'lockpoint' : 'lockpoints'} will be moved or
-                removed.
+                <strong>{lockpointsMovedOrRemoved}</strong> نقطه قفل جابجا یا حذف خواهد شد.
               </>
             )}
           </Alert>
@@ -115,14 +115,14 @@ export function DeleteQuestionsModal({
           error={previewError}
           className="mt-3 mb-0"
           render={{
-            UNKNOWN: ({ message }) => <>Failed to load deletion preview: {message}</>,
+            UNKNOWN: ({ message }) => <>خطا در بارگذاری پیش‌نمایش حذف: {message}</>,
           }}
         />
         <BulkQuestionErrorAlert error={appError} urlPrefix={urlPrefix} />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         {!isBlocked && (
           <Button
@@ -131,12 +131,10 @@ export function DeleteQuestionsModal({
             onClick={() => mutation.mutate({ questionIds })}
           >
             {mutation.isPending
-              ? 'Deleting...'
+              ? 'در حال حذف…'
               : previewQuery.isFetching
-                ? 'Loading preview...'
-                : `Delete ${selectedQuestions.length} ${
-                    selectedQuestions.length === 1 ? 'question' : 'questions'
-                  }`}
+                ? 'در حال دریافت پیش‌نمایش…'
+                : `حذف ${selectedQuestions.length} سوال`}
           </Button>
         )}
       </Modal.Footer>

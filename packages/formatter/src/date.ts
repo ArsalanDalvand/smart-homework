@@ -20,8 +20,38 @@ function getDateTimeFormatter(
   return formatter;
 }
 
+export function formatShamsiDateNumeric(date: Date, timeZone: string): string {
+  try {
+    const parts = keyBy(
+      getDateTimeFormatter('fa-IR-u-ca-persian', {
+        timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).formatToParts(date),
+      (x) => x.type,
+    );
+    return `${parts.year.value}/${parts.month.value}/${parts.day.value}`;
+  } catch {
+    return '';
+  }
+}
+
+export function formatShamsiDateFriendly(date: Date, timeZone: string): string {
+  try {
+    return getDateTimeFormatter('fa-IR-u-ca-persian', {
+      timeZone,
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(date);
+  } catch {
+    return '';
+  }
+}
+
 /**
- * Format a date to a human-readable string like '2020-03-27 12:34:56 (CDT)'.
+ * Format a date to a human-readable string like '2020-03-27 12:34:56 [۱۴۰۵/۰۸/۲۹] (CDT)'.
  *
  * @param date The date to format.
  * @param timeZone The time zone to use for formatting.
@@ -57,9 +87,13 @@ export function formatDate(
     timeZoneName: longTz ? 'long' : 'short',
   };
   const parts = keyBy(getDateTimeFormatter('en-US', options).formatToParts(date), (x) => x.type);
+  const shamsi = formatShamsiDateNumeric(date, timeZone);
   let dateFormatted = `${parts.year.value}-${parts.month.value}-${parts.day.value} ${parts.hour.value}:${parts.minute.value}:${parts.second.value}`;
   if (includeMs) {
     dateFormatted = `${dateFormatted}.${parts.fractionalSecond.value}`;
+  }
+  if (shamsi) {
+    dateFormatted = `${dateFormatted} [${shamsi}]`;
   }
   if (includeTz) {
     dateFormatted = `${dateFormatted} (${parts.timeZoneName.value})`;
@@ -168,11 +202,14 @@ export function formatDateYMD(date: Date, timeZone: string): string {
     day: '2-digit',
   };
   const parts = keyBy(getDateTimeFormatter('en-US', options).formatToParts(date), (x) => x.type);
-  return `${parts.year.value}-${parts.month.value}-${parts.day.value}`;
+  const shamsi = formatShamsiDateNumeric(date, timeZone);
+  return shamsi
+    ? `${parts.year.value}-${parts.month.value}-${parts.day.value} [${shamsi}]`
+    : `${parts.year.value}-${parts.month.value}-${parts.day.value}`;
 }
 
 /**
- * Format a date to a human-readable string like '2020-03-27 14:27'.
+ * Format a date to a human-readable string like '2020-03-27 14:27 [۱۴۰۵/۰۸/۲۹]'.
  *
  * @param date The date to format.
  * @param timeZone The time zone to use for formatting.
@@ -189,7 +226,10 @@ export function formatDateYMDHM(date: Date, timeZone: string): string {
     minute: '2-digit',
   };
   const parts = keyBy(getDateTimeFormatter('en-US', options).formatToParts(date), (x) => x.type);
-  return `${parts.year.value}-${parts.month.value}-${parts.day.value} ${parts.hour.value}:${parts.minute.value}`;
+  const shamsi = formatShamsiDateNumeric(date, timeZone);
+  return shamsi
+    ? `${parts.year.value}-${parts.month.value}-${parts.day.value} ${parts.hour.value}:${parts.minute.value} [${shamsi}]`
+    : `${parts.year.value}-${parts.month.value}-${parts.day.value} ${parts.hour.value}:${parts.minute.value}`;
 }
 
 /**
@@ -375,18 +415,21 @@ function formatDateFriendlyParts(
 
   // format the date string
 
+  const shamsi = formatShamsiDateFriendly(date, timezone);
   let dateFormatted = '';
   if (daysOffset === 0) {
-    dateFormatted = 'today';
+    dateFormatted = shamsi ? `امروز [${shamsi}]` : 'today';
   } else if (daysOffset === 1) {
-    dateFormatted = 'tomorrow';
+    dateFormatted = shamsi ? `فردا [${shamsi}]` : 'tomorrow';
   } else if (daysOffset === -1) {
-    dateFormatted = 'yesterday';
+    dateFormatted = shamsi ? `دیروز [${shamsi}]` : 'yesterday';
   } else if (Math.abs(daysOffset) <= 180) {
     // non-breaking-space (\u00a0) is used between the month and day
     dateFormatted = `${parts.weekday.value}, ${parts.month.value}\u00a0${parts.day.value}`;
+    if (shamsi) dateFormatted = `${dateFormatted} [${shamsi}]`;
   } else {
     dateFormatted = `${parts.weekday.value}, ${parts.month.value}\u00a0${parts.day.value}, ${parts.year.value}`;
+    if (shamsi) dateFormatted = `${dateFormatted} [${shamsi}]`;
   }
 
   const precisionOrder: TimePrecision[] = ['second', 'minute', 'hour'];

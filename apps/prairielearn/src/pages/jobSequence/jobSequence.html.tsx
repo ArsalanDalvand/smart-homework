@@ -36,8 +36,8 @@ export function JobSequence({
         {referrer && (
           <div className="row">
             <div className="col-12">
-              <a className="btn btn-primary mb-4" href={referrer}>
-                <i className="fa fa-arrow-left" aria-hidden="true" /> Back to previous page
+              <a className="btn btn-primary mb-4" href={referrer} style={{ fontFamily: 'var(--font-persian)' }}>
+                <i className="fa fa-arrow-right me-1" aria-hidden="true" /> بازگشت به صفحه قبلی
               </a>
             </div>
           </div>

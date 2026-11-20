@@ -65,7 +65,7 @@ export function AdministratorCourses({
     <QueryClientProviderDebug client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
         <>
-          <h1 className="visually-hidden">Courses</h1>
+          <h1 className="visually-hidden">مدیریت درس‌ها</h1>
           <CoursesCard
             courses={courses}
             institutions={institutions}

@@ -7,6 +7,8 @@ export {
   formatDateWithinRange,
   formatDateYMD,
   formatDateYMDHM,
+  formatShamsiDateNumeric,
+  formatShamsiDateFriendly,
   formatTz,
 } from './date.js';
 export {

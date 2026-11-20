@@ -85,9 +85,9 @@ export function TagsTopicsTable<Entity extends StaffTag | StaffTopic>({
 
   return (
     <>
-      <div className="card mb-4">
+      <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
         <div className="card-header bg-primary text-white d-flex align-items-center">
-          <h1>{entityType === 'topic' ? 'Topics' : 'Tags'}</h1>
+          <h1 className="h4 mb-0">{entityType === 'topic' ? 'مباحث آموزشی (Topics)' : 'برچسب‌های سوالات (Tags)'}</h1>
           <div className="ms-auto">
             {allowEdit && origHash ? (
               !editMode ? (
@@ -96,7 +96,7 @@ export function TagsTopicsTable<Entity extends StaffTag | StaffTopic>({
                   type="button"
                   onClick={() => setEditMode(true)}
                 >
-                  <i className="fa fa-edit" aria-hidden="true" /> Edit {entityType}s
+                  <i className="fa fa-edit me-1" aria-hidden="true" /> ویرایش {entityType === 'topic' ? 'مباحث' : 'برچسب‌ها'}
                 </button>
               ) : (
                 <form method="POST">
@@ -106,14 +106,14 @@ export function TagsTopicsTable<Entity extends StaffTag | StaffTopic>({
                   <input type="hidden" name="data" value={JSON.stringify(entitiesState)} />
                   <span className="js-edit-mode-buttons">
                     <button className="btn btn-sm btn-light mx-1" type="submit">
-                      <i className="fa fa-save" aria-hidden="true" /> Save
+                      <i className="fa fa-save me-1" aria-hidden="true" /> ذخیره تغییرات
                     </button>
                     <button
                       className="btn btn-sm btn-light"
                       type="button"
                       onClick={() => window.location.reload()}
                     >
-                      Cancel
+                      انصراف
                     </button>
                   </span>
                 </form>
@@ -126,17 +126,17 @@ export function TagsTopicsTable<Entity extends StaffTag | StaffTopic>({
         <div className="table-responsive">
           <table
             className="table table-sm table-hover table-striped"
-            aria-label={entityType === 'topic' ? 'Topics' : 'Tags'}
+            aria-label={entityType === 'topic' ? 'مباحث درسی' : 'برچسب‌ها'}
           >
             <thead>
               <tr>
                 {editMode && allowEdit && (
                   <th style={{ width: '1%' }}>
-                    <span className="visually-hidden">Edit and Delete</span>
+                    <span className="visually-hidden">عملیات ویرایش و حذف</span>
                   </th>
                 )}
-                <th>Name</th>
-                <th className="col-9">Description</th>
+                <th>نام {entityType === 'topic' ? 'مبحث' : 'برچسب'}</th>
+                <th className="col-9">توضیحات</th>
               </tr>
             </thead>
             <tbody>
@@ -152,7 +152,7 @@ export function TagsTopicsTable<Entity extends StaffTag | StaffTopic>({
                           <button
                             className="btn btn-sm btn-ghost"
                             type="button"
-                            aria-label={`Edit ${entityType} ${row.name}`}
+                            aria-label={`ویرایش ${entityType === 'topic' ? 'مبحث' : 'برچسب'} ${row.name}`}
                             onClick={() => handleEdit(index)}
                           >
                             <i className="fa fa-edit" aria-hidden="true" />
@@ -160,7 +160,7 @@ export function TagsTopicsTable<Entity extends StaffTag | StaffTopic>({
                           <button
                             className="btn btn-sm btn-ghost"
                             type="button"
-                            aria-label={`Delete ${entityType} ${row.name}`}
+                            aria-label={`حذف ${entityType === 'topic' ? 'مبحث' : 'برچسب'} ${row.name}`}
                             onClick={() => handleDelete(row.id)}
                           >
                             <i className="fa fa-trash text-danger" aria-hidden="true" />
@@ -198,7 +198,7 @@ export function TagsTopicsTable<Entity extends StaffTag | StaffTopic>({
                 <tr>
                   <td colSpan={5}>
                     <button className="btn btn-sm btn-ghost" type="button" onClick={handleCreate}>
-                      <i className="fa fa-plus" aria-hidden="true" /> New {entityType}
+                      <i className="fa fa-plus me-1" aria-hidden="true" /> افزودن {entityType === 'topic' ? 'مبحث جدید' : 'برچسب جدید'}
                     </button>
                   </td>
                 </tr>

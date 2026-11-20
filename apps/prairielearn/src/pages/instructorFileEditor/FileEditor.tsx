@@ -52,14 +52,13 @@ const EDITOR_OPTIONS = {
 
 function InvalidJsonModalContent() {
   return (
-    <div className="alert alert-danger d-flex flex-column align-items-start mb-0">
+    <div className="alert alert-danger d-flex flex-column align-items-start mb-0" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="d-flex flex-row align-items-start gap-2 mb-1">
         <i className="bi bi-x-circle-fill fs-6" />
-        <strong>Invalid JSON</strong>
+        <strong>فرمت نامعتبر JSON</strong>
       </div>
       <div>
-        This file contains invalid JSON syntax and cannot be saved. Please fix the errors before
-        saving.
+        این فایل حاوی ساختار نامعتبر JSON است و امکان ذخیره آن وجود ندارد. لطفاً پیش از ذخیره، خطاهای ساختاری را برطرف نمایید.
       </div>
     </div>
   );
@@ -75,30 +74,30 @@ function UuidChangeModalContent({
   newUuid?: string;
 }) {
   return (
-    <>
+    <div style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="alert alert-warning d-flex flex-column mb-3">
         <div className="d-flex flex-row align-items-start gap-2 mb-1">
           <i className="bi bi-exclamation-triangle-fill fs-6" />
-          <strong>UUID change</strong>
+          <strong>تغییر شناسه یکتا (UUID)</strong>
         </div>
         <div>
           {run(() => {
             if (errorCode === SaveErrorCode.UUID_CHANGED && originalUuid && newUuid) {
               return (
                 <>
-                  The UUID in this file was changed from <code>"{originalUuid}"</code> to{' '}
-                  <code>"{newUuid}"</code>.
+                  شناسه UUID این فایل از <code dir="ltr">&quot;{originalUuid}&quot;</code> به{' '}
+                  <code dir="ltr">&quot;{newUuid}&quot;</code> تغییر کرده است.
                 </>
               );
             } else if (errorCode === SaveErrorCode.UUID_REMOVED) {
-              return <>The UUID was removed from this file.</>;
+              return <>شناسه UUID از این فایل حذف شده است.</>;
             }
-            return <>The UUID was modified.</>;
+            return <>شناسه UUID ویرایش شده است.</>;
           })}
         </div>
       </div>
-      <div>Clicking "Confirm save" will save this file with its original UUID.</div>
-    </>
+      <div>کلیک بر روی «تایید ذخیره» این فایل را با همان UUID اولیه و اصلی خود ذخیره خواهد نمود.</div>
+    </div>
   );
 }
 
@@ -181,32 +180,25 @@ function getSyncAlert(
   switch (outcome) {
     case undefined:
     case 'save_failed':
-      return { variant: 'danger', message: 'Failed to save file.' };
+      return { variant: 'danger', message: 'خطا در ذخیره‌سازی فایل روی دیسک.' };
     case 'sync_failed':
-      return { variant: 'danger', message: 'File was saved, but the course failed to sync.' };
+      return { variant: 'danger', message: 'فایل ذخیره شد، اما همگام‌سازی محتوای درس با پایگاه‌داده ناموفق بود.' };
     case 'sync_json_errors':
       // The file's own entity has sync errors — the user's edit likely caused them.
       if (fileMetadata?.syncErrors) {
         return {
           variant: 'danger',
           message:
-            'File was saved, but it contains errors that prevented it from syncing. See the details above.',
+            'فایل ذخیره شد، اما دارای خطاهایی است که مانع همگام‌سازی گردید. جزئیات خطاها را در بالا مشاهده فرمایید.',
         };
       }
-      // The sync completed, but some *other* entity has JSON errors. The user's
-      // file synced fine — we show a warning so they're not alarmed.
-      //
-      // TODO: This can be misleading when the user's edit *caused* errors in other
-      // entities (e.g., renaming a QID that an assessment references). We'd need to
-      // snapshot sync_errors before the sync and diff afterward to distinguish
-      // "pre-existing errors" from "errors caused by this edit."
       return {
         variant: 'warning',
         message:
-          'File was saved and synced successfully. Other files in this course have sync errors.',
+          'فایل ذخیره و با موفقیت همگام‌سازی شد. البته سایر فایل‌های درس دارای خطای همگام‌سازی هستند.',
       };
     case 'success':
-      return { variant: 'success', message: 'File was saved and synced successfully.' };
+      return { variant: 'success', message: 'فایل با موفقیت ذخیره و همگام‌سازی شد.' };
     default:
       assertNever(outcome);
   }
@@ -412,7 +404,7 @@ export function FileEditor({
                     onClick={() => setHelpExpanded((expanded) => !expanded)}
                   >
                     <i className="far fa-question-circle" aria-hidden="true" />{' '}
-                    <span>{helpExpanded ? 'Hide help' : 'Show help'}</span>
+                    <span>{helpExpanded ? 'مخفی کردن راهنما' : 'نمایش راهنما'}</span>
                   </button>
                   {isJson ? (
                     <button
@@ -420,7 +412,7 @@ export function FileEditor({
                       className="btn btn-light btn-sm"
                       onClick={() => void reformatJsonFile()}
                     >
-                      <i className="fas fa-paintbrush" aria-hidden="true" /> Reformat
+                      <i className="fas fa-paintbrush" aria-hidden="true" /> قالب‌بندی خودکار
                     </button>
                   ) : null}
                   {editorData.lintHtmlMustache ? (
@@ -428,7 +420,7 @@ export function FileEditor({
                       type="button"
                       className="btn btn-light btn-sm js-reformat-html-mustache"
                     >
-                      <i className="fas fa-paintbrush" aria-hidden="true" /> Reformat
+                      <i className="fas fa-paintbrush" aria-hidden="true" /> قالب‌بندی خودکار
                     </button>
                   ) : null}
                   <button
@@ -438,7 +430,7 @@ export function FileEditor({
                     className="btn btn-light btn-sm"
                     disabled={saveDisabled}
                   >
-                    <i className="fas fa-save" aria-hidden="true" /> Save
+                    <i className="fas fa-save" aria-hidden="true" /> ذخیره تغییرات
                   </button>
                 </div>
               </Collapse>
@@ -446,14 +438,14 @@ export function FileEditor({
           </div>
           <Collapse in={helpExpanded}>
             <div id="help">
-              <div className="card-body">
-                You are editing the file <code>{editorData.normalizedFileName}</code>. To save
-                changes, click <strong>Save</strong> or use <strong>Ctrl-S</strong> (Windows/Linux)
-                or <strong>Cmd-S</strong> (Mac).{' '}
+              <div className="card-body" style={{ lineHeight: '1.8' }}>
+                شما در حال ویرایش فایل <code dir="ltr">{editorData.normalizedFileName}</code> هستید. برای ذخیره
+                تغییرات، بر روی <strong>ذخیره تغییرات</strong> کلیک کنید یا کلیدهای میانبر{' '}
+                <kbd>Ctrl-S</kbd> (ویندوز/لینوکس) یا <kbd>Cmd-S</kbd> (مک) را بفشارید.{' '}
                 {fileEditorUseGit
-                  ? 'Doing so will write your changes to disk, will push them to the remote GitHub repository, and will sync them to the database.'
-                  : 'Doing so will write your changes to disk and will sync them to your local database. You will need to push these changes to the GitHub repository manually (i.e., not in PrairieLearn), if desired.'}{' '}
-                If you reload or navigate away from this page, any unsaved changes will be lost.
+                  ? 'با این کار تغییرات بر روی دیسک ثبت شده، به مخزن گیت‌هاب ارسال گردیده و با پایگاه‌داده همگام می‌شود.'
+                  : 'با این کار تغییرات بر روی دیسک ثبت شده و با پایگاه‌داده محلی همگام‌سازی خواهد شد. ارسال تغییرات به مخزن گیت‌هاب باید در صورت نیاز به صورت دستی انجام گیرد.'}{' '}
+                در صورت خروج از این صفحه یا بارگذاری مجدد، تغییرات ذخیره‌نشده از دست خواهند رفت.
               </div>
             </div>
           </Collapse>
@@ -485,7 +477,7 @@ export function FileEditor({
                                 aria-controls="job-sequence-results"
                                 onClick={() => setDetailExpanded((expanded) => !expanded)}
                               >
-                                {detailExpanded ? 'Hide detail' : 'Show detail'}
+                                {detailExpanded ? 'مخفی کردن جزئیات' : 'نمایش جزئیات'}
                               </button>
                             </div>
                           ) : null}
@@ -510,13 +502,12 @@ export function FileEditor({
                   onClose={() => setShowVersionChoiceAlert(false)}
                 >
                   {versionChoice.hasRemoteChanges
-                    ? 'Both you and another user made changes to this file.'
-                    : 'You were editing this file and made changes.'}{' '}
-                  You may choose either to continue editing your draft or to discard your changes.
-                  In particular, if you click <strong>Choose my version</strong> and then click{' '}
-                  <strong>Save</strong>, you will overwrite the version of this file that is on
-                  disk. If you instead click <strong>Choose their version</strong>, any changes you
-                  have made to this file will be lost.
+                    ? 'هم شما و هم کاربر دیگری تغییراتی در این فایل ایجاد کرده‌اید.'
+                    : 'شما در حال ویرایش این فایل بودید و تغییراتی در پیش‌نویس ثبت شده است.'}{' '}
+                  می‌توانید ادامه ویرایش نسخه پیش‌نویس خود را انتخاب کنید یا تغییرات را نادیده بگیرید.
+                  به‌طور خاص، در صورت کلیک بر روی <strong>انتخاب نسخه من</strong> و فشردن{' '}
+                  <strong>ذخیره تغییرات</strong>، نسخه روی دیسک رونویسی خواهد شد. اما در صورت کلیک بر روی{' '}
+                  <strong>انتخاب نسخه سرور</strong>، تمام تغییرات اعمالی شما در این فایل لغو خواهند گردید.
                 </Alert>
               ) : null}
             </div>
@@ -525,9 +516,9 @@ export function FileEditor({
                 <div className="card p-0">
                   {showVersionChoice ? (
                     <div className="card-header text-center">
-                      <h4 className="mb-4">My version</h4>
+                      <h4 className="mb-4">نسخه من (پیش‌نویس)</h4>
                       <button className="btn btn-primary" type="button" onClick={takeOverDraft}>
-                        Choose my version (continue editing)
+                        انتخاب نسخه من (ادامه ویرایش)
                       </button>
                     </div>
                   ) : null}
@@ -568,12 +559,12 @@ export function FileEditor({
                       >
                         <div className="d-flex">
                           <Toast.Body>
-                            Error formatting JSON. Please check your JSON syntax.
+                            خطا در قالب‌بندی JSON. لطفاً ساختار نگارشی (Syntax) فایل را بررسی فرمایید.
                           </Toast.Body>
                           <button
                             type="button"
                             className="btn-close btn-close-white me-2 m-auto"
-                            aria-label="Close"
+                            aria-label="بستن"
                             onClick={() => setReformatToastIds((ids) => ({ ...ids, json: 0 }))}
                           />
                         </div>
@@ -589,12 +580,12 @@ export function FileEditor({
                         >
                           <div className="d-flex">
                             <Toast.Body>
-                              Error reformatting file. Please check the syntax.
+                              خطا در قالب‌بندی خودکار فایل. لطفاً صحت ساختار کد را بررسی فرمایید.
                             </Toast.Body>
                             <button
                               type="button"
                               className="btn-close btn-close-white me-2 m-auto"
-                              aria-label="Close"
+                              aria-label="بستن"
                               onClick={() => setReformatToastIds((ids) => ({ ...ids, html: 0 }))}
                             />
                           </div>
@@ -608,9 +599,9 @@ export function FileEditor({
                 <div className="col">
                   <div className="card p-0">
                     <div className="card-header text-center">
-                      <h4 className="mb-4">Their version</h4>
+                      <h4 className="mb-4">نسخه سرور (روی دیسک)</h4>
                       <button className="btn btn-primary" type="button" onClick={discardDraft}>
-                        Choose their version (discard my changes)
+                        انتخاب نسخه سرور (لغو تغییرات من)
                       </button>
                     </div>
                     <div className="card-body p-0">
@@ -637,10 +628,11 @@ export function FileEditor({
         onExited={() => {
           setSaveIssue(null);
         }}
+        style={{ fontFamily: 'var(--font-persian)' }}
       >
         <Modal.Header closeButton>
           <Modal.Title as="h2" className="h4" id="save-confirmation-modal-title">
-            {saveIssue?.errorCode === SaveErrorCode.INVALID_JSON ? 'Cannot save' : 'Confirm save'}
+            {saveIssue?.errorCode === SaveErrorCode.INVALID_JSON ? 'عدم امکان ذخیره‌سازی' : 'تایید ذخیره‌سازی'}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -664,11 +656,11 @@ export function FileEditor({
             }
             onClick={cancelSave}
           >
-            {saveIssue?.errorCode === SaveErrorCode.INVALID_JSON ? 'OK' : 'Cancel'}
+            {saveIssue?.errorCode === SaveErrorCode.INVALID_JSON ? 'متوجه شدم' : 'انصراف'}
           </button>
           {saveIssue?.errorCode === SaveErrorCode.INVALID_JSON ? null : (
             <button type="button" className="btn btn-primary" onClick={() => void confirmSave()}>
-              Confirm save
+              تایید و ذخیره‌سازی
             </button>
           )}
         </Modal.Footer>

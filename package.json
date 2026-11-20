@@ -1,5 +1,12 @@
 {
-  "name": "prairielearn",
+  "name": "smart-learning",
+  "description": "Smart Learning - سامانه جامع ارزیابی، آموزش و یادگیری هوشمند دانشگاه علم و صنعت ایران",
+  "author": "Arsalan Dalvand <arsalan_dalvand@mathdep.iust.ac.ir> (https://t.me/b_7vat4r)",
+  "homepage": "https://github.com/ArsalanDalvand/smart-learning",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArsalanDalvand/smart-learning.git"
+  },
   "private": true,
   "workspaces": [
     "apps/*",

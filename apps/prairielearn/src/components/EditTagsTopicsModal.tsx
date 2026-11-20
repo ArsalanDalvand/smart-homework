@@ -65,16 +65,17 @@ export function EditTagsTopicsModal<Entity extends StaffTopic | StaffTag>({
       onHide={onClose}
       onEntering={handleModalEntering}
       onExited={handleModalExited}
+      style={{ fontFamily: 'var(--font-persian)' }}
     >
       <Modal.Header closeButton>
         <Modal.Title>
           {isCreateMode
             ? state.entityType === 'topic'
-              ? 'Add topic'
-              : 'Add tag'
+              ? 'افزودن مبحث جدید'
+              : 'افزودن برچسب جدید'
             : state.type === 'edit' && state.entityType === 'topic'
-              ? 'Edit topic'
-              : 'Edit tag'}
+              ? 'ویرایش مبحث'
+              : 'ویرایش برچسب'}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -84,14 +85,14 @@ export function EditTagsTopicsModal<Entity extends StaffTopic | StaffTag>({
               {state.type !== 'closed' && state.entityType === 'topic' ? (
                 <TopicBadge
                   topic={{
-                    name: entity.name || 'Topic preview',
+                    name: entity.name || 'پیش‌نمایش مبحث',
                     color: entity.color,
                   }}
                 />
               ) : (
                 <TagBadge
                   tag={{
-                    name: entity.name || 'Tag preview',
+                    name: entity.name || 'پیش‌نمایش برچسب',
                     color: entity.color,
                   }}
                 />
@@ -99,7 +100,7 @@ export function EditTagsTopicsModal<Entity extends StaffTopic | StaffTag>({
             </div>
             <div className="mb-3">
               <label className="form-label" htmlFor="name">
-                Name
+                عنوان
               </label>
               <input
                 type="text"
@@ -115,14 +116,13 @@ export function EditTagsTopicsModal<Entity extends StaffTopic | StaffTag>({
               />
               {invalidName && (
                 <div className="invalid-feedback">
-                  {state.type !== 'closed' && state.entityType === 'topic' ? 'Topic' : 'Tag'} name
-                  is required
+                  وارد کردن عنوان {state.type !== 'closed' && state.entityType === 'topic' ? 'مبحث' : 'برچسب'} الزامی است
                 </div>
               )}
             </div>
             <div className="mb-3">
               <label className="form-label" htmlFor="color">
-                Color
+                رنگ
               </label>
               <ColorPicker
                 id="color"
@@ -132,14 +132,13 @@ export function EditTagsTopicsModal<Entity extends StaffTopic | StaffTag>({
               />
               {invalidColor && (
                 <div className="invalid-feedback d-block">
-                  {state.type !== 'closed' && state.entityType === 'topic' ? 'Topic' : 'Tag'} color
-                  is required
+                  انتخاب رنگ {state.type !== 'closed' && state.entityType === 'topic' ? 'مبحث' : 'برچسب'} الزامی است
                 </div>
               )}
             </div>
             <div className="mb-3">
               <label className="form-label" htmlFor="description">
-                Description
+                توضیحات
               </label>
               <input
                 type="text"
@@ -158,17 +157,17 @@ export function EditTagsTopicsModal<Entity extends StaffTopic | StaffTag>({
         ) : null}
       </Modal.Body>
       <Modal.Footer>
-        <button type="button" className="btn btn-primary me-2" onClick={handleSubmit}>
+        <button type="button" className="btn btn-secondary" onClick={onClose}>
+          انصراف
+        </button>
+        <button type="button" className="btn btn-primary" onClick={handleSubmit}>
           {isCreateMode
             ? state.entityType === 'topic'
-              ? 'Add topic'
-              : 'Add tag'
+              ? 'افزودن مبحث'
+              : 'افزودن برچسب'
             : state.type === 'edit' && state.entityType === 'topic'
-              ? 'Update topic'
-              : 'Update tag'}
-        </button>
-        <button type="button" className="btn btn-secondary" onClick={onClose}>
-          Close
+              ? 'به‌روزرسانی مبحث'
+              : 'به‌روزرسانی برچسب'}
         </button>
       </Modal.Footer>
     </Modal>

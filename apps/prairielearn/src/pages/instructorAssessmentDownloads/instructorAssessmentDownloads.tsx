@@ -444,7 +444,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Downloads',
+        pageTitle: 'دریافت داده‌ها و خروجی‌ها',
         navContext: {
           type: 'instructor',
           page: 'assessment',

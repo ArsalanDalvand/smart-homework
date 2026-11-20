@@ -73,9 +73,9 @@ export function InstructorAssessmentAccess({
       fullWidth: true,
     },
     content: html`
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1>${resLocals.assessment_set.name} ${resLocals.assessment.number}: Access</h1>
+          <h1 class="h4 mb-0">${resLocals.assessment_set.name} ${resLocals.assessment.number}: قوانین دسترسی</h1>
           ${
             migrationPreview && canEdit
               ? html`
@@ -87,8 +87,8 @@ export function InstructorAssessmentAccess({
                   >
                     ${
                       migrationPreview.isIncompatible
-                        ? 'Migrate and clear'
-                        : 'Migrate to modern format'
+                        ? 'مهاجرت و پاک‌سازی'
+                        : 'مهاجرت به قالب جدید انتشار'
                     }
                   </button>
                 `
@@ -99,31 +99,29 @@ export function InstructorAssessmentAccess({
         <div class="alert alert-warning mb-0 rounded-0 border-start-0 border-end-0 border-top-0">
           ${
             migrationAnalysis && migrationAnalysis.errors.length > 0
-              ? html`This assessment uses the legacy access control system. Automatic migration is
-                not available for this assessment's access rules.`
-              : html`This assessment uses the legacy access control system. Consider migrating to
-                the modern format for a better editing experience.`
+              ? html`این آزمون از سیستم قدیمی قوانین دسترسی استفاده می‌کند. مهاجرت خودکار برای این آزمون در دسترس نیست.`
+              : html`این آزمون از سیستم قدیمی قوانین دسترسی استفاده می‌کند. پیشنهاد می‌شود جهت مدیریت بهتر دسترسی‌ها به سیستم جدید مهاجرت نمایید.`
           }
         </div>
 
         <div class="table-responsive">
-          <table class="table table-sm table-hover" aria-label="Access rules">
+          <table class="table table-sm table-hover" aria-label="قوانین دسترسی آزمون">
             <thead>
               <tr>
                 ${
                   showComments
-                    ? html`<th style="width: 1%"><span class="visually-hidden">Comments</span></th>`
+                    ? html`<th style="width: 1%"><span class="visually-hidden">توضیحات</span></th>`
                     : ''
                 }
-                <th>Mode</th>
-                <th>UIDs</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Active</th>
-                <th>Credit</th>
-                <th>Time limit</th>
-                <th>Password</th>
-                <th>PrairieTest</th>
+                <th>حالت دسترسی</th>
+                <th>شناسه‌ها (UIDs)</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>فعال</th>
+                <th>اعتبار نمره</th>
+                <th>محدودیت زمانی</th>
+                <th>رمز عبور</th>
+                <th>سامانه آزمون</th>
               </tr>
             </thead>
             <tbody>
@@ -353,7 +351,7 @@ function MigrationConfirmModal({
               aria-controls="migration-after"
               aria-selected="false"
             >
-              New state
+              حالت جدید
             </button>
           </li>
         </ul>
@@ -362,12 +360,14 @@ function MigrationConfirmModal({
             <pre
               style="max-height: 400px; overflow-y: auto;"
               class="mb-0"
+              dir="ltr"
             ><code>${migrationPreview.beforeJson}</code></pre>
           </div>
           <div class="tab-pane fade p-3" id="migration-after" role="tabpanel">
             <pre
               style="max-height: 400px; overflow-y: auto;"
               class="mb-0"
+              dir="ltr"
             ><code>${migrationPreview.afterJson}</code></pre>
           </div>
         </div>
@@ -388,14 +388,14 @@ function MigrationConfirmModal({
           : ''
       }
       <small class="text-muted me-auto">
-        This can be reverted through the file editor or git history.
+        این عملیات از طریق ویرایشگر فایل یا تاریخچه گیت قابل بازگردانی است.
       </small>
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
       <button
         type="submit"
         class="btn ${migrationPreview.isIncompatible ? 'btn-danger' : 'btn-primary'}"
       >
-        ${migrationPreview.isIncompatible ? 'Migrate and clear' : 'Confirm migration'}
+        ${migrationPreview.isIncompatible ? 'مهاجرت و پاک‌سازی' : 'تایید و اعمال مهاجرت'}
       </button>
     `,
   });
@@ -427,7 +427,7 @@ export function InstructorAssessmentAccessNew({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Access',
+    pageTitle: 'قوانین دسترسی و انتشار',
     headContent: [
       compiledStylesheetTag('splitPane.css'),
       compiledStylesheetTag('instructorAssessmentAccess.css'),

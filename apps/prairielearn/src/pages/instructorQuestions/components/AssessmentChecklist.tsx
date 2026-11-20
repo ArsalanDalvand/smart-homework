@@ -48,10 +48,10 @@ export function AssessmentChecklist({
 
   return (
     <fieldset className="mb-3">
-      <legend className="form-label">Assessments</legend>
+      <legend className="form-label">آزمون‌ها</legend>
       {run(() => {
         if (isLoading) {
-          return <div className="text-muted">Loading assessments…</div>;
+          return <div className="text-muted">در حال بارگذاری آزمون‌ها…</div>;
         }
         if (assessments.length === 0) {
           return <div className="text-muted">{emptyMessage}</div>;

@@ -30,21 +30,21 @@ const MODE_CONFIG: Record<
 > = {
   add: {
     idPrefix: 'bulk-add-tags',
-    title: 'Add tags',
-    submitLabel: 'Add tags',
+    title: 'افزودن برچسب‌ها',
+    submitLabel: 'افزودن برچسب‌ها',
     submitVariant: 'primary',
-    noChangeMessage: 'All selected questions are already assigned these tags.',
-    changedMessageVerb: 'Added tags to',
-    unchangedMessageVerb: 'are already assigned all selected tags',
+    noChangeMessage: 'تمامی سوالات انتخاب‌شده از قبل این برچسب‌ها را دارند.',
+    changedMessageVerb: 'برچسب‌ها افزوده شدند به',
+    unchangedMessageVerb: 'از قبل تمامی برچسب‌های انتخابی را داشتند',
   },
   remove: {
     idPrefix: 'bulk-remove-tags',
-    title: 'Remove tags',
-    submitLabel: 'Remove tags',
+    title: 'حذف برچسب‌ها',
+    submitLabel: 'حذف برچسب‌ها',
     submitVariant: 'danger',
-    noChangeMessage: 'None of the selected questions had the selected tags.',
-    changedMessageVerb: 'Removed tags from',
-    unchangedMessageVerb: 'did not include the selected tags',
+    noChangeMessage: 'هیچ‌یک از سوالات انتخاب‌شده برچسب‌های مشخص‌شده را نداشتند.',
+    changedMessageVerb: 'برچسب‌ها حذف شدند از',
+    unchangedMessageVerb: 'فاقد برچسب‌های انتخابی بودند',
   },
 };
 
@@ -61,11 +61,11 @@ function buildSuccessMessage({
   if (changedCount === 0) return config.noChangeMessage;
 
   const parts = [
-    `${config.changedMessageVerb} ${changedCount} ${changedCount === 1 ? 'question' : 'questions'}.`,
+    `${config.changedMessageVerb} ${changedCount} سوال.`,
   ];
   if (unchangedCount > 0) {
     parts.push(
-      `${unchangedCount} ${unchangedCount === 1 ? 'question' : 'questions'} ${config.unchangedMessageVerb}.`,
+      `${unchangedCount} سوال ${config.unchangedMessageVerb}.`,
     );
   }
   return parts.join(' ');
@@ -149,17 +149,20 @@ export function UpdateTagsModal({
         mutation.reset();
         setSelectedTagNames(new Set());
       }}
+      contentClassName="text-end"
+      dir="rtl"
+      style={{ fontFamily: 'var(--font-persian)' }}
     >
       <Modal.Header closeButton>
         <Modal.Title id={`${config.idPrefix}-modal-title`}>{config.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <fieldset className="mb-3">
-          <legend className="form-label">Tags</legend>
+          <legend className="form-label">برچسب‌ها</legend>
           {sortedTags.length === 0 ? (
-            <div className="text-muted">No tags are defined for this course.</div>
+            <div className="text-muted">هیچ برچسبی برای این درس تعریف نشده است.</div>
           ) : availableTags.length === 0 ? (
-            <div className="text-muted">None of the selected questions have tags to remove.</div>
+            <div className="text-muted">هیچ‌یک از سوالات انتخابی برچسبی برای حذف کردن ندارند.</div>
           ) : (
             <div className="d-flex flex-column gap-1">
               {availableTags.map((tag, index) => {
@@ -199,7 +202,7 @@ export function UpdateTagsModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant={config.submitVariant}
@@ -208,8 +211,8 @@ export function UpdateTagsModal({
         >
           {mutation.isPending
             ? mode === 'add'
-              ? 'Adding tags...'
-              : 'Removing tags...'
+              ? 'در حال افزودن برچسب‌ها…'
+              : 'در حال حذف برچسب‌ها…'
             : config.submitLabel}
         </Button>
       </Modal.Footer>

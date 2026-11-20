@@ -2,12 +2,12 @@ import { EnrollmentCodeForm } from '../../components/EnrollmentCodeForm.js';
 
 export function EnrollmentCodeRequired({ courseInstanceId }: { courseInstanceId: string }) {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="row justify-content-center">
         <div className="col-lg-8 col-xl-6">
           <div className="card">
             <div className="card-header bg-primary text-white">
-              <h1 className="mb-0">Join course via enrollment code</h1>
+              <h1 className="h4 mb-0">عضویت در دوره با کد اختصاصی ثبت‌نام</h1>
             </div>
             <div className="card-body">
               <EnrollmentCodeForm
@@ -15,7 +15,7 @@ export function EnrollmentCodeRequired({ courseInstanceId }: { courseInstanceId:
                 courseInstanceId={courseInstanceId}
                 leadingContent={
                   <p>
-                    To access this course, enter the enrollment code provided by your instructor.
+                    جهت دسترسی به این دوره، لطفاً کد ثبت‌نامی که توسط استاد یا کادر آموزشی درس در اختیارتان قرار گرفته است را وارد فرمایید.
                   </p>
                 }
               />

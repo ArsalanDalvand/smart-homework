@@ -1,3 +1,4 @@
+import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 import type {
   BatchedMigrationJobRow,
@@ -114,15 +115,15 @@ export function AdministratorBatchedMigration({
               </tr>
               <tr>
                 <th>${uiStrings.batchedMigrations.createdAt}</th>
-                <td dir="ltr" class="text-end">${batchedMigration.created_at.toUTCString()}</td>
+                <td dir="ltr" class="text-end">${formatDate(batchedMigration.created_at, 'Asia/Tehran')}</td>
               </tr>
               <tr>
                 <th>${uiStrings.batchedMigrations.updatedAt}</th>
-                <td dir="ltr" class="text-end">${batchedMigration.updated_at.toUTCString()}</td>
+                <td dir="ltr" class="text-end">${formatDate(batchedMigration.updated_at, 'Asia/Tehran')}</td>
               </tr>
               <tr>
                 <th>${uiStrings.batchedMigrations.startedAt}</th>
-                <td dir="ltr" class="text-end">${batchedMigration.started_at?.toUTCString() ?? '—'}</td>
+                <td dir="ltr" class="text-end">${batchedMigration.started_at ? formatDate(batchedMigration.started_at, 'Asia/Tehran') : '—'}</td>
               </tr>
               <tr>
                 <th>${uiStrings.batchedMigrations.actions}</th>
@@ -224,9 +225,8 @@ function MigrationJobsCard({
                             <span
                               class="text-muted text-small"
                               style="font-variant-numeric: tabular-nums;"
-                              dir="ltr"
                             >
-                              #${job.id} ran at ${job.started_at.toUTCString()} for ${duration}ms
+                              شناسه #${job.id} &mdash; اجرا شده در <span dir="ltr">${formatDate(job.started_at, 'Asia/Tehran')}</span> به مدت ${duration} میلی‌ثانیه
                               &mdash; ${job.attempts} تلاش
                             </span>
                           `

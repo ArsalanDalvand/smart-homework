@@ -55,24 +55,24 @@ function JobSequenceResultsJobItem({
   if (!showVerbose) outputStyle['--verbose-display'] = 'none';
 
   return (
-    <div className="list-group">
+    <div className="list-group" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="list-group-item">
         {jobSequence.legacy && (
           <>
             <h4 className="list-group-item-heading">
-              Stage {job.number_in_sequence}: {job.description}
+              مرحله {job.number_in_sequence}: {job.description}
             </h4>
             {job.command && (
               <p className="mb-1">
-                Command{' '}
-                <code>
+                دستور{' '}
+                <code dir="ltr">
                   {job.command}
                   {job.arguments?.map((arg) => ` ${arg}`)}
                 </code>
                 {job.working_directory && (
                   <>
                     {' '}
-                    run in <code>{job.working_directory}</code>
+                    اجرا شده در <code dir="ltr">{job.working_directory}</code>
                   </>
                 )}
               </p>
@@ -80,10 +80,10 @@ function JobSequenceResultsJobItem({
           </>
         )}
         <p className="mb-1">
-          Started {job.start_date ? `at ${formatDate(job.start_date, timeZone)}` : ''}{' '}
-          {userUid ? `by ${userUid}` : ''}{' '}
-          {authnUserUid !== userUid ? `(really ${authnUserUid})` : ''}{' '}
-          {job.finish_date && <>&mdash; finished at {formatDate(job.finish_date, timeZone)}</>}
+          شروع {job.start_date ? `در ${formatDate(job.start_date, timeZone)}` : ''}{' '}
+          {userUid ? `توسط ${userUid}` : ''}{' '}
+          {authnUserUid !== userUid ? `(کاربر واقعی: ${authnUserUid})` : ''}{' '}
+          {job.finish_date && <>&mdash; پایان در {formatDate(job.finish_date, timeZone)}</>}
         </p>
         <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-1">
           <div>
@@ -99,19 +99,19 @@ function JobSequenceResultsJobItem({
               checked={showVerbose}
               onChange={(event) => setShowVerbose(event.target.checked)}
             />
-            <label className="form-check-label" htmlFor={`toggle-verbose-${job.id}`}>
-              Show verbose messages
+            <label className="form-check-label ms-2" htmlFor={`toggle-verbose-${job.id}`}>
+              نمایش پیام‌های تفصیلی (Verbose)
             </label>
           </div>
         </div>
         {jobSequence.legacy && (
           <>
             {job.status === 'Error' && job.exit_code != null && (
-              <p className="mb-1">Exit code: {job.exit_code}</p>
+              <p className="mb-1">کد خروج: {job.exit_code}</p>
             )}
-            {job.exit_signal != null && <p className="mb-1">Exit signal: {job.exit_signal}</p>}
+            {job.exit_signal != null && <p className="mb-1">سیگنال خروج: {job.exit_signal}</p>}
             {job.error_message != null && (
-              <p className="mb-1">Error message: {job.error_message}</p>
+              <p className="mb-1">پیام خطا: {job.error_message}</p>
             )}
           </>
         )}
@@ -119,6 +119,7 @@ function JobSequenceResultsJobItem({
           id={`output-${job.id}`}
           className="text-white rounded p-3 mb-0 mt-3"
           style={outputStyle}
+          dir="ltr"
           // oxlint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: job.outputHtml }}
         />

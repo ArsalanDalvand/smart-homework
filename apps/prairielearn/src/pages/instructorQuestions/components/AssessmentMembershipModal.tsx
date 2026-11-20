@@ -36,25 +36,25 @@ interface ModeConfig {
 const MODE_CONFIG: Record<Mode, ModeConfig> = {
   add: {
     idPrefix: 'bulk-add-assessment',
-    title: 'Add selected questions to assessments',
+    title: 'افزودن سوالات انتخاب‌شده به آزمون‌ها',
     submitVariant: 'primary',
-    submitVerb: 'Add to',
-    emptyMessage: 'This course instance has no assessments.',
+    submitVerb: 'افزودن به',
+    emptyMessage: 'این دوره هیچ آزمونی ندارد.',
     includeAssessmentsWithoutQuestions: true,
-    noChangeMessage: 'All selected questions were already present in the chosen assessments.',
-    successVerb: 'Added selected questions to',
-    partialSkipMessage: 'Some questions were already present in one or more assessments.',
+    noChangeMessage: 'تمامی سوالات انتخاب‌شده از قبل در آزمون‌های مشخص‌شده وجود داشتند.',
+    successVerb: 'سوالات انتخاب‌شده افزوده شدند به',
+    partialSkipMessage: 'برخی سوالات از قبل در یک یا چند آزمون وجود داشتند.',
   },
   remove: {
     idPrefix: 'bulk-remove-assessment',
-    title: 'Remove selected questions from assessments',
+    title: 'حذف سوالات انتخاب‌شده از آزمون‌ها',
     submitVariant: 'danger',
-    submitVerb: 'Remove from',
-    emptyMessage: 'None of the selected questions are in an assessment in this course instance.',
+    submitVerb: 'حذف از',
+    emptyMessage: 'هیچ‌کدام از سوالات انتخاب‌شده در آزمون‌های این دوره قرار ندارند.',
     includeAssessmentsWithoutQuestions: false,
-    noChangeMessage: 'None of the selected questions were in the chosen assessments.',
-    successVerb: 'Removed selected questions from',
-    partialSkipMessage: 'Some questions were not present in one or more assessments.',
+    noChangeMessage: 'هیچ‌یک از سوالات انتخاب‌شده در آزمون‌های مشخص‌شده وجود نداشتند.',
+    successVerb: 'سوالات انتخاب‌شده حذف شدند از',
+    partialSkipMessage: 'برخی سوالات در یک یا چند آزمون وجود نداشتند.',
   },
 };
 
@@ -136,7 +136,7 @@ export function AssessmentMembershipModal({
         parts.push(config.noChangeMessage);
       } else {
         parts.push(
-          `${config.successVerb} ${affectedAssessmentCount} ${affectedAssessmentCount === 1 ? 'assessment' : 'assessments'}.`,
+          `${config.successVerb} ${affectedAssessmentCount} آزمون.`,
         );
         if (results.some((result) => result.skippedCount > 0)) {
           parts.push(config.partialSkipMessage);
@@ -163,6 +163,9 @@ export function AssessmentMembershipModal({
         mutation.reset();
         resetModalState();
       }}
+      contentClassName="text-end"
+      dir="rtl"
+      style={{ fontFamily: 'var(--font-persian)' }}
     >
       <Modal.Header closeButton>
         <Modal.Title id={`${config.idPrefix}-modal-title`}>{config.title}</Modal.Title>
@@ -170,11 +173,11 @@ export function AssessmentMembershipModal({
       <Modal.Body>
         <AppErrorAlert
           error={getAppError<QuestionsError['ListAssessments']>(assessmentsQuery.error)}
-          render={{ UNKNOWN: ({ message }) => <>Error loading assessments: {message}</> }}
+          render={{ UNKNOWN: ({ message }) => <>خطا در دریافت لیست آزمون‌ها: {message}</> }}
         />
         <div className="mb-3">
           <label className="form-label" htmlFor={`${config.idPrefix}-course-instance`}>
-            Course instance
+            دوره / ترم تحصیلی
           </label>
           <select
             id={`${config.idPrefix}-course-instance`}
@@ -207,7 +210,7 @@ export function AssessmentMembershipModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant={config.submitVariant}
@@ -216,7 +219,7 @@ export function AssessmentMembershipModal({
             mutation.mutate({ questionIds, assessmentIds: [...selectedAssessmentIds] })
           }
         >
-          {config.submitVerb} {selectedCount} {selectedCount === 1 ? 'assessment' : 'assessments'}
+          {config.submitVerb} {selectedCount} آزمون
         </Button>
       </Modal.Footer>
     </Modal>

@@ -21,15 +21,15 @@ function describeChangeResult({
   unchangedCount: number;
 }) {
   if (changedCount === 0) {
-    return 'All selected questions are already assigned to this topic.';
+    return 'تمامی سوالات انتخاب‌شده از قبل به این مبحث اختصاص دارند.';
   }
 
   const parts = [
-    `Changed topic for ${changedCount} ${changedCount === 1 ? 'question' : 'questions'}.`,
+    `مبحث آموزشی ${changedCount} سوال با موفقیت تغییر یافت.`,
   ];
   if (unchangedCount > 0) {
     parts.push(
-      `${unchangedCount} ${unchangedCount === 1 ? 'question is' : 'questions are'} already assigned to this topic.`,
+      `${unchangedCount} سوال از قبل به این مبحث اختصاص داشتند.`,
     );
   }
   return parts.join(' ');
@@ -87,14 +87,17 @@ export function ChangeTopicModal({
         mutation.reset();
         setTopic(initialTopic);
       }}
+      contentClassName="text-end"
+      dir="rtl"
+      style={{ fontFamily: 'var(--font-persian)' }}
     >
       <Modal.Header closeButton>
-        <Modal.Title id="bulk-change-topic-modal-title">Change topic</Modal.Title>
+        <Modal.Title id="bulk-change-topic-modal-title">تغییر مبحث آموزشی سوالات</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="mb-3">
           <label className="form-label" htmlFor="bulk-change-topic-select">
-            Topic
+            مبحث آموزشی
           </label>
           <select
             id="bulk-change-topic-select"
@@ -116,14 +119,14 @@ export function ChangeTopicModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant="primary"
           disabled={!canSubmit || mutation.isPending}
           onClick={() => mutation.mutate({ questionIds, topic })}
         >
-          {mutation.isPending ? 'Changing topic...' : 'Change topic'}
+          {mutation.isPending ? 'در حال تغییر مبحث…' : 'تغییر مبحث'}
         </Button>
       </Modal.Footer>
     </Modal>

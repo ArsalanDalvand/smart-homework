@@ -611,11 +611,11 @@ export function TanstackTableCard<RowDataModel extends RowData>({
             }}
           />
           {inputValue && (
-            <OverlayTrigger overlay={<Tooltip>Clear search</Tooltip>}>
+            <OverlayTrigger overlay={<Tooltip>پاک کردن جستجو</Tooltip>}>
               <button
                 type="button"
                 className="btn btn-floating-icon"
-                aria-label="Clear search"
+                aria-label="پاک کردن جستجو"
                 onClick={() => {
                   setInputValue('');
                   debouncedSetFilter.cancel();

@@ -102,39 +102,28 @@ export function InstructorAssessmentDownloads({
 
   return (
     <>
-      <div className="card mb-4">
+      <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
         <div className="card-header bg-primary text-white">
-          <h1>
-            {assessmentSetName} {assessmentNumber}: Downloads
+          <h1 className="h4 mb-0">
+            {assessmentSetName} {assessmentNumber}: دریافت داده‌ها و خروجی‌ها
           </h1>
         </div>
         {isMultipleInstance && (
           <div className="card-body">
             <p>
               <small>
-                This is a <strong>multiple instance</strong> assessment, so each {identity} may have
-                more than one assessment instance. The CSV files are available in plain and{' '}
-                <strong>
-                  <code>_all</code>
-                </strong>{' '}
-                versions. The plain versions contain one record per {identity}, which is taken to be
-                the assessment instance for that {identity} with the maximum percentage score. The{' '}
-                <strong>
-                  <code>_all</code>
-                </strong>{' '}
-                CSV files contain one record per assessment instance, possibly including more than
-                one record per {identity}.
+                این آزمون دارای <strong>چندین نمونه شرکت در آزمون (Multiple Instance)</strong> است و هر {identity === 'group' ? 'گروه' : 'دانشجو'} ممکن است چند بار در آزمون شرکت کرده باشد. فایل‌های CSV در دو قالب ساده و <strong><code>_all</code></strong> در دسترس هستند. نسخه ساده شامل بهترین نتیجه هر {identity === 'group' ? 'گروه' : 'دانشجو'} و نسخه <code>_all</code> شامل تمامی دفعات شرکت در آزمون می‌باشد.
               </small>
             </p>
           </div>
         )}
 
         <div className="table-responsive">
-          <table className="table table-sm table-hover" aria-label="File downloads">
+          <table className="table table-sm table-hover" aria-label="فایل‌های خروجی آزمون">
             <thead>
               <tr>
-                <th>Data file</th>
-                <th>Description</th>
+                <th>نام فایل داده‌ها</th>
+                <th>شرح و محتوا</th>
               </tr>
             </thead>
             <tbody>

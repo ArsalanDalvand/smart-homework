@@ -138,8 +138,9 @@ export function InstructorAssessmentInstance({
       <div class="card mb-4">
         <div
           class="card-header bg-primary text-white d-flex align-items-center justify-content-between"
+          style="font-family: var(--font-persian);"
         >
-          <h2 class="mb-0">${resLocals.assessment_instance_label} Summary: ${headingLabel}</h2>
+          <h2 class="mb-0 h4">خلاصه وضعیت ${resLocals.assessment_instance_label}: ${headingLabel}</h2>
           ${
             resLocals.authz_data.has_course_instance_permission_edit &&
             resLocals.instance_group?.deleted_at == null
@@ -165,37 +166,37 @@ export function InstructorAssessmentInstance({
                 resLocals.instance_group
                   ? html`
                       <tr>
-                        <th>Name</th>
+                        <th>نام گروه</th>
                         <td colspan="2">${resLocals.instance_group.name}</td>
                       </tr>
                       <tr>
-                        <th>Group Members</th>
+                        <th>اعضای گروه</th>
                         <td colspan="2">${resLocals.instance_group_uid_list.join(', ')}</td>
                       </tr>
                     `
                   : html`
                       <tr>
-                        <th>UID</th>
+                        <th>شناسه کاربری (UID / ایمیل)</th>
                         <td colspan="2">${resLocals.instance_user.uid}</td>
                       </tr>
                       <tr>
-                        <th>Name</th>
+                        <th>نام و نام خانوادگی</th>
                         <td colspan="2">${resLocals.instance_user.name}</td>
                       </tr>
                       <tr>
-                        <th>Role</th>
+                        <th>نقش</th>
                         <td colspan="2">${resLocals.instance_role}</td>
                       </tr>
                     `
               }
               <tr>
-                <th>Instance</th>
+                <th>نوبت آزمون</th>
                 <td colspan="2">
                   ${resLocals.assessment_instance.number} (<a
                     href="/pl/course_instance/${
                       resLocals.course_instance.id
                     }/assessment_instance/${resLocals.assessment_instance.id}"
-                    >student view</a
+                    >مشاهده از دید فراگیر</a
                   >)
                 </td>
               </tr>
@@ -203,7 +204,7 @@ export function InstructorAssessmentInstance({
                 resLocals.instance_user
                   ? html`
                       <tr>
-                        <th>Fingerprint Changes</th>
+                        <th>تغییرات اثرانگشت کلاینت</th>
                         <td colspan="2">
                           ${resLocals.assessment_instance.client_fingerprint_id_change_count}
                           <button
@@ -213,8 +214,8 @@ export function InstructorAssessmentInstance({
                             data-bs-toggle="popover"
                             data-bs-container="body"
                             data-bs-html="false"
-                            data-bs-title="Client fingerprint changes"
-                            data-bs-content="Client fingerprints are a record of a user's IP address, user agent and session. These attributes are tracked while a user is accessing an assessment. This value indicates the amount of times that those attributes changed as the student accessed the assessment, while the assessment was active. Some changes may naturally occur during an assessment, such as if a student changes network connections or browsers. However, a high number of changes in an exam-like environment could be an indication of multiple people accessing the same assessment simultaneously, which may suggest an academic integrity issue. Accesses taking place after the assessment has been closed are not counted, as they typically indicate scenarios where a student is reviewing their results, which may happen outside of a controlled environment."
+                            data-bs-title="تغییرات اثرانگشت دستگاه کلاینت"
+                            data-bs-content="اثرانگشت کلاینت شامل ثبت آدرس IP، مشخصات مرورگر و نشست کاربری در طول مدت آزمون است. تغییر مکرر این مشخصات ممکن است نشان‌دهنده ورود همزمان چند نفر به یک آزمون باشد."
                           >
                             <i class="fa fa-question-circle"></i>
                           </button>
@@ -225,7 +226,7 @@ export function InstructorAssessmentInstance({
               }
 
               <tr>
-                <th>Points</th>
+                <th>نمره کل / امتیازات</th>
                 <td colspan="2">
                   <span id="total-points">
                     ${formatPoints(resLocals.assessment_instance.points)}
@@ -246,7 +247,7 @@ export function InstructorAssessmentInstance({
                             data-bs-container="body"
                             data-bs-html="true"
                             data-bs-placement="auto"
-                            data-bs-title="Change total points"
+                            data-bs-title="ویرایش نمره کل"
                             data-bs-content="${escapeHtml(
                               EditTotalPointsForm({
                                 resLocals,
@@ -261,7 +262,7 @@ export function InstructorAssessmentInstance({
                 </td>
               </tr>
               <tr>
-                <th>Score</th>
+                <th>درصد نمره</th>
                 <td class="align-middle" style="width: 20%;">
                   ${ScorebarHtml(resLocals.assessment_instance.score_perc)}
                 </td>
@@ -277,7 +278,7 @@ export function InstructorAssessmentInstance({
                             data-bs-container="body"
                             data-bs-html="true"
                             data-bs-placement="auto"
-                            data-bs-title="Change total percentage score"
+                            data-bs-title="ویرایش درصد نمره کل"
                             data-bs-content="${escapeHtml(
                               EditTotalScorePercForm({
                                 resLocals,
@@ -292,34 +293,34 @@ export function InstructorAssessmentInstance({
                 </td>
               </tr>
               <tr>
-                <th>Statistics</th>
+                <th>محاسبه در آمار</th>
                 <td colspan="2">
                   ${
                     resLocals.assessment_instance.include_in_statistics
                       ? html`
-                          Included
+                          لحاظ‌شده در آمار
                           <button
                             type="button"
                             class="btn btn-xs btn-ghost"
                             data-bs-toggle="popover"
                             data-bs-container="body"
                             data-bs-html="true"
-                            data-bs-title="Included in statistics"
-                            data-bs-content="This assessment is included in the calculation of assessment and question statistics"
+                            data-bs-title="لحاظ‌شده در آمار"
+                            data-bs-content="نتایج این آزمون در محاسبات آماری سوالات و آزمون لحاظ می‌گردد."
                           >
                             <i class="fa fa-question-circle"></i>
                           </button>
                         `
                       : html`
-                          Not included
+                          لحاظ‌نشده در آمار
                           <button
                             type="button"
                             class="btn btn-xs btn-ghost"
                             data-bs-toggle="popover"
                             data-bs-container="body"
                             data-bs-html="true"
-                            data-bs-title="Not included in statistics"
-                            data-bs-content="This assessment is not included in the calculation of assessment and question statistics because it was created by a course staff member"
+                            data-bs-title="لحاظ‌نشده در آمار"
+                            data-bs-content="این آزمون به دلیل ثبت توسط کادر آموزشی در آمار دانشجویان لحاظ نمی‌شود."
                           >
                             <i class="fa fa-question-circle"></i>
                           </button>
@@ -328,7 +329,7 @@ export function InstructorAssessmentInstance({
                 </td>
               </tr>
               <tr>
-                <th>Date started</th>
+                <th>زمان شروع آزمون</th>
                 <td colspan="2">
                   ${formatDate(
                     resLocals.assessment_instance.date!,
@@ -337,7 +338,7 @@ export function InstructorAssessmentInstance({
                 </td>
               </tr>
               <tr>
-                <th>Duration</th>
+                <th>مدت زمان آزمون</th>
                 <td colspan="2">${formatInterval(resLocals.assessment_instance.duration ?? 0)}</td>
               </tr>
             </tbody>
@@ -345,27 +346,27 @@ export function InstructorAssessmentInstance({
         </div>
       </div>
 
-      <div class="card mb-4">
+      <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
-          <h2>${resLocals.assessment_instance_label} Questions: ${headingLabel}</h2>
+          <h2 class="h5 mb-0">سوالات آزمون ${resLocals.assessment_instance_label}: ${headingLabel}</h2>
         </div>
 
         <div class="table-responsive">
           <table
             id="instanceQuestionList"
             class="table table-sm table-hover"
-            aria-label="Assessment instance questions"
+            aria-label="سوالات آزمون"
           >
             <thead>
               <tr>
-                <th>Student question</th>
-                <th>Instructor question</th>
-                <th class="text-center">Auto-grading points</th>
-                <th class="text-center">Manual grading points</th>
-                <th class="text-center">Awarded points</th>
-                <th class="text-center" colspan="2" scope="colgroup">Percentage score</th>
+                <th>سوال از دید فراگیر</th>
+                <th>سوال از دید مدرس</th>
+                <th class="text-center">نمره خودکار</th>
+                <th class="text-center">نمره تصحیح دستی</th>
+                <th class="text-center">امتیاز نهایی</th>
+                <th class="text-center" colspan="2" scope="colgroup">درصد نمره</th>
                 <th><!--Manual grading column --></th>
-                <th class="text-end">Actions</th>
+                <th class="text-end">عملیات</th>
               </tr>
             </thead>
             ${run(() => {

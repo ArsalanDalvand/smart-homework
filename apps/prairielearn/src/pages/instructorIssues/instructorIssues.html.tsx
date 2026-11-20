@@ -93,17 +93,17 @@ export function InstructorIssues({
       )}
       <FilterHelpModal />
 
-      <div className="card mb-4">
+      <div className="card mb-4" style={{ fontFamily: 'var(--font-persian)' }}>
         <div className="card-header bg-primary text-white">
           <div className="d-flex flex-row align-items-center mb-2">
             <div className="d-flex flex-column">
-              <h1 className="h6 fw-normal mb-0">Issues</h1>
+              <h1 className="h6 fw-normal mb-0">گزارش‌های اشکال (Issues)</h1>
               <small>
-                <a href={formattedCommonQueries.allOpenQuery} className="me-3 text-white">
-                  <i className="fa fa-exclamation-circle" /> {openCount} open
+                <a href={formattedCommonQueries.allOpenQuery} className="me-3 text-white text-decoration-none">
+                  <i className="fa fa-exclamation-circle me-1" /> {openCount} مورد باز
                 </a>
-                <a href={formattedCommonQueries.allClosedQuery} className="text-white">
-                  <i className="fa fa-check-circle" /> {closedCount} closed
+                <a href={formattedCommonQueries.allClosedQuery} className="text-white text-decoration-none">
+                  <i className="fa fa-check-circle me-1" /> {closedCount} مورد بسته
                 </a>
               </small>
             </div>
@@ -113,7 +113,7 @@ export function InstructorIssues({
                 data-bs-toggle="modal"
                 data-bs-target="#closeMatchingIssuesModal"
               >
-                <i className="fa fa-times" aria-hidden="true" /> Close matching issues
+                <i className="fa fa-times me-1" aria-hidden="true" /> بستن اشکالات منطبق
               </button>
             )}
           </div>
@@ -126,23 +126,23 @@ export function InstructorIssues({
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                Filters
+                فیلترها
               </button>
               <div className="dropdown-menu">
                 <a className="dropdown-item" href={formattedCommonQueries.allOpenQuery}>
-                  Open issues
+                  اشکالات باز
                 </a>
                 <a className="dropdown-item" href={formattedCommonQueries.allClosedQuery}>
-                  Closed issues
+                  اشکالات بسته
                 </a>
                 <a className="dropdown-item" href={formattedCommonQueries.allManuallyReportedQuery}>
-                  Manually-reported issues
+                  گزارش‌های دستی فراگیران
                 </a>
                 <a
                   className="dropdown-item"
                   href={formattedCommonQueries.allAutomaticallyReportedQuery}
                 >
-                  Automatically-reported issues
+                  گزارش‌های خودکار سامانه
                 </a>
               </div>
               <input
@@ -150,14 +150,15 @@ export function InstructorIssues({
                 className="form-control"
                 name="q"
                 defaultValue={filterQuery}
-                aria-label="Search all issues"
+                placeholder="جستجو در میان گزارش‌های اشکال..."
+                aria-label="جستجو در میان گزارش‌های اشکال"
               />
               <button
                 className="btn btn-med-light"
                 type="submit"
                 data-bs-toggle="tooltip"
-                data-bs-title="Search"
-                aria-label="Search issues"
+                data-bs-title="جستجو"
+                aria-label="جستجو"
               >
                 <i className="fa fa-search" aria-hidden="true" />
               </button>
@@ -165,18 +166,18 @@ export function InstructorIssues({
                 className="btn btn-med-light"
                 href={`${urlPrefix}/course_admin/issues?q=`}
                 data-bs-toggle="tooltip"
-                data-bs-title="Clear filters"
-                aria-label="Clear filters"
+                data-bs-title="پاک‌سازی فیلترها"
+                aria-label="پاک‌سازی فیلترها"
               >
                 <i className="fa fa-times" aria-hidden="true" />
               </a>
               <button
                 className="btn btn-med-light"
                 type="button"
-                aria-label="Filter help"
+                aria-label="راهنمای فیلترها"
                 data-bs-toggle="modal tooltip"
                 data-bs-target="#filterHelpModal"
-                data-bs-title="Filter help"
+                data-bs-title="راهنمای فیلترها"
               >
                 <i className="fa fa-question-circle" aria-hidden="true" />
               </button>
@@ -186,7 +187,7 @@ export function InstructorIssues({
 
         {issues.length === 0 ? (
           <div className="card-body">
-            <div className="text-center text-muted">No matching issues found</div>
+            <div className="text-center text-muted py-4">هیچ گزارش اشکالی با شرایط جستجوی فعلی یافت نشد.</div>
           </div>
         ) : (
           <div className="list-group list-group-flush">
@@ -258,13 +259,13 @@ function IssueRow({
           />
         )}
         <div className="d-block">
-          <strong>{issue.question_qid}</strong>{' '}
+          <strong dir="ltr">{issue.question_qid}</strong>{' '}
           {!issue.instance_question_id ? (
             // Issue not associated to an instance question (originates from question preview)
             hasCoursePermissionPreview ? (
               <>
                 (
-                <a href={`${questionPreviewUrl}?variant_id=${issue.variant_id}`}>instructor view</a>
+                <a href={`${questionPreviewUrl}?variant_id=${issue.variant_id}`}>مشاهده مدرس</a>
                 )
               </>
             ) : (
@@ -273,9 +274,9 @@ function IssueRow({
                 className="badge text-bg-warning badge-sm"
                 data-bs-toggle="tooltip"
                 data-bs-html="true"
-                title="This issue was not raised in an assessment. You do not have access to this question outside of an assessment, so you can't view some of the issue details. Course permissions can be granted by a course owner on the Staff page."
+                title="این اشکال در جریان یک آزمون ثبت نشده است و شما به صورت مستقیم به این سوال دسترسی ندارید. دسترسی به درس توسط مالک درس در بخش کادر آموزشی قابل اعطا می‌باشد."
               >
-                Insufficient permissions
+                عدم دسترسی کافی
               </button>
             )
           ) : issue.showUser ? (
@@ -284,15 +285,15 @@ function IssueRow({
                 (
                 {hasCoursePermissionPreview && (
                   <a href={`${questionPreviewUrl}?variant_id=${issue.variant_id}`}>
-                    instructor view
+                    مشاهده مدرس
                   </a>
                 )}
                 {!issue.assessment?.deleted_at && (
                   <>
                     {hasCoursePermissionPreview && <>, </>}
-                    <a href={studentViewUrl}>student view</a>,{' '}
-                    <a href={manualGradingUrl}>manual grading</a>,{' '}
-                    <a href={assessmentInstanceUrl}> assessment details</a>
+                    <a href={studentViewUrl}>مشاهده فراگیر</a>،{' '}
+                    <a href={manualGradingUrl}>تصحیح دستی</a>،{' '}
+                    <a href={assessmentInstanceUrl}>جزئیات آزمون</a>
                   </>
                 )}
                 )
@@ -304,7 +305,7 @@ function IssueRow({
                 <>
                   (
                   <a href={`${questionPreviewUrl}?variant_seed=${issue.variant_seed}`}>
-                    instructor view
+                    مشاهده مدرس
                   </a>
                   ){' '}
                 </>
@@ -314,9 +315,9 @@ function IssueRow({
                 className="badge text-bg-warning badge-sm"
                 data-bs-toggle="tooltip"
                 data-bs-html="true"
-                title={`This issue was raised in course instance <strong>${issue.course_instance_short_name}</strong>. You do not have student data access for ${issue.course_instance_short_name}, so you can't view some of the issue details. Student data access can be granted by a course owner on the Staff page.`}
+                title={`این اشکال در دوره «${issue.course_instance_short_name}» ثبت شده است و شما به داده‌های فراگیران این دوره دسترسی ندارید. دسترسی به اطلاعات فراگیران توسط مالک درس در بخش کادر آموزشی قابل تنظیم است.`}
               >
-                No student data access
+                عدم دسترسی به داده‌های فراگیران
               </button>
             </>
           )}
@@ -325,7 +326,7 @@ function IssueRow({
           {getFormattedMessage(issue)}
         </p>
         <small className="text-muted me-2">
-          #{issue.id} reported{' '}
+          #{issue.id} ثبت شده{' '}
           {issue.date && (
             <span title={formatDate(issue.date, issue.display_timezone)}>
               {formatDistance(issue.date, now, { addSuffix: true })}
@@ -333,19 +334,19 @@ function IssueRow({
           )}{' '}
           {issue.showUser && issue.user_id != null && (
             <>
-              {issue.manually_reported ? 'by' : 'for'} {issue.user_name || '-'} ({userUidLink})
+              {issue.manually_reported ? 'توسط' : 'برای'} {issue.user_name || '-'} ({userUidLink})
             </>
           )}
         </small>
         <span className="d-inline-flex flex-wrap align-items-center gap-1">
           {issue.manually_reported ? (
-            <span className="badge text-bg-info">Manually reported</span>
+            <span className="badge text-bg-info">گزارش دستی فراگیر</span>
           ) : (
-            <span className="badge text-bg-warning">Automatically reported</span>
+            <span className="badge text-bg-warning">گزارش خودکار سامانه</span>
           )}
           {issue.assessment &&
             (issue.assessment.deleted_at ? (
-              <span className="badge color-red3">{issue.assessment.label} (deleted)</span>
+              <span className="badge color-red3">{issue.assessment.label} (حذف‌شده)</span>
             ) : (
               issue.course_instance_id && (
                 <AssessmentBadge
@@ -393,17 +394,16 @@ function CloseMatchingIssuesModal({
         id="closeMatchingIssuesModal"
         aria-labelledby="closeMatchingIssuesModal-title"
       >
-        <div className="modal-dialog modal-lg" role="document">
+        <div className="modal-dialog modal-lg" role="document" style={{ fontFamily: 'var(--font-persian)' }}>
           <div className="modal-content">
             <div className="modal-header">
               <h2 className="modal-title h4" id="closeMatchingIssuesModal-title">
-                Close matching issues
+                بستن اشکالات منطبق بر فیلتر
               </h2>
             </div>
             <div className="modal-body">
               <p>
-                Are you sure you want to close the <strong>{openFilteredIssuesCount}</strong> open{' '}
-                {openFilteredIssuesCount === 1 ? 'issue' : 'issues'} visible on the current page?
+                آیا از بستن <strong>{openFilteredIssuesCount}</strong> گزارش اشکال باز موجود در این صفحه اطمینان دارید؟
               </p>
             </div>
             <div className="modal-footer">
@@ -415,10 +415,10 @@ function CloseMatchingIssuesModal({
                 value={issues.map((issue) => issue.id).join(',')}
               />
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                Cancel
+                انصراف
               </button>
               <button type="submit" className="btn btn-danger">
-                Close issues
+                بستن اشکالات
               </button>
             </div>
           </div>
@@ -437,139 +437,112 @@ function FilterHelpModal() {
       id="filterHelpModal"
       aria-labelledby="filterHelpModal-title"
     >
-      <div className="modal-dialog modal-lg" role="document">
+      <div className="modal-dialog modal-lg" role="document" style={{ fontFamily: 'var(--font-persian)' }}>
         <div className="modal-content">
           <div className="modal-header">
             <h2 className="modal-title h4" id="filterHelpModal-title">
-              Filter help
+              راهنمای فیلتر و جستجوی اشکالات
             </h2>
           </div>
           <div className="modal-body">
             <p>
-              Issues can be filtered and searched in a variety of ways. Filtering is done with the
-              following set of qualifiers.
+              می‌توانید گزارش‌های اشکال را با استفاده از الگوها و پیشوندهای زیر جستجو و فیلتر نمایید:
             </p>
             <div className="table-responsive">
-              <table className="table table-bordered" aria-label="Filtering qualifiers">
+              <table className="table table-bordered table-striped" aria-label="راهنمای فیلترهای جستجو">
                 <thead>
                   <tr>
-                    <th>Qualifier</th>
-                    <th>Explanation</th>
+                    <th>عبارت فیلتر</th>
+                    <th>توضیحات و کاربرد</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
+                    <td dir="ltr">
                       <code>is:open</code>
                     </td>
-                    <td>Shows all issues that are open</td>
+                    <td>نمایش تمامی اشکالات در وضعیت باز</td>
                   </tr>
                   <tr>
-                    <td>
+                    <td dir="ltr">
                       <code>is:closed</code>
                     </td>
-                    <td>Shows all issues that are closed</td>
+                    <td>نمایش تمامی اشکالات در وضعیت بسته</td>
                   </tr>
                   <tr>
-                    <td>
+                    <td dir="ltr">
                       <code>is:manually-reported</code>
                     </td>
-                    <td>Shows all issues that were manually reported by a student</td>
+                    <td>نمایش اشکالاتی که به صورت دستی توسط فراگیران گزارش شده‌اند</td>
                   </tr>
                   <tr>
-                    <td>
+                    <td dir="ltr">
                       <code>is:automatically-reported</code>
                     </td>
-                    <td>Shows all issues that were automatically reported by PrairieLearn</td>
+                    <td>نمایش اشکالاتی که به صورت خودکار توسط سامانه ثبت شده‌اند</td>
                   </tr>
                   <tr>
-                    <td>
+                    <td dir="ltr">
                       <code>
                         assessment:<em>short_name</em>
                       </code>
                     </td>
                     <td>
-                      Shows all issues with an assessment short name like <code>short_name</code>;
-                      supports <code>*</code> as a wildcard. For example,{' '}
-                      <code>assessment:exam/instantFeedback</code> shows all issues associated with
-                      the assessment <code>exam/instantFeedback</code>, and{' '}
-                      <code>assessment:exam/*</code> shows all issues associated with any assessment
-                      that starts with <code>exam/</code>, such as <code>exam/instantFeedback</code>{' '}
-                      and <code>exam/manualGrading</code>.
+                      نمایش اشکالات مربوط به یک آزمون خاص؛ استفاده از <code>*</code> به عنوان کاراکتر عام مجاز است. مانند <code>assessment:HW*</code>
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td dir="ltr">
                       <code>
                         ci:<em>short_name</em>
                       </code>
                     </td>
                     <td>
-                      Shows all issues associated with a course instance short name like{' '}
-                      <code>short_name</code>; supports <code>*</code> as a wildcard. For example,{' '}
-                      <code>ci:2025F</code> shows all issues associated with the course instance{' '}
-                      <code>2025F</code>, while <code>ci:2025*</code> shows all issues associated
-                      with any course instance that starts with <code>2025</code>.
+                      نمایش اشکالات مربوط به یک دوره یا ترم تحصیلی خاص مانند <code>ci:Fall2026</code>
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td dir="ltr">
                       <code>
                         qid:<em>QID</em>
                       </code>
                     </td>
                     <td>
-                      Shows all issues with a question ID like <code>QID</code>; supports{' '}
-                      <code>*</code> as a wildcard. For example, <code>qid:graphConnectivity</code>{' '}
-                      shows all issues associated with the question <code>graphConnectivity</code>,
-                      and <code>qid:graph*</code> shows all issues associated with any question that
-                      starts with <code>graph</code>, such as <code>graphConnectivity</code> and{' '}
-                      <code>graphTheory</code>.
+                      نمایش اشکالات مربوط به یک شناسه سوال مانند <code>qid:python/circle-area</code>
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td dir="ltr">
                       <code>
                         user:<em>UID</em>
                       </code>
                     </td>
                     <td>
-                      Shows all issues that were reported by a user with a UID like <code>UID</code>
-                      . For example, <code>user:student@example.com</code> shows all issues that
-                      were reported by <code>student@example.com</code>. Searching by UID will only
-                      include issues in course instances where you have permission to see student
-                      data.
+                      نمایش اشکالات گزارش شده توسط فراگیر با شناسه کاربری / ایمیل مشخص
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <h3 className="h4">Full-text search</h3>
+            <h3 className="h5 mt-3">جستجوی متنی</h3>
             <p>
-              You can also search the issue message by simply entering text. For example,{' '}
-              <code>no picture</code> would return any issues that contain text like "no picture".
+              با وارد کردن هرگونه واژه یا عبارت، متن پیام گزارش فراگیران جستجو می‌شود.
             </p>
 
-            <h3 className="h4">Qualifier negation</h3>
+            <h3 className="h5 mt-3">نفی شرایط فیلتر</h3>
             <p>
-              Any qualifier can be negated with a hyphen (<code>-</code>). For example,{' '}
-              <code>-is:manually-reported</code> would return all issues that were{' '}
-              <strong>not</strong> manually reported.
+              با قرار دادن علامت منفی (<code>-</code>) قبل از هر عبارت، آن شرط نفی می‌شود. برای مثال: <code>-is:manually-reported</code>
             </p>
 
-            <h3 className="h4">Combining qualifiers</h3>
-            <p>These can be combined to form complex searches. An example:</p>
-            <pre>
-              <code>is:open qid:vector answer is wrong</code>
+            <h3 className="h5 mt-3">ترکیب شروط</h3>
+            <p>می‌توانید چند عبارت را با فاصله در کنار هم قرار دهید:</p>
+            <pre dir="ltr" className="bg-light p-2 rounded">
+              <code>is:open qid:python/circle-area خطا در تست</code>
             </pre>
-            <p>
-              This would return any open issues with a QID like <code>vector</code> whose message
-              contains text like "answer is wrong".
-            </p>
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-primary" data-bs-dismiss="modal">
-              Close
+              بستن
             </button>
           </div>
         </div>
@@ -589,10 +562,10 @@ function IssueActionButton({ issue, csrfToken }: { issue: Issue; csrfToken: stri
             className="btn btn-outline-secondary"
             name="__action"
             value="close"
-            aria-label="Close issue"
+            aria-label="بستن اشکال"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
-            data-bs-title="Close issue"
+            data-bs-title="بستن اشکال"
           >
             <i className="fa fa-times" aria-hidden="true" />
           </button>
@@ -601,10 +574,10 @@ function IssueActionButton({ issue, csrfToken }: { issue: Issue; csrfToken: stri
             className="btn btn-outline-secondary"
             name="__action"
             value="open"
-            aria-label="Reopen issue"
+            aria-label="بازگشایی مجدد اشکال"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
-            data-bs-title="Reopen issue"
+            data-bs-title="بازگشایی مجدد اشکال"
           >
             <i className="fa fa-rotate-right" aria-hidden="true" />
           </button>
