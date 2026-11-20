@@ -157,6 +157,41 @@ function LoginPageContainer({
             color: #0f172a;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
           }
+
+          /* Explicit RTL form alignment rules */
+          .login-form-card,
+          .login-form-card form,
+          .login-form-card .form-label,
+          .login-form-card .form-control,
+          .login-form-card .form-text,
+          .login-form-card .alert {
+            text-align: right !important;
+            direction: rtl !important;
+          }
+
+          .login-form-card input::placeholder {
+            text-align: right !important;
+            direction: rtl !important;
+          }
+
+          .login-form-card input[type="text"],
+          .login-form-card input:not([type="email"]):not([type="password"]) {
+            direction: rtl !important;
+            text-align: right !important;
+          }
+
+          .login-form-card input[type="email"],
+          .login-form-card input[type="password"] {
+            direction: ltr !important;
+            text-align: right !important;
+          }
+
+          .login-form-card input[type="email"]:focus,
+          .login-form-card input[type="password"]:focus,
+          .login-form-card input[type="email"]:not(:placeholder-shown),
+          .login-form-card input[type="password"]:not(:placeholder-shown) {
+            text-align: left !important;
+          }
         </style>
       </head>
       <body class="d-flex flex-column min-vh-100" style="font-family: var(--font-persian);">
@@ -482,18 +517,17 @@ function LocalLoginForm({
   initialIdentifier?: string;
 }) {
   return html`
-    <form method="POST" dir="rtl" class="text-end">
+    <form method="POST" dir="rtl">
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <div class="mb-3">
-        <label class="form-label fw-bold d-block text-end" for="login_identifier">
+        <label class="form-label fw-bold d-block" for="login_identifier">
           <bdi>${uiStrings.auth.identifierLabel}</bdi>
         </label>
         <input
           type="text"
-          class="form-control text-start"
+          class="form-control"
           id="login_identifier"
           name="identifier"
-          dir="ltr"
           value="${initialIdentifier ?? ''}"
           placeholder="${uiStrings.auth.identifierPlaceholder}"
           required
@@ -501,15 +535,14 @@ function LocalLoginForm({
         />
       </div>
       <div class="mb-3">
-        <label class="form-label fw-bold d-block text-end" for="login_password">
+        <label class="form-label fw-bold d-block" for="login_password">
           <bdi>${uiStrings.auth.passwordLabel}</bdi>
         </label>
         <input
           type="password"
-          class="form-control text-start"
+          class="form-control"
           id="login_password"
           name="password"
-          dir="ltr"
           placeholder="${uiStrings.auth.passwordPlaceholder}"
           required
           autocomplete="current-password"
@@ -538,13 +571,13 @@ function LocalRegisterForm({
   initialIdentifier?: string;
 }) {
   return html`
-    <form method="POST" dir="rtl" class="text-end">
+    <form method="POST" dir="rtl">
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <div class="mb-3">
-        <label class="form-label fw-bold d-block text-end" for="reg_name">${uiStrings.auth.nameLabel}</label>
+        <label class="form-label fw-bold d-block" for="reg_name">${uiStrings.auth.nameLabel}</label>
         <input
           type="text"
-          class="form-control text-end"
+          class="form-control"
           id="reg_name"
           name="name"
           placeholder="${uiStrings.auth.namePlaceholder}"
@@ -553,15 +586,14 @@ function LocalRegisterForm({
         />
       </div>
       <div class="mb-3">
-        <label class="form-label fw-bold d-block text-end" for="reg_email">
+        <label class="form-label fw-bold d-block" for="reg_email">
           <bdi>${uiStrings.auth.emailLabel}</bdi>
         </label>
         <input
           type="email"
-          class="form-control text-start"
+          class="form-control"
           id="reg_email"
           name="email"
-          dir="ltr"
           value="${initialIdentifier ?? ''}"
           placeholder="${uiStrings.auth.emailPlaceholder}"
           required
@@ -570,15 +602,14 @@ function LocalRegisterForm({
       </div>
       <div class="row g-2 mb-3">
         <div class="col-12 col-sm-6">
-          <label class="form-label fw-bold d-block text-end" for="reg_password">
+          <label class="form-label fw-bold d-block" for="reg_password">
             <bdi>${uiStrings.auth.passwordLabel}</bdi>
           </label>
           <input
             type="password"
-            class="form-control text-start"
+            class="form-control"
             id="reg_password"
             name="password"
-            dir="ltr"
             placeholder="${uiStrings.auth.passwordPlaceholder}"
             minlength="6"
             required
@@ -586,15 +617,14 @@ function LocalRegisterForm({
           />
         </div>
         <div class="col-12 col-sm-6">
-          <label class="form-label fw-bold d-block text-end" for="reg_confirm_password">
+          <label class="form-label fw-bold d-block" for="reg_confirm_password">
             <bdi>${uiStrings.auth.confirmPasswordLabel}</bdi>
           </label>
           <input
             type="password"
-            class="form-control text-start"
+            class="form-control"
             id="reg_confirm_password"
             name="confirm_password"
-            dir="ltr"
             placeholder="${uiStrings.auth.confirmPasswordPlaceholder}"
             minlength="6"
             required
@@ -603,17 +633,16 @@ function LocalRegisterForm({
         </div>
       </div>
       <div class="mb-3">
-        <label class="form-label d-block text-end" for="reg_uin">${uiStrings.auth.uinLabel}</label>
+        <label class="form-label d-block" for="reg_uin">${uiStrings.auth.uinLabel}</label>
         <input
           type="text"
-          class="form-control text-start"
+          class="form-control"
           id="reg_uin"
           name="uin"
-          dir="ltr"
           placeholder="${uiStrings.auth.uinPlaceholder}"
           aria-describedby="reg_uin_help"
         />
-        <small id="reg_uin_help" class="form-text text-muted d-block text-end">
+        <small id="reg_uin_help" class="form-text text-muted d-block">
           ${uiStrings.auth.uinHelp}
         </small>
       </div>
@@ -710,7 +739,7 @@ export function AuthLogin({
               <input
                 type="search"
                 id="js-institution-search"
-                class="form-control mb-2 text-end"
+                class="form-control mb-2"
                 placeholder="${uiStrings.auth.institutionPlaceholder}"
                 aria-label="${uiStrings.auth.institutionAria}"
                 autocomplete="off"

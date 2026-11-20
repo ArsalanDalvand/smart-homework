@@ -149,10 +149,25 @@ export function HeadContents(titleOptions: TitleOptions) {
         border-radius: 6px;
         border: 1px solid #334155 !important;
       }
-      /* LTR technical inputs */
-      input[type="email"], input[type="url"], input.js-effective-uid-input, #effective-uid {
+      /* LTR technical inputs & RTL placeholder handling */
+      input, textarea, select {
+        text-align: right;
+      }
+      ::placeholder {
+        text-align: right !important;
+        direction: rtl !important;
+      }
+      input.js-effective-uid-input, #effective-uid {
         direction: ltr !important;
         text-align: left !important;
+      }
+      input[type="email"], input[type="url"], input[type="password"] {
+        direction: ltr;
+        text-align: right;
+      }
+      input[type="email"]:focus, input[type="url"]:focus, input[type="password"]:focus,
+      input[type="email"]:not(:placeholder-shown), input[type="url"]:not(:placeholder-shown), input[type="password"]:not(:placeholder-shown) {
+        text-align: left;
       }
       /* RTL Dropdown menu alignment */
       .dropdown-menu {
