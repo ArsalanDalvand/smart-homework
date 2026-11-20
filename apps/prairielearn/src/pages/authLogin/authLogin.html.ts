@@ -26,10 +26,14 @@ function LoginPageContainer({
   children,
   service,
   resLocals,
+  errorMessage,
+  initialTab = 'login',
 }: {
   children: HtmlValue;
   service: string | null;
   resLocals: UntypedResLocals;
+  errorMessage?: string;
+  initialTab?: 'login' | 'register';
 }) {
   const isCourseRequestService = service?.includes('request_course');
 
@@ -307,11 +311,22 @@ function LoginPageContainer({
                 <div class="login-form-card h-100 p-4 p-md-4 d-flex flex-column justify-content-between">
                   <div>
                     ${
+                      errorMessage
+                        ? html`
+                            <div class="alert alert-danger py-2 px-3 small mb-3 border-0 bg-danger-subtle text-danger-emphasis d-flex align-items-center gap-2" role="alert">
+                              <i class="fas fa-exclamation-circle text-danger flex-shrink-0"></i>
+                              <span>${errorMessage}</span>
+                            </div>
+                          `
+                        : ''
+                    }
+
+                    ${
                       isCourseRequestService
                         ? html`
                             <div class="alert alert-primary py-2 px-3 small mb-3 border-0 bg-primary-subtle text-primary-emphasis">
                               <i class="fas fa-info-circle me-1"></i>
-                              <strong>استاد / طراح گرامی:</strong> با وارد کردن ایمیل و نام خود، حساب کاربری شما فعال شده و مستقیماً به فرم تعریف درس جدید منتقل می‌شوید.
+                              ${uiStrings.auth.courseRequestInstructorNotice}
                             </div>
                           `
                         : ''
@@ -331,32 +346,27 @@ function LoginPageContainer({
                     <div class="d-flex bg-light rounded-pill p-1 mb-3 border">
                       <button
                         type="button"
-                        class="btn btn-sm w-50 rounded-pill fw-medium auth-tab-btn active"
+                        class="btn btn-sm w-50 rounded-pill fw-medium auth-tab-btn ${initialTab === 'login' ? 'active' : 'text-secondary'}"
                         id="tab-login-btn"
                         onclick="setAuthMode('login')"
                       >
-                        ورود به سامانه
+                        ${uiStrings.auth.loginTab}
                       </button>
                       <button
                         type="button"
-                        class="btn btn-sm w-50 rounded-pill fw-medium text-secondary auth-tab-btn"
+                        class="btn btn-sm w-50 rounded-pill fw-medium auth-tab-btn ${initialTab === 'register' ? 'active' : 'text-secondary'}"
                         id="tab-signup-btn"
-                        onclick="setAuthMode('signup')"
+                        onclick="setAuthMode('register')"
                       >
-                        ثبت‌نام سریع
+                        ${uiStrings.auth.registerTab}
                       </button>
-                    </div>
-
-                    <div id="signup-info-banner" class="alert alert-info py-2 px-3 small mb-3 d-none">
-                      <i class="fas fa-user-plus me-1"></i>
-                      <strong>عضویت فوری:</strong> برای ثبت‌نام نیازی به تاییدیه یا کد فعال‌سازی نیست. با تکمیل فرم زیر، حساب شما بی‌درنگ ایجاد می‌شود.
                     </div>
 
                     ${children}
                   </div>
 
                   <div class="pt-3 border-top text-center mt-3">
-                    <small class="text-muted d-block mb-2">استاد هستید یا نیاز به راهنمایی دارید؟</small>
+                    <small class="text-muted d-block mb-2">${uiStrings.landing.loginFooterHelp}</small>
                     <div class="d-flex justify-content-center gap-3">
                       <a href="/pl/request_course" class="text-decoration-none small text-primary fw-medium">
                         ${uiStrings.landing.requestCourseBtn}
@@ -403,25 +413,24 @@ function LoginPageContainer({
           function setAuthMode(mode) {
             const loginBtn = document.getElementById('tab-login-btn');
             const signupBtn = document.getElementById('tab-signup-btn');
-            const banner = document.getElementById('signup-info-banner');
-            const submitBtnText = document.getElementById('auth-btn-text');
+            const loginPane = document.getElementById('login-form-pane');
+            const registerPane = document.getElementById('register-form-pane');
 
-            if (mode === 'signup') {
-              loginBtn.classList.remove('active');
-              signupBtn.classList.add('active');
-              banner.classList.remove('d-none');
-              if (submitBtnText) {
-                submitBtnText.innerHTML = '<i class="fas fa-user-plus me-1"></i> ایجاد حساب و ورود به سامانه';
-              }
+            if (mode === 'register' || mode === 'signup') {
+              if (loginBtn) { loginBtn.classList.remove('active'); loginBtn.classList.add('text-secondary'); }
+              if (signupBtn) { signupBtn.classList.add('active'); signupBtn.classList.remove('text-secondary'); }
+              if (loginPane) loginPane.classList.add('d-none');
+              if (registerPane) registerPane.classList.remove('d-none');
             } else {
-              signupBtn.classList.remove('active');
-              loginBtn.classList.add('active');
-              banner.classList.add('d-none');
-              if (submitBtnText) {
-                submitBtnText.innerHTML = '<i class="fas fa-sign-in-alt me-1"></i> ${uiStrings.auth.devLoginBtn}';
-              }
+              if (signupBtn) { signupBtn.classList.remove('active'); signupBtn.classList.add('text-secondary'); }
+              if (loginBtn) { loginBtn.classList.add('active'); loginBtn.classList.remove('text-secondary'); }
+              if (registerPane) registerPane.classList.add('d-none');
+              if (loginPane) loginPane.classList.remove('d-none');
             }
           }
+          document.addEventListener('DOMContentLoaded', () => {
+            setAuthMode('${initialTab}');
+          });
         </script>
 
         ${SupportModal()}
@@ -465,34 +474,235 @@ function SamlLoginButton({ institutionId }: { institutionId: string }) {
   `;
 }
 
+function LocalLoginForm({
+  csrfToken,
+  initialIdentifier,
+}: {
+  csrfToken: string;
+  initialIdentifier?: string;
+}) {
+  return html`
+    <form method="POST" dir="rtl" class="text-end">
+      <input type="hidden" name="__csrf_token" value="${csrfToken}" />
+      <div class="mb-3">
+        <label class="form-label fw-bold d-block text-end" for="login_identifier">
+          <bdi>${uiStrings.auth.identifierLabel}</bdi>
+        </label>
+        <input
+          type="text"
+          class="form-control text-start"
+          id="login_identifier"
+          name="identifier"
+          dir="ltr"
+          value="${initialIdentifier ?? ''}"
+          placeholder="${uiStrings.auth.identifierPlaceholder}"
+          required
+          autocomplete="username"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold d-block text-end" for="login_password">
+          <bdi>${uiStrings.auth.passwordLabel}</bdi>
+        </label>
+        <input
+          type="password"
+          class="form-control text-start"
+          id="login_password"
+          name="password"
+          dir="ltr"
+          placeholder="${uiStrings.auth.passwordPlaceholder}"
+          required
+          autocomplete="current-password"
+        />
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary d-block w-100 py-2 shadow-sm mb-2"
+        name="__action"
+        value="local_login"
+      >
+        <span class="fw-bold"><i class="fas fa-sign-in-alt me-1"></i> ${uiStrings.auth.loginBtn}</span>
+      </button>
+      <div class="text-center mt-2">
+        <small class="text-muted">${uiStrings.auth.forgotPasswordHint}</small>
+      </div>
+    </form>
+  `;
+}
+
+function LocalRegisterForm({
+  csrfToken,
+  initialIdentifier,
+}: {
+  csrfToken: string;
+  initialIdentifier?: string;
+}) {
+  return html`
+    <form method="POST" dir="rtl" class="text-end">
+      <input type="hidden" name="__csrf_token" value="${csrfToken}" />
+      <div class="mb-3">
+        <label class="form-label fw-bold d-block text-end" for="reg_name">${uiStrings.auth.nameLabel}</label>
+        <input
+          type="text"
+          class="form-control text-end"
+          id="reg_name"
+          name="name"
+          placeholder="${uiStrings.auth.namePlaceholder}"
+          required
+          autocomplete="name"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold d-block text-end" for="reg_email">
+          <bdi>${uiStrings.auth.emailLabel}</bdi>
+        </label>
+        <input
+          type="email"
+          class="form-control text-start"
+          id="reg_email"
+          name="email"
+          dir="ltr"
+          value="${initialIdentifier ?? ''}"
+          placeholder="${uiStrings.auth.emailPlaceholder}"
+          required
+          autocomplete="email"
+        />
+      </div>
+      <div class="row g-2 mb-3">
+        <div class="col-12 col-sm-6">
+          <label class="form-label fw-bold d-block text-end" for="reg_password">
+            <bdi>${uiStrings.auth.passwordLabel}</bdi>
+          </label>
+          <input
+            type="password"
+            class="form-control text-start"
+            id="reg_password"
+            name="password"
+            dir="ltr"
+            placeholder="${uiStrings.auth.passwordPlaceholder}"
+            minlength="6"
+            required
+            autocomplete="new-password"
+          />
+        </div>
+        <div class="col-12 col-sm-6">
+          <label class="form-label fw-bold d-block text-end" for="reg_confirm_password">
+            <bdi>${uiStrings.auth.confirmPasswordLabel}</bdi>
+          </label>
+          <input
+            type="password"
+            class="form-control text-start"
+            id="reg_confirm_password"
+            name="confirm_password"
+            dir="ltr"
+            placeholder="${uiStrings.auth.confirmPasswordPlaceholder}"
+            minlength="6"
+            required
+            autocomplete="new-password"
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label d-block text-end" for="reg_uin">${uiStrings.auth.uinLabel}</label>
+        <input
+          type="text"
+          class="form-control text-start"
+          id="reg_uin"
+          name="uin"
+          dir="ltr"
+          placeholder="${uiStrings.auth.uinPlaceholder}"
+          aria-describedby="reg_uin_help"
+        />
+        <small id="reg_uin_help" class="form-text text-muted d-block text-end">
+          ${uiStrings.auth.uinHelp}
+        </small>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-success d-block w-100 py-2 shadow-sm mb-2"
+        name="__action"
+        value="local_register"
+      >
+        <span class="fw-bold"><i class="fas fa-user-plus me-1"></i> ${uiStrings.auth.registerBtn}</span>
+      </button>
+      <div class="text-center mt-2">
+        <small class="text-muted">${uiStrings.auth.registerNotice}</small>
+      </div>
+    </form>
+  `;
+}
+
 export function AuthLogin({
   institutionAuthnProviders,
   service,
   resLocals,
+  errorMessage,
+  initialTab = 'login',
+  initialIdentifier,
 }: {
   institutionAuthnProviders: InstitutionAuthnProvider[] | null;
   service: string | null;
   resLocals: UntypedResLocals;
+  errorMessage?: string;
+  initialTab?: 'login' | 'register';
+  initialIdentifier?: string;
 }) {
+  const hasExternalProviders =
+    (config.hasShib && !config.hideShibLogin) ||
+    config.hasOauth ||
+    (config.hasAzure && isEnterprise()) ||
+    Boolean(institutionAuthnProviders?.length);
+
   return LoginPageContainer({
     service,
     resLocals,
+    errorMessage,
+    initialTab,
     children: html`
+      <!-- Tab 1: Login Form -->
+      <div id="login-form-pane" class="${initialTab === 'register' ? 'd-none' : ''}">
+        ${LocalLoginForm({
+          csrfToken: resLocals.__csrf_token,
+          initialIdentifier,
+        })}
+      </div>
+
+      <!-- Tab 2: Fast Registration Form -->
+      <div id="register-form-pane" class="${initialTab === 'register' ? '' : 'd-none'}">
+        ${LocalRegisterForm({
+          csrfToken: resLocals.__csrf_token,
+          initialIdentifier,
+        })}
+      </div>
+
+      <!-- Dev Mode Quick Bypass (Available in dev mode) -->
       ${
         config.devMode
           ? html`
-              ${DevModeBypass()}
-              <hr />
-              ${DevModeLogin({ csrfToken: resLocals.__csrf_token })}
-              <hr />
+              <div class="mt-4 pt-3 border-top">
+                <div class="d-flex align-items-center gap-2 mb-2 text-muted small">
+                  <i class="fas fa-bolt text-warning"></i>
+                  <span class="fw-bold">${uiStrings.auth.devLoginTitle}</span>
+                </div>
+                ${DevModeBypass()}
+              </div>
             `
           : ''
       }
-      <div class="d-flex flex-column gap-2 mt-4">
-        ${config.hasShib && !config.hideShibLogin ? ShibLoginButton() : ''}
-        ${config.hasOauth ? GoogleLoginButton() : ''}
-        ${config.hasAzure && isEnterprise() ? MicrosoftLoginButton() : ''}
-      </div>
+
+      <!-- Official SSO and University Providers -->
+      ${
+        hasExternalProviders
+          ? html`
+              <div class="institution-header text-muted my-3">${uiStrings.auth.ssoDivider}</div>
+              <div class="d-flex flex-column gap-2">
+                ${config.hasShib && !config.hideShibLogin ? ShibLoginButton() : ''}
+                ${config.hasOauth ? GoogleLoginButton() : ''}
+                ${config.hasAzure && isEnterprise() ? MicrosoftLoginButton() : ''}
+              </div>
+            `
+          : ''
+      }
       ${
         institutionAuthnProviders?.length
           ? html`
@@ -520,7 +730,7 @@ export function AuthLogin({
                 )}
               </div>
               <div id="js-institution-no-results" class="text-muted d-none mt-2 text-center">
-                موردی یافت نشد
+                ${uiStrings.landing.noInstitutionsFound}
               </div>
               <script>
                 document.getElementById('js-institution-search').addEventListener('input', (e) => {
@@ -696,50 +906,3 @@ function DevModeBypass() {
   `;
 }
 
-function DevModeLogin({ csrfToken }: { csrfToken: string }) {
-  return html`
-    <form method="POST" dir="rtl" class="text-end">
-      <div class="mb-3">
-        <label class="form-label fw-bold d-block text-end" for="dev_uid">
-          <bdi>${uiStrings.auth.uidLabel}</bdi>
-        </label>
-        <input type="text" class="form-control text-start" id="dev_uid" name="uid" dir="ltr" placeholder="${uiStrings.auth.uidPlaceholder}" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label fw-bold d-block text-end" for="dev_name">${uiStrings.auth.nameLabel}</label>
-        <input type="text" class="form-control text-end" id="dev_name" name="name" placeholder="${uiStrings.auth.namePlaceholder}" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label d-block text-end" for="dev_uin">${uiStrings.auth.uinLabel}</label>
-        <input
-          type="text"
-          class="form-control text-start"
-          id="dev_uin"
-          name="uin"
-          dir="ltr"
-          placeholder="${uiStrings.auth.uinPlaceholder}"
-          aria-describedby="dev_uin_help"
-        />
-        <small id="dev_uin_help" class="form-text text-muted d-block text-end">
-          ${uiStrings.auth.uinHelp}
-        </small>
-      </div>
-      <div class="mb-3">
-        <label class="form-label d-block text-end" for="dev_email">${uiStrings.auth.emailLabel}</label>
-        <input
-          type="email"
-          class="form-control text-start"
-          id="dev_email"
-          name="email"
-          dir="ltr"
-          placeholder="${uiStrings.auth.emailPlaceholder}"
-          aria-describedby="dev_email_help"
-        />
-      </div>
-      <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-      <button type="submit" class="btn btn-primary d-block w-100 py-2 shadow-sm" name="__action" value="dev_login">
-        <span class="fw-bold" id="auth-btn-text"><i class="fas fa-sign-in-alt me-1"></i> ${uiStrings.auth.devLoginBtn}</span>
-      </button>
-    </form>
-  `;
-}
