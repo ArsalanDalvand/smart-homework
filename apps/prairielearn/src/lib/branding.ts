@@ -32,7 +32,7 @@ export const platformBranding = {
   portalUrl: env.PL_PORTAL_URL || 'https://github.com/ArsalanDalvand/smart-homework',
   repoUrl: env.PL_REPO_URL || 'https://github.com/ArsalanDalvand/smart-homework',
   supportEmail: env.PL_SUPPORT_EMAIL || 'support@prairielearn.ir',
-  docsUrl: env.PL_DOCS_URL || 'https://docs.prairielearn.com',
+  docsUrl: env.PL_DOCS_URL || 'https://github.com/ArsalanDalvand/smart-homework-docs',
   licenseUrl: env.PL_LICENSE_URL || 'https://github.com/ArsalanDalvand/smart-homework/blob/master/LICENSE',
   licenseName: 'GNU AGPLv3',
 
