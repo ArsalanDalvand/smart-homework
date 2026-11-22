@@ -95,7 +95,7 @@ export function StudentGradebook({
                             className="mx-auto"
                           />
                         ) : (
-                          'Score not shown'
+                          'نمره پنهان است'
                         )}
                       </td>
                     </tr>

@@ -189,7 +189,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Settings',
+        pageTitle: 'تنظیمات ترم',
         navContext: {
           type: 'instructor',
           page: 'instance_admin',

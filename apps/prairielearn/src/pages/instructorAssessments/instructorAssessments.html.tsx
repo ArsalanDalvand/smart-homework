@@ -51,7 +51,7 @@ export function InstructorAssessments({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Assessments',
+    pageTitle: 'تکالیف و آزمون‌ها',
     navContext: {
       type: 'instructor',
       page: 'instance_admin',
@@ -70,7 +70,7 @@ export function InstructorAssessments({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1>Assessments</h1>
+          <h1>تکالیف و آزمون‌ها</h1>
           ${
             authz_data.has_course_permission_edit && !course.example_course
               ? html`
@@ -81,7 +81,7 @@ export function InstructorAssessments({
                       aria-label="Import content"
                     >
                       <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
-                      <span class="d-none d-sm-inline">Import content</span>
+                      <span class="d-none d-sm-inline">درون‌ریزی محتوا</span>
                     </a>
                     ${
                       rows.length > 0
@@ -94,7 +94,7 @@ export function InstructorAssessments({
                               aria-label="Add assessment"
                             >
                               <i class="fa fa-plus" aria-hidden="true"></i>
-                              <span class="d-none d-sm-inline">Add assessment</span>
+                              <span class="d-none d-sm-inline">افزودن ارزیابی</span>
                             </button>
                           `
                         : ''
@@ -113,11 +113,11 @@ export function InstructorAssessments({
                       <tr>
                         <th style="width: 1%"><span class="visually-hidden">Label</span></th>
                         <th><span class="visually-hidden">Title</span></th>
-                        <th>Short name</th>
-                        <th class="text-center">Students</th>
-                        <th class="text-center">Scores</th>
-                        <th class="text-center">Mean Score</th>
-                        <th class="text-center">Mean Duration</th>
+                        <th>کد اختصاری</th>
+                        <th class="text-center">دانشجویان</th>
+                        <th class="text-center">نمرات</th>
+                        <th class="text-center">میانگین نمره</th>
+                        <th class="text-center">میانگین زمان</th>
                       </tr>
                     </thead>
                     ${assessmentGroups.map(
@@ -204,13 +204,12 @@ export function InstructorAssessments({
               `
             : html`
                 <div class="my-4 card-body text-center" style="text-wrap: balance;">
-                  <p class="fw-bold">No assessments found.</p>
+                  <p class="fw-bold">ارزیابی‌ای یافت نشد.</p>
                   <p class="mb-0">
-                    An assessment is a collection of questions to build or assess a student's
-                    knowledge.
+                    هر ارزیابی مجموعه‌ای از سوالات و تمرین‌ها جهت سنجش و ارتقای یادگیری دانشجویان است.
                   </p>
                   <p>
-                    Learn more in the
+                    اطلاعات بیشتر در
                     <a
                       href="https://docs.prairielearn.com/assessment/overview/"
                       target="_blank"
@@ -223,7 +222,7 @@ export function InstructorAssessments({
                       return html`<p>You can't add assessments to the example course.</p>`;
                     }
                     if (!authz_data.has_course_permission_edit) {
-                      return html`<p>Course Editors can create new assessments.</p>`;
+                      return html`<p>ویرایشگران درس می‌توانند ارزیابی‌های جدید ایجاد نمایند.</p>`;
                     }
                     return html`
                       <button
@@ -233,7 +232,7 @@ export function InstructorAssessments({
                         data-bs-target="#createAssessmentModal"
                       >
                         <i class="fa fa-plus" aria-hidden="true"></i>
-                        <span class="d-none d-sm-inline">Add assessment</span>
+                        <span class="d-none d-sm-inline">افزودن ارزیابی</span>
                       </button>
                     `;
                   })}
@@ -322,14 +321,14 @@ function CreateAssessmentModal({
 }) {
   return Modal({
     id: 'createAssessmentModal',
-    title: 'Create assessment',
+    title: 'تعریف ارزیابی جدید',
     formMethod: 'POST',
     // TODO: if/when this page is converted to React, use `validateShortName`
     // from `../../lib/short-name.js` with react-hook-form to provide more specific
     // validation feedback (e.g., "cannot start with a slash").
     body: html`
       <div class="mb-3">
-        <label class="form-label" for="title">Title</label>
+        <label class="form-label" for="title">عنوان ارزیابی</label>
         <input
           type="text"
           class="form-control"
@@ -339,11 +338,11 @@ function CreateAssessmentModal({
           aria-describedby="title_help"
         />
         <small id="title_help" class="form-text text-muted">
-          The full name of the assessment, visible to users.
+          عنوان کامل ارزیابی که برای کاربران نمایش داده می‌شود.
         </small>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="aid">Short name</label>
+        <label class="form-label" for="aid">کد اختصاری</label>
         <input
           type="text"
           class="form-control"
@@ -358,10 +357,10 @@ function CreateAssessmentModal({
         </small>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="type">Type</label>
+        <label class="form-label" for="type">نوع ارزیابی</label>
         <select class="form-select" id="type" name="type" aria-describedby="type_help" required>
-          <option value="Homework">Homework</option>
-          <option value="Exam">Exam</option>
+          <option value="Homework">تکلیف منزل (Homework)</option>
+          <option value="Exam">امتحان (Exam)</option>
         </select>
         <small id="type_help" class="form-text text-muted">
           The type of the assessment. This can be either
@@ -371,7 +370,7 @@ function CreateAssessmentModal({
         </small>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="set">Set</label>
+        <label class="form-label" for="set">دسته‌بندی (Set)</label>
         <select class="form-select" id="set" name="set" aria-describedby="set_help" required>
           ${assessmentSets.map((set) => html`<option value="${set.name}">${set.heading}</option>`)}
         </select>
@@ -384,7 +383,7 @@ function CreateAssessmentModal({
         assessmentsGroupBy === 'Module'
           ? html`
               <div class="mb-3">
-                <label class="form-label" for="module">Module</label>
+                <label class="form-label" for="module">سرفصل / ماژول</label>
                 <select
                   class="form-select"
                   id="module"
@@ -408,8 +407,8 @@ function CreateAssessmentModal({
     footer: html`
       <input type="hidden" name="__action" value="add_assessment" />
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+      <button type="submit" class="btn btn-primary">ایجاد ارزیابی</button>
     `,
   });
 }

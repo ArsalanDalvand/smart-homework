@@ -13,22 +13,22 @@ export function AssessmentQuestionHeaders({
         <tr>
           <th colSpan={nTableCols} scope="rowgroup">
             <div className="d-flex align-items-center">
-              Zone {question.zone.number}. {question.zone.title}{' '}
+              بخش {question.zone.number}. {question.zone.title}{' '}
               {question.zone.number_choose == null
-                ? '(Choose all questions)'
+                ? '(انتخاب تمامی سوالات)'
                 : question.zone.number_choose === 1
-                  ? '(Choose 1 question)'
-                  : `(Choose ${question.zone.number_choose} questions)`}
+                  ? '(انتخاب ۱ سوال)'
+                  : `(انتخاب ${question.zone.number_choose} سوال)`}
               {question.zone.max_points != null
-                ? ` (maximum ${question.zone.max_points} points)`
+                ? ` (حداکثر ${question.zone.max_points} نمره)`
                 : ''}
               {question.zone.best_questions != null
-                ? ` (best ${question.zone.best_questions} questions)`
+                ? ` (بهترین ${question.zone.best_questions} سوال)`
                 : ''}
               {question.zone.lockpoint ? (
                 <span className="badge text-bg-warning ms-2">
                   <i className="bi bi-lock-fill me-1" aria-hidden="true" />
-                  Lockpoint
+                  مرحله عطف
                 </span>
               ) : null}
             </div>
@@ -42,10 +42,10 @@ export function AssessmentQuestionHeaders({
           <td colSpan={nTableCols}>
             {question.alternative_pool.number}.{' '}
             {question.alternative_pool.number_choose == null
-              ? 'Choose all questions from:'
+              ? 'انتخاب تمامی سوالات از:'
               : question.alternative_pool.number_choose === 1
-                ? 'Choose 1 question from:'
-                : `Choose ${question.alternative_pool.number_choose} questions from:`}
+                ? 'انتخاب ۱ سوال از:'
+                : `انتخاب ${question.alternative_pool.number_choose} سوال از:`}
           </td>
         </tr>
       ) : (

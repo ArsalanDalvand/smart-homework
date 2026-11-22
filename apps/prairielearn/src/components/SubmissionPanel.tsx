@@ -181,7 +181,7 @@ export function SubmissionPanel({
                               submission.rubric_grading.adjust_points
                                 ? html`
                                     <div class="mb-2">
-                                      <span class="text-muted"> Manual grading adjustment: </span>
+                                      <span class="text-muted"> تنظیم دستی نمره: </span>
                                       <span
                                         class="text-${
                                           submission.rubric_grading.adjust_points >= 0
@@ -289,7 +289,7 @@ export function SubmissionPanel({
               submissionHtml == null
                 ? html`
                     <div class="spinner-border" role="status">
-                      <span class="visually-hidden">Loading...</span>
+                      <span class="visually-hidden">در حال بارگذاری...</span>
                     </div>
                   `
                 : questionRenderContext === 'ai_grading'
@@ -340,11 +340,11 @@ function SubmissionStatusBadge({
       if (!instance_question || instance_question.requires_manual_grading) {
         if (!submission.gradable && !assessment_question?.max_auto_points) {
           manualGradingBadge = html`
-            <span class="badge text-bg-danger">invalid, not gradable</span><br />
+            <span class="badge text-bg-danger">نامعتبر (غیرقابل نمره‌دهی)</span><br />
           `;
         } else {
           manualGradingBadge = html`
-            <span class="badge text-bg-secondary">manual grading: waiting for grading</span><br />
+            <span class="badge text-bg-secondary">تصحیح دستی: در انتظار بررسی کادر آموزشی</span><br />
           `;
         }
       } else {
@@ -474,7 +474,7 @@ function SubmissionInfoModal({
         }`;
   return Modal({
     id: `submissionInfoModal-${submission.id}`,
-    title: 'Submission info',
+    title: 'مشخصات پاسخ ارسالی',
     body: html`
       <table
         class="table table-sm table-borderless two-column-description mb-0"
@@ -482,14 +482,14 @@ function SubmissionInfoModal({
       >
         <tbody>
           <tr>
-            <th>Submission time</th>
+            <th>زمان ثبت پاسخ</th>
             <td>${formattedDate}</td>
           </tr>
           ${
             submission.user_uid
               ? html`
                   <tr>
-                    <th>Submitted by</th>
+                    <th>ارائه‌دهنده</th>
                     <td>${submission.user_uid}</td>
                   </tr>
                 `
@@ -499,27 +499,27 @@ function SubmissionInfoModal({
             gradingJobStats?.grading_method === 'External'
               ? html`
                   <tr>
-                    <th><span class="text-dark me-2">&bull;</span>Submit duration</th>
+                    <th><span class="text-dark me-2">&bull;</span>زمان ارسال</th>
                     <td>${gradingJobStats.submitDuration}</td>
                   </tr>
                   <tr>
-                    <th><span class="text-warning me-2">&bull;</span>Queue duration</th>
+                    <th><span class="text-warning me-2">&bull;</span>زمان صف داوری</th>
                     <td>${gradingJobStats.queueDuration}</td>
                   </tr>
                   <tr>
-                    <th><span class="text-primary me-2">&bull;</span>Prepare duration</th>
+                    <th><span class="text-primary me-2">&bull;</span>زمان آماده‌سازی</th>
                     <td>${gradingJobStats.prepareDuration}</td>
                   </tr>
                   <tr>
-                    <th><span class="text-success me-2">&bull;</span>Run duration</th>
+                    <th><span class="text-success me-2">&bull;</span>زمان اجرای تست‌ها</th>
                     <td>${gradingJobStats.runDuration}</td>
                   </tr>
                   <tr>
-                    <th><span class="text-danger me-2">&bull;</span>Report duration</th>
+                    <th><span class="text-danger me-2">&bull;</span>زمان ثبت گزارش</th>
                     <td>${gradingJobStats.reportDuration}</td>
                   </tr>
                   <tr>
-                    <th>Total duration</th>
+                    <th>مجموع مدت زمان</th>
                     <td>${gradingJobStats.totalDuration}</td>
                   </tr>
                 `
@@ -530,7 +530,7 @@ function SubmissionInfoModal({
       ${
         gradingJobStats || !isAutograded({ question, assessment_question })
           ? ''
-          : html`<p class="mt-2">This submission was not automatically graded.</p>`
+          : html`<p class="mt-2">این پاسخ به صورت خودکار تصحیح نشده است.</p>`
       }
       ${
         gradingJobStats?.grading_method === 'External'
@@ -558,14 +558,14 @@ function SubmissionInfoModal({
                 ></span>
               </div>
               <a class="btn btn-primary mt-2" href="${gradingJobUrl}">
-                View grading job ${submission.grading_job?.id}
+                مشاهده فرآیند تصحیح ${submission.grading_job?.id}
               </a>
             `
           : ''
       }
     `,
     footer: html`
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
     `,
   });
 }
@@ -599,7 +599,7 @@ function RubricItem({
                   data-bs-content="${item.explanation_rendered}"
                   data-bs-html="true"
                   data-testid="rubric-item-explanation"
-                  aria-label="Details"
+                  aria-label="جزئیات"
                 >
                   <i class="fas fa-circle-info"></i>
                 </button>

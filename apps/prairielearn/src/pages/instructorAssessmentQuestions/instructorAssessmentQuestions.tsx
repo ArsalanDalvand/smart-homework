@@ -79,7 +79,7 @@ router.get(
             subPage: 'questions',
           },
           courseOwners,
-          pageTitle: 'Questions',
+          pageTitle: 'سوالات ارزیابی',
           requiredPermissions: 'Previewer',
         }),
       );
@@ -98,7 +98,7 @@ router.get(
       res.send(
         PageLayout({
           resLocals: res.locals,
-          pageTitle: 'Questions',
+          pageTitle: 'سوالات ارزیابی',
           navContext: { type: 'instructor', page: 'assessment', subPage: 'questions' },
           content: (
             <Alert variant="warning">
@@ -181,7 +181,7 @@ router.get(
       PageLayout({
         resLocals: res.locals,
         postContent: CalculatorPreviewAssets(),
-        pageTitle: 'Questions',
+        pageTitle: 'سوالات ارزیابی',
         headContent: [
           compiledScriptTag('instructorAssessmentQuestionsClient.ts'),
           compiledStylesheetTag('splitPane.css'),

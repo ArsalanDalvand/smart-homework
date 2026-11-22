@@ -630,8 +630,8 @@ function ExamQuestionHelpAvailablePoints() {
       data-bs-container="body"
       data-bs-html="true"
       data-bs-placement="auto"
-      data-bs-title="Available points"
-      data-bs-content="The number of points that would be earned for a 100% correct answer on the next attempt. If retries are available for the question then a list of further points is shown, where the <i>n</i>-th value is the number of points that would be earned for a 100% correct answer on the <i>n</i>-th attempt."
+      data-bs-title="نمره در دسترس"
+      data-bs-content="تعداد نمره‌ای که برای پاسخ ۱۰۰٪ صحیح در تلاش بعدی دریافت خواهید کرد. در صورتی که امکان تلاش مجدد وجود داشته باشد، فهرستی از نمرات نشان داده می‌شود که مقدار n-ام نشان‌دهنده نمره حاصل از پاسخ صحیح در تلاش n-ام است."
     >
       <i class="fa fa-question-circle" aria-hidden="true"></i>
     </button>
@@ -647,8 +647,8 @@ function ExamQuestionHelpAwardedPoints() {
       data-bs-container="body"
       data-bs-html="true"
       data-bs-placement="auto"
-      data-bs-title="Awarded points"
-      data-bs-content="The number of points already earned, as a fraction of the maximum possible points for the question."
+      data-bs-title="نمره کسب‌شده"
+      data-bs-content="تعداد نمره‌ای که تاکنون کسب کرده‌اید، به صورت کسری از کل نمره ممکن این سوال."
     >
       <i class="fa fa-question-circle" aria-hidden="true"></i>
     </button>
@@ -668,24 +668,23 @@ function ConfirmFinishModal({
 
   return Modal({
     id: 'confirmFinishModal',
-    title: 'All done?',
+    title: 'اتمام و ثبت نهایی آزمون',
     body: html`
       ${
         !all_questions_answered
-          ? html`<div class="alert alert-warning">There are still unanswered questions.</div>`
+          ? html`<div class="alert alert-warning">هنوز سوالاتی وجود دارند که پاسخ داده نشده‌اند.</div>`
           : ''
       }
       <p class="text-danger">
-        <strong>Warning</strong>: You will not be able to answer any more questions after finishing
-        the assessment.
+        <strong>هشدار</strong>: پس از اتمام آزمون، امکان پاسخگویی مجدد یا ویرایش پاسخ‌ها را نخواهید داشت.
       </p>
-      <p>Are you sure you want to finish, complete, and close out the assessment?</p>
+      <p>آیا از پایان قطعی آزمون و بستن آن اطمینان دارید؟</p>
     `,
     footer: html`
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-      <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
+      <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">انصراف</button>
       <button type="submit" class="btn btn-danger" name="__action" value="finish">
-        Finish assessment
+        ثبت و پایان قطعی آزمون
       </button>
     `,
   });

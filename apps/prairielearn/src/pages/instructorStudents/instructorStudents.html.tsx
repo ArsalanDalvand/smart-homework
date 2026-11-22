@@ -434,7 +434,7 @@ function StudentsCard({
         }),
         columnHelper.accessor((row) => row.user?.uid ?? row.enrollment.pending_uid, {
           id: 'user_uid',
-          header: 'UID',
+          header: 'شناسه کاربری (UID)',
           cell: (info) => {
             return (
               <a href={getStudentEnrollmentUrl(courseInstance.id, info.row.original.enrollment.id)}>
@@ -445,7 +445,7 @@ function StudentsCard({
         }),
         columnHelper.accessor((row) => row.user?.name, {
           id: 'user_name',
-          header: 'Name',
+          header: 'نام و نام خانوادگی',
           cell: (info) => {
             if (info.row.original.user) {
               return info.getValue() || '—';
@@ -455,7 +455,7 @@ function StudentsCard({
         }),
         columnHelper.accessor((row) => row.enrollment.status, {
           id: 'enrollment_status',
-          header: 'Status',
+          header: 'وضعیت',
           cell: (info) => <EnrollmentStatusIcon type="text" status={info.getValue()} />,
           filterFn: (row, _columnId, filter: MultiSelectFilterValue<EnumEnrollmentStatus>) => {
             const current = row.original.enrollment.status;
@@ -464,7 +464,7 @@ function StudentsCard({
         }),
         columnHelper.accessor((row) => row.user?.uin, {
           id: 'user_uin',
-          header: 'UIN',
+          header: 'شماره دانشجویی (UIN)',
           cell: (info) => {
             if (info.row.original.user) {
               return info.getValue() || '—';
@@ -474,7 +474,7 @@ function StudentsCard({
         }),
         columnHelper.accessor((row) => row.user?.email, {
           id: 'user_email',
-          header: 'Email',
+          header: 'ایمیل',
           cell: (info) => {
             if (info.row.original.user) {
               return info.getValue() || '—';
@@ -488,7 +488,7 @@ function StudentsCard({
           meta: {
             label: 'Student labels',
           },
-          header: 'Labels',
+          header: 'برچسب‌ها',
           cell: (info) => {
             const labelIds = info.getValue();
             if (labelIds.length === 0) return '—';
@@ -513,7 +513,7 @@ function StudentsCard({
         }),
         columnHelper.accessor((row) => row.enrollment.first_joined_at, {
           id: 'enrollment_first_joined_at',
-          header: 'Joined',
+          header: 'تاریخ عضویت',
           cell: (info) => {
             const date = info.getValue();
             if (date == null) return '—';

@@ -23,16 +23,16 @@ export function RowLabel({
     showLink = false;
     lockMessage =
       row.prev_question_access_mode === 'blocked_sequence'
-        ? 'A previous question must be completed before you can access this one.'
-        : `You must score at least ${row.prev_advance_score_perc}% on ${row.prev_title} to unlock this question.`;
+        ? 'پیش از دسترسی به این سوال، باید سوال قبلی تکمیل گردد.'
+        : `برای باز شدن این سوال باید حداقل ${row.prev_advance_score_perc}٪ نمره را در «${row.prev_title}» کسب کنید.`;
   } else if (row.question_access_mode === 'blocked_lockpoint') {
     showLink = false;
   } else if (!(row.group_role_permissions?.can_view ?? true)) {
     showLink = false;
-    lockMessage = `Your current group role (${userGroupRoles}) restricts access to this question.`;
+    lockMessage = `نقش فعلی گروهی شما (${userGroupRoles}) دسترسی به این سوال را محدود کرده است.`;
   } else if (row.question_access_mode === 'read_only_lockpoint') {
     lockMessage =
-      'You can no longer submit answers to this question because you have advanced past a lockpoint.';
+      'به دلیل عبور از مرحله عطف، دیگر امکان ارسال پاسخ برای این سوال وجود ندارد.';
   }
 
   return html`
@@ -85,7 +85,7 @@ export function RowLabel({
               data-bs-toggle="popover"
               data-bs-container="body"
               data-bs-html="true"
-              data-bs-content="Personal notes: ${row.file_count}"
+              data-bs-content="یادداشت‌های شخصی: ${row.file_count}"
               aria-label="Has personal note attachments"
             >
               <i class="fas fa-paperclip"></i>

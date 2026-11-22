@@ -19,12 +19,12 @@ export function LockpointRow({
   displayTimezone: string;
 }) {
   if (row.lockpoint_crossed) {
-    const parts: string[] = ['Previous questions locked'];
+    const parts: string[] = ['سوالات قبلی قفل شدند'];
     if (isGroupAssessment && row.lockpoint_crossed_authn_user_uid) {
-      parts.push(`by ${row.lockpoint_crossed_authn_user_uid}`);
+      parts.push(`توسط ${row.lockpoint_crossed_authn_user_uid}`);
     }
     if (row.lockpoint_crossed_at) {
-      parts.push(`at ${formatDate(row.lockpoint_crossed_at, displayTimezone)}`);
+      parts.push(`در تاریخ ${formatDate(row.lockpoint_crossed_at, displayTimezone)}`);
     }
 
     return html`
@@ -33,7 +33,7 @@ export function LockpointRow({
           <div class="d-flex">
             <i class="fas fa-check-circle text-success me-2 mt-1" aria-hidden="true"></i>
             <div>
-              <span class="fw-bold">Lockpoint</span>
+              <span class="fw-bold">مرحله عطف</span>
               <small class="text-muted d-block">${parts.join(' ')}</small>
             </div>
           </div>
@@ -52,9 +52,9 @@ export function LockpointRow({
             <div class="d-flex">
               <i class="fas fa-lock text-warning me-2 mt-1" aria-hidden="true"></i>
               <div>
-                <span class="fw-bold">Lockpoint</span>
+                <span class="fw-bold">مرحله عطف</span>
                 <small class="text-muted d-block">
-                  After proceeding, you will not be able to submit answers to previous questions.
+                  پس از عبور از این مرحله، دیگر امکان ثبت پاسخ برای سوالات قبلی را نخواهید داشت.
                 </small>
               </div>
             </div>
@@ -64,7 +64,7 @@ export function LockpointRow({
               data-bs-toggle="modal"
               data-bs-target="#crossLockpointModal-${row.zone.id}"
             >
-              Proceed to next questions
+              عبور به سوالات بعدی
             </button>
           </div>
         </td>
@@ -78,12 +78,12 @@ export function LockpointRow({
         <div class="d-flex">
           <i class="fas fa-lock text-secondary me-2 mt-1" aria-hidden="true"></i>
           <div>
-            <span class="fw-bold text-muted">Lockpoint</span>
+            <span class="fw-bold text-muted">مرحله عطف</span>
             <small class="text-muted d-block">
               ${
                 blockedByAdvanceScorePerc
-                  ? 'A previous question requires a higher score before you can proceed past this lockpoint.'
-                  : 'Complete previous questions to unlock.'
+                  ? 'برای عبور از این مرحله عطف، باید در سوال قبلی نمره بالاتری کسب نمایید.'
+                  : 'جهت باز شدن این بخش، سوالات قبلی را تکمیل کنید.'
               }
             </small>
           </div>

@@ -28,7 +28,7 @@ export function ViewToggle({
           aria-pressed={viewType === 'simple'}
           onClick={() => onViewTypeChange('simple')}
         >
-          Simple
+          ساده
         </button>
         <button
           type="button"
@@ -39,7 +39,7 @@ export function ViewToggle({
           aria-pressed={viewType === 'detailed'}
           onClick={() => onViewTypeChange('detailed')}
         >
-          Detailed
+          تفصیلی
         </button>
       </div>
       {hasAlternatives && (
@@ -52,12 +52,12 @@ export function ViewToggle({
           {isAllExpanded ? (
             <>
               <i className="bi bi-chevron-contract" aria-hidden="true" />{' '}
-              <span className="toolbar-btn-label">Collapse alternatives</span>
+              <span className="toolbar-btn-label">بستن گزینه‌ها</span>
             </>
           ) : (
             <>
               <i className="bi bi-chevron-expand" aria-hidden="true" />{' '}
-              <span className="toolbar-btn-label">Expand alternatives</span>
+              <span className="toolbar-btn-label">باز کردن گزینه‌ها</span>
             </>
           )}
         </button>
@@ -99,7 +99,7 @@ export function EditModeToolbar({
         type="button"
         onClick={() => setEditMode(true)}
       >
-        <i className="bi bi-pencil" aria-hidden="true" /> Edit
+        <i className="bi bi-pencil" aria-hidden="true" /> ویرایش
       </button>
     );
   }
@@ -116,7 +116,7 @@ export function EditModeToolbar({
       {...(saveButtonDisabledReason && { 'aria-describedby': saveTooltipId })}
     >
       <i className="bi bi-floppy" aria-hidden="true" />{' '}
-      <span className="toolbar-btn-label">Save</span>
+      <span className="toolbar-btn-label">ذخیره</span>
     </button>
   );
 
@@ -140,7 +140,7 @@ export function EditModeToolbar({
         saveButton
       )}
       <button className="btn btn-sm btn-outline-secondary" type="button" onClick={onCancel}>
-        Cancel
+        انصراف
       </button>
     </form>
   );

@@ -1,0 +1,25 @@
+services:
+  smart_homework:
+    image: smart-homework:prod
+    container_name: smart_homework
+    restart: always
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/pl_ag_jobs:/jobs
+      - /opt/smart-homework/courses/iust-bp:/course
+      - /opt/smart-homework/config.json:/PrairieLearn/config.json
+      - smart_homework_db:/var/postgres
+    environment:
+      - HOST_JOBS_DIR=/root/pl_ag_jobs
+      - DOCKER_HOST=/var/run/docker.sock
+      - NODE_ENV=production
+      - PL_BRAND_NAME=سامانه جامع ارزیابی و یادگیری هوشمند دانشگاهی
+      - PL_BRAND_SHORT_NAME=سامانه یادگیری هوشمند
+      - PL_PORTAL_URL=https://homework.atomathix.ir
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  smart_homework_db:

@@ -182,7 +182,7 @@ function GradebookTable({
       columnHelper.columns([
         columnHelper.accessor('uid', {
           id: 'uid',
-          header: 'UID',
+          header: 'شناسه کاربری (UID)',
           cell: (info) => {
             const uid = info.getValue();
             // Staff may not have an enrollment
@@ -196,7 +196,7 @@ function GradebookTable({
 
         columnHelper.accessor('user_name', {
           id: 'user_name',
-          header: 'Name',
+          header: 'نام و نام خانوادگی',
           cell: (info) => {
             return info.getValue() ?? '—';
           },
@@ -204,7 +204,7 @@ function GradebookTable({
 
         columnHelper.accessor('uin', {
           id: 'uin',
-          header: 'UIN',
+          header: 'شماره دانشجویی (UIN)',
           cell: (info) => info.getValue() ?? '—',
         }),
 
@@ -237,7 +237,7 @@ function GradebookTable({
 
         columnHelper.accessor((row) => row.enrollment?.status, {
           id: 'enrollment_status',
-          header: 'Enrollment',
+          header: 'وضعیت ثبت‌نام',
           cell: (info) => {
             const status = info.getValue();
             return status ? <EnrollmentStatusIcon type="text" status={status} /> : '—';
@@ -461,7 +461,7 @@ function GradebookTable({
     <>
       <TanstackTableCard
         table={table}
-        title="Gradebook"
+        title="دفتر نمرات"
         singularLabel="user"
         pluralLabel="users"
         className="h-100"

@@ -124,7 +124,7 @@ router.get(
       PageLayout({
         resLocals: res.locals,
         postContent: CalculatorPreviewAssets(),
-        pageTitle: 'Settings',
+        pageTitle: 'تنظیمات ارزیابی',
         navContext: {
           type: 'instructor',
           page: 'assessment',

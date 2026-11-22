@@ -62,7 +62,7 @@ router.get(
             subPage: 'gradebook',
           },
           courseOwners,
-          pageTitle: 'Gradebook',
+          pageTitle: 'دفتر نمرات',
           requiredPermissions: 'Student Data Viewer',
         }),
       );
@@ -85,7 +85,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Gradebook',
+        pageTitle: 'دفتر نمرات',
         navContext: {
           type: 'instructor',
           page: 'instance_admin',

@@ -139,8 +139,7 @@ export function StudentInstanceQuestion({
             resLocals.instance_question_info.question_access_mode === 'read_only_lockpoint'
               ? html`
                   <div class="alert alert-warning">
-                    This question is read-only because you advanced past a lockpoint. You can review
-                    your previous submissions but cannot make new ones.
+                    این سوال فقط-خواندنی است زیرا از مرحله عطف عبور کرده‌اید. می‌توانید پاسخ‌های قبلی خود را مرور کنید اما امکان ثبت پاسخ جدید وجود ندارد.
                   </div>
                 `
               : ''
@@ -160,8 +159,7 @@ export function StudentInstanceQuestion({
                       </h1>
                     </div>
                     <div class="card-body">
-                      This question was not viewed while the assessment was open, so no variant was
-                      created.
+                      این سوال در زمان باز بودن ارزیابی مشاهده نشد، بنابراین نمونه‌ای برای آن تولید نشده است.
                     </div>
                   </div>
                 `
@@ -203,7 +201,7 @@ export function StudentInstanceQuestion({
                             resLocals.assessment_instance.id
                           }/"
                         >
-                          Assessment overview
+                          نمای کلی ارزیابی
                         </a>
                       </div>
 
@@ -214,7 +212,7 @@ export function StudentInstanceQuestion({
                               <div class="mt-3">
                                 <div id="countdownProgress"></div>
                                 <p class="mb-0">
-                                  Time remaining: <span id="countdownDisplay"></span>
+                                  زمان باقی‌مانده: <span id="countdownDisplay"></span>
                                 </p>
                               </div>
                             `

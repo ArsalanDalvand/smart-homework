@@ -279,7 +279,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Home',
+        pageTitle: 'صفحه اصلی',
         navContext: {
           type: 'plain',
           page: 'home',

@@ -68,7 +68,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'User Settings',
+        pageTitle: 'تنظیمات حساب کاربری',
         navContext: {
           page: 'user_settings',
           type: 'plain',

@@ -150,9 +150,7 @@ export function StudentAssessments({
         authz_data.mode === 'Exam'
           ? html`
               <p>
-                Don't see your exam? Exams for this course are only made available to students with
-                checked-in exam reservations who have clicked the "Start exam" button in
-                PrairieTest. See a proctor for assistance.
+                آزمون خود را مشاهده نمی‌کنید؟ آزمون‌های این درس صرفاً برای دانشجویانی که نوبت حضوری آن‌ها ثبت شده و توسط مراقب تأیید گردیده در دسترس قرار می‌گیرد. لطفاً به مراقب آزمون مراجعه فرمایید.
               </p>
             `
           : ''
@@ -162,17 +160,17 @@ export function StudentAssessments({
 }
 
 function AssessmentScore(row: StudentAssessmentsRow) {
-  if (row.assessment_instance_id == null) return 'Not started';
-  if (!row.authz_result.show_closed_assessment_score) return 'Score not shown';
+  if (row.assessment_instance_id == null) return 'شروع نشده';
+  if (!row.authz_result.show_closed_assessment_score) return 'نمره پنهان است';
   return ScorebarHtml(row.assessment_instance_score_perc, { classes: 'mx-auto' });
 }
 
 function NewInstanceButton({ urlPrefix, row }: { urlPrefix: string; row: StudentAssessmentsRow }) {
   if (row.authz_result.active) {
-    return html`<a href="${urlPrefix}${row.link}" class="btn btn-primary btn-sm">New instance</a>`;
+    return html`<a href="${urlPrefix}${row.link}" class="btn btn-primary btn-sm">تلاش جدید</a>`;
   } else {
     return html`<button type="button" disabled class="btn btn-primary btn-sm">
-      New instance
+      تلاش جدید
     </button>`;
   }
 }
@@ -181,9 +179,9 @@ function AvailableCredit({ row }: { row: StudentAssessmentsRow }) {
   const authzResult = row.authz_result;
   if (row.modern_access_control && row.assessment_instance_id == null && !authzResult.authorized) {
     if (authzResult.next_active_time) {
-      return html`<span class="text-muted">Available ${authzResult.next_active_time}</span>`;
+      return html`<span class="text-muted">در دسترس از ${authzResult.next_active_time}</span>`;
     }
-    return html`<span class="text-muted">Not yet available</span>`;
+    return html`<span class="text-muted">هنوز فعال نشده است</span>`;
   }
   const creditDateString = authzResult.credit_date_string ?? 'None';
   if (creditDateString === 'None') return null;

@@ -28,12 +28,12 @@ export function ExamFooterContent({
           savedAnswers > 0
             ? html`
                 <button type="submit" class="btn btn-info" ${!authorizedEdit ? 'disabled' : ''}>
-                  Grade ${savedAnswers} saved ${savedAnswers !== 1 ? 'answers' : 'answer'}
+                  تصحیح ${savedAnswers} پاسخ ذخیره‌شده
                 </button>
               `
             : html`
                 <button type="submit" class="btn btn-info" disabled>
-                  No saved answers to grade
+                  هیچ پاسخ ذخیره‌شده‌ای برای تصحیح وجود ندارد
                 </button>
               `
         }
@@ -43,10 +43,8 @@ export function ExamFooterContent({
           suspendedSavedAnswers > 1
             ? html`
                 <li>
-                  There are ${suspendedSavedAnswers} saved answers that cannot be graded yet because
-                  their grade rate has not been reached. They are marked with the
-                  <i class="fa fa-hourglass-half"></i> icon above. Reload this page to update this
-                  information.
+                  تعداد ${suspendedSavedAnswers} پاسخ ذخیره‌شده هنوز به دلیل محدودیت زمانی تصحیح مجدد قابل داوری نیستند. این موارد با نماد
+                  <i class="fa fa-hourglass-half"></i> در جدول بالا مشخص شده‌اند. با تازه‌سازی صفحه می‌توانید وضعیت را به‌روز نمایید.
                 </li>
               `
             : suspendedSavedAnswers === 1
@@ -61,14 +59,10 @@ export function ExamFooterContent({
               : ''
         }
         <li>
-          Submit your answer to each question with the
-          <strong>Save & Grade</strong> or <strong>Save only</strong> buttons on the question page.
+          پاسخ خود به هر سوال را با دکمه‌های <strong>ارسال و تصحیح خودکار</strong> یا <strong>ذخیره پیش‌نویس</strong> در صفحه هر سوال ثبت فرمایید.
         </li>
         <li>
-          Look at <strong>Status</strong> to confirm that each question has been
-          ${someQuestionsForbidRealTimeGrading ? 'either saved or graded' : 'graded'}. Questions
-          with <strong>Available points</strong> can be attempted again for more points. Attempting
-          questions again will never reduce the points you already have.
+          ستون <strong>وضعیت</strong> را بررسی کنید تا مطمئن شوید هر سوال ${someQuestionsForbidRealTimeGrading ? 'ذخیره یا تصحیح' : 'تصحیح'} شده است. سوالاتی که دارای <strong>نمره در دسترس</strong> هستند را می‌توانید برای کسب امتیاز بالاتر مجدداً امتحان کنید؛ تلاش‌های جدید هرگز نمره کسب‌شده فعلی شما را کاهش نمی‌دهد.
         </li>
         ${
           hasPassword ||
@@ -79,22 +73,20 @@ export function ExamFooterContent({
           someQuestionsForbidRealTimeGrading
             ? html`
                 <li>
-                  After you have answered all the questions completely, click here:
+                  پس از پاسخگویی به تمامی سوالات، جهت ثبت نهایی بر روی دکمه زیر کلیک نمایید:
                   <button
                     class="btn btn-danger"
                     data-bs-toggle="modal"
                     data-bs-target="#confirmFinishModal"
                     ${!authorizedEdit ? 'disabled' : ''}
                   >
-                    Finish assessment
+                    ثبت و پایان قطعی آزمون
                   </button>
                 </li>
               `
             : html`
                 <li>
-                  When you are done, please logout and close your browser. If you have any saved
-                  answers when you leave, they will be automatically graded before your final score
-                  is computed.
+                  پس از اتمام کار، از حساب خود خارج شده و مرورگر را ببندید. در صورتی که پاسخ ذخیره‌شده‌ای باقی مانده باشد، پیش از محاسبه نمره نهایی به طور خودکار تصحیح خواهد شد.
                 </li>
               `
         }
@@ -105,18 +97,17 @@ export function ExamFooterContent({
   return html`
     <ul class="mb-0">
       <li>
-        Submit your answer to each question with the
-        <strong>Save</strong> button on the question page.
+        پاسخ خود به هر سوال را با دکمه <strong>ذخیره پاسخ</strong> در صفحه همان سوال ثبت فرمایید.
       </li>
       <li>
-        After you have answered all the questions completely, click here:
+        پس از پاسخگویی به تمامی سوالات، جهت ثبت نهایی کلیک نمایید:
         <button
           class="btn btn-danger"
           data-bs-toggle="modal"
           data-bs-target="#confirmFinishModal"
           ${!authorizedEdit ? 'disabled' : ''}
         >
-          Finish assessment
+          ثبت و پایان قطعی آزمون
         </button>
       </li>
     </ul>

@@ -1,0 +1,12 @@
+FROM prairielearn/prairielearn:latest
+
+WORKDIR /PrairieLearn
+
+COPY apps/prairielearn/src/ /PrairieLearn/apps/prairielearn/src/
+COPY apps/prairielearn/public/ /PrairieLearn/apps/prairielearn/public/
+COPY scripts/entrypoint-prod.sh /PrairieLearn/scripts/entrypoint-prod.sh
+
+RUN chmod +x /PrairieLearn/scripts/entrypoint-prod.sh
+
+HEALTHCHECK CMD ["curl", "--fail", "http://localhost:3000/pl/webhooks/ping"]
+CMD [ "/PrairieLearn/scripts/entrypoint-prod.sh" ]

@@ -172,7 +172,7 @@ export function QuestionContainer({
                           aria-expanded="false"
                           aria-controls="more-submissions-collapser"
                         >
-                          Show/hide older submissions
+                          نمایش / پنهان‌سازی پاسخ‌های قبلی
                           <i class="fa fa-angle-up ms-1 expand-icon"></i>
                         </button>
                       </div>
@@ -205,7 +205,7 @@ export function AIGradingPrompt({ prompt }: { prompt: string }) {
       <div
         class="card-header collapsible-card-header bg-secondary text-white d-flex align-items-center"
       >
-        <h2>AI grading prompt</h2>
+        <h2>پرامپت داوری هوش مصنوعی</h2>
         <button
           type="button"
           class="expand-icon-container btn btn-outline-light btn-sm text-nowrap ms-auto collapsed"
@@ -221,7 +221,7 @@ export function AIGradingPrompt({ prompt }: { prompt: string }) {
         class="card-body collapse js-submission-body js-collapsible-card-body"
         id="ai-grading-prompt-body"
       >
-        <h5 class="card-title">Raw prompt</h5>
+        <h5 class="card-title">متن خام پرامپت</h5>
         <pre class="mb-0"><code>${prompt}</code></pre>
       </div>
     </div>
@@ -251,7 +251,7 @@ export function AIGradingExplanation({
       <div
         class="card-header collapsible-card-header bg-secondary text-white d-flex align-items-center"
       >
-        <h2>AI grading explanation</h2>
+        <h2>استدلال و توضیحات داوری هوش مصنوعی</h2>
         <button
           type="button"
           class="expand-icon-container btn btn-outline-light btn-sm text-nowrap ms-auto flex-shrink-0"
@@ -272,15 +272,14 @@ export function AIGradingExplanation({
             hasImage && rotationCorrectionApplied
               ? html`<div class="alert alert-warning mb-3" role="alert">
                   <p>
-                    One or more images were uploaded in a rotated state by the student (this was an
-                    error by the student). The system corrected their rotation prior to AI grading.
+                    یک یا چند تصویر ارسالی دانشجو چرخش غیرصحیح داشتند. سامانه زاویه آن‌ها را پیش از داوری هوش مصنوعی به صورت خودکار اصلاح نمود.
                   </p>
                   <div class="card table-responsive mb-0" style="max-width: 800px;">
                     <table class="table table-sm mb-0">
                       <thead class="table-light">
                         <tr>
-                          <th class="text-nowrap">Filename</th>
-                          <th class="text-nowrap">Correction (counterclockwise)</th>
+                          <th class="text-nowrap">نام تصویر</th>
+                          <th class="text-nowrap">اصلاح زاویه</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -311,8 +310,8 @@ ${explanation}
         <div class="card-footer small text-body-secondary">
           ${
             model
-              ? html`Graded with <span class="font-monospace text-break">${model}</span>`
-              : 'Model not recorded'
+              ? html`داوری‌شده توسط مدل هوشمند <span class="font-monospace text-break">${model}</span>`
+              : 'مدل ثبت نشده است'
           }
         </div>
       </div>
@@ -360,9 +359,9 @@ function IssuePanel({
       <div
         class="card-header ${issue.open === true ? 'bg-danger' : 'bg-secondary'} text-white d-flex flex-wrap align-items-center justify-content-between gap-2"
       >
-        ${issue.manually_reported ? 'Manually reported issue' : 'Issue'}
+        ${issue.manually_reported ? 'اشکال گزارش‌شده دستی' : 'گزارش اشکال'}
         <span class="badge text-bg-light"
-          >${issue.open === null ? 'Unknown' : issue.open ? 'Open' : 'Closed'}</span
+          >${issue.open === null ? 'نامشخص' : issue.open ? 'بررسی‌نشده' : 'رسیدگی‌شده'}</span
         >
       </div>
 
@@ -379,35 +378,35 @@ function IssuePanel({
                       issue.user_id != null
                         ? html`
                             <tr>
-                              <th>User:</th>
+                              <th>کاربر:</th>
                               <td>${issue.user_name || '-'} (${userUidLink})</td>
                             </tr>
                           `
                         : ''
                     }
                     <tr>
-                      <th>Student message:</th>
+                      <th>شرح دانشجو:</th>
                       <td style="white-space: pre-wrap;">${issue.student_message}</td>
                     </tr>
                     <tr>
-                      <th>Instructor message:</th>
+                      <th>پاسخ کادر آموزشی:</th>
                       <td>${issue.instructor_message}</td>
                     </tr>
                   `
                 : authz_data.has_course_permission_preview
                   ? html`
                       <tr>
-                        <th>Student message:</th>
+                        <th>شرح دانشجو:</th>
                         <td style="white-space: pre-wrap;">${issue.student_message}</td>
                       </tr>
                       <tr>
-                        <th>Instructor message:</th>
+                        <th>پاسخ کادر آموزشی:</th>
                         <td>${issue.instructor_message}</td>
                       </tr>
                     `
                   : html`
                       <tr>
-                        <th>Message:</th>
+                        <th>شرح پیام:</th>
                         <td style="white-space: pre-wrap;">${issue.student_message}</td>
                       </tr>
                     `
@@ -451,14 +450,14 @@ ${unsafeHtml(ansiToHtml(issue.system_data.courseErrData.outputBoth))}</pre>
                     : ''
                 }
                 ${IssueDataCollapse({
-                  label: 'Associated data',
+                  label: 'داده‌های وابسته',
                   collapseId: `issue-course-data-${issue.id}`,
                   data: issue.course_data,
                 })}
                 ${
                   is_administrator
                     ? IssueDataCollapse({
-                        label: 'System data',
+                        label: 'داده‌های سیستمی',
                         collapseId: `issue-system-data-${issue.id}`,
                         data: issue.system_data,
                       })
@@ -493,7 +492,7 @@ function IssueDataCollapse({
           aria-expanded="false"
           aria-controls="${collapseId}"
         >
-          Show/hide
+          نمایش / بستن
         </button>
       </p>
       <div class="collapse" id="${collapseId}">
@@ -637,13 +636,12 @@ export function QuestionFooterContent({
 
   const contents = run(() => {
     if (questionContext === 'student_exam' && variantAttemptsLeft === 0) {
-      return 'This question is complete and cannot be answered again.';
+      return 'این سوال تکمیل شده و امکان پاسخگویی مجدد ندارد.';
     }
 
     if (authz_result?.authorized_edit === false) {
       return html`<div class="alert alert-warning mb-0" role="alert">
-        You are viewing the question instance of a different user and so are not authorized to save
-        answers, to submit answers for grading, or to try a new variant of this same question.
+        شما در حال مشاهده سوال کاربری دیگر هستید و مجاز به ذخیره پاسخ، ارسال برای تصحیح یا امتحان گونه جدید نیستید.
       </div>`;
     }
 
@@ -756,7 +754,7 @@ export function QuestionFooterContent({
                   : hasAttemptsOtherVariants
                     ? html`
                         <small class="fst-italic align-self-center">
-                          Additional attempts available with new variants
+                          تلاش‌های تکمیلی با گونه‌های جدید سوال در دسترس است
                         </small>
                         <button
                           type="button"
@@ -764,7 +762,7 @@ export function QuestionFooterContent({
                           data-bs-toggle="popover"
                           data-bs-container="body"
                           data-bs-html="true"
-                          data-bs-title="Explanation of new variants"
+                          data-bs-title="توضیح درباره گونه‌های جدید سوال"
                           data-bs-content="${escapeHtml(
                             NewVariantInfo({ variantAttemptsLeft, variantAttemptsTotal }),
                           )}"
@@ -782,7 +780,7 @@ export function QuestionFooterContent({
                   ? ''
                   : html`
                       <small class="fst-italic text-end">
-                        This question will be graded after the assessment is finished
+                        این سوال پس از اتمام آزمون تصحیح خواهد شد
                       </small>
                     `
               }
@@ -838,7 +836,7 @@ function SubmitRateFooter({
             allowGradeLeftMs > 0
               ? html`
                   <small class="fst-italic ms-2 mt-1 submission-suspended-msg">
-                    Grading possible in <span id="submission-suspended-display"></span>
+                    امکان تصحیح مجدد تا <span id="submission-suspended-display"></span>
                     <div id="submission-suspended-progress" class="border border-info"></div>
                   </small>
                   ${EncodedData(
@@ -854,7 +852,7 @@ function SubmitRateFooter({
         </span>
         <span class="d-flex align-self-center">
           <small class="fst-italic">
-            Can only be graded once every ${assessment_question.grade_rate_minutes}
+            امکان تصحیح مجدد هر ${assessment_question.grade_rate_minutes}
             ${assessment_question.grade_rate_minutes > 1 ? 'minutes' : 'minute'}
           </small>
           <button
@@ -863,7 +861,7 @@ function SubmitRateFooter({
             data-bs-toggle="popover"
             data-bs-container="body"
             data-bs-html="true"
-            data-bs-title="Explanation of grading rate limits"
+            data-bs-title="توضیح محدودیت زمانی تصحیح مجدد"
             data-bs-content="${escapeHtml(popoverContent)}"
             data-bs-placement="auto"
           >
@@ -884,17 +882,15 @@ function NewVariantInfo({
 }) {
   return html`
     <p>
-      This question allows you to try multiple variants. Each of these variants is equivalent to the
-      question you have been presented with, but may include changes in input values, parameters,
-      and other settings. Although
+      این سوال امکان تمرین با گونه‌های مختلف را فراهم می‌کند. هر گونه از نظر مفهومی معادل سوال جاری است اما پارامترها و اعداد تصادفی متفاوتی دارد. با وجود اینکه
       ${
         variantAttemptsLeft > 1
-          ? `you have ${variantAttemptsLeft} attempts left`
+          ? `شما ${variantAttemptsLeft} تلاش دیگر در این گونه دارید`
           : variantAttemptsTotal > 1
-            ? 'this is your last attempt'
-            : 'you have a single attempt'
+            ? 'این آخرین تلاش شما در این گونه است'
+            : 'شما یک تلاش در این گونه دارید'
       }
-      with the current variant, you are allowed to try an unlimited number of other variants.
+      ، می‌توانید گونه‌های جدید نامحدودی را نیز امتحان نمایید.
     </p>
   `;
 }

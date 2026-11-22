@@ -48,26 +48,27 @@ export function StudentAssessment({
           ${
             authz_result.mode === 'Exam' || authz_result.password != null
               ? html`
-                  <p class="lead text-center">Please wait until instructed to start by a proctor</p>
+                  <p class="lead text-center">لطفاً تا زمان اعلام شروع آزمون توسط مراقب منتظر بمانید</p>
                 `
               : ''
           }
 
           <p class="lead text-center">
-            This is
+            این ارزیابی مربوط به
             <strong>${assessment_set.name} ${assessment.number}: ${assessment.title}</strong>
-            for <strong>${course.short_name}</strong>
+            برای درس <strong>${course.short_name}</strong> است.
           </p>
 
           ${
             authz_result.time_limit_min != null
               ? html`
                   <p class="lead text-center">
-                    The time limit for this assessment is
+                    مدت زمان تعیین‌شده برای این ارزیابی
                     <strong>
                       ${authz_result.time_limit_min}
-                      ${authz_result.time_limit_min === 1 ? 'minute' : 'minutes'}
+                      دقیقه
                     </strong>
+                    است.
                   </p>
                 `
               : ''
@@ -130,7 +131,7 @@ function StartAssessmentForm({
             : ''
         }
       >
-        Start assessment
+        شروع ارزیابی
       </button>
     </form>
   `;
@@ -152,13 +153,10 @@ function HonorPledge({
           ? html`<div class="px-3 py-2 honor-code">${unsafeHtml(customHonorCode)}</div>`
           : html`<ul class="list-group list-group-flush">
               <li class="list-group-item py-2">
-                I certify that I am ${user.name} and ${groupWork ? 'our group is' : 'I am'} allowed
-                to take this assessment.
+                تأیید می‌کنم که اینجانب ${user.name} هستم و ${groupWork ? 'گروه ما' : 'من'} مجاز به شرکت در این آزمون ${groupWork ? 'می‌باشیم' : 'می‌باشم'}.
               </li>
               <li class="list-group-item py-2">
-                ${groupWork ? 'We' : 'I'} pledge on ${groupWork ? 'our' : 'my'} honor that
-                ${groupWork ? 'we' : 'I'} will not give or receive any unauthorized assistance on
-                this assessment and that all work will be ${groupWork ? 'our' : 'my'} own.
+                به شرافت خود سوگند یاد می‌کنم که در طول این آزمون هیچ‌گونه کمک غیرمجازی دریافت نکرده و به دیگران نخواهم رساند و تمام پاسخ‌های ارائه‌شده حاصل کار و تلاش ${groupWork ? 'گروه ما' : 'شخص من'} خواهد بود.
               </li>
             </ul>`
       }
@@ -166,7 +164,7 @@ function HonorPledge({
         <span class="form-check">
           <input type="checkbox" class="form-check-input" id="certify-pledge" />
           <label class="form-check-label fw-bold" for="certify-pledge">
-            I certify and pledge the above.
+            تعهدنامه و سوگند اخلاقی فوق را تأیید و امضا می‌نمایم.
           </label>
         </span>
       </div>
@@ -204,8 +202,7 @@ function StudentGroupControls({
       groupConfig.minimum != null && groupConfig.minimum > groupInfo.groupSize
         ? html`
             <p class="text-center">
-              * Minimum group size is ${groupConfig.minimum}. You need at least
-              ${groupConfig.minimum - groupInfo.groupSize} more group member(s) to start.
+              * حداقل تعداد اعضای گروه ${groupConfig.minimum} نفر است. برای شروع به حداقل ${groupConfig.minimum - groupInfo.groupSize} عضو دیگر نیاز دارید.
             </p>
           `
         : ''
@@ -223,7 +220,7 @@ function GroupCreationJoinForm({
   if (!groupConfig.student_authz_join && !groupConfig.student_authz_create) {
     return html`
       <p class="text-center">
-        This is a group assessment. Please wait for the instructor to assign groups.
+        این یک ارزیابی گروهی است. لطفاً منتظر گروه‌بندی توسط استاد یا دستیار آموزشی بمانید.
       </p>
     `;
   }
@@ -233,23 +230,19 @@ function GroupCreationJoinForm({
       ${
         (groupConfig.minimum ?? 0) > 1
           ? html`
-              This is a group assessment. A group must have
-              ${
+              این یک ارزیابی گروهی است. هر گروه باید ${
                 groupConfig.maximum != null
-                  ? `between ${groupConfig.minimum} and ${groupConfig.maximum}`
-                  : `at least ${groupConfig.minimum}`
-              }
-              students.
+                  ? `بین ${groupConfig.minimum} تا ${groupConfig.maximum}`
+                  : `حداقل شامل ${groupConfig.minimum}`
+              } دانشجو باشد.
             `
           : html`
-              This assessment can be done individually or in groups.
-              ${
+              این ارزیابی را می‌توان به صورت انفرادی یا گروهی انجام داد. ${
                 groupConfig.maximum
-                  ? `A group must have no more than ${groupConfig.maximum} students.`
+                  ? `هر گروه حداکثر می‌تواند ${groupConfig.maximum} دانشجو داشته باشد.`
                   : ''
               }
-              <br />To work individually, you must also create a group, but you don't need to share
-              your join code.
+              <br />برای فعالیت انفرادی نیز باید یک گروه تشکیل دهید اما نیازی به اشتراک‌گذاری کد عضویت آن با دیگران نیست.
             `
       }
     </p>
@@ -263,7 +256,7 @@ function GroupCreationJoinForm({
                     ${
                       groupConfig.student_authz_choose_name
                         ? html`
-                            <label for="group-name-input">Group name</label>
+                            <label for="group-name-input">نام گروه</label>
                             <input
                               type="text"
                               class="form-control"
@@ -271,14 +264,12 @@ function GroupCreationJoinForm({
                               name="group_name"
                               maxlength="30"
                               pattern="[a-zA-Z0-9]+"
-                              placeholder="e.g. teamOne"
+                              placeholder="مثال: گروه۱"
                               aria-label="Group name"
                               aria-describedby="group-name-help"
                             />
                             <small id="group-name-help" class="form-text text-muted">
-                              Group names can only contain letters and numbers, with maximum length
-                              of 30 characters. If you leave this blank, a group name will be
-                              generated for you.
+                              نام گروه فقط می‌تواند شامل حروف و اعداد باشد و حداکثر ۳۰ کاراکتر است. در صورت خالی گذاشتن، یک نام خودکار برای گروه شما انتخاب خواهد شد.
                             </small>
                           `
                         : ''
@@ -287,7 +278,7 @@ function GroupCreationJoinForm({
                       <div class="mb-3">
                         <input type="hidden" name="__action" value="create_group" />
                         <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
-                        <button type="submit" class="btn btn-primary">Create new group</button>
+                        <button type="submit" class="btn btn-primary">ایجاد گروه جدید</button>
                       </div>
                     </div>
                   </form>
@@ -300,7 +291,7 @@ function GroupCreationJoinForm({
             ? html`
                 <div class="col-sm bg-light py-4 px-4 border">
                   <form id="joingroup-form" name="joingroup-form" method="POST">
-                    <label for="join-code-input">Join code</label>
+                    <label for="join-code-input">کد عضویت گروه</label>
                     <input
                       type="text"
                       class="form-control"
@@ -315,7 +306,7 @@ function GroupCreationJoinForm({
                       <div class="mb-3">
                         <input type="hidden" name="__action" value="join_group" />
                         <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
-                        <button type="submit" class="btn btn-primary">Join group</button>
+                        <button type="submit" class="btn btn-primary">عضویت در گروه</button>
                       </div>
                     </div>
                   </form>

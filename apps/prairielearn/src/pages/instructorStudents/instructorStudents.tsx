@@ -615,7 +615,7 @@ router.get(
             subPage: 'overview',
           },
           courseOwners,
-          pageTitle: 'Students',
+          pageTitle: 'دانشجویان دوره',
           requiredPermissions: 'Student Data Viewer',
         }),
       );
@@ -654,7 +654,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Students',
+        pageTitle: 'دانشجویان دوره',
         navContext: {
           type: 'instructor',
           page: 'students',
