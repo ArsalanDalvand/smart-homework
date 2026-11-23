@@ -33,7 +33,7 @@ export function SupportModal() {
           })}
           ${SupportOptionCard({
             title: 'ارتباط مستقیم با توسعه‌دهنده',
-            description: `پشتیبانی فنی مستقیم، مشارکت در توسعه و ارسال بازخورد به ارسلان دالوند (${platformBranding.developer.affiliation})`,
+            description: 'پشتیبانی فنی مستقیم، مشارکت در توسعه و ارسال بازخورد',
             href: platformBranding.developer.telegramUrl,
             action: `پیام در تلگرام (${platformBranding.developer.telegram})`,
             icon: 'bi-telegram',
