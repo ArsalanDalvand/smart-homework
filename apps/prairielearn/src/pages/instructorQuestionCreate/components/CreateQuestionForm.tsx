@@ -13,6 +13,7 @@ import type {
 } from '../../instructorQuestions/templateQuestions.js';
 
 import { WireframePreview, getCardInfo, hasWireframePreview } from './WireframePreview.js';
+import { TEMPLATE_QUESTIONS_FA } from './templateQuestionsFa.js';
 
 export const ZONE_INFO: Partial<Record<string, { heading: string; description: string }>> = {
   'Basic questions: no randomization': {
@@ -241,6 +242,9 @@ function TemplateCards({
     <div className="d-flex flex-column gap-2">
       {cards.map((card, index) => {
         const isSelected = selectedQid === card.qid;
+        const fa = TEMPLATE_QUESTIONS_FA[card.qid];
+        const displayTitle = fa?.title ?? card.title;
+        const displayReadme = fa?.readme ?? card.readme;
         return (
           <div
             key={card.qid}
@@ -249,7 +253,7 @@ function TemplateCards({
               'border-primary bg-primary bg-opacity-10': isSelected,
             })}
             style={{ cursor: 'pointer' }}
-            aria-label={card.title}
+            aria-label={displayTitle}
           >
             <div className="card-body py-2 px-3">
               <div className="d-flex align-items-center justify-content-between">
@@ -259,7 +263,7 @@ function TemplateCards({
                       'text-primary fw-bold': isSelected,
                     })}
                   >
-                    {card.title}
+                    {displayTitle}
                   </div>
                   {showQid && (
                     <div className="text-muted small" style={{ fontSize: '0.75rem' }}>
@@ -269,9 +273,9 @@ function TemplateCards({
                 </div>
                 {isSelected && <i className="fa fa-check-circle text-primary" aria-hidden="true" />}
               </div>
-              {isSelected && card.readme && (
+              {isSelected && displayReadme && (
                 <div className="small mt-1 markdown-body">
-                  <ReactMarkdown>{card.readme.trim()}</ReactMarkdown>
+                  <ReactMarkdown>{displayReadme.trim()}</ReactMarkdown>
                 </div>
               )}
             </div>
@@ -286,6 +290,9 @@ function matchesSearch(query: string, question: TemplateQuestion): boolean {
   const lowerQuery = query.toLowerCase();
   if (question.title.toLowerCase().includes(lowerQuery)) return true;
   if (question.readme?.toLowerCase().includes(lowerQuery)) return true;
+  const fa = TEMPLATE_QUESTIONS_FA[question.qid];
+  if (fa?.title.toLowerCase().includes(lowerQuery)) return true;
+  if (fa?.readme.toLowerCase().includes(lowerQuery)) return true;
   const cardInfo = getCardInfo(question.qid);
   if (cardInfo?.label.toLowerCase().includes(lowerQuery)) return true;
   if (cardInfo?.description.toLowerCase().includes(lowerQuery)) return true;
