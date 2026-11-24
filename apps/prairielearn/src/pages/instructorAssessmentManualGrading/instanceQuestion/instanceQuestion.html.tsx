@@ -241,7 +241,7 @@ export function InstanceQuestion({
       // instance_question_info is reset to keep the default title from showing the student question number
       instance_question_info: undefined,
     },
-    pageTitle: 'Manual Grading',
+    pageTitle: 'تصحیح دستی',
     navContext: {
       type: 'instructor',
       page: 'assessment',

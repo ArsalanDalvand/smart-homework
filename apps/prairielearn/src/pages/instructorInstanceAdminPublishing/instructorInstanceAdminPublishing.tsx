@@ -186,7 +186,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Publishing',
+        pageTitle: 'انتشار و دسترسی دوره',
         navContext: {
           type: 'instructor',
           page: 'instance_admin',

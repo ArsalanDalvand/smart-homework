@@ -46,7 +46,7 @@ export function ManualGradingAssessment({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Manual Grading',
+    pageTitle: 'تصحیح دستی',
     navContext: {
       type: 'instructor',
       page: 'assessment',

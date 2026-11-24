@@ -163,7 +163,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Manual Grading',
+        pageTitle: 'تصحیح دستی',
         navContext: {
           type: 'instructor',
           page: 'assessment',

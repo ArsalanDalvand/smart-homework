@@ -734,13 +734,14 @@ function LocalRegisterForm({
         </div>
       </div>
       <div class="mb-3">
-        <label class="form-label d-block" for="reg_uin">${uiStrings.auth.uinLabel}</label>
+        <label class="form-label fw-bold d-block" for="reg_uin">${uiStrings.auth.uinLabel}</label>
         <input
           type="text"
           class="form-control"
           id="reg_uin"
           name="uin"
           placeholder="${uiStrings.auth.uinPlaceholder}"
+          required
           aria-describedby="reg_uin_help"
         />
         <small id="reg_uin_help" class="form-text text-muted d-block">

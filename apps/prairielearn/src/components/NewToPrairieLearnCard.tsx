@@ -1,15 +1,15 @@
 const DOC_LINKS = [
   {
     href: 'https://docs.prairielearn.com/question/overview/',
-    label: 'How questions are structured',
+    label: 'ساختار سوال‌ها چگونه است',
   },
   {
     href: 'https://docs.prairielearn.com/elements/',
-    label: 'Available elements',
+    label: 'المان‌های قابل استفاده',
   },
   {
     href: 'https://docs.prairielearn.com/question/template/',
-    label: 'Writing question HTML',
+    label: 'نوشتن HTML سوال',
   },
 ];
 
@@ -17,7 +17,7 @@ export function NewToPrairieLearnCard() {
   return (
     <div className="card bg-light text-start small">
       <div className="card-body py-2 px-3">
-        <p className="fw-semibold mb-1">New to PrairieLearn?</p>
+        <p className="fw-semibold mb-1">تازه‌کار هستید؟ راهنمای ساخت سوال:</p>
         <ul className="mb-0 ps-3">
           {DOC_LINKS.map((link) => (
             <li key={link.href}>

@@ -27,6 +27,7 @@
 !package.json
 !packages/
 !scripts/
+!templateCourse/
 !testCourse/
 
 # Forbid specific patterns.

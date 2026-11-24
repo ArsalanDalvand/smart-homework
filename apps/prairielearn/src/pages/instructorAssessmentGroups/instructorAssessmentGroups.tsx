@@ -95,7 +95,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Groups',
+        pageTitle: 'گروه‌بندی‌ها',
         navContext: {
           type: 'instructor',
           page: 'assessment',

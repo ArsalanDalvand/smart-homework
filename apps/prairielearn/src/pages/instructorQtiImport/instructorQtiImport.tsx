@@ -159,7 +159,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Import QTI content',
+        pageTitle: 'وارد کردن محتوای QTI',
         navContext: {
           type: 'instructor',
           ...(returnTo === 'questions'

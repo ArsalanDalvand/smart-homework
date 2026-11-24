@@ -50,7 +50,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Create question',
+        pageTitle: 'ایجاد سوال جدید',
         navContext: {
           type: 'instructor',
           page: 'course_admin',

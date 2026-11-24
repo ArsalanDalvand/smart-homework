@@ -64,7 +64,7 @@ export function CourseInstancePublishing({
   return (
     <>
       <div className="mb-4">
-        <h4 className="mb-4">Publishing</h4>
+        <h4 className="mb-4">انتشار دوره</h4>
 
         <form method="POST" onSubmit={onSubmit}>
           <input type="hidden" name="__csrf_token" value={csrfToken} />
@@ -84,13 +84,13 @@ export function CourseInstancePublishing({
 
         {!canEditPublishing && origHash !== null && (
           <div className="alert alert-info" role="alert">
-            You must be a course editor to edit publishing settings.
+            برای ویرایش تنظیمات انتشار باید دسترسی ویرایشگر درس (Course Editor) داشته باشید.
           </div>
         )}
         {!canEditPublishing && origHash === null && (
           <div className="alert alert-info" role="alert">
-            You cannot edit publishing settings because the <code>infoCourseInstance.json</code>{' '}
-            file does not exist.
+            به دلیل وجود نداشتن فایل <code>infoCourseInstance.json</code>{' '}
+            امکان ویرایش تنظیمات انتشار وجود ندارد.
           </div>
         )}
 

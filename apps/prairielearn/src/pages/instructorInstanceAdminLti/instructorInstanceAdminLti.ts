@@ -30,7 +30,7 @@ router.get(
             subPage: 'lti',
           },
           courseOwners,
-          pageTitle: 'LTI configuration',
+          pageTitle: 'تنظیمات LTI',
           requiredPermissions: 'Editor',
         }),
       );

@@ -42,7 +42,7 @@ export function InstructorGradingJob({
 
   return PageLayout({
     resLocals,
-    pageTitle: `Grading Job ${gradingJobRow.grading_job.id}`,
+    pageTitle: `گزارش تصحیح خودکار ${gradingJobRow.grading_job.id}`,
     navContext: {
       type: 'instructor',
       page: 'course_instance' in resLocals ? 'instance_admin' : 'course_admin',

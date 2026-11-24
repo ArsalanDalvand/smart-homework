@@ -4,6 +4,7 @@ WORKDIR /PrairieLearn
 
 COPY apps/prairielearn/src/ /PrairieLearn/apps/prairielearn/src/
 COPY apps/prairielearn/public/ /PrairieLearn/apps/prairielearn/public/
+COPY templateCourse/ /PrairieLearn/templateCourse/
 COPY scripts/entrypoint-prod.sh /PrairieLearn/scripts/entrypoint-prod.sh
 
 RUN chmod +x /PrairieLearn/scripts/entrypoint-prod.sh &&     cd /PrairieLearn/apps/prairielearn &&     pnpm exec compiled-assets build ./assets ./public/build

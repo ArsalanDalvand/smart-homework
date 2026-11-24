@@ -16,19 +16,19 @@ import { WireframePreview, getCardInfo, hasWireframePreview } from './WireframeP
 
 export const ZONE_INFO: Partial<Record<string, { heading: string; description: string }>> = {
   'Basic questions: no randomization': {
-    heading: 'Basic questions',
+    heading: 'سوال‌های پایه',
     description:
-      'These questions use hardcoded prompts and answers. Great for getting started quickly.',
+      'این سوال‌ها دارای متن و پاسخ ثابت هستند و برای شروع سریع بسیار مناسب‌اند.',
   },
   'Intermediate questions: randomization without Python': {
-    heading: 'Intermediate questions',
+    heading: 'سوال‌های متوسط (تصادفی بدون کد)',
     description:
-      'These questions use built-in randomization features to create unique variants for each student without writing any code.',
+      'این سوال‌ها بدون نیاز به کدنویسی و با ابزارهای داخلی سامانه برای هر دانشجو نسخه تصادفی می‌سازند.',
   },
   'Advanced questions: randomization with Python': {
-    heading: 'Advanced questions',
+    heading: 'سوال‌های پیشرفته (تصادفی با پایتون)',
     description:
-      'These questions use Python to generate randomized parameters, enabling complex computations and dynamic figures.',
+      'این سوال‌ها از پایتون برای تولید پارامترهای تصادفی، محاسبات پیچیده و شکل‌های پویا استفاده می‌کنند.',
   },
 };
 
@@ -401,21 +401,21 @@ export function CreateQuestionForm({
   if (hasExampleTemplates) {
     startFromOptions.push({
       id: 'example',
-      title: 'PrairieLearn template',
-      description: 'Start with a pre-built question template',
+      title: 'قالب آماده سامانه',
+      description: 'شروع با یک قالب از پیش آماده‌شده',
     });
   }
 
   startFromOptions.push(
     {
       id: 'course',
-      title: 'Course template',
-      description: 'Start with a template from your course',
+      title: 'قالب‌های همین درس',
+      description: 'شروع با یکی از قالب‌های تعریف‌شده در درس شما',
     },
     {
       id: 'empty',
-      title: 'Empty question',
-      description: 'Start with a blank question and build from scratch',
+      title: 'سوال خالی',
+      description: 'شروع از صفر با یک سوال کاملاً خالی',
     },
   );
 
@@ -425,19 +425,19 @@ export function CreateQuestionForm({
         <nav aria-label="breadcrumb" className="mb-3">
           <ol className="breadcrumb mb-0">
             <li className="breadcrumb-item">
-              <a href={questionsUrl}>Questions</a>
+              <a href={questionsUrl}>سوال‌ها</a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Create question
+              ایجاد سوال جدید
             </li>
           </ol>
         </nav>
         <form method="POST" autoComplete="off" onSubmit={() => setIsSubmitting(true)}>
           <div className="mb-5">
-            <h2 className="h5">Name your question</h2>
+            <h2 className="h5">مشخصات سوال</h2>
             <div className="mb-3">
               <label className="form-label" htmlFor="title">
-                Title
+                عنوان سوال
               </label>
               <input
                 type="text"
@@ -448,13 +448,13 @@ export function CreateQuestionForm({
                 required
               />
               <small id="title_help" className="form-text text-muted">
-                The full name of the question, visible to users.
+                نام کامل سوال که برای کاربران نمایش داده می‌شود.
               </small>
             </div>
 
             <div className="mb-3">
               <label className="form-label" htmlFor="qid">
-                Question identifier (QID)
+                شناسه سوال (QID)
               </label>
               <input
                 type="text"
@@ -474,12 +474,12 @@ export function CreateQuestionForm({
           </div>
 
           <div className="mb-3 mt-4">
-            <h2 className="h5 mb-1">Choose a starting point</h2>
+            <h2 className="h5 mb-1">انتخاب نقطه شروع</h2>
             <p className="text-muted mb-3">
-              Pick a template to get started quickly, or begin from scratch.
+              برای شروع سریع یک قالب انتخاب کنید یا از صفر بسازید.
             </p>
             <RadioCardGroup
-              label="Choose a starting point"
+              label="انتخاب نقطه شروع"
               value={startFrom}
               options={startFromOptions}
               onChange={handleStartFromChange}
@@ -503,16 +503,15 @@ export function CreateQuestionForm({
                 <>
                   {startFrom === 'course' && (
                     <p className="text-muted small mb-3">
-                      Course templates are reusable starting points defined by your course. Any
-                      question with a QID starting with <code>template/</code> will appear here.
+                      قالب‌های درس نقاط شروع قابل استفاده مجدد در همین درس هستند. هر سوالی که QID آن با <code>template/</code> شروع شود اینجا نمایش داده می‌شود.
                     </p>
                   )}
                   <input
                     type="search"
                     className="form-control"
                     id="template_search"
-                    aria-label="Search templates"
-                    placeholder="Search templates..."
+                    aria-label="جستجوی قالب‌ها"
+                    placeholder="جستجوی قالب‌ها..."
                     value={searchQuery}
                     onChange={(e) => handleSearch(e.currentTarget.value)}
                   />
@@ -530,7 +529,7 @@ export function CreateQuestionForm({
                       {filteredZones.length > 0 ? (
                         <div
                           role="radiogroup"
-                          aria-label="Choose a template"
+                          aria-label="انتخاب قالب"
                           className="d-flex flex-column gap-5"
                         >
                           {filteredZones.map((zone) => {
@@ -575,7 +574,7 @@ export function CreateQuestionForm({
                   {startFrom === 'course' && (
                     <div className="mt-3">
                       {filteredCourseTemplates.length > 0 ? (
-                        <div role="radiogroup" aria-label="Course templates">
+                        <div role="radiogroup" aria-label="قالب‌های درس">
                           <TemplateCards
                             cards={filteredCourseTemplates.map((t) => ({
                               ...t,
@@ -647,9 +646,9 @@ function EmptySearchState({
 }) {
   return (
     <div className="text-center py-4">
-      <p className="text-muted mb-2">No templates match{query ? ` "${query}"` : ''}.</p>
+      <p className="text-muted mb-2">هیچ قالبی مطابق با جستجو{query ? ` «${query}»` : ''} پیدا نشد.</p>
       <button type="button" className="btn btn-link btn-sm" onClick={onStartFromScratch}>
-        Start from scratch instead
+        شروع از صفر
       </button>
     </div>
   );
@@ -658,10 +657,9 @@ function EmptySearchState({
 function EmptyCourseTemplatesState() {
   return (
     <div className="text-center py-4">
-      <p className="mb-1">This course doesn't have any templates yet.</p>
+      <p className="mb-1">این درس هنوز هیچ قالبی ندارد.</p>
       <p className="small mb-0">
-        Course templates are reusable starting points defined by your course. To create one, add a
-        question with a QID starting with <code>template/</code>.
+        قالب‌های درس نقاط شروع قابل استفاده مجدد در درس شما هستند. برای ساخت یک قالب، سوالی با QID شروع‌شونده با <code>template/</code> اضافه کنید.
       </p>
     </div>
   );
@@ -671,7 +669,7 @@ function StartFromScratchState({ isSubmitting }: { isSubmitting: boolean }) {
   return (
     <div className="d-grid gap-3">
       <p className="mb-0">
-        You'll start with empty <code>question.html</code> and <code>server.py</code> files.
+        کار را با فایل‌های خالی <code>question.html</code> و <code>server.py</code> شروع خواهید کرد.
       </p>
       <NewToPrairieLearnCard />
       <button type="submit" className="btn btn-primary text-nowrap" disabled={isSubmitting}>
@@ -687,13 +685,13 @@ function CreateQuestionButtonContent({ isSubmitting }: { isSubmitting: boolean }
     return (
       <>
         <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" />
-        Creating...
+        در حال ایجاد...
       </>
     );
   }
   return (
     <>
-      Create question <i className="fa fa-arrow-right ms-1" aria-hidden="true" />
+      ایجاد سوال <i className="fa fa-arrow-left ms-1" aria-hidden="true" />
     </>
   );
 }

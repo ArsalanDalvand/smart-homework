@@ -45,7 +45,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Instances',
+        pageTitle: 'آزمون‌های دانشجویان',
         navContext: {
           type: 'instructor',
           page: 'assessment',

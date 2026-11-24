@@ -67,7 +67,7 @@ router.get(
               subPage: 'file_edit',
             },
             courseOwners: [],
-            pageTitle: 'File editor',
+            pageTitle: 'ویرایشگر فایل',
             requiredPermissions: 'Editor',
           }),
         );
@@ -87,7 +87,7 @@ router.get(
               subPage: 'file_edit',
             },
             courseOwners,
-            pageTitle: 'File editor',
+            pageTitle: 'ویرایشگر فایل',
             requiredPermissions: 'Editor',
           }),
         );

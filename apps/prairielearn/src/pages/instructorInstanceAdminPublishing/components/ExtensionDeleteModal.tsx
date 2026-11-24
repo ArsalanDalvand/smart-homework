@@ -45,7 +45,7 @@ export function ExtensionDeleteModal({
   return (
     <Modal backdrop="static" show={show} onHide={onHide} onExited={onExited}>
       <Modal.Header closeButton>
-        <Modal.Title>Delete extension</Modal.Title>
+        <Modal.Title>حذف تمدید</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {deleteMutation.isError && (
@@ -91,7 +91,7 @@ export function ExtensionDeleteModal({
           disabled={deleteMutation.isPending}
           onClick={onHide}
         >
-          Cancel
+          انصراف
         </button>
         <button
           type="button"
@@ -102,7 +102,7 @@ export function ExtensionDeleteModal({
             deleteMutation.mutate(data.extensionId);
           }}
         >
-          {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+          {deleteMutation.isPending ? 'در حال حذف...' : 'حذف'}
         </button>
       </Modal.Footer>
     </Modal>

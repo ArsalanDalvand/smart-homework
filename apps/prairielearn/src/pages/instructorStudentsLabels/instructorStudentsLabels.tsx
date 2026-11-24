@@ -47,7 +47,7 @@ router.get(
             subPage: 'student_labels',
           },
           courseOwners,
-          pageTitle: 'Student labels',
+          pageTitle: 'برچسب‌های دانشجویان',
           requiredPermissions: 'Student Data Viewer',
         }),
       );
@@ -78,7 +78,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Student labels',
+        pageTitle: 'برچسب‌های دانشجویان',
         navContext: {
           type: 'instructor',
           page: 'students',

@@ -9,6 +9,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/pl_ag_jobs:/jobs
       - /opt/smart-homework/courses/iust-bp:/course
+      - /opt/smart-homework/courses:/data1/courses
+      - /opt/smart-homework/ssh:/root/.ssh
       - /opt/smart-homework/config.json:/PrairieLearn/config.json
       - smart_homework_db:/var/postgres
     environment:

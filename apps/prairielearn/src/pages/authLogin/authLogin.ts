@@ -202,7 +202,7 @@ router.post(
       const body = req.body;
       const initialIdentifier = typeof body.email === 'string' ? body.email : '';
 
-      if (!body.name || !body.email || !body.password || !body.confirm_password) {
+      if (!body.name || !body.email || !body.password || !body.confirm_password || typeof body.uin !== 'string' || !body.uin.trim()) {
         const providers = await getInstitutionAuthnProviders();
         res.status(400).send(
           AuthLogin({
@@ -283,7 +283,7 @@ router.post(
           name: body.name.trim(),
           email: body.email.trim(),
           password: body.password,
-          uin: typeof body.uin === 'string' ? body.uin.trim() || null : null,
+          uin: body.uin.trim(),
         });
 
         await authLib.loadUser(

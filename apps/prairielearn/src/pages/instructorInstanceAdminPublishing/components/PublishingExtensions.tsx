@@ -63,10 +63,10 @@ export function PublishingExtensions({
       <div className="mb-3">
         <div className="d-flex align-items-center justify-content-between mb-2">
           <h5 key={`extensions-header-${extensionsQuery.isFetching}`} className="mb-0">
-            Extensions
+            تمدید دسترسی‌ها (Extensions)
             {extensionsQuery.isFetching && (
               <div className="spinner-border spinner-border-sm" role="status">
-                <span className="visually-hidden">Loading extensions...</span>
+                <span className="visually-hidden">در حال بارگذاری تمدیدها...</span>
               </div>
             )}
           </h5>
@@ -86,27 +86,25 @@ export function PublishingExtensions({
                 })
               }
             >
-              Add extension
+              افزودن تمدید
             </button>
           )}
         </div>
         <small className="text-muted">
-          Extend access to specific users beyond the original end date. If multiple extensions apply
-          to a user, the latest extension date will take effect. If an extension is before the end
-          date, it will be ignored.
+          دسترسی کاربران مشخصی را فراتر از تاریخ پایان اصلی تمدید کنید. اگر چند تمدید شامل یک کاربر شود، دیرترین تاریخ اعمال می‌گردد.
         </small>
       </div>
 
       {hasExtensionsWithoutPublishDate && (
         <Alert variant="warning" className="mb-3">
           <i className="fas fa-exclamation-triangle me-2" aria-hidden="true" />
-          Extensions will not take effect until you set a publishing end date.
+          تا زمانی که تاریخ پایان انتشار تنظیم نشود، تمدیدها اعمال نخواهند شد.
         </Alert>
       )}
 
       {!canView ? (
         <div className="alert alert-info" role="alert">
-          You must have student data viewer permissions to view extensions.
+          برای مشاهده تمدیدها باید دسترسی مشاهده اطلاعات دانشجویان را داشته باشید.
         </div>
       ) : extensionsQuery.isError ? (
         <Alert variant="danger" dismissible onClose={() => void extensionsQuery.refetch()}>
@@ -114,17 +112,17 @@ export function PublishingExtensions({
         </Alert>
       ) : extensionsQuery.data.length === 0 ? (
         <div className="text-center text-muted mb-3">
-          <p className="mb-0">No extensions configured.</p>
+          <p className="mb-0">هیچ تمدیدی ثبت نشده است.</p>
         </div>
       ) : (
         <div className="table-responsive">
           <table className="table table-striped">
             <thead>
               <tr>
-                <th className="col-1">Extension name</th>
-                <th className="col-1">End date</th>
-                <th className="col-3">Students</th>
-                <th className="col-1">Actions</th>
+                <th className="col-1">نام تمدید</th>
+                <th className="col-1">تاریخ پایان</th>
+                <th className="col-3">دانشجویان</th>
+                <th className="col-1">عملیات</th>
               </tr>
             </thead>
             <tbody>

@@ -49,7 +49,7 @@ export function InstructorEffectiveUser({
   const formattedReqDate = formatDateISO(req_date, displayTimezone);
 
   return PageLayout({
-    pageTitle: 'Change Effective User',
+    pageTitle: 'تغییر کاربر موثر (نمای آزمایشی)',
     resLocals,
     navContext: {
       type: navbarType,
@@ -59,38 +59,38 @@ export function InstructorEffectiveUser({
       fullWidth: true,
     },
     content: html`
-      <h1 class="visually-hidden">Effective User</h1>
+      <h1 class="visually-hidden">کاربر موثر</h1>
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h2>Authenticated user</h2>
+          <h2>کاربر احراز هویت‌شده</h2>
         </div>
 
         <div class="card-body">
-          <p><strong>Authenticated UID:</strong> ${authz_data.authn_user.uid}</p>
-          <p><strong>Authenticated name:</strong> ${authz_data.authn_user.name}</p>
-          <p><strong>Authenticated course role:</strong> ${authz_data.authn_course_role}</p>
+          <p><strong>شناسه کاربری اصلی (UID):</strong> ${authz_data.authn_user.uid}</p>
+          <p><strong>نام اصلی:</strong> ${authz_data.authn_user.name}</p>
+          <p><strong>نقش اصلی در درس:</strong> ${authz_data.authn_course_role}</p>
           ${
             'authn_course_instance_role' in authz_data
               ? html`
                   <p>
-                    <strong>Authenticated course instance role:</strong>
+                    <strong>نقش اصلی در دوره:</strong>
                     ${authz_data.authn_course_instance_role}
                   </p>
                 `
               : ''
           }
-          <p><strong>Authenticated mode:</strong> ${authz_data.authn_mode}</p>
-          <p><strong>Authenticated date:</strong> ${formattedTrueReqDate}</p>
+          <p><strong>حالت احراز هویت:</strong> ${authz_data.authn_mode}</p>
+          <p><strong>زمان اصلی:</strong> ${formattedTrueReqDate}</p>
 
           <form id="resetForm" method="POST">
             <p>
               <input type="hidden" name="__action" value="reset" />
               <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
-              <button type="submit" class="btn btn-info">Reset to these values</button>
+              <button type="submit" class="btn btn-info">بازنشانی به مقادیر اصلی</button>
             </p>
           </form>
 
-          <p><strong>Connecting from IP:</strong> ${ipAddress ?? html`<em>unknown</em>`}</p>
+          <p><strong>آدرس IP اتصال:</strong> ${ipAddress ?? html`<em>نامشخص</em>`}</p>
         </div>
 
         <div class="card-footer">
@@ -99,7 +99,7 @@ export function InstructorEffectiveUser({
             <em>effective</em> values below allow you to view PrairieLearn as if you had a different
             <em>course role</em> or as if you were a specific other person with a different
             <em>UID</em>. This can be used to test out how PrairieLearn will look from different
-            points of view. The “Reset to these values” button above will reset all effective values
+            points of view. The “بازنشانی به مقادیر اصلی” button above will reset all effective values
             below to your authenticated values. Effective values are also reset when you choose a
             course instance or when you switch to a different course.
           </small>
@@ -108,17 +108,17 @@ export function InstructorEffectiveUser({
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h2>Effective user</h2>
+          <h2>کاربر موثر</h2>
         </div>
 
         <div class="card-body">
-          <p><strong>Effective UID:</strong> ${user.uid}</p>
-          <p><strong>Effective name:</strong> ${user.name}</p>
+          <p><strong>شناسه کاربری موثر (UID):</strong> ${user.uid}</p>
+          <p><strong>نام موثر:</strong> ${user.name}</p>
 
           <div class="alert alert-secondary mb-0">
             <form id="changeUidForm" method="POST">
               <div class="mb-3">
-                <label class="form-label" for="changeEffectiveUid">Change effective UID to:</label>
+                <label class="form-label" for="changeEffectiveUid">تغییر شناسه کاربری موثر به:</label>
                 <input
                   list="userList"
                   type="text"
@@ -138,7 +138,7 @@ export function InstructorEffectiveUser({
               </div>
               <input type="hidden" name="__action" value="changeUid" />
               <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
-              <button type="submit" class="btn btn-primary">Change UID</button>
+              <button type="submit" class="btn btn-primary">تغییر شناسه کاربری</button>
             </form>
           </div>
         </div>
@@ -154,17 +154,17 @@ export function InstructorEffectiveUser({
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h2>Effective course role</h2>
+          <h2>نقش موثر در درس</h2>
         </div>
 
         <div class="card-body">
-          <p><strong>Effective course role:</strong> ${authz_data.course_role}</p>
+          <p><strong>نقش موثر در درس:</strong> ${authz_data.course_role}</p>
 
           <div class="alert alert-secondary mb-0">
             <form id="changeCourseRoleForm" method="POST">
               <div class="mb-3">
                 <label class="form-label" for="changeEffectiveCourseRole">
-                  Change effective course role to:
+                  تغییر نقش موثر در درس به:
                 </label>
                 <select
                   class="form-select me-2"
@@ -177,7 +177,7 @@ export function InstructorEffectiveUser({
                       available_course_role === authz_data.course_role
                         ? html`
                             <option value="${available_course_role}" selected>
-                              ${available_course_role} (current)
+                              ${available_course_role} (فعلی)
                             </option>
                           `
                         : html`
@@ -190,7 +190,7 @@ export function InstructorEffectiveUser({
               </div>
               <input type="hidden" name="__action" value="changeCourseRole" />
               <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
-              <button type="submit" class="btn btn-primary">Change course role</button>
+              <button type="submit" class="btn btn-primary">تغییر نقش در درس</button>
             </form>
           </div>
         </div>
@@ -209,12 +209,12 @@ export function InstructorEffectiveUser({
           ? html`
               <div class="card mb-4">
                 <div class="card-header bg-primary text-white">
-                  <h2>Effective course instance role</h2>
+                  <h2>نقش موثر در دوره</h2>
                 </div>
 
                 <div class="card-body">
                   <p>
-                    <strong>Effective course instance role:</strong>
+                    <strong>نقش موثر در دوره:</strong>
                     ${authz_data.course_instance_role}
                   </p>
 
@@ -222,7 +222,7 @@ export function InstructorEffectiveUser({
                     <form id="changeCourseInstanceRoleForm" method="POST">
                       <div class="mb-3">
                         <label class="form-label" for="changeEffectiveCourseInstanceRole">
-                          Change effective course instance role to:
+                          تغییر نقش موثر در دوره به:
                         </label>
                         <select
                           class="form-select me-2"
@@ -235,7 +235,7 @@ export function InstructorEffectiveUser({
                               available_course_instance_role === authz_data.course_instance_role
                                 ? html`
                                     <option value="${available_course_instance_role}" selected>
-                                      ${available_course_instance_role} (current)
+                                      ${available_course_instance_role} (فعلی)
                                     </option>
                                   `
                                 : html`
@@ -249,7 +249,7 @@ export function InstructorEffectiveUser({
                       <input type="hidden" name="__action" value="changeCourseInstanceRole" />
                       <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
                       <button type="submit" class="btn btn-primary">
-                        Change course instance role
+                        تغییر نقش در دوره
                       </button>
                     </form>
                   </div>
@@ -270,16 +270,16 @@ export function InstructorEffectiveUser({
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h2>Effective date</h2>
+          <h2>تاریخ و زمان موثر</h2>
         </div>
 
         <div class="card-body">
-          <p><strong>Effective date:</strong> ${formattedReqDate}</p>
+          <p><strong>تاریخ موثر:</strong> ${formattedReqDate}</p>
 
           <div class="alert alert-secondary mb-0">
             <form id="changeDateForm" method="POST">
               <div class="mb-3">
-                <label class="form-label" for="changeDate">Change effective date to:</label>
+                <label class="form-label" for="changeDate">تغییر تاریخ موثر به:</label>
                 <input
                   type="text"
                   class="form-control me-2 w-100"
@@ -291,7 +291,7 @@ export function InstructorEffectiveUser({
               </div>
               <input type="hidden" name="__action" value="changeDate" />
               <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
-              <button type="submit" class="btn btn-primary">Change date</button>
+              <button type="submit" class="btn btn-primary">تغییر تاریخ</button>
             </form>
           </div>
         </div>

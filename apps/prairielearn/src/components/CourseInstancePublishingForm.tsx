@@ -234,7 +234,7 @@ export function CourseInstancePublishingForm({
               }}
             />
             <label className="form-check-label" htmlFor={`${formId}-status-unpublished`}>
-              Unpublished
+              منتشرنشده (مخفی)
             </label>
           </div>
           {selectedStatus === 'unpublished' && (
@@ -242,8 +242,7 @@ export function CourseInstancePublishingForm({
               <input type="hidden" name="start_date" value={startDate} />
               <input type="hidden" name="end_date" value={endDate} />
               <div className="ms-4 small text-muted">
-                Course is not accessible by any students
-                {startDate && ' except those with extensions'}.
+                این دوره برای هیچ دانشجویی قابل دسترسی نیست{startDate && ' (به‌جز کاربران دارای تمدید)'}.
                 {endDate && (
                   <>
                     <br />
@@ -284,7 +283,7 @@ export function CourseInstancePublishingForm({
               }}
             />
             <label className="form-check-label" htmlFor={`${formId}-status-publish-scheduled`}>
-              Scheduled to be published
+              زمان‌بندی‌شده برای انتشار
             </label>
           </div>
 
@@ -311,7 +310,7 @@ export function CourseInstancePublishingForm({
                 <div className="mb-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <label className="form-label mb-0" htmlFor={`${formId}-start-date`}>
-                      Start date
+                      تاریخ شروع
                     </label>
                     {canEdit && (
                       <button
@@ -320,7 +319,7 @@ export function CourseInstancePublishingForm({
                         disabled={!startDate}
                         onClick={() => handleAddWeek('start_date')}
                       >
-                        +1 week
+                        +۱ هفته
                       </button>
                     )}
                   </div>
@@ -354,7 +353,7 @@ export function CourseInstancePublishingForm({
                 <div className="mb-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <label className="form-label mb-0" htmlFor={`${formId}-end-date`}>
-                      End date
+                      تاریخ پایان
                     </label>
                     {canEdit && (
                       <button
@@ -363,7 +362,7 @@ export function CourseInstancePublishingForm({
                         disabled={!endDate}
                         onClick={() => handleAddWeek('end_date')}
                       >
-                        +1 week
+                        +۱ هفته
                       </button>
                     )}
                   </div>
@@ -413,7 +412,7 @@ export function CourseInstancePublishingForm({
               }}
             />
             <label className="form-check-label" htmlFor={`${formId}-status-published`}>
-              Published
+              منتشرشده (فعال)
             </label>
           </div>
           {selectedStatus === 'published' && (
@@ -445,7 +444,7 @@ export function CourseInstancePublishingForm({
                 <div className="mb-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <label className="form-label mb-0" htmlFor={`${formId}-end-date`}>
-                      End date
+                      تاریخ پایان
                     </label>
                     {canEdit && (
                       <button
@@ -454,7 +453,7 @@ export function CourseInstancePublishingForm({
                         disabled={!endDate}
                         onClick={() => handleAddWeek('end_date')}
                       >
-                        +1 week
+                        +۱ هفته
                       </button>
                     )}
                   </div>
@@ -490,7 +489,7 @@ export function CourseInstancePublishingForm({
       {canEdit && showButtons && (
         <div className="d-flex gap-2">
           <button type="submit" className="btn btn-primary" disabled={!isDirty}>
-            Save
+            ذخیره
           </button>
           <button
             type="button"
@@ -501,7 +500,7 @@ export function CourseInstancePublishingForm({
               reset();
             }}
           >
-            Cancel
+            انصراف
           </button>
         </div>
       )}
