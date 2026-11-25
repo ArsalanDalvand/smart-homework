@@ -5,12 +5,14 @@ services:
     restart: always
     ports:
       - "127.0.0.1:3000:3000"
+      - "192.168.1.192:3000:3000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/pl_ag_jobs:/jobs
       - /opt/smart-homework/courses/iust-bp:/course
       - /opt/smart-homework/courses:/data1/courses
       - /opt/smart-homework/ssh:/root/.ssh
+      - /opt/smart-homework/files:/files
       - /opt/smart-homework/config.json:/PrairieLearn/config.json
       - smart_homework_db:/var/postgres
     environment:
@@ -22,6 +24,29 @@ services:
       - PL_PORTAL_URL=https://homework.atomathix.ir
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  workspace_host:
+    image: smart-homework:prod
+    container_name: workspace_host
+    restart: always
+    network_mode: "service:smart_homework"
+    depends_on:
+      smart_homework:
+        condition: service_healthy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/pl_ag_jobs:/jobs
+      - /opt/smart-homework/config.json:/PrairieLearn/config.json
+    environment:
+      - HOST_JOBS_DIR=/root/pl_ag_jobs
+      - NODE_ENV=production
+    command: ["node", "/PrairieLearn/apps/workspace-host/dist/interface.js"]
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8081/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
 
 volumes:
   smart_homework_db:
