@@ -12,18 +12,17 @@ export function ExamResetNotSupportedModal({
   return (
     <Modal show={show} size="lg" backdrop="static" onHide={onHide} onExited={onExited}>
       <Modal.Header closeButton>
-        <Modal.Title>Not supported</Modal.Title>
+        <Modal.Title>پشتیبانی نمی‌شود</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Resetting question variants is not supported for Exam assessments.</p>
+        <p>بازنشانی نسخه‌های سوال برای ارزیابی‌های نوع امتحان (Exam) پشتیبانی نمی‌شود.</p>
         <p className="mb-0">
-          Consider alternative options, such as deleting assessment instances to allow students to
-          start over.
+          گزینه‌های جایگزین مانند حذف نمونه‌های ارزیابی را برای شروع مجدد دانشجویان در نظر بگیرید.
         </p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={onHide}>
-          Close
+          بستن
         </Button>
       </Modal.Footer>
     </Modal>

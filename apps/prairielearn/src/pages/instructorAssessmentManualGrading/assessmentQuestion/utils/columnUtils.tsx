@@ -7,12 +7,12 @@ export function generateAiGraderName(
   ai_grading_status?: 'Graded' | 'OutdatedRubric' | 'LatestRubric',
 ): string {
   return (
-    'AI' +
+    'هوش مصنوعی' +
     (ai_grading_status === undefined ||
     ai_grading_status === 'Graded' ||
     ai_grading_status === 'LatestRubric'
       ? ''
-      : ' (old rubric)')
+      : ' (معیار قدیمی)')
   );
 }
 

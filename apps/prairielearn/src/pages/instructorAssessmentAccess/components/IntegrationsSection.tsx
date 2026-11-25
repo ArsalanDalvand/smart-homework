@@ -26,13 +26,13 @@ export function IntegrationsSection() {
   const hasDuration = durationMinutes != null;
   const conflictText = run(() => {
     if (hasPassword && hasDuration) {
-      return 'The password and time limit set under "Date control" don\'t apply during PrairieTest reservations.';
+      return 'رمز عبور و محدودیت زمانی تنظیم‌شده در بخش «کنترل تاریخ و زمان» در طول رزروهای PrairieTest اعمال نمی‌شوند.';
     }
     if (hasPassword) {
-      return 'The password set under "Date control" doesn\'t apply during PrairieTest reservations.';
+      return 'رمز عبور تنظیم‌شده در بخش «کنترل تاریخ و زمان» در طول رزروهای PrairieTest اعمال نمی‌شود.';
     }
     if (hasDuration) {
-      return 'The time limit set under "Date control" doesn\'t apply during PrairieTest reservations.';
+      return 'محدودیت زمانی تنظیم‌شده در بخش «کنترل تاریخ و زمان» در طول رزروهای PrairieTest اعمال نمی‌شود.';
     }
     return null;
   });
@@ -40,7 +40,7 @@ export function IntegrationsSection() {
   return (
     <div>
       <div className="section-header mb-3">
-        <strong>Integrations</strong>
+        <strong>اتصال‌ها (Integrations)</strong>
       </div>
       <Form.Check
         type="checkbox"
@@ -78,7 +78,7 @@ export function IntegrationsSection() {
         }}
       />
       <Form.Text id="defaultRule-prairietest-help" className="text-muted">
-        Control access to your assessment through PrairieTest exams.
+        کنترل دسترسی به ارزیابی از طریق آزمون‌های PrairieTest.
       </Form.Text>
       {prairieTestEnabled && conflictText && (
         <Alert variant="info" className="mt-3">

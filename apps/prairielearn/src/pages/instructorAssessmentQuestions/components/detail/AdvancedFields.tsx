@@ -19,19 +19,19 @@ import { InheritableField } from './InheritableField.js';
 
 const HELP_TEXT = {
   advanceScorePerc: {
-    question: 'Minimum score percentage required to unlock the next question.',
-    altPool: 'Default minimum score percentage to unlock the next question.',
-    zone: 'Default minimum score percentage to unlock the next question.',
+    question: 'حداقل درصد نمره لازم برای باز شدن سوال بعدی.',
+    altPool: 'حداقل درصد نمره پیش‌فرض برای باز شدن سوال بعدی.',
+    zone: 'حداقل درصد نمره پیش‌فرض برای باز شدن سوال بعدی.',
   },
   gradeRateMinutes: {
-    question: 'Minimum time between grading attempts.',
-    altPool: 'Minimum time between grading attempts for questions in this pool.',
-    zone: 'Minimum time between grading attempts for questions in this zone.',
+    question: 'حداقل زمان بین تلاش‌های تصحیح.',
+    altPool: 'حداقل زمان بین تلاش‌های تصحیح برای سوالات این مجموعه.',
+    zone: 'حداقل زمان بین تلاش‌های تصحیح برای سوالات این بخش.',
   },
   allowRealTimeGrading: {
-    question: 'Allow students to see grading results during the exam (Exams only).',
-    altPool: 'Allow students to see grading results during the exam (Exams only).',
-    zone: 'Allow students to see grading results during the exam for questions in this zone (Exams only).',
+    question: 'اجازه به دانشجویان برای مشاهده نتایج تصحیح در حین امتحان (فقط امتحانات).',
+    altPool: 'اجازه به دانشجویان برای مشاهده نتایج تصحیح در حین امتحان (فقط امتحانات).',
+    zone: 'اجازه به دانشجویان برای مشاهده نتایج تصحیح در حین امتحان برای سوالات این بخش (فقط امتحانات).',
   },
 } as const;
 
@@ -83,7 +83,7 @@ export function AdvancedFields({
     setValueAs: coerceToNumber,
     validate: (v) => {
       if (v == null) return;
-      if (v < 0 || v > 100) return 'Advance score % must be between 0 and 100.';
+      if (v < 0 || v > 100) return 'درصد نمره پیشرفت باید بین ۰ تا ۱۰۰ باشد.';
     },
   });
 
@@ -91,7 +91,7 @@ export function AdvancedFields({
     setValueAs: coerceToNumber,
     validate: (v) => {
       if (v == null) return;
-      if (v < 0) return 'Grade rate must be non-negative.';
+      if (v < 0) return 'فاصله زمانی تصحیح باید نامنفی باشد.';
     },
   });
 
@@ -136,10 +136,10 @@ export function AdvancedFields({
       <FormCheckField
         editMode={editMode}
         id={`${idPrefix}-lockpoint`}
-        label="Lockpoint"
+        label="نقطه قفل (Lockpoint)"
         viewValue={!!watchedLockpoint}
         error={errors?.lockpoint as FieldError | undefined}
-        helpText="Creates a one-way barrier; crossing it makes all earlier zones read-only."
+        helpText="یک مانع یک‌طرفه ایجاد می‌کند؛ عبور از آن تمام بخش‌های قبلی را فقط-خواندنی می‌کند."
         hideWhenEmpty
       >
         {(aria) => (
@@ -150,7 +150,7 @@ export function AdvancedFields({
             {...register('lockpoint', {
               validate: (v) => {
                 if (v && zoneIndex === 0) {
-                  return 'The first zone cannot be a lockpoint.';
+                  return 'اولین بخش نمی‌تواند نقطه قفل باشد.';
                 }
               },
             })}
@@ -166,7 +166,7 @@ export function AdvancedFields({
       return (
         <InheritableField
           id={`${idPrefix}-advanceScorePerc`}
-          label="Advance score %"
+          label="درصد نمره پیشرفت"
           inputType="number"
           step="any"
           editMode={editMode}
@@ -204,7 +204,7 @@ export function AdvancedFields({
       <FormField
         editMode={editMode}
         id={`${idPrefix}-advanceScorePerc`}
-        label="Advance score %"
+        label="درصد نمره پیشرفت"
         viewValue={viewValue}
         error={errors?.advanceScorePerc as FieldError | undefined}
         helpText={HELP_TEXT.advanceScorePerc[variant]}
@@ -229,7 +229,7 @@ export function AdvancedFields({
       return (
         <InheritableField
           id={`${idPrefix}-gradeRateMinutes`}
-          label="Grade rate (minutes)"
+          label="فاصله زمانی تصحیح (دقیقه)"
           inputType="number"
           step="any"
           editMode={editMode}
@@ -267,7 +267,7 @@ export function AdvancedFields({
       <FormField
         editMode={editMode}
         id={`${idPrefix}-gradeRateMinutes`}
-        label="Grade rate (minutes)"
+        label="فاصله زمانی تصحیح (دقیقه)"
         viewValue={viewValue}
         error={errors?.gradeRateMinutes as FieldError | undefined}
         helpText={HELP_TEXT.gradeRateMinutes[variant]}
@@ -292,8 +292,8 @@ export function AdvancedFields({
       return (
         <InheritableCheckboxField
           id={`${idPrefix}-forceMaxPoints`}
-          label="Force max points"
-          helpText="Award maximum points when the assessment is regraded. Used to fix broken questions."
+          label="اعمال حداکثر امتیاز"
+          helpText="اعطای حداکثر امتیاز هنگام تصحیح مجدد ارزیابی. برای اصلاح سوالات معیوب استفاده می‌شود."
           editMode={editMode}
           isInherited={isInherited}
           inheritedValue={inheritance.parentForceMaxPoints}
@@ -319,9 +319,9 @@ export function AdvancedFields({
       <FormCheckField
         editMode={editMode}
         id={`${idPrefix}-forceMaxPoints`}
-        label="Force max points"
+        label="اعمال حداکثر امتیاز"
         viewValue={!!watchedForceMaxPoints}
-        helpText="Award maximum points when the assessment is regraded. Used to fix broken questions."
+        helpText="اعطای حداکثر امتیاز هنگام تصحیح مجدد ارزیابی. برای اصلاح سوالات معیوب استفاده می‌شود."
         hideWhenEmpty
       >
         {(aria) => (
@@ -342,7 +342,7 @@ export function AdvancedFields({
       return (
         <InheritableCheckboxField
           id={`${idPrefix}-allowRealTimeGrading`}
-          label="Allow real-time grading"
+          label="اجازه تصحیح هم‌زمان"
           helpText={HELP_TEXT.allowRealTimeGrading[variant]}
           editMode={editMode}
           isInherited={isInherited}
@@ -369,7 +369,7 @@ export function AdvancedFields({
       <FormCheckField
         editMode={editMode}
         id={`${idPrefix}-allowRealTimeGrading`}
-        label="Allow real-time grading"
+        label="اجازه تصحیح هم‌زمان"
         viewValue={!!watchedAllowRealTimeGrading}
         helpText={HELP_TEXT.allowRealTimeGrading[variant]}
         hideWhenEmpty
@@ -398,7 +398,7 @@ export function AdvancedFields({
 
   return (
     <>
-      <DetailSectionHeader>Advanced</DetailSectionHeader>
+      <DetailSectionHeader>پیشرفته</DetailSectionHeader>
       {editMode ? fields : <dl className="mb-0">{fields}</dl>}
     </>
   );

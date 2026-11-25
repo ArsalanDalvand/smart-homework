@@ -61,30 +61,40 @@ export function ShareSourcePubliclyCard({
   unshareBlock?: { parentNoun: string; href: string };
 }) {
   const blockedCount = blockingChildren.length;
+  const translateNoun = (noun: string) =>
+    ({
+      assessment: 'تکلیف/آزمون',
+      'course instance': 'دوره آموزشی',
+      questions: 'سوالات',
+      assessments: 'تکالیف و آزمون‌ها',
+    })[noun] ?? noun;
+  const entityLabel = translateNoun(entityNoun);
+  const childLabel = translateNoun(childNoun);
+  const parentLabel = unshareBlock ? translateNoun(unshareBlock.parentNoun) : '';
 
   return (
     <div className="card">
       <div className="card-body">
-        <h2 className="h5 card-title mb-3">Sharing</h2>
+        <h2 className="h5 card-title mb-3">اشتراک‌گذاری</h2>
         <Form.Check
           type="checkbox"
           id="share_source_publicly"
-          label="Share source publicly"
+          label="اشتراک‌گذاری عمومی کد منبع"
           className="mb-1"
           disabled={!canEdit || blockedCount > 0 || unshareBlock != null}
           defaultChecked={defaultChecked}
           {...registerProps}
         />
         <small className="form-text text-muted d-block mb-2">
-          The {entityNoun}'s source becomes available for others to view and copy.
+          کد منبع این {entityLabel} برای مشاهده و کپی کردن توسط دیگران در دسترس قرار می‌گیرد.
         </small>
         {blockedCount > 0 && !alreadyShared && (
           <Alert variant="warning" className="small mb-2">
-            Cannot share this {entityNoun} publicly until the following {childNoun} are also shared
-            publicly:{' '}
+            امکان اشتراک‌گذاری عمومی این {entityLabel} وجود ندارد تا زمانی که {childLabel} زیر نیز
+            به‌صورت عمومی به اشتراک گذاشته شوند:{' '}
             {blockingChildren.map((child, i) => (
               <span key={child.id}>
-                {i > 0 && ', '}
+                {i > 0 && '، '}
                 <a href={child.href}>{child.label}</a>
               </span>
             ))}
@@ -93,16 +103,16 @@ export function ShareSourcePubliclyCard({
         )}
         {unshareBlock != null && (
           <Alert variant="warning" className="small mb-2">
-            This {entityNoun}'s source cannot be un-shared while its {unshareBlock.parentNoun} is
-            publicly shared. To un-share it, first{' '}
-            <a href={unshareBlock.href}>un-share the {unshareBlock.parentNoun}</a>.
+            تا زمانی که {parentLabel} مربوطه به‌صورت عمومی به اشتراک گذاشته شده است، نمی‌توان
+            اشتراک‌گذاری کد منبع این {entityLabel} را لغو کرد. برای لغو اشتراک‌گذاری، ابتدا{' '}
+            <a href={unshareBlock.href}>اشتراک‌گذاری {parentLabel} را لغو کنید</a>.
           </Alert>
         )}
         {alreadyShared && (
           <PublicLinkSharing
             publicLink={publicLink}
-            sharingMessage={`This ${entityNoun}'s source is publicly shared.`}
-            publicLinkMessage={`The link that other instructors can use to view this ${entityNoun}.`}
+            sharingMessage={`کد منبع این ${entityLabel} به‌صورت عمومی به اشتراک گذاشته شده است.`}
+            publicLinkMessage={`پیوندی که سایر مدرسان می‌توانند برای مشاهده این ${entityLabel} از آن استفاده کنند.`}
           />
         )}
       </div>

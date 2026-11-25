@@ -60,7 +60,7 @@ export function PublicAssessments({
   return (
     <div className="card mb-4">
       <div className="card-header bg-primary text-white d-flex align-items-center">
-        <h1>Assessments</h1>
+        <h1>آزمون‌ها</h1>
         <div className="ms-auto d-flex flex-row gap-1">
           <div className="btn-group">
             <Hydrate>
@@ -81,12 +81,12 @@ export function PublicAssessments({
           <thead>
             <tr>
               <th style={{ width: '1%' }}>
-                <span className="visually-hidden">Label</span>
+                <span className="visually-hidden">برچسب</span>
               </th>
               <th>
-                <span className="visually-hidden">Title</span>
+                <span className="visually-hidden">عنوان</span>
               </th>
-              <th>Short name</th>
+              <th>نام کوتاه</th>
             </tr>
           </thead>
           {assessmentGroups.map((groupRows) => (

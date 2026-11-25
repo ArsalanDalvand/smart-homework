@@ -31,7 +31,7 @@ export function Workspace({
 
   return PageLayout({
     resLocals,
-    pageTitle: pageTitle || 'Workspace',
+    pageTitle: pageTitle || 'محیط کاری ابری',
     navContext: {
       type: 'plain',
       page: 'workspace',
@@ -80,7 +80,7 @@ export function Workspace({
             </h1>
             <span class="small" style="color: #000;">
               <i class="fa fa-laptop-code" aria-hidden="true"></i>
-              PrairieLearn Workspace
+              محیط کاری ابری
             </span>
           </div>
 
@@ -110,7 +110,7 @@ export function Workspace({
                   ? html` <li class="nav-item ms-2 my-1">
                       <div id="countdownProgress"></div>
                       <div class="text-white small">
-                        Time remaining: <span id="countdownDisplay"></span>
+                        زمان باقی‌مانده: <span id="countdownDisplay"></span>
                       </div>
                     </li>`
                   : ''
@@ -123,7 +123,7 @@ export function Workspace({
                   data-bs-target="#rebootModal"
                 >
                   <i class="fas fa-sync text-info" aria-hidden="true"></i>
-                  Reboot
+                  راه‌اندازی مجدد
                 </button>
               </li>
               <li class="nav-item ms-2 my-1">
@@ -134,7 +134,7 @@ export function Workspace({
                   data-bs-target="#resetModal"
                 >
                   <i class="fas fa-trash text-danger" aria-hidden="true"></i>
-                  Reset
+                  بازنشانی
                 </button>
               </li>
               ${
@@ -147,7 +147,7 @@ export function Workspace({
                           target="_blank"
                         >
                           <i class="fas fa-bars-staggered" aria-hidden="true"></i>
-                          Logs
+                          گزارش‌ها
                         </a>
                       </li>
                     `
@@ -174,22 +174,22 @@ export function Workspace({
     content: html`
       <div id="loading" class="d-flex h-100 flex-grow justify-content-center align-items-center">
         <i class="d-block fa fa-10x fa-circle-notch fa-spin text-info" aria-hidden="true"></i>
-        <span class="visually-hidden">Loading workspace &hellip;</span>
+        <span class="visually-hidden">در حال بارگذاری محیط کاری ابری &hellip;</span>
       </div>
       <div
         id="stopped"
         class="d-none h-100 flex-grow flex-column justify-content-center align-items-center p-2 text-center"
       >
-        <h2>Workspace stopped due to inactivity</h2>
-        <p>Your data was automatically saved. Reload the page to restart the workspace.</p>
-        <button id="reload" class="btn btn-primary">Reload</button>
+        <h2>محیط کاری ابری به دلیل عدم فعالیت متوقف شد</h2>
+        <p>داده‌های شما به‌طور خودکار ذخیره شدند. برای راه‌اندازی مجدد محیط کاری ابری، صفحه را بارگذاری مجدد کنید.</p>
+        <button id="reload" class="btn btn-primary">بارگذاری مجدد</button>
       </div>
       <div
         id="failed"
         class="d-none h-100 flex-grow flex-column justify-content-center align-items-center p-2 text-center"
       >
         <i class="d-block fa fa-10x fa-xmark text-danger" aria-hidden="true"></i>
-        <h2>Workspace failed to load</h2>
+        <h2>بارگذاری محیط کاری ابری ناموفق بود</h2>
         <!-- The client reveals this frame, then writes the failure detail here,
              so role="alert" announces it. -->
         <p id="failed-message" role="alert"></p>
@@ -197,7 +197,7 @@ export function Workspace({
       <iframe
         id="workspace"
         class="d-none flex-grow h-100 w-100 border-0"
-        title="Workspace"
+        title="محیط کاری ابری"
       ></iframe>
     `,
   });
@@ -206,29 +206,29 @@ export function Workspace({
 function ResetModal({ __csrf_token }: { __csrf_token: string }) {
   return Modal({
     id: 'resetModal',
-    title: 'Reset the workspace',
+    title: 'بازنشانی محیط کاری ابری',
     body: html`
-      <p>Are you sure you want to reset the virtual machine?</p>
+      <p>آیا از بازنشانی ماشین مجازی مطمئن هستید؟</p>
       <ul class="fa-ul">
         <li>
           <span class="fa-li">
             <i class="fas fa-exclamation-triangle text-danger" aria-hidden="true"></i>
           </span>
-          <strong class="text-danger">Your file changes will be lost!</strong> The workspace will
-          return to its original state upon reset.
+          <strong class="text-danger">تغییرات فایل‌های شما از بین خواهد رفت!</strong> محیط کاری ابری
+          پس از بازنشانی به وضعیت اولیه خود بازمی‌گردد.
         </li>
         <li>
           <span class="fa-li"><i class="fas fa-window-restore" aria-hidden="true"></i></span>
-          Your workspace will reset into this same tab.
+          محیط کاری ابری شما در همین زبانه بازنشانی خواهد شد.
         </li>
       </ul>
     `,
     footer: html`
       <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
       <button name="__action" value="reset" class="btn btn-danger">
         <i class="fas fa-trash" aria-hidden="true"></i>
-        Reset
+        بازنشانی
       </button>
     `,
   });
@@ -237,26 +237,26 @@ function ResetModal({ __csrf_token }: { __csrf_token: string }) {
 function RebootModal({ __csrf_token }: { __csrf_token: string }) {
   return Modal({
     id: 'rebootModal',
-    title: 'Reboot the workspace',
+    title: 'راه‌اندازی مجدد محیط کاری ابری',
     body: html`
-      <p>Are you sure you want to reboot the virtual machine?</p>
+      <p>آیا از راه‌اندازی مجدد ماشین مجازی مطمئن هستید؟</p>
       <ul class="fa-ul">
         <li>
-          <span class="fa-li"><i class="fas fa-save" aria-hidden="true"></i></span> Your files will
-          remain intact through the reboot.
+          <span class="fa-li"><i class="fas fa-save" aria-hidden="true"></i></span> فایل‌های شما
+          در طول راه‌اندازی مجدد دست‌نخورده باقی خواهند ماند.
         </li>
         <li>
-          <span class="fa-li"><i class="fas fa-window-restore" aria-hidden="true"></i></span> Your
-          workspace will reboot into this same tab.
+          <span class="fa-li"><i class="fas fa-window-restore" aria-hidden="true"></i></span> محیط
+          کاری ابری شما در همین زبانه راه‌اندازی مجدد خواهد شد.
         </li>
       </ul>
     `,
     footer: html`
       <input type="hidden" name="__csrf_token" value="${__csrf_token}" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
       <button name="__action" value="reboot" class="btn btn-info">
         <i class="fas fa-sync" aria-hidden="true"></i>
-        Reboot
+        راه‌اندازی مجدد
       </button>
     `,
   });
@@ -267,43 +267,43 @@ function HelpButtonContents() {
     <ul class="list-group list-group-flush">
       <li class="list-group-item p-2">
         <div class="row">
-          <div class="col col-3 fw-bold d-flex align-items-center">Reloading</div>
+          <div class="col col-3 fw-bold d-flex align-items-center">بارگذاری مجدد</div>
           <div class="col col-9">
-            Use your browser reload button on this tab at any time, or close and re-open the tab.
+            می‌توانید در هر زمان از دکمه بارگذاری مجدد مرورگر در این زبانه استفاده کنید یا زبانه را ببندید و دوباره باز کنید.
           </div>
         </div>
       </li>
       <li class="list-group-item p-2">
         <div class="row">
-          <div class="col col-3 fw-bold d-flex align-items-center">Rebooting</div>
+          <div class="col col-3 fw-bold d-flex align-items-center">راه‌اندازی مجدد</div>
           <div class="col col-9">
-            The
+            دکمه
             <span class="badge badge-outline text-bg-light">
-              <i class="fas fa-sync" aria-hidden="true"></i> Reboot
+              <i class="fas fa-sync" aria-hidden="true"></i> راه‌اندازی مجدد
             </span>
-            button will restart the virtual machine. Your files will remain intact.
+            ماشین مجازی را مجدداً راه‌اندازی می‌کند. فایل‌های شما دست‌نخورده باقی می‌مانند.
           </div>
         </div>
       </li>
       <li class="list-group-item p-2">
         <div class="row">
-          <div class="col col-3 fw-bold d-flex align-items-center">Resetting</div>
+          <div class="col col-3 fw-bold d-flex align-items-center">بازنشانی</div>
           <div class="col col-9">
-            The
+            دکمه
             <span class="badge badge-outline text-bg-light">
-              <i class="fas fa-trash text-secondary" aria-hidden="true"></i> Reset
+              <i class="fas fa-trash text-secondary" aria-hidden="true"></i> بازنشانی
             </span>
-            button will delete all of your file edits and revert the virtual machine to its original
-            state.
+            تمامی تغییرات فایل‌های شما را حذف کرده و ماشین مجازی را به حالت اولیه برمی‌گرداند.
           </div>
         </div>
       </li>
       <li class="list-group-item p-2">
         <div class="row">
-          <div class="col col-3 fw-bold d-flex align-items-center">Grading</div>
+          <div class="col col-3 fw-bold d-flex align-items-center">تصحیح</div>
           <div class="col col-9">
-            Use the <span class="badge badge-outline text-bg-light">Save &amp; Grade</span> button
-            on the PrairieLearn question page to submit your files for grading.
+            برای ارسال فایل‌های خود جهت تصحیح، از دکمه
+            <span class="badge badge-outline text-bg-light">ارسال و تصحیح خودکار</span>
+            در صفحه سوال استفاده کنید.
           </div>
         </div>
       </li>

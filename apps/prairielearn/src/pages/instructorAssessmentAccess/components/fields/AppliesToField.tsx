@@ -74,12 +74,12 @@ export function AppliesToField({
   const excludedUids = new Set(enrollments.map((i) => i.uid));
   const studentLabelLimitReached =
     studentLabels.length >= MAX_ACCESS_CONTROL_STUDENT_LABELS_PER_RULE;
-  const studentLabelLimitReason = `At most ${MAX_ACCESS_CONTROL_STUDENT_LABELS_PER_RULE} student labels can be selected.`;
+  const studentLabelLimitReason = `حداکثر ${MAX_ACCESS_CONTROL_STUDENT_LABELS_PER_RULE} برچسب دانشجویی قابل انتخاب است.`;
   const enrollmentDisabledReason = targetTypeDisabledReasons?.enrollment ?? undefined;
   const studentLabelDisabledReason = targetTypeDisabledReasons?.student_label ?? undefined;
 
   const hasNoTargets = enrollments.length === 0 && studentLabels.length === 0;
-  const targetDescription = targetType === 'enrollment' ? 'student' : 'student label';
+  const targetDescription = targetType === 'enrollment' ? 'دانشجو' : 'برچسب دانشجویی';
   const studentSpecificPermissionMessageId = `${namePrefix}-student-specific-permission-message`;
   const enrollmentLimitMessageId = `${namePrefix}-target-enrollment-limit-message`;
   const studentLabelLimitMessageId = `${namePrefix}-target-student-label-limit-message`;
@@ -93,21 +93,21 @@ export function AppliesToField({
   return (
     <div className="mb-3">
       <div className="section-header mb-3">
-        <strong>Applies to</strong>
+        <strong>اعمال برای</strong>
       </div>
       {showStudentLabelOnlyHint && (
         <Alert variant="info" className="mb-3" id={studentSpecificPermissionMessageId}>
-          Student-specific overrides require student data editor permissions. You can still create
-          or edit overrides for students with specific labels.
+          استثناهای مختص دانشجو نیازمند دسترسی ویرایشگر داده‌های دانشجو هستند. همچنان می‌توانید
+          استثناهایی برای دانشجویان دارای برچسب‌های خاص ایجاد یا ویرایش کنید.
         </Alert>
       )}
       <fieldset className="mb-3">
-        <legend className="visually-hidden">Target type</legend>
+        <legend className="visually-hidden">نوع هدف</legend>
         <Form.Check
           type="radio"
           id={`${namePrefix}-target-enrollment`}
           name={`${namePrefix}-target-type`}
-          label="Specific students"
+          label="دانشجویان خاص"
           checked={targetType === 'enrollment'}
           disabled={!ruleEditable || !canEditEnrollmentRules || enrollmentDisabledReason != null}
           title={enrollmentDisabledReason}
@@ -123,7 +123,7 @@ export function AppliesToField({
           type="radio"
           id={`${namePrefix}-target-student-label`}
           name={`${namePrefix}-target-type`}
-          label="Students by label"
+          label="دانشجویان بر اساس برچسب"
           checked={targetType === 'student_label'}
           disabled={!ruleEditable || studentLabelDisabledReason != null}
           title={studentLabelDisabledReason}
@@ -146,9 +146,7 @@ export function AppliesToField({
                 enrollments.length > 0 && 'border-bottom',
               )}
             >
-              <span className="small text-muted">
-                {enrollments.length} {enrollments.length === 1 ? 'student' : 'students'}
-              </span>
+              <span className="small text-muted">{enrollments.length} دانشجو</span>
               {ruleEditable && (
                 <div className="ms-auto">
                   <AddStudentsModal
@@ -161,7 +159,7 @@ export function AppliesToField({
                         className="text-decoration-none"
                         onClick={onClick}
                       >
-                        Select students…
+                        انتخاب دانشجویان…
                       </Button>
                     )}
                     onSaveStudents={handleSaveStudents}
@@ -187,7 +185,7 @@ export function AppliesToField({
                         <Button
                           variant="ghost"
                           size="sm"
-                          aria-label={`Remove ${s.name ?? s.uid}`}
+                          aria-label={`حذف ${s.name ?? s.uid}`}
                           onClick={() => handleRemoveEnrollmentByUid(s.uid)}
                         >
                           <i className="bi bi-trash text-danger" aria-hidden="true" />
@@ -206,7 +204,7 @@ export function AppliesToField({
                 <StudentLabelDropdown
                   labels={allLabels ?? []}
                   selectedIds={excludedStudentLabelIds}
-                  buttonLabel="Select labels"
+                  buttonLabel="انتخاب برچسب‌ها"
                   maxSelected={MAX_ACCESS_CONTROL_STUDENT_LABELS_PER_RULE}
                   onToggle={(label) => {
                     if (excludedStudentLabelIds.has(label.id)) {
@@ -222,7 +220,7 @@ export function AppliesToField({
                 />
               )}
               {studentLabels.length === 0 ? (
-                <span className="text-muted small">No student labels selected</span>
+                <span className="text-muted small">برچسب دانشجویی انتخاب نشده است</span>
               ) : (
                 studentLabels.map((sl) => (
                   <StudentLabelBadge
@@ -233,7 +231,7 @@ export function AppliesToField({
                       <button
                         type="button"
                         className="btn p-0 lh-1"
-                        aria-label={`Remove label "${sl.name}"`}
+                        aria-label={`حذف برچسب «${sl.name}»`}
                         onClick={() => handleRemoveStudentLabelById(sl.studentLabelId)}
                       >
                         <i className="bi bi-x text-danger" aria-hidden="true" />
@@ -246,17 +244,17 @@ export function AppliesToField({
             <div className="form-text mt-2">
               {studentLabelLimitReached
                 ? studentLabelLimitReason
-                : 'Applies to students with any of the selected labels.'}
+                : 'برای دانشجویانی که هر یک از برچسب‌های انتخاب‌شده را دارند اعمال می‌شود.'}
             </div>
           </div>
         )}
       </div>
       {hasNoTargets && (
         <Alert variant="warning" className="mt-3 mb-0">
-          This override has no targets.{' '}
+          این استثنا هیچ هدفی ندارد.{' '}
           {ruleEditable
-            ? `Add at least one ${targetDescription} for this rule to take effect.`
-            : `A user with permission to edit this override must add at least one ${targetDescription} for this rule to take effect.`}
+            ? `برای اعمال شدن این قانون، حداقل یک ${targetDescription} اضافه کنید.`
+            : `کاربری با دسترسی ویرایش این استثنا باید حداقل یک ${targetDescription} اضافه کند تا این قانون اعمال شود.`}
         </Alert>
       )}
     </div>

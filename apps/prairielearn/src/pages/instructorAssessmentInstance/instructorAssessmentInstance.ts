@@ -167,7 +167,7 @@ router.get(
       res.attachment(req.params.filename);
       await pipeline(cursor.stream(1), stringifier, res);
     } else {
-      throw new HttpStatusError(404, 'Unknown filename: ' + req.params.filename);
+      throw new HttpStatusError(404, 'نام فایل ناشناخته: ' + req.params.filename);
     }
   }),
 );
@@ -176,7 +176,7 @@ router.post(
   '/',
   typedAsyncHandler<'assessment-instance'>(async (req, res) => {
     if (!res.locals.authz_data.has_course_instance_permission_edit) {
-      throw new HttpStatusError(403, 'Access denied (must be a student data editor)');
+      throw new HttpStatusError(403, 'دسترسی مجاز نیست (باید مجوز ویرایش اطلاعات دانشجویان را داشته باشید)');
     }
     // TODO: parse req.body with Zod
 
@@ -219,7 +219,7 @@ router.post(
     } else if (req.body.__action === 'reset_question_variants') {
       if (res.locals.assessment.type === 'Exam') {
         // See https://github.com/PrairieLearn/PrairieLearn/issues/12977
-        throw new HttpStatusError(403, 'Cannot reset variants for Exam assessments');
+        throw new HttpStatusError(403, 'امکان بازنشانی نسخه‌های سوال برای ارزیابی‌های از نوع آزمون وجود ندارد');
       }
 
       await resetVariantsForInstanceQuestion({

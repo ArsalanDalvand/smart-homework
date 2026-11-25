@@ -46,7 +46,7 @@ interface DateTableRow {
 }
 
 function formatListedForStudents(listed: boolean): string {
-  return listed ? 'Listed for students' : 'Hidden from students';
+  return listed ? 'نمایش در فهرست دانشجویان' : 'پنهان از دانشجویان';
 }
 
 /**
@@ -192,7 +192,7 @@ export function generateDefaultRuleDateTableRows(
 
   rows.push({
     date: '',
-    label: 'Before release',
+    label: 'پیش از انتشار',
     access: formatListedForStudents(rule.beforeReleaseListed),
     current: isBeforeReleaseSegment,
     currentVariant,
@@ -207,10 +207,10 @@ export function generateDefaultRuleDateTableRows(
           options={{ includeTz: false }}
         />
       ) : (
-        'No date set'
+        'تاریخی تنظیم نشده'
       ),
-      label: 'Release',
-      access: 'Opens',
+      label: 'انتشار',
+      access: 'باز می‌شود',
       error: releaseDateError,
     });
   }
@@ -226,9 +226,9 @@ export function generateDefaultRuleDateTableRows(
           options={{ includeTz: false }}
         />
       ) : (
-        'No date set'
+        'تاریخی تنظیم نشده'
       ),
-      label: `Early ${index + 1}`,
+      label: `ددلاین زودهنگام ${index + 1}`,
       access: formatCreditPercent(deadline.credit),
       error: [dateErr, creditErr].filter(Boolean).join('; ') || undefined,
       current: deadline.date ? isDeadlineCurrent(deadline.date) : false,
@@ -249,7 +249,7 @@ export function generateDefaultRuleDateTableRows(
           options={{ includeTz: false }}
         />
       ),
-      label: 'Due',
+      label: 'ددلاین اصلی',
       access: formatCreditPercent(dueCredit),
       error: dueError,
       current: isDeadlineCurrent(dueDate),
@@ -257,8 +257,8 @@ export function generateDefaultRuleDateTableRows(
     });
   } else if (dueDate === null) {
     rows.push({
-      date: 'No due date',
-      label: 'Due',
+      date: 'بدون ددلاین اصلی',
+      label: 'ددلاین اصلی',
       access: formatCreditPercent(dueCredit),
       error: dueError,
       current: isNoDeadlineSegment,
@@ -267,8 +267,8 @@ export function generateDefaultRuleDateTableRows(
   } else {
     // dueDate is an empty string — "Due on date" selected but no date entered
     rows.push({
-      date: 'No date set',
-      label: 'Due',
+      date: 'تاریخی تنظیم نشده',
+      label: 'ددلاین اصلی',
       access: formatCreditPercent(dueCredit),
       error: dueError,
     });
@@ -285,9 +285,9 @@ export function generateDefaultRuleDateTableRows(
           options={{ includeTz: false }}
         />
       ) : (
-        'No date set'
+        'تاریخی تنظیم نشده'
       ),
-      label: `Late ${index + 1}`,
+      label: `ددلاین تاخیر ${index + 1}`,
       access: formatCreditPercent(deadline.credit),
       error: [dateErr, creditErr].filter(Boolean).join('; ') || undefined,
       current: deadline.date ? isDeadlineCurrent(deadline.date) : false,
@@ -305,8 +305,8 @@ export function generateDefaultRuleDateTableRows(
       access: afterLastDeadline.allowSubmissions
         ? afterLastDeadline.credit > 0
           ? formatCreditPercent(afterLastDeadline.credit)
-          : 'Practice for zero credit'
-        : 'No submissions allowed',
+          : 'تمرین بدون اعتبار نمره'
+        : 'ارسال پاسخ مجاز نیست',
       error: get(formErrors, 'afterLastDeadline.credit')?.message,
       current: isAfterLastSegment,
       currentVariant,
@@ -372,7 +372,7 @@ function VisibilityBadge({ visible }: { visible: boolean }) {
       variant={visible ? 'success' : 'danger'}
       icon={visible ? 'bi-eye' : 'bi-eye-slash'}
     >
-      {visible ? 'Shown' : 'Hidden'}
+      {visible ? 'نمایش داده می‌شود' : 'پنهان'}
     </SummaryBadge>
   );
 }
@@ -386,7 +386,7 @@ function AfterCompleteTimeRange({
 }) {
   return (
     <>
-      After{' '}
+      پس از{' '}
       <FriendlyDate
         date={Temporal.PlainDateTime.from(date)}
         timezone={displayTimezone}
@@ -464,7 +464,7 @@ export function generateAfterCompleteTableRows(
   const rows: AfterCompleteTableRow[] = [
     {
       key: 'immediately',
-      timeRange: 'Immediately after completion',
+      timeRange: 'بلافاصله پس از اتمام',
       questionsVisible,
       scoreVisible,
       errors,
@@ -506,7 +506,7 @@ function formatDeadlineEntries(
   deadlineErrors?: (string | undefined)[],
 ): OverrideFieldItem[] {
   return deadlines.map((entry, i) => ({
-    label: deadlines.length === 1 ? `${labelPrefix} deadline` : `${labelPrefix} deadline ${i + 1}`,
+    label: deadlines.length === 1 ? `ددلاین ${labelPrefix}` : `ددلاین ${labelPrefix} ${i + 1}`,
     value: entry.date ? (
       <>
         <FriendlyDate
@@ -514,10 +514,10 @@ function formatDeadlineEntries(
           timezone={displayTimezone}
           options={{ includeTz: false }}
         />{' '}
-        ({formatCreditPercent(entry.credit)} credit)
+        (اعتبار {formatCreditPercent(entry.credit)})
       </>
     ) : (
-      `No date set (${formatCreditPercent(entry.credit)} credit)`
+      `تاریخی تنظیم نشده (اعتبار ${formatCreditPercent(entry.credit)})`
     ),
     error: deadlineErrors?.[i],
   }));
@@ -530,16 +530,16 @@ function formatAfterLastDeadline(afterLastDeadline: AfterLastDeadlineValue): str
     afterLastDeadline.credit > 0 &&
     Number.isFinite(afterLastDeadline.credit)
   ) {
-    parts.push(`${afterLastDeadline.credit}% credit`);
+    parts.push(`اعتبار ${afterLastDeadline.credit}%`);
   }
   if (afterLastDeadline.allowSubmissions) {
     parts.push(
-      parts.length > 0 ? 'submissions allowed' : 'Practice submissions allowed for zero credit',
+      parts.length > 0 ? 'ارسال پاسخ مجاز است' : 'ارسال تمرینی با اعتبار صفر درصد مجاز است',
     );
   } else {
-    parts.push('No submissions allowed');
+    parts.push('ارسال پاسخ مجاز نیست');
   }
-  return parts.join(', ');
+  return parts.join('، ');
 }
 
 function HiddenAfterCompletionVisibility({
@@ -554,13 +554,13 @@ function HiddenAfterCompletionVisibility({
   if (visibleFromDate && visibleUntilDate) {
     return (
       <>
-        Hidden after completion; visible from{' '}
+        پس از اتمام پنهان؛ قابل مشاهده از{' '}
         <FriendlyDate
           date={Temporal.PlainDateTime.from(visibleFromDate)}
           timezone={displayTimezone}
           options={{ includeTz: false }}
         />{' '}
-        until{' '}
+        تا{' '}
         <FriendlyDate
           date={Temporal.PlainDateTime.from(visibleUntilDate)}
           timezone={displayTimezone}
@@ -573,7 +573,7 @@ function HiddenAfterCompletionVisibility({
   if (visibleFromDate) {
     return (
       <>
-        Hidden after completion; visible starting{' '}
+        پس از اتمام پنهان؛ قابل مشاهده از{' '}
         <FriendlyDate
           date={Temporal.PlainDateTime.from(visibleFromDate)}
           timezone={displayTimezone}
@@ -583,7 +583,7 @@ function HiddenAfterCompletionVisibility({
     );
   }
 
-  return 'Hidden after completion';
+  return 'پس از اتمام پنهان';
 }
 
 function generateOverrideFieldItems(
@@ -598,7 +598,7 @@ function generateOverrideFieldItems(
     // A null/empty release date means "not released" (resolver returns active: false).
     // TODO: enforce non-null release dates on overrides so this case goes away.
     items.push({
-      label: 'Release date',
+      label: 'تاریخ انتشار',
       value: rule.release.date ? (
         <FriendlyDate
           date={Temporal.PlainDateTime.from(rule.release.date)}
@@ -606,7 +606,7 @@ function generateOverrideFieldItems(
           options={{ includeTz: false }}
         />
       ) : (
-        'Not released'
+        'منتشر نشده'
       ),
       error: formErrors?.release?.date?.message,
     });
@@ -621,11 +621,11 @@ function generateOverrideFieldItems(
     const earlyItems = formatDeadlineEntries(
       rule.earlyDeadlines,
       displayTimezone,
-      'Early',
+      'زودهنگام',
       earlyDeadlineErrors,
     );
     items.push(
-      ...(earlyItems.length > 0 ? earlyItems : [{ label: 'Early deadlines', value: 'None' }]),
+      ...(earlyItems.length > 0 ? earlyItems : [{ label: 'ددلاین‌های زودهنگام', value: 'ندارد' }]),
     );
   }
 
@@ -634,7 +634,7 @@ function generateOverrideFieldItems(
     const dueDateErr = formErrors?.due?.date?.message;
     const dueCreditErr = formErrors?.due?.credit?.message;
     items.push({
-      label: 'Due date',
+      label: 'ددلاین اصلی',
       value: rule.due.date ? (
         <>
           <FriendlyDate
@@ -645,7 +645,7 @@ function generateOverrideFieldItems(
           {creditLabel}
         </>
       ) : (
-        'No due date'
+        'بدون ددلاین اصلی'
       ),
       error: [dueDateErr, dueCreditErr].filter(Boolean).join('; ') || undefined,
     });
@@ -660,17 +660,17 @@ function generateOverrideFieldItems(
     const lateItems = formatDeadlineEntries(
       rule.lateDeadlines,
       displayTimezone,
-      'Late',
+      'تاخیر',
       lateDeadlineErrors,
     );
     items.push(
-      ...(lateItems.length > 0 ? lateItems : [{ label: 'Late deadlines', value: 'None' }]),
+      ...(lateItems.length > 0 ? lateItems : [{ label: 'ددلاین‌های تاخیر', value: 'ندارد' }]),
     );
   }
 
   if (overriddenFields.has('afterLastDeadline')) {
     items.push({
-      label: 'After last deadline',
+      label: 'پس از آخرین ددلاین',
       value: formatAfterLastDeadline(rule.afterLastDeadline),
       error: get(formErrors, 'afterLastDeadline.credit')?.message,
     });
@@ -678,16 +678,17 @@ function generateOverrideFieldItems(
 
   if (overriddenFields.has('durationMinutes')) {
     items.push({
-      label: 'Time limit',
-      value: rule.durationMinutes !== null ? `${rule.durationMinutes} minutes` : 'No time limit',
+      label: 'محدودیت زمانی',
+      value:
+        rule.durationMinutes !== null ? `${rule.durationMinutes} دقیقه` : 'بدون محدودیت زمانی',
       error: formErrors?.durationMinutes?.message,
     });
   }
 
   if (overriddenFields.has('password')) {
     items.push({
-      label: 'Password',
-      value: rule.password ? 'Required to start or submit' : 'No password',
+      label: 'رمز عبور',
+      value: rule.password ? 'الزامی برای شروع یا ارسال' : 'بدون رمز عبور',
       error: formErrors?.password?.message,
     });
   }
@@ -700,7 +701,7 @@ function generateOverrideFieldItems(
       formErrors?.questionVisibility?.message;
     if (qv.hidden) {
       items.push({
-        label: 'Question visibility',
+        label: 'نمایش سوالات',
         value: (
           <HiddenAfterCompletionVisibility
             visibleFromDate={qv.visibleFromDate}
@@ -712,8 +713,8 @@ function generateOverrideFieldItems(
       });
     } else {
       items.push({
-        label: 'Question visibility',
-        value: 'Visible after completion',
+        label: 'نمایش سوالات',
+        value: 'قابل مشاهده پس از اتمام',
         error: qvError,
       });
     }
@@ -725,7 +726,7 @@ function generateOverrideFieldItems(
       formErrors?.scoreVisibility?.visibleFromDate?.message || formErrors?.scoreVisibility?.message;
     if (sv.hidden) {
       items.push({
-        label: 'Score visibility',
+        label: 'نمایش نمره',
         value: (
           <HiddenAfterCompletionVisibility
             visibleFromDate={sv.visibleFromDate}
@@ -736,8 +737,8 @@ function generateOverrideFieldItems(
       });
     } else {
       items.push({
-        label: 'Score visibility',
-        value: 'Visible after completion',
+        label: 'نمایش نمره',
+        value: 'قابل مشاهده پس از اتمام',
         error: svError,
       });
     }
@@ -808,7 +809,7 @@ function YesNoBadge({ value }: { value: boolean | null }) {
     return <span className="text-body-secondary">—</span>;
   }
   return (
-    <SummaryBadge variant={value ? 'success' : 'warning'}>{value ? 'Yes' : 'No'}</SummaryBadge>
+    <SummaryBadge variant={value ? 'success' : 'warning'}>{value ? 'بله' : 'خیر'}</SummaryBadge>
   );
 }
 
@@ -854,12 +855,12 @@ export function DateTableView({
   if (rule.durationMinutes != null) {
     const error = formErrors?.durationMinutes?.message;
     if (!error) {
-      footerItems.push(`${rule.durationMinutes} min time limit`);
+      footerItems.push(`محدودیت زمانی ${rule.durationMinutes} دقیقه`);
     } else {
       footerItems.push(
         <span className="text-danger">
           <i className="bi bi-exclamation-circle" aria-hidden="true" />
-          &nbsp;Missing time limit
+          &nbsp;محدودیت زمانی نامعتبر
         </span>,
       );
     }
@@ -867,12 +868,12 @@ export function DateTableView({
   if (rule.password != null) {
     const error = formErrors?.password?.message;
     if (!error) {
-      footerItems.push('Password required to start or submit');
+      footerItems.push('رمز عبور برای شروع یا ارسال الزامی است');
     } else {
       footerItems.push(
         <span className="text-danger">
           <i className="bi bi-exclamation-circle" aria-hidden="true" />
-          &nbsp;Missing password
+          &nbsp;رمز عبور وارد نشده است
         </span>,
       );
     }
@@ -882,7 +883,7 @@ export function DateTableView({
     <div className="access-summary-card access-summary-card--cols-2">
       <SummaryCardHeader
         icon="bi-calendar3"
-        title="Date control"
+        title="کنترل تاریخ و زمان"
         headingId={DATE_CONTROL_HEADING_ID}
       />
       <div className="access-summary-rows" role="table" aria-labelledby={DATE_CONTROL_HEADING_ID}>
@@ -891,13 +892,13 @@ export function DateTableView({
             className="access-summary-cell access-summary-cell--header access-summary-cell--first"
             role="columnheader"
           >
-            Date
+            تاریخ
           </div>
           <div
             className="access-summary-cell access-summary-cell--header access-summary-cell--span-rest"
             role="columnheader"
           >
-            Access
+            دسترسی
           </div>
         </div>
         {rows.map((row, index) => (
@@ -961,7 +962,7 @@ export function AfterCompleteTableView({
     <div className="access-summary-card access-summary-card--cols-3">
       <SummaryCardHeader
         icon="bi-check2-circle"
-        title="After completion"
+        title="پس از اتمام"
         headingId={AFTER_COMPLETION_HEADING_ID}
       />
       <div
@@ -974,13 +975,13 @@ export function AfterCompleteTableView({
             className="access-summary-cell access-summary-cell--header access-summary-cell--first"
             role="columnheader"
           >
-            Time range
+            بازه زمانی
           </div>
           <div className="access-summary-cell access-summary-cell--header" role="columnheader">
-            Question visibility
+            نمایش سوالات
           </div>
           <div className="access-summary-cell access-summary-cell--header" role="columnheader">
-            Score visibility
+            نمایش نمره
           </div>
         </div>
         {rows.map((row) => (
@@ -999,7 +1000,7 @@ export function AfterCompleteTableView({
       </div>
       {hasPrairieTest && (
         <div className="access-summary-card-footer">
-          During active PrairieTest reservations, the exam’s visibility settings apply instead.
+          در طول رزروهای فعال PrairieTest، تنظیمات نمایش خود امتحان اعمال می‌شود.
         </div>
       )}
       {errors.length > 0 && (
@@ -1039,7 +1040,7 @@ function buildDefaultRuleCurrentIndicator(
       return {
         variant: 'primary',
         icon: 'bi-eye',
-        text: 'Listed but not accessible',
+        text: 'در فهرست نمایش داده می‌شود اما قابل دسترس نیست',
       };
     }
     return null;
@@ -1056,21 +1057,21 @@ function buildDefaultRuleCurrentIndicator(
         variant: 'primary',
         icon: 'bi-eye',
         text: opensAt ? (
-          <>Listed but not accessible · opens {friendlyDate(opensAt)}</>
+          <>در فهرست نمایش داده می‌شود اما قابل دسترس نیست · زمان بازشدن: {friendlyDate(opensAt)}</>
         ) : (
-          'Listed but not accessible'
+          'در فهرست نمایش داده می‌شود اما قابل دسترس نیست'
         ),
       };
     }
     return {
       variant: 'primary',
       icon: 'bi-eye-slash',
-      text: opensAt ? <>Hidden · opens {friendlyDate(opensAt)}</> : 'Hidden',
+      text: opensAt ? <>پنهان · زمان بازشدن: {friendlyDate(opensAt)}</> : 'پنهان',
     };
   }
 
   if (!segment.submittable) {
-    return { variant: 'primary', icon: 'bi-lock', text: 'No submissions allowed' };
+    return { variant: 'primary', icon: 'bi-lock', text: 'ارسال پاسخ مجاز نیست' };
   }
 
   if (segment.endDate) {
@@ -1079,7 +1080,7 @@ function buildDefaultRuleCurrentIndicator(
       icon: 'bi-unlock',
       text: (
         <>
-          Open · {formatCreditPercent(segment.credit)} credit until {friendlyDate(segment.endDate)}
+          باز · اعتبار {formatCreditPercent(segment.credit)} تا {friendlyDate(segment.endDate)}
         </>
       ),
     };
@@ -1087,7 +1088,7 @@ function buildDefaultRuleCurrentIndicator(
   return {
     variant: 'success',
     icon: 'bi-unlock',
-    text: `Open · ${formatCreditPercent(segment.credit)} credit`,
+    text: `باز · اعتبار ${formatCreditPercent(segment.credit)}`,
   };
 }
 
@@ -1107,7 +1108,7 @@ export function DefaultRuleCurrentIndicator({
     >
       <i className={`bi ${indicator.icon}`} aria-hidden="true" />
       <span>
-        <strong>Current:</strong> {indicator.text}
+        <strong>وضعیت فعلی:</strong> {indicator.text}
       </span>
     </div>
   );
@@ -1165,13 +1166,13 @@ export function PrairieTestExamsTable({
             className="access-summary-cell access-summary-cell--header access-summary-cell--first"
             role="columnheader"
           >
-            Exam
+            آزمون
           </div>
           <div className="access-summary-cell access-summary-cell--header" role="columnheader">
-            Allows submissions
+            اجازه ارسال پاسخ
           </div>
           <div className="access-summary-cell access-summary-cell--header" role="columnheader">
-            After completion
+            پس از اتمام
           </div>
         </div>
         {exams.map((exam, index) => {
@@ -1198,14 +1199,14 @@ export function PrairieTestExamsTable({
             const archivedCenters = centers.filter(({ archived }) => archived);
             if (centers.length <= 1 && archivedCenters.length > 0) {
               return meta?.pt_course_archived
-                ? 'This course and testing center are archived in PrairieTest.'
-                : 'This testing center is archived in PrairieTest.';
+                ? 'این درس و مرکز آزمون در PrairieTest بایگانی شده‌اند.'
+                : 'این مرکز آزمون در PrairieTest بایگانی شده است.';
             }
             return [
-              ...(meta?.pt_course_archived ? ['This course is archived in PrairieTest.'] : []),
+              ...(meta?.pt_course_archived ? ['این درس در PrairieTest بایگانی شده است.'] : []),
               ...archivedCenters.map(
                 ({ name, term }) =>
-                  `${term ? `${name} (${term})` : name} is archived in PrairieTest.`,
+                  `${term ? `${name} (${term})` : name} در PrairieTest بایگانی شده است.`,
               ),
             ].join(' ');
           });
@@ -1237,7 +1238,7 @@ export function PrairieTestExamsTable({
                     )}
                   </>
                 ) : (
-                  <span className="text-body-secondary">Unknown exam</span>
+                  <span className="text-body-secondary">آزمون ناشناس</span>
                 )}
               </div>
               <div className="access-summary-cell text-nowrap" role="cell">
@@ -1248,11 +1249,11 @@ export function PrairieTestExamsTable({
                   if (exam.readOnly) return <>&mdash;</>;
 
                   if (exam.afterCompleteQuestionsHidden && exam.afterCompleteScoreHidden) {
-                    return 'Questions and score hidden';
+                    return 'سوالات و نمره پنهان';
                   } else if (exam.afterCompleteQuestionsHidden) {
-                    return 'Questions hidden · Score shown';
+                    return 'سوالات پنهان · نمره قابل مشاهده';
                   } else {
-                    return 'Questions and score visible';
+                    return 'سوالات و نمره قابل مشاهده';
                   }
                 })}
               </div>
@@ -1261,9 +1262,9 @@ export function PrairieTestExamsTable({
         })}
       </div>
       <div className="access-summary-card-footer">
-        <span>{formatListedForStudents(beforeReleaseListed)} before the exam</span>
+        <span>{formatListedForStudents(beforeReleaseListed)} پیش از آزمون</span>
         <span className="mx-1">·</span>
-        <span>PrairieTest controls access and time limits during reservations</span>
+        <span>PrairieTest دسترسی و محدودیت‌های زمانی را در طول رزروها کنترل می‌کند</span>
       </div>
     </div>
   );
@@ -1308,7 +1309,7 @@ export function OverrideRuleSummaryCard({
               type="button"
               className="btn btn-sm btn-ghost p-0"
               style={{ cursor: 'grab', touchAction: 'none' }}
-              aria-label="Drag to reorder"
+              aria-label="برای تغییر ترتیب بکشید"
               {...dragHandleProps}
             >
               <i className="bi bi-grip-vertical" aria-hidden="true" />
@@ -1335,24 +1336,24 @@ export function OverrideRuleSummaryCard({
             <Button
               variant="outline-primary"
               size="sm"
-              aria-label={canEdit ? 'Edit' : 'View'}
+              aria-label={canEdit ? 'ویرایش' : 'مشاهده'}
               className="d-inline-flex align-items-center"
               onClick={onEdit}
             >
               <i className={canEdit ? 'bi bi-pencil' : 'bi bi-eye'} aria-hidden="true" />
-              <span className="toolbar-btn-label ms-1">{canEdit ? 'Edit' : 'View'}</span>
+              <span className="toolbar-btn-label ms-1">{canEdit ? 'ویرایش' : 'مشاهده'}</span>
             </Button>
           )}
           {onRemove && (
             <Button
               variant="outline-danger"
               size="sm"
-              aria-label="Remove"
+              aria-label="حذف"
               className="d-inline-flex align-items-center"
               onClick={onRemove}
             >
               <i className="bi bi-trash" aria-hidden="true" />
-              <span className="toolbar-btn-label ms-1">Remove</span>
+              <span className="toolbar-btn-label ms-1">حذف</span>
             </Button>
           )}
         </div>
@@ -1361,7 +1362,7 @@ export function OverrideRuleSummaryCard({
         {overrideFieldItems.length > 0 && <OverrideFieldsList items={overrideFieldItems} />}
 
         {overrideFieldItems.length === 0 && (
-          <p className="text-body-secondary mb-0">No specific settings configured</p>
+          <p className="text-body-secondary mb-0">تنظیمات خاصی پیکربندی نشده است</p>
         )}
       </Card.Body>
     </Card>

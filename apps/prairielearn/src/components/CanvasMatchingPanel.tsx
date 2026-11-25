@@ -53,7 +53,7 @@ export function CanvasMatchingPanel({
       }
 
       if (canvasStudents.length === 0) {
-        setParseError('No student rows found in the uploaded CSV.');
+        setParseError('هیچ ردیف دانشجویی در فایل CSV بارگذاری‌شده یافت نشد.');
         onMatchingStateChange(null);
         return;
       }
@@ -82,11 +82,11 @@ export function CanvasMatchingPanel({
 
   return (
     <div>
-      <h6>Canvas gradebook import</h6>
+      <h6>ورود دفترچه نمره Canvas</h6>
       <p className="text-muted small mb-1">
-        Upload a gradebook CSV exported from Canvas so PrairieLearn can reuse each student&apos;s
-        roster identity from that file. Without this, values that identify students to Canvas will
-        leave identity columns empty.
+        یک فایل CSV دفترچه نمره خروجی‌گرفته‌شده از Canvas را بارگذاری کنید تا سامانه بتواند از شناسه فهرست
+        هر دانشجو در آن فایل دوباره استفاده کند. بدون این کار، ستون‌های هویتی که دانشجویان را به
+        Canvas معرفی می‌کنند خالی خواهند ماند.
       </p>
       <p className="small mb-3">
         <a
@@ -94,12 +94,12 @@ export function CanvasMatchingPanel({
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn more about exporting grades to Canvas
+          اطلاعات بیشتر درباره خروجی گرفتن نمرات برای Canvas
         </a>
       </p>
 
       <Form.Group controlId="canvas-csv-upload" className="mb-3">
-        <Form.Label>Canvas gradebook CSV</Form.Label>
+        <Form.Label>فایل CSV دفترچه نمره Canvas</Form.Label>
         <div className="d-flex align-items-center gap-2">
           <Form.Control ref={fileInputRef} type="file" accept=".csv" onChange={handleFileChange} />
           {matchingState && (
@@ -108,7 +108,7 @@ export function CanvasMatchingPanel({
               className="btn btn-sm btn-outline-secondary text-nowrap"
               onClick={handleClear}
             >
-              Clear
+              پاک کردن
             </button>
           )}
         </div>
@@ -130,9 +130,9 @@ function MatchingSummary({ bestResult }: { bestResult: StrategyResult }) {
       <Alert variant="danger" className="d-flex align-items-start gap-2">
         <i className="bi bi-x-circle-fill" />
         <div>
-          We were unable to match any provided Canvas student records to PrairieLearn students.
-          Identity columns in the exported CSV will be empty. Verify that the uploaded file is a
-          gradebook CSV exported from Canvas.
+          تطبیق هیچ‌یک از رکوردهای دانشجویان Canvas با دانشجویان سامانه امکان‌پذیر نبود. ستون‌های
+          هویتی در فایل CSV خروجی خالی خواهند بود. مطمئن شوید که فایل بارگذاری‌شده یک CSV دفترچه
+          نمره خروجی از Canvas است.
         </div>
       </Alert>
     );
@@ -153,8 +153,8 @@ function MatchingSummary({ bestResult }: { bestResult: StrategyResult }) {
         <i className={`bi ${icon}`} />
         <div>
           <div className="mb-1">
-            Matched <strong>{matched.length}</strong> students using{' '}
-            <strong>{strategy.label}</strong>
+            تعداد <strong>{matched.length}</strong> دانشجو با استفاده از{' '}
+            <strong>{strategy.label}</strong> تطبیق داده شد
           </div>
           {(ambiguousPl.length > 0 || ambiguousCanvas.length > 0) && (
             <div
@@ -165,29 +165,29 @@ function MatchingSummary({ bestResult }: { bestResult: StrategyResult }) {
             >
               {ambiguousPl.length > 0 && (
                 <>
-                  <strong>{ambiguousPl.length}</strong> PrairieLearn
+                  <strong>{ambiguousPl.length}</strong> دانشجو در سامانه
                 </>
               )}
               {ambiguousCanvas.length > 0 && (
                 <>
-                  {ambiguousPl.length > 0 ? ' and ' : ''}
-                  <strong>{ambiguousCanvas.length}</strong> Canvas
+                  {ambiguousPl.length > 0 ? ' و ' : ''}
+                  <strong>{ambiguousCanvas.length}</strong> دانشجو در Canvas
                 </>
               )}{' '}
-              students could not be disambiguated, and will have populated names but empty identity
-              columns in the exported CSV.
+              قابل ابهام‌زدایی نبودند و در فایل CSV خروجی نام آن‌ها درج می‌شود اما ستون‌های هویتی
+              خالی خواهند ماند.
             </div>
           )}
           {unmatchedPl.length > 0 && (
             <div className={clsx('small', unmatchedCanvas.length > 0 ? 'mb-1' : '')}>
-              <strong>{unmatchedPl.length}</strong> unmatched PrairieLearn students will have
-              populated names but empty identity columns in the exported CSV.
+              <strong>{unmatchedPl.length}</strong> دانشجوی تطبیق‌نیافته سامانه در فایل CSV خروجی
+              دارای نام خواهند بود اما ستون‌های هویتی آن‌ها خالی می‌ماند.
             </div>
           )}
           {unmatchedCanvas.length > 0 && (
             <div className="small">
-              <strong>{unmatchedCanvas.length}</strong> unmatched Canvas students will be excluded
-              from the export.
+              <strong>{unmatchedCanvas.length}</strong> دانشجوی تطبیق‌نیافته Canvas از خروجی حذف
+              خواهند شد.
             </div>
           )}
         </div>
@@ -214,15 +214,15 @@ function AmbiguousStudentsList({
   return (
     <details className="mb-3">
       <summary className="fw-semibold small">
-        Ambiguous students ({ambiguousPl.length + ambiguousCanvas.length})
+        دانشجویان مبهم ({ambiguousPl.length + ambiguousCanvas.length})
       </summary>
       <p className="text-muted small mt-1">
-        These students share an identifier with another student on the same side and cannot be
-        matched automatically.
+        این دانشجویان دارای شناسه مشترک با دانشجوی دیگری در همان طرف هستند و نمی‌توان آن‌ها را
+        به‌صورت خودکار تطبیق داد.
       </p>
       {ambiguousPl.length > 0 && (
         <div className="mb-2">
-          <div className="fw-semibold small">PrairieLearn</div>
+          <div className="fw-semibold small">سامانه</div>
           <StudentList students={ambiguousPl} />
         </div>
       )}
@@ -248,7 +248,7 @@ function UnmatchedStudentsList({
       {unmatchedPl.length > 0 && (
         <details className="mb-3">
           <summary className="fw-semibold small">
-            Unmatched PrairieLearn students ({unmatchedPl.length})
+            دانشجویان تطبیق‌نیافته سامانه ({unmatchedPl.length})
           </summary>
           <div className="mt-1">
             <StudentList students={unmatchedPl} />
@@ -258,7 +258,7 @@ function UnmatchedStudentsList({
       {unmatchedCanvas.length > 0 && (
         <details className="mb-3">
           <summary className="fw-semibold small">
-            Unmatched Canvas students ({unmatchedCanvas.length})
+            دانشجویان تطبیق‌نیافته Canvas ({unmatchedCanvas.length})
           </summary>
           <div className="mt-1">
             <CanvasStudentList students={unmatchedCanvas} />
@@ -276,7 +276,7 @@ function StudentList({ students }: { students: Student[] }) {
       {students.map((s, i) => (
         // oxlint-disable-next-line react/no-array-index-key
         <li key={`${s.uid}-${i}`}>
-          {s.userName ?? '(no name)'} <span className="text-muted">({s.uid})</span>
+          {s.userName ?? '(بدون نام)'} <span className="text-muted">({s.uid})</span>
         </li>
       ))}
     </ul>

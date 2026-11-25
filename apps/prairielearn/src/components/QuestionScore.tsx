@@ -52,8 +52,7 @@ export function QuestionScorePanel(
                   authz_result?.authorized_edit === false
                     ? html`
                         <div class="alert alert-warning mb-0" role="alert">
-                          You are viewing the question instance of a different user and so are not
-                          authorized to report an error.
+                          شما در حال مشاهده نمونه سوال کاربر دیگری هستید و مجاز به گزارش خطا نیستید.
                         </div>
                       `
                     : IssueReportingPanel({ variant, csrfToken })
@@ -85,7 +84,7 @@ export function QuestionScorePanelContent({
   return html`
     <table
       class="table table-sm two-column-description-no-header"
-      aria-label="Question score"
+      aria-label="نمره سوال"
       id="question-score-panel-content"
     >
       <tbody>
@@ -327,8 +326,8 @@ export function InstanceQuestionPoints({
                 type="button"
                 class="btn btn-xs"
                 data-bs-toggle="tooltip"
-                aria-label="Not included in grade"
-                title="This zone uses only the best questions for score, and this question is not included."
+                aria-label="در نمره لحاظ نمی‌شود"
+                title="این بخش تنها بهترین سوالات را در نمره محاسبه می‌کند و این سوال در نمره لحاظ نشده است."
               >
                 <i class="far fa-question-circle" aria-hidden="true"></i>
               </button>
@@ -363,55 +362,53 @@ function QuestionValue({
     const parts: HtmlValue[] = [
       html`
         <p>
-          This question awards partial credit if you continue getting closer to the correct answer.
+          در صورت نزدیک‌تر شدن به پاسخ صحیح، این سوال به شما نمره جزئی اعطا می‌کند.
         </p>
       `,
     ];
 
     if (bestCurrentScore === 0) {
-      const pluralizedPoints = currentAutoValue === 1 ? 'point' : 'points';
       parts.push(html`
         <p>
-          If you score 100% on your next submission, you will be awarded an additional
-          ${formatPoints(currentAutoValue)} ${pluralizedPoints}.
+          اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید، ${formatPoints(currentAutoValue)} امتیاز اضافه به
+          شما تعلق می‌گیرد.
         </p>
         <p class="mb-0">
-          If you score less than 100% on your next submission, you will be awarded an additional
-          <code>${formatPoints(initAutoPoints)} * score / 100</code> points.
+          اگر در ارسال بعدی نمره‌ای کمتر از ۱۰۰٪ کسب کنید، به میزان
+          <code>${formatPoints(initAutoPoints)} * score / 100</code> امتیاز اضافه دریافت خواهید کرد.
         </p>
       `);
     } else {
       if (instance_question.some_perfect_submission) {
         parts.push(html`
           <p>
-            Your highest submission score since your last 100% submission is
-            ${formatPoints(bestCurrentScore)}%.
+            بالاترین نمره ارسال شما پس از آخرین ارسال ۱۰۰٪، برابر با
+            ${formatPoints(bestCurrentScore)}% است.
           </p>
         `);
       } else {
         parts.push(
-          html`<p>Your highest submission score so far is ${formatPoints(bestCurrentScore)}%.</p>`,
+          html`<p>بالاترین نمره ارسال شما تاکنون ${formatPoints(bestCurrentScore)}% است.</p>`,
         );
       }
 
       const perfectAdditionalPoints = (currentAutoValue * (100 - bestCurrentScore)) / 100;
-      const pluralizedPoints = perfectAdditionalPoints === 1 ? 'point' : 'points';
       parts.push(html`
         <p>
-          If you score 100% on your next submission, you will be awarded an additional
-          ${formatPoints(perfectAdditionalPoints)} ${pluralizedPoints}.
+          اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید، ${formatPoints(perfectAdditionalPoints)} امتیاز اضافه
+          به شما تعلق می‌گیرد.
         </p>
         <p>
-          If you score between ${formatPoints(bestCurrentScore)}% and 100% on your next submission,
-          you will be awarded an additional
+          اگر در ارسال بعدی نمره‌ای بین ${formatPoints(bestCurrentScore)}% تا ۱۰۰٪ کسب کنید، به
+          میزان
           <code>
             ${formatPoints(currentAutoValue)} * (score - ${formatPoints(bestCurrentScore)}) / 100
           </code>
-          points.
+          امتیاز اضافه دریافت خواهید کرد.
         </p>
         <p class="mb-0">
-          If you score less than ${formatPoints(bestCurrentScore)}% on your next submission, you
-          will not be awarded any additional points for that submission.
+          اگر در ارسال بعدی نمره‌ای کمتر از ${formatPoints(bestCurrentScore)}% کسب کنید، برای آن
+          ارسال امتیاز اضافه‌ای دریافت نخواهید کرد.
         </p>
       `);
     }
@@ -427,7 +424,7 @@ function QuestionValue({
       data-bs-toggle="popover"
       data-bs-container="body"
       data-bs-html="true"
-      data-bs-title="Explanation of question value"
+      data-bs-title="توضیح ارزش سوال"
       data-bs-content="${escapeHtml(popoverContent)}"
       data-bs-placement="auto"
     >

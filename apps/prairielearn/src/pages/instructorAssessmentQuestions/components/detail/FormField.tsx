@@ -94,7 +94,7 @@ export function FormCheckField({
     return (
       <>
         <dt>{label}</dt>
-        <dd>{viewValue ? 'Yes' : 'No'}</dd>
+        <dd>{viewValue ? 'بله' : 'خیر'}</dd>
       </>
     );
   }

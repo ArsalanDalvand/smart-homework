@@ -21,9 +21,9 @@ const NOT_IN_ANY_ASSESSMENT_ID = '__not_in_any_assessment__';
 const PINNED_ASSESSMENT_IDS = new Set([NOT_IN_ANY_ASSESSMENT_ID]);
 
 const GRADING_METHOD_ITEMS: FilterItem[] = [
-  { id: 'Internal', name: 'Internal' },
-  { id: 'External', name: 'External' },
-  { id: 'Manual', name: 'Manual' },
+  { id: 'Internal', name: 'داخلی (Internal)' },
+  { id: 'External', name: 'خارجی (External)' },
+  { id: 'Manual', name: 'دستی (Manual)' },
 ];
 
 export function QuestionPickerPanel({
@@ -116,7 +116,7 @@ export function QuestionPickerPanel({
     return {
       topics: Array.from(topicMap.values()).sort((a, b) => a.name.localeCompare(b.name)),
       tags: Array.from(tagMap.values()).sort((a, b) => a.name.localeCompare(b.name)),
-      assessments: [{ id: NOT_IN_ANY_ASSESSMENT_ID, name: 'None' }, ...sortedAssessments],
+      assessments: [{ id: NOT_IN_ANY_ASSESSMENT_ID, name: 'هیچ‌کدام' }, ...sortedAssessments],
     };
   }, [courseQuestions, currentAssessmentId]);
 
@@ -216,9 +216,9 @@ export function QuestionPickerPanel({
     return (
       <div className="d-flex flex-column align-items-center justify-content-center py-5">
         <div className="spinner-border text-primary mb-3" role="status">
-          <span className="visually-hidden">Loading...</span>
+          <span className="visually-hidden">در حال بارگذاری...</span>
         </div>
-        <span className="text-muted">Loading questions...</span>
+        <span className="text-muted">در حال بارگذاری سوالات...</span>
       </div>
     );
   }
@@ -229,28 +229,28 @@ export function QuestionPickerPanel({
         <input
           type="text"
           className="form-control form-control-sm mb-2"
-          placeholder="Search by QID or title..."
-          aria-label="Search by QID or title"
+          placeholder="جستجو بر اساس شناسه سوال (QID) یا عنوان..."
+          aria-label="جستجو بر اساس شناسه سوال (QID) یا عنوان"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <div className="d-flex gap-1 flex-wrap">
           <FilterDropdown
-            label="Topic"
+            label="موضوع"
             items={topics}
             selectedIds={selectedTopics}
             maxHeight={20 * 28 + 50}
             onChange={setSelectedTopics}
           />
           <FilterDropdown
-            label="Tags"
+            label="برچسب‌ها"
             items={tags}
             selectedIds={selectedTags}
             maxHeight={20 * 28 + 50}
             onChange={setSelectedTags}
           />
           <FilterDropdown
-            label="Assessment"
+            label="ارزیابی"
             items={assessments}
             selectedIds={selectedAssessments}
             pinnedIds={PINNED_ASSESSMENT_IDS}
@@ -258,7 +258,7 @@ export function QuestionPickerPanel({
             onChange={setSelectedAssessments}
           />
           <FilterDropdown
-            label="Grading"
+            label="روش تصحیح"
             items={GRADING_METHOD_ITEMS}
             selectedIds={selectedGradingMethods}
             onChange={setSelectedGradingMethods}
@@ -269,7 +269,7 @@ export function QuestionPickerPanel({
               className="btn btn-sm btn-link text-decoration-none p-0"
               onClick={clearFilters}
             >
-              Clear filters
+              پاک کردن فیلترها
             </button>
           )}
         </div>
@@ -279,13 +279,13 @@ export function QuestionPickerPanel({
           <i className="bi bi-exclamation-triangle-fill me-1" aria-hidden="true" />
           {renderAppError(pickerError, {
             QUESTION_NOT_FOUND: ({ message }) => message,
-            UNKNOWN: ({ message }) => message || 'Failed to add question. Please try again.',
+            UNKNOWN: ({ message }) => message || 'افزودن سوال ناموفق بود. لطفاً دوباره تلاش کنید.',
           })}
         </div>
       )}
       {!sharedQuestionMode && (
         <div className="px-2 py-1 bg-light border-bottom text-muted small">
-          {sortedQuestions.length} {sortedQuestions.length === 1 ? 'question' : 'questions'} found
+          {sortedQuestions.length} سوال یافت شد
         </div>
       )}
       <div ref={scrollParentRef} className="flex-grow-1" style={{ overflow: 'auto' }}>
@@ -293,9 +293,9 @@ export function QuestionPickerPanel({
           sharedQuestionQuery.isFetching ? (
             <div className="d-flex align-items-center justify-content-center py-5 text-muted">
               <div className="spinner-border spinner-border-sm me-2" role="status">
-                <span className="visually-hidden">Searching...</span>
+                <span className="visually-hidden">در حال جستجو...</span>
               </div>
-              Searching...
+              در حال جستجو...
             </div>
           ) : sharedQuestionQuery.data ? (
             run(() => {
@@ -360,34 +360,34 @@ export function QuestionPickerPanel({
               QUESTION_NOT_FOUND: () => (
                 <div className="d-flex flex-column align-items-center justify-content-center text-muted py-5 text-center px-3">
                   <i className="bi bi-search display-6 mb-2" aria-hidden="true" />
-                  <p className="mb-1">Shared question not found.</p>
+                  <p className="mb-1">سوال اشتراکی یافت نشد.</p>
                 </div>
               ),
               UNKNOWN: () => (
                 <div className="d-flex flex-column align-items-center justify-content-center text-danger py-5 text-center px-3">
                   <i className="bi bi-exclamation-circle display-6 mb-2" aria-hidden="true" />
-                  <p className="mb-1">Failed to search for a shared question. Try again.</p>
+                  <p className="mb-1">جستجوی سوال اشتراکی ناموفق بود. دوباره تلاش کنید.</p>
                 </div>
               ),
             })
           ) : (
             <div className="d-flex flex-column align-items-center justify-content-center text-muted py-5 text-center px-3">
               <i className="bi bi-share display-6 mb-2" aria-hidden="true" />
-              <p className="mb-1">To add a shared question, enter its exact reference:</p>
+              <p className="mb-1">برای افزودن سوال اشتراکی، ارجاع دقیق آن را وارد کنید:</p>
               <code>@&lt;sharing-name&gt;/&lt;qid&gt;</code>
             </div>
           )
         ) : sortedQuestions.length === 0 ? (
           <div className="d-flex flex-column align-items-center justify-content-center text-muted py-5 text-center px-3">
             <i className="bi bi-search display-6 mb-2" aria-hidden="true" />
-            <p className="mb-1">No questions match your search criteria.</p>
+            <p className="mb-1">هیچ سوالی با معیارهای جستجوی شما مطابقت ندارد.</p>
             <small>
               <a
                 href={getQuestionCreateUrl(courseInstanceId)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Create a new question
+                ایجاد سوال جدید
               </a>
             </small>
           </div>
@@ -421,7 +421,7 @@ export function QuestionPickerPanel({
                   data-index={virtualRow.index}
                   role={isDisabled ? undefined : 'button'}
                   tabIndex={isDisabled ? undefined : 0}
-                  aria-label={`${accessibleLabel}${isCurrentChange ? ' (current)' : isInAssessment ? ` (in ${addedZoneNames.join(', ')})` : ''}`}
+                  aria-label={`${accessibleLabel}${isCurrentChange ? ' (فعلی)' : isInAssessment ? ` (در ${addedZoneNames.join('، ')})` : ''}`}
                   aria-disabled={isDisabled || undefined}
                   className="d-flex align-items-center px-2 py-1 border-bottom list-group-item-action picker-row"
                   style={{
@@ -493,7 +493,7 @@ export function QuestionPickerPanel({
                     <button
                       type="button"
                       className="btn btn-sm border-0 text-muted ms-1 picker-delete-btn hover-show"
-                      aria-label={`Remove ${qid} from assessment`}
+                      aria-label={`حذف ${qid} از ارزیابی`}
                       onClick={(e) => {
                         e.stopPropagation();
                         onRemoveQuestionByQid(qid);

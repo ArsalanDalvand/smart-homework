@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 
 import type { InheritanceSource } from '../../types.js';
+import { formatInheritanceSourceFa } from '../../utils/formHelpers.js';
 
 export function InheritableRolesField({
   id,
@@ -31,6 +32,7 @@ export function InheritableRolesField({
 }) {
   const displayValue = isInherited ? (inheritedValue ?? allRoles) : value;
   const selectedSet = new Set(displayValue);
+  const sourceFa = formatInheritanceSourceFa(inheritedFromLabel);
 
   if (!editMode) {
     return (
@@ -38,7 +40,7 @@ export function InheritableRolesField({
         <dt>
           {label}
           {isInherited && (
-            <span className="text-muted fw-normal"> (inherited from {inheritedFromLabel})</span>
+            <span className="text-muted fw-normal"> (به ارث برده‌شده از {sourceFa})</span>
           )}
         </dt>
         <dd>
@@ -77,13 +79,13 @@ export function InheritableRolesField({
         {helpText}{' '}
         {isInherited ? (
           <>
-            Inherited from {inheritedFromLabel}.{' '}
+            به ارث برده‌شده از {sourceFa}.{' '}
             <button
               type="button"
               className="btn btn-link btn-sm p-0 align-baseline"
               onClick={onOverride}
             >
-              Override
+              بازنویسی
             </button>
           </>
         ) : (
@@ -92,7 +94,7 @@ export function InheritableRolesField({
             className="btn btn-link btn-sm p-0 align-baseline"
             onClick={onReset}
           >
-            Inherit from {inheritedFromLabel}
+            ارث‌بری از {sourceFa}
           </button>
         )}
       </small>
@@ -129,7 +131,7 @@ function RoleChecklist({
             key={role}
             htmlFor={checkboxId}
             className={clsx('list-group-item py-1 px-2 m-0', readOnly && 'text-muted')}
-            title={isLastSelected && selected ? 'At least one role must be selected.' : undefined}
+            title={isLastSelected && selected ? 'حداقل یک نقش باید انتخاب شود.' : undefined}
           >
             <input
               id={checkboxId}

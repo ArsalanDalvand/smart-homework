@@ -15,19 +15,19 @@ export function GradingConflictModal({
   return (
     <Modal show={modalState != null} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Grading conflict detected</Modal.Title>
+        <Modal.Title>تداخل در تصحیح شناسایی شد</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <p>Another grader has already graded this submission.</p>
+        <p>مصحح دیگری قبلاً این ارسال را تصحیح کرده است.</p>
       </Modal.Body>
 
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Dismiss
+          بستن
         </Button>
         <Button variant="primary" href={modalState?.conflictDetailsUrl}>
-          See details
+          مشاهده جزئیات
         </Button>
       </Modal.Footer>
     </Modal>

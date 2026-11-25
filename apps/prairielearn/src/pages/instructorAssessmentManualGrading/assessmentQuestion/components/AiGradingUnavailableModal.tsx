@@ -4,28 +4,28 @@ export function AiGradingUnavailableModal({ show, onHide }: { show: boolean; onH
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>AI grading not available</Modal.Title>
+        <Modal.Title>تصحیح با هوش مصنوعی در دسترس نیست</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          AI grading is only supported for questions with a manually graded portion. To enable
-          manual grading, set <code>manualPoints</code> to a non-zero value.
+          تصحیح با هوش مصنوعی تنها برای سوالاتی پشتیبانی می‌شود که دارای بخش تصحیح دستی هستند.
+          برای فعال‌سازی تصحیح دستی، مقدار <code>manualPoints</code> را غیرصفر تنظیم کنید.
         </p>
         <p className="mb-0">
-          See the{' '}
+          برای اطلاعات بیشتر،{' '}
           <a
             href="https://docs.prairielearn.com/manualGrading/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            manual grading documentation
+            مستندات تصحیح دستی
           </a>{' '}
-          for more info.
+          را مشاهده کنید.
         </p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Close
+          بستن
         </Button>
       </Modal.Footer>
     </Modal>

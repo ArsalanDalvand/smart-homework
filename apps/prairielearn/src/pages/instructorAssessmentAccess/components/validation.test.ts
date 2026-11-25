@@ -114,7 +114,7 @@ describe('getGlobalDateValidationErrors', () => {
 
     expect(errors).toContainEqual({
       path: 'defaultRule.release.date',
-      message: 'Release date must not be in the future when state is Released.',
+      message: 'وقتی وضعیت «منتشرشده» است، تاریخ انتشار نباید در آینده باشد.',
     });
   });
 
@@ -129,7 +129,7 @@ describe('getGlobalDateValidationErrors', () => {
 
     expect(errors).toContainEqual({
       path: 'defaultRule.release.date',
-      message: 'Release date must be in the future when scheduled for release.',
+      message: 'وقتی برای انتشار زمان‌بندی شده است، تاریخ انتشار باید در آینده باشد.',
     });
   });
 
@@ -146,7 +146,7 @@ describe('getGlobalDateValidationErrors', () => {
 
     expect(errors).toContainEqual({
       path: 'overrides.0.release.date',
-      message: 'Release date must not be in the future when state is Released.',
+      message: 'وقتی وضعیت «منتشرشده» است، تاریخ انتشار نباید در آینده باشد.',
     });
   });
 
@@ -234,7 +234,7 @@ describe('getGlobalDateValidationErrors', () => {
 
     expect(errors).toContainEqual({
       path: 'overrides.0.scoreVisibility',
-      message: 'The score cannot be hidden after completion while questions are visible.',
+      message: 'هنگامی که سوالات قابل مشاهده هستند، نمره نمی‌تواند پس از اتمام پنهان باشد.',
     });
     expect(errors.find((e) => e.path === 'overrides.0.questionVisibility')).toBeUndefined();
   });
@@ -275,7 +275,7 @@ describe('getAccessControlFormValidationErrors', () => {
 
     expect(errors).toContainEqual({
       path: 'defaultRule.prairieTestExams.0.examUuid',
-      message: 'Exam UUID is required',
+      message: 'شناسه یکتای آزمون (Exam UUID) الزامی است',
     });
   });
 
@@ -292,11 +292,11 @@ describe('getAccessControlFormValidationErrors', () => {
 
     expect(errors).toContainEqual({
       path: 'defaultRule.questionVisibility.visibleFromDate',
-      message: 'Date is required',
+      message: 'وارد کردن تاریخ الزامی است',
     });
     expect(errors).toContainEqual({
       path: 'defaultRule.scoreVisibility.visibleFromDate',
-      message: 'Date is required',
+      message: 'وارد کردن تاریخ الزامی است',
     });
   });
 
@@ -329,11 +329,11 @@ describe('getAccessControlFormValidationErrors', () => {
 
     expect(errors).toContainEqual({
       path: 'overrides.0.durationMinutes',
-      message: 'Duration must be at least 1 minute',
+      message: 'مدت زمان باید حداقل ۱ دقیقه باشد',
     });
     expect(errors).toContainEqual({
       path: 'overrides.0.password',
-      message: 'Password is required',
+      message: 'وارد کردن رمز عبور الزامی است',
     });
   });
 });

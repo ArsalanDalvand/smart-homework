@@ -339,8 +339,8 @@ describe('getZonePointsMismatch', () => {
       ],
     };
     const result = getZonePointsMismatch(zone as ZoneAssessmentForm, 'Homework');
-    expect(result?.label).toBe('Inconsistent points');
-    expect(result?.body).toContain('randomly selects');
+    expect(result?.label).toBe('امتیازهای ناسازگار');
+    expect(result?.body).toContain('تصادفی');
   });
 
   it('warns about best-scoring when bestQuestions < question count', () => {
@@ -353,8 +353,8 @@ describe('getZonePointsMismatch', () => {
       ],
     };
     const result = getZonePointsMismatch(zone as ZoneAssessmentForm, 'Homework');
-    expect(result?.label).toBe('Inconsistent points');
-    expect(result?.body).toContain('best-scoring');
+    expect(result?.label).toBe('امتیازهای ناسازگار');
+    expect(result?.body).toContain('بالاترین امتیاز');
   });
 
   it('warns about both when bestQuestions < numberChoose (numberChoose covers all)', () => {
@@ -369,8 +369,8 @@ describe('getZonePointsMismatch', () => {
       ],
     };
     const result = getZonePointsMismatch(zone as ZoneAssessmentForm, 'Homework');
-    expect(result?.label).toBe('Inconsistent points');
-    expect(result?.body).toContain('best-scoring');
+    expect(result?.label).toBe('امتیازهای ناسازگار');
+    expect(result?.body).toContain('بالاترین امتیاز');
   });
 
   it('warns about both when numberChoose and bestQuestions are both active', () => {
@@ -386,9 +386,9 @@ describe('getZonePointsMismatch', () => {
       ],
     };
     const result = getZonePointsMismatch(zone as ZoneAssessmentForm, 'Homework');
-    expect(result?.label).toBe('Inconsistent points');
-    expect(result?.body).toContain('randomly selects');
-    expect(result?.body).toContain('best-scoring');
+    expect(result?.label).toBe('امتیازهای ناسازگار');
+    expect(result?.body).toContain('تصادفی');
+    expect(result?.body).toContain('بالاترین امتیاز');
   });
 });
 
@@ -599,8 +599,8 @@ describe('getZoneMixedToolsWarning', () => {
     const z2 = makeZone('z2', { calculator: { enabled: false } });
     const zones = [z1, z2];
     const result = getZoneMixedToolsWarning({ zone: z2, zones, assessmentToolDefaults: {} });
-    expect(result).toContain('Calculator');
-    expect(result).toContain('earlier zone');
+    expect(result).toContain('ماشین‌حساب');
+    expect(result).toContain('بخش قبلی');
   });
 
   it('does not warn for the zone where the tool is enabled', () => {
@@ -626,7 +626,7 @@ describe('getZoneMixedToolsWarning', () => {
       zones,
       assessmentToolDefaults: { calculator: true },
     });
-    expect(result).toContain('Calculator');
+    expect(result).toContain('ماشین‌حساب');
   });
 
   it('returns null when assessment default is disabled and no zone enables it', () => {

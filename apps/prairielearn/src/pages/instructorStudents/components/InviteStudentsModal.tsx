@@ -50,17 +50,17 @@ export function InviteStudentsModal({
     try {
       uids = parseUniqueValuesFromString(value, MAX_UIDS);
     } catch (error) {
-      return error instanceof Error ? error.message : 'An error occurred';
+      return error instanceof Error ? error.message : 'خطایی رخ داد';
     }
 
     if (uids.length === 0) {
-      return 'At least one UID is required';
+      return 'حداقل یک شناسه کاربری (UID) الزامی است';
     }
 
     const invalidUids = uids.filter((uid) => !z.email().safeParse(uid).success);
 
     if (invalidUids.length > 0) {
-      return `The following UIDs were invalid: "${invalidUids.join('", "')}"`;
+      return `شناسه‌های کاربری زیر نامعتبر هستند: «${invalidUids.join('»، «')}»`;
     }
 
     return true;
@@ -88,7 +88,7 @@ export function InviteStudentsModal({
   return (
     <Modal show={show} backdrop="static" onHide={onHide} onExited={resetModalState}>
       <Modal.Header closeButton>
-        <Modal.Title>Invite students</Modal.Title>
+        <Modal.Title>دعوت دانشجویان</Modal.Title>
       </Modal.Header>
 
       <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -99,20 +99,19 @@ export function InviteStudentsModal({
               courseInstance.publishing_end_date,
             ) !== 'published' && (
               <Alert variant="warning">
-                Students will not be able to accept the invitation until the course instance is
-                published.
+                دانشجویان تا زمانی که ترم منتشر نشده باشد نمی‌توانند دعوت‌نامه را بپذیرند.
               </Alert>
             )}
           {saveMutation.isError && (
             <Alert variant="danger" dismissible onClose={() => saveMutation.reset()}>
               {saveMutation.error instanceof Error
                 ? saveMutation.error.message
-                : 'An error occurred'}
+                : 'خطایی رخ داد'}
             </Alert>
           )}
           <div className="mb-0">
             <label htmlFor="invite-uids" className="form-label">
-              UIDs
+              شناسه‌های کاربری (UID)
             </label>
             <textarea
               id="invite-uids"
@@ -133,26 +132,26 @@ export function InviteStudentsModal({
               </div>
             )}
             <div className="form-text" id="invite-uids-help">
-              One UID per line, or comma/space separated. Students are not notified about the
-              invitation: you must instruct them to visit{' '}
+              در هر خط یک شناسه کاربری، یا جدا شده با کاما/فاصله وارد کنید. به دانشجویان درباره
+              دعوت‌نامه اعلانی ارسال نمی‌شود: باید به آن‌ها اطلاع دهید برای پذیرش دعوت‌نامه به{' '}
               <a href="/" target="_blank" rel="noopener noreferrer">
-                the PrairieLearn homepage
+                صفحه اصلی PrairieLearn
               </a>{' '}
-              or{' '}
+              یا{' '}
               <a href={selfEnrollLink} target="_blank" rel="noopener noreferrer">
-                the course instance enrollment link
+                لینک ثبت‌نام ترم
               </a>{' '}
-              to accept the invitation.
+              مراجعه کنند.
             </div>
           </div>
           {studentLabels.length > 0 && (
             <fieldset className="mt-3" disabled={saveMutation.isPending}>
-              <legend className="form-label fs-6">Labels</legend>
+              <legend className="form-label fs-6">برچسب‌ها</legend>
               <div className="d-flex flex-wrap align-items-center gap-2">
                 <StudentLabelDropdown
                   labels={studentLabels}
                   selectedIds={selectedLabelIds}
-                  buttonLabel="Select labels"
+                  buttonLabel="انتخاب برچسب‌ها"
                   disabled={saveMutation.isPending}
                   onToggle={(label) => {
                     setSelectedLabelIds((previous) => {
@@ -173,8 +172,8 @@ export function InviteStudentsModal({
                   ))}
               </div>
               <div className="form-text">
-                Selected labels will be added to new and already invited or enrolled students.
-                Existing labels and enrollment statuses will be preserved.
+                برچسب‌های انتخاب‌شده به دانشجویان جدید و دانشجویانی که قبلاً دعوت یا ثبت‌نام
+                شده‌اند اضافه می‌شوند. برچسب‌های فعلی و وضعیت ثبت‌نام حفظ خواهد شد.
               </div>
             </fieldset>
           )}
@@ -186,10 +185,10 @@ export function InviteStudentsModal({
             disabled={saveMutation.isPending}
             onClick={onHide}
           >
-            Cancel
+            انصراف
           </button>
           <button type="submit" className="btn btn-primary" disabled={saveMutation.isPending}>
-            {saveMutation.isPending ? 'Inviting...' : 'Invite'}
+            {saveMutation.isPending ? 'در حال دعوت...' : 'دعوت'}
           </button>
         </Modal.Footer>
       </form>

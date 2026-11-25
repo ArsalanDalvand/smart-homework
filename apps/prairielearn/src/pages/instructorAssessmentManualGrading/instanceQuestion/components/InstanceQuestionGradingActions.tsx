@@ -50,7 +50,7 @@ export function InstanceQuestionGradingActions({
       name="__action"
       value="add_manual_grade"
     >
-      Grade
+      ثبت نمره
       {editShortcuts && (
         <kbd className="pl-kbd kbd-semi-transparent ms-2" aria-hidden="true">
           G
@@ -71,7 +71,7 @@ export function InstanceQuestionGradingActions({
               name="skip_graded_submissions"
               value="true"
               checked={skipGradedSubmissions}
-              label="Skip graded submissions"
+              label="رد کردن ارسال‌های تصحیح‌شده"
               onChange={(event) => onSkipGradedSubmissionsChange(event.target.checked)}
             />
             <Form.Check
@@ -80,7 +80,7 @@ export function InstanceQuestionGradingActions({
               name="show_submissions_assigned_to_me_only"
               value="true"
               checked={showSubmissionsAssignedToMeOnly}
-              label="Skip submissions not assigned to me"
+              label="رد کردن ارسال‌هایی که به من تخصیص نیافته‌اند"
               onChange={(event) => onShowSubmissionsAssignedToMeOnlyChange(event.target.checked)}
             />
           </>
@@ -106,7 +106,7 @@ export function InstanceQuestionGradingActions({
             {context === 'main' && selectedGroupId ? (
               <Dropdown as={ButtonGroup} id="grade-button-with-options" className="position-static">
                 {gradeButton}
-                <Dropdown.Toggle aria-label="Grade options" split />
+                <Dropdown.Toggle aria-label="گزینه‌های ثبت نمره" split />
                 <Dropdown.Menu align="end" className="mw-100" style={{ width: 'max-content' }}>
                   <Dropdown.Item
                     className="text-wrap"
@@ -115,7 +115,7 @@ export function InstanceQuestionGradingActions({
                     name="__action"
                     value="add_manual_grade"
                   >
-                    This instance question
+                    فقط همین سوال دانشجو
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item
@@ -125,7 +125,7 @@ export function InstanceQuestionGradingActions({
                     name="__action"
                     value="add_manual_grade_for_instance_question_group_ungraded"
                   >
-                    All ungraded instance questions in submission group
+                    همه سوالات تصحیح‌نشده در گروه ارسال
                   </Dropdown.Item>
                   <Dropdown.Item
                     className="text-wrap"
@@ -134,10 +134,10 @@ export function InstanceQuestionGradingActions({
                     name="__action"
                     value="add_manual_grade_for_instance_question_group"
                   >
-                    All instance questions in submission group
+                    همه سوالات در گروه ارسال
                   </Dropdown.Item>
                   <Dropdown.Header className="text-wrap">
-                    AI can make mistakes. Review submission groups before grading.
+                    هوش مصنوعی ممکن است اشتباه کند. پیش از ثبت نمره، گروه‌های ارسال را بررسی کنید.
                   </Dropdown.Header>
                 </Dropdown.Menu>
               </Dropdown>
@@ -155,7 +155,7 @@ export function InstanceQuestionGradingActions({
                 onClick={() => document.dispatchEvent(new CustomEvent(AI_GRADING_MODAL_OPEN_EVENT))}
               >
                 <i className="bi bi-stars me-1" aria-hidden="true" />
-                AI grade
+                تصحیح با هوش مصنوعی
               </Button>
             )}
           </>
@@ -178,7 +178,7 @@ export function InstanceQuestionGradingActions({
           </Button>
           {!disabled && (
             <>
-              <Dropdown.Toggle variant="secondary" aria-label="Change assigned grader" split />
+              <Dropdown.Toggle variant="secondary" aria-label="تغییر مصحح تخصیص‌یافته" split />
               <Dropdown.Menu align="end" className="mw-100" style={{ width: 'max-content' }}>
                 {graders.map((grader) => (
                   <Dropdown.Item
@@ -189,7 +189,7 @@ export function InstanceQuestionGradingActions({
                     name="__action"
                     value={`reassign_${grader.id}`}
                   >
-                    Assign to {grader.name} ({grader.uid})
+                    تخصیص به {grader.name} ({grader.uid})
                   </Dropdown.Item>
                 ))}
                 <Dropdown.Item
@@ -199,7 +199,7 @@ export function InstanceQuestionGradingActions({
                   name="__action"
                   value="reassign_nobody"
                 >
-                  Tag for grading without assigned grader
+                  نشانه‌گذاری برای تصحیح بدون مصحح مشخص
                 </Dropdown.Item>
                 <Dropdown.Item
                   className="text-wrap"
@@ -208,7 +208,7 @@ export function InstanceQuestionGradingActions({
                   name="__action"
                   value="reassign_graded"
                 >
-                  Tag as graded (keep current grade)
+                  نشانه‌گذاری به‌عنوان تصحیح‌شده (حفظ نمره فعلی)
                 </Dropdown.Item>
               </Dropdown.Menu>
             </>

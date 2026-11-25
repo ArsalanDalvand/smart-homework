@@ -28,7 +28,7 @@ export default function (options = { publicQuestionPreview: false }) {
           !(res.locals.question.share_publicly || res.locals.question.share_source_publicly) ||
           res.locals.course.id !== res.locals.question.course_id
         ) {
-          throw new HttpStatusError(404, 'Not Found');
+          throw new HttpStatusError(404, 'یافت نشد');
         }
       }
 
@@ -46,7 +46,7 @@ export default function (options = { publicQuestionPreview: false }) {
       });
 
       if (!variant.open) {
-        throw new HttpStatusError(403, 'This variant is not open');
+        throw new HttpStatusError(403, 'این گونه سوال باز نیست');
       }
 
       // Used for "auth" to connect to the external image capture socket.
@@ -88,11 +88,11 @@ export default function (options = { publicQuestionPreview: false }) {
       }
 
       if (!req.file?.buffer) {
-        throw new HttpStatusError(400, 'No file uploaded');
+        throw new HttpStatusError(400, 'فایلی بارگذاری نشده است');
       }
 
       if (req.file.buffer.length > 10 * 1024 * 1024) {
-        throw new HttpStatusError(400, 'File size exceeds the limit of 10MB');
+        throw new HttpStatusError(400, 'حجم فایل از حد مجاز ۱۰ مگابایت بیشتر است');
       }
 
       // Emit a socket event to notify the client that the image has been captured.

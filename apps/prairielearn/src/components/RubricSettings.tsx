@@ -319,7 +319,7 @@ export function RubricSettings({
   const importRubric = async () => {
     const input = rubricFileRef.current;
     if (!input?.files || input.files.length === 0) {
-      setImportModalWarning('Please select a file to import.');
+      setImportModalWarning('لطفاً یک فایل را برای ورود انتخاب کنید.');
       return;
     }
     const file = input.files[0];
@@ -333,7 +333,7 @@ export function RubricSettings({
       try {
         parsedData = ExportedRubricDataSchema.parse(JSON.parse(fileContent));
       } catch {
-        setImportModalWarning('Error parsing JSON file, please check the file format.');
+        setImportModalWarning('خطا در تجزیه فایل JSON، لطفاً قالب فایل را بررسی کنید.');
         return;
       }
 
@@ -386,7 +386,7 @@ export function RubricSettings({
 
       closeImportModal();
     } catch {
-      setImportModalWarning('Error reading file content.');
+      setImportModalWarning('خطا در خواندن محتوای فایل.');
     }
   };
 
@@ -453,7 +453,7 @@ export function RubricSettings({
         try {
           data = (await res.json()) ?? {};
         } catch {
-          data = { err: `Error: ${res.statusText}` };
+          data = { err: `خطا: ${res.statusText}` };
         }
         if (data.err) {
           return setSettingsError(data.err);
@@ -535,7 +535,7 @@ export function RubricSettings({
       <input type="hidden" name="max_extra_points" value={maxExtraPoints ?? ''} />
       <input type="hidden" name="min_points" value={minPoints ?? ''} />
       <div className="card-header collapsible-card-header d-flex align-items-center">
-        <h2>Rubric settings</h2>
+        <h2>تنظیمات روبریک (Rubric)</h2>
         <button
           type="button"
           className="expand-icon-container btn btn-secondary btn-sm text-nowrap ms-auto collapsed"
@@ -543,7 +543,7 @@ export function RubricSettings({
           data-bs-target="#rubric-setting"
           aria-expanded="false"
           aria-controls="rubric-setting"
-          aria-label="Toggle rubric settings"
+          aria-label="باز/بسته کردن تنظیمات روبریک"
         >
           <i className="fa fa-angle-up ms-1 expand-icon" aria-hidden="true" />
         </button>
@@ -577,16 +577,16 @@ export function RubricSettings({
                               }
                             }}
                           />
-                          Apply rubric to manual points (out of{' '}
-                          {assessmentQuestion.max_manual_points}, keep auto points)
+                          اعمال روبریک بر امتیاز دستی (از{' '}
+                          {assessmentQuestion.max_manual_points}، حفظ امتیاز خودکار)
                         </label>
                         <button
                           type="button"
                           className="btn btn-sm btn-ghost"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
-                          data-bs-title="If the rubric is applied to manual points only, then a student's auto points are kept, and the rubric items will be added to (or subtracted from) the autograder results."
-                          aria-label="More information about applying rubric to manual points"
+                          data-bs-title="اگر روبریک فقط بر امتیاز دستی اعمال شود، امتیاز تصحیح خودکار دانشجو حفظ شده و موارد روبریک به نتایج تصحیح خودکار اضافه (یا از آن کسر) می‌شوند."
+                          aria-label="اطلاعات بیشتر درباره اعمال روبریک بر امتیاز دستی"
                         >
                           <i className="fas fa-circle-info" aria-hidden="true" />
                         </button>
@@ -607,16 +607,16 @@ export function RubricSettings({
                               }
                             }}
                           />
-                          Apply rubric to total points (out of {assessmentQuestion.max_points},
-                          ignore auto points)
+                          اعمال روبریک بر مجموع امتیاز (از {assessmentQuestion.max_points}، نادیده
+                          گرفتن امتیاز خودکار)
                         </label>
                         <button
                           type="button"
                           className="btn btn-sm btn-ghost"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
-                          data-bs-title={`If the rubric is applied to total points, then a student's auto points will be ignored, and the rubric items will be based on the total points of the question (${assessmentQuestion.max_points} points).`}
-                          aria-label="More information about applying rubric to total points"
+                          data-bs-title={`اگر روبریک بر مجموع امتیاز اعمال شود، امتیاز تصحیح خودکار دانشجو نادیده گرفته می‌شود و موارد روبریک بر اساس کل امتیاز سوال (${assessmentQuestion.max_points} امتیاز) محاسبه خواهند شد.`}
+                          aria-label="اطلاعات بیشتر درباره اعمال روبریک بر مجموع امتیاز"
                         >
                           <i className="fas fa-circle-info" aria-hidden="true" />
                         </button>
@@ -638,7 +638,7 @@ export function RubricSettings({
                       disabled={!hasCourseInstancePermissionEdit}
                       onChange={() => setStartingPoints(0)}
                     />
-                    Positive grading (start at zero, add points)
+                    نمره‌دهی افزایشی (شروع از صفر، افزودن امتیاز)
                   </label>
                 </div>
                 <div className="form-check">
@@ -656,19 +656,19 @@ export function RubricSettings({
                         )
                       }
                     />
-                    Negative grading (start at{' '}
+                    نمره‌دهی کاهشی (شروع از{' '}
                     {replaceAutoPoints
                       ? assessmentQuestion.max_points
                       : assessmentQuestion.max_manual_points}
-                    , subtract penalties)
+                    ، کسر جریمه‌ها)
                   </label>
                   <button
                     type="button"
                     className="btn btn-sm btn-ghost"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
-                    data-bs-title="This setting only affects starting points. Rubric items may always be added with positive or negative points."
-                    aria-label="More information about grading mode"
+                    data-bs-title="این تنظیم فقط امتیاز شروع را مشخص می‌کند. موارد روبریک همیشه می‌توانند با امتیاز مثبت یا منفی اضافه شوند."
+                    aria-label="اطلاعات بیشتر درباره روش نمره‌دهی"
                   >
                     <i className="fas fa-circle-info" aria-hidden="true" />
                   </button>
@@ -679,14 +679,14 @@ export function RubricSettings({
                 <div className="row">
                   <div className="col-6 col-md-12">
                     <label className="form-label w-100">
-                      Minimum rubric score
+                      حداقل نمره روبریک
                       <button
                         type="button"
                         className="btn btn-sm btn-ghost"
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
-                        data-bs-title="By default, penalties applied by rubric items cannot cause the rubric to have negative points. This value overrides this limit, e.g., for penalties that affect auto points or the assessment as a whole."
-                        aria-label="More information about minimum rubric score"
+                        data-bs-title="به‌صورت پیش‌فرض، جریمه‌های اعمالی از طریق موارد روبریک نمی‌توانند باعث منفی شدن نمره روبریک شوند. این مقدار این محدودیت را تغییر می‌دهد (مثلاً برای جریمه‌هایی که بر امتیاز خودکار یا کل تکلیف/آزمون اثر می‌گذارند)."
+                        aria-label="اطلاعات بیشتر درباره حداقل نمره روبریک"
                       >
                         <i className="fas fa-circle-info" aria-hidden="true" />
                       </button>
@@ -706,14 +706,14 @@ export function RubricSettings({
                   </div>
                   <div className="col-6 col-md-12">
                     <label className="form-label w-100">
-                      Maximum extra credit
+                      حداکثر امتیاز اضافی
                       <button
                         type="button"
                         className="btn btn-sm btn-ghost"
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
-                        data-bs-title="By default, points are limited to the maximum points assigned to the question, and credit assigned by rubric items do not violate this limit. This value allows rubric points to extend beyond this limit, e.g., for bonus credit."
-                        aria-label="More information about maximum extra credit"
+                        data-bs-title="به‌صورت پیش‌فرض، امتیازها به حداکثر امتیاز تعیین‌شده برای سوال محدود هستند و اعتبار موارد روبریک از این سقف فراتر نمی‌رود. این مقدار اجازه می‌دهد امتیاز روبریک از این حد فراتر برود (مثلاً برای امتیاز تشویقی)."
+                        aria-label="اطلاعات بیشتر درباره حداکثر امتیاز اضافی"
                       >
                         <i className="fas fa-circle-info" aria-hidden="true" />
                       </button>
@@ -735,7 +735,7 @@ export function RubricSettings({
               </div>
               <div className="mb-3 col-12 col-md-6 col-xl-5">
                 <label className="form-label" htmlFor="grader_guidelines">
-                  Grader guidelines (not shown to students)
+                  دستورالعمل‌های مصحح (به دانشجویان نمایش داده نمی‌شود)
                 </label>
                 <textarea
                   id="grader_guidelines"
@@ -752,16 +752,16 @@ export function RubricSettings({
 
           {/* Rubric table */}
           <div className="table-responsive">
-            <table className="table table-sm border-bottom mb-3" aria-label="Rubric items">
+            <table className="table table-sm border-bottom mb-3" aria-label="موارد روبریک">
               <thead>
                 <tr className="table-light fw-bold">
                   <td style={{ width: '1px' }} />
-                  <td>Points</td>
-                  <td>Description</td>
-                  <td>Detailed explanation</td>
-                  <td>Grader note</td>
-                  <td>Show to students</td>
-                  {showAiGradingStats ? <td>AI agreement</td> : <td>In use</td>}
+                  <td>امتیاز</td>
+                  <td>شرح</td>
+                  <td>توضیح تفصیلی</td>
+                  <td>یادداشت مصحح</td>
+                  <td>نمایش به دانشجویان</td>
+                  {showAiGradingStats ? <td>توافق با هوش مصنوعی</td> : <td>در حال استفاده</td>}
                 </tr>
               </thead>
               <tbody>
@@ -784,7 +784,7 @@ export function RubricSettings({
                 ) : (
                   <tr>
                     <td colSpan={7} className="text-muted py-3">
-                      This question does not have any rubric items.
+                      این سوال هنوز هیچ مورد روبریکی ندارد.
                       {hasCourseInstancePermissionEdit && (
                         <>
                           {' '}
@@ -793,19 +793,19 @@ export function RubricSettings({
                             className="btn btn-link p-0 align-baseline text-decoration-none"
                             onClick={addRubricItemRow}
                           >
-                            Add item
+                            افزودن مورد
                           </button>
                           {wasUsingRubric && (
                             <>
-                              , or{' '}
+                              ، یا{' '}
                               <button
                                 type="button"
                                 className="btn btn-link p-0 align-baseline text-decoration-none"
                                 onClick={() => submitSettings(false)}
                               >
-                                Disable rubric
+                                غیرفعال کردن روبریک
                               </button>{' '}
-                              to switch back to manual grade input.
+                              برای بازگشت به ورود دستی نمره.
                             </>
                           )}
                         </>
@@ -819,22 +819,22 @@ export function RubricSettings({
                   <td colSpan={7}>
                     <div className="d-flex flex-wrap column-gap-4 row-gap-1 small">
                       <span>
-                        <span className="fw-semibold">Max score from items:</span> {totalPositive} /{' '}
-                        {maxPoints} points
+                        <span className="fw-semibold">حداکثر نمره از موارد:</span> {totalPositive} /{' '}
+                        {maxPoints} امتیاز
                         {maxPointsShortfall > 0 && rubricItems.length > 0 && (
                           <span className="text-muted ms-2">
                             <i className="bi bi-exclamation-triangle-fill" aria-hidden="true" />{' '}
-                            {maxPointsShortfall} below maximum
+                            {maxPointsShortfall} کمتر از حداکثر
                           </span>
                         )}
                       </span>
                       <span>
-                        <span className="fw-semibold">Min score from items:</span> {totalNegative} /{' '}
-                        {minRubricScore} points
+                        <span className="fw-semibold">حداقل نمره از موارد:</span> {totalNegative} /{' '}
+                        {minRubricScore} امتیاز
                         {minPointsShortfall > 0 && rubricItems.length > 0 && (
                           <span className="text-muted ms-2">
                             <i className="bi bi-exclamation-triangle-fill" aria-hidden="true" />{' '}
-                            {minPointsShortfall} above minimum
+                            {minPointsShortfall} بیشتر از حداقل
                           </span>
                         )}
                       </span>
@@ -853,16 +853,16 @@ export function RubricSettings({
             dismissible
             onClose={() => setShowSavedNotification(false)}
           >
-            Rubric saved
+            روبریک ذخیره شد
           </Alert>
           <div className="mb-3 gap-1 d-flex">
             {hasCourseInstancePermissionEdit && rubricItems.length > 0 && (
               <button type="button" className="btn btn-sm btn-secondary" onClick={addRubricItemRow}>
-                Add item
+                افزودن مورد
               </button>
             )}
             <button type="button" className="btn btn-sm btn-primary" onClick={exportRubric}>
-              <i className="fas fa-download" aria-hidden="true" /> Export rubric
+              <i className="fas fa-download" aria-hidden="true" /> خروجی گرفتن از روبریک
             </button>
             {hasCourseInstancePermissionEdit && (
               <button
@@ -871,7 +871,7 @@ export function RubricSettings({
                 className="btn btn-sm btn-primary"
                 onClick={() => setShowImportModal(!showImportModal)}
               >
-                <i className="fas fa-upload" aria-hidden="true" /> Import rubric
+                <i className="fas fa-upload" aria-hidden="true" /> ورود روبریک
               </button>
             )}
             <Modal
@@ -881,11 +881,11 @@ export function RubricSettings({
               onExited={resetImportModal}
             >
               <Modal.Header closeButton>
-                <Modal.Title>Import rubric settings</Modal.Title>
+                <Modal.Title>ورود تنظیمات روبریک</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <label className="form-label" htmlFor="rubric-settings-file-input">
-                  Choose file
+                  انتخاب فایل
                 </label>
                 <input
                   ref={rubricFileRef}
@@ -906,7 +906,7 @@ export function RubricSettings({
                     <button
                       type="button"
                       className="btn-close"
-                      aria-label="Close"
+                      aria-label="بستن"
                       onClick={() => setImportModalWarning(null)}
                     />
                   </div>
@@ -914,7 +914,7 @@ export function RubricSettings({
               </Modal.Body>
               <Modal.Footer>
                 <button type="button" className="btn btn-secondary" onClick={closeImportModal}>
-                  Cancel
+                  انصراف
                 </button>
                 <button
                   id="upload-rubric-file-button"
@@ -922,7 +922,7 @@ export function RubricSettings({
                   className="btn btn-primary"
                   onClick={() => importRubric()}
                 >
-                  Upload file
+                  بارگذاری فایل
                 </button>
               </Modal.Footer>
             </Modal>
@@ -932,8 +932,8 @@ export function RubricSettings({
                 className="btn btn-sm btn-ghost"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
-                data-bs-title="Imported rubric point values will be scaled to match the maximum points for this question."
-                aria-label="More information about importing rubrics"
+                data-bs-title="مقادیر امتیاز روبریک واردشده به‌گونه‌ای مقیاس‌بندی می‌شوند که با حداکثر امتیاز این سوال هماهنگ شوند."
+                aria-label="اطلاعات بیشتر درباره ورود روبریک‌ها"
               >
                 <i className="fas fa-circle-info" aria-hidden="true" />
               </button>
@@ -941,8 +941,8 @@ export function RubricSettings({
           </div>
           {params.length > 0 && (
             <div className="small form-text text-muted">
-              Rubric items may use these entries, which are replaced with the corresponding values
-              for the student variant (click to copy):
+              موارد روبریک می‌توانند از این عبارات استفاده کنند که با مقادیر متناظر گونه سوال دانشجو
+              جایگزین می‌شوند (برای کپی کلیک کنید):
               <ul style={{ maxHeight: '7rem', overflowY: 'auto' }}>
                 {params.map((param) => (
                   <li key={`${param}`}>
@@ -959,7 +959,7 @@ export function RubricSettings({
                   <Overlay target={copyPopoverTarget} placement="right" show>
                     {(props) => (
                       <Popover {...props}>
-                        <Popover.Body>Copied!</Popover.Body>
+                        <Popover.Body>کپی شد!</Popover.Body>
                       </Popover>
                     )}
                   </Overlay>
@@ -988,15 +988,15 @@ export function RubricSettings({
                 disabled={!hasCourseInstancePermissionEdit}
                 onChange={() => setTagForGrading(!tagForGrading)}
               />
-              Require all graded submissions to be manually graded/reviewed
+              الزام بررسی یا تصحیح دستی مجدد برای تمامی ارسال‌های تصحیح‌شده
             </label>
             <button
               type="button"
               className="btn btn-sm btn-ghost"
               data-bs-toggle="tooltip"
               data-bs-placement="bottom"
-              data-bs-title="Changes in rubric item values update the points for all previously graded submissions. If this option is selected, these submissions will also be tagged for manual grading, requiring a review by a grader."
-              aria-label="More information about requiring manual grading"
+              data-bs-title="تغییر در مقادیر موارد روبریک، امتیاز تمام ارسال‌های قبلاً تصحیح‌شده را به‌روزرسانی می‌کند. در صورت انتخاب این گزینه، این ارسال‌ها همچنین برای تصحیح دستی نشانه‌گذاری می‌شوند و نیازمند بررسی مصحح خواهند بود."
+              aria-label="اطلاعات بیشتر درباره الزام تصحیح دستی"
             >
               <i className="fas fa-circle-info" aria-hidden="true" />
             </button>
@@ -1009,16 +1009,16 @@ export function RubricSettings({
                   className="btn btn-link btn-sm me-auto text-danger"
                   onClick={() => setShowDeleteConfirmModal(true)}
                 >
-                  Delete rubric
+                  حذف روبریک
                 </button>
               )}
               <Modal show={showDeleteConfirmModal} onHide={() => setShowDeleteConfirmModal(false)}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Delete rubric?</Modal.Title>
+                  <Modal.Title>حذف روبریک؟</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  This will remove the rubric and clear any rubric-derived scores from previously
-                  graded submissions. This action cannot be undone.
+                  این کار روبریک را حذف کرده و تمامی نمرات به‌دست‌آمده از روبریک را برای ارسال‌های
+                  قبلاً تصحیح‌شده پاک می‌کند. این عملیات قابل بازگشت نیست.
                 </Modal.Body>
                 <Modal.Footer>
                   <button
@@ -1026,7 +1026,7 @@ export function RubricSettings({
                     className="btn btn-secondary"
                     onClick={() => setShowDeleteConfirmModal(false)}
                   >
-                    Cancel
+                    انصراف
                   </button>
                   <button
                     type="button"
@@ -1036,7 +1036,7 @@ export function RubricSettings({
                       void submitSettings(false);
                     }}
                   >
-                    Delete rubric
+                    حذف روبریک
                   </button>
                 </Modal.Footer>
               </Modal>
@@ -1046,7 +1046,7 @@ export function RubricSettings({
                 disabled={!isDirty || isSubmitting}
                 onClick={onCancel}
               >
-                Discard changes
+                لغو تغییرات
               </button>
               <button
                 type="button"
@@ -1054,7 +1054,7 @@ export function RubricSettings({
                 disabled={!isDirty || isSubmitting}
                 onClick={() => submitSettings(true)}
               >
-                Save
+                ذخیره
               </button>
             </div>
           )}
@@ -1102,19 +1102,19 @@ function RubricRow({
               type="button"
               className="btn btn-sm btn-ghost"
               style={{ cursor: 'grab' }}
-              aria-label="Drag to reorder"
+              aria-label="کشیدن برای تغییر ترتیب"
               draggable
               onDragStart={onDragStart}
             >
               <i className="fas fa-arrows-up-down" aria-hidden="true" />
             </button>
-            <button type="button" className="visually-hidden" aria-label="Move up" onClick={moveUp}>
+            <button type="button" className="visually-hidden" aria-label="انتقال به بالا" onClick={moveUp}>
               <i className="fas fa-arrow-up" aria-hidden="true" />
             </button>
             <button
               type="button"
               className="visually-hidden"
-              aria-label="Move down"
+              aria-label="انتقال به پایین"
               onClick={moveDown}
             >
               <i className="fas fa-arrow-down" aria-hidden="true" />
@@ -1122,7 +1122,7 @@ function RubricRow({
             <button
               type="button"
               className="btn btn-sm btn-ghost text-danger"
-              aria-label="Delete"
+              aria-label="حذف"
               onClick={deleteRow}
             >
               <i className="fas fa-trash text-danger" aria-hidden="true" />
@@ -1172,7 +1172,7 @@ function RubricRow({
           style={{ width: '5rem' }}
           step="any"
           value={item.rubric_item.points ?? ''}
-          aria-label="Points"
+          aria-label="امتیاز"
           disabled={!hasCourseInstancePermissionEdit}
           required
           onInput={({ currentTarget }) =>
@@ -1192,7 +1192,7 @@ function RubricRow({
           maxLength={100}
           style={{ minWidth: '15rem' }}
           value={item.rubric_item.description}
-          aria-label="Description"
+          aria-label="شرح"
           disabled={!hasCourseInstancePermissionEdit}
           required
           onInput={(e) => updateRubricItem({ description: e.currentTarget.value })}
@@ -1212,7 +1212,7 @@ function RubricRow({
           value={item.rubric_item.explanation ?? ''}
           maxLength={10000}
           style={{ minWidth: '15rem' }}
-          aria-label="Explanation"
+          aria-label="توضیح تفصیلی"
           disabled={!hasCourseInstancePermissionEdit}
           onInput={(e) => updateRubricItem({ explanation: e.currentTarget.value })}
         />
@@ -1224,7 +1224,7 @@ function RubricRow({
           value={item.rubric_item.grader_note ?? ''}
           maxLength={10000}
           style={{ minWidth: '15rem' }}
-          aria-label="Grader note"
+          aria-label="یادداشت مصحح"
           disabled={!hasCourseInstancePermissionEdit}
           onInput={(e) => updateRubricItem({ grader_note: e.currentTarget.value })}
         />
@@ -1240,7 +1240,7 @@ function RubricRow({
               disabled={!hasCourseInstancePermissionEdit}
               onChange={() => updateRubricItem({ always_show_to_students: true })}
             />
-            Always
+            همیشه
           </label>
         </div>
         <div className="form-check form-check-inline">
@@ -1252,7 +1252,7 @@ function RubricRow({
               disabled={!hasCourseInstancePermissionEdit}
               onChange={() => updateRubricItem({ always_show_to_students: false })}
             />
-            If selected
+            در صورت انتخاب
           </label>
         </div>
       </td>
@@ -1262,30 +1262,28 @@ function RubricRow({
           {submissionCount === 0 ? (
             <span>&mdash;</span>
           ) : item.disagreement_count == null ? (
-            <span>New</span>
+            <span>جدید</span>
           ) : item.disagreement_count ? (
             <>
               <i className="bi bi-x-square-fill text-danger" aria-hidden="true" />{' '}
               <span className="text-muted">
-                ({item.disagreement_count}/{submissionCount} disagree)
+                ({item.disagreement_count}/{submissionCount} عدم توافق)
               </span>
             </>
           ) : (
             <>
               <i className="bi bi-check-square-fill text-success" aria-hidden="true" />
-              <span className="visually-hidden">All submissions agree</span>
+              <span className="visually-hidden">همه ارسال‌ها موافق هستند</span>
             </>
           )}
         </td>
       ) : (
         <td className="text-nowrap align-middle">
           {item.num_submissions == null
-            ? 'New'
+            ? 'جدید'
             : item.num_submissions === 0
-              ? 'No'
-              : item.num_submissions === 1
-                ? '1 submission'
-                : `${item.num_submissions} submissions`}
+              ? 'خیر'
+              : `${item.num_submissions} ارسال`}
         </td>
       )}
     </tr>

@@ -49,11 +49,11 @@ function getTargetAssessmentInstanceIds(target: AssessmentInstanceActionTarget):
 function describeTargetInstances(target: AssessmentInstanceActionTarget): string {
   switch (target.kind) {
     case 'single':
-      return 'this instance';
+      return 'این آزمون';
     case 'selected':
-      return `${target.instances.length} ${target.instances.length === 1 ? 'instance' : 'instances'}`;
+      return `${target.instances.length} آزمون`;
     case 'all':
-      return 'all instances';
+      return 'همه آزمون‌ها';
     default:
       assertNever(target);
   }
@@ -62,11 +62,11 @@ function describeTargetInstances(target: AssessmentInstanceActionTarget): string
 function describeTargetAssessmentInstances(target: AssessmentInstanceActionTarget): string {
   switch (target.kind) {
     case 'single':
-      return 'this assessment instance';
+      return 'این نمونه آزمون';
     case 'selected':
-      return `${target.instances.length} assessment ${target.instances.length === 1 ? 'instance' : 'instances'}`;
+      return `${target.instances.length} نمونه آزمون`;
     case 'all':
-      return 'all assessment instances';
+      return 'همه نمونه‌های آزمون';
     default:
       assertNever(target);
   }
@@ -75,11 +75,11 @@ function describeTargetAssessmentInstances(target: AssessmentInstanceActionTarge
 function describeTargetForTitle(target: AssessmentInstanceActionTarget): string {
   switch (target.kind) {
     case 'single':
-      return 'this instance';
+      return 'این آزمون';
     case 'selected':
-      return 'selected instances';
+      return 'آزمون‌های انتخاب‌شده';
     case 'all':
-      return 'all instances';
+      return 'همه آزمون‌ها';
     default:
       assertNever(target);
   }
@@ -88,11 +88,11 @@ function describeTargetForTitle(target: AssessmentInstanceActionTarget): string 
 function describeNoRegradeQuestions(target: AssessmentInstanceActionTarget): string {
   switch (target.kind) {
     case 'single':
-      return 'This instance has no questions awaiting full credit.';
+      return 'این آزمون هیچ سوالی در انتظار دریافت نمره کامل ندارد.';
     case 'selected':
-      return 'None of the selected instances have questions awaiting full credit.';
+      return 'هیچ‌یک از آزمون‌های انتخاب‌شده سوالی در انتظار دریافت نمره کامل ندارند.';
     case 'all':
-      return 'None of the instances have questions awaiting full credit.';
+      return 'هیچ‌یک از آزمون‌ها سوالی در انتظار دریافت نمره کامل ندارند.';
     default:
       assertNever(target);
   }
@@ -123,36 +123,36 @@ export function AssessmentInstanceActions({
     <>
       <Dropdown>
         <Dropdown.Toggle size="sm" variant="light" id="instance-actions">
-          Actions
+          عملیات
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => setOpenModal('grade')}>
             <i className="bi bi-clipboard-check me-2" aria-hidden="true" />
-            Grade
+            تصحیح
           </Dropdown.Item>
           <Dropdown.Item onClick={() => setOpenModal('gradeAndClose')}>
             <i className="bi bi-slash-circle me-2" aria-hidden="true" />
-            Grade &amp; close
+            تصحیح و بستن
           </Dropdown.Item>
           <Dropdown.Item onClick={() => setOpenModal('regrade')}>
             <i className="bi bi-arrow-repeat me-2" aria-hidden="true" />
-            Regrade
+            تصحیح مجدد
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item onClick={() => setOpenModal('timeLimit')}>
             <i className="bi bi-clock me-2" aria-hidden="true" />
-            Change time limit
+            تغییر محدودیت زمان
           </Dropdown.Item>
           <Dropdown.Item className="text-danger" onClick={() => setOpenModal('delete')}>
             <i className="bi bi-trash3 me-2" aria-hidden="true" />
-            Delete
+            حذف
           </Dropdown.Item>
           {showLogsLink && (
             <>
               <Dropdown.Divider />
               <Dropdown.Item as="a" href={logsUrl}>
                 <i className="bi bi-card-list me-2" aria-hidden="true" />
-                View logs
+                مشاهده گزارش‌ها
               </Dropdown.Item>
             </>
           )}
@@ -188,8 +188,8 @@ export function AssessmentInstanceActions({
         onSuccess={() => {
           onActionSuccess({
             message: isAllInstancesTarget
-              ? 'Deleted all instances.'
-              : `Deleted ${count} ${count === 1 ? 'instance' : 'instances'}.`,
+              ? 'همه آزمون‌ها حذف شدند.'
+              : `${count} آزمون حذف شد.`,
             action: 'delete',
           });
           setOpenModal(null);
@@ -204,8 +204,8 @@ export function AssessmentInstanceActions({
         onSuccess={() => {
           onActionSuccess({
             message: isAllInstancesTarget
-              ? 'Updated the time limit for all instances.'
-              : `Updated the time limit for ${count} ${count === 1 ? 'instance' : 'instances'}.`,
+              ? 'محدودیت زمان برای همه آزمون‌ها به‌روزرسانی شد.'
+              : `محدودیت زمان برای ${count} آزمون به‌روزرسانی شد.`,
             action: 'timeLimit',
           });
           setOpenModal(null);
@@ -236,14 +236,14 @@ function JobActionModalWithIds({
   }[action];
   const labels = {
     grade: {
-      title: `Grade ${describeTargetForTitle(target)}`,
-      body: 'grade pending submissions for',
-      confirm: 'Grade',
+      title: `تصحیح ${describeTargetForTitle(target)}`,
+      body: 'تصحیح ارسال‌های در انتظار برای',
+      confirm: 'تصحیح',
     },
     gradeAndClose: {
-      title: `Grade and close ${describeTargetForTitle(target)}`,
-      body: 'grade and close',
-      confirm: 'Grade and close',
+      title: `تصحیح و بستن ${describeTargetForTitle(target)}`,
+      body: 'تصحیح و بستن',
+      confirm: 'تصحیح و بستن',
     },
   }[action];
 
@@ -262,8 +262,8 @@ function JobActionModalWithIds({
       </Modal.Header>
       <Modal.Body>
         <p>
-          Are you sure you want to {labels.body} <strong>{describeTargetInstances(target)}</strong>?
-          This cannot be undone.
+          آیا مطمئن هستید که می‌خواهید عملیات {labels.body}{' '}
+          <strong>{describeTargetInstances(target)}</strong> را انجام دهید؟ این عمل قابل بازگشت نیست.
         </p>
         <AppErrorAlert
           error={appError}
@@ -273,14 +273,14 @@ function JobActionModalWithIds({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant="primary"
           disabled={mutation.isPending}
           onClick={() => mutation.mutate({ assessmentInstanceIds })}
         >
-          {mutation.isPending ? 'Working...' : labels.confirm}
+          {mutation.isPending ? 'در حال انجام...' : labels.confirm}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -316,26 +316,27 @@ function RegradeInstancesModal({
   return (
     <Modal show={show} onHide={onHide} onExited={() => mutation.reset()}>
       <Modal.Header closeButton>
-        <Modal.Title>{`Regrade ${describeTargetForTitle(target)}`}</Modal.Title>
+        <Modal.Title>{`تصحیح مجدد ${describeTargetForTitle(target)}`}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          Regrading recomputes the score for <strong>{describeTargetInstances(target)}</strong> and
-          awards full credit for questions configured with <code>forceMaxPoints</code>. This updates
-          stored scores without re-evaluating student submissions.
+          تصحیح مجدد، نمره <strong>{describeTargetInstances(target)}</strong> را دوباره محاسبه کرده
+          و برای سوالاتی که با <code>forceMaxPoints</code> پیکربندی شده‌اند نمره کامل در نظر
+          می‌گیرد. این کار نمرات ذخیره‌شده را بدون ارزیابی مجدد ارسال‌های دانشجو به‌روزرسانی
+          می‌کند.
         </p>
         {previewQuery.isPending ? (
           <div className="d-flex align-items-center gap-2 text-muted">
-            <Spinner animation="border" size="sm" /> Checking which questions will change…
+            <Spinner animation="border" size="sm" /> در حال بررسی سوالاتی که تغییر خواهند کرد…
           </div>
         ) : previewQuery.isError ? (
-          <p className="text-muted mb-0">Couldn't load the list of affected questions.</p>
+          <p className="text-muted mb-0">بارگذاری فهرست سوالات متاثر ناموفق بود.</p>
         ) : questions.length > 0 ? (
           <PendingRegradeQuestionList questions={questions} />
         ) : (
           <p className="text-muted mb-0">{describeNoRegradeQuestions(target)}</p>
         )}
-        <p className="mt-3 mb-0">This cannot be undone.</p>
+        <p className="mt-3 mb-0">این عمل قابل بازگشت نیست.</p>
         <AppErrorAlert
           error={appError}
           className="mt-3 mb-0"
@@ -345,14 +346,14 @@ function RegradeInstancesModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant="primary"
           disabled={mutation.isPending}
           onClick={() => mutation.mutate({ assessmentInstanceIds })}
         >
-          {mutation.isPending ? 'Working...' : 'Regrade'}
+          {mutation.isPending ? 'در حال انجام...' : 'تصحیح مجدد'}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -385,12 +386,12 @@ function DeleteInstancesModal({
   return (
     <Modal show={show} onHide={onHide} onExited={() => mutation.reset()}>
       <Modal.Header closeButton>
-        <Modal.Title>{`Delete ${describeTargetForTitle(target)}`}</Modal.Title>
+        <Modal.Title>{`حذف ${describeTargetForTitle(target)}`}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          Are you sure you want to delete{' '}
-          <strong>{describeTargetAssessmentInstances(target)}</strong>? This cannot be undone.
+          آیا مطمئن هستید که می‌خواهید <strong>{describeTargetAssessmentInstances(target)}</strong> را
+          حذف کنید؟ این عمل قابل بازگشت نیست.
         </p>
         <AppErrorAlert
           error={appError}
@@ -400,14 +401,14 @@ function DeleteInstancesModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant="danger"
           disabled={mutation.isPending}
           onClick={() => mutation.mutate({ assessmentInstanceIds })}
         >
-          {mutation.isPending ? 'Deleting...' : `Delete ${describeTargetInstances(target)}`}
+          {mutation.isPending ? 'در حال حذف...' : `حذف ${describeTargetInstances(target)}`}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -40,7 +40,7 @@ function ReleaseDateInput({
           type="radio"
           name={`${idPrefix}-releaseMode`}
           id={`${idPrefix}-release-now`}
-          label="Released"
+          label="منتشرشده"
           checked={released}
           disabled={!ruleEditable}
           onChange={({ currentTarget }) => {
@@ -59,7 +59,7 @@ function ReleaseDateInput({
           type="radio"
           name={`${idPrefix}-releaseMode`}
           id={`${idPrefix}-release-scheduled`}
-          label="Scheduled for release"
+          label="زمان‌بندی‌شده برای انتشار"
           checked={!released}
           disabled={!ruleEditable}
           onChange={({ currentTarget }) => {
@@ -78,7 +78,7 @@ function ReleaseDateInput({
       <Form.Control
         type="datetime-local"
         step={1}
-        aria-label="Release date"
+        aria-label="تاریخ انتشار"
         aria-invalid={!!error}
         aria-errormessage={error ? `${idPrefix}-release-date-error` : undefined}
         value={date ?? ''}
@@ -109,7 +109,7 @@ export function DefaultReleaseDateField({ displayTimezone }: { displayTimezone: 
 
   return (
     <div>
-      <strong className="d-block mb-2">Release</strong>
+      <strong className="d-block mb-2">انتشار</strong>
       <ReleaseDateInput
         date={dateField.value}
         released={releasedField.value}
@@ -153,7 +153,7 @@ export function OverrideReleaseDateField({
   return (
     <FieldWrapper
       isOverridden={isOverridden}
-      label="Release"
+      label="انتشار"
       onOverride={() => {
         const date = defaultRuleValue || todayLocalDatetime(displayTimezone);
         dateField.onChange(date);

@@ -72,11 +72,11 @@ router.post(
   '/',
   typedAsyncHandler<'assessment'>(async (req, res) => {
     if (!res.locals.authz_data.has_course_instance_permission_edit) {
-      throw new HttpStatusError(403, 'Access denied (must be a student data editor)');
+      throw new HttpStatusError(403, 'دسترسی مجاز نیست (باید مجوز ویرایش اطلاعات دانشجویان را داشته باشید)');
     }
     if (req.body.__action === 'assign_graders') {
       if (!req.body.assigned_grader) {
-        flash('error', 'No graders were selected for assignment.');
+        flash('error', 'هیچ مصححی برای تخصیص انتخاب نشده است.');
         res.redirect(req.originalUrl);
         return;
       }
@@ -93,7 +93,7 @@ router.post(
       if (assignedGraderIds.some((graderId) => !allowedGraderIds.has(graderId))) {
         flash(
           'error',
-          'Selected graders do not have student data editor access to this course instance.',
+          'مصححین انتخاب‌شده دسترسی ویرایش اطلاعات دانشجویان در این دوره را ندارند.',
         );
         res.redirect(req.originalUrl);
         return;
@@ -108,7 +108,7 @@ router.post(
           z.number(),
         );
         if (!numInstancesToGrade) {
-          flash('warning', 'No instances to assign.');
+          flash('warning', 'هیچ نمونه‌ای برای تخصیص وجود ندارد.');
           return;
         }
         // We use ceil to ensure that all instances are graded, even if the
@@ -127,14 +127,14 @@ router.post(
       res.redirect(req.originalUrl);
     } else if (req.body.__action === 'ai_grade_all') {
       if (!res.locals.is_administrator) {
-        throw new HttpStatusError(403, 'Access denied');
+        throw new HttpStatusError(403, 'دسترسی مجاز نیست');
       }
 
       const selection = parseRequestBody(req, AiGradeAllPostBodySchema);
 
       const aiGradingEnabled = await features.enabledFromLocals('ai-grading', res.locals);
       if (!aiGradingEnabled) {
-        throw new HttpStatusError(403, 'Access denied (feature not available)');
+        throw new HttpStatusError(403, 'دسترسی مجاز نیست (این قابلیت در دسترس نیست)');
       }
 
       const assessment = res.locals.assessment;
@@ -149,7 +149,7 @@ router.post(
       );
 
       if (manuallyGradedRows.length === 0) {
-        flash('warning', 'No manually graded assessment questions found for AI grading.');
+        flash('warning', 'هیچ سوال با تصحیح دستی برای تصحیح با هوش مصنوعی یافت نشد.');
         res.redirect(req.originalUrl);
         return;
       }
@@ -170,16 +170,16 @@ router.post(
           mode: 'all',
         });
       }
-      flash('success', 'AI grading successfully initiated.');
+      flash('success', 'تصحیح با هوش مصنوعی با موفقیت آغاز شد.');
       res.redirect(req.originalUrl);
     } else if (req.body.__action === 'export_ai_grading_statistics') {
       if (!res.locals.is_administrator) {
-        throw new HttpStatusError(403, 'Access denied');
+        throw new HttpStatusError(403, 'دسترسی مجاز نیست');
       }
 
       const aiGradingEnabled = await features.enabledFromLocals('ai-grading', res.locals);
       if (!aiGradingEnabled) {
-        throw new HttpStatusError(403, 'Access denied (feature not available)');
+        throw new HttpStatusError(403, 'دسترسی مجاز نیست (این قابلیت در دسترس نیست)');
       }
 
       const stats = await generateAssessmentAiGradingStats(res.locals.assessment);
@@ -204,11 +204,11 @@ router.post(
       );
     } else if (req.body.__action === 'delete_ai_grading_data') {
       if (!res.locals.is_administrator) {
-        throw new HttpStatusError(403, 'Access denied');
+        throw new HttpStatusError(403, 'دسترسی مجاز نیست');
       }
 
       if (!(await features.enabledFromLocals('ai-grading', res.locals))) {
-        throw new HttpStatusError(403, 'Access denied (feature not available)');
+        throw new HttpStatusError(403, 'دسترسی مجاز نیست (این قابلیت در دسترس نیست)');
       }
 
       const assessment = res.locals.assessment;
@@ -221,7 +221,7 @@ router.post(
         authn_user_id: res.locals.authn_user.id,
       });
 
-      flash('success', 'AI grading data deleted successfully.');
+      flash('success', 'داده‌های تصحیح با هوش مصنوعی با موفقیت حذف شدند.');
       res.redirect(req.originalUrl);
     } else {
       throw new HttpStatusError(400, `unknown __action: ${req.body.__action}`);

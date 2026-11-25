@@ -93,7 +93,7 @@ const qtiImportUploadSingle: RequestHandler = (req, res, next) => {
     });
     if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
       const maxSizeLabel = filesize(QTI_IMPORT_MAX_UPLOAD_BYTES, { round: 0, standard: 'jedec' });
-      res.status(413).json({ error: `The maximum import size is ${maxSizeLabel}.` });
+      res.status(413).json({ error: `حداکثر حجم مجاز برای وارد کردن محتوا ${maxSizeLabel} است.` });
       return;
     }
     next(err);
@@ -108,10 +108,10 @@ router.use(
       accessType: 'instructor',
     });
     if (!authzData.has_course_permission_edit) {
-      throw new HttpStatusError(403, 'Access denied (must be course editor)');
+      throw new HttpStatusError(403, 'دسترسی غیرمجاز (نیازمند دسترسی ویرایشگر درس)');
     }
     if (course.example_course) {
-      throw new HttpStatusError(403, 'Cannot import into the example course');
+      throw new HttpStatusError(403, 'امکان وارد کردن محتوا به درس نمونه وجود ندارد');
     }
     next();
   }),
@@ -212,19 +212,19 @@ router.post(
       const courseInstances = await selectCourseInstancesWithStaffAccess({ course, authzData });
       const courseInstance = courseInstances.find((ci) => idsEqual(ci.id, courseInstanceId));
       if (!courseInstance) {
-        throw new HttpStatusError(400, 'Invalid course instance');
+        throw new HttpStatusError(400, 'دوره انتخاب‌شده نامعتبر است');
       }
       return courseInstance;
     });
 
     const file = req.file;
     if (!file) {
-      throw new HttpStatusError(400, 'No file uploaded');
+      throw new HttpStatusError(400, 'هیچ فایلی بارگذاری نشده است');
     }
 
     const ext = path.extname(file.originalname).toLowerCase();
     if (ext !== '.zip' && ext !== '.imscc') {
-      throw new HttpStatusError(400, 'File must be a .zip or .imscc file');
+      throw new HttpStatusError(400, 'فایل باید با فرمت .zip یا .imscc باشد');
     }
 
     const { path: tempDir, cleanup } = await tmp.dir({ unsafeCleanup: true });
@@ -232,7 +232,7 @@ router.post(
       // Extract the archive to the temp directory.
       try {
         if (!file.path) {
-          throw new Error('Uploaded archive was not written to disk');
+          throw new Error('فایل فشرده بارگذاری‌شده روی دیسک ذخیره نشد');
         }
         await extractZipArchive({
           archivePath: file.path,
@@ -244,7 +244,7 @@ router.post(
         const message =
           err instanceof ZipArchiveValidationError
             ? err.message
-            : 'The uploaded archive is invalid or corrupt';
+            : 'فایل فشرده بارگذاری‌شده نامعتبر یا خراب است';
         throw new HttpStatusError(400, message, { cause: err });
       }
 
@@ -267,7 +267,7 @@ router.post(
         }
       }
       if (entries.length === 0) {
-        throw new HttpStatusError(400, 'No QTI content files found in the uploaded archive.');
+        throw new HttpStatusError(400, 'هیچ فایل محتوای QTI در آرشیو بارگذاری‌شده یافت نشد.');
       }
 
       // Try to read rubrics from course_settings/rubrics.xml (not present in quiz-only exports).
@@ -482,7 +482,7 @@ export async function serializeConversionResult(
       if (missingFiles.length > 0) {
         extraWarnings.push({
           questionId,
-          message: `Missing asset file(s): ${missingFiles.join(', ')}`,
+          message: `فایل‌های منبع (Asset) یافت نشدند: ${missingFiles.join(', ')}`,
           level: 'warn',
         });
       }

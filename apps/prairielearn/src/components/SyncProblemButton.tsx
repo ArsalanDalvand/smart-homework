@@ -5,7 +5,7 @@ import { renderHtml } from '@prairielearn/react';
 import { ansiToHtml } from '../lib/chalk.js';
 
 export function SyncProblemButton({ output, type }: { output: string; type: 'error' | 'warning' }) {
-  const title = type === 'error' ? 'Sync Errors' : 'Sync Warnings';
+  const title = type === 'error' ? 'خطاهای همگام‌سازی' : 'هشدارهای همگام‌سازی';
 
   const popoverContent = (
     <pre

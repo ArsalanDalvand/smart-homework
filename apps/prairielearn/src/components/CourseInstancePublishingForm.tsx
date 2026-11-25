@@ -185,12 +185,12 @@ export function CourseInstancePublishingForm({
   const validateStartDate = (value: string) => {
     if (selectedStatus === 'publish_scheduled') {
       if (!value) {
-        return 'Start date is required for scheduled publishing';
+        return 'برای انتشار زمان‌بندی‌شده، تاریخ شروع الزامی است';
       }
       // Check if start date is in the future
       const startDateTime = plainDateTimeStringToDate(value, displayTimezone);
       if (startDateTime <= nowRoundedToSeconds()) {
-        return 'Start date must be in the future for scheduled publishing';
+        return 'برای انتشار زمان‌بندی‌شده، تاریخ شروع باید در آینده باشد';
       }
     }
     return true;
@@ -199,14 +199,14 @@ export function CourseInstancePublishingForm({
   const validateEndDate = (value: string, { start_date }: { start_date: string }) => {
     if (selectedStatus !== 'unpublished') {
       if (!value) {
-        return 'End date is required';
+        return 'تاریخ پایان الزامی است';
       }
       // Check if end date is after start date
       if (start_date) {
         const startDateTime = plainDateTimeStringToDate(start_date, displayTimezone);
         const endDateTime = plainDateTimeStringToDate(value, displayTimezone);
         if (endDateTime <= startDateTime) {
-          return 'End date must be after start date';
+          return 'تاریخ پایان باید پس از تاریخ شروع باشد';
         }
       }
     }
@@ -246,17 +246,16 @@ export function CourseInstancePublishingForm({
                 {endDate && (
                   <>
                     <br />
-                    The course{' '}
-                    {plainDateTimeStringToDate(endDate, displayTimezone).getTime() ===
-                      originalEndDate?.getTime() && originalStatus === 'unpublished'
-                      ? 'was'
-                      : 'will be'}{' '}
-                    unpublished at{' '}
+                    این دوره در تاریخ{' '}
                     <FriendlyDate
                       date={plainDateTimeStringToDate(endDate, displayTimezone)}
                       timezone={displayTimezone}
                       options={{ timeFirst: true }}
-                    />
+                    />{' '}
+                    {plainDateTimeStringToDate(endDate, displayTimezone).getTime() ===
+                      originalEndDate?.getTime() && originalStatus === 'unpublished'
+                      ? 'از حالت انتشار خارج شده است'
+                      : 'از حالت انتشار خارج خواهد شد'}
                     .
                   </>
                 )}
@@ -291,19 +290,19 @@ export function CourseInstancePublishingForm({
             <>
               {startDate && endDate && (
                 <div className="ms-4 small text-muted">
-                  The course will be published at{' '}
+                  این دوره در تاریخ{' '}
                   <FriendlyDate
                     date={Temporal.PlainDateTime.from(startDate)}
                     timezone={displayTimezone}
                     options={{ timeFirst: true }}
                   />{' '}
-                  and will be unpublished at{' '}
+                  منتشر خواهد شد و در تاریخ{' '}
                   <FriendlyDate
                     date={Temporal.PlainDateTime.from(endDate)}
                     timezone={displayTimezone}
                     options={{ timeFirst: true }}
-                  />
-                  .
+                  />{' '}
+                  از حالت انتشار خارج خواهد شد.
                 </div>
               )}
               <div className="ms-4 mt-2">
@@ -419,24 +418,23 @@ export function CourseInstancePublishingForm({
             <>
               {startDate && endDate && (
                 <div className="ms-4 small text-muted">
-                  The course{' '}
-                  {plainDateTimeStringToDate(startDate, displayTimezone).getTime() ===
-                    originalStartDate?.getTime() && originalStatus === 'published'
-                    ? 'was'
-                    : 'will be'}{' '}
-                  published at{' '}
+                  این دوره در تاریخ{' '}
                   <FriendlyDate
                     date={Temporal.PlainDateTime.from(startDate)}
                     timezone={displayTimezone}
                     options={{ timeFirst: true }}
                   />{' '}
-                  and will be unpublished at{' '}
+                  {plainDateTimeStringToDate(startDate, displayTimezone).getTime() ===
+                    originalStartDate?.getTime() && originalStatus === 'published'
+                    ? 'منتشر شده است'
+                    : 'منتشر خواهد شد'}{' '}
+                  و در تاریخ{' '}
                   <FriendlyDate
                     date={Temporal.PlainDateTime.from(endDate)}
                     timezone={displayTimezone}
                     options={{ timeFirst: true }}
-                  />
-                  .
+                  />{' '}
+                  از حالت انتشار خارج خواهد شد.
                 </div>
               )}
               <input type="hidden" name="start_date" value={startDate} />

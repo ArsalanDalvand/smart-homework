@@ -38,17 +38,17 @@ const MAX_UIDS = 5000;
 function getCurrentStatusLabel(status: EnumEnrollmentStatus): string {
   switch (status) {
     case 'invited':
-      return 'Currently invited';
+      return 'در حال حاضر دعوت‌شده';
     case 'joined':
-      return 'Currently joined';
+      return 'در حال حاضر عضو';
     case 'blocked':
-      return 'Currently blocked';
+      return 'در حال حاضر مسدود';
     case 'removed':
-      return 'Currently removed';
+      return 'در حال حاضر حذف‌شده';
     case 'rejected':
-      return 'Currently rejected';
+      return 'در حال حاضر ردشده';
     case 'left':
-      return 'Currently left';
+      return 'در حال حاضر خارج‌شده';
     default:
       assertNever(status);
   }
@@ -57,7 +57,7 @@ function getCurrentStatusLabel(status: EnumEnrollmentStatus): string {
 function renderSyncItemBadge(item: StudentSyncItem) {
   return (
     <span className="badge rounded-pill bg-light text-body border align-self-end">
-      {item.currentStatus ? getCurrentStatusLabel(item.currentStatus) : 'New'}
+      {item.currentStatus ? getCurrentStatusLabel(item.currentStatus) : 'جدید'}
     </span>
   );
 }
@@ -134,17 +134,17 @@ export function SyncStudentsModal({
     try {
       uids = parseUniqueValuesFromString(value, MAX_UIDS);
     } catch (error) {
-      return error instanceof Error ? error.message : 'An error occurred';
+      return error instanceof Error ? error.message : 'خطایی رخ داد';
     }
 
     if (uids.length === 0) {
-      return 'At least one UID is required';
+      return 'حداقل یک شناسه کاربری (UID) الزامی است';
     }
 
     const invalidUids = uids.filter((uid) => !z.email().safeParse(uid).success);
 
     if (invalidUids.length > 0) {
-      return `The following UIDs were invalid: "${invalidUids.join('", "')}"`;
+      return `شناسه‌های کاربری زیر نامعتبر هستند: «${invalidUids.join('»، «')}»`;
     }
 
     return true;
@@ -161,18 +161,18 @@ export function SyncStudentsModal({
         try {
           text = await csvFile[0].text();
         } catch {
-          setError('csvFile', { message: 'Could not read this file. Select the CSV file again.' });
+          setError('csvFile', { message: 'امکان خواندن این فایل وجود نداشت. فایل CSV را دوباره انتخاب کنید.' });
           return;
         }
         if (text.trim() === '') {
           setError('csvFile', {
-            message: 'This file is empty. Select a CSV file containing students.',
+            message: 'این فایل خالی است. یک فایل CSV شامل اطلاعات دانشجویان انتخاب کنید.',
           });
           return;
         }
         if (text.length > MAX_SYNC_CSV_TEXT_LENGTH) {
           setError('csvFile', {
-            message: 'This CSV exceeds the 1,000,000-character limit. Select a smaller file.',
+            message: 'این فایل CSV از محدودیت ۱٬۰۰۰٬۰۰۰ نویسه بیشتر است. فایل کوچک‌تری انتخاب کنید.',
           });
           return;
         }
@@ -290,14 +290,14 @@ export function SyncStudentsModal({
           .filter((label) => desired.has(label.id) && !previous.has(label.id))
           .map((label) => (
             <span key={label.id} className="d-flex flex-wrap align-items-center gap-1">
-              Add: <StudentLabelBadge label={label} />
+              افزودن: <StudentLabelBadge label={label} />
             </span>
           ))}
         {labels
           .filter((label) => previous.has(label.id) && !desired.has(label.id))
           .map((label) => (
             <span key={label.id} className="d-flex flex-wrap align-items-center gap-1">
-              Remove: <StudentLabelBadge label={label} />
+              حذف: <StudentLabelBadge label={label} />
             </span>
           ))}
       </span>
@@ -319,13 +319,13 @@ export function SyncStudentsModal({
       onExited={resetModalState}
     >
       <Modal.Header closeButton={!isComparing && !syncMutation.isPending}>
-        <Modal.Title>Synchronize student list</Modal.Title>
+        <Modal.Title>همگام‌سازی فهرست دانشجویان</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
         {syncMutation.isError && (
           <Alert variant="danger" dismissible onClose={() => syncMutation.reset()}>
-            {syncMutation.error instanceof Error ? syncMutation.error.message : 'An error occurred'}
+            {syncMutation.error instanceof Error ? syncMutation.error.message : 'خطایی رخ داد'}
           </Alert>
         )}
 
@@ -334,14 +334,15 @@ export function SyncStudentsModal({
           <div className="d-flex flex-column gap-3">
             <form onSubmit={onCompare}>
               <p>
-                Upload a CSV file or paste a list of student UIDs below. Students on this list will
-                be added to the course. Students not on this list will be removed.
+                یک فایل CSV بارگذاری کنید یا فهرست شناسه‌های کاربری دانشجویان را در زیر وارد نمایید.
+                دانشجویان موجود در این فهرست به درس اضافه می‌شوند و دانشجویان خارج از این فهرست حذف
+                خواهند شد.
               </p>
               <fieldset className="mb-3" disabled={isComparing}>
-                <legend className="form-label fs-6">Input format</legend>
+                <legend className="form-label fs-6">قالب ورودی</legend>
                 {[
-                  { value: 'uids', label: 'UID list' },
-                  { value: 'csv-file', label: 'CSV file' },
+                  { value: 'uids', label: 'فهرست شناسه کاربری (UID)' },
+                  { value: 'csv-file', label: 'فایل CSV' },
                 ].map(({ value, label }) => (
                   <Form.Check
                     key={value}
@@ -364,25 +365,26 @@ export function SyncStudentsModal({
               {format === 'csv-file' && (
                 <div className="mb-3">
                   <p>
-                    Use one row per student. In the labels column, separate label names with
-                    semicolons, such as <code>Section A;Extra time</code>. Labels must already exist
-                    in this course instance.
+                    برای هر دانشجو یک ردیف در نظر بگیرید. در ستون برچسب‌ها (labels)، نام برچسب‌ها را
+                    با نقطه‌ویرگول از هم جدا کنید، مانند <code>Section A;Extra time</code>.
+                    برچسب‌ها باید از قبل در این ترم وجود داشته باشند.
                   </p>
-                  <pre className="bg-body-tertiary p-2" style={{ whiteSpace: 'pre-wrap' }}>
+                  <pre className="bg-body-tertiary p-2" dir="ltr" style={{ whiteSpace: 'pre-wrap' }}>
                     {
                       'uid,labels\nadam@example.com,Section 1;Arts\nben@example.com,Section 1;Science'
                     }
                   </pre>
                   <p className="mb-0">
-                    The labels column replaces each student's labels. Include every label to retain.
-                    An empty cell clears labels. Omit the labels column to preserve existing labels.
+                    ستون برچسب‌ها جایگزین برچسب‌های فعلی هر دانشجو می‌شود؛ بنابراین هر برچسبی را که
+                    باید حفظ شود در آن درج کنید. سلول خالی برچسب‌ها را پاک می‌کند و حذف ستون
+                    برچسب‌ها برچسب‌های موجود را حفظ می‌نماید.
                   </p>
                 </div>
               )}
               <div>
                 {format === 'csv-file' ? (
                   <Form.Group controlId="sync-csv-file">
-                    <Form.Label>Choose CSV file</Form.Label>
+                    <Form.Label>انتخاب فایل CSV</Form.Label>
                     <Form.Control
                       type="file"
                       accept=".csv"
@@ -394,7 +396,7 @@ export function SyncStudentsModal({
                       }
                       aria-describedby="sync-file-help"
                       {...register('csvFile', {
-                        validate: (files) => !!files.item(0) || 'Select a CSV file.',
+                        validate: (files) => !!files.item(0) || 'یک فایل CSV انتخاب کنید.',
                         onChange: () => {
                           clearErrors('csvFile');
                           previewMutation.reset();
@@ -402,7 +404,7 @@ export function SyncStudentsModal({
                       })}
                     />
                     <Form.Text id="sync-file-help">
-                      Maximum CSV length: 1,000,000 characters.
+                      حداکثر طول فایل CSV: ۱٬۰۰۰٬۰۰۰ نویسه.
                     </Form.Text>
                     {errors.csvFile?.message && (
                       <Form.Control.Feedback type="invalid" id="sync-file-error">
@@ -421,7 +423,7 @@ export function SyncStudentsModal({
                 ) : (
                   <>
                     <label htmlFor="sync-uids" className="form-label">
-                      Student UIDs
+                      شناسه‌های کاربری دانشجویان (UID)
                     </label>
                     <textarea
                       id="sync-uids"
@@ -445,32 +447,32 @@ export function SyncStudentsModal({
                   </>
                 )}
                 <div className="form-text" id="sync-uids-help">
-                  {format === 'uids' && 'One UID per line, or comma/space/semicolon separated. '}
-                  Students are not notified about the invitation: you must instruct them to visit{' '}
+                  {format === 'uids' && 'در هر خط یک شناسه کاربری، یا جدا شده با کاما/فاصله/سمی‌کالن. '}
+                  به دانشجویان درباره دعوت‌نامه اعلانی ارسال نمی‌شود: باید به آن‌ها اطلاع دهید برای
+                  پذیرش دعوت‌نامه به{' '}
                   <a href="/" target="_blank" rel="noopener noreferrer">
-                    the PrairieLearn homepage
+                    صفحه اصلی PrairieLearn
                   </a>{' '}
-                  or{' '}
+                  یا{' '}
                   <a href={selfEnrollLink} target="_blank" rel="noopener noreferrer">
-                    the course instance enrollment link
+                    لینک ثبت‌نام ترم
                   </a>{' '}
-                  to accept the invitation.
+                  مراجعه کنند.
                 </div>
               </div>
             </form>
 
             {isUnpublished && (
               <Alert variant="warning" className="mb-0">
-                Students will not be able to accept invitations until the course instance is
-                published.
+                دانشجویان تا زمانی که ترم منتشر نشده باشد نمی‌توانند دعوت‌نامه‌ها را بپذیرند.
               </Alert>
             )}
 
             {courseInstance.self_enrollment_enabled && (
               <Alert variant="info" className="mb-0">
-                Self-enrollment is enabled for this course instance. Removed students will be able
-                to re-enroll themselves. Consider disabling self-enrollment if you want to prevent
-                this.
+                ثبت‌نام خودکار برای این ترم فعال است. دانشجویان حذف‌شده می‌توانند دوباره خودشان
+                ثبت‌نام کنند. اگر می‌خواهید از این موضوع جلوگیری کنید، غیرفعال کردن ثبت‌نام خودکار
+                را در نظر بگیرید.
               </Alert>
             )}
           </div>
@@ -485,13 +487,13 @@ export function SyncStudentsModal({
                   style={{ fontSize: '3rem' }}
                   aria-hidden="true"
                 />
-                <p className="h4 mb-2">All synced!</p>
-                <p className="text-muted mb-0">Your student list is already up to date.</p>
+                <p className="h4 mb-2">همه موارد همگام هستند!</p>
+                <p className="text-muted mb-0">فهرست دانشجویان شما از قبل به‌روز است.</p>
               </div>
             ) : (
               <div className="d-flex flex-column gap-4">
                 <p className="mb-0">
-                  Review the changes below. Uncheck any students you don't want to modify.
+                  تغییرات زیر را بررسی کنید. تیک هر دانشجویی را که نمی‌خواهید تغییر کند بردارید.
                 </p>
 
                 {preview.toInvite.length > 0 && (
@@ -501,8 +503,8 @@ export function SyncStudentsModal({
                     icon="bi-person-plus"
                     iconColor="text-success"
                     iconBg="bg-success-subtle"
-                    label="Students to add"
-                    description="New students will be invited. Blocked or removed students will be re-enrolled."
+                    label="دانشجویان برای افزودن"
+                    description="دانشجویان جدید دعوت می‌شوند. دانشجویان مسدود یا حذف‌شده دوباره ثبت‌نام خواهند شد."
                     checkboxIdPrefix="sync-add"
                     renderItemExtra={(item) => (
                       <span className="d-flex flex-column gap-1">
@@ -525,8 +527,8 @@ export function SyncStudentsModal({
                     icon="bi-tags"
                     iconColor="text-primary"
                     iconBg="bg-primary-subtle"
-                    label="Students with label changes"
-                    description="These students will keep their current enrollment status."
+                    label="دانشجویان با تغییر برچسب"
+                    description="وضعیت ثبت‌نام فعلی این دانشجویان حفظ خواهد شد."
                     checkboxIdPrefix="sync-labels"
                     renderItemExtra={renderLabelChanges}
                     onToggle={(uid) =>
@@ -553,8 +555,8 @@ export function SyncStudentsModal({
                     icon="bi-person-dash"
                     iconColor="text-danger"
                     iconBg="bg-danger-subtle"
-                    label="Students to remove"
-                    description="Joined students will be removed. Pending invitations will be cancelled."
+                    label="دانشجویان برای حذف"
+                    description="دانشجویان عضو حذف می‌شوند. دعوت‌نامه‌های در انتظار لغو خواهند شد."
                     checkboxIdPrefix="sync-remove"
                     renderItemExtra={renderSyncItemBadge}
                     onToggle={toggleRemoval}
@@ -574,10 +576,10 @@ export function SyncStudentsModal({
         {step === 'input' && (
           <>
             <Button variant="secondary" disabled={isComparing} onClick={onHide}>
-              Cancel
+              انصراف
             </Button>
             <Button variant="primary" disabled={isComparing} onClick={onCompare}>
-              {isComparing ? 'Comparing...' : 'Compare'}
+              {isComparing ? 'در حال مقایسه...' : 'مقایسه'}
             </Button>
           </>
         )}
@@ -586,7 +588,7 @@ export function SyncStudentsModal({
           <div className="d-flex flex-column w-100 gap-3">
             {!hasNoChanges && !hasNoSelections && (
               <div className="d-flex flex-wrap align-items-center gap-3 small text-muted">
-                <span className="fw-medium">Summary:</span>
+                <span className="fw-medium">خلاصه:</span>
                 {summaryCounts.added > 0 && (
                   <span className="d-inline-flex align-items-center gap-1">
                     <span
@@ -594,7 +596,7 @@ export function SyncStudentsModal({
                       style={{ width: '0.5rem', height: '0.5rem' }}
                       aria-hidden="true"
                     />
-                    {summaryCounts.added} added
+                    {summaryCounts.added} افزوده‌شده
                   </span>
                 )}
                 {summaryCounts.removed > 0 && (
@@ -604,11 +606,11 @@ export function SyncStudentsModal({
                       style={{ width: '0.5rem', height: '0.5rem' }}
                       aria-hidden="true"
                     />
-                    {summaryCounts.removed} removed
+                    {summaryCounts.removed} حذف‌شده
                   </span>
                 )}
                 {selectedLabelUpdates.size > 0 && (
-                  <span>{selectedLabelUpdates.size} labels updated</span>
+                  <span>{selectedLabelUpdates.size} به‌روزرسانی برچسب</span>
                 )}
                 {summaryCounts.unchanged > 0 && (
                   <span className="d-inline-flex align-items-center gap-1">
@@ -617,7 +619,7 @@ export function SyncStudentsModal({
                       style={{ width: '0.5rem', height: '0.5rem' }}
                       aria-hidden="true"
                     />
-                    {summaryCounts.unchanged} unchanged
+                    {summaryCounts.unchanged} بدون تغییر
                   </span>
                 )}
               </div>
@@ -628,17 +630,17 @@ export function SyncStudentsModal({
                 disabled={syncMutation.isPending}
                 onClick={() => setStep('input')}
               >
-                <i className="bi bi-arrow-left" aria-hidden="true" /> Back
+                <i className="bi bi-arrow-left" aria-hidden="true" /> بازگشت
               </Button>
               <div className="ms-auto d-flex gap-2">
                 {hasNoChanges ? (
                   <Button variant="primary" onClick={onHide}>
-                    Done
+                    انجام شد
                   </Button>
                 ) : (
                   <>
                     <Button variant="secondary" disabled={syncMutation.isPending} onClick={onHide}>
-                      Cancel
+                      انصراف
                     </Button>
                     <Button
                       variant="primary"
@@ -646,8 +648,8 @@ export function SyncStudentsModal({
                       onClick={() => syncMutation.mutate()}
                     >
                       {syncMutation.isPending
-                        ? 'Updating...'
-                        : `Update ${totalSelectedCount} student${totalSelectedCount === 1 ? '' : 's'}`}
+                        ? 'در حال به‌روزرسانی...'
+                        : `به‌روزرسانی ${totalSelectedCount} دانشجو`}
                     </Button>
                   </>
                 )}

@@ -46,20 +46,20 @@ export function StudentSearchInput({
   return (
     <div className="d-flex flex-column gap-2">
       <Form.Control
-        aria-label="Filter students by name or UID"
-        placeholder="Filter by name or UID..."
+        aria-label="فیلتر دانشجویان بر اساس نام یا UID"
+        placeholder="فیلتر بر اساس نام یا UID..."
         type="text"
         value={searchQuery}
         onChange={({ currentTarget }) => setSearchQuery(currentTarget.value)}
       />
 
       {filteredStudents.length === 0 ? (
-        <div className="text-muted text-center py-3 border rounded">No matching students</div>
+        <div className="text-muted text-center py-3 border rounded">دانشجویی یافت نشد</div>
       ) : (
         <StudentCheckboxList
           items={filteredStudents}
           selectedUids={selectedUids}
-          label="Student selection"
+          label="انتخاب دانشجو"
           checkboxIdPrefix="student-select"
           maxHeight="300px"
           maxSelected={maxSelected}

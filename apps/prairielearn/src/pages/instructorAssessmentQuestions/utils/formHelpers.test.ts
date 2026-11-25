@@ -46,7 +46,7 @@ describe('parsePointsListValue', () => {
 describe('validateAtLeastOnePointsField', () => {
   it('returns an error when no values are set', () => {
     expect(validateAtLeastOnePointsField({})).toBe(
-      'At least one of auto points or manual points must be set.',
+      'حداقل یکی از امتیاز خودکار یا امتیاز دستی باید تنظیم شود.',
     );
   });
 
@@ -68,7 +68,7 @@ describe('validateAtLeastOnePointsField', () => {
 
   it('returns an error when neither own nor parent values are set', () => {
     expect(validateAtLeastOnePointsField({}, {})).toBe(
-      'At least one of auto points or manual points must be set.',
+      'حداقل یکی از امتیاز خودکار یا امتیاز دستی باید تنظیم شود.',
     );
   });
 });
@@ -80,12 +80,12 @@ describe('validateNonIncreasingPoints', () => {
 
   it('returns an error for an increasing sequence', () => {
     expect(validateNonIncreasingPoints([5, 10])).toBe(
-      'Points must be non-increasing (each value must be ≤ the previous).',
+      'امتیازها باید غیرصعودی باشند (هر مقدار باید ≤ مقدار قبلی باشد).',
     );
   });
 
   it('returns an error for negative values', () => {
-    expect(validateNonIncreasingPoints([10, -1])).toBe('All point values must be non-negative.');
+    expect(validateNonIncreasingPoints([10, -1])).toBe('تمام مقادیر امتیاز باید نامنفی باشند.');
   });
 
   it('returns undefined for a single number', () => {
@@ -167,7 +167,7 @@ describe('parseCommentValue', () => {
 describe('validatePointsListFormat', () => {
   it('returns an error for a raw string value', () => {
     expect(validatePointsListFormat('10, abc, 5')).toBe(
-      'Points must be a number or a comma-separated list of numbers.',
+      'امتیازها باید یک عدد یا فهرستی از اعداد جداشده با ویرگول باشند.',
     );
   });
 

@@ -123,7 +123,7 @@ export function InstructorAssessmentInstance({
     `,
     content: html`
       <h1 class="visually-hidden">
-        ${resLocals.assessment_instance_label} instance for
+        نمونه ${resLocals.assessment_instance_label} برای
         ${
           resLocals.instance_group
             ? html`${resLocals.instance_group.name}`
@@ -159,7 +159,7 @@ export function InstructorAssessmentInstance({
         <div class="table-responsive">
           <table
             class="table table-sm table-hover two-column-description"
-            aria-label="Assessment instance summary"
+            aria-label="خلاصه وضعیت آزمون دانشجو"
           >
             <tbody>
               ${
@@ -404,22 +404,23 @@ export function InstructorAssessmentInstance({
                                 ${
                                   firstQuestion.lockpoint_crossed
                                     ? html`
-                                        Lockpoint crossed by
+                                        نقطه قفل (Lockpoint) توسط
                                         ${
                                           firstQuestion.lockpoint_crossed_authn_user_uid ??
-                                          'unknown user'
+                                          'کاربر ناشناس'
                                         }
                                         ${
                                           firstQuestion.lockpoint_crossed_at
-                                            ? html`at
+                                            ? html`در زمان
                                               ${formatDate(
                                                 firstQuestion.lockpoint_crossed_at,
                                                 resLocals.course_instance.display_timezone,
                                               )}`
                                             : ''
                                         }
+                                        عبور داده شد
                                       `
-                                    : html`Lockpoint not yet crossed`
+                                    : html`نقطه قفل (Lockpoint) هنوز عبور داده نشده است`
                                 }
                               </td>
                             </tr>
@@ -436,10 +437,10 @@ export function InstructorAssessmentInstance({
                                     ? (() => {
                                         const constraints = [
                                           firstQuestion.zone_has_max_points
-                                            ? `maximum ${firstQuestion.zone_max_points} points`
+                                            ? `حداکثر ${firstQuestion.zone_max_points} امتیاز`
                                             : null,
                                           firstQuestion.zone_has_best_questions
-                                            ? `best ${firstQuestion.zone_best_questions} questions`
+                                            ? `${firstQuestion.zone_best_questions} سوال برتر`
                                             : null,
                                         ].filter(Boolean);
 
@@ -451,7 +452,7 @@ export function InstructorAssessmentInstance({
                                         } else {
                                           // No title - capitalize the first constraint
                                           const text = constraints.join(', ');
-                                          return text.charAt(0).toUpperCase() + text.slice(1);
+                                          return text;
                                         }
                                       })()
                                     : html`&nbsp;`
@@ -471,7 +472,7 @@ export function InstructorAssessmentInstance({
                                 instanceQuestionId: instance_question.id,
                                 variantId: instance_question.last_variant_id,
                               })}"
-                              >student view</a
+                              >نمای دانشجو</a
                             >)
                           </td>
                           <td>
@@ -486,7 +487,7 @@ export function InstructorAssessmentInstance({
                                         questionId: instance_question.question_id,
                                         variantSeed: instance_question.last_variant_seed,
                                       })}"
-                                      >instructor view</a
+                                      >نمای مدرس</a
                                     >)
                                   `
                                 : ''
@@ -572,7 +573,7 @@ export function InstructorAssessmentInstance({
                                       href="${resLocals.urlPrefix}/assessment/${
                                         resLocals.assessment.id
                                       }/manual_grading/instance_question/${instance_question.id}"
-                                      >Manual grading</a
+                                      >تصحیح دستی</a
                                     >
                                   `
                                 : ''
@@ -587,7 +588,7 @@ export function InstructorAssessmentInstance({
                                 aria-haspopup="true"
                                 aria-expanded="false"
                               >
-                                Action <span class="caret"></span>
+                                عملیات <span class="caret"></span>
                               </button>
                               <div class="dropdown-menu dropdown-menu-end">
                                 ${
@@ -603,12 +604,12 @@ export function InstructorAssessmentInstance({
                                           }"
                                           data-instance-question-id="${instance_question.id}"
                                         >
-                                          Reset question variants
+                                          بازنشانی نسخه‌های سوال
                                         </button>
                                       `
                                     : html`
                                         <button class="dropdown-item disabled" disabled>
-                                          Must have editor permission
+                                          نیازمند دسترسی ویرایشگر
                                         </button>
                                       `
                                 }
@@ -628,24 +629,24 @@ export function InstructorAssessmentInstance({
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h2>${resLocals.assessment_instance_label} Statistics: ${headingLabel}</h2>
+          <h2>آمار ${resLocals.assessment_instance_label}: ${headingLabel}</h2>
         </div>
         <div class="table-responsive">
           <table
             id="instanceQuestionStatsTable"
             class="table table-sm table-hover tablesorter"
-            aria-label="Assessment instance statistics"
+            aria-label="آمار آزمون دانشجو"
           >
             <thead>
               <tr>
-                <th>Instructor question</th>
-                <th>Some submission</th>
-                <th>Some perfect submission</th>
-                <th>Some nonzero submission</th>
-                <th>First submission score</th>
-                <th>Last submission score</th>
-                <th>Max submission score</th>
-                <th>Average submission score</th>
+                <th>سوال از دید مدرس</th>
+                <th>دارای ارسال</th>
+                <th>دارای ارسال کامل</th>
+                <th>دارای ارسال غیرصفر</th>
+                <th>نمره اولین ارسال</th>
+                <th>نمره آخرین ارسال</th>
+                <th>بیشترین نمره ارسال</th>
+                <th>میانگین نمره ارسال‌ها</th>
               </tr>
             </thead>
             <tbody>
@@ -699,22 +700,24 @@ export function InstructorAssessmentInstance({
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h2>${resLocals.assessment_instance_label} Log: ${headingLabel}</h2>
+          <h2>گزارش رویدادهای ${resLocals.assessment_instance_label}: ${headingLabel}</h2>
         </div>
         <div class="card-body">
           <small>
-            Click on a column header to sort. Shift-click on a second header to sub-sort. Download
+            برای مرتب‌سازی روی عنوان ستون کلیک کنید. برای مرتب‌سازی فرعی، کلید Shift را نگه داشته و
+            روی ستون دوم کلیک کنید. فایل
             <a
               href="${resLocals.urlPrefix}/assessment_instance/${
                 resLocals.assessment_instance.id
               }/${logCsvFilename}"
               >${logCsvFilename}</a
-            >. Uploaded student files are not shown above or in the CSV file. Student files can be
-            downloaded on the
-            <a href="${resLocals.urlPrefix}/assessment/${resLocals.assessment.id}/downloads"
-              >Downloads</a
             >
-            tab.
+            را دانلود کنید. فایل‌های آپلودشده توسط دانشجو در بالا یا در فایل CSV نمایش داده نمی‌شوند.
+            فایل‌های دانشجو را می‌توان از تب
+            <a href="${resLocals.urlPrefix}/assessment/${resLocals.assessment.id}/downloads"
+              >فایل‌های قابل دانلود</a
+            >
+            دریافت کرد.
           </small>
         </div>
 
@@ -722,17 +725,17 @@ export function InstructorAssessmentInstance({
           <table
             id="logTable"
             class="table table-sm table-hover tablesorter"
-            aria-label="Assessment instance log"
+            aria-label="گزارش رویدادهای آزمون دانشجو"
           >
             <thead>
               <tr>
-                <th>Time</th>
-                <th>User</th>
-                ${resLocals.instance_user ? html`<th>Fingerprint</th>` : ''}
-                <th>Event</th>
-                <th>Instructor question</th>
-                <th>Student question</th>
-                <th>Data</th>
+                <th>زمان</th>
+                <th>کاربر</th>
+                ${resLocals.instance_user ? html`<th>اثرانگشت</th>` : ''}
+                <th>رویداد</th>
+                <th>سوال از دید مدرس</th>
+                <th>سوال از دید دانشجو</th>
+                <th>داده‌ها</th>
               </tr>
             </thead>
             <tbody>
@@ -758,7 +761,7 @@ export function InstructorAssessmentInstance({
                                   data-bs-container="body"
                                   data-bs-html="true"
                                   data-bs-placement="auto"
-                                  data-bs-title="Fingerprint ${row.client_fingerprint_number}"
+                                  data-bs-title="اثرانگشت ${row.client_fingerprint_number}"
                                   data-bs-custom-class="popover-wide"
                                   data-bs-content="${escapeHtml(
                                     FingerprintContent({ fingerprint: row.client_fingerprint }),
@@ -826,7 +829,7 @@ export function InstructorAssessmentInstance({
                                 class="btn btn-primary"
                                 href="${resLocals.urlPrefix}/grading_job/${row.data?.id}"
                               >
-                                View grading job ${row.data?.id}
+                                مشاهده گزارش داوری خودکار ${row.data?.id}
                               </a>
                             </td>
                           `
@@ -849,18 +852,19 @@ export function InstructorAssessmentInstance({
         </script>
         <div class="card-footer">
           <small>
-            Download
+            فایل
             <a
               href="${resLocals.urlPrefix}/assessment_instance/${
                 resLocals.assessment_instance.id
               }/${logCsvFilename}"
               >${logCsvFilename}</a
-            >. Uploaded student files are not shown above or in the CSV file. Student files can be
-            downloaded on the
-            <a href="${resLocals.urlPrefix}/assessment/${resLocals.assessment.id}/downloads"
-              >Downloads</a
             >
-            tab.
+            را دانلود کنید. فایل‌های آپلودشده توسط دانشجو در بالا یا در فایل CSV نمایش داده نمی‌شوند.
+            فایل‌های دانشجو را می‌توان از تب
+            <a href="${resLocals.urlPrefix}/assessment/${resLocals.assessment.id}/downloads"
+              >فایل‌های قابل دانلود</a
+            >
+            دریافت کرد.
           </small>
         </div>
       </div>
@@ -872,7 +876,7 @@ function FingerprintContent({ fingerprint }: { fingerprint: ClientFingerprint })
   const { browser, device, os } = UAParser(fingerprint.user_agent ?? undefined);
   return html`
     <div>
-      IP Address:
+      آدرس IP:
       <a
         href="https://client.rdap.org/?type=ip&object=${fingerprint.ip_address}"
         target="_blank"
@@ -881,14 +885,14 @@ function FingerprintContent({ fingerprint }: { fingerprint: ClientFingerprint })
         ${fingerprint.ip_address}
       </a>
     </div>
-    <div>Session ID: ${fingerprint.user_session_id}</div>
-    <div>User Agent:</div>
+    <div>شناسه نشست (Session ID): ${fingerprint.user_session_id}</div>
+    <div>مشخصات مرورگر (User Agent):</div>
     <ul>
-      ${browser.name ? html`<li>Browser: ${browser.name} ${browser.version ?? ''}</li>` : ''}
-      ${device.type ? html`<li>Device Type: ${device.type}</li>` : ''}
-      ${device.vendor ? html`<li>Device: ${device.vendor} ${device.model ?? ''}</li>` : ''}
-      ${os.name ? html`<li>OS: ${os.name} ${os.version ?? ''}</li>` : ''}
-      <li>Raw: <code>${fingerprint.user_agent}</code></li>
+      ${browser.name ? html`<li>مرورگر: ${browser.name} ${browser.version ?? ''}</li>` : ''}
+      ${device.type ? html`<li>نوع دستگاه: ${device.type}</li>` : ''}
+      ${device.vendor ? html`<li>دستگاه: ${device.vendor} ${device.model ?? ''}</li>` : ''}
+      ${os.name ? html`<li>سیستم‌عامل: ${os.name} ${os.version ?? ''}</li>` : ''}
+      <li>خام: <code>${fingerprint.user_agent}</code></li>
     </ul>
   `;
 }
@@ -914,19 +918,19 @@ function EditTotalPointsForm({
             class="form-control"
             name="points"
             value="${resLocals.assessment_instance.points}"
-            aria-label="Total points"
+            aria-label="نمره کل"
           />
           <span class="input-group-addon">/${resLocals.assessment_instance.max_points}</span>
         </div>
       </div>
       <p>
         <small>
-          This change will be overwritten if further questions are answered by the student.
+          در صورت پاسخ‌گویی دانشجو به سوالات دیگر، این تغییر بازنویسی خواهد شد.
         </small>
       </p>
       <div class="text-end">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">Cancel</button>
-        <button type="submit" class="btn btn-primary">Change</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">انصراف</button>
+        <button type="submit" class="btn btn-primary">تغییر</button>
       </div>
     </form>
   `;
@@ -953,19 +957,19 @@ function EditTotalScorePercForm({
             class="form-control"
             name="score_perc"
             value="${resLocals.assessment_instance.score_perc}"
-            aria-label="Total score percentage"
+            aria-label="درصد نمره کل"
           />
           <span class="input-group-addon">%</span>
         </div>
       </div>
       <p>
         <small>
-          This change will be overwritten if further questions are answered by the student.
+          در صورت پاسخ‌گویی دانشجو به سوالات دیگر، این تغییر بازنویسی خواهد شد.
         </small>
       </p>
       <div class="text-end">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">Cancel</button>
-        <button type="submit" class="btn btn-primary">Change</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">انصراف</button>
+        <button type="submit" class="btn btn-primary">تغییر</button>
       </div>
     </form>
   `;
@@ -980,24 +984,24 @@ function ResetQuestionVariantsModal({
 }) {
   return Modal({
     id: 'resetQuestionVariantsModal',
-    title: 'Confirm reset question variants',
+    title: 'تایید بازنشانی نسخه‌های سوال',
     body: html`
       <p>
-        Are your sure you want to reset all current variants of this question for this
-        ${assessment.team_work ? 'group' : 'student'}?
-        <strong>All ungraded attempts will be lost.</strong>
+        آیا مطمئن هستید که می‌خواهید تمام نسخه‌های فعلی این سوال را برای این
+        ${assessment.team_work ? 'گروه' : 'دانشجو'} بازنشانی کنید؟
+        <strong>تمام تلاش‌های تصحیح‌نشده از بین خواهند رفت.</strong>
       </p>
       <p>
-        This ${assessment.team_work ? 'group' : 'student'} will receive a new variant the next time
-        they view this question.
+        این ${assessment.team_work ? 'گروه' : 'دانشجو'} در مراجعه بعدی خود به این سوال، نسخه جدیدی
+        دریافت خواهد کرد.
       </p>
     `,
     footer: html`
       <input type="hidden" name="__action" value="reset_question_variants" />
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <input type="hidden" name="unsafe_instance_question_id" class="js-instance-question-id" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      <button type="submit" class="btn btn-danger">Reset question variants</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+      <button type="submit" class="btn btn-danger">بازنشانی نسخه‌های سوال</button>
     `,
   });
 }
@@ -1005,16 +1009,16 @@ function ResetQuestionVariantsModal({
 function ExamResetNotSupportedModal({ assessment }: { assessment: Assessment }) {
   return Modal({
     id: 'examResetNotSupportedModal',
-    title: 'Not supported',
+    title: 'پشتیبانی نمی‌شود',
     body: html`
-      <p>Resetting question variants is not supported for Exam assessments.</p>
+      <p>بازنشانی نسخه‌های سوال برای ارزیابی‌های از نوع آزمون (Exam) پشتیبانی نمی‌شود.</p>
       <p class="mb-0">
-        Consider alternative options, such as deleting the assessment instance to allow the
-        ${assessment.team_work ? 'group' : 'student'} to start over.
+        گزینه‌های جایگزین مانند حذف نمونه آزمون را در نظر بگیرید تا
+        ${assessment.team_work ? 'گروه' : 'دانشجو'} بتواند از ابتدا شروع کند.
       </p>
     `,
     footer: html`
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">بستن</button>
     `,
   });
 }

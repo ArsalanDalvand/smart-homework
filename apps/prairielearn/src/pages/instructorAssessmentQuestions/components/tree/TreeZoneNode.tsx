@@ -53,24 +53,24 @@ export function TreeZoneNode({
   const zoneGuidance: string[] = [];
   if (zone.numberChoose != null) {
     zoneGuidance.push(
-      `${zone.numberChoose} question${zone.numberChoose === 1 ? ' is' : 's are'} randomly selected from this zone, spread across pools as evenly as possible.`,
+      `${zone.numberChoose} سوال به صورت تصادفی از این بخش انتخاب می‌شود و تا حد امکان به طور مساوی بین مجموعه‌ها توزیع می‌گردد.`,
     );
   }
   if (zone.maxPoints != null) {
     zoneGuidance.push(
-      `At most ${zone.maxPoints} points from this zone count toward the assessment.`,
+      `حداکثر ${zone.maxPoints} امتیاز از این بخش در نمره کل ارزیابی محاسبه می‌شود.`,
     );
   }
   if (zone.bestQuestions != null) {
     zoneGuidance.push(
       zone.bestQuestions === 1
-        ? 'Only the highest-scoring question in this zone counts toward the total.'
-        : `Only the ${zone.bestQuestions} highest-scoring questions in this zone count toward the total.`,
+        ? 'تنها سوال با بالاترین امتیاز در این بخش در مجموع کل محاسبه می‌شود.'
+        : `تنها ${zone.bestQuestions} سوال با بالاترین امتیاز در این بخش در مجموع کل محاسبه می‌شوند.`,
     );
   }
   if (zone.lockpoint) {
     zoneGuidance.push(
-      'Students must cross this lockpoint before entering this zone. Crossing it makes earlier zones read-only.',
+      'دانشجویان پیش از ورود به این بخش باید از این نقطه قفل (Lockpoint) عبور کنند. عبور از آن بخش‌های قبلی را فقط-خواندنی می‌کند.',
     );
   }
   const isSelected =
@@ -149,15 +149,15 @@ export function TreeZoneNode({
             attributes={draggableAttributes}
             listeners={draggableListeners}
             disabled={!editMode}
-            ariaLabel="Drag to reorder zone"
+            ariaLabel="برای تغییر ترتیب بخش بکشید"
           />
           <CollapseToggleButton
             isCollapsed={isCollapsed}
-            ariaLabel={isCollapsed ? 'Expand zone' : 'Collapse zone'}
+            ariaLabel={isCollapsed ? 'باز کردن بخش' : 'بستن بخش'}
             onToggle={toggleCollapse}
           />
           <span className="fw-semibold">
-            {zone.title || `Zone ${zoneNumber}`}
+            {zone.title || `بخش ${zoneNumber}`}
             <ChangeIndicatorBadges
               trackingId={zone.trackingId}
               comment={zone.comment}
@@ -176,8 +176,8 @@ export function TreeZoneNode({
             {zoneChooseExceeds && (
               <WarningIndicator
                 tooltipId={`choose-exceeds-${zone.trackingId}`}
-                label="Choose exceeds count"
-                body="Number to choose or best questions exceeds the number of questions in this zone"
+                label="تعداد انتخاب بیش از حد"
+                body="تعداد برای انتخاب یا بهترین سوالات از تعداد سوالات موجود در این بخش بیشتر است"
               />
             )}
             {run(() => {
@@ -189,17 +189,17 @@ export function TreeZoneNode({
                   placement="top"
                   tooltip={{
                     props: { id: `${badgeTooltipId}-count` },
-                    body: 'Total questions in this zone',
+                    body: 'مجموع سوالات در این بخش',
                   }}
                 >
                   <button type="button" className="btn btn-badge color-blue3">
-                    {count} question{count !== 1 ? 's' : ''}
+                    {count} سوال
                   </button>
                 </OverlayTrigger>
               );
             })}
             {zone.numberChoose != null && (
-              <span className="badge color-blue3">Choose {zone.numberChoose}</span>
+              <span className="badge color-blue3">انتخاب {zone.numberChoose}</span>
             )}
             <ZonePointsBadge
               zone={zone}
@@ -207,15 +207,15 @@ export function TreeZoneNode({
               tooltipId={`${badgeTooltipId}-points`}
             />
             {zone.maxPoints != null && (
-              <span className="badge color-blue3">Max {zone.maxPoints} pts</span>
+              <span className="badge color-blue3">حداکثر {zone.maxPoints} امتیاز</span>
             )}
             {zone.bestQuestions != null && (
-              <span className="badge color-blue3">Best {zone.bestQuestions}</span>
+              <span className="badge color-blue3">بهترین {zone.bestQuestions}</span>
             )}
             {zone.lockpoint && (
               <span className="badge color-blue3">
                 <i className="bi bi-lock-fill me-1" aria-hidden="true" />
-                Lockpoint
+                نقطه قفل
               </span>
             )}
           </span>
@@ -227,8 +227,8 @@ export function TreeZoneNode({
                 'btn btn-sm border-0 text-muted ms-1 tree-delete-btn',
                 !isSelected && 'hover-show',
               )}
-              aria-label={`Delete zone '${zone.title}'`}
-              title="Delete zone"
+              aria-label={`حذف بخش '${zone.title}'`}
+              title="حذف بخش"
               onClick={(e) => {
                 e.stopPropagation();
                 onDeleteZone(zone.trackingId);
@@ -266,7 +266,7 @@ export function TreeZoneNode({
               ) : (
                 <div className="text-center text-muted py-3 border-bottom">
                   <i className="bi bi-info-circle me-1" aria-hidden="true" />
-                  No questions in this zone
+                  سوالی در این بخش وجود ندارد
                 </div>
               ))}
             {editMode && (
@@ -280,7 +280,7 @@ export function TreeZoneNode({
                   onClick={() => onAddQuestion(zone.trackingId)}
                 >
                   <i className="bi bi-plus-lg me-1" aria-hidden="true" />
-                  Add question
+                  افزودن سوال
                 </button>
                 <button
                   className="btn btn-sm btn-link text-muted"
@@ -288,7 +288,7 @@ export function TreeZoneNode({
                   onClick={() => onAddAltPool(zone.trackingId)}
                 >
                   <i className="bi bi-stack me-1" aria-hidden="true" />
-                  Add alternative pool
+                  افزودن مجموعه جایگزین
                 </button>
               </div>
             )}
@@ -315,15 +315,15 @@ function ZonePointsBadge({
   const totalPoints = autoPoints + manualPoints;
 
   if (totalPoints === 0 && zone.questions.length === 0) {
-    return <span className="badge color-blue3">No questions</span>;
+    return <span className="badge color-blue3">بدون سوال</span>;
   }
 
   const label = run(() => {
-    if (assessmentType === 'Exam') return `${totalPoints} pts`;
+    if (assessmentType === 'Exam') return `${totalPoints} امتیاز`;
     const parts: string[] = [];
-    if (autoPoints > 0) parts.push(`${autoPoints} auto`);
-    if (manualPoints > 0) parts.push(`${manualPoints} manual`);
-    if (parts.length === 0) parts.push('0 pts');
+    if (autoPoints > 0) parts.push(`${autoPoints} خودکار`);
+    if (manualPoints > 0) parts.push(`${manualPoints} دستی`);
+    if (parts.length === 0) parts.push('0 امتیاز');
     return parts.join(' + ');
   });
 
@@ -332,7 +332,7 @@ function ZonePointsBadge({
       placement="top"
       tooltip={{
         props: { id: tooltipId },
-        body: 'Total points a student can earn in this zone',
+        body: 'مجموع امتیاز قابل کسب توسط دانشجو در این بخش',
       }}
     >
       <button type="button" className="btn btn-badge color-blue3">

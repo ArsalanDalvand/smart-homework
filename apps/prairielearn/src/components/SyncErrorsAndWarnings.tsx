@@ -27,16 +27,22 @@ export function SyncErrorsAndWarnings({
   const syncErrorsAnsified = syncErrors ? ansiToHtml(syncErrors) : null;
   const syncWarningsAnsified = syncWarnings ? ansiToHtml(syncWarnings) : null;
   const infoFileName = fileEditUrl.split('/').pop();
+  const contextLabel = {
+    course: 'درس',
+    question: 'سوال',
+    'course instance': 'دوره آموزشی',
+    assessment: 'تکلیف/آزمون',
+  }[context];
 
   return (
     <>
       {syncErrors ? (
         <div className="alert alert-danger" role="alert">
-          <h2 className="h5 alert-heading">Sync error</h2>
+          <h2 className="h5 alert-heading">خطای همگام‌سازی</h2>
           <p>
-            There was an error syncing this {context}; the information you see below may be
-            inconsistent with this {context}'s <code>{infoFileName}</code> file. Please correct the
-            error and sync again.
+            در همگام‌سازی این {contextLabel} خطایی رخ داد؛ اطلاعاتی که در زیر مشاهده می‌کنید ممکن
+            است با فایل <code>{infoFileName}</code> این {contextLabel} ناسازگار باشد. لطفاً خطا را
+            برطرف کرده و دوباره همگام‌سازی کنید.
           </p>
           <pre
             className={clsx('text-white', 'rounded', 'p-3', exampleCourse && 'mb-0')}
@@ -52,7 +58,9 @@ export function SyncErrorsAndWarnings({
           ) : (
             <a className="btn btn-primary" href={fileEditUrl}>
               <i className="fa fa-edit" />
-              <span className="d-none d-sm-inline">Edit {infoFileName} to fix this error</span>
+              <span className="d-none d-sm-inline">
+                ویرایش <code>{infoFileName}</code> برای رفع این خطا
+              </span>
             </a>
           )}
         </div>
@@ -61,10 +69,10 @@ export function SyncErrorsAndWarnings({
       )}
       {syncWarnings ? (
         <div className="alert alert-warning" role="alert">
-          <h2 className="h5 alert-heading">Sync warning</h2>
+          <h2 className="h5 alert-heading">هشدار همگام‌سازی</h2>
           <p>
-            These warnings do not impact the ability to sync this {context}, but they should still
-            be reviewed and corrected.
+            این هشدارها مانع از همگام‌سازی این {contextLabel} نمی‌شوند، اما همچنان باید بررسی و
+            برطرف شوند.
           </p>
           <pre
             className={clsx('text-white', 'rounded', 'p-3', exampleCourse && 'mb-0')}
@@ -80,7 +88,9 @@ export function SyncErrorsAndWarnings({
           ) : (
             <a className="btn btn-primary" href={fileEditUrl}>
               <i className="fa fa-edit" />
-              <span className="d-none d-sm-inline">Edit {infoFileName} to fix this warning</span>
+              <span className="d-none d-sm-inline">
+                ویرایش <code>{infoFileName}</code> برای رفع این هشدار
+              </span>
             </a>
           )}
         </div>

@@ -54,9 +54,9 @@ describe('NonRubricWarnings', () => {
       />,
     );
 
-    expect(html).toContain('We detected several questions named');
+    expect(html).toContain('چند سوال با عنوان یکسان');
     expect(html).toContain('Question');
-    expect(html).toContain('find and edit them more easily in PrairieLearn');
+    expect(html).toContain('نام‌های معنادار و متمایز برای این سوال‌ها انتخاب کنید');
   });
 
   it('rolls up multiple duplicate question titles into one generic warning', () => {
@@ -72,8 +72,8 @@ describe('NonRubricWarnings', () => {
       />,
     );
 
-    expect(html).toContain('We detected several questions with the same names');
-    expect(html).not.toContain('questions named');
+    expect(html).toContain('چندین سوال با عنوان‌های تکراری شناسایی شد');
+    expect(html).not.toContain('عنوان یکسان');
     expect(html).not.toContain('Quiz item');
   });
 
@@ -90,7 +90,7 @@ describe('NonRubricWarnings', () => {
 
     expect(html.match(/alert-warning/g)).toHaveLength(1);
     expect(html).toContain('Missing asset file: diagram.png');
-    expect(html).toContain('We detected several questions named');
+    expect(html).toContain('چند سوال با عنوان یکسان');
   });
 });
 
@@ -102,8 +102,8 @@ describe('QuestionBankDeduplicationWarning', () => {
 
     expect(html).toContain('alert-info');
     expect(html).toContain('bi-info-circle-fill');
-    expect(html).toContain('2 questions appeared in multiple question banks');
-    expect(html).toContain('will only be imported once');
+    expect(html).toContain('2 سوال در چند بانک سوال تکرار شده بودند');
+    expect(html).toContain('تنها یک بار وارد خواهند شد');
   });
 });
 
@@ -206,15 +206,15 @@ describe('UploadStep', () => {
   it('explains that quizzes become standalone questions without a course instance', () => {
     const html = render([]);
 
-    expect(html).toContain('have any course instances yet');
+    expect(html).toContain('هنوز هیچ دوره‌ای ندارد');
     expect(html).toContain('href="/pl/course/1/course_admin/instances"');
-    expect(html).not.toContain('Target course instance');
+    expect(html).not.toContain('دوره مقصد');
   });
 
   it('shows the only course instance as read-only text', () => {
     const html = render(courseInstances.slice(0, 1));
 
-    expect(html).toContain('Target course instance');
+    expect(html).toContain('دوره مقصد');
     expect(html).toContain('Sp15: Spring 2015');
     expect(html).not.toContain('<select');
   });

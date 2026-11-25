@@ -36,7 +36,7 @@ function DisableGroupWorkModal({
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Disable group work</Modal.Title>
+        <Modal.Title>غیرفعال‌سازی کار گروهی</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <AppErrorAlert
@@ -47,7 +47,7 @@ function DisableGroupWorkModal({
               <>
                 {message}{' '}
                 <a href={getCourseInstanceJobSequenceUrl(courseInstanceId, jobSequenceId)}>
-                  View job logs
+                  مشاهده گزارش عملیات
                 </a>
               </>
             ),
@@ -56,11 +56,10 @@ function DisableGroupWorkModal({
           onDismiss={onDismissError}
         />
         <p className="mb-2">
-          All group configuration for this assessment, including groups and their memberships, will
-          be permanently removed.
+          تمامی تنظیمات گروهی این ارزیابی، شامل گروه‌ها و اعضای آن‌ها، به صورت دائمی حذف خواهند شد.
         </p>
         <p className="mb-0">
-          If you enable group work again later, students will need to be assigned to groups again.
+          اگر بعداً دوباره کار گروهی را فعال کنید، باید دانشجویان را مجدداً به گروه‌ها اختصاص دهید.
         </p>
         {hasAssessmentInstances && (
           <GroupWorkInstancesWarning
@@ -73,10 +72,10 @@ function DisableGroupWorkModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" disabled={isPending} onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button variant="danger" disabled={isPending || hasAssessmentInstances} onClick={onConfirm}>
-          Disable group work
+          غیرفعال‌سازی کار گروهی
         </Button>
       </Modal.Footer>
     </Modal>
@@ -145,13 +144,13 @@ export function ManageGroupWorkCard({
           <div className="d-flex flex-column flex-sm-row align-items-sm-center gap-1 gap-sm-3">
             <div className="d-flex align-items-center gap-2">
               <i className="bi bi-check-circle-fill text-success" aria-hidden="true" />
-              <span className="fw-semibold">Group work is enabled</span>
+              <span className="fw-semibold">کار گروهی فعال است</span>
             </div>
             {assignmentSummary && assignmentSummary.totalStudentCount > 0 && (
               <div className="text-muted small">
                 {assignmentSummary.unassignedStudentCount === 0
-                  ? 'All students assigned'
-                  : `${assignmentSummary.unassignedStudentCount} student${assignmentSummary.unassignedStudentCount === 1 ? '' : 's'} unassigned`}
+                  ? 'همه دانشجویان گروه‌بندی شده‌اند'
+                  : `${assignmentSummary.unassignedStudentCount} دانشجو بدون گروه`}
               </div>
             )}
           </div>
@@ -163,7 +162,7 @@ export function ManageGroupWorkCard({
               disabled={mutation.isPending || !canDisable}
               onClick={() => setShowDisableModal(true)}
             >
-              Disable group work
+              غیرفعال‌سازی کار گروهی
             </Button>
           )}
         </div>

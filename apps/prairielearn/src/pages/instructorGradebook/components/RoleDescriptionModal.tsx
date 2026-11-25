@@ -5,28 +5,27 @@ import { Modal } from '../../../components/Modal.js';
 export function RoleDescriptionModal() {
   return Modal({
     id: 'role-help',
-    title: 'Roles',
+    title: 'نقش‌ها',
     form: false,
     body: html`
       <ul>
         <li>
-          <strong>Staff</strong> is a member of the course staff. Depending on course settings, they
-          may have permission to see the data of all users, and to edit the information of other
-          users.
+          <strong>کادر آموزشی (Staff)</strong> عضو کادر آموزشی درس است. بسته به تنظیمات درس، ممکن
+          است اجازه مشاهده داده‌های همه کاربران و ویرایش اطلاعات سایر کاربران را داشته باشد.
         </li>
         <li>
-          <strong>Student</strong> is a student participating in the class. They can only see their
-          own information, and can do assessments.
+          <strong>دانشجو (Student)</strong> دانشجوی شرکت‌کننده در کلاس است. آن‌ها تنها می‌توانند
+          اطلاعات خود را ببینند و آزمون‌ها را انجام دهند.
         </li>
         <li>
-          <strong>None</strong> is a user who at one point was part of the course but is no longer
-          enrolled in the course or part of the staff. They can no longer access the course but
-          their work done within the course has been retained.
+          <strong>هیچ‌کدام (None)</strong> کاربری است که زمانی عضو درس بوده اما دیگر در درس ثبت‌نام
+          نیست یا جزو کادر آموزشی نیست. او دیگر به درس دسترسی ندارد اما کارهای انجام‌شده‌اش در درس
+          حفظ شده است.
         </li>
       </ul>
     `,
     footer: html`
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">بستن</button>
     `,
   });
 }

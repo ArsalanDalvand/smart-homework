@@ -59,8 +59,8 @@ function getOverrideLimitPolicy(
   const studentLabelLimitReached =
     studentLabelOverrideCount >= MAX_STUDENT_LABEL_ACCESS_CONTROL_RULES;
 
-  const enrollmentLimitReason = `An assessment can have at most ${MAX_ENROLLMENT_ACCESS_CONTROL_RULES} student-specific overrides.`;
-  const studentLabelLimitReason = `An assessment can have at most ${MAX_STUDENT_LABEL_ACCESS_CONTROL_RULES} student-label overrides.`;
+  const enrollmentLimitReason = `یک ارزیابی می‌تواند حداکثر ${MAX_ENROLLMENT_ACCESS_CONTROL_RULES} استثنای مختص دانشجو داشته باشد.`;
+  const studentLabelLimitReason = `یک ارزیابی می‌تواند حداکثر ${MAX_STUDENT_LABEL_ACCESS_CONTROL_RULES} استثنای برچسب دانشجویی داشته باشد.`;
 
   return {
     nextTargetType:
@@ -70,7 +70,7 @@ function getOverrideLimitPolicy(
         ? studentLabelLimitReason
         : null
       : enrollmentLimitReached && studentLabelLimitReached
-        ? `An assessment can have at most ${MAX_ENROLLMENT_ACCESS_CONTROL_RULES} student-specific overrides and ${MAX_STUDENT_LABEL_ACCESS_CONTROL_RULES} student-label overrides.`
+        ? `یک ارزیابی می‌تواند حداکثر ${MAX_ENROLLMENT_ACCESS_CONTROL_RULES} استثنای مختص دانشجو و ${MAX_STUDENT_LABEL_ACCESS_CONTROL_RULES} استثنای برچسب دانشجویی داشته باشد.`
         : null,
     getTargetTypeDisabledReasons: (currentTargetType) => ({
       enrollment:
@@ -97,9 +97,9 @@ function SelectedOverrideTitle({ index }: { index: number }) {
 function AccessControlSaveBar({ isSaving, onCancel }: { isSaving: boolean; onCancel: () => void }) {
   const { isDirty, isValid } = useFormState<AccessControlFormData>();
   const saveDisabledReason = !isDirty
-    ? 'No changes to save'
+    ? 'تغییری برای ذخیره وجود ندارد'
     : !isValid
-      ? 'Fix validation errors before saving'
+      ? 'پیش از ذخیره، خطاهای اعتبارسنجی را برطرف کنید'
       : null;
 
   return (
@@ -300,14 +300,14 @@ export function AccessControlForm({
 
   const rightTitle =
     selectedRule?.type === 'default' ? (
-      'Defaults'
+      'تنظیمات پیش‌فرض'
     ) : selectedRule?.type === 'override' ? (
       // The selected index can point past the end of the list, e.g. after
       // discarding changes that added the selected override.
       selectedRule.index < overrideTargetTypes.length ? (
         <SelectedOverrideTitle index={selectedRule.index} />
       ) : (
-        `Override ${selectedRule.index + 1}`
+        `استثنا ${selectedRule.index + 1}`
       )
     ) : undefined;
 
@@ -315,7 +315,7 @@ export function AccessControlForm({
     <button
       type="button"
       className="btn btn-sm btn-outline-secondary"
-      aria-label="Close detail panel"
+      aria-label="بستن پنل جزئیات"
       onClick={() => setSelectedRule(null)}
     >
       <i className="bi bi-x-lg" aria-hidden="true" />

@@ -44,12 +44,12 @@ export default function ({ publicQuestionEndpoint }: { publicQuestionEndpoint: b
 
       if (publicQuestionEndpoint || res.locals.assessment == null) {
         // public or instructor preview
-        pageTitle = 'Workspace Preview';
+        pageTitle = 'پیش‌نمایش محیط کاری ابری';
         pageNote = res.locals.question.qid;
         navTitle = res.locals.question.qid;
       } else {
         // student assessment
-        pageTitle = 'Workspace';
+        pageTitle = 'محیط کاری ابری';
         navTitle = `${res.locals.instance_question_info.question_number} - ${res.locals.course.short_name}`;
       }
 
@@ -82,7 +82,11 @@ export default function ({ publicQuestionEndpoint }: { publicQuestionEndpoint: b
       const workspace_id = res.locals.workspace_id;
 
       if (req.body.__action === 'reboot') {
-        await workspaceUtils.updateWorkspaceState(workspace_id, 'stopped', 'Rebooting container');
+        await workspaceUtils.updateWorkspaceState(
+          workspace_id,
+          'stopped',
+          'در حال راه‌اندازی مجدد کانتینر',
+        );
         await sqldb.execute(sql.update_workspace_rebooted_at_now, {
           workspace_id,
         });
@@ -92,7 +96,7 @@ export default function ({ publicQuestionEndpoint }: { publicQuestionEndpoint: b
           await workspaceUtils.updateWorkspaceState(
             workspace_id,
             'uninitialized',
-            'Resetting container',
+            'در حال بازنشانی کانتینر',
           );
           await sqldb.execute(sql.increment_workspace_version, { workspace_id });
         });

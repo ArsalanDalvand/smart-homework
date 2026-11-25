@@ -14,7 +14,7 @@ import { StudentLabelBadge } from './StudentLabelBadge.js';
 export function StudentLabelsHeader() {
   return (
     <span className="d-inline-flex align-items-center gap-1">
-      <span>Labels</span>
+      <span>برچسب‌ها</span>
       <i className="bi bi-people" aria-hidden="true" />
     </span>
   );

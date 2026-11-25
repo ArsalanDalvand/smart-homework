@@ -10,12 +10,12 @@ import { IntegrationsSection } from './IntegrationsSection.js';
 import { type AccessControlFormData } from './types.js';
 
 const beforeReleasePopoverConfig = {
-  header: 'What does "before release" mean?',
+  header: '«پیش از انتشار» به چه معناست؟',
   body: (
     <ul className="mb-0">
-      <li>If date control is enabled, this is the period before the release date.</li>
-      <li>If PrairieTest is enabled, this is before the exam is closed.</li>
-      <li>If neither is enabled and this is checked, the assessment is always listed.</li>
+      <li>اگر کنترل تاریخ فعال باشد، این بازه پیش از تاریخ انتشار است.</li>
+      <li>اگر PrairieTest فعال باشد، این بازه پیش از بسته شدن امتحان است.</li>
+      <li>اگر هیچ‌کدام فعال نباشند و این گزینه تیک خورده باشد، ارزیابی همیشه نمایش داده می‌شود.</li>
     </ul>
   ),
   props: { id: 'before-release-info-popover' },
@@ -39,13 +39,13 @@ export function DefaultRuleForm({
       <IntegrationsSection />
       <div>
         <div className="d-flex align-items-center section-header mb-3">
-          <strong>Before release</strong>
+          <strong>پیش از انتشار</strong>
           <OverlayTrigger trigger="click" placement="auto" popover={beforeReleasePopoverConfig}>
             <Button
               variant="link"
               size="sm"
               className="ms-2 p-0"
-              aria-label="What does before release mean?"
+              aria-label="«پیش از انتشار» به چه معناست؟"
             >
               <i className="bi bi-info-circle" aria-hidden="true" />
             </Button>
@@ -54,13 +54,13 @@ export function DefaultRuleForm({
         <Form.Check
           type="checkbox"
           id="defaultRule-before-release-listed"
-          label={<strong>List before release</strong>}
+          label={<strong>نمایش در فهرست پیش از انتشار</strong>}
           disabled={!ruleEditable}
           {...register('defaultRule.beforeReleaseListed')}
           aria-describedby="defaultRule-before-release-listed-help"
         />
         <Form.Text id="defaultRule-before-release-listed-help" className="text-muted">
-          Students can see the assessment title before release
+          دانشجویان می‌توانند عنوان ارزیابی را پیش از انتشار مشاهده کنند
         </Form.Text>
       </div>
       <DefaultAfterCompleteForm

@@ -21,7 +21,7 @@ export function ViewToggle({
 }) {
   return (
     <div className="d-flex gap-2 align-items-center">
-      <div className="btn-group btn-group-sm" role="group" aria-label="View type">
+      <div className="btn-group btn-group-sm" role="group" aria-label="نوع نمایش">
         <button
           type="button"
           className={clsx('btn', viewType === 'simple' ? 'btn-secondary' : 'btn-outline-secondary')}
@@ -46,7 +46,7 @@ export function ViewToggle({
         <button
           className="btn btn-sm btn-outline-secondary"
           type="button"
-          aria-label={isAllExpanded ? 'Collapse alternatives' : 'Expand alternatives'}
+          aria-label={isAllExpanded ? 'بستن گزینه‌های جایگزین' : 'باز کردن گزینه‌های جایگزین'}
           onClick={onToggleExpandCollapse}
         >
           {isAllExpanded ? (
@@ -112,7 +112,7 @@ export function EditModeToolbar({
       )}
       type="submit"
       disabled={saveButtonDisabled}
-      aria-label="Save"
+      aria-label="ذخیره"
       {...(saveButtonDisabledReason && { 'aria-describedby': saveTooltipId })}
     >
       <i className="bi bi-floppy" aria-hidden="true" />{' '}

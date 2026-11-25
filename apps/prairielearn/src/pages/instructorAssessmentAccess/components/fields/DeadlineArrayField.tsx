@@ -107,17 +107,18 @@ function computeNextDeadline({
 
 function getAddEarlyDisabledTitle(dueCredit: number): string | undefined {
   if (dueCredit < 100) {
-    return 'Early deadlines are not allowed when due date credit is below 100%.';
+    return 'وقتی اعتبار نمره ددلاین اصلی کمتر از ۱۰۰٪ باشد، ددلاین زودهنگام مجاز نیست.';
   }
   if (dueCredit >= 200) {
-    return 'Early deadlines require credit above due credit, but due date credit is already 200%.';
+    return 'ددلاین‌های زودهنگام نیازمند اعتباری بالاتر از ددلاین اصلی هستند، اما اعتبار ددلاین اصلی از قبل ۲۰۰٪ است.';
   }
   return undefined;
 }
 
 function getDeadlineLimitDisabledTitle(type: 'early' | 'late', count: number): string | undefined {
   if (count < MAX_ACCESS_CONTROL_EARLY_OR_LATE_DEADLINES_PER_RULE) return undefined;
-  return `A rule can have at most ${MAX_ACCESS_CONTROL_EARLY_OR_LATE_DEADLINES_PER_RULE} ${type} deadlines.`;
+  const typeFa = type === 'early' ? 'زودهنگام' : 'تاخیر';
+  return `هر قانون می‌تواند حداکثر ${MAX_ACCESS_CONTROL_EARLY_OR_LATE_DEADLINES_PER_RULE} ددلاین ${typeFa} داشته باشد.`;
 }
 
 // Memoized on the raw date strings: formatting dates is relatively expensive,
@@ -217,7 +218,7 @@ function DeadlineArrayInput({
     const anchorDate = isEarly ? releaseDate : dueDate;
     return (
       <DeadlineTimeRange
-        prefix={isEarly ? 'While accessible' : 'After due date'}
+        prefix={isEarly ? 'در زمان دسترسی' : 'پس از ددلاین اصلی'}
         start={(index > 0 ? deadlines[index - 1].date : null) ?? anchorDate ?? null}
         end={deadline.date}
         displayTimezone={displayTimezone}
@@ -237,7 +238,7 @@ function DeadlineArrayInput({
         <div className="d-flex justify-content-between align-items-center mb-2">
           <ToggleTitle
             id={`${idPrefix}-${type}-deadlines-enabled`}
-            label={isEarly ? 'Early deadlines' : 'Late deadlines'}
+            label={isEarly ? 'ددلاین‌های زودهنگام' : 'ددلاین‌های تاخیر'}
             checked={deadlineFields.length > 0}
             disabled={!ruleEditable || (addEarlyDisabled && deadlineFields.length === 0)}
             title={
@@ -259,7 +260,7 @@ function DeadlineArrayInput({
               title={addDisabledTitle}
               onClick={addDeadline}
             >
-              Add {isEarly ? 'early' : 'late'}
+              افزودن ددلاین {isEarly ? 'زودهنگام' : 'تاخیر'}
             </Button>
           )}
         </div>
@@ -279,14 +280,14 @@ function DeadlineArrayInput({
                 type="datetime-local"
                 step={1}
                 defaultValue={deadlineField.date}
-                aria-label={`${isEarly ? 'Early' : 'Late'} deadline ${index + 1} date`}
+                aria-label={`تاریخ ددلاین ${isEarly ? 'زودهنگام' : 'تاخیر'} ${index + 1}`}
                 aria-invalid={!!getDateError(index)}
                 aria-errormessage={
                   getDateError(index)
                     ? `${idPrefix}-${type}-deadline-${index}-date-error`
                     : undefined
                 }
-                placeholder="Deadline Date"
+                placeholder="تاریخ ددلاین"
                 disabled={!ruleEditable}
                 {...register(`${fieldArrayName}.${index}.date`)}
               />
@@ -296,7 +297,7 @@ function DeadlineArrayInput({
                 className="form-label text-body-secondary mt-2 ms-auto"
                 htmlFor={`${idPrefix}-${type}-deadline-${index}-credit`}
               >
-                Credit
+                اعتبار نمره
               </label>
               <InputGroup style={{ width: 'auto', flex: '0 0 auto' }}>
                 <Form.Control
@@ -304,7 +305,7 @@ function DeadlineArrayInput({
                   type="number"
                   defaultValue={deadlineField.credit}
                   style={{ width: '6rem' }}
-                  aria-label={`${isEarly ? 'Early' : 'Late'} deadline ${index + 1} credit percentage`}
+                  aria-label={`درصد اعتبار نمره ددلاین ${isEarly ? 'زودهنگام' : 'تاخیر'} ${index + 1}`}
                   aria-invalid={!!getCreditError(index)}
                   aria-errormessage={
                     getCreditError(index)
@@ -332,7 +333,7 @@ function DeadlineArrayInput({
                 <Button
                   size="sm"
                   variant="outline-danger"
-                  aria-label={`Remove ${isEarly ? 'early' : 'late'} deadline ${index + 1}`}
+                  aria-label={`حذف ددلاین ${isEarly ? 'زودهنگام' : 'تاخیر'} ${index + 1}`}
                   onClick={() => removeDeadline(index)}
                 >
                   <i className="bi bi-trash" aria-hidden="true" />
@@ -428,7 +429,8 @@ export function OverrideDeadlineArrayField({
   const ruleEditable = useAccessControlRuleEditable();
   const isEarly = type === 'early';
   const fieldPath = isEarly ? 'earlyDeadlines' : 'lateDeadlines';
-  const label = isEarly ? 'Early deadlines' : 'Late deadlines';
+  const label = isEarly ? 'ددلاین‌های زودهنگام' : 'ددلاین‌های تاخیر';
+  const typeFa = isEarly ? 'زودهنگام' : 'تاخیر';
   const fieldArrayName = `overrides.${index}.${fieldPath}` as const;
   const idPrefix = `overrides-${index}`;
 
@@ -518,7 +520,7 @@ export function OverrideDeadlineArrayField({
             title={addDisabledTitle}
             onClick={() => append(nextDeadline())}
           >
-            Add {isEarly ? 'early' : 'late'}
+            افزودن ددلاین {isEarly ? 'زودهنگام' : 'تاخیر'}
           </Button>
         ) : undefined
       }
@@ -531,9 +533,9 @@ export function OverrideDeadlineArrayField({
     >
       {fields.length === 0 && (
         <Alert variant="info" className="py-2 mb-0">
-          With no {type} deadlines set, this override clears any {type} deadlines inherited from the
-          defaults or earlier overrides.
-          {ruleEditable && <> Click "Remove override" to inherit them instead.</>}
+          با تنظیم نکردن هیچ ددلاین {typeFa}، این استثنا هرگونه ددلاین {typeFa} به ارث برده‌شده از
+          تنظیمات پیش‌فرض یا استثناهای قبلی را پاک می‌کند.
+          {ruleEditable && <> برای ارث‌بری مجدد، روی «حذف بازنویسی» کلیک کنید.</>}
         </Alert>
       )}
       <DeadlineArrayInput

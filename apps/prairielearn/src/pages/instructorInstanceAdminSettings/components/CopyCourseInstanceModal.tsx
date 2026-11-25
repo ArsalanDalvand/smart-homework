@@ -211,7 +211,7 @@ export function CopyCourseInstanceModal({
     <Modal show={show} backdrop="static" size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
-          {step === 'settings' ? 'Copy course instance' : 'Access control migration'}
+          {step === 'settings' ? 'کپی کردن ترم' : 'مهاجرت قوانین کنترل دسترسی'}
         </Modal.Title>
       </Modal.Header>
       <FormProvider {...methods}>
@@ -265,7 +265,7 @@ export function CopyCourseInstanceModal({
                 disabled={isPending}
                 onClick={() => setStep('settings')}
               >
-                Back
+                بازگشت
               </button>
             )}
             <button
@@ -274,7 +274,7 @@ export function CopyCourseInstanceModal({
               disabled={isPending}
               onClick={handleClose}
             >
-              Cancel
+              انصراف
             </button>
             <button
               type="submit"
@@ -282,12 +282,12 @@ export function CopyCourseInstanceModal({
               disabled={isPending || (step === 'access-control' && analysisQuery.isFetching)}
             >
               {isPending
-                ? 'Copying...'
+                ? 'در حال کپی...'
                 : step === 'access-control' && analysisQuery.isFetching
-                  ? 'Analyzing...'
+                  ? 'در حال بررسی...'
                   : step === 'settings' && accessControlMigrationNeeded
-                    ? 'Review access control'
-                    : 'Copy course instance'}
+                    ? 'بررسی کنترل دسترسی'
+                    : 'کپی کردن ترم'}
             </button>
           </Modal.Footer>
         </form>
@@ -327,7 +327,7 @@ function SettingsStep({
     <Modal.Body>
       <div className="mb-3">
         <label className="form-label" htmlFor="copy-long-name">
-          Long name
+          عنوان کامل
         </label>
         <input
           id="copy-long-name"
@@ -338,13 +338,12 @@ function SettingsStep({
           aria-errormessage={errors.long_name ? 'copy-long-name-error' : undefined}
           defaultValue={defaultNames.longName}
           {...register('long_name', {
-            required: 'Long name is required',
+            required: 'عنوان کامل الزامی است',
           })}
         />
         <small id="copy-long-name-help" className="form-text text-muted">
-          The full course instance name, such as &quot;Fall 2025&quot;. Users see it joined to the
-          course name, e.g. &quot;
-          {courseShortName} Fall 2025&quot;.
+          عنوان کامل ترم، مانند «پاییز ۱۴۰۵». کاربران این عنوان را در کنار نام درس مشاهده می‌کنند،
+          مثلاً «{courseShortName} پاییز ۱۴۰۵».
         </small>
         {errors.long_name && (
           <div className="invalid-feedback" id="copy-long-name-error">
@@ -355,7 +354,7 @@ function SettingsStep({
 
       <div className="mb-3">
         <label className="form-label" htmlFor="copy-short-name">
-          Short name
+          نام اختصاری (کد ترم)
         </label>
         <input
           id="copy-short-name"
@@ -366,7 +365,7 @@ function SettingsStep({
           aria-errormessage={errors.short_name ? 'copy-short-name-error' : undefined}
           defaultValue={defaultNames.shortName}
           {...register('short_name', {
-            required: 'Short name is required',
+            required: 'نام اختصاری الزامی است',
             validate: {
               format: (value) => {
                 const result = validateShortName(value);
@@ -390,10 +389,9 @@ function SettingsStep({
 
       <hr />
 
-      <h3 className="h5">Publishing settings</h3>
+      <h3 className="h5">تنظیمات انتشار</h3>
       <p className="text-muted small">
-        Choose the initial publishing status for your new course instance. This can be changed
-        later.
+        وضعیت اولیه انتشار برای ترم جدید خود را انتخاب کنید. این مورد بعداً قابل تغییر است.
       </p>
 
       <CourseInstancePublishingForm
@@ -407,9 +405,9 @@ function SettingsStep({
 
       <hr />
 
-      <h3 className="h5">Self-enrollment settings</h3>
+      <h3 className="h5">تنظیمات ثبت‌نام خودکار</h3>
       <p className="text-muted small">
-        Configure self-enrollment for your new course instance. This can be changed later.
+        ثبت‌نام خودکار را برای ترم جدید خود پیکربندی کنید. این مورد بعداً قابل تغییر است.
       </p>
 
       <CourseInstanceSelfEnrollmentForm formId="copy-course-instance" />
@@ -420,14 +418,14 @@ function SettingsStep({
         id="copy-self-enrollment-restrict-to-institution"
         defaultChecked={selfEnrollmentRestrictToInstitution}
         {...register('self_enrollment_restrict_to_institution')}
-        label={`Restrict self-enrollment to institution "${institutionLongName}"`}
+        label={`محدود کردن ثبت‌نام خودکار به مؤسسه «${institutionLongName}»`}
       />
 
       <hr />
 
-      <h3 className="h5">Course instance permissions</h3>
+      <h3 className="h5">دسترسی‌های ترم</h3>
       <p className="text-muted small">
-        Choose your initial permissions for this course instance. This can be changed later.
+        دسترسی‌های اولیه خود را برای این ترم انتخاب کنید. این مورد بعداً قابل تغییر است.
       </p>
 
       <CourseInstancePermissionsForm formId="copy-course-instance" />
@@ -452,9 +450,9 @@ function AccessControlStep({
     return (
       <Modal.Body className="text-center py-5">
         <Spinner animation="border" role="status">
-          <span className="visually-hidden">Analyzing access control rules...</span>
+          <span className="visually-hidden">در حال بررسی قوانین کنترل دسترسی...</span>
         </Spinner>
-        <p className="mt-2 text-muted">Analyzing access control rules...</p>
+        <p className="mt-2 text-muted">در حال بررسی قوانین کنترل دسترسی...</p>
       </Modal.Body>
     );
   }
@@ -478,7 +476,7 @@ function AccessControlStep({
     return (
       <Modal.Body>
         <Alert variant="info" className="mb-0">
-          No legacy access control rules were found. You can continue copying this course instance.
+          هیچ قانون کنترل دسترسی قدیمی یافت نشد. می‌توانید به کپی کردن این ترم ادامه دهید.
         </Alert>
       </Modal.Body>
     );
@@ -488,32 +486,29 @@ function AccessControlStep({
     <Modal.Body>
       {appError && (
         <Alert variant="danger">
-          {appError.message} You can still choose how copied assessments should handle any legacy
-          access control rules that are encountered.
+          {appError.message} همچنان می‌توانید انتخاب کنید که آزمون‌های کپی‌شده با قوانین کنترل
+          دسترسی قدیمی چگونه رفتار کنند.
         </Alert>
       )}
 
       {assessments.length > 0 && (
         <>
           <p>
-            This course instance has{' '}
-            <strong>
-              {assessments.length} assessment{assessments.length !== 1 ? 's' : ''}
-            </strong>{' '}
-            with legacy access control rules. Choose how to handle copying them.{' '}
+            این ترم دارای <strong>{assessments.length} آزمون</strong> با قوانین کنترل دسترسی قدیمی
+            است. نحوه کپی کردن آن‌ها را انتخاب کنید.{' '}
             {cleanlyMigratableCount > 0 && assessmentsNeedingAttention.length > 0 && (
               <>
-                <strong>{cleanlyMigratableCount}</strong> will migrate cleanly and{' '}
-                {cleanlyMigratableCount === 1 ? 'is' : 'are'} not listed below.{' '}
+                <strong>{cleanlyMigratableCount}</strong> مورد بدون مشکل منتقل می‌شوند و در زیر
+                فهرست نشده‌اند.{' '}
               </>
             )}
-            Learn more about{' '}
+            اطلاعات بیشتر درباره{' '}
             <a
               href="https://docs.prairielearn.com/assessment/accessControl/"
               target="_blank"
               rel="noreferrer noopener"
             >
-              access control
+              کنترل دسترسی
             </a>
             .
           </p>
@@ -522,15 +517,12 @@ function AccessControlStep({
             <Alert variant="warning">
               {assessmentsWithNotes.length > 0 && (
                 <div>
-                  <strong>{assessmentsWithNotes.length}</strong> assessment
-                  {assessmentsWithNotes.length !== 1 ? 's' : ''} can migrate with caveats.
+                  <strong>{assessmentsWithNotes.length}</strong> آزمون با نکاتی قابل انتقال است.
                 </div>
               )}
               {blockedAssessments.length > 0 && (
                 <div>
-                  <strong>{blockedAssessments.length}</strong> assessment
-                  {blockedAssessments.length !== 1 ? 's' : ''} require
-                  {blockedAssessments.length === 1 ? 's' : ''} manual review.
+                  <strong>{blockedAssessments.length}</strong> آزمون نیازمند بررسی دستی است.
                 </div>
               )}
             </Alert>
@@ -540,13 +532,13 @@ function AccessControlStep({
             <div className="border rounded mb-3" style={{ maxHeight: '240px', overflowY: 'auto' }}>
               <table
                 className="table table-sm table-hover mb-0"
-                aria-label="Assessments that need attention"
+                aria-label="آزمون‌های نیازمند توجه"
               >
                 <thead className="table-light sticky-top">
                   <tr>
-                    <th>Assessment</th>
-                    <th>Status</th>
-                    <th>Notes</th>
+                    <th>آزمون</th>
+                    <th>وضعیت</th>
+                    <th>توضیحات</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -558,9 +550,9 @@ function AccessControlStep({
                       </td>
                       <td>
                         {a.errors.length > 0 ? (
-                          <span className="badge text-bg-warning">Manual review</span>
+                          <span className="badge text-bg-warning">بررسی دستی</span>
                         ) : (
-                          <span className="badge text-bg-info">Migrates with notes</span>
+                          <span className="badge text-bg-info">انتقال همراه با نکات</span>
                         )}
                       </td>
                       <td>
@@ -580,21 +572,21 @@ function AccessControlStep({
       )}
 
       <fieldset>
-        <legend className="h6">Migration strategy</legend>
+        <legend className="h6">روش مهاجرت</legend>
 
         <Form.Check
           type="radio"
           id="strategy-migrate"
-          label="Migrate to modern format (Recommended)"
+          label="انتقال به قالب جدید (پیشنهادی)"
           value="migrate"
           {...register('access_control_strategy')}
         />
         {accessControlStrategy === 'migrate' && assessmentsWithNotes.some((a) => a.hasUidRules) && (
           <div className="ms-4 mt-1 mb-2">
             <small className="text-muted d-block">
-              UID-based rules are copied only in legacy format. If you migrate the copy, those
-              student-specific rules are omitted and should be recreated later as enrollment
-              overrides if needed.
+              قوانین مبتنی بر UID فقط در قالب قدیمی کپی می‌شوند. اگر نسخه کپی را به قالب جدید منتقل
+              کنید، آن قوانین خاص دانشجو حذف می‌شوند و در صورت نیاز باید بعداً به صورت استثنای
+              ثبت‌نام ایجاد شوند.
             </small>
           </div>
         )}
@@ -605,7 +597,7 @@ function AccessControlStep({
               id="clear-incompatible"
               label={
                 <small className="text-muted">
-                  Clear access control for incompatible assessments
+                  پاک کردن کنترل دسترسی برای آزمون‌های ناسازگار
                 </small>
               }
               defaultChecked
@@ -617,7 +609,7 @@ function AccessControlStep({
         <Form.Check
           type="radio"
           id="strategy-keep"
-          label="Don't migrate to modern access control"
+          label="عدم انتقال به کنترل دسترسی جدید"
           value="keep"
           {...register('access_control_strategy')}
         />
@@ -625,7 +617,7 @@ function AccessControlStep({
         <Form.Check
           type="radio"
           id="strategy-clear"
-          label="Migrate to modern format and clear all rules"
+          label="انتقال به قالب جدید و پاک کردن تمام قوانین"
           value="clear"
           {...register('access_control_strategy')}
         />

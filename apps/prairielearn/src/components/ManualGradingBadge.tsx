@@ -13,10 +13,7 @@ function ManualGradingBadge({
 }) {
   if (ungradedSubmissionCount === 0) return null;
 
-  const label =
-    ungradedSubmissionCount === 1
-      ? '1 submission requires manual grading'
-      : `${ungradedSubmissionCount} submissions require manual grading`;
+  const label = `${ungradedSubmissionCount} ارسال نیازمند تصحیح دستی`;
 
   return (
     <a

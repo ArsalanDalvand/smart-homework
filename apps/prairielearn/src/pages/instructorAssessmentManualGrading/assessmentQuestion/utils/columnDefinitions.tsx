@@ -114,7 +114,7 @@ export function createColumns({
 
     columnHelper.accessor((row, index) => index, {
       id: 'index',
-      header: 'Instance',
+      header: 'نمونه',
       size: 200,
       cell: (info) => {
         const row = info.row.original;
@@ -123,24 +123,24 @@ export function createColumns({
             <a
               href={`${urlPrefix}/assessment/${assessment.id}/manual_grading/instance_question/${row.instance_question.id}`}
             >
-              Instance {info.getValue() + 1}
+              نمونه {info.getValue() + 1}
             </a>
             {row.open_issue_count ? (
               <Badge
                 bg="danger"
-                title={`${row.open_issue_count} open ${row.open_issue_count > 1 ? 'issues' : 'issue'}`}
+                title={`${row.open_issue_count} گزارش خطای باز`}
                 pill
               >
                 {row.open_issue_count}
                 <span className="visually-hidden">
                   {' '}
-                  open {row.open_issue_count > 1 ? 'issues' : 'issue'}
+                  گزارش خطای باز
                 </span>
               </Badge>
             ) : null}
             {row.assessment_open ? (
               <Badge bg="warning" text="dark">
-                <i className="bi bi-exclamation-triangle-fill" aria-hidden="true" /> Open
+                <i className="bi bi-exclamation-triangle-fill" aria-hidden="true" /> باز
               </Badge>
             ) : null}
           </div>
@@ -151,11 +151,11 @@ export function createColumns({
 
     columnHelper.accessor((row) => row.instance_question.instance_question_group_name, {
       id: 'instance_question_group_name',
-      header: 'Submission group',
+      header: 'گروه ارسال',
       cell: (info) => {
         const value = info.getValue();
         if (!value) {
-          return <span className="text-secondary">No Group</span>;
+          return <span className="text-secondary">بدون گروه</span>;
         }
         const group = instanceQuestionGroups.find((g) => g.instance_question_group_name === value);
         const rowId = info.row.original.instance_question.id;
@@ -169,7 +169,7 @@ export function createColumns({
                   props: { id: `submission-group-${rowId}-description-tooltip` },
                 }}
               >
-                <button className="btn btn-xs btn-ghost" aria-label="Group description">
+                <button className="btn btn-xs btn-ghost" aria-label="توضیحات گروه">
                   <i
                     className="fas fa-circle-info fa-width-auto text-secondary"
                     aria-hidden="true"
@@ -182,7 +182,7 @@ export function createColumns({
       },
       filterFn: (row, _columnId, filter: MultiSelectFilterValue) => {
         const current = row.original.instance_question.instance_question_group_name;
-        const groupName = current ?? 'No Group';
+        const groupName = current ?? 'بدون گروه';
         return applyMultiSelectFilter(filter, (values) => values.includes(groupName));
       },
       enableHiding: aiGradingMode && instanceQuestionGroups.length > 0,
@@ -190,13 +190,13 @@ export function createColumns({
 
     columnHelper.accessor('user_or_group_name', {
       id: 'user_or_group_name',
-      header: assessment.team_work ? 'Group name' : 'Name',
+      header: assessment.team_work ? 'نام گروه' : 'نام',
       cell: (info) => info.getValue() || '—',
     }),
 
     columnHelper.accessor('uid', {
       id: 'uid',
-      header: assessment.team_work ? 'UIDs' : 'UID',
+      header: assessment.team_work ? 'شناسه‌های کاربری' : 'شناسه کاربری (UID)',
       cell: (info) => {
         const uid = info.getValue();
         const enrollmentId = info.row.original.enrollment_id;
@@ -213,7 +213,7 @@ export function createColumns({
           columnHelper.accessor('student_label_ids', {
             id: 'student_labels',
             header: StudentLabelsHeader,
-            meta: { label: 'Labels' },
+            meta: { label: 'برچسب‌ها' },
             cell: (info) => (
               <StudentLabelsCell labelIds={info.getValue()} studentLabelsById={studentLabelsById} />
             ),
@@ -227,7 +227,7 @@ export function createColumns({
 
     columnHelper.accessor((row) => row.instance_question.requires_manual_grading, {
       id: 'requires_manual_grading',
-      header: 'Grading status',
+      header: 'وضعیت تصحیح',
       minSize: aiGradingMode ? 220 : 100,
       cell: (info) => {
         return (
@@ -251,11 +251,11 @@ export function createColumns({
 
     columnHelper.accessor('assigned_grader_name', {
       id: 'assigned_grader_name',
-      header: 'Assigned grader',
-      cell: (info) => info.getValue() || 'Unassigned',
+      header: 'مصحح تخصیص‌یافته',
+      cell: (info) => info.getValue() || 'تخصیص‌نیافته',
       filterFn: (row, _columnId, filter: MultiSelectFilterValue) => {
         const current = row.original.assigned_grader_name;
-        const grader = current ?? 'Unassigned';
+        const grader = current ?? 'تخصیص‌نیافته';
         return applyMultiSelectFilter(filter, (values) => values.includes(grader));
       },
       meta: {
@@ -265,7 +265,7 @@ export function createColumns({
 
     columnHelper.accessor((row) => row.instance_question.auto_points, {
       id: 'auto_points',
-      header: 'Auto points',
+      header: 'نمره خودکار',
       cell: (info) => renderPointsCell(info.row.original, 'auto_points'),
       filterFn: numericColumnFilterFn,
       enableHiding: (assessmentQuestion.max_auto_points ?? 0) > 0,
@@ -273,7 +273,7 @@ export function createColumns({
 
     columnHelper.accessor((row) => row.instance_question.manual_points, {
       id: 'manual_points',
-      header: 'Manual points',
+      header: 'نمره دستی',
       cell: (info) => renderPointsCell(info.row.original, 'manual_points'),
       filterFn: numericColumnFilterFn,
       meta: {
@@ -283,14 +283,14 @@ export function createColumns({
 
     columnHelper.accessor((row) => row.instance_question.points, {
       id: 'points',
-      header: 'Total points',
+      header: 'نمره کل',
       cell: (info) => renderPointsCell(info.row.original, 'points'),
       filterFn: numericColumnFilterFn,
     }),
 
     columnHelper.accessor((row) => row.instance_question.score_perc, {
       id: 'score_perc',
-      header: 'Percentage score',
+      header: 'درصد نمره',
       cell: (info) => (
         <ScoreWithEditButton
           row={info.row.original}
@@ -309,7 +309,7 @@ export function createColumns({
 
     columnHelper.accessor('last_grader_name', {
       id: 'last_grader_name',
-      header: 'Graded by',
+      header: 'تصحیح‌شده توسط',
       cell: (info) => {
         const row = info.row.original;
         if (aiGradingMode) {
@@ -337,7 +337,7 @@ export function createColumns({
             </span>
           );
         } else {
-          if (!info.getValue()) return 'Unassigned';
+          if (!info.getValue()) return 'تخصیص‌نیافته';
           if (row.instance_question.is_ai_graded) {
             return (
               <span className="badge rounded-pill text-bg-light border">
@@ -355,7 +355,7 @@ export function createColumns({
           rowData.instance_question.ai_grading_status !== 'None'
             ? generateAiGraderName(rowData.instance_question.ai_grading_status)
             : null;
-        const grader = current ?? 'Unassigned';
+        const grader = current ?? 'تخصیص‌نیافته';
         return applyMultiSelectFilter(
           filter,
           (values) =>
@@ -387,7 +387,7 @@ export function createColumns({
       (row) => row.instance_question.ai_grading?.latest_update.ai_grading_model ?? null,
       {
         id: 'ai_grading_model',
-        header: 'AI model',
+        header: 'مدل هوش مصنوعی',
         size: 220,
         cell: (info) => (
           <span className="font-monospace" title={info.getValue() ?? undefined}>
@@ -396,7 +396,7 @@ export function createColumns({
         ),
         filterFn: (row, columnId, filter: MultiSelectFilterValue) =>
           applyMultiSelectFilter(filter, (values) =>
-            values.includes(row.getValue<string | null>(columnId) ?? 'None'),
+            values.includes(row.getValue<string | null>(columnId) ?? 'هیچ‌کدام'),
           ),
       },
     ),
@@ -404,7 +404,7 @@ export function createColumns({
     // AI agreement column
     columnHelper.accessor((row) => row.instance_question.rubric_difference, {
       id: 'rubric_difference',
-      header: 'AI agreement',
+      header: 'تطابق هوش مصنوعی',
       size: 400,
       minSize: 200,
       maxSize: 600,
@@ -436,7 +436,7 @@ export function createColumns({
           return (
             <OverlayTrigger
               tooltip={{
-                body: 'AI and human grading are in agreement',
+                body: 'تصحیح هوش مصنوعی و مصحح انسانی یکسان است',
                 props: { id: `ai-agreement-${rowId}-agreement-tooltip` },
               }}
             >
@@ -452,7 +452,7 @@ export function createColumns({
                 {item.false_positive ? (
                   <OverlayTrigger
                     tooltip={{
-                      body: 'Selected by AI but not by human',
+                      body: 'انتخاب‌شده توسط هوش مصنوعی اما نه توسط مصحح',
                       props: { id: `ai-agreement-${rowId}-false-positive-tooltip` },
                     }}
                   >
@@ -461,7 +461,7 @@ export function createColumns({
                 ) : (
                   <OverlayTrigger
                     tooltip={{
-                      body: 'Selected by human but not by AI',
+                      body: 'انتخاب‌شده توسط مصحح اما نه توسط هوش مصنوعی',
                       props: { id: `ai-agreement-${rowId}-false-negative-tooltip` },
                     }}
                   >
@@ -500,7 +500,7 @@ export function createColumns({
 
     columnHelper.accessor('rubric_grading_item_ids', {
       id: 'rubric_grading_item_ids',
-      header: 'Rubric Items',
+      header: 'موارد معیار نمره‌دهی',
       enableHiding: false,
       enableSorting: false,
       cell: () => null,

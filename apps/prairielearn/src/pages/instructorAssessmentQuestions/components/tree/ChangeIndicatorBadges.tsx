@@ -30,8 +30,8 @@ export function ChangeIndicatorBadges({
   return (
     <>
       {editMode && changeTracking.newIds.has(trackingId) && (
-        <OverlayTrigger placement="top" tooltip={{ props: { id: changeTooltipId }, body: 'New' }}>
-          <span className="text-primary ms-1" role="img" aria-label="New">
+        <OverlayTrigger placement="top" tooltip={{ props: { id: changeTooltipId }, body: 'جدید' }}>
+          <span className="text-primary ms-1" role="img" aria-label="جدید">
             ●
           </span>
         </OverlayTrigger>
@@ -39,9 +39,9 @@ export function ChangeIndicatorBadges({
       {editMode && changeTracking.modifiedIds.has(trackingId) && (
         <OverlayTrigger
           placement="top"
-          tooltip={{ props: { id: changeTooltipId }, body: 'Modified' }}
+          tooltip={{ props: { id: changeTooltipId }, body: 'تغییریافته' }}
         >
-          <span className="text-primary ms-1" role="img" aria-label="Modified">
+          <span className="text-primary ms-1" role="img" aria-label="تغییریافته">
             ●
           </span>
         </OverlayTrigger>

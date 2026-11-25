@@ -9,14 +9,14 @@ function zoneHasStructuralValidationError(zone: ZoneAssessmentForm, zoneIndex: n
 
   if (
     zone.numberChoose != null &&
-    validatePositiveInteger(zone.numberChoose, 'Number to choose') != null
+    validatePositiveInteger(zone.numberChoose, 'تعداد انتخاب') != null
   ) {
     return true;
   }
 
   if (
     zone.bestQuestions != null &&
-    validatePositiveInteger(zone.bestQuestions, 'Best questions') != null
+    validatePositiveInteger(zone.bestQuestions, 'بهترین سوالات') != null
   ) {
     return true;
   }
@@ -29,7 +29,7 @@ function altPoolHasStructuralValidationError(question: ZoneQuestionBlockForm): b
     return false;
   }
 
-  return validatePositiveInteger(question.numberChoose, 'Number to choose') != null;
+  return validatePositiveInteger(question.numberChoose, 'تعداد انتخاب') != null;
 }
 
 function hasPoints(q: {

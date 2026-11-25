@@ -310,7 +310,7 @@ function FileBrowser({
       </style>
     `,
     content: html`
-      <h1 class="visually-hidden">Files</h1>
+      <h1 class="visually-hidden">فایل‌ها</h1>
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
           <div class="row align-items-center justify-content-between">
@@ -516,7 +516,7 @@ function FileContentPreview({
       <img
         src="${paths.urlPrefix}/file_download/${paths.workingPathRelativeToCourse}"
         class="img-fluid"
-        alt="Preview of ${fileInfo.name}"
+        alt="پیش‌نمایش ${fileInfo.name}"
       />
     `;
   }
@@ -528,14 +528,14 @@ function FileContentPreview({
       <div class="ratio ratio-4x3">
         <iframe
           src="${paths.urlPrefix}/file_download/${paths.workingPathRelativeToCourse}?type=application/pdf#view=FitH"
-          title="PDF preview of ${fileInfo.name}"
+          title="پیش‌نمایش PDF برای ${fileInfo.name}"
         >
-          This PDF cannot be displayed.
+          امکان نمایش این فایل PDF وجود ندارد.
         </iframe>
       </div>
     `;
   }
-  return html`<div class="alert alert-warning" role="alert">No preview available.</div>`;
+  return html`<div class="alert alert-warning" role="alert">پیش‌نمایشی در دسترس نیست.</div>`;
 }
 
 function DirectoryBrowserBody({
@@ -551,7 +551,7 @@ function DirectoryBrowserBody({
 }) {
   return html`
     <div class="table-responsive">
-      <table class="table table-sm table-hover" aria-label="Directories and files">
+      <table class="table table-sm table-hover" aria-label="پوشه‌ها و فایل‌ها">
         <thead class="visually-hidden">
           <tr>
             <th>نام فایل</th>

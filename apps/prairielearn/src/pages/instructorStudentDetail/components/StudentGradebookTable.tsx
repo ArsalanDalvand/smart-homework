@@ -16,7 +16,7 @@ export function StudentGradebookTable({ rows, urlPrefix }: StudentGradebookTable
   if (rows.length === 0) {
     return (
       <div className="card-body">
-        <div className="text-muted">No gradebook entries found.</div>
+        <div className="text-muted">هیچ موردی در دفتر نمرات یافت نشد.</div>
       </div>
     );
   }
@@ -30,17 +30,17 @@ export function StudentGradebookTable({ rows, urlPrefix }: StudentGradebookTable
   });
 
   return (
-    <table className="table table-sm table-hover" aria-label="Student Assessment Performance">
+    <table className="table table-sm table-hover" aria-label="عملکرد آزمون‌های دانشجو">
       <thead>
         <tr>
           <th style={{ width: '1%' }}>
-            <span className="visually-hidden">Label</span>
+            <span className="visually-hidden">برچسب</span>
           </th>
           <th>
-            <span className="visually-hidden">Assessment</span>
+            <span className="visually-hidden">آزمون</span>
           </th>
-          <th className="text-center">Score</th>
-          <th className="text-center">Points</th>
+          <th className="text-center">نمره (درصد)</th>
+          <th className="text-center">امتیاز</th>
         </tr>
       </thead>
       {Array.from(rowsBySet.entries(), ([setHeading, setAssessments]) => (
@@ -73,14 +73,14 @@ export function StudentGradebookTable({ rows, urlPrefix }: StudentGradebookTable
                   {computeTitle(row)}
                 </a>
                 {row.assessment.team_work && (
-                  <i className="fas fa-users ms-1" aria-hidden="true" title="Group work" />
+                  <i className="fas fa-users ms-1" aria-hidden="true" title="کار گروهی" />
                 )}
               </td>
               <td className="text-center align-middle">
                 {row.show_closed_assessment_score ? (
                   <Scorebar score={row.assessment_instance.score_perc} className="mx-auto" />
                 ) : (
-                  'In progress'
+                  'در حال انجام'
                 )}
               </td>
               <td className="text-center align-middle">

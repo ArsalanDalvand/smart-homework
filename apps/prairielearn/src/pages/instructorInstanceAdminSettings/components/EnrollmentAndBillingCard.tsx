@@ -21,47 +21,44 @@ export function EnrollmentAndBillingCard({
     <Card aria-labelledby="enrollment-and-billing-heading">
       <Card.Body>
         <h2 id="enrollment-and-billing-heading" className="h5 card-title mb-3">
-          Enrollment and billing
+          ثبت‌نام و صورت‌حساب
         </h2>
         <h3 className="h6">
           {studentBillingEnabled
-            ? 'Student billing enabled'
+            ? 'صورت‌حساب دانشجویی فعال است'
             : studentComputeBillingEnabled
-              ? 'Student billing for compute features'
-              : 'Student payment not required'}
+              ? 'صورت‌حساب دانشجویی برای امکانات محاسباتی'
+              : 'پرداخت دانشجو الزامی نیست'}
         </h3>
         {studentBillingEnabled ? (
-          <p className="mb-0">Students pay for access to this course instance.</p>
+          <p className="mb-0">دانشجویان برای دسترسی به این ترم هزینه پرداخت می‌کنند.</p>
         ) : !studentComputeBillingEnabled ? (
-          <p className="mb-0">Students can enroll without paying for course access.</p>
+          <p className="mb-0">دانشجویان می‌توانند بدون پرداخت هزینه در درس ثبت‌نام کنند.</p>
         ) : null}
         {studentComputeBillingEnabled && (
-          <p className="mb-0">Students pay for external grading and workspaces.</p>
+          <p className="mb-0">دانشجویان برای تصحیح خارجی و محیط‌های کاری (Workspaces) هزینه پرداخت می‌کنند.</p>
         )}
         {studentBillingEnabled && (
           <p className="mt-3 mb-0">
-            {enrollmentCount.toLocaleString('en-US')}{' '}
-            {enrollmentCount === 1 ? 'enrollment' : 'enrollments'}
+            {enrollmentCount.toLocaleString('fa-IR')} ثبت‌نام
           </p>
         )}
         {capacity && (
           <div className="mt-3">
-            <h3 className="h6">Enrollment allowance</h3>
+            <h3 className="h6">سقف مجاز ثبت‌نام</h3>
             <p className="mb-0">
-              {capacity.used.toLocaleString('en-US')} of {capacity.limit.toLocaleString('en-US')}{' '}
-              enrollments used{' · '}
-              <strong>{capacity.remaining.toLocaleString('en-US')} remaining</strong>
+              {capacity.used.toLocaleString('fa-IR')} از {capacity.limit.toLocaleString('fa-IR')}{' '}
+              ثبت‌نام استفاده شده{' · '}
+              <strong>{capacity.remaining.toLocaleString('fa-IR')} باقی‌مانده</strong>
             </p>
             {capacity.annualLimitSource && (
               <p className="mt-2 mb-0">
-                Remaining capacity is limited by the {capacity.annualLimitSource}'s shared
-                enrollment limit over the past year.
+                ظرفیت باقی‌مانده به دلیل سقف ثبت‌نام مشترک {capacity.annualLimitSource} در سال گذشته محدود شده است.
               </p>
             )}
             {capacity.paid > 0 && (
               <p className="small text-muted mt-2 mb-0">
-                Students with individually purchased or sponsored course access do not use this
-                allowance.
+                دانشجویانی که دسترسی خود را به صورت فردی خریداری کرده یا تحت حمایت مالی هستند، از این سهمیه استفاده نمی‌کنند.
               </p>
             )}
           </div>
@@ -69,8 +66,8 @@ export function EnrollmentAndBillingCard({
         {enrollmentLimitReached && (
           <Alert variant="warning" className="mt-3 mb-0">
             {capacity
-              ? 'The enrollment allowance has been reached. Contact support to increase it.'
-              : 'An enrollment limit has been reached. Contact support to enable additional enrollments.'}
+              ? 'سقف مجاز ثبت‌نام تکمیل شده است. برای افزایش آن با پشتیبانی تماس بگیرید.'
+              : 'محدودیت ثبت‌نام تکمیل شده است. برای امکان ثبت‌نام‌های بیشتر با پشتیبانی تماس بگیرید.'}
           </Alert>
         )}
       </Card.Body>

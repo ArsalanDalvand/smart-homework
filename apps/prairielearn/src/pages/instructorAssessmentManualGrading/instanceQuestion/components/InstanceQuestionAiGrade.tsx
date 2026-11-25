@@ -106,7 +106,7 @@ function InstanceQuestionAiGradeInner({
     const inProgress =
       submissionStatus === JobItemStatus.queued || submissionStatus === JobItemStatus.in_progress;
     button.disabled = inProgress;
-    button.title = inProgress ? 'AI grading in progress…' : '';
+    button.title = inProgress ? 'تصحیح با هوش مصنوعی در حال انجام است…' : '';
   }, [submissionStatus]);
 
   useEffect(() => {
@@ -140,7 +140,7 @@ function InstanceQuestionAiGradeInner({
       >
         <div className="d-flex flex-wrap align-items-center gap-2">
           <i className="bi bi-exclamation-triangle-fill fs-5" aria-hidden="true" />
-          <strong>Failed to refresh grading panel</strong>
+          <strong>بروزرسانی پنل تصحیح ناموفق بود</strong>
           <span className="text-body-secondary opacity-50" aria-hidden="true">
             &middot;
           </span>
@@ -150,7 +150,7 @@ function InstanceQuestionAiGradeInner({
             style={{ fontSize: 'inherit' }}
             onClick={() => window.location.reload()}
           >
-            Refresh
+            بروزرسانی
           </button>
         </div>
       </Alert>

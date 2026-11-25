@@ -63,7 +63,7 @@ router.get(
       GradingJobRowSchema,
     );
     if (gradingJobRow === null) {
-      throw new HttpStatusError(404, 'Job not found');
+      throw new HttpStatusError(404, 'گزارش تصحیح یافت نشد');
     }
 
     await assertHasAccessToGradingJob(res.locals, gradingJobRow);
@@ -81,7 +81,7 @@ router.get(
       : ['output.log', 'results.json'];
 
     if (!allowList.includes(file)) {
-      throw new HttpStatusError(404, `Unknown file ${file}`);
+      throw new HttpStatusError(404, `فایل ناشناخته ${file}`);
     }
 
     const gradingJobRow = await sqldb.queryOptionalRow(
@@ -94,7 +94,7 @@ router.get(
       GradingJobRowSchema,
     );
     if (gradingJobRow === null) {
-      throw new HttpStatusError(404, 'Job not found');
+      throw new HttpStatusError(404, 'گزارش تصحیح یافت نشد');
     }
 
     await assertHasAccessToGradingJob(res.locals, gradingJobRow);

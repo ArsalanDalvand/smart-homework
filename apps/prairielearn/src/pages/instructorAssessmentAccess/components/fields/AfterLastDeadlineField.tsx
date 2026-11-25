@@ -22,29 +22,29 @@ type AfterLastDeadlineMode = 'no_submissions' | 'practice_submissions' | 'partia
 const AFTER_LAST_DEADLINE_ITEMS: RichSelectItem<AfterLastDeadlineMode>[] = [
   {
     value: 'no_submissions',
-    label: 'No submissions allowed',
+    label: 'ارسال پاسخ مجاز نیست',
   },
   {
     value: 'practice_submissions',
-    label: 'Allow practice submissions for zero credit',
+    label: 'اجازه ارسال تمرینی با اعتبار صفر درصد',
   },
   {
     value: 'partial_credit',
-    label: 'Allow submissions for partial credit',
+    label: 'اجازه ارسال با اعتبار جزئی',
   },
 ];
 
 /** Caller passes the *effective* late deadlines (overrides may inherit from default). */
 export function getAfterLastDeadlineLabel(lateDeadlines: DeadlineEntry[]): string {
-  if (lateDeadlines.length === 0) return 'After due date';
-  if (lateDeadlines.length === 1) return 'After late deadline';
-  return 'After late deadlines';
+  if (lateDeadlines.length === 0) return 'پس از ددلاین اصلی';
+  if (lateDeadlines.length === 1) return 'پس از ددلاین تاخیر';
+  return 'پس از ددلاین‌های تاخیر';
 }
 
 function getLastDeadlineNoun(lateDeadlines: DeadlineEntry[]): string {
-  if (lateDeadlines.length === 0) return 'due date';
-  if (lateDeadlines.length === 1) return 'late deadline';
-  return 'late deadlines';
+  if (lateDeadlines.length === 0) return 'ددلاین اصلی';
+  if (lateDeadlines.length === 1) return 'ددلاین تاخیر';
+  return 'ددلاین‌های تاخیر';
 }
 
 function getMode(value: AfterLastDeadlineValue): AfterLastDeadlineMode {
@@ -137,16 +137,16 @@ function AfterLastDeadlineInput({
 
   // For overrides we can't fully reason about the effective deadlines (override
   // stacking may produce a different set), so we fall back to a generic label.
-  const label = isOverride ? 'After last deadline' : getAfterLastDeadlineLabel(lateDeadlines);
+  const label = isOverride ? 'پس از آخرین ددلاین' : getAfterLastDeadlineLabel(lateDeadlines);
 
   const getLastDeadlineText = () => {
     const lastDate = getLastDeadlineDate(lateDeadlines, dueDate);
     if (lastDate) {
       return (
         <>
-          This controls the ability to submit after{' '}
-          <FriendlyDate date={lastDate} timezone={displayTimezone} options={{ includeTz: false }} />
-          , until the course instance end date.
+          این بخش امکان ارسال پاسخ پس از{' '}
+          <FriendlyDate date={lastDate} timezone={displayTimezone} options={{ includeTz: false }} />{' '}
+          تا تاریخ پایان ارائه درس را کنترل می‌کند.
         </>
       );
     }
@@ -154,7 +154,7 @@ function AfterLastDeadlineInput({
     // TODO: we want to update the UI to completely hide the "after last deadline" options
     // when there are in fact no deadlines. That'll render this branch obsolete, but in the
     // meantime we have to show something here.
-    return 'This controls the ability to submit until the course instance end date.';
+    return 'این بخش امکان ارسال پاسخ را تا تاریخ پایان ارائه درس کنترل می‌کند.';
   };
 
   const handleModeChange = (newMode: AfterLastDeadlineMode) => {
@@ -178,7 +178,7 @@ function AfterLastDeadlineInput({
   };
 
   const showExamSubmissionsWarning = isExam && value.allowSubmissions === true;
-  const deadlineNoun = isOverride ? 'last deadline' : getLastDeadlineNoun(lateDeadlines);
+  const deadlineNoun = isOverride ? 'آخرین ددلاین' : getLastDeadlineNoun(lateDeadlines);
 
   return (
     <Form.Group>
@@ -196,8 +196,8 @@ function AfterLastDeadlineInput({
       </div>
       {showExamSubmissionsWarning && (
         <Alert variant="warning" className="mt-2 mb-0">
-          This is an Exam assessment. Consider disallowing submissions after the {deadlineNoun}{' '}
-          unless you want students to keep working.
+          این ارزیابی از نوع امتحان است. در صورت عدم تمایل به ادامه فعالیت دانشجویان، ارسال پاسخ پس
+          از {deadlineNoun} را غیرفعال کنید.
         </Alert>
       )}
       {mode === 'partial_credit' && (
@@ -207,14 +207,14 @@ function AfterLastDeadlineInput({
               htmlFor={`${idPrefix}-after-deadline-credit`}
               className="form-label mb-0 small text-body-secondary"
             >
-              Credit
+              اعتبار نمره
             </label>
             <InputGroup style={{ width: 'auto', flex: '0 0 auto' }}>
               <Form.Control
                 id={`${idPrefix}-after-deadline-credit`}
                 type="number"
                 style={{ width: '6rem' }}
-                aria-label="Credit percentage after last deadline"
+                aria-label="درصد اعتبار نمره پس از آخرین ددلاین"
                 aria-invalid={!!creditError}
                 aria-errormessage={
                   creditError ? `${idPrefix}-after-deadline-credit-error` : undefined
@@ -231,7 +231,7 @@ function AfterLastDeadlineInput({
             </InputGroup>
           </div>
           <Form.Text className="text-muted d-block">
-            Students will receive this percentage of credit for submissions after the deadline
+            دانشجویان این درصد از اعتبار نمره را برای ارسال‌های پس از ددلاین دریافت خواهند کرد
           </Form.Text>
         </div>
       )}
@@ -302,7 +302,7 @@ export function OverrideAfterLastDeadlineField({
   return (
     <FieldWrapper
       isOverridden={isOverridden}
-      label="After last deadline"
+      label="پس از آخرین ددلاین"
       onOverride={() => {
         field.onChange(defaultRuleValue);
         addOverride();

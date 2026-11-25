@@ -20,32 +20,49 @@ type TimeLimitAction =
   | 'remove'
   | 'expire';
 
+export function formatTimeDisplay(value: string): string {
+  switch (value) {
+    case 'Expired':
+      return 'منقضی شده';
+    case 'Closed':
+      return 'بسته شده';
+    case 'Closed (pending grading)':
+      return 'بسته شده (در انتظار تصحیح)';
+    case 'Open (no time limit)':
+      return 'باز (بدون محدودیت زمان)';
+    case '< 1 min':
+      return 'کمتر از ۱ دقیقه';
+    default:
+      return value.endsWith(' min') ? `${value.slice(0, -4)} دقیقه` : value;
+  }
+}
+
 function TimeLimitExplanation({ action }: { action: TimeLimitAction }) {
   let explanation = '';
   switch (action) {
     case 'set_total':
       explanation =
-        'Updating the total time limit will set the given amount of time for the assessment based on when the assessment was started.';
+        'به‌روزرسانی محدودیت زمان کل، زمان مشخص‌شده را بر اساس زمان شروع ارزیابی تنظیم می‌کند.';
       break;
     case 'set_rem':
       explanation =
-        'Updating the time remaining will set the given amount of time for the assessment based on the current time.';
+        'به‌روزرسانی زمان باقی‌مانده، زمان مشخص‌شده را بر اساس زمان فعلی تنظیم می‌کند.';
       break;
     case 'set_exact':
-      explanation = 'This will set the exact closing time for the assessment.';
+      explanation = 'این گزینه زمان دقیق بسته شدن ارزیابی را تنظیم می‌کند.';
       break;
     case 'add':
-      explanation = 'This will add the given amount of time to the remaining time limit.';
+      explanation = 'این گزینه مقدار زمان مشخص‌شده را به زمان باقی‌مانده اضافه می‌کند.';
       break;
     case 'subtract':
-      explanation = 'This will subtract the given amount of time from the remaining time limit.';
+      explanation = 'این گزینه مقدار زمان مشخص‌شده را از زمان باقی‌مانده کم می‌کند.';
       break;
     case 'remove':
-      explanation = 'This will remove the time limit and the assessment will remain open.';
+      explanation = 'این گزینه محدودیت زمان را حذف کرده و ارزیابی باز می‌ماند.';
       break;
     case 'expire':
       explanation =
-        'This will expire the time limit and students will be unable to submit any further answers.';
+        'این گزینه محدودیت زمان را منقضی می‌کند و دانشجویان دیگر قادر به ارسال پاسخ نخواهند بود.';
       break;
     default:
       assertNever(action);
@@ -213,7 +230,7 @@ export function TimeLimitEditForm({
               onChange={() => updateFormState('reopen_without_limit', true)}
             />
             <label className="form-check-label" htmlFor="reopen_without_limit">
-              Re-open without time limit
+              بازگشایی بدون محدودیت زمان
             </label>
           </div>
           <div className="form-check">
@@ -226,16 +243,16 @@ export function TimeLimitEditForm({
               onChange={() => updateFormState('reopen_without_limit', false)}
             />
             <label className="form-check-label" htmlFor="reopen_with_limit">
-              Re-open with time limit
+              بازگشایی با محدودیت زمان
             </label>
           </div>
         </div>
       ) : null}
       {mode === 'single' && singleRow ? (
         <p>
-          Total time limit: {singleRow.total_time}
+          محدودیت زمان کل: {formatTimeDisplay(singleRow.total_time)}
           <br />
-          Remaining time: {singleRow.time_remaining}
+          زمان باقی‌مانده: {formatTimeDisplay(singleRow.time_remaining)}
         </p>
       ) : (
         <p>{targetDescription}</p>
@@ -245,28 +262,28 @@ export function TimeLimitEditForm({
           <select
             className="form-select select-time-limit"
             name="action"
-            aria-label="Time limit options"
+            aria-label="گزینه‌های محدودیت زمان"
             value={form.action}
             onChange={(e) => updateFormState('action', e.currentTarget.value as TimeLimitAction)}
           >
             {canAddSubtract ? (
               mode === 'bulk' && hasOpenInstance ? (
                 <>
-                  <option value="add">Add to instances with time limit</option>
-                  <option value="subtract">Subtract from instances with time limit</option>
+                  <option value="add">افزودن به آزمون‌های دارای محدودیت زمان</option>
+                  <option value="subtract">کاهش از آزمون‌های دارای محدودیت زمان</option>
                 </>
               ) : (
                 <>
-                  <option value="add">Add</option>
-                  <option value="subtract">Subtract</option>
+                  <option value="add">افزودن</option>
+                  <option value="subtract">کاهش</option>
                 </>
               )
             ) : null}
-            <option value="set_total">Set total time limit</option>
-            <option value="set_rem">Set remaining time</option>
-            <option value="set_exact">Set exact closing time</option>
-            {showRemove ? <option value="remove">Remove time limit</option> : null}
-            {showExpire ? <option value="expire">Expire time limit</option> : null}
+            <option value="set_total">تنظیم محدودیت زمان کل</option>
+            <option value="set_rem">تنظیم زمان باقی‌مانده</option>
+            <option value="set_exact">تنظیم زمان دقیق بسته شدن</option>
+            {showRemove ? <option value="remove">حذف محدودیت زمان</option> : null}
+            {showExpire ? <option value="expire">منقضی کردن محدودیت زمان</option> : null}
           </select>
           <TimeLimitExplanation action={form.action} />
         </p>
@@ -277,12 +294,12 @@ export function TimeLimitEditForm({
             className="form-control time-limit-field"
             type="number"
             name="time_add"
-            aria-label="Time value"
+            aria-label="مقدار زمان"
             value={form.time_add}
             required
             onChange={(e) => updateFormState('time_add', e.currentTarget.value)}
           />
-          <span className="input-group-text time-limit-field">minutes</span>
+          <span className="input-group-text time-limit-field">دقیقه</span>
         </div>
       ) : null}
       {showTimeLimitOptions && form.action === 'set_exact' ? (
@@ -291,7 +308,7 @@ export function TimeLimitEditForm({
             className="form-control date-picker"
             type="datetime-local"
             name="date"
-            aria-label="Closing date and time"
+            aria-label="تاریخ و ساعت بسته شدن"
             value={form.date}
             required
             onChange={(e) => updateFormState('date', e.currentTarget.value)}
@@ -299,7 +316,7 @@ export function TimeLimitEditForm({
           <span className="input-group-text date-picker">{timezone}</span>
         </div>
       ) : null}
-      {showProposedClosingTime ? <p>Proposed closing time: {proposedClosingTime()}</p> : null}
+      {showProposedClosingTime ? <p>زمان پیشنهادی بسته شدن: {proposedClosingTime()}</p> : null}
       {mode === 'bulk' && hasClosedInstance ? (
         <div className="form-check mb-2">
           <input
@@ -311,7 +328,7 @@ export function TimeLimitEditForm({
             onChange={(e) => updateFormState('reopen_closed', e.currentTarget.checked)}
           />
           <label className="form-check-label" htmlFor="reopen_closed">
-            Also re-open closed instances
+            آزمون‌های بسته‌شده نیز بازگشایی شوند
           </label>
         </div>
       ) : null}
@@ -322,10 +339,10 @@ export function TimeLimitEditForm({
       ) : null}
       <div className="btn-toolbar justify-content-end">
         <Button type="button" variant="secondary" className="me-2" onClick={onCancel}>
-          Cancel
+          انصراف
         </Button>
         <Button type="submit" variant="primary" disabled={mutation.isPending}>
-          {mutation.isPending ? 'Saving...' : 'Set'}
+          {mutation.isPending ? 'در حال ذخیره...' : 'تنظیم'}
         </Button>
       </div>
     </form>

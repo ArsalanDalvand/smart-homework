@@ -35,10 +35,10 @@ export function FieldWrapper({
                 size="sm"
                 variant="outline-primary"
                 className="ms-3"
-                aria-label={`Override ${label}`}
+                aria-label={`بازنویسی ${label}`}
                 onClick={onOverride}
               >
-                Override
+                بازنویسی
               </Button>
             )}
           </div>
@@ -54,10 +54,10 @@ export function FieldWrapper({
                       size="sm"
                       variant="outline-danger"
                       className="text-nowrap"
-                      aria-label={`Remove override for ${label}`}
+                      aria-label={`حذف بازنویسی برای ${label}`}
                       onClick={onRemoveOverride}
                     >
-                      Remove override
+                      حذف بازنویسی
                     </Button>
                   )}
                 </div>

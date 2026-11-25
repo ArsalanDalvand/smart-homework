@@ -76,7 +76,7 @@ router.post(
     } else if (req.body.__action === 'changeDate') {
       const date = parseISO(req.body.pl_requested_date);
       if (!isValid(date)) {
-        throw new HttpStatusError(400, `invalid requested date: ${req.body.pl_requested_date}`);
+        throw new HttpStatusError(400, `تاریخ درخواستی نامعتبر است: ${req.body.pl_requested_date}`);
       }
       setCookie(res, ['pl_requested_date', 'pl2_requested_date'], date.toISOString(), {
         maxAge: 60 * 60 * 1000,

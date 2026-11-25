@@ -1,3 +1,16 @@
+import type { InheritanceSource } from '../types.js';
+
+export function formatInheritanceSourceFa(source: InheritanceSource): string {
+  switch (source) {
+    case 'zone':
+      return 'بخش';
+    case 'pool':
+      return 'مجموعه جایگزین';
+    case 'assessment':
+      return 'ارزیابی';
+  }
+}
+
 /**
  * Converts a string value from an HTML textarea to a string or undefined.
  * Used as a `setValueAs` transform for react-hook-form textarea inputs
@@ -85,7 +98,7 @@ export function validateAtLeastOnePointsField(
   ) {
     return;
   }
-  return 'At least one of auto points or manual points must be set.';
+  return 'حداقل یکی از امتیاز خودکار یا امتیاز دستی باید تنظیم شود.';
 }
 
 /**
@@ -97,14 +110,14 @@ export function validateNonIncreasingPoints(
 ): string | undefined {
   if (value == null || typeof value === 'string') return;
   if (typeof value === 'number') {
-    return value < 0 ? 'All point values must be non-negative.' : undefined;
+    return value < 0 ? 'تمام مقادیر امتیاز باید نامنفی باشند.' : undefined;
   }
   for (const v of value) {
-    if (v < 0) return 'All point values must be non-negative.';
+    if (v < 0) return 'تمام مقادیر امتیاز باید نامنفی باشند.';
   }
   for (let i = 1; i < value.length; i++) {
     if (value[i] > value[i - 1]) {
-      return 'Points must be non-increasing (each value must be ≤ the previous).';
+      return 'امتیازها باید غیرصعودی باشند (هر مقدار باید ≤ مقدار قبلی باشد).';
     }
   }
 }
@@ -116,7 +129,7 @@ export function validatePointsListFormat(
   value: number | number[] | string | undefined,
 ): string | undefined {
   if (typeof value === 'string') {
-    return 'Points must be a number or a comma-separated list of numbers.';
+    return 'امتیازها باید یک عدد یا فهرستی از اعداد جداشده با ویرگول باشند.';
   }
 }
 

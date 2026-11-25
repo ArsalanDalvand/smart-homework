@@ -22,10 +22,10 @@ export function InstructorCourseAdminGettingStarted({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h1>Getting started checklist</h1>
+          <h1>راهنمای شروع کار</h1>
         </div>
         <div class="card-body">
-          <p class="mb-3">Complete these suggested tasks to finish setting up your course.</p>
+          <p class="mb-3">برای تکمیل راه‌اندازی درس خود، موارد پیشنهادی زیر را انجام دهید.</p>
           <div class="list-group mb-3">${tasks.map((task) => GettingStartedTask(task))}</div>
           <form method="POST">
             <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
@@ -36,11 +36,11 @@ export function InstructorCourseAdminGettingStarted({
               type="submit"
               aria-describedby="dismiss_getting_started_help"
             >
-              Dismiss the getting started checklist
+              بستن چک‌لیست شروع کار
             </button>
             <br />
             <small id="dismiss_getting_started_help" class="text-muted">
-              This page can be restored from the course settings.
+              این صفحه را می‌توان دوباره از تنظیمات درس بازگرداند.
             </small>
           </form>
         </div>

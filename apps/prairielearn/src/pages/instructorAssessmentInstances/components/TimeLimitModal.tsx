@@ -29,7 +29,7 @@ export function TimeLimitModal({
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>
-          {target.kind === 'single' && hasClosedInstance ? 'Re-open instance' : 'Change time limit'}
+          {target.kind === 'single' && hasClosedInstance ? 'بازگشایی آزمون' : 'تغییر محدودیت زمان'}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -41,8 +41,8 @@ export function TimeLimitModal({
             }
             targetDescription={
               target.kind === 'all'
-                ? 'All instances'
-                : `${rows.length} ${rows.length === 1 ? 'instance' : 'instances'} selected`
+                ? 'همه آزمون‌ها'
+                : `${rows.length} آزمون انتخاب شده`
             }
             hasOpenInstance={hasOpenInstance}
             hasClosedInstance={hasClosedInstance}

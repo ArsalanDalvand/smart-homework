@@ -7,7 +7,7 @@ export function TagDescription({ tag }: { tag: Tag }) {
 
   return (
     <span className="text-muted">
-      Auto-generated from use in a question; edit this tag to customize
+      ایجادشده به‌صورت خودکار از طریق استفاده در یک سوال؛ برای سفارشی‌سازی این برچسب را ویرایش کنید
     </span>
   );
 }

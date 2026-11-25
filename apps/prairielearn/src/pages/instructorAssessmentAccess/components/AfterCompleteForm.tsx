@@ -25,46 +25,46 @@ type HideScoreMode = 'show_score' | 'hide_score_forever' | 'hide_score_until_dat
 const QUESTION_VISIBILITY_ITEMS: RichSelectItem<HideQuestionsMode>[] = [
   {
     value: 'hide_questions_forever',
-    label: 'Hide questions permanently',
-    description: 'Questions and submissions will never be visible after completion',
+    label: 'پنهان‌کردن همیشگی سوالات',
+    description: 'سوالات و پاسخ‌های ارسال‌شده پس از پایان آزمون هرگز قابل مشاهده نخواهند بود',
   },
   {
     value: 'show_questions',
-    label: 'Show questions after completion',
+    label: 'نمایش سوالات پس از پایان',
     description:
-      'Students can review questions and their submissions immediately after completing the assessment',
+      'دانشجویان می‌توانند بلافاصله پس از اتمام ارزیابی، سوالات و پاسخ‌های ارسال‌شده خود را مرور کنند',
   },
   {
     value: 'hide_questions_between_dates',
-    label: 'Show questions between dates',
+    label: 'نمایش سوالات بین دو تاریخ',
     description:
-      'Questions and submissions will be visible between these dates, hidden before and after',
+      'سوالات و پاسخ‌های ارسال‌شده بین این دو تاریخ قابل مشاهده بوده و پیش و پس از آن پنهان هستند',
   },
   {
     value: 'hide_questions_until_date',
-    label: 'Show questions after date',
+    label: 'نمایش سوالات پس از تاریخ مشخص',
     description:
-      'Questions and submissions will be hidden after completion and become visible on this date',
+      'سوالات و پاسخ‌های ارسال‌شده پس از اتمام پنهان بوده و از این تاریخ به بعد قابل مشاهده می‌شوند',
   },
 ];
 
 const SCORE_VISIBILITY_ITEMS: RichSelectItem<HideScoreMode>[] = [
   {
     value: 'hide_score_forever',
-    label: 'Hide score permanently',
-    description: 'The overall assessment score will never be visible after completion',
+    label: 'پنهان‌کردن همیشگی نمره',
+    description: 'نمره کل ارزیابی پس از اتمام هرگز قابل مشاهده نخواهد بود',
   },
   {
     value: 'show_score',
-    label: 'Show score after completion',
+    label: 'نمایش نمره پس از پایان',
     description:
-      'Students can see their overall assessment score immediately after completing the assessment',
+      'دانشجویان می‌توانند بلافاصله پس از اتمام ارزیابی نمره کل خود را مشاهده کنند',
   },
   {
     value: 'hide_score_until_date',
-    label: 'Show score after date',
+    label: 'نمایش نمره پس از تاریخ مشخص',
     description:
-      'The overall assessment score will be hidden after completion and become visible on this date',
+      'نمره کل ارزیابی پس از اتمام پنهان بوده و از این تاریخ به بعد قابل مشاهده می‌شود',
   },
 ];
 
@@ -156,7 +156,7 @@ function QuestionVisibilityInput({
         <RichSelect
           items={QUESTION_VISIBILITY_ITEMS}
           value={hideQuestionsMode}
-          aria-label="Question visibility"
+          aria-label="وضعیت نمایش سوالات"
           id={`${idPrefix}-question-visibility-mode`}
           minWidth={300}
           disabled={!ruleEditable}
@@ -171,7 +171,7 @@ function QuestionVisibilityInput({
         <div className="d-flex flex-column gap-3">
           <div>
             <Form.Label htmlFor={`${idPrefix}-show-questions-between-start`}>
-              Show questions on
+              نمایش سوالات از تاریخ
             </Form.Label>
             <Form.Control
               id={`${idPrefix}-show-questions-between-start`}
@@ -205,7 +205,7 @@ function QuestionVisibilityInput({
           </div>
           <div>
             <Form.Label htmlFor={`${idPrefix}-hide-questions-between-end`}>
-              Hide questions again on
+              پنهان‌کردن مجدد سوالات در تاریخ
             </Form.Label>
             <Form.Control
               id={`${idPrefix}-hide-questions-between-end`}
@@ -243,7 +243,7 @@ function QuestionVisibilityInput({
             id={`${idPrefix}-show-questions-date`}
             type="datetime-local"
             step={1}
-            aria-label="Show questions on"
+            aria-label="نمایش سوالات در تاریخ"
             value={value.visibleFromDate ?? ''}
             isInvalid={visibleFromDateInvalid}
             disabled={!ruleEditable}
@@ -264,14 +264,14 @@ function QuestionVisibilityInput({
       )}
       {hasPrairieTest && hideQuestionsMode === 'show_questions' && (
         <Alert variant="warning" className="mb-0">
-          Showing questions after completion is not recommended when PrairieTest exams are
-          connected. Students may be able to view exam content when their assessment is closed.
+          نمایش سوالات پس از اتمام هنگام اتصال به آزمون‌های PrairieTest توصیه نمی‌شود. دانشجویان ممکن
+          است بتوانند محتوای آزمون را پس از بسته شدن ارزیابی خود مشاهده کنند.
         </Alert>
       )}
       {!hasPrairieTest && hasCompletionMechanism && hideQuestionsMode !== 'show_questions' && (
         <Alert variant="info" className="mb-0">
-          If this is not an exam, consider setting question visibility to "Show questions after
-          completion" so students can review their work.
+          اگر این ارزیابی امتحان نیست، نمایش سوالات را روی «نمایش سوالات پس از پایان» قرار دهید تا
+          دانشجویان بتوانند کار خود را مرور کنند.
         </Alert>
       )}
     </Form.Group>
@@ -324,7 +324,7 @@ function ScoreVisibilityInput({
         <RichSelect
           items={SCORE_VISIBILITY_ITEMS}
           value={hideScoreMode}
-          aria-label="Score visibility"
+          aria-label="وضعیت نمایش نمره"
           id={`${idPrefix}-score-visibility-mode`}
           minWidth={300}
           disabled={!ruleEditable}
@@ -341,7 +341,7 @@ function ScoreVisibilityInput({
             id={`${idPrefix}-show-score-date`}
             type="datetime-local"
             step={1}
-            aria-label="Show score on"
+            aria-label="نمایش نمره در تاریخ"
             value={value.visibleFromDate ?? ''}
             isInvalid={visibleFromDateInvalid}
             disabled={!ruleEditable}
@@ -365,22 +365,21 @@ function ScoreVisibilityInput({
 }
 
 const infoPopoverConfig = {
-  header: 'When is an assessment "complete"?',
+  header: 'چه زمانی ارزیابی «تکمیل‌شده» محسوب می‌شود؟',
   body: (
     <>
       <p>
-        These settings apply once submissions are no longer allowed: after the final deadline, when
-        a time limit expires, or when a student's assessment instance is closed manually or by Exam
-        auto-close. If after-deadline submissions are allowed, these settings apply only after the
-        student's assessment instance closes or its time limit expires.
+        این تنظیمات زمانی اعمال می‌شوند که دیگر امکان ارسال پاسخ وجود نداشته باشد: پس از ددلاین
+        نهایی، هنگام اتمام محدودیت زمانی، یا زمانی که نمونه ارزیابی دانشجو به صورت دستی یا توسط
+        بسته‌شدن خودکار امتحان بسته شود. اگر ارسال پس از ددلاین مجاز باشد، این تنظیمات تنها پس از
+        بسته شدن نمونه ارزیابی دانشجو یا پایان محدودیت زمانی اعمال می‌شوند.
       </p>
       <p>
-        The completion time can vary between students based on when they started or any
-        accommodations they have.
+        زمان تکمیل ممکن است بین دانشجویان بر اساس زمان شروع یا شرایط ویژه آن‌ها متفاوت باشد.
       </p>
       <p>
-        While a student has an active PrairieTest reservation, the per-exam settings on each
-        PrairieTest exam govern visibility instead.
+        زمانی که دانشجو یک رزرو فعال در PrairieTest دارد، تنظیمات هر امتحان در PrairieTest
+        وضعیت نمایش را تعیین می‌کند.
       </p>
     </>
   ),
@@ -388,7 +387,7 @@ const infoPopoverConfig = {
 };
 
 function AfterCompleteCard({
-  title = 'After completion',
+  title = 'پس از اتمام',
   hasPrairieTest,
   children,
 }: {
@@ -406,21 +405,21 @@ function AfterCompleteCard({
               variant="link"
               size="sm"
               className="ms-2 p-0"
-              aria-label="When is an assessment complete?"
+              aria-label="چه زمانی ارزیابی تکمیل‌شده محسوب می‌شود؟"
             >
               <i className="bi bi-info-circle" aria-hidden="true" />
             </Button>
           </OverlayTrigger>
         </div>
         <div className="text-muted small mt-1">
-          Control question and score visibility once students can no longer make submissions to the
-          assessment.
+          کنترل نمایش سوالات و نمره پس از آنکه دانشجویان دیگر نتوانند پاسخی برای ارزیابی ارسال
+          کنند.
         </div>
       </div>
       <div className="d-flex flex-column gap-3">
         {hasPrairieTest && (
           <Alert variant="info" className="mb-0">
-            During active PrairieTest reservations, the exam’s visibility settings apply instead.
+            در طول رزروهای فعال PrairieTest، تنظیمات نمایش خود امتحان اعمال می‌شود.
           </Alert>
         )}
         {children}
@@ -489,20 +488,20 @@ export function DefaultAfterCompleteForm({
     hasExamAutoClose,
   });
   const automaticCompletionMechanisms = isExam
-    ? 'a due date, time limit, late deadline, PrairieTest exam, or Exam auto-close'
-    : 'a due date, time limit, late deadline, or PrairieTest exam';
+    ? 'ددلاین اصلی، محدودیت زمانی، ددلاین تاخیر، آزمون PrairieTest یا بسته‌شدن خودکار امتحان'
+    : 'ددلاین اصلی، محدودیت زمانی، ددلاین تاخیر یا آزمون PrairieTest';
 
   return (
     <AfterCompleteCard title={title} hasPrairieTest={hasPrairieTest}>
       {!hasCompletionMechanism && (
         <Alert variant="info" className="mb-0">
-          Without {automaticCompletionMechanisms}, these settings will only take effect if an
-          instructor manually closes a student's assessment instance.
+          بدون {automaticCompletionMechanisms}، این تنظیمات تنها در صورتی اعمال می‌شوند که مدرس به
+          صورت دستی نمونه ارزیابی دانشجو را ببندد.
         </Alert>
       )}
       <div>
         <Form.Label className="fw-bold" htmlFor="defaultRule-score-visibility-mode">
-          Score visibility after completion
+          نمایش نمره پس از اتمام
         </Form.Label>
         <ScoreVisibilityInput
           value={svField.value}
@@ -515,7 +514,7 @@ export function DefaultAfterCompleteForm({
       </div>
       <div>
         <Form.Label className="fw-bold" htmlFor="defaultRule-question-visibility-mode">
-          Question visibility after completion
+          نمایش سوالات پس از اتمام
         </Form.Label>
         <QuestionVisibilityInput
           value={qvField.value}
@@ -598,7 +597,7 @@ export function OverrideAfterCompleteForm({
       <div>
         <FieldWrapper
           isOverridden={svOverridden}
-          label="Score visibility after completion"
+          label="نمایش نمره پس از اتمام"
           onOverride={() => {
             svField.onChange({ ...defaultRuleSV });
             addSvOverride();
@@ -618,7 +617,7 @@ export function OverrideAfterCompleteForm({
       <div>
         <FieldWrapper
           isOverridden={qvOverridden}
-          label="Question visibility after completion"
+          label="نمایش سوالات پس از اتمام"
           onOverride={() => {
             qvField.onChange({ ...defaultRuleQV });
             addQvOverride();

@@ -18,33 +18,30 @@ export function ExamQuestionAvailablePoints({
   const bestScore = Math.floor((highestSubmissionScore ?? 0) * 100);
   const popoverContent = html`
     <p>
-      You have ${pointsList.length} remaining attempt${pointsList.length !== 1 ? 's' : ''} for this
-      question.
+      شما ${pointsList.length} تلاش باقی‌مانده برای این سوال دارید.
     </p>
     <p>
-      If you score 100% on your next submission, then you will be awarded an additional
-      ${formatPoints(pointsList[0])} points.
+      اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید، ${formatPoints(pointsList[0])} امتیاز اضافه به شما
+      تعلق می‌گیرد.
     </p>
     ${
       bestScore > 0
         ? html`
             <p>
-              If you score less than ${bestScore}% on your next submission, then you will be awarded
-              no additional points, but you will keep any awarded points that you already have.
+              اگر در ارسال بعدی نمره‌ای کمتر از ${bestScore}% کسب کنید، امتیاز اضافه‌ای دریافت
+              نخواهید کرد، اما امتیازهایی که قبلاً کسب کرده‌اید حفظ می‌شوند.
             </p>
             <p class="mb-0">
-              If you score between ${bestScore}% and 100% on your next submission, then you will be
-              awarded an additional
+              اگر در ارسال بعدی نمره‌ای بین ${bestScore}% تا ۱۰۰٪ کسب کنید، به میزان
               <code>(${formatPoints(currentWeight)} * (score - ${bestScore})/100)</code>
-              points.
+              امتیاز اضافه دریافت خواهید کرد.
             </p>
           `
         : html`
             <p class="mb-0">
-              If you score less than 100% on your next submission, then you will be awarded an
-              additional
+              اگر در ارسال بعدی نمره‌ای کمتر از ۱۰۰٪ کسب کنید، به میزان
               <code>(${formatPoints(currentWeight)} * score / 100)</code>
-              points.
+              امتیاز اضافه دریافت خواهید کرد.
             </p>
           `
     }
@@ -63,7 +60,7 @@ export function ExamQuestionAvailablePoints({
       data-bs-toggle="popover"
       data-bs-container="body"
       data-bs-html="true"
-      data-bs-title="Explanation of available points"
+      data-bs-title="توضیح امتیازهای قابل کسب"
       data-bs-content="${escapeHtml(popoverContent)}"
       data-bs-placement="auto"
     >

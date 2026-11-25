@@ -25,7 +25,7 @@ router.get(
   typedAsyncHandler<'plain'>(async (req, res, next) => {
     const module = await loadAdminQueryModule(req.params.query);
     if (module.specs.enabled === false) {
-      throw new HttpStatusError(403, 'Admin query is disabled in the current environment');
+      throw new HttpStatusError(403, 'پرس‌وجوی مدیریتی در محیط فعلی غیرفعال است');
     }
 
     let query_run_id: string | null = null;
@@ -82,7 +82,7 @@ router.post(
   typedAsyncHandler<'plain'>(async (req, res) => {
     const module = await loadAdminQueryModule(req.params.query);
     if (module.specs.enabled === false) {
-      throw new HttpStatusError(403, 'Admin query is disabled in the current environment');
+      throw new HttpStatusError(403, 'پرس‌وجوی مدیریتی در محیط فعلی غیرفعال است');
     }
 
     const queryParams: Record<string, string> = {};

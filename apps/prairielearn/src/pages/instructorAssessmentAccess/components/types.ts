@@ -159,23 +159,23 @@ export function isOverrideEditable(
 export function getOverrideName(appliesTo: AppliesTo, index: number): string {
   if (appliesTo.targetType === 'student_label') {
     const studentLabels = appliesTo.studentLabels;
-    if (studentLabels.length === 0) return `Override ${index + 1}`;
+    if (studentLabels.length === 0) return `استثنا ${index + 1}`;
     if (studentLabels.length === 1) return studentLabels[0].name;
     if (studentLabels.length === 2) {
-      return `${studentLabels[0].name} and ${studentLabels[1].name}`;
+      return `${studentLabels[0].name} و ${studentLabels[1].name}`;
     }
     const remaining = studentLabels.length - 2;
-    return `${studentLabels[0].name}, ${studentLabels[1].name}, and ${remaining} ${remaining === 1 ? 'other' : 'others'}`;
+    return `${studentLabels[0].name}، ${studentLabels[1].name} و ${remaining} مورد دیگر`;
   } else {
     const enrollments = appliesTo.enrollments;
-    if (enrollments.length === 0) return `Override ${index + 1}`;
+    if (enrollments.length === 0) return `استثنا ${index + 1}`;
     const getName = (e: (typeof enrollments)[0]) => e.name || e.uid;
     if (enrollments.length === 1) return getName(enrollments[0]);
     if (enrollments.length === 2) {
-      return `${getName(enrollments[0])} and ${getName(enrollments[1])}`;
+      return `${getName(enrollments[0])} و ${getName(enrollments[1])}`;
     }
     const remaining = enrollments.length - 2;
-    return `${getName(enrollments[0])}, ${getName(enrollments[1])}, and ${remaining} ${remaining === 1 ? 'other' : 'others'}`;
+    return `${getName(enrollments[0])}، ${getName(enrollments[1])} و ${remaining} مورد دیگر`;
   }
 }
 

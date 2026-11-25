@@ -16,14 +16,14 @@ export function ResetQuestionVariantsModal({
   return (
     <Modal show={show} size="lg" backdrop="static" onHide={onHide} onExited={onExited}>
       <Modal.Header closeButton>
-        <Modal.Title>Confirm reset question variants</Modal.Title>
+        <Modal.Title>تایید بازنشانی نسخه‌های سوال</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          Are you sure you want to reset all current variants of this question?{' '}
-          <strong>All ungraded attempts will be lost.</strong>
+          آیا از بازنشانی تمام نسخه‌های فعلی این سوال مطمئن هستید؟{' '}
+          <strong>تمامی تلاش‌های نمره‌داده‌نشده از بین خواهند رفت.</strong>
         </p>
-        <p>Students will receive a new variant the next time they view this question.</p>
+        <p>دانشجویان در مراجعه بعدی به این سوال، نسخه جدیدی دریافت خواهند کرد.</p>
       </Modal.Body>
       <Modal.Footer>
         <form method="POST">
@@ -31,10 +31,10 @@ export function ResetQuestionVariantsModal({
           <input type="hidden" name="__csrf_token" value={csrfToken} />
           <input type="hidden" name="unsafe_assessment_question_id" value={assessmentQuestionId} />
           <button type="button" className="btn btn-secondary me-1" onClick={onHide}>
-            Cancel
+            انصراف
           </button>
           <button type="submit" className="btn btn-danger">
-            Reset question variants
+            بازنشانی نسخه‌های سوال
           </button>
         </form>
       </Modal.Footer>

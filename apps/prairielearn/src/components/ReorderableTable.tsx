@@ -115,7 +115,7 @@ export function ReorderableRowActionsCell({
           type="button"
           className={clsx('btn btn-sm btn-ghost', dragDisabled && 'invisible')}
           style={{ cursor: 'grab', touchAction: 'none' }}
-          aria-label="Drag row"
+          aria-label="کشیدن و جابه‌جایی ردیف"
           // Native buttons already have the role supplied by dnd-kit.
           {...omit(dragHandleProps, ['role'])}
           disabled={dragDisabled}

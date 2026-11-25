@@ -49,7 +49,7 @@ export function LabelDeleteModal({
           <Alert variant="danger" dismissible onClose={() => deleteMutation.reset()}>
             {appError.message}{' '}
             <a href={getCourseInstanceJobSequenceUrl(courseInstanceId, appError.jobSequenceId)}>
-              View job logs
+              مشاهده گزارش‌های کار
             </a>
           </Alert>
         );
@@ -72,19 +72,19 @@ export function LabelDeleteModal({
       }}
     >
       <Modal.Header closeButton>
-        <Modal.Title>Delete student label</Modal.Title>
+        <Modal.Title>حذف برچسب دانشجو</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {renderMutationError()}
         <p>
-          Are you sure you want to delete the label <strong>{data?.labelName}</strong>?
+          آیا از حذف برچسب <strong>{data?.labelName}</strong> اطمینان دارید؟
         </p>
         {data && data.userData.length > 0 && (
           <Alert variant="warning">
-            This label has {data.userData.length} student
-            {data.userData.length !== 1 ? 's' : ''}. This label will be removed from them.
+            این برچسب به {data.userData.length} دانشجو اختصاص داده شده است و از آن‌ها حذف خواهد
+            شد.
             <details className="mt-2">
-              <summary style={{ cursor: 'pointer' }}>Show affected students</summary>
+              <summary style={{ cursor: 'pointer' }}>نمایش دانشجویان مشمول</summary>
               <div className="mt-2 p-2 bg-light border rounded">
                 {data.userData.map((user) => (
                   <div key={user.uid}>{user.name || user.uid}</div>
@@ -96,7 +96,7 @@ export function LabelDeleteModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant="danger"
@@ -110,10 +110,10 @@ export function LabelDeleteModal({
                 role="status"
                 aria-hidden="true"
               />
-              Deleting...
+              در حال حذف...
             </>
           ) : (
-            'Delete'
+            'حذف'
           )}
         </Button>
       </Modal.Footer>

@@ -49,7 +49,7 @@ function DueDateInput({
 
     return (
       <>
-        {startNode} – {friendly(dueDatePlain)} ({effectiveCredit}% credit)
+        {startNode} – {friendly(dueDatePlain)} (اعتبار {effectiveCredit}٪)
       </>
     );
   };
@@ -61,7 +61,7 @@ function DueDateInput({
           type="radio"
           name={`${idPrefix}-dueMode`}
           id={`${idPrefix}-due-never`}
-          label="No due date"
+          label="بدون ددلاین اصلی"
           checked={value.date === null}
           disabled={!ruleEditable}
           onChange={({ currentTarget }) => {
@@ -72,7 +72,7 @@ function DueDateInput({
           type="radio"
           name={`${idPrefix}-dueMode`}
           id={`${idPrefix}-due-on-date`}
-          label="Due on date"
+          label="دارای تاریخ مشخص"
           checked={value.date !== null}
           disabled={!ruleEditable}
           onChange={({ currentTarget }) => {
@@ -99,7 +99,7 @@ function DueDateInput({
           <Form.Control
             type="datetime-local"
             step={1}
-            aria-label="Due date"
+            aria-label="ددلاین اصلی"
             aria-invalid={!!dateError}
             aria-errormessage={dateError ? `${idPrefix}-due-date-error` : undefined}
             value={value.date}
@@ -119,7 +119,7 @@ function DueDateInput({
       <div className="mt-2 d-flex align-items-center gap-2 flex-wrap">
         {!value.customCredit ? (
           <span className="text-muted small">
-            100% credit (default)
+            اعتبار ۱۰۰٪ (پیش‌فرض)
             {ruleEditable && (
               <>
                 {' '}
@@ -129,7 +129,7 @@ function DueDateInput({
                   className="p-0 align-baseline"
                   onClick={() => onChange({ ...value, customCredit: true, credit: 100 })}
                 >
-                  Change
+                  تغییر
                 </Button>
               </>
             )}
@@ -140,7 +140,7 @@ function DueDateInput({
               htmlFor={`${idPrefix}-due-credit`}
               className="form-label mb-0 small text-body-secondary"
             >
-              Credit
+              اعتبار نمره
             </label>
             <InputGroup style={{ width: 'auto', flex: '0 0 auto' }}>
               <Form.Control
@@ -150,7 +150,7 @@ function DueDateInput({
                 max={200}
                 step={1}
                 style={{ width: '6rem' }}
-                aria-label="Due date credit percentage"
+                aria-label="درصد اعتبار نمره ددلاین اصلی"
                 aria-invalid={!!creditError}
                 aria-errormessage={creditError ? `${idPrefix}-due-credit-error` : undefined}
                 value={value.credit ?? ''}
@@ -171,7 +171,7 @@ function DueDateInput({
                 className="p-0"
                 onClick={() => onChange({ ...value, customCredit: false, credit: null })}
               >
-                Reset to default
+                بازگشت به پیش‌فرض
               </Button>
             )}
           </>
@@ -222,7 +222,7 @@ export function DefaultDueDateField({ displayTimezone }: { displayTimezone: stri
 
   return (
     <div>
-      <Form.Label className="fw-bold">Due date</Form.Label>
+      <Form.Label className="fw-bold">ددلاین اصلی</Form.Label>
       <DueDateInput
         value={value}
         idPrefix="defaultRule"
@@ -299,7 +299,7 @@ export function OverrideDueDateField({
   return (
     <FieldWrapper
       isOverridden={isOverridden}
-      label="Due date"
+      label="ددلاین اصلی"
       onOverride={() => {
         dateCtrl.field.onChange(defaultRuleValue.date);
         creditCtrl.field.onChange(defaultRuleValue.credit);

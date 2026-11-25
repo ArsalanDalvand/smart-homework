@@ -18,37 +18,36 @@ export function LegacyAccessRuleCard({
   return (
     <>
       <div className="alert alert-warning" role="alert">
-        <strong>Legacy Access Rules Active:</strong> This course instance is using the legacy{' '}
-        <code>allowAccess</code> system. To use the new publishing system, you must first remove the{' '}
-        <code>allowAccess</code> section from your course instance configuration. For more
-        information, please see the{' '}
+        <strong>قوانین دسترسی قدیمی فعال است:</strong> این ترم از سیستم قدیمی{' '}
+        <code>allowAccess</code> استفاده می‌کند. برای استفاده از سیستم انتشار جدید، ابتدا باید بخش{' '}
+        <code>allowAccess</code> را از پیکربندی ترم حذف کنید. برای اطلاعات بیشتر لطفاً{' '}
         <a
           href="https://docs.prairielearn.com/courseInstance/#migrating-from-allowaccess"
           target="_blank"
           rel="noreferrer"
         >
-          migration documentation
-        </a>
-        .
+          مستندات مهاجرت
+        </a>{' '}
+        را مشاهده کنید.
       </div>
       <div className="card mb-4">
         <div className="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-          <h1>Access rules</h1>
+          <h1>قوانین دسترسی</h1>
         </div>
 
         <div className="table-responsive">
-          <table className="table table-sm table-hover" aria-label="Access rules">
+          <table className="table table-sm table-hover" aria-label="قوانین دسترسی">
             <thead>
               <tr>
                 {showComments && (
                   <th style={{ width: '1%' }}>
-                    <span className="visually-hidden">Comments</span>
+                    <span className="visually-hidden">توضیحات</span>
                   </th>
                 )}
-                <th>UIDs</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Institution</th>
+                <th>شناسه‌های کاربری (UID)</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>مؤسسه</th>
               </tr>
             </thead>
             <tbody>
@@ -102,10 +101,10 @@ function AccessRuleRow({
         data-bs-toggle="popover"
         data-bs-container="body"
         data-bs-placement="auto"
-        data-bs-title="Hidden UIDs"
-        data-bs-content="This access rule is specific to individual students. You need permission to view student data in order to see which ones."
+        data-bs-title="شناسه‌های کاربری پنهان"
+        data-bs-content="این قانون دسترسی مخصوص دانشجویان خاص است. برای مشاهده آن‌ها باید دسترسی مشاهده اطلاعات دانشجویان را داشته باشید."
       >
-        Hidden
+        پنهان
       </button>
     );
   });

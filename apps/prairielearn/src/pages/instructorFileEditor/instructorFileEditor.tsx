@@ -113,7 +113,7 @@ router.get(
 
       const contents = await fs.readFile(fullPath);
       if (await isBinaryFile(contents)) {
-        throw new Error('Cannot edit binary file');
+        throw new Error('امکان ویرایش فایل باینری وجود ندارد');
       }
 
       const encodedContents = b64EncodeUnicode(contents.toString('utf8'));
@@ -186,7 +186,7 @@ router.get(
       res.send(
         PageLayout({
           resLocals: res.locals,
-          pageTitle: `Edit ${editorData.fileName}`,
+          pageTitle: `ویرایش ${editorData.fileName}`,
           navContext: {
             type: res.locals.navbarType,
             page: res.locals.navPage,
@@ -223,11 +223,9 @@ router.get(
               editorData.fileMetadata?.syncErrors
                 ? html`
                     <div class="alert alert-danger" role="alert">
-                      <h2 class="h5 alert-heading">Sync error</h2>
+                      <h2 class="h5 alert-heading">خطای همگام‌سازی</h2>
                       <p>
-                        There were one or more errors in this file the last time you tried to sync.
-                        This file will not be able to be synced until the errors are corrected. The
-                        errors are listed below.
+                        در آخرین تلاش برای همگام‌سازی، یک یا چند خطا در این فایل وجود داشت. تا زمانی که خطاها برطرف نشوند، امکان همگام‌سازی این فایل وجود ندارد. فهرست خطاها در زیر آمده است.
                       </p>
                       <pre
                         class="text-white rounded p-3 mb-0"
@@ -243,11 +241,9 @@ router.get(
               editorData.fileMetadata?.syncWarnings
                 ? html`
                     <div class="alert alert-warning" role="alert">
-                      <h2 class="h5 alert-heading">Sync warning</h2>
+                      <h2 class="h5 alert-heading">هشدار همگام‌سازی</h2>
                       <p>
-                        There were one or more warnings in this file the last time you tried to
-                        sync. These warnings do not prevent this file from being synced, but they
-                        should still be fixed. The warnings are listed below.
+                        در آخرین تلاش برای همگام‌سازی، یک یا چند هشدار در این فایل ثبت شده است. این هشدارها مانع همگام‌سازی فایل نمی‌شوند، اما بهتر است برطرف شوند. فهرست هشدارها در زیر آمده است.
                       </p>
                       <pre
                         class="text-white rounded p-3 mb-0"
@@ -259,7 +255,7 @@ router.get(
                   `
                 : ''
             }
-            <h1 class="visually-hidden">File editor</h1>
+            <h1 class="visually-hidden">ویرایشگر فایل</h1>
 
             ${hydrateHtml(
               <FileEditor
@@ -287,7 +283,7 @@ router.post(
   '/*',
   typedAsyncHandler<'course' | 'course-instance' | 'assessment'>(async (req, res) => {
     if (!res.locals.authz_data.has_course_permission_edit) {
-      throw new HttpStatusError(403, 'Access denied (must be a course Editor)');
+      throw new HttpStatusError(403, 'دسترسی غیرمجاز (نیازمند دسترسی ویرایشگر درس)');
     }
 
     const paths = getPaths(req.params[0], res.locals);

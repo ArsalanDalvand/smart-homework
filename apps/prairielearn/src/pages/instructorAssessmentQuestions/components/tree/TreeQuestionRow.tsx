@@ -54,7 +54,7 @@ export function PointsBadge({
           placement="top"
           tooltip={{
             props: { id: tooltipId },
-            body: `Force max points: student receives ${total} pts on regrade`,
+            body: `اعمال حداکثر امتیاز: دانشجو در تصحیح مجدد ${total} امتیاز دریافت می‌کند`,
           }}
         >
           <span className="text-muted small text-nowrap ms-2">
@@ -76,7 +76,7 @@ export function PointsBadge({
           {manualStr}
         </span>,
       );
-      tooltipParts.push(`Manual grading: ${manualStr} pts`);
+      tooltipParts.push(`تصحیح دستی: ${manualStr} امتیاز`);
     }
 
     if (autoPoints != null) {
@@ -92,8 +92,8 @@ export function PointsBadge({
       );
       tooltipParts.push(
         pts.length > 1
-          ? `Auto-graded: ${pts.join(', ')} pts (per variant)`
-          : `Auto-graded: ${pts[0]} pts`,
+          ? `تصحیح خودکار: ${pts.join(', ')} امتیاز (به ازای هر نسخه)`
+          : `تصحیح خودکار: ${pts[0]} امتیاز`,
       );
     }
 
@@ -121,7 +121,7 @@ export function PointsBadge({
         placement="top"
         tooltip={{
           props: { id: tooltipId },
-          body: `Force max points: student receives ${total} pts on regrade`,
+          body: `اعمال حداکثر امتیاز: دانشجو در تصحیح مجدد ${total} امتیاز دریافت می‌کند`,
         }}
       >
         <span className="text-muted small text-nowrap ms-2">
@@ -143,7 +143,7 @@ export function PointsBadge({
         {manualStr}
       </span>,
     );
-    tooltipParts.push(`Manual grading: ${manualStr} pts`);
+    tooltipParts.push(`تصحیح دستی: ${manualStr} امتیاز`);
   }
 
   if (initPoints != null || maxAuto != null) {
@@ -160,8 +160,8 @@ export function PointsBadge({
     );
     tooltipParts.push(
       init === max
-        ? `Auto-graded: ${init} pts`
-        : `Auto-graded: ${init} pts initial, ${max} pts max`,
+        ? `تصحیح خودکار: ${init} امتیاز`
+        : `تصحیح خودکار: ${init} امتیاز اولیه، حداکثر ${max} امتیاز`,
     );
   }
 
@@ -287,7 +287,7 @@ export function TreeQuestionRow({
               {!hasTitle && (
                 <CopyButton
                   text={question.id}
-                  ariaLabel="Copy QID"
+                  ariaLabel="کپی QID"
                   className="btn-xs btn-ghost hover-show ms-1"
                 />
               )}
@@ -307,15 +307,15 @@ export function TreeQuestionRow({
           {!questionData && (
             <WarningIndicator
               tooltipId={`unavailable-${question.trackingId}`}
-              label="Unavailable locally"
-              body="This question is unavailable in this PrairieLearn instance. Its assessment settings will be preserved when saving."
+              label="در دسترس نیست"
+              body="این سوال در این نمونه سامانه در دسترس نیست. تنظیمات ارزیابی آن هنگام ذخیره حفظ خواهد شد."
             />
           )}
           {hasManualGradingAutoPointsWarning && (
             <WarningIndicator
               tooltipId={`manual-auto-points-${question.trackingId}`}
-              label="Auto points ignored"
-              body="Auto points have no effect on manually-graded questions"
+              label="نادیده‌گرفتن امتیاز خودکار"
+              body="امتیاز خودکار بر سوالات با تصحیح دستی تاثیری ندارد"
             />
           )}
           <ChangeIndicatorBadges
@@ -333,7 +333,7 @@ export function TreeQuestionRow({
             <span className="text-truncate">{question.id}</span>
             <CopyButton
               text={question.id}
-              ariaLabel="Copy QID"
+              ariaLabel="کپی QID"
               className="btn-xs btn-ghost hover-show ms-1"
             />
           </div>
@@ -381,8 +381,8 @@ export function TreeQuestionRow({
             'btn btn-sm border-0 text-muted ms-1 tree-delete-btn',
             !isSelected && 'hover-show',
           )}
-          aria-label={`Delete question ${question.id}`}
-          title="Delete question"
+          aria-label={`حذف سوال ${question.id}`}
+          title="حذف سوال"
           onClick={(e) => {
             e.stopPropagation();
             onDelete();

@@ -60,10 +60,10 @@ function AssessmentAccessControlInner({
     permissions.hasCoursePermissionEdit || permissions.hasCourseInstancePermissionView;
   const readOnlyMessage = run(() => {
     if (permissions.isExampleCourse) {
-      return 'Editing access settings is not permitted for the example course.';
+      return 'ویرایش تنظیمات دسترسی برای درس نمونه مجاز نیست.';
     }
     if (!permissions.hasCoursePermissionEdit) {
-      return 'Editing access settings requires course editor permissions.';
+      return 'ویرایش تنظیمات دسترسی نیازمند دسترسی ویرایشگر درس است.';
     }
     return null;
   });
@@ -121,7 +121,7 @@ function AssessmentAccessControlInner({
     if (saveMutation.isSuccess) {
       return {
         variant: 'success',
-        message: 'Access control updated successfully.',
+        message: 'کنترل دسترسی با موفقیت به‌روزرسانی شد.',
         onDismiss: () => saveMutation.reset(),
       };
     }
@@ -132,7 +132,7 @@ function AssessmentAccessControlInner({
           <>
             {saveError.message}{' '}
             <a href={getCourseInstanceJobSequenceUrl(courseInstance.id, saveError.jobSequenceId)}>
-              View job logs
+              مشاهده گزارش عملیات
             </a>
           </>
         ),

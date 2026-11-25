@@ -27,7 +27,7 @@ import { TopicBadge } from './TopicBadge.js';
 type ColumnFilter = (props: { header: TanstackTableHeader<SafeQuestionsPageData> }) => ReactNode;
 
 const columnHelper = createTanstackTableColumnHelper<SafeQuestionsPageData>();
-const NONE_FILTER_VALUE = '(None)';
+const NONE_FILTER_VALUE = '(هیچ‌کدام)';
 const AUTO_SIZE_SAMPLE_COUNT = 5;
 
 function imageFilterValue(value: string | null | undefined): string {
@@ -388,7 +388,7 @@ export function createQuestionsTableColumns({
                         ) ?? [];
                       return applyMultiSelectFilter(filter, (values) => {
                         if (assessments.length === 0) {
-                          return values.includes('(None)');
+                          return values.includes(NONE_FILTER_VALUE);
                         }
                         return values.some((v) =>
                           assessments.some(
@@ -443,7 +443,7 @@ export function createQuestionsTableFilters({
   ];
 
   const allSharingSets = run(() => {
-    const sets = new Set<string>(['Public', 'Public source']);
+    const sets = new Set<string>(['عمومی', 'سورس عمومی']);
     questions.forEach((q) => {
       q.sharing_sets?.forEach((s) => {
         if (s.name) sets.add(s.name);

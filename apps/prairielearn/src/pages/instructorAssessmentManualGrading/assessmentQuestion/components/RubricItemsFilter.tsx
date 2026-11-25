@@ -53,7 +53,7 @@ export function RubricItemsFilter({
           className={rubricItemsFilter.length > 0 ? 'bi bi-funnel-fill me-2' : 'bi bi-funnel me-2'}
           aria-hidden="true"
         />
-        Filter by rubric items
+        فیلتر بر اساس موارد معیار نمره‌دهی
       </Dropdown.Toggle>
       <Dropdown.Menu align="end" style={{ width: '400px' }}>
         {sortedRubricItems.map((item) => (
@@ -83,7 +83,7 @@ export function RubricItemsFilter({
                 {item.rubric_item.points > 0
                   ? `+${item.rubric_item.points}`
                   : item.rubric_item.points}{' '}
-                pts
+                امتیاز
               </small>
               <span className="ms-auto badge bg-secondary">
                 {rubricItemUsage.get(item.rubric_item.id) ?? 0}

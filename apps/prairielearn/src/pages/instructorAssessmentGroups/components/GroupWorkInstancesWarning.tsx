@@ -13,14 +13,15 @@ export function GroupWorkInstancesWarning({
   assessmentId: string;
   className?: string;
 }) {
-  const subject = action === 'enabling' ? 'Some students' : 'Some groups';
-  const instanceKind = action === 'enabling' ? 'individual' : 'group';
+  const subject = action === 'enabling' ? 'برخی دانشجویان' : 'برخی گروه‌ها';
+  const instanceKind = action === 'enabling' ? 'فردی' : 'گروهی';
+  const actionText = action === 'enabling' ? 'فعال‌سازی' : 'غیرفعال‌سازی';
   const assessmentStudentsUrl = getAssessmentStudentsUrl({ courseInstanceId, assessmentId });
   return (
     <Alert variant="warning" className={className}>
-      {subject} have already started this assessment. Delete all {instanceKind} assessment instances
-      on the <Alert.Link href={assessmentStudentsUrl}>Students tab</Alert.Link> before {action}{' '}
-      group work.
+      {subject} قبلاً این ارزیابی را شروع کرده‌اند. پیش از {actionText} کار گروهی، همه نمونه‌های{' '}
+      {instanceKind} این ارزیابی را از <Alert.Link href={assessmentStudentsUrl}>بخش دانشجویان</Alert.Link>{' '}
+      حذف کنید.
     </Alert>
   );
 }

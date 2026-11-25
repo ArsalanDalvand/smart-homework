@@ -214,26 +214,24 @@ export function AltPoolDetailPanel({
       {pointsMismatch && (
         <div className="alert alert-warning small mb-3" role="alert">
           <i className="bi bi-exclamation-triangle-fill me-1" aria-hidden="true" />
-          Students will receive different total points because this pool has alternatives with
-          different point values.
+          دانشجویان مجموع امتیاز متفاوتی دریافت خواهند کرد زیرا این مجموعه دارای گزینه‌های جایگزین با مقادیر امتیاز متفاوت است.
         </div>
       )}
       {chooseExceeds && (
         <div className="alert alert-warning small mb-3" role="alert">
           <i className="bi bi-exclamation-triangle-fill me-1" aria-hidden="true" />
-          Number to choose exceeds the number of alternatives in this pool.
+          تعداد انتخاب از تعداد گزینه‌های جایگزین موجود در این مجموعه بیشتر است.
         </div>
       )}
       {zoneQuestionBlock.pointsDistributedInfoBanner &&
         !state.dismissedBanners.has(zoneQuestionBlock.trackingId) && (
           <div className="alert alert-info small mb-3 alert-dismissible" role="alert">
             <i className="bi bi-info-circle-fill me-1" aria-hidden="true" />
-            This pool contains both auto-graded and manually-graded questions. Points have been
-            distributed to individual alternatives based on each question's grading method.
+            این مجموعه هم شامل سوالات با تصحیح خودکار و هم شامل سوالات با تصحیح دستی است. امتیازها بر اساس روش تصحیح هر سوال به گزینه‌های جایگزین جداگانه توزیع شده‌اند.
             <button
               type="button"
               className="btn-close"
-              aria-label="Dismiss"
+              aria-label="بستن"
               onClick={() => onDismissBanner(zoneQuestionBlock.trackingId)}
             />
           </div>
@@ -241,23 +239,22 @@ export function AltPoolDetailPanel({
       {hasAutoGradedWithOnlyManualPoints && (
         <div className="alert alert-info small mb-3" role="alert">
           <i className="bi bi-info-circle-fill me-1" aria-hidden="true" />
-          One or more alternatives in this pool are auto-graded but only have manual points.
-          Auto-grading results for those questions will not contribute to the score.
+          یک یا چند گزینه جایگزین در این مجموعه دارای تصحیح خودکار هستند اما فقط امتیاز دستی دارند. نتایج تصحیح خودکار آن سوالات در نمره لحاظ نخواهد شد.
         </div>
       )}
       <div className="d-flex flex-column gap-2">
         <div className="text-muted small">
-          {alternativeCount} alternative{alternativeCount !== 1 ? 's' : ''} in pool
+          {alternativeCount} گزینه جایگزین در مجموعه
         </div>
         {sharedTopic && (
           <div>
-            <div className="text-muted small mb-1">Topic shared across alternatives</div>
+            <div className="text-muted small mb-1">موضوع مشترک بین گزینه‌های جایگزین</div>
             <span className={`badge color-${sharedTopic.color}`}>{sharedTopic.name}</span>
           </div>
         )}
         {sharedTags.length > 0 && (
           <div>
-            <div className="text-muted small mb-1">Tags shared across alternatives</div>
+            <div className="text-muted small mb-1">برچسب‌های مشترک بین گزینه‌های جایگزین</div>
             <div className="d-flex flex-wrap gap-1">
               {sharedTags.map((tag) => (
                 <span key={tag.name} className={`badge color-${tag.color}`}>
@@ -269,11 +266,11 @@ export function AltPoolDetailPanel({
         )}
       </div>
 
-      <DetailSectionHeader>Settings</DetailSectionHeader>
+      <DetailSectionHeader>تنظیمات</DetailSectionHeader>
 
       {membershipLocked && (
         <p className="text-muted small">
-          Alternatives in this pool are read-only while questions are unavailable locally.
+          گزینه‌های جایگزین این مجموعه تا زمانی که سوالات به‌صورت محلی در دسترس نباشند، فقط خواندنی هستند.
         </p>
       )}
 
@@ -281,13 +278,13 @@ export function AltPoolDetailPanel({
         <dl className={clsx(editMode ? 'mb-3' : 'mb-2')}>
           {zoneQuestionBlock.points != null && (
             <>
-              <dt>Points (default)</dt>
+              <dt>امتیاز (پیش‌فرض)</dt>
               <dd>{formatPoints(zoneQuestionBlock.points)}</dd>
             </>
           )}
           {zoneQuestionBlock.maxPoints != null && (
             <>
-              <dt>Max points (default)</dt>
+              <dt>حداکثر امتیاز (پیش‌فرض)</dt>
               <dd>{formatPoints(zoneQuestionBlock.maxPoints)}</dd>
             </>
           )}
@@ -298,10 +295,10 @@ export function AltPoolDetailPanel({
         <FormField
           editMode={editMode}
           id={`${idPrefix}-numberChoose`}
-          label="Number to choose"
-          viewValue={zoneQuestionBlock.numberChoose ?? 'All'}
+          label="تعداد انتخاب"
+          viewValue={zoneQuestionBlock.numberChoose ?? 'همه'}
           error={errors.numberChoose}
-          helpText={`How many of the ${alternativeCount} alternative${alternativeCount !== 1 ? 's' : ''} to randomly choose for each student (leave empty for all).`}
+          helpText={`تعداد سوالاتی که از میان ${alternativeCount} گزینه جایگزین به‌صورت تصادفی برای هر دانشجو انتخاب می‌شود (برای همه خالی بگذارید).`}
         >
           {(aria) => (
             <input
@@ -310,7 +307,7 @@ export function AltPoolDetailPanel({
               {...aria.inputProps}
               {...register('numberChoose', {
                 setValueAs: coerceToNumber,
-                validate: (v) => validatePositiveInteger(v, 'Number to choose'),
+                validate: (v) => validatePositiveInteger(v, 'تعداد انتخاب'),
               })}
             />
           )}
@@ -321,21 +318,21 @@ export function AltPoolDetailPanel({
             <FormField
               editMode={editMode && !hasLegacyPoints}
               id={`${idPrefix}-autoPoints`}
-              label="Auto points (default)"
+              label="امتیاز خودکار (پیش‌فرض)"
               viewValue={formatPoints(zoneQuestionBlock.autoPoints)}
               error={errors.autoPoints}
               helpText={
                 <>
-                  Points awarded for the auto-graded component.{' '}
+                  امتیاز اختصاص‌یافته به بخش تصحیح خودکار.{' '}
                   {constantQuestionValue
-                    ? 'Each correct answer is worth this many points.'
-                    : 'Each consecutive correct answer is worth more; an incorrect answer resets the value.'}{' '}
+                    ? 'هر پاسخ صحیح این مقدار امتیاز دارد.'
+                    : 'هر پاسخ صحیح پیاپی امتیاز بیشتری دارد؛ پاسخ نادرست مقدار را بازنشانی می‌کند.'}{' '}
                   <a
                     href="https://docs.prairielearn.com/assessment/configuration/#question-points-for-homework-assessments"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Learn more about question points
+                    اطلاعات بیشتر درباره امتیاز سوالات
                   </a>
                 </>
               }
@@ -352,14 +349,14 @@ export function AltPoolDetailPanel({
                     deps: ['maxAutoPoints'],
                     validate: (v, formValues) => {
                       if (typeof v === 'number' && v < 0) {
-                        return 'Auto points must be non-negative.';
+                        return 'امتیاز خودکار باید نامنفی باشد.';
                       }
                       const maxPoints = formValues.maxAutoPoints;
                       if (typeof v === 'number' && v === 0 && maxPoints != null && maxPoints > 0) {
-                        return 'Auto points cannot be 0 when max auto points is greater than 0.';
+                        return 'وقتی حداکثر امتیاز خودکار بیشتر از ۰ است، امتیاز خودکار نمی‌تواند ۰ باشد.';
                       }
                       if (typeof v === 'number' && typeof maxPoints === 'number' && v > maxPoints) {
-                        return 'Auto points cannot exceed max auto points.';
+                        return 'امتیاز خودکار نمی‌تواند از حداکثر امتیاز خودکار بیشتر باشد.';
                       }
                     },
                   })}
@@ -369,14 +366,14 @@ export function AltPoolDetailPanel({
             <FormField
               editMode={editMode && !hasLegacyPoints}
               id={`${idPrefix}-maxAutoPoints`}
-              label="Max auto points (default)"
+              label="حداکثر امتیاز خودکار (پیش‌فرض)"
               viewValue={
                 zoneQuestionBlock.maxAutoPoints != null
                   ? String(zoneQuestionBlock.maxAutoPoints)
                   : undefined
               }
               error={errors.maxAutoPoints}
-              helpText="Maximum total auto-graded points."
+              helpText="حداکثر مجموع امتیاز تصحیح خودکار."
               hideWhenEmpty
             >
               {(aria) => (
@@ -390,13 +387,13 @@ export function AltPoolDetailPanel({
                     setValueAs: coerceToNumber,
                     deps: ['autoPoints'],
                     validate: (v, formValues) => {
-                      if (v != null && v < 0) return 'Max auto points must be non-negative.';
+                      if (v != null && v < 0) return 'حداکثر امتیاز خودکار باید نامنفی باشد.';
                       const points = formValues.autoPoints;
                       if (typeof points === 'number' && points === 0 && v != null && v > 0) {
-                        return 'Max auto points must be 0 or empty when auto points is 0.';
+                        return 'وقتی امتیاز خودکار ۰ است، حداکثر امتیاز خودکار باید ۰ یا خالی باشد.';
                       }
                       if (typeof points === 'number' && typeof v === 'number' && v < points) {
-                        return 'Max auto points must be at least auto points.';
+                        return 'حداکثر امتیاز خودکار باید حداقل برابر با امتیاز خودکار باشد.';
                       }
                     },
                   })}
@@ -406,14 +403,14 @@ export function AltPoolDetailPanel({
             <FormField
               editMode={editMode && !hasLegacyPoints}
               id={`${idPrefix}-manualPoints`}
-              label="Manual points (default)"
+              label="امتیاز دستی (پیش‌فرض)"
               viewValue={
                 zoneQuestionBlock.manualPoints != null
                   ? String(zoneQuestionBlock.manualPoints)
                   : undefined
               }
               error={errors.manualPoints}
-              helpText="Default manual points inherited by alternatives unless overridden."
+              helpText="امتیاز دستی پیش‌فرض که توسط گزینه‌های جایگزین به ارث برده می‌شود مگر اینکه بازنویسی شود."
               hideWhenEmpty
             >
               {(aria) => (
@@ -425,7 +422,7 @@ export function AltPoolDetailPanel({
                   {...register('manualPoints', {
                     setValueAs: coerceToNumber,
                     validate: (v) => {
-                      if (v != null && v < 0) return 'Manual points must be non-negative.';
+                      if (v != null && v < 0) return 'امتیاز دستی باید نامنفی باشد.';
                     },
                   })}
                 />
@@ -434,14 +431,14 @@ export function AltPoolDetailPanel({
             <FormField
               editMode={editMode}
               id={`${idPrefix}-triesPerVariant`}
-              label="Tries per variant (default)"
+              label="تعداد تلاش در هر نسخه (پیش‌فرض)"
               viewValue={
                 zoneQuestionBlock.triesPerVariant != null
                   ? String(zoneQuestionBlock.triesPerVariant)
                   : undefined
               }
               error={errors.triesPerVariant}
-              helpText="Default number of submission attempts per variant, inherited by alternatives unless overridden."
+              helpText="تعداد پیش‌فرض دفعات مجاز ارسال پاسخ برای هر نسخه، که توسط گزینه‌های جایگزین به ارث برده می‌شود مگر اینکه بازنویسی شود."
               hideWhenEmpty
             >
               {(aria) => (
@@ -451,7 +448,7 @@ export function AltPoolDetailPanel({
                   {...aria.inputProps}
                   {...register('triesPerVariant', {
                     setValueAs: coerceToNumber,
-                    validate: (v) => validatePositiveInteger(v, 'Tries per variant'),
+                    validate: (v) => validatePositiveInteger(v, 'تعداد تلاش در هر نسخه'),
                   })}
                 />
               )}
@@ -462,10 +459,10 @@ export function AltPoolDetailPanel({
             <FormField
               editMode={editMode && !hasLegacyPoints}
               id={`${idPrefix}-points`}
-              label="Auto points (default)"
+              label="امتیاز خودکار (پیش‌فرض)"
               viewValue={formatPoints(zoneQuestionBlock.autoPoints)}
               error={errors.autoPoints}
-              helpText='Default auto points inherited by alternatives unless overridden, as a comma-separated list (e.g. "10, 5, 2, 1").'
+              helpText='امتیاز خودکار پیش‌فرض که توسط گزینه‌های جایگزین به ارث برده می‌شود مگر اینکه بازنویسی شود، به‌صورت فهرست جداشده با ویرگول (مثلاً "10, 5, 2, 1").'
               hideWhenEmpty
             >
               {(aria) => (
@@ -486,14 +483,14 @@ export function AltPoolDetailPanel({
             <FormField
               editMode={editMode && !hasLegacyPoints}
               id={`${idPrefix}-manualPoints`}
-              label="Manual points (default)"
+              label="امتیاز دستی (پیش‌فرض)"
               viewValue={
                 zoneQuestionBlock.manualPoints != null
                   ? String(zoneQuestionBlock.manualPoints)
                   : undefined
               }
               error={errors.manualPoints}
-              helpText="Default manual points inherited by alternatives unless overridden."
+              helpText="امتیاز دستی پیش‌فرض که توسط گزینه‌های جایگزین به ارث برده می‌شود مگر اینکه بازنویسی شود."
               hideWhenEmpty
             >
               {(aria) => (
@@ -505,7 +502,7 @@ export function AltPoolDetailPanel({
                   {...register('manualPoints', {
                     setValueAs: coerceToNumber,
                     validate: (v) => {
-                      if (v != null && v < 0) return 'Manual points must be non-negative.';
+                      if (v != null && v < 0) return 'امتیاز دستی باید نامنفی باشد.';
                     },
                   })}
                 />
@@ -517,13 +514,13 @@ export function AltPoolDetailPanel({
         <FormField
           editMode={editMode}
           id={`${idPrefix}-comment`}
-          label="Comment"
+          label="یادداشت"
           viewValue={
             zoneQuestionBlock.comment != null ? (
               <span className="text-break">{commentToString(zoneQuestionBlock.comment)}</span>
             ) : undefined
           }
-          helpText="Internal note, not shown to students."
+          helpText="یادداشت داخلی، به دانشجویان نمایش داده نمی‌شود."
           hideWhenEmpty
         >
           {(aria) => (
@@ -539,13 +536,13 @@ export function AltPoolDetailPanel({
 
       {groupsConfigured && (
         <>
-          <DetailSectionHeader>Role permissions</DetailSectionHeader>
+          <DetailSectionHeader>دسترسی نقش‌ها</DetailSectionHeader>
           {hasRoles ? (
             <Wrapper className={clsx(!editMode && 'mb-0')}>
               <InheritableRolesField
                 id={`${idPrefix}-canView`}
-                label="Can view"
-                helpText="Roles allowed to view alternatives in this pool."
+                label="مجاز به مشاهده"
+                helpText="نقش‌های مجاز به مشاهده گزینه‌های جایگزین در این مجموعه."
                 editMode={editMode}
                 isInherited={!canViewOverridden}
                 inheritedValue={canViewParent.value}
@@ -563,8 +560,8 @@ export function AltPoolDetailPanel({
               />
               <InheritableRolesField
                 id={`${idPrefix}-canSubmit`}
-                label="Can submit"
-                helpText="Roles allowed to submit answers to alternatives in this pool."
+                label="مجاز به ارسال"
+                helpText="نقش‌های مجاز به ارسال پاسخ برای گزینه‌های جایگزین در این مجموعه."
                 editMode={editMode}
                 isInherited={!canSubmitOverridden}
                 inheritedValue={canSubmitParent.value}
@@ -583,7 +580,7 @@ export function AltPoolDetailPanel({
             </Wrapper>
           ) : (
             <p className="text-muted small mb-3">
-              No <a href={groupsPageUrl}>custom roles</a> defined for this assessment.
+              هیچ <a href={groupsPageUrl}>نقش سفارشی</a> برای این ارزیابی تعریف نشده است.
             </p>
           )}
         </>

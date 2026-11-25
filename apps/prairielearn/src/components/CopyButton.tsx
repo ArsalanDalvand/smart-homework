@@ -6,7 +6,7 @@ import { OverlayTrigger } from '@prairielearn/ui';
 export function CopyButton({
   text,
   label = '',
-  ariaLabel = label || 'Copy to clipboard',
+  ariaLabel = label || 'کپی در حافظه موقت',
   className,
 }: {
   text: string;
@@ -34,7 +34,7 @@ export function CopyButton({
   return (
     <OverlayTrigger
       tooltip={{
-        body: copied ? 'Copied!' : 'Copy',
+        body: copied ? 'کپی شد!' : 'کپی',
         props: { id: tooltipId },
       }}
     >

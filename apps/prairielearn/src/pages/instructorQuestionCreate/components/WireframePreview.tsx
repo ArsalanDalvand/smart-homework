@@ -219,8 +219,8 @@ function DropdownPreview() {
 function TrueFalsePreview() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <RadioRow text="True" selected />
-      <RadioRow text="False" />
+      <RadioRow text="صحیح" selected />
+      <RadioRow text="غلط" />
     </div>
   );
 }
@@ -230,7 +230,7 @@ function AllOfTheAbovePreview() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <RadioRow width="55%" />
       <RadioRow width="42%" />
-      <RadioRow text="All of the above" selected />
+      <RadioRow text="همه موارد" selected />
     </div>
   );
 }
@@ -240,7 +240,7 @@ function NoneOfTheAbovePreview() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <RadioRow width="55%" />
       <RadioRow width="42%" />
-      <RadioRow text="None of the above" selected />
+      <RadioRow text="هیچ‌کدام" selected />
     </div>
   );
 }
@@ -268,7 +268,7 @@ function NumberInputPreview() {
 }
 
 function StringInputPreview() {
-  return <InputField width="fit-content" text="Hello, world!" />;
+  return <InputField width="fit-content" text="سلام دنیا!" />;
 }
 
 function SymbolicInputPreview() {

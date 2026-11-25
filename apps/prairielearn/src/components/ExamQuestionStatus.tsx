@@ -86,10 +86,10 @@ export function ExamQuestionStatus({
               data-bs-toggle="popover"
               data-bs-container="body"
               data-bs-html="true"
-              data-bs-content="This question limits the rate of submissions. Further grade allowed in ${formatInterval(
+              data-bs-content="این سوال نرخ ارسال پاسخ‌ها را محدود می‌کند. ارسال بعدی جهت تصحیح پس از ${formatInterval(
                 allowGradeLeftMs,
                 { fullPartNames: true, firstOnly: true },
-              )} (as of the loading of this page)."
+              )} (نسبت به زمان بارگذاری این صفحه) مجاز خواهد بود."
               data-bs-placement="auto"
             >
               <i class="fa fa-hourglass-half" aria-hidden="true"></i>

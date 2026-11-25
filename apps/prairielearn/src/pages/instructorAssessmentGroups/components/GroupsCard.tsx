@@ -2,7 +2,6 @@ import { type UseQueryResult, useMutation } from '@tanstack/react-query';
 import type { TRPCClientErrorLike } from '@trpc/client';
 import type { inferRouterOutputs } from '@trpc/server';
 import clsx from 'clsx';
-import { formatDistance } from 'date-fns';
 import { useEffect, useState } from 'react';
 import {
   Alert,
@@ -30,6 +29,17 @@ import type { AssessmentGroupsError } from '../../../trpc/assessment/assessment-
 import { useTRPC } from '../../../trpc/assessment/context.js';
 import type { AssessmentRouter } from '../../../trpc/assessment/trpc.js';
 import type { ActionAccess } from '../types.js';
+
+function formatRelativeTimeFa(fromMs: number, toMs: number): string {
+  const diffSec = Math.max(0, Math.floor((toMs - fromMs) / 1000));
+  if (diffSec < 60) return 'لحظاتی پیش';
+  const diffMin = Math.floor(diffSec / 60);
+  if (diffMin < 60) return `${diffMin} دقیقه پیش`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr} ساعت پیش`;
+  const diffDay = Math.floor(diffHr / 24);
+  return `${diffDay} روز پیش`;
+}
 
 type MembershipData = inferRouterOutputs<AssessmentRouter>['assessmentGroups']['membership'];
 
@@ -87,7 +97,7 @@ function EditGroupModal({
     <Modal show={show} onHide={handleHide}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header>
-          <Modal.Title>Edit group</Modal.Title>
+          <Modal.Title>ویرایش گروه</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {appError && (
@@ -97,7 +107,7 @@ function EditGroupModal({
           )}
           {failures.length > 0 && (
             <Alert variant="warning" dismissible onClose={() => mutation.reset()}>
-              <strong>Some changes could not be applied:</strong>
+              <strong>برخی تغییرات اعمال نشدند:</strong>
               <ul className="mb-0">
                 {failures.map((f) => (
                   <li key={f.uid}>
@@ -109,7 +119,7 @@ function EditGroupModal({
           )}
           <div className="mb-3">
             <label className="form-label" htmlFor={`editGroupName-${row.group_id}`}>
-              Group name
+              نام گروه
             </label>
             <input
               type="text"
@@ -121,7 +131,7 @@ function EditGroupModal({
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor={uidsInputId}>
-              UIDs
+              شناسه‌های کاربری (UIDs)
             </label>
             <textarea
               className={clsx('form-control', errors.uids && 'is-invalid')}
@@ -139,20 +149,21 @@ function EditGroupModal({
               </div>
             )}
             <small className="form-text text-muted">
-              Separate multiple UIDs with commas. This list replaces the current members.
+              شناسه‌های متعدد را با کاما (،) یا ویرگول انگلیسی (,) جدا کنید. این فهرست جایگزین اعضای
+              فعلی می‌شود.
             </small>
           </div>
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={handleHide}>
-            Cancel
+            انصراف
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={isSubmitting || mutation.isPending}
           >
-            Save
+            ذخیره
           </button>
         </Modal.Footer>
       </form>
@@ -198,7 +209,7 @@ function DeleteGroupModal({
         }}
       >
         <Modal.Header>
-          <Modal.Title>Delete group</Modal.Title>
+          <Modal.Title>حذف گروه</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {appError && (
@@ -207,15 +218,15 @@ function DeleteGroupModal({
             </Alert>
           )}
           <p>
-            Are you sure you want to delete the group <strong>{row.name}</strong>?
+            آیا از حذف گروه <strong>{row.name}</strong> مطمئن هستید؟
           </p>
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={handleHide}>
-            Cancel
+            انصراف
           </button>
           <button type="submit" className="btn btn-danger" disabled={mutation.isPending}>
-            Delete
+            حذف
           </button>
         </Modal.Footer>
       </form>
@@ -236,10 +247,10 @@ function UploadAssessmentGroupsModal({
     <Modal show={show} onHide={onHide}>
       <form method="POST" encType="multipart/form-data">
         <Modal.Header>
-          <Modal.Title>Upload group memberships</Modal.Title>
+          <Modal.Title>بارگذاری اعضای گروه‌ها</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Upload a CSV file in the format of:</p>
+          <p>یک فایل CSV با قالب زیر بارگذاری کنید:</p>
           <pre className="ms-4">
             {`group_name,uid
 groupA,one@example.com
@@ -248,12 +259,12 @@ groupB,three@example.com
 groupB,four@example.com`}
           </pre>
           <p>
-            The <code>group_name</code> column should be a unique identifier for each group. To
-            change the grouping, link uids to the group name.
+            ستون <code>group_name</code> باید یک شناسه یکتا برای هر گروه باشد. برای تغییر
+            گروه‌بندی، شناسه‌های کاربری (uid) را به نام گروه مورد نظر متصل کنید.
           </p>
           <div className="mb-3">
             <label className="form-label" htmlFor="uploadAssessmentGroupsFileInput">
-              Choose CSV file
+              انتخاب فایل CSV
             </label>
             <input
               type="file"
@@ -268,10 +279,10 @@ groupB,four@example.com`}
           <input type="hidden" name="__action" value="upload_assessment_groups" />
           <input type="hidden" name="__csrf_token" value={csrfToken} />
           <button type="button" className="btn btn-secondary" onClick={onHide}>
-            Cancel
+            انصراف
           </button>
           <button type="submit" className="btn btn-primary">
-            Upload
+            بارگذاری
           </button>
         </Modal.Footer>
       </form>
@@ -325,7 +336,7 @@ function RandomAssessmentGroupsModal({
     <Modal show={show} onHide={handleHide}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header>
-          <Modal.Title>Assign students randomly</Modal.Title>
+          <Modal.Title>اختصاص تصادفی دانشجویان</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AppErrorAlert
@@ -336,13 +347,13 @@ function RandomAssessmentGroupsModal({
             onDismiss={() => mutation.reset()}
           />
           <p className="text-muted small">
-            Unassigned students will be randomly distributed into new groups based on the size
-            constraints below. Students already in a group will not be affected.
+            دانشجویان بدون گروه به صورت تصادفی و بر اساس محدودیت‌های اندازه زیر در گروه‌های جدید
+            توزیع می‌شوند. دانشجویانی که از قبل در یک گروه هستند تحت تاثیر قرار نمی‌گیرند.
           </p>
           <div className="row g-3">
             <div className="col-6">
               <label className="form-label" htmlFor="formMin">
-                Min members
+                حداقل اعضا
               </label>
               <input
                 type="number"
@@ -353,13 +364,13 @@ function RandomAssessmentGroupsModal({
                 aria-errormessage={errors.minGroupSize ? 'formMinError' : undefined}
                 {...register('minGroupSize', {
                   valueAsNumber: true,
-                  required: 'Required.',
-                  min: { value: 1, message: 'Must be at least 1.' },
+                  required: 'الزامی است.',
+                  min: { value: 1, message: 'باید حداقل ۱ باشد.' },
                   deps: ['maxGroupSize'],
                   validate: (value) => {
                     const max = getValues('maxGroupSize');
                     if (Number.isFinite(value) && Number.isFinite(max) && value > max) {
-                      return 'Must be ≤ max members.';
+                      return 'باید ≤ حداکثر اعضا باشد.';
                     }
                     return true;
                   },
@@ -373,7 +384,7 @@ function RandomAssessmentGroupsModal({
             </div>
             <div className="col-6">
               <label className="form-label" htmlFor="formMax">
-                Max members
+                حداکثر اعضا
               </label>
               <input
                 type="number"
@@ -384,13 +395,13 @@ function RandomAssessmentGroupsModal({
                 aria-errormessage={errors.maxGroupSize ? 'formMaxError' : undefined}
                 {...register('maxGroupSize', {
                   valueAsNumber: true,
-                  required: 'Required.',
-                  min: { value: 1, message: 'Must be at least 1.' },
+                  required: 'الزامی است.',
+                  min: { value: 1, message: 'باید حداقل ۱ باشد.' },
                   deps: ['minGroupSize'],
                   validate: (value) => {
                     const min = getValues('minGroupSize');
                     if (Number.isFinite(value) && Number.isFinite(min) && value < min) {
-                      return 'Must be ≥ min members.';
+                      return 'باید ≥ حداقل اعضا باشد.';
                     }
                     return true;
                   },
@@ -406,14 +417,14 @@ function RandomAssessmentGroupsModal({
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={handleHide}>
-            Cancel
+            انصراف
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={!isValid || isSubmitting || mutation.isPending}
           >
-            Assign
+            اختصاص
           </button>
         </Modal.Footer>
       </form>
@@ -464,7 +475,7 @@ function AddGroupModal({
     <Modal show={show} onHide={handleHide}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header>
-          <Modal.Title>Add a group</Modal.Title>
+          <Modal.Title>افزودن گروه</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {appError && (
@@ -474,7 +485,7 @@ function AddGroupModal({
           )}
           <div className="mb-3">
             <label className="form-label" htmlFor="formName">
-              Group name
+              نام گروه
             </label>
             <input
               type="text"
@@ -488,9 +499,9 @@ function AddGroupModal({
               {...register('groupName', {
                 pattern: {
                   value: /^[0-9a-zA-Z]*$/,
-                  message: 'Only letters and numbers are allowed.',
+                  message: 'فقط حروف انگلیسی و اعداد مجاز هستند.',
                 },
-                maxLength: { value: 30, message: 'Use at most 30 characters.' },
+                maxLength: { value: 30, message: 'حداکثر ۳۰ کاراکتر استفاده کنید.' },
               })}
             />
             {errors.groupName && (
@@ -499,13 +510,13 @@ function AddGroupModal({
               </div>
             )}
             <small id="addGroupNameHelp" className="form-text text-muted">
-              Keep blank to use a default name. If provided, the name must be at most 30 characters
-              long and may only contain letters and numbers.
+              برای استفاده از نام پیش‌فرض خالی بگذارید. در صورت وارد کردن، نام باید حداکثر ۳۰
+              کاراکتر بوده و فقط شامل حروف انگلیسی و اعداد باشد.
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="addGroupUids">
-              UIDs
+              شناسه‌های کاربری (UIDs)
             </label>
             <textarea
               className={clsx('form-control', errors.uids && 'is-invalid')}
@@ -516,7 +527,7 @@ function AddGroupModal({
               aria-invalid={errors.uids ? 'true' : undefined}
               {...(errors.uids ? { 'aria-errormessage': 'addGroupUidsError' } : {})}
               defaultValue=""
-              {...register('uids', { required: 'At least one UID is required.' })}
+              {...register('uids', { required: 'وارد کردن حداقل یک شناسه کاربری الزامی است.' })}
             />
             {errors.uids && (
               <div id="addGroupUidsError" className="invalid-feedback">
@@ -524,20 +535,20 @@ function AddGroupModal({
               </div>
             )}
             <small id="addGroupUidsHelp" className="form-text text-muted">
-              Separate multiple UIDs with commas.
+              شناسه‌های متعدد را با ویرگول انگلیسی (,) جدا کنید.
             </small>
           </div>
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={handleHide}>
-            Cancel
+            انصراف
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={isSubmitting || mutation.isPending}
           >
-            Add
+            افزودن
           </button>
         </Modal.Footer>
       </form>
@@ -582,7 +593,7 @@ function DeleteAllGroupsModal({
         }}
       >
         <Modal.Header>
-          <Modal.Title>Delete all existing groups</Modal.Title>
+          <Modal.Title>حذف همه گروه‌های موجود</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {appError && (
@@ -591,19 +602,19 @@ function DeleteAllGroupsModal({
             </Alert>
           )}
           <p>
-            Are you sure you want to delete all existing groups for{' '}
+            آیا از حذف تمام گروه‌های موجود برای{' '}
             <strong>
               {assessmentSetName} {assessmentNumber}
-            </strong>
-            ? This cannot be undone.
+            </strong>{' '}
+            مطمئن هستید؟ این عمل قابل بازگشت نیست.
           </p>
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={handleHide}>
-            Cancel
+            انصراف
           </button>
           <button type="submit" className="btn btn-danger" disabled={mutation.isPending}>
-            Delete all
+            حذف همه
           </button>
         </Modal.Footer>
       </form>
@@ -639,7 +650,7 @@ function GroupRow({
             ))}
           </div>
         ) : (
-          <small className="text-muted">(empty)</small>
+          <small className="text-muted">(خالی)</small>
         )}
       </td>
 
@@ -649,7 +660,7 @@ function GroupRow({
             <button
               type="button"
               className="btn btn-sm btn-outline-secondary"
-              aria-label={`Edit ${row.name}`}
+              aria-label={`ویرایش ${row.name}`}
               onClick={() => onEdit(row)}
             >
               <i className="bi bi-pencil" aria-hidden="true" />
@@ -657,7 +668,7 @@ function GroupRow({
             <button
               type="button"
               className="btn btn-sm btn-outline-danger"
-              aria-label={`Delete ${row.name}`}
+              aria-label={`حذف ${row.name}`}
               onClick={() => onDelete(row)}
             >
               <i className="bi bi-trash" aria-hidden="true" />
@@ -713,11 +724,11 @@ export function GroupsCard({
     const assignedCount = groups.reduce((sum, g) => sum + g.size, 0);
     const totalStudents = unassignedCount + assignedCount;
     if (totalStudents === 0) return null;
-    if (unassignedCount === 0) return 'All students are assigned';
+    if (unassignedCount === 0) return 'همه دانشجویان گروه‌بندی شده‌اند';
     if (assignedCount === 0) {
-      return `${unassignedCount} student${unassignedCount === 1 ? '' : 's'} unassigned`;
+      return `${unassignedCount} دانشجو بدون گروه`;
     }
-    return `${assignedCount} assigned · ${unassignedCount} unassigned`;
+    return `${assignedCount} گروه‌بندی‌شده · ${unassignedCount} بدون گروه`;
   });
 
   return (
@@ -772,9 +783,9 @@ export function GroupsCard({
         <div className="card-body">
           <div className="d-flex flex-column flex-md-row justify-content-md-between align-items-md-start gap-3 mb-3">
             <div>
-              <h5 className="mb-1">Groups</h5>
+              <h5 className="mb-1">گروه‌ها</h5>
               <div className="text-muted small">
-                {groupCount} group{groupCount === 1 ? '' : 's'}
+                {groupCount} گروه
                 {assignmentSummary && (
                   <>
                     {' · '}
@@ -783,15 +794,14 @@ export function GroupsCard({
                 )}
                 {membershipQuery.data ? (
                   <>
-                    {' · Updated '}
-                    {formatDistance(
+                    {' · به‌روزرسانی‌شده '}
+                    {formatRelativeTimeFa(
                       membershipQuery.dataUpdatedAt,
                       Math.max(now, membershipQuery.dataUpdatedAt),
-                      { addSuffix: true },
                     )}
                   </>
                 ) : (
-                  membershipQuery.isFetching && <> · Refreshing...</>
+                  membershipQuery.isFetching && <> · در حال بارگذاری...</>
                 )}
               </div>
             </div>
@@ -802,10 +812,10 @@ export function GroupsCard({
                   className="btn btn-outline-primary"
                   onClick={() => addModal.showWithData(null)}
                 >
-                  <i className="bi bi-plus-lg" aria-hidden="true" /> Add group
+                  <i className="bi bi-plus-lg" aria-hidden="true" /> افزودن گروه
                 </button>
               )}
-              <DropdownButton as={ButtonGroup} title="Actions" variant="outline-secondary">
+              <DropdownButton as={ButtonGroup} title="عملیات" variant="outline-secondary">
                 {canEdit && (
                   <Dropdown.Item
                     as="button"
@@ -813,7 +823,7 @@ export function GroupsCard({
                     onClick={() => uploadModal.showWithData(null)}
                   >
                     <i className="bi bi-upload me-2" aria-hidden="true" />
-                    Import CSV
+                    درون‌ریزی CSV
                   </Dropdown.Item>
                 )}
                 <Dropdown.Item
@@ -825,7 +835,7 @@ export function GroupsCard({
                   })}
                 >
                   <i className="bi bi-download me-2" aria-hidden="true" />
-                  Export CSV
+                  خروجی CSV
                 </Dropdown.Item>
                 {canEdit && (
                   <>
@@ -837,14 +847,14 @@ export function GroupsCard({
                       onClick={() => deleteAllModal.showWithData(null)}
                     >
                       <i className="bi bi-trash me-2" aria-hidden="true" />
-                      Delete all
+                      حذف همه
                     </Dropdown.Item>
                   </>
                 )}
               </DropdownButton>
               <Button
                 variant="outline-secondary"
-                aria-label="Refresh groups"
+                aria-label="به‌روزرسانی گروه‌ها"
                 disabled={membershipQuery.isFetching}
                 onClick={onRefresh}
               >
@@ -865,7 +875,7 @@ export function GroupsCard({
 
           {membershipQuery.isError && (
             <Alert variant="danger" className="mb-3">
-              Could not refresh group memberships. {membershipQuery.error.message}
+              به‌روزرسانی عضویت گروه‌ها ناموفق بود. {membershipQuery.error.message}
             </Alert>
           )}
 
@@ -877,8 +887,7 @@ export function GroupsCard({
               <div className="flex-grow-1">
                 <details>
                   <summary className="fw-semibold">
-                    {notAssigned.length} student{notAssigned.length === 1 ? '' : 's'} not assigned
-                    to a group
+                    {notAssigned.length} دانشجو به گروهی اختصاص نیافته است
                   </summary>
                   <ul className="mb-0 mt-2 small">
                     {notAssigned.map((uid) => (
@@ -893,19 +902,19 @@ export function GroupsCard({
                   className="btn btn-outline-secondary text-nowrap"
                   onClick={() => randomModal.showWithData(null)}
                 >
-                  <i className="bi bi-shuffle" aria-hidden="true" /> Assign randomly
+                  <i className="bi bi-shuffle" aria-hidden="true" /> اختصاص تصادفی
                 </button>
               )}
             </Alert>
           )}
 
           <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0" aria-label="Groups">
+            <table className="table table-hover align-middle mb-0" aria-label="گروه‌ها">
               <thead>
                 <tr>
-                  <th className="pe-3 text-nowrap">Name</th>
-                  <th className="pe-3 text-nowrap">Size</th>
-                  <th>Members</th>
+                  <th className="pe-3 text-nowrap">نام</th>
+                  <th className="pe-3 text-nowrap">تعداد اعضا</th>
+                  <th>اعضا</th>
                   {canEdit && <th />}
                 </tr>
               </thead>
@@ -924,7 +933,7 @@ export function GroupsCard({
                   <tr className="text-center text-muted">
                     <td colSpan={canEdit ? 4 : 3} className="py-4">
                       <i className="bi bi-people me-2" aria-hidden="true" />
-                      No groups created
+                      گروهی ایجاد نشده است
                     </td>
                   </tr>
                 )}

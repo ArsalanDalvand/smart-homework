@@ -6,16 +6,16 @@ import { type CalculatorType, CalculatorTypeSchema } from '../schemas/infoAssess
 
 const presets = {
   basic: {
-    label: 'Basic',
-    description: 'Arithmetic, fractions, percentages, and the previous answer.',
+    label: 'پایه',
+    description: 'عملیات حسابی، کسرها، درصدها و پاسخ قبلی.',
   },
   scientific: {
-    label: 'Scientific',
-    description: 'Basic operations plus powers, roots, logarithms, trigonometry, and constants.',
+    label: 'مهندسی',
+    description: 'عملیات پایه به‌همراه توان، ریشه، لگاریتم، مثلثات و ثابت‌ها.',
   },
   advanced: {
-    label: 'Advanced',
-    description: 'Unrestricted calculator, including alphabet and function panels.',
+    label: 'پیشرفته',
+    description: 'ماشین‌حساب بدون محدودیت، شامل پنل‌های حروف و توابع.',
   },
 };
 
@@ -31,7 +31,7 @@ export function CalculatorTypeInput({
   onChange: (value: CalculatorType) => void;
 }) {
   return (
-    <fieldset className="mt-3 ms-4" aria-label="Calculator type">
+    <fieldset className="mt-3 ms-4" aria-label="نوع ماشین‌حساب">
       {CalculatorTypeSchema.options.map((type) => (
         <div key={type} className="mb-2">
           <div className="d-flex align-items-center gap-2">
@@ -50,8 +50,8 @@ export function CalculatorTypeInput({
                 trigger="click"
                 placement="auto"
                 popover={{
-                  header: 'Advanced calculator',
-                  body: 'Students can evaluate integrals and derivatives and define variables and functions. Choose Basic or Scientific if these capabilities are not appropriate for your assessment.',
+                  header: 'ماشین‌حساب پیشرفته',
+                  body: 'دانشجویان می‌توانند انتگرال و مشتق را محاسبه کرده و متغیرها و توابع تعریف کنند. اگر این قابلیت‌ها برای تکلیف/آزمون شما مناسب نیست، گزینه پایه یا مهندسی را انتخاب کنید.',
                   props: { id: `${id}-advanced-info` },
                 }}
                 rootClose
@@ -60,7 +60,7 @@ export function CalculatorTypeInput({
                   variant="link"
                   size="sm"
                   className="p-0"
-                  aria-label="About the Advanced calculator"
+                  aria-label="درباره ماشین‌حساب پیشرفته"
                 >
                   <i className="bi bi-info-circle" aria-hidden="true" />
                 </Button>

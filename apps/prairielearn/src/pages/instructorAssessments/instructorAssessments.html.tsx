@@ -78,7 +78,7 @@ export function InstructorAssessments({
                     <a
                       href="${getCourseAdminQtiImportUrl({ courseInstanceId: course_instance.id })}"
                       class="btn btn-sm btn-light"
-                      aria-label="Import content"
+                      aria-label="درون‌ریزی محتوا"
                     >
                       <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
                       <span class="d-none d-sm-inline">درون‌ریزی محتوا</span>
@@ -91,7 +91,7 @@ export function InstructorAssessments({
                               class="btn btn-sm btn-light"
                               data-bs-toggle="modal"
                               data-bs-target="#createAssessmentModal"
-                              aria-label="Add assessment"
+                              aria-label="افزودن ارزیابی"
                             >
                               <i class="fa fa-plus" aria-hidden="true"></i>
                               <span class="d-none d-sm-inline">افزودن ارزیابی</span>
@@ -108,11 +108,11 @@ export function InstructorAssessments({
           rows.length > 0
             ? html`
                 <div class="table-responsive">
-                  <table class="table table-sm table-hover" aria-label="Assessments">
+                  <table class="table table-sm table-hover" aria-label="تکالیف و آزمون‌ها">
                     <thead>
                       <tr>
-                        <th style="width: 1%"><span class="visually-hidden">Label</span></th>
-                        <th><span class="visually-hidden">Title</span></th>
+                        <th style="width: 1%"><span class="visually-hidden">برچسب</span></th>
+                        <th><span class="visually-hidden">عنوان</span></th>
                         <th>کد اختصاری</th>
                         <th class="text-center">دانشجویان</th>
                         <th class="text-center">نمرات</th>
@@ -195,11 +195,11 @@ export function InstructorAssessments({
                   </table>
                 </div>
                 <div class="card-footer">
-                  Download
+                  دانلود
                   <a href="${urlPrefix}/instance_admin/assessments/file/${csvFilename}">
                     ${csvFilename}
                   </a>
-                  (includes more statistics columns than displayed above)
+                  (شامل ستون‌های آماری بیشتری نسبت به جدول بالا است)
                 </div>
               `
             : html`
@@ -214,12 +214,12 @@ export function InstructorAssessments({
                       href="https://docs.prairielearn.com/assessment/overview/"
                       target="_blank"
                       rel="noreferrer"
-                      >assessments documentation</a
+                      >مستندات ارزیابی‌ها</a
                     >.
                   </p>
                   ${run(() => {
                     if (course.example_course) {
-                      return html`<p>You can't add assessments to the example course.</p>`;
+                      return html`<p>امکان افزودن ارزیابی به درس نمونه وجود ندارد.</p>`;
                     }
                     if (!authz_data.has_course_permission_edit) {
                       return html`<p>ویرایشگران درس می‌توانند ارزیابی‌های جدید ایجاد نمایند.</p>`;
@@ -256,7 +256,7 @@ export function InstructorAssessments({
 export function AssessmentStats({ row }: { row: AssessmentStatsRow }) {
   const spinner = html`
     <div class="spinner-border spinner-border-sm" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">در حال بارگذاری...</span>
     </div>
   `;
   return html`
@@ -363,10 +363,11 @@ function CreateAssessmentModal({
           <option value="Exam">امتحان (Exam)</option>
         </select>
         <small id="type_help" class="form-text text-muted">
-          The type of the assessment. This can be either
+          نوع ارزیابی؛ می‌تواند یکی از گزینه‌های
           <a href="https://docs.prairielearn.com/assessment/configuration/#assessment-types">
-            Homework or Exam</a
-          >.
+            تکلیف منزل (Homework) یا امتحان (Exam)</a
+          >
+          باشد.
         </small>
       </div>
       <div class="mb-3">
@@ -375,8 +376,7 @@ function CreateAssessmentModal({
           ${assessmentSets.map((set) => html`<option value="${set.name}">${set.heading}</option>`)}
         </select>
         <small id="set_help" class="form-text text-muted">
-          The <a href="${urlPrefix}/course_admin/sets">assessment set</a> this assessment belongs
-          to.
+          <a href="${urlPrefix}/course_admin/sets">دسته‌بندی ارزیابی (Set)</a> که این ارزیابی به آن تعلق دارد.
         </small>
       </div>
       ${
@@ -396,8 +396,7 @@ function CreateAssessmentModal({
                   )}
                 </select>
                 <small id="module_help" class="form-text text-muted">
-                  The <a href="${urlPrefix}/course_admin/modules">module</a> this assessment belongs
-                  to.
+                  <a href="${urlPrefix}/course_admin/modules">سرفصل (Module)</a> که این ارزیابی به آن تعلق دارد.
                 </small>
               </div>
             `

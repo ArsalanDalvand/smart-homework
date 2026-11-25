@@ -27,10 +27,10 @@ export function LabelTableRow({
       </td>
       <td className="align-middle">
         {count === 0 ? (
-          <span className="text-muted">0 students</span>
+          <span className="text-muted">۰ دانشجو</span>
         ) : (
           <a href={studentsUrl}>
-            {count} {count === 1 ? 'student' : 'students'}
+            {count} دانشجو
           </a>
         )}
       </td>
@@ -40,20 +40,20 @@ export function LabelTableRow({
             <button
               type="button"
               className="btn btn-sm btn-outline-primary"
-              aria-label={`Edit ${label.student_label.name}`}
+              aria-label={`ویرایش ${label.student_label.name}`}
               disabled={disabled}
               onClick={() => onEdit(label)}
             >
-              Edit
+              ویرایش
             </button>
             <button
               type="button"
               className="btn btn-sm btn-outline-danger"
-              aria-label={`Delete ${label.student_label.name}`}
+              aria-label={`حذف ${label.student_label.name}`}
               disabled={disabled}
               onClick={() => onDelete(label)}
             >
-              Delete
+              حذف
             </button>
           </div>
         </td>

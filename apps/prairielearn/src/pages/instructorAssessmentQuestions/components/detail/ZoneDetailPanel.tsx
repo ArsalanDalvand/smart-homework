@@ -213,22 +213,22 @@ export function ZoneDetailPanel({
       {zoneChooseExceeds && (
         <div className="alert alert-warning small mb-3" role="alert">
           <i className="bi bi-exclamation-triangle-fill me-1" aria-hidden="true" />
-          Number to choose or best questions exceeds the number of questions in this zone.
+          تعداد انتخاب یا بهترین سوالات از تعداد سوالات موجود در این بخش بیشتر است.
         </div>
       )}
       <div className="text-muted small">
-        {zoneQuestionCount} choosable question{zoneQuestionCount !== 1 ? 's' : ''} in zone
+        {zoneQuestionCount} سوال قابل انتخاب در بخش
       </div>
 
-      <DetailSectionHeader>Settings</DetailSectionHeader>
+      <DetailSectionHeader>تنظیمات</DetailSectionHeader>
 
       <Wrapper className={clsx(!editMode && 'mb-0')}>
         <FormField
           editMode={editMode}
           id={`${idPrefix}-title`}
-          label="Title"
-          viewValue={zone.title || <span className="text-muted">No title</span>}
-          helpText="Display name shown to students (optional)."
+          label="عنوان"
+          viewValue={zone.title || <span className="text-muted">بدون عنوان</span>}
+          helpText="نام نمایشی برای دانشجویان (اختیاری)."
         >
           {(aria) => (
             <input
@@ -243,10 +243,10 @@ export function ZoneDetailPanel({
         <FormField
           editMode={editMode}
           id={`${idPrefix}-maxPoints`}
-          label="Max points"
+          label="حداکثر امتیاز"
           viewValue={zone.maxPoints}
           error={errors.maxPoints}
-          helpText="Maximum total points from this zone that count toward the assessment (leave empty for all)."
+          helpText="حداکثر مجموع امتیاز از این بخش که در ارزیابی محاسبه می‌شود (برای نامحدود خالی بگذارید)."
           hideWhenEmpty
         >
           {(aria) => (
@@ -258,7 +258,7 @@ export function ZoneDetailPanel({
               {...register('maxPoints', {
                 setValueAs: coerceToNumber,
                 validate: (v) => {
-                  if (v != null && v < 0) return 'Max points must be non-negative.';
+                  if (v != null && v < 0) return 'حداکثر امتیاز باید نامنفی باشد.';
                 },
               })}
             />
@@ -268,10 +268,10 @@ export function ZoneDetailPanel({
         <FormField
           editMode={editMode}
           id={`${idPrefix}-numberChoose`}
-          label="Number to choose"
+          label="تعداد انتخاب"
           viewValue={zone.numberChoose}
           error={errors.numberChoose}
-          helpText="How many questions from this zone to present (leave empty for all)."
+          helpText="تعداد سوالاتی که از این بخش نمایش داده می‌شود (برای همه خالی بگذارید)."
           hideWhenEmpty
         >
           {(aria) => (
@@ -281,7 +281,7 @@ export function ZoneDetailPanel({
               {...aria.inputProps}
               {...register('numberChoose', {
                 setValueAs: coerceToNumber,
-                validate: (v) => validatePositiveInteger(v, 'Number to choose'),
+                validate: (v) => validatePositiveInteger(v, 'تعداد انتخاب'),
               })}
             />
           )}
@@ -290,10 +290,10 @@ export function ZoneDetailPanel({
         <FormField
           editMode={editMode}
           id={`${idPrefix}-bestQuestions`}
-          label="Best questions"
+          label="بهترین سوالات"
           viewValue={zone.bestQuestions}
           error={errors.bestQuestions}
-          helpText="Only the N highest-scoring questions in this zone count toward the total (leave empty for all)."
+          helpText="تنها N سوال با بالاترین امتیاز در این بخش در مجموع نمره محاسبه می‌شوند (برای همه خالی بگذارید)."
           hideWhenEmpty
         >
           {(aria) => (
@@ -303,7 +303,7 @@ export function ZoneDetailPanel({
               {...aria.inputProps}
               {...register('bestQuestions', {
                 setValueAs: coerceToNumber,
-                validate: (v) => validatePositiveInteger(v, 'Best questions'),
+                validate: (v) => validatePositiveInteger(v, 'بهترین سوالات'),
               })}
             />
           )}
@@ -312,13 +312,13 @@ export function ZoneDetailPanel({
         <FormField
           editMode={editMode}
           id={`${idPrefix}-comment`}
-          label="Comment"
+          label="یادداشت"
           viewValue={
             zone.comment != null ? (
               <span className="text-break">{commentToString(zone.comment)}</span>
             ) : undefined
           }
-          helpText="Internal note, not shown to students."
+          helpText="یادداشت داخلی، به دانشجویان نمایش داده نمی‌شود."
           hideWhenEmpty
         >
           {(aria) => (
@@ -332,10 +332,10 @@ export function ZoneDetailPanel({
         </FormField>
       </Wrapper>
 
-      <DetailSectionHeader>Tools</DetailSectionHeader>
+      <DetailSectionHeader>ابزارها</DetailSectionHeader>
       <Wrapper className={clsx(!editMode && 'mb-0')}>
         {EnumAssessmentToolSchema.options.map((tool) => {
-          const toolLabel = tool[0].toUpperCase() + tool.slice(1);
+          const toolLabel = tool === 'calculator' ? 'ماشین‌حساب' : tool[0].toUpperCase() + tool.slice(1);
           const fieldName = `tool_${tool}` as const;
           const inheritedValue = assessmentToolDefaults[tool] ?? false;
           const isInherited = !overriddenTools.has(tool);
@@ -348,7 +348,7 @@ export function ZoneDetailPanel({
               <InheritableCheckboxField
                 id={`${idPrefix}-tool-${tool}`}
                 label={toolLabel}
-                helpText={`Override the assessment-level ${toolLabel.toLowerCase()} setting for this zone.`}
+                helpText={`بازنویسی تنظیم سطح ارزیابی برای «${toolLabel}» در این بخش.`}
                 editMode={editMode}
                 isInherited={isInherited}
                 inheritedValue={inheritedValue}
@@ -407,13 +407,13 @@ export function ZoneDetailPanel({
 
       {groupsConfigured && (
         <>
-          <DetailSectionHeader>Role permissions</DetailSectionHeader>
+          <DetailSectionHeader>دسترسی نقش‌ها</DetailSectionHeader>
           {hasRoles ? (
             <Wrapper className={clsx(!editMode && 'mb-0')}>
               <InheritableRolesField
                 id={`${idPrefix}-canView`}
-                label="Can view"
-                helpText="Roles allowed to view questions in this zone."
+                label="مجاز به مشاهده"
+                helpText="نقش‌های مجاز به مشاهده سوالات این بخش."
                 editMode={editMode}
                 isInherited={!canViewOverridden}
                 inheritedValue={assessmentCanView}
@@ -431,8 +431,8 @@ export function ZoneDetailPanel({
               />
               <InheritableRolesField
                 id={`${idPrefix}-canSubmit`}
-                label="Can submit"
-                helpText="Roles allowed to submit answers to questions in this zone."
+                label="مجاز به ارسال"
+                helpText="نقش‌های مجاز به ارسال پاسخ برای سوالات این بخش."
                 editMode={editMode}
                 isInherited={!canSubmitOverridden}
                 inheritedValue={assessmentCanSubmit}
@@ -451,7 +451,7 @@ export function ZoneDetailPanel({
             </Wrapper>
           ) : (
             <p className="text-muted small mb-3">
-              No <a href={groupsPageUrl}>custom roles</a> defined for this assessment.
+              هیچ <a href={groupsPageUrl}>نقش سفارشی</a> برای این ارزیابی تعریف نشده است.
             </p>
           )}
         </>

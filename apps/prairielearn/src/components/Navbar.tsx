@@ -93,7 +93,7 @@ export function Navbar({
         : ''
     }
 
-    <nav class="navbar navbar-dark bg-dark navbar-expand-md" aria-label="Global navigation">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md" aria-label="ناوبری سراسری">
       <div class="container-fluid position-relative">
         ${
           sideNavEnabled
@@ -103,7 +103,7 @@ export function Navbar({
                   class="navbar-toggler"
                   type="button"
                   aria-expanded="false"
-                  aria-label="Toggle side nav"
+                  aria-label="باز/بسته کردن منوی کناری"
                 >
                   <span class="navbar-toggler-icon"></span>
                 </button>
@@ -127,7 +127,7 @@ export function Navbar({
             data-bs-target="#course-nav"
             data-bs-animation="false"
             aria-expanded="false"
-            aria-label="Toggle navigation"
+            aria-label="باز/بسته کردن منوی ناوبری"
           >
             <span class="${sideNavEnabled ? 'bi bi-person-circle' : 'navbar-toggler-icon'}"></span>
           </button>
@@ -415,7 +415,7 @@ function UserDropdownMenu({
   } else if (authn_user) {
     displayedName = authn_user.name || authn_user.uid;
   } else {
-    displayedName = '(no user)';
+    displayedName = '(بدون کاربر)';
   }
 
   if (
@@ -522,7 +522,7 @@ function FlashMessages() {
         role="alert"
       >
         ${unsafeHtml(message)}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="بستن"></button>
       </div>
     `,
   );
@@ -998,7 +998,7 @@ function NavbarPublic({ resLocals }: { resLocals: UntypedResLocals }) {
     <li class="nav-item btn-group">
       <a
         class="nav-link"
-        aria-label="Link to page showing all public questions for the course."
+        aria-label="پیوند به صفحه نمایش تمام سوالات عمومی این درس."
         href="/pl/public/course/${course?.id}/questions"
       >
         ${course?.short_name ?? ''}

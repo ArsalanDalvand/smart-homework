@@ -19,11 +19,11 @@ export function PublicLinkSharing({
   return (
     <>
       <p>
-        <span className="badge color-green3 me-1">Public</span>
+        <span className="badge color-green3 me-1">عمومی</span>
         {sharingMessage}
       </p>
       <div className="mb-3">
-        <label htmlFor="publicLink">Public link</label>
+        <label htmlFor="publicLink">پیوند عمومی</label>
         <InputGroup>
           <Form.Control
             type="text"
@@ -34,13 +34,13 @@ export function PublicLinkSharing({
           />
           <CopyButton
             text={publicLink}
-            ariaLabel="Copy public link"
+            ariaLabel="کپی پیوند عمومی"
             className="btn-sm btn-outline-secondary"
           />
           <Button
             size="sm"
             variant="outline-secondary"
-            aria-label="Public Link QR Code"
+            aria-label="رمزینه QR پیوند عمومی"
             onClick={() => setShowQR(true)}
           >
             <i className="fas fa-qrcode" />
@@ -50,7 +50,7 @@ export function PublicLinkSharing({
       </div>
       <QRCodeModal
         id="publicLinkModal"
-        title="Public Link QR Code"
+        title="رمزینه QR پیوند عمومی"
         content={publicLink}
         show={showQR}
         onHide={() => setShowQR(false)}
@@ -70,7 +70,7 @@ export function StudentLinkSharing({
   return (
     <div className="mb-0">
       <label className="form-label" htmlFor="student_link">
-        Student link
+        پیوند دانشجو
       </label>
       <InputGroup>
         <Form.Control
@@ -82,19 +82,19 @@ export function StudentLinkSharing({
         />
         <CopyButton
           text={studentLink}
-          ariaLabel="Copy student link"
+          ariaLabel="کپی پیوند دانشجو"
           className="btn-sm btn-outline-secondary"
         />
         <OverlayTrigger
           tooltip={{
-            body: 'View QR Code',
+            body: 'مشاهده رمزینه QR',
             props: { id: 'student-link-qr-code-tooltip' },
           }}
         >
           <Button
             size="sm"
             variant="outline-secondary"
-            aria-label="Student link QR code"
+            aria-label="رمزینه QR پیوند دانشجو"
             onClick={() => setShowQR(true)}
           >
             <i className="bi bi-qr-code-scan" />
@@ -104,7 +104,7 @@ export function StudentLinkSharing({
       <small className="form-text text-muted">{studentLinkMessage}</small>
       <QRCodeModal
         id="studentLinkModal"
-        title="Student link QR code"
+        title="رمزینه QR پیوند دانشجو"
         content={studentLink}
         show={showQR}
         onHide={() => setShowQR(false)}

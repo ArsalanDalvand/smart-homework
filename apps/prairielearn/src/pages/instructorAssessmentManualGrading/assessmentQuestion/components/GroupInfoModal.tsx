@@ -85,11 +85,11 @@ export function GroupInfoModal({
     if (modalState == null) return '';
 
     if (modalState.type === 'all') {
-      return 'Group all submissions';
+      return 'گروه‌بندی تمام ارسال‌ها';
     } else if (modalState.type === 'ungrouped') {
-      return 'Group ungrouped submissions';
+      return 'گروه‌بندی ارسال‌های گروه‌بندی‌نشده';
     } else {
-      return 'Group selected submissions';
+      return 'گروه‌بندی ارسال‌های انتخاب‌شده';
     }
   };
 
@@ -108,44 +108,44 @@ export function GroupInfoModal({
 
         <Modal.Body>
           <p>
-            Groups student submission answers based on whether they{' '}
-            <strong>match the correct answer exactly.</strong>
+            پاسخ‌های ارسالی دانشجویان را بر اساس اینکه آیا{' '}
+            <strong>دقیقاً با پاسخ صحیح مطابقت دارند یا خیر</strong> گروه‌بندی می‌کند.
           </p>
 
-          <p>Answers that match go into one group, and those that don't are grouped separately.</p>
+          <p>پاسخ‌های منطبق در یک گروه قرار می‌گیرند و بقیه به‌صورت جداگانه گروه‌بندی می‌شوند.</p>
 
           <p>
-            To enable grouping, the correct answer must be provided in <code>pl-answer-panel</code>.
+            برای فعال‌سازی گروه‌بندی، پاسخ صحیح باید در <code>pl-answer-panel</code> ارائه شده باشد.
           </p>
 
           <p>
-            Grouping checks for exact equivalence to the final answer, considering only the boxed or
-            final answer to form groups.
+            گروه‌بندی هم‌ارزی دقیق با پاسخ نهایی را بررسی کرده و برای تشکیل گروه‌ها تنها پاسخ
+            نهایی یا کادرگذاری‌شده را در نظر می‌گیرد.
           </p>
 
-          <p>Examples of what can and can't be grouped:</p>
+          <p>نمونه‌هایی از موارد قابل گروه‌بندی و غیرقابل گروه‌بندی:</p>
 
           <div
             className="d-grid border rounded overflow-hidden"
             style={{ gridTemplateColumns: '1fr 1fr' }}
           >
-            <div className="px-2 py-1 bg-light fw-bold border-end">Can group</div>
-            <div className="px-2 py-1 bg-light fw-bold">Can't group</div>
+            <div className="px-2 py-1 bg-light fw-bold border-end">قابل گروه‌بندی</div>
+            <div className="px-2 py-1 bg-light fw-bold">غیرقابل گروه‌بندی</div>
 
-            <div className="px-2 py-1 border-top border-end">Mathematical Equations</div>
-            <div className="px-2 py-1 border-top">Essays</div>
+            <div className="px-2 py-1 border-top border-end">معادلات ریاضی</div>
+            <div className="px-2 py-1 border-top">مقاله و متن طولانی</div>
 
-            <div className="px-2 py-1 border-top border-end">Mechanical Formulas</div>
-            <div className="px-2 py-1 border-top">Free Response Questions</div>
+            <div className="px-2 py-1 border-top border-end">فرمول‌های مکانیکی</div>
+            <div className="px-2 py-1 border-top">سوالات تشریحی آزاد</div>
 
-            <div className="px-2 py-1 border-top border-end">Exact String Inputs</div>
-            <div className="px-2 py-1 border-top">Freeform Code</div>
+            <div className="px-2 py-1 border-top border-end">ورودی‌های متنی دقیق</div>
+            <div className="px-2 py-1 border-top">کدنویسی آزاد</div>
 
             <div className="px-2 py-1 border-top border-end">
-              Handwritten submissions with 1 correct answer
+              پاسخ‌های دست‌نویس با ۱ پاسخ صحیح
             </div>
             <div className="px-2 py-1 border-top">
-              Handwritten submissions with 2+ correct answers
+              پاسخ‌های دست‌نویس با ۲ پاسخ صحیح یا بیشتر
             </div>
           </div>
 
@@ -154,16 +154,13 @@ export function GroupInfoModal({
               <div className="row g-2">
                 <div className="col-12 col-md-6">
                   <p className="my-0">
-                    This assessment has{' '}
-                    {numOpenInstances === 1
-                      ? '1 open instance that '
-                      : `${numOpenInstances} open instances, which `}
-                    may contain submissions selected for grouping.
+                    این ارزیابی دارای {numOpenInstances} نمونه آزمون باز است که ممکن است شامل
+                    ارسال‌های انتخاب‌شده برای گروه‌بندی باشد.
                   </p>
                 </div>
                 <div className="col-12 col-md-6 d-flex flex-column gap-2">
                   <label htmlFor="grouping-application-select" className="my-0">
-                    Choose how to apply grouping:
+                    نحوه اعمال گروه‌بندی را انتخاب کنید:
                   </label>
                   <select
                     id="grouping-application-select"
@@ -171,8 +168,8 @@ export function GroupInfoModal({
                     value={closedSubmissionsOnly ? 'true' : 'false'}
                     onChange={(e) => setClosedSubmissionsOnly(e.currentTarget.value === 'true')}
                   >
-                    <option value="true">Only group closed submissions</option>
-                    <option value="false">Group open & closed submissions</option>
+                    <option value="true">فقط ارسال‌های بسته‌شده گروه‌بندی شوند</option>
+                    <option value="false">ارسال‌های باز و بسته‌شده هر دو گروه‌بندی شوند</option>
                   </select>
                 </div>
               </div>
@@ -184,19 +181,19 @@ export function GroupInfoModal({
           <div className="m-0 w-100">
             {mutation.isError && (
               <Alert variant="danger" className="mb-2" dismissible onClose={() => mutation.reset()}>
-                <strong>Error:</strong> {mutation.error.message}
+                <strong>خطا:</strong> {mutation.error.message}
               </Alert>
             )}
             <div className="d-flex align-items-center justify-content-end gap-2 mb-1">
               <Button variant="secondary" disabled={mutation.isPending} onClick={handleClose}>
-                Cancel
+                انصراف
               </Button>
               <Button variant="primary" disabled={mutation.isPending} type="submit">
-                {mutation.isPending ? 'Submitting...' : 'Group submissions'}
+                {mutation.isPending ? 'در حال ارسال...' : 'گروه‌بندی ارسال‌ها'}
               </Button>
             </div>
             <small className="text-muted my-0 text-end d-block">
-              AI can make mistakes. Review groups before grading.
+              هوش مصنوعی ممکن است اشتباه کند. پیش از نمره‌دهی، گروه‌ها را بررسی نمایید.
             </small>
           </div>
         </Modal.Footer>

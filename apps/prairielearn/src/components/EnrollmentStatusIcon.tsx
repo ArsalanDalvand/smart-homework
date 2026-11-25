@@ -33,17 +33,17 @@ function getIconClass(status: EnumEnrollmentStatus): string {
 function getFriendlyStatus(status: EnumEnrollmentStatus): string {
   switch (status) {
     case 'invited':
-      return 'Invited';
+      return 'دعوت‌شده';
     case 'joined':
-      return 'Joined';
+      return 'عضو شده';
     case 'left':
-      return 'Left';
+      return 'خارج شده';
     case 'removed':
-      return 'Removed';
+      return 'حذف شده';
     case 'rejected':
-      return 'Rejected';
+      return 'رد شده';
     case 'blocked':
-      return 'Blocked';
+      return 'مسدود شده';
     default:
       assertNever(status);
   }
@@ -94,8 +94,8 @@ export function EnrollmentStatusIcon({
           tooltip={{
             body: (
               <div>
-                This student has rejected the invitation to join the course. They can still join
-                while self-enrollment is enabled.
+                این دانشجو دعوت‌نامه پیوستن به درس را رد کرده است. تا زمانی که خودثبت‌نامی فعال است
+                همچنان می‌تواند بپیوندد.
               </div>
             ),
             props: { id: 'rejected-info-tooltip' },

@@ -222,7 +222,7 @@ router.post(
         return;
       }
 
-      flash('success', 'Assessment created successfully.');
+      flash('success', 'ارزیابی با موفقیت ایجاد شد.');
 
       const assessment_id = await queryScalar(
         sql.select_assessment_id_from_uuid,

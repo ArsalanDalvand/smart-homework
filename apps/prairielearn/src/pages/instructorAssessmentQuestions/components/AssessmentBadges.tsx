@@ -94,8 +94,8 @@ export function AssessmentBadges({
   assessments,
   courseInstanceId,
   markedAssessmentIds,
-  markedSingleLabel = 'A zone in this assessment will be removed',
-  markedGroupLabel = 'A zone in one or more of these assessments will be removed',
+  markedSingleLabel = 'یک بخش در این ارزیابی حذف خواهد شد',
+  markedGroupLabel = 'یک بخش در یک یا چند مورد از این ارزیابی‌ها حذف خواهد شد',
   stopGroupClickPropagation = true,
 }: {
   assessments: AssessmentForPicker[];
@@ -186,8 +186,8 @@ export function AssessmentBadges({
             className={`btn btn-badge color-${color} tree-interactive-badge`}
             aria-label={
               groupHasMarked
-                ? `${abbrev}: ${items.length} assessments. ${markedGroupLabel}`
-                : `${abbrev}: ${items.length} assessments`
+                ? `${abbrev}: ${items.length} ارزیابی. ${markedGroupLabel}`
+                : `${abbrev}: ${items.length} ارزیابی`
             }
             onClick={stopGroupClickPropagation ? (e) => e.stopPropagation() : undefined}
           >

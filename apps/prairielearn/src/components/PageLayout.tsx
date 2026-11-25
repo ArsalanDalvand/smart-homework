@@ -135,16 +135,16 @@ function LegacyPublishingBannerComponent({
       className="alert alert-warning py-2 mb-0 rounded-0 border-0 border-bottom small"
       role="alert"
     >
-      You are using access rules to control who can access the course instance.{' '}
+      شما در حال استفاده از قوانین دسترسی برای کنترل دسترسی به این دوره هستید.{' '}
       <a
         href="https://docs.prairielearn.com/courseInstance/#migrating-from-allowaccess"
         className="alert-link"
         target="_blank"
         rel="noreferrer"
       >
-        Migrate to publishing
+        مهاجرت به حالت انتشار
       </a>{' '}
-      to unlock additional enrollment management features.
+      را انجام دهید تا امکانات بیشتر مدیریت ثبت‌نام فعال شوند.
     </div>
   );
 }
@@ -184,11 +184,11 @@ function UnpublishedBannerComponent({
     switch (status) {
       case 'unpublished':
         if (courseInstance.publishing_end_date) {
-          return `This course instance is no longer accessible to students because it was unpublished at ${formatDateFriendly(courseInstance.publishing_end_date, courseInstance.display_timezone, { timeFirst: true })}.`;
+          return `این دوره از تاریخ ${formatDateFriendly(courseInstance.publishing_end_date, courseInstance.display_timezone, { timeFirst: true })} از حالت انتشار خارج شده و دیگر برای دانشجویان قابل دسترسی نیست.`;
         }
-        return 'This course instance is not accessible to students because it is unpublished.';
+        return 'این دوره به دلیل منتشر نشدن برای دانشجویان قابل دسترسی نیست.';
       case 'publish_scheduled':
-        return `This course instance will be accessible to students after the scheduled publish date of ${formatDateFriendly(courseInstance.publishing_start_date, courseInstance.display_timezone, { timeFirst: true })}.`;
+        return `این دوره پس از تاریخ انتشار زمان‌بندی‌شده یعنی ${formatDateFriendly(courseInstance.publishing_start_date, courseInstance.display_timezone, { timeFirst: true })} برای دانشجویان قابل دسترسی خواهد بود.`;
       default:
         assertNever(status);
     }
@@ -201,7 +201,7 @@ function UnpublishedBannerComponent({
     >
       {message}{' '}
       <a href={`${urlPrefix}/instance_admin/publishing`} className="alert-link">
-        Configure publishing settings
+        پیکربندی تنظیمات انتشار
       </a>
     </div>
   );
@@ -426,7 +426,7 @@ export function PageLayout({
           ${
             sideNavEnabled
               ? html`
-                  <nav class="app-side-nav bg-light border-end" aria-label="Course navigation">
+                  <nav class="app-side-nav bg-light border-end" aria-label="ناوبری درس">
                     <div class="app-side-nav-scroll">
                       ${SideNav({
                         resLocals,

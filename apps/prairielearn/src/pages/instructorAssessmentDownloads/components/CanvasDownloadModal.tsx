@@ -42,13 +42,13 @@ export function CanvasDownloadModal({
     try {
       const response = await fetch(downloadUrl);
       if (!response.ok) {
-        throw new Error(`Failed to fetch CSV: ${response.status}`);
+        throw new Error(`دریافت فایل CSV ناموفق بود: ${response.status}`);
       }
       const csvText = await response.text();
 
       const lines = parseCsvWithHeaders(csvText);
       if (!lines) {
-        throw new Error('Failed to parse CSV');
+        throw new Error('تجزیه فایل CSV ناموفق بود');
       }
 
       const canvasLookup = matchingState
@@ -90,7 +90,7 @@ export function CanvasDownloadModal({
       setDownloadError(
         err instanceof Error
           ? err.message
-          : 'An unexpected error occurred while preparing the CSV.',
+          : 'هنگام آماده‌سازی فایل CSV خطای غیرمنتظره‌ای رخ داد.',
       );
     } finally {
       setDownloading(false);
@@ -100,7 +100,7 @@ export function CanvasDownloadModal({
   return (
     <Modal show={show} size="lg" onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Download Canvas CSV</Modal.Title>
+        <Modal.Title>دانلود فایل CSV برای Canvas</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <CanvasMatchingPanel
@@ -116,10 +116,10 @@ export function CanvasDownloadModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button variant="primary" disabled={downloading} onClick={handleDownload}>
-          {downloading ? 'Downloading...' : 'Download'}
+          {downloading ? 'در حال دانلود...' : 'دانلود'}
         </Button>
       </Modal.Footer>
     </Modal>

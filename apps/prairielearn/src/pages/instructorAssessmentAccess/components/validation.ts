@@ -38,7 +38,7 @@ import {
   isReleasedAt,
 } from './types.js';
 
-export const DATE_REQUIRED_MESSAGE = 'Date is required';
+export const DATE_REQUIRED_MESSAGE = 'وارد کردن تاریخ الزامی است';
 
 export type AccessControlFormFieldPath = FieldPath<AccessControlFormData>;
 
@@ -176,7 +176,7 @@ function mapIssueToEditableFormError(
     if (isFormFieldPathEditable(formData, scorePath)) {
       return {
         path: scorePath,
-        message: 'The score cannot be hidden after completion while questions are visible.',
+        message: 'هنگامی که سوالات قابل مشاهده هستند، نمره نمی‌تواند پس از اتمام پنهان باشد.',
       };
     }
   }
@@ -206,12 +206,12 @@ function getReleaseStateValidationErrors(
     if (release.released && !dateIsPast) {
       results.push({
         path,
-        message: 'Release date must not be in the future when state is Released.',
+        message: 'وقتی وضعیت «منتشرشده» است، تاریخ انتشار نباید در آینده باشد.',
       });
     } else if (!release.released && dateIsPast) {
       results.push({
         path,
-        message: 'Release date must be in the future when scheduled for release.',
+        message: 'وقتی برای انتشار زمان‌بندی شده است، تاریخ انتشار باید در آینده باشد.',
       });
     }
   };
@@ -294,7 +294,7 @@ function addValidationError(
 }
 
 function validateReleaseDate(value: string | null): string | undefined {
-  if (!value) return 'Release date is required';
+  if (!value) return 'تاریخ انتشار الزامی است';
   return undefined;
 }
 
@@ -308,36 +308,36 @@ function validateIntegerCredit(
   credit: number,
   { max, rangeMessage }: { max: number; rangeMessage: string },
 ): string | undefined {
-  if (Number.isNaN(credit)) return 'Credit is required';
-  if (!Number.isFinite(credit)) return 'Credit must be a finite number';
-  if (!Number.isInteger(credit)) return 'Credit must be an integer';
+  if (Number.isNaN(credit)) return 'اعتبار نمره الزامی است';
+  if (!Number.isFinite(credit)) return 'اعتبار نمره باید یک عدد متناهی باشد';
+  if (!Number.isInteger(credit)) return 'اعتبار نمره باید یک عدد صحیح باشد';
   if (credit < 0 || credit > max) return rangeMessage;
   return undefined;
 }
 
 function validateDueCredit(value: number | null, customCredit: boolean): string | undefined {
   if (value === null) {
-    if (customCredit) return 'Credit is required';
+    if (customCredit) return 'اعتبار نمره الزامی است';
     return undefined;
   }
   return validateIntegerCredit(value, {
     max: 200,
-    rangeMessage: 'Credit must be between 0% and 200%',
+    rangeMessage: 'اعتبار نمره باید بین ۰٪ تا ۲۰۰٪ باشد',
   });
 }
 
 function validateDuration(value: number | null): string | undefined {
-  if (value !== null && value < 1) return 'Duration must be at least 1 minute';
+  if (value !== null && value < 1) return 'مدت زمان باید حداقل ۱ دقیقه باشد';
   if (value !== null && value > MAX_ACCESS_CONTROL_DURATION_MINUTES) {
-    return `Duration must be at most ${MAX_ACCESS_CONTROL_DURATION_MINUTES} minutes`;
+    return `مدت زمان باید حداکثر ${MAX_ACCESS_CONTROL_DURATION_MINUTES} دقیقه باشد`;
   }
   return undefined;
 }
 
 function validatePassword(value: string | null): string | undefined {
-  if (value === '') return 'Password is required';
+  if (value === '') return 'وارد کردن رمز عبور الزامی است';
   if (value !== null && value.length > MAX_ACCESS_CONTROL_PASSWORD_LENGTH) {
-    return `Password must be at most ${MAX_ACCESS_CONTROL_PASSWORD_LENGTH} characters`;
+    return `رمز عبور باید حداکثر ${MAX_ACCESS_CONTROL_PASSWORD_LENGTH} کاراکتر باشد`;
   }
   return undefined;
 }
@@ -382,7 +382,7 @@ function validateDeadlineDate({
   if (!value) return DATE_REQUIRED_MESSAGE;
 
   for (let i = 0; i < deadlines.length; i++) {
-    if (i !== index && deadlines[i]?.date === value) return 'Duplicate deadline date';
+    if (i !== index && deadlines[i]?.date === value) return 'تاریخ ددلاین تکراری است';
   }
   return undefined;
 }
@@ -397,7 +397,9 @@ function validateDeadlineCredit({
   return validateIntegerCredit(value, {
     max: type === 'early' ? 200 : 99,
     rangeMessage:
-      type === 'early' ? 'Credit must be 0-200%' : 'Credit after the due date must be 0-99%',
+      type === 'early'
+        ? 'اعتبار نمره باید بین ۰ تا ۲۰۰٪ باشد'
+        : 'اعتبار نمره پس از ددلاین اصلی باید بین ۰ تا ۹۹٪ باشد',
   });
 }
 
@@ -415,9 +417,10 @@ function validateDeadlineArray({
   addError: AddValidationError;
 }) {
   if (deadlines.length > MAX_ACCESS_CONTROL_EARLY_OR_LATE_DEADLINES_PER_RULE) {
+    const typeFa = type === 'early' ? 'زودهنگام' : 'تاخیر';
     addError(
       rulePath(prefix, `${fieldName}.${MAX_ACCESS_CONTROL_EARLY_OR_LATE_DEADLINES_PER_RULE}.date`),
-      `A rule can have at most ${MAX_ACCESS_CONTROL_EARLY_OR_LATE_DEADLINES_PER_RULE} ${type} deadlines.`,
+      `هر قانون می‌تواند حداکثر ${MAX_ACCESS_CONTROL_EARLY_OR_LATE_DEADLINES_PER_RULE} ددلاین ${typeFa} داشته باشد.`,
     );
   }
 
@@ -437,7 +440,7 @@ function validateAfterLastDeadlineCredit(value: AfterLastDeadlineValue): string 
   if (!value.allowSubmissions) return undefined;
   return validateIntegerCredit(value.credit, {
     max: 99,
-    rangeMessage: 'Credit after the due date must be 0-99%',
+    rangeMessage: 'اعتبار نمره پس از ددلاین اصلی باید بین ۰ تا ۹۹٪ باشد',
   });
 }
 
@@ -448,7 +451,7 @@ function validatePrairieTestExams(
   if (exams.length > MAX_ACCESS_CONTROL_PRAIRIETEST_EXAMS) {
     addError(
       `defaultRule.prairieTestExams.${MAX_ACCESS_CONTROL_PRAIRIETEST_EXAMS}.examUuid`,
-      `A rule can have at most ${MAX_ACCESS_CONTROL_PRAIRIETEST_EXAMS} PrairieTest exams.`,
+      `هر قانون می‌تواند حداکثر ${MAX_ACCESS_CONTROL_PRAIRIETEST_EXAMS} آزمون PrairieTest داشته باشد.`,
     );
   }
 
@@ -463,11 +466,11 @@ function validatePrairieTestExams(
   exams.forEach((exam, index) => {
     const path: AccessControlFormFieldPath = `defaultRule.prairieTestExams.${index}.examUuid`;
     if (!exam.examUuid) {
-      addError(path, 'Exam UUID is required');
+      addError(path, 'شناسه یکتای آزمون (Exam UUID) الزامی است');
     } else if (!UUID_REGEXP.test(exam.examUuid)) {
-      addError(path, 'Invalid UUID format');
+      addError(path, 'قالب UUID نامعتبر است');
     } else if ((examUuidCounts.get(exam.examUuid.toLowerCase()) ?? 0) > 1) {
-      addError(path, 'Duplicate exam UUID');
+      addError(path, 'شناسه یکتای آزمون تکراری است');
     }
   });
 }

@@ -18,8 +18,8 @@ import type { AccessControlFormData } from './types.js';
 import { startOfDayDatetime, todayDate } from './utils/dateUtils.js';
 
 export function DefaultDateControlForm({
-  title = 'Date control',
-  description = 'Control access and credit to your assessment based on a schedule',
+  title = 'کنترل تاریخ و زمان',
+  description = 'کنترل دسترسی و اعتبار نمره ارزیابی بر اساس زمان‌بندی',
   displayTimezone,
   isExam,
 }: {
@@ -106,7 +106,7 @@ export function DefaultDateControlForm({
         </div>
       ) : (
         <p className="text-body-secondary mt-2 mb-0">
-          Enable date control to configure release dates, due dates, and deadlines.
+          برای پیکربندی تاریخ انتشار، ددلاین اصلی و ددلاین‌ها، کنترل تاریخ و زمان را فعال کنید.
         </p>
       )}
     </div>
@@ -115,8 +115,8 @@ export function DefaultDateControlForm({
 
 export function OverrideDateControlForm({
   index,
-  title = 'Date control',
-  description = 'Override date settings from the defaults by clicking "Override" on individual fields',
+  title = 'کنترل تاریخ و زمان',
+  description = 'با کلیک بر روی «بازنویسی» در هر فیلد، تنظیمات تاریخ پیش‌فرض را تغییر دهید',
   displayTimezone,
   isExam,
 }: {

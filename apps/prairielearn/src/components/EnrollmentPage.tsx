@@ -15,15 +15,15 @@ function BlockedEnrollment() {
         <div className="col-lg-8 col-xl-6">
           <div className="card">
             <div className="card-header bg-primary text-white">
-              <h4 className="mb-0">Enrollment blocked</h4>
+              <h4 className="mb-0">ثبت‌نام مسدود شده است</h4>
             </div>
             <div className="card-body">
               <p>
-                You are blocked from accessing this course. If you believe you were blocked by
-                mistake, contact your instructor.
+                دسترسی شما به این درس مسدود شده است. اگر فکر می‌کنید به اشتباه مسدود شده‌اید، با
+                مدرس خود تماس بگیرید.
               </p>
               <a href="/pl" className="btn btn-primary">
-                Return home
+                بازگشت به صفحه اصلی
               </a>
             </div>
           </div>
@@ -40,15 +40,15 @@ function SelfEnrollmentDisabled() {
         <div className="col-lg-8 col-xl-6">
           <div className="card">
             <div className="card-header bg-primary text-white">
-              <h4 className="mb-0">Self-enrollment not available</h4>
+              <h4 className="mb-0">خودثبت‌نامی در دسترس نیست</h4>
             </div>
             <div className="card-body">
               <p>
-                Self-enrollment is not enabled for this course. If you believe self-enrollment
-                should be enabled, contact your instructor.
+                خودثبت‌نامی برای این درس فعال نیست. اگر فکر می‌کنید باید فعال باشد، با مدرس خود تماس
+                بگیرید.
               </p>
               <a href="/pl" className="btn btn-primary">
-                Return home
+                بازگشت به صفحه اصلی
               </a>
             </div>
           </div>
@@ -65,15 +65,15 @@ function SelfEnrollmentExpired() {
         <div className="col-lg-8 col-xl-6">
           <div className="card">
             <div className="card-header bg-primary text-white">
-              <h4 className="mb-0">Self-enrollment expired</h4>
+              <h4 className="mb-0">مهلت خودثبت‌نامی به پایان رسیده است</h4>
             </div>
             <div className="card-body">
               <p>
-                Self-enrollment for this course has expired. If you believe you should still be able
-                to enroll, contact your instructor.
+                مهلت خودثبت‌نامی برای این درس به پایان رسیده است. اگر فکر می‌کنید همچنان باید
+                بتوانید ثبت‌نام کنید، با مدرس خود تماس بگیرید.
               </p>
               <a href="/pl" className="btn btn-primary">
-                Return home
+                بازگشت به صفحه اصلی
               </a>
             </div>
           </div>
@@ -90,15 +90,15 @@ function InstitutionRestriction() {
         <div className="col-lg-8 col-xl-6">
           <div className="card">
             <div className="card-header bg-primary text-white">
-              <h4 className="mb-0">Institution restriction</h4>
+              <h4 className="mb-0">محدودیت موسسه</h4>
             </div>
             <div className="card-body">
               <p>
-                Self-enrollment for this course is restricted to users from the same institution. If
-                you believe you should be able to enroll, contact your instructor.
+                خودثبت‌نامی برای این درس محدود به کاربران همان موسسه است. اگر فکر می‌کنید باید
+                بتوانید ثبت‌نام کنید، با مدرس خود تماس بگیرید.
               </p>
               <a href="/pl" className="btn btn-primary">
-                Return home
+                بازگشت به صفحه اصلی
               </a>
             </div>
           </div>
@@ -111,12 +111,12 @@ function InstitutionRestriction() {
 export function EnrollmentPage({ reason, resLocals }: EnrollmentPageProps) {
   const pageTitle =
     reason === 'blocked'
-      ? 'Enrollment blocked'
+      ? 'ثبت‌نام مسدود شده است'
       : reason === 'self-enrollment-expired'
-        ? 'Self-enrollment expired'
+        ? 'مهلت خودثبت‌نامی به پایان رسیده است'
         : reason === 'institution-restriction'
-          ? 'Institution restriction'
-          : 'Self-enrollment not available';
+          ? 'محدودیت موسسه'
+          : 'خودثبت‌نامی در دسترس نیست';
 
   const content =
     reason === 'blocked' ? (

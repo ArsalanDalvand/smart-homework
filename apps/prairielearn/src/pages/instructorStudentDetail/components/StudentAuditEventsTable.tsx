@@ -10,30 +10,30 @@ function renderEnrollmentEventText(event: StaffAuditEvent): string {
   const { action_detail } = event;
 
   if (!action_detail) {
-    return 'Enrollment event';
+    return 'رویداد ثبت‌نام';
   }
 
   const detailMap: Record<SupportedActionsForTable<'enrollments'>, string> = {
-    implicit_joined: 'Enrolled in course',
-    explicit_joined: 'Enrolled in course',
-    invited: 'Invited to course',
-    invited_by_manual_sync: 'Invited to course (manual student list sync)',
-    invitation_accepted: 'Accepted invitation',
-    invitation_rejected: 'Rejected invitation',
-    identity_merged: 'Enrollment identity merged',
-    blocked: 'Blocked from course',
-    unblocked: 'Reenrolled in course (unblocked)',
-    unblocked_by_manual_sync: 'Unblocked (manual student list sync)',
-    left: 'Student left course',
-    removed: 'Removed from course by instructor',
-    removed_by_manual_sync: 'Removed from course (manual student list sync)',
-    reenrolled_by_manual_sync: 'Reenrolled (manual student list sync)',
-    reenrolled_by_instructor: 'Reenrolled in course by instructor',
+    implicit_joined: 'ثبت‌نام در درس',
+    explicit_joined: 'ثبت‌نام در درس',
+    invited: 'دعوت به درس',
+    invited_by_manual_sync: 'دعوت به درس (همگام‌سازی دستی فهرست دانشجویان)',
+    invitation_accepted: 'پذیرش دعوت‌نامه',
+    invitation_rejected: 'رد دعوت‌نامه',
+    identity_merged: 'ادغام هویت ثبت‌نام',
+    blocked: 'مسدودشده از درس',
+    unblocked: 'ثبت‌نام مجدد در درس (رفع مسدودیت)',
+    unblocked_by_manual_sync: 'رفع مسدودیت (همگام‌سازی دستی فهرست دانشجویان)',
+    left: 'خروج دانشجو از درس',
+    removed: 'حذف از درس توسط استاد',
+    removed_by_manual_sync: 'حذف از درس (همگام‌سازی دستی فهرست دانشجویان)',
+    reenrolled_by_manual_sync: 'ثبت‌نام مجدد (همگام‌سازی دستی فهرست دانشجویان)',
+    reenrolled_by_instructor: 'ثبت‌نام مجدد در درس توسط استاد',
 
     // You can never actually see these states since canceling an invitation
     // hard-deletes the enrollment.
-    invitation_deleted: 'Invitation cancelled',
-    invitation_deleted_by_manual_sync: 'Invitation cancelled (manual student list sync)',
+    invitation_deleted: 'لغو دعوت‌نامه',
+    invitation_deleted_by_manual_sync: 'لغو دعوت‌نامه (همگام‌سازی دستی فهرست دانشجویان)',
   };
 
   const detail = detailMap[action_detail as SupportedActionsForTable<'enrollments'>];
@@ -46,16 +46,16 @@ function renderEnrollmentEventText(event: StaffAuditEvent): string {
 function renderLabelEventText(event: StaffAuditEvent): string {
   const { action_detail, context } = event;
   const labelName = String(
-    (context as Record<string, unknown> | null)?.label_name ?? 'Unknown label',
+    (context as Record<string, unknown> | null)?.label_name ?? 'برچسب ناشناس',
   );
 
   if (!action_detail) {
-    return 'Label event';
+    return 'رویداد برچسب';
   }
 
   const detailMap: Record<SupportedActionsForTable<'student_label_enrollments'>, string> = {
-    enrollment_added: `Label "${labelName}" added`,
-    enrollment_removed: `Label "${labelName}" removed`,
+    enrollment_added: `برچسب «${labelName}» اضافه شد`,
+    enrollment_removed: `برچسب «${labelName}» حذف شد`,
   };
 
   const detail = detailMap[action_detail as SupportedActionsForTable<'student_label_enrollments'>];
@@ -72,7 +72,7 @@ function renderEventText(event: StaffAuditEvent): string {
   if (event.table_name === 'student_label_enrollments') {
     return renderLabelEventText(event);
   }
-  return 'Unknown event';
+  return 'رویداد ناشناس';
 }
 
 export function StudentAuditEventsTable({ events }: StudentAuditEventsTableProps) {
@@ -80,10 +80,10 @@ export function StudentAuditEventsTable({ events }: StudentAuditEventsTableProps
     return (
       <>
         <div className="card-body">
-          <div className="text-muted">No audit events found.</div>
+          <div className="text-muted">هیچ رویداد ممیزی یافت نشد.</div>
         </div>
         <div className="card-footer text-muted small">
-          Missing events? Enrollment events were not logged before October 2025.
+          رویدادی را نمی‌بینید؟ رویدادهای ثبت‌نام پیش از اکتبر ۲۰۲۵ ثبت نمی‌شدند.
         </div>
       </>
     );
@@ -93,11 +93,11 @@ export function StudentAuditEventsTable({ events }: StudentAuditEventsTableProps
   // search/filter functionality to help the user find specific events.
   return (
     <>
-      <table className="table table-sm table-hover" aria-label="Student audit events">
+      <table className="table table-sm table-hover" aria-label="رویدادهای ممیزی دانشجو">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Event</th>
+            <th>تاریخ</th>
+            <th>رویداد</th>
           </tr>
         </thead>
         <tbody>
@@ -112,7 +112,7 @@ export function StudentAuditEventsTable({ events }: StudentAuditEventsTableProps
         </tbody>
       </table>
       <div className="card-footer text-muted small">
-        Missing events? Enrollment events were not logged before October 2025.
+        رویدادی را نمی‌بینید؟ رویدادهای ثبت‌نام پیش از اکتبر ۲۰۲۵ ثبت نمی‌شدند.
       </div>
     </>
   );

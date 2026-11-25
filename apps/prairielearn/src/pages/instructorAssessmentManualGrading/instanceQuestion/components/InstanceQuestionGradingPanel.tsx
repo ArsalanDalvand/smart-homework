@@ -75,7 +75,7 @@ function InstanceQuestionGradingPanelInner({
   );
   const editShortcuts = data.context === 'main' && data.enableSingleKeyShortcuts && !data.disabled;
   const showNextShortcut =
-    data.context === 'main' && data.enableSingleKeyShortcuts && data.skipText === 'Next';
+    data.context === 'main' && data.enableSingleKeyShortcuts && data.skipText === 'بعدی';
   const aiSelectedRubricItemIds = data.aiGradingInfo?.submissionManuallyGraded
     ? new Set(data.aiGradingInfo.selectedRubricItemIds)
     : null;
@@ -250,13 +250,13 @@ function InstanceQuestionGradingPanelInner({
       <ul className="list-group list-group-flush">
         {maxPoints > 0 && (
           <li className="list-group-item d-flex justify-content-center">
-            <span>Points</span>
+            <span>امتیاز</span>
             <Form.Check
               className="form-switch mx-2"
               type="switch"
               name="use_score_perc"
               id={`use-score-percentage-${data.context}`}
-              aria-label="Grade using percentages"
+              aria-label="نمره‌دهی بر اساس درصد"
               checked={usePercentage}
               onChange={(event) => {
                 const next = event.target.checked;
@@ -265,7 +265,7 @@ function InstanceQuestionGradingPanelInner({
               }}
             />
             <Form.Label className="mb-0" htmlFor={`use-score-percentage-${data.context}`}>
-              Percentage
+              درصد
             </Form.Label>
           </li>
         )}
@@ -284,7 +284,7 @@ function InstanceQuestionGradingPanelInner({
 
         {data.graderGuidelinesRendered && (
           <li className="list-group-item">
-            <div className="mb-1">Guidelines:</div>
+            <div className="mb-1">راهنمای مصحح:</div>
             <div
               className="markdown-body mt-3"
               data-testid="grader-guidelines"
@@ -298,9 +298,9 @@ function InstanceQuestionGradingPanelInner({
         {(data.aiGradingInfo || data.gradedByHumanName) && (
           <li className="list-group-item">
             <div className="d-flex align-items-center flex-wrap gap-1">
-              <span>Graded by:</span>
+              <span>تصحیح‌شده توسط:</span>
               {data.aiGradingInfo && (
-                <span className="badge text-bg-light border fw-medium">AI</span>
+                <span className="badge text-bg-light border fw-medium">هوش مصنوعی</span>
               )}
               {data.aiGradingInfo && data.gradedByHumanName && <span>+</span>}
               {data.gradedByHumanName && <span>{data.gradedByHumanName}</span>}
@@ -317,12 +317,12 @@ function InstanceQuestionGradingPanelInner({
                   }}
                 >
                   <i className="bi bi-stars me-1" aria-hidden="true" />
-                  View AI explanation
+                  مشاهده توضیح هوش مصنوعی
                 </a>
               )}
             </div>
             {data.aiGradingInfo && data.gradedByHumanName && (
-              <div className="text-muted small mt-1">Human grading always takes priority</div>
+              <div className="text-muted small mt-1">تصحیح مصحح انسانی همیشه اولویت دارد</div>
             )}
           </li>
         )}
@@ -332,7 +332,7 @@ function InstanceQuestionGradingPanelInner({
             context={data.context}
             disabled={data.disabled}
             editing={false}
-            label="Manual"
+            label="دستی"
             maxPoints={data.assessmentQuestion.maxManualPoints}
             percentageValue={formState.manualPercentage}
             pointsValue={formState.manualPoints}
@@ -377,7 +377,7 @@ function InstanceQuestionGradingPanelInner({
                 context={data.context}
                 disabled={data.disabled}
                 editing={formState.autoEditing}
-                label="Auto"
+                label="خودکار"
                 maxPoints={data.assessmentQuestion.maxAutoPoints}
                 percentageValue={formState.autoPercentage}
                 pointsValue={formState.autoPoints}
@@ -429,7 +429,7 @@ function InstanceQuestionGradingPanelInner({
 
         <li className="list-group-item">
           <Form.Label htmlFor={`submission-feedback-${data.context}`}>
-            Feedback:
+            بازخورد:
             {editShortcuts && (
               <kbd aria-hidden="true" className="pl-kbd kbd-semi-transparent mb-1 ms-2">
                 F
@@ -451,8 +451,8 @@ function InstanceQuestionGradingPanelInner({
             }
           />
           <Form.Text id={`submission-feedback-help-${data.context}`} muted>
-            Markdown formatting, such as *<em>emphasis</em>* or <code>`code`</code>, is permitted
-            and will be used to format the feedback when presented to the student.
+            قالب‌بندی Markdown، مانند *<em>تاکید</em>* یا <code>`کد`</code> مجاز است و هنگام نمایش
+            بازخورد به دانشجو اعمال خواهد شد.
           </Form.Text>
         </li>
 
@@ -466,7 +466,7 @@ function InstanceQuestionGradingPanelInner({
                 name="unsafe_issue_ids_close"
                 value={id}
                 checked={formState.closeIssueIds.has(id)}
-                label={`Close issue #${id}`}
+                label={`بستن گزارش خطا #${id}`}
                 onChange={(event) =>
                   setFormState((current) => {
                     const closeIssueIds = new Set(current.closeIssueIds);

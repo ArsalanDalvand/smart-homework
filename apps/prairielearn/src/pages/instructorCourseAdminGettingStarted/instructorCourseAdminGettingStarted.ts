@@ -44,7 +44,7 @@ router.post(
     }
     flash(
       'success',
-      'The getting started checklist has been dismissed. You can restore it from your course settings.',
+      'چک‌لیست شروع کار بسته شد. می‌توانید آن را از تنظیمات درس بازگردانید.',
     );
     res.redirect(`${res.locals.urlPrefix}/course_admin/instances`);
   }),

@@ -9,7 +9,7 @@ export function StudentLabelDropdown({
   onToggle,
   disabled,
   footer,
-  buttonLabel = 'Edit labels',
+  buttonLabel = 'ویرایش برچسب‌ها',
   maxSelected,
 }: {
   labels: StaffStudentLabel[];
@@ -23,7 +23,7 @@ export function StudentLabelDropdown({
   const maxSelectedReason =
     maxSelected === undefined
       ? undefined
-      : `At most ${maxSelected} student labels can be selected.`;
+      : `حداکثر ${maxSelected} برچسب دانشجو قابل انتخاب است.`;
   const maxSelectedReached = maxSelected !== undefined && selectedIds.size >= maxSelected;
 
   return (
@@ -34,7 +34,7 @@ export function StudentLabelDropdown({
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {labels.length === 0 ? (
-          <Dropdown.ItemText className="text-muted">No student labels available</Dropdown.ItemText>
+          <Dropdown.ItemText className="text-muted">برچسب دانشجویی موجود نیست</Dropdown.ItemText>
         ) : (
           labels.map((label) => {
             const isSelected = selectedIds.has(label.id);

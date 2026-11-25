@@ -48,7 +48,7 @@ export function buildInstanceQuestionGradingPanelProps({
   context,
   graders = [],
   disable = false,
-  skipText = 'Next',
+  skipText = 'بعدی',
   customAutoPoints,
   customManualPoints,
   gradingJob,
@@ -96,7 +96,7 @@ export function buildInstanceQuestionGradingPanelProps({
     if (!error) return renderedHtml;
     return (
       renderedHtml +
-      html` <span class="text-danger small">(template error: ${error})</span>`.toString()
+      html` <span class="text-danger small">(خطای قالب: ${error})</span>`.toString()
     );
   })();
 
@@ -251,7 +251,7 @@ export function InstanceQuestion({
       fullWidth: true,
       fullHeight: true,
       contentPadding: false,
-      pageNote: `Instance - question ${resLocals.instance_question_info.instructor_question_number}`,
+      pageNote: `نمونه - سوال ${resLocals.instance_question_info.instructor_question_number}`,
     },
     headContent: html`
       ${compiledStylesheetTag('instructorAssessmentManualGradingInstanceQuestion.css')}
@@ -295,7 +295,7 @@ export function InstanceQuestion({
       ${unsafeHtml(resLocals.extraHeadersHtml)}
     `,
     content: html`
-      <h1 class="visually-hidden">Instance Question Manual Grading</h1>
+      <h1 class="visually-hidden">تصحیح دستی سوال دانشجو</h1>
       <div class="instance-question-manual-grading d-flex flex-column flex-grow-1">
         <div class="d-flex flex-shrink-0 align-items-center justify-content-between gap-2 p-3">
           <nav aria-label="breadcrumb">
@@ -304,7 +304,7 @@ export function InstanceQuestion({
                 <a
                   href="${resLocals.urlPrefix}/assessment/${resLocals.assessment.id}/manual_grading"
                 >
-                  Manual grading
+                  تصحیح دستی
                 </a>
               </li>
               <li class="breadcrumb-item">
@@ -313,11 +313,11 @@ export function InstanceQuestion({
                     resLocals.assessment.id
                   }/manual_grading/assessment_question/${resLocals.assessment_question.id}"
                 >
-                  Question ${resLocals.instance_question_info.instructor_question_number}.
+                  سوال ${resLocals.instance_question_info.instructor_question_number}.
                   ${resLocals.question.title}
                 </a>
               </li>
-              <li class="breadcrumb-item active" aria-current="page">Student submission</li>
+              <li class="breadcrumb-item active" aria-current="page">ارسال دانشجو</li>
             </ol>
           </nav>
 
@@ -338,7 +338,7 @@ export function InstanceQuestion({
                       />
                       <label class="form-check-label" for="switchCheckDefault">
                         <i class="bi bi-stars"></i>
-                        AI grading mode
+                        حالت تصحیح با هوش مصنوعی
                       </label>
                     </div>
                   </form>
@@ -351,15 +351,15 @@ export function InstanceQuestion({
           <div
             class="instance-question-manual-grading-question p-3"
             role="region"
-            aria-label="Question and grading settings"
+            aria-label="سوال و تنظیمات تصحیح"
             tabindex="0"
           >
             ${
               resLocals.assessment_instance.open
                 ? html`
                     <div class="alert alert-danger" role="alert">
-                      This assessment instance is still open. Student may still be able to submit
-                      new answers.
+                      این نمونه آزمون هنوز باز است. ممکن است دانشجو همچنان قادر به ارسال پاسخ‌های
+                      جدید باشد.
                     </div>
                   `
                 : ''
@@ -368,9 +368,9 @@ export function InstanceQuestion({
               submissionCredits.some((credit) => credit !== 100)
                 ? html`
                     <div class="alert alert-warning" role="alert">
-                      There are submissions in this assessment instance with credit different than
-                      100%. Submitting a manual grade will override any credit limits set for this
-                      assessment instance.
+                      ارسال‌هایی در این نمونه آزمون وجود دارند که درصد اعتبار آن‌ها ۱۰۰٪ نیست. ثبت
+                      نمره دستی، محدودیت‌های اعتبار تنظیم‌شده برای این نمونه آزمون را بازنویسی
+                      خواهد کرد.
                     </div>
                   `
                 : ''
@@ -446,7 +446,7 @@ export function InstanceQuestion({
                               resLocals.course_instance.display_timezone,
                             )
                           : null,
-                        graderName: conflict_grading_job.grader_name ?? 'an unknown grader',
+                        graderName: conflict_grading_job.grader_name ?? 'مصحح ناشناس',
                         gradingPanelData: buildInstanceQuestionGradingPanelProps({
                           resLocals,
                           customAutoPoints: conflict_grading_job.auto_points ?? 0,
@@ -464,11 +464,11 @@ export function InstanceQuestion({
                           resLocals.instance_question.modified_at,
                           resLocals.course_instance.display_timezone,
                         ),
-                        graderName: lastGrader?.name ?? lastGrader?.uid ?? 'an unknown grader',
+                        graderName: lastGrader?.name ?? lastGrader?.uid ?? 'مصحح ناشناس',
                         gradingPanelData: buildInstanceQuestionGradingPanelProps({
                           resLocals,
                           disable: true,
-                          skipText: 'Accept existing score',
+                          skipText: 'پذیرش نمره فعلی',
                           context: 'existing',
                           skipGradedSubmissions,
                           showSubmissionsAssignedToMeOnly,
@@ -489,11 +489,11 @@ export function InstanceQuestion({
           <div
             class="instance-question-manual-grading-sidebar p-3"
             role="region"
-            aria-label="Grading controls and instructor information"
+            aria-label="ابزارهای تصحیح و اطلاعات مدرس"
             tabindex="0"
           >
             <div class="card mb-4">
-              <div class="card-header">Grading</div>
+              <div class="card-header">تصحیح</div>
               <div class="js-main-grading-panel">
                 ${hydrateHtml(
                   <InstanceQuestionGradingPanel

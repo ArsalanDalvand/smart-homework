@@ -1,6 +1,7 @@
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
 import type { InheritanceSource } from '../../types.js';
+import { formatInheritanceSourceFa } from '../../utils/formHelpers.js';
 
 export function InheritableCheckboxField({
   id,
@@ -29,14 +30,16 @@ export function InheritableCheckboxField({
   onOverride: () => void;
   onReset: () => void;
 }) {
+  const sourceFa = formatInheritanceSourceFa(inheritedFromLabel);
+
   if (!editMode) {
     if (isInherited) {
       return (
         <>
           <dt>{label}</dt>
           <dd>
-            {inheritedValue ? 'Yes' : 'No'}{' '}
-            <span className="text-muted">(inherited from {inheritedFromLabel})</span>
+            {inheritedValue ? 'بله' : 'خیر'}{' '}
+            <span className="text-muted">(به ارث برده‌شده از {sourceFa})</span>
           </dd>
         </>
       );
@@ -45,7 +48,7 @@ export function InheritableCheckboxField({
       return (
         <>
           <dt>{label}</dt>
-          <dd>{viewValue ? 'Yes' : 'No'}</dd>
+          <dd>{viewValue ? 'بله' : 'خیر'}</dd>
         </>
       );
     }
@@ -67,13 +70,13 @@ export function InheritableCheckboxField({
           {label}
         </label>
         <small className="form-text text-muted d-block">
-          Inherited from {inheritedFromLabel}.{' '}
+          به ارث برده‌شده از {sourceFa}.{' '}
           <button
             type="button"
             className="btn btn-link btn-sm p-0 align-baseline"
             onClick={onOverride}
           >
-            Override
+            بازنویسی
           </button>
         </small>
       </div>
@@ -88,7 +91,7 @@ export function InheritableCheckboxField({
       </label>
       <small id={`${id}-help`} className="form-text text-muted d-block">
         {showResetButton
-          ? `Overrides ${inheritedFromLabel} value (${inheritedValue ? 'on' : 'off'}).`
+          ? `بازنویسی مقدار ${sourceFa} (${inheritedValue ? 'روشن' : 'خاموش'}).`
           : helpText}
         {showResetButton && (
           <>
@@ -96,10 +99,10 @@ export function InheritableCheckboxField({
             <button
               type="button"
               className="btn btn-link btn-sm p-0 align-baseline"
-              title={`Reset to ${inheritedFromLabel} value`}
+              title={`بازنشانی به مقدار ${sourceFa}`}
               onClick={onReset}
             >
-              Reset
+              بازنشانی
             </button>
           </>
         )}

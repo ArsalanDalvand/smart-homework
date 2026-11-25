@@ -340,7 +340,7 @@ export function AssessmentQuestionTable({
       Array.from(
         new Set(
           instanceQuestionsInfo.map(
-            (row) => row.instance_question.ai_grading?.latest_update.ai_grading_model ?? 'None',
+            (row) => row.instance_question.ai_grading?.latest_update.ai_grading_model ?? 'هیچ‌کدام',
           ),
         ),
       ).sort(),
@@ -711,8 +711,7 @@ export function AssessmentQuestionTable({
           dismissible
           onClose={() => deleteAiGradingJobsMutation.reset()}
         >
-          Deleted AI grading results for {deleteAiGradingJobsMutation.data.num_deleted}{' '}
-          {deleteAiGradingJobsMutation.data.num_deleted === 1 ? 'question' : 'questions'}.
+          نتایج تصحیح هوش مصنوعی برای {deleteAiGradingJobsMutation.data.num_deleted} سوال حذف شد.
         </Alert>
       )}
       {deleteAiGroupingsMutation.isSuccess && (
@@ -722,8 +721,8 @@ export function AssessmentQuestionTable({
           dismissible
           onClose={() => deleteAiGroupingsMutation.reset()}
         >
-          Deleted AI submission grouping results for {deleteAiGroupingsMutation.data.num_deleted}{' '}
-          {deleteAiGroupingsMutation.data.num_deleted === 1 ? 'question' : 'questions'}.
+          نتایج گروه‌بندی ارسال‌های هوش مصنوعی برای {deleteAiGroupingsMutation.data.num_deleted} سوال
+          حذف شد.
         </Alert>
       )}
       {isInstanceQuestionsError && (
@@ -737,12 +736,12 @@ export function AssessmentQuestionTable({
             });
           }}
         >
-          <strong>Error loading instance questions:</strong> {instanceQuestionsError.message}
+          <strong>خطا در بارگذاری سوالات دانشجویان:</strong> {instanceQuestionsError.message}
         </Alert>
       )}
       <TanstackTableCard
         table={table}
-        title="Student instance questions"
+        title="سوالات دانشجویان"
         style={{ height: '90vh' }}
         columnManager={{
           topContent: (
@@ -755,7 +754,7 @@ export function AssessmentQuestionTable({
                   className="form-check-input"
                   onChange={handleStudentInfoCheckboxClick}
                 />
-                <span className="form-check-label ms-2">Show student info</span>
+                <span className="form-check-label ms-2">نمایش اطلاعات دانشجو</span>
               </label>
             </div>
           ),
@@ -775,11 +774,11 @@ export function AssessmentQuestionTable({
                 <Dropdown>
                   <Dropdown.Toggle key="ai-grading-dropdown" variant="light" size="sm">
                     <i className="bi bi-stars" aria-hidden="true" />
-                    <span>AI grading</span>
+                    <span>تصحیح با هوش مصنوعی</span>
                   </Dropdown.Toggle>
                   <Dropdown.Menu align="end">
                     <AiGradingOption
-                      text="Grade all human-graded"
+                      text="تصحیح تمام موارد تصحیح‌شده توسط مصحح"
                       numToGrade={aiGradingCounts.humanGraded}
                       onSelect={() =>
                         modelSelectionModalState.showWithData({
@@ -789,11 +788,11 @@ export function AssessmentQuestionTable({
                       }
                     />
                     <AiGradingOption
-                      text="Grade selected"
+                      text="تصحیح موارد انتخاب‌شده"
                       numToGrade={aiGradingCounts.selected}
                       hint={
                         aiGradingCounts.selected === 0 && aiGradingCounts.all > 0
-                          ? 'Checkboxes on the left select submissions. Shift-click to select a range.'
+                          ? 'با کادرهای انتخاب، ارسال‌ها را برگزینید. برای انتخاب یک بازه، کلید Shift را نگه داشته و کلیک کنید.'
                           : undefined
                       }
                       onSelect={() =>
@@ -805,11 +804,11 @@ export function AssessmentQuestionTable({
                       }
                     />
                     <AiGradingOption
-                      text="Grade all"
+                      text="تصحیح همه"
                       numToGrade={aiGradingCounts.all}
                       hint={
                         aiGradingCounts.all === 0
-                          ? 'Receive at least one submission to perform AI grading.'
+                          ? 'برای انجام تصحیح با هوش مصنوعی باید حداقل یک ارسال دریافت شده باشد.'
                           : undefined
                       }
                       onSelect={() =>
@@ -821,7 +820,7 @@ export function AssessmentQuestionTable({
                     />
                     <Dropdown.Divider />
                     <Dropdown.Item onClick={() => setShowDeleteAiGradingModal(true)}>
-                      Delete all AI grading results
+                      حذف تمام نتایج تصحیح هوش مصنوعی
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -829,7 +828,7 @@ export function AssessmentQuestionTable({
                   (!availableAiGradingProviders.includes('openai') ? (
                     <OverlayTrigger
                       tooltip={{
-                        body: 'No OpenAI API key is configured. Add a key in AI grading settings to use submission grouping.',
+                        body: 'هیچ کلید API برای OpenAI تنظیم نشده است. برای استفاده از گروه‌بندی ارسال‌ها، کلیدی در تنظیمات تصحیح هوش مصنوعی اضافه کنید.',
                         props: { id: 'ai-grouping-no-openai-tooltip' },
                       }}
                     >
@@ -841,7 +840,7 @@ export function AssessmentQuestionTable({
                           disabled
                         >
                           <i className="bi bi-stars" aria-hidden="true" />
-                          <span className="d-none d-sm-inline">AI submission grouping</span>
+                          <span className="d-none d-sm-inline">گروه‌بندی ارسال‌ها با هوش مصنوعی</span>
                         </Button>
                       </span>
                     </OverlayTrigger>
@@ -849,7 +848,7 @@ export function AssessmentQuestionTable({
                     <Dropdown>
                       <Dropdown.Toggle variant="light" size="sm">
                         <i className="bi bi-stars" aria-hidden="true" />
-                        <span className="d-none d-sm-inline">AI submission grouping</span>
+                        <span className="d-none d-sm-inline">گروه‌بندی ارسال‌ها با هوش مصنوعی</span>
                       </Dropdown.Toggle>
                       <Dropdown.Menu align="end">
                         <Dropdown.Item
@@ -859,7 +858,7 @@ export function AssessmentQuestionTable({
                           }
                         >
                           <div className="d-flex justify-content-between align-items-center w-100">
-                            <span>Group selected submissions</span>
+                            <span>گروه‌بندی ارسال‌های انتخاب‌شده</span>
                             <span className="badge bg-secondary ms-2">
                               {aiGroupingCounts.selected}
                             </span>
@@ -867,7 +866,7 @@ export function AssessmentQuestionTable({
                         </Dropdown.Item>
                         <Dropdown.Item onClick={() => onSetGroupInfoModalState({ type: 'all' })}>
                           <div className="d-flex justify-content-between align-items-center w-100">
-                            <span>Group all submissions</span>
+                            <span>گروه‌بندی تمام ارسال‌ها</span>
                             <span className="badge bg-secondary ms-2">{aiGroupingCounts.all}</span>
                           </div>
                         </Dropdown.Item>
@@ -875,7 +874,7 @@ export function AssessmentQuestionTable({
                           onClick={() => onSetGroupInfoModalState({ type: 'ungrouped' })}
                         >
                           <div className="d-flex justify-content-between align-items-center w-100">
-                            <span>Group ungrouped submissions</span>
+                            <span>گروه‌بندی ارسال‌های گروه‌بندی‌نشده</span>
                             <span className="badge bg-secondary ms-2">
                               {aiGroupingCounts.ungrouped}
                             </span>
@@ -883,7 +882,7 @@ export function AssessmentQuestionTable({
                         </Dropdown.Item>
                         <Dropdown.Divider />
                         <Dropdown.Item onClick={() => setShowDeleteAiGroupingsModal(true)}>
-                          Delete all AI groupings
+                          حذف تمام گروه‌بندی‌های هوش مصنوعی
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
@@ -893,17 +892,17 @@ export function AssessmentQuestionTable({
               <Dropdown>
                 <Dropdown.Toggle variant="light" size="sm" disabled={selectedIds.length === 0}>
                   <i className="fas fa-tags" aria-hidden="true" />{' '}
-                  <span className="d-none d-sm-inline">Tag for grading</span>
+                  <span className="d-none d-sm-inline">برچسب‌گذاری برای تصحیح</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu align="end">
                   <Dropdown.Header className="d-flex align-items-center gap-1">
-                    Assign for grading
+                    تخصیص برای تصحیح
                     <OverlayTrigger
                       tooltip={{
                         body: (
                           <>
-                            Only staff with student data editor permissions can be assigned as
-                            graders
+                            فقط اعضای کادر آموزشی با دسترسی ویرایش اطلاعات دانشجویان می‌توانند
+                            به‌عنوان مصحح تخصیص داده شوند
                           </>
                         ),
                         props: { id: 'assign-for-grading-tooltip' },
@@ -924,7 +923,7 @@ export function AssessmentQuestionTable({
                         })
                       }
                     >
-                      <i className="fas fa-user-tag" /> Assign to: {grader.name || ''} ({grader.uid}
+                      <i className="fas fa-user-tag" /> تخصیص به: {grader.name || ''} ({grader.uid}
                       )
                     </Dropdown.Item>
                   ))}
@@ -937,7 +936,7 @@ export function AssessmentQuestionTable({
                       })
                     }
                   >
-                    <i className="fas fa-user-slash" /> Remove grader assignment
+                    <i className="fas fa-user-slash" /> حذف تخصیص مصحح
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item
@@ -949,7 +948,7 @@ export function AssessmentQuestionTable({
                       })
                     }
                   >
-                    <i className="fas fa-tag" /> Tag as required grading
+                    <i className="fas fa-tag" /> نشانه‌گذاری به‌عنوان نیازمند تصحیح
                   </Dropdown.Item>
                   <Dropdown.Item
                     key="tag-as-graded"
@@ -960,7 +959,7 @@ export function AssessmentQuestionTable({
                       })
                     }
                   >
-                    <i className="fas fa-check-square" /> Tag as graded
+                    <i className="fas fa-check-square" /> نشانه‌گذاری به‌عنوان تصحیح‌شده
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -970,15 +969,15 @@ export function AssessmentQuestionTable({
           )
         }
         globalFilter={{
-          placeholder: 'Search by name, UID...',
+          placeholder: 'جستجو بر اساس نام، شناسه کاربری...',
         }}
         tableOptions={{
           rowHeight: 48,
           filters: columnFiltersComponents,
           scrollRef,
         }}
-        singularLabel="submission"
-        pluralLabel="submissions"
+        singularLabel="ارسال"
+        pluralLabel="ارسال"
         downloadButtonOptions={{
           filenameBase: `manual_grading_${questionQid}`,
           isPending: exportAiGradingTextMutation.isPending,
@@ -1048,15 +1047,15 @@ export function AssessmentQuestionTable({
       {/* Delete AI Grading Results Modal */}
       <Modal show={showDeleteAiGradingModal} onHide={() => setShowDeleteAiGradingModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Delete all AI grading results</Modal.Title>
+          <Modal.Title>حذف تمام نتایج تصحیح هوش مصنوعی</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete <strong>all AI grading results</strong> for this
-          assessment? This action cannot be undone.
+          آیا مطمئن هستید که می‌خواهید <strong>تمام نتایج تصحیح هوش مصنوعی</strong> این ارزیابی را
+          حذف کنید؟ این عمل قابل بازگشت نیست.
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowDeleteAiGradingModal(false)}>
-            Cancel
+            انصراف
           </Button>
           <Button
             variant="danger"
@@ -1067,7 +1066,7 @@ export function AssessmentQuestionTable({
               })
             }
           >
-            {deleteAiGradingJobsMutation.isPending ? 'Deleting...' : 'Delete'}
+            {deleteAiGradingJobsMutation.isPending ? 'در حال حذف...' : 'حذف'}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -1075,15 +1074,15 @@ export function AssessmentQuestionTable({
       {/* Delete AI Groupings Modal */}
       <Modal show={showDeleteAiGroupingsModal} onHide={() => setShowDeleteAiGroupingsModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Delete all AI submission groupings</Modal.Title>
+          <Modal.Title>حذف تمام گروه‌بندی‌های هوش مصنوعی</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete <strong>all AI submission groupings</strong> for this
-          assessment? This action cannot be undone.
+          آیا مطمئن هستید که می‌خواهید <strong>تمام گروه‌بندی‌های ارسال هوش مصنوعی</strong> این
+          ارزیابی را حذف کنید؟ این عمل قابل بازگشت نیست.
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowDeleteAiGroupingsModal(false)}>
-            Cancel
+            انصراف
           </Button>
           <Button
             variant="danger"
@@ -1094,7 +1093,7 @@ export function AssessmentQuestionTable({
               })
             }
           >
-            {deleteAiGroupingsMutation.isPending ? 'Deleting...' : 'Delete'}
+            {deleteAiGroupingsMutation.isPending ? 'در حال حذف...' : 'حذف'}
           </Button>
         </Modal.Footer>
       </Modal>

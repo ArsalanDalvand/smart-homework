@@ -41,7 +41,7 @@ export function StudentCheckboxList<T extends StudentCheckboxListItem>({
   const selectedCount = items.filter((item) => selectedUids.has(item.uid)).length;
   const unselectedCount = items.length - selectedCount;
   const maxSelectedReason =
-    maxSelected === undefined ? undefined : `At most ${maxSelected} students can be selected.`;
+    maxSelected === undefined ? undefined : `حداکثر ${maxSelected} دانشجو قابل انتخاب است.`;
   const maxSelectedReached = maxSelected !== undefined && selectedUids.size >= maxSelected;
   const selectAllWouldExceedLimit =
     maxSelected !== undefined && selectedUids.size + unselectedCount > maxSelected;
@@ -74,7 +74,7 @@ export function StudentCheckboxList<T extends StudentCheckboxListItem>({
       <div className="border rounded overflow-hidden" role="group" aria-label={label}>
         <div className="d-flex align-items-center px-3 py-2 bg-body-tertiary border-bottom">
           <span className="small text-muted">
-            {selectedCount} of {items.length} selected
+            {selectedCount} از {items.length} انتخاب شده
           </span>
           <div className="d-flex gap-1 ms-auto">
             {onSelectAll && (
@@ -82,22 +82,22 @@ export function StudentCheckboxList<T extends StudentCheckboxListItem>({
                 variant="link"
                 size="sm"
                 className="text-decoration-none"
-                aria-label={`Select all ${label.toLowerCase()}`}
+                aria-label={`انتخاب همه ${label}`}
                 disabled={selectAllDisabledReason !== undefined}
                 title={selectAllDisabledReason}
                 onClick={onSelectAll}
               >
-                Select all
+                انتخاب همه
               </Button>
             )}
             <Button
               variant="link"
               size="sm"
               className="text-decoration-none"
-              aria-label={`Clear all ${label.toLowerCase()}`}
+              aria-label={`پاک کردن انتخاب همه ${label}`}
               onClick={onDeselectAll}
             >
-              Clear all
+              پاک کردن همه
             </Button>
           </div>
         </div>

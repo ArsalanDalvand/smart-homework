@@ -75,7 +75,7 @@ export function ManualGradingAssessment({
         <div className="card mb-4">
           <div className="card-header bg-primary text-white align-items-center justify-content-between d-flex gap-2">
             <h1>
-              {resLocals.assessment_set.name} {resLocals.assessment.number}: Manual Grading Queue
+              {resLocals.assessment_set.name} {resLocals.assessment.number}: صف تصحیح دستی
             </h1>
             {adminFeaturesEnabled && questions.length > 0 && (
               <div
@@ -92,10 +92,10 @@ export function ManualGradingAssessment({
                       <button
                         type="submit"
                         class="btn btn-sm btn-light grading-tag-button"
-                        aria-label="Export AI grading statistics"
+                        aria-label="خروجی آمار تصحیح با هوش مصنوعی"
                       >
                         <i class="bi bi-download" aria-hidden="true"></i>
-                        Export AI grading statistics
+                        خروجی آمار تصحیح با هوش مصنوعی
                       </button>
                     </form>
                     <form method="POST" class="d-inline">
@@ -104,10 +104,10 @@ export function ManualGradingAssessment({
                       <button
                         type="submit"
                         class="btn btn-sm btn-light grading-tag-button"
-                        aria-label="AI grade all questions"
+                        aria-label="تصحیح تمام سوالات با هوش مصنوعی"
                       >
                         <i class="bi bi-stars" aria-hidden="true"></i>
-                        AI grade all questions
+                        تصحیح تمام سوالات با هوش مصنوعی
                       </button>
                     </form>
                     <form method="POST" class="d-inline">
@@ -116,11 +116,11 @@ export function ManualGradingAssessment({
                       <button
                         type="submit"
                         class="btn btn-sm btn-light grading-tag-button"
-                        aria-label="Delete all AI grading data"
+                        aria-label="حذف تمام داده‌های تصحیح هوش مصنوعی"
                         data-bs-toggle="tooltip"
-                        data-bs-title="Delete all AI grading results for this assessment's questions"
+                        data-bs-title="حذف تمام نتایج تصحیح هوش مصنوعی برای سوالات این ارزیابی"
                       >
-                        Delete AI grading data
+                        حذف داده‌های تصحیح هوش مصنوعی
                       </button>
                     </form>
                   `.toString(),
@@ -133,20 +133,20 @@ export function ManualGradingAssessment({
             <table
               id="instanceQuestionGradingTable"
               className="table table-sm table-hover"
-              aria-label="Questions for manual grading"
+              aria-label="سوالات برای تصحیح دستی"
             >
               <thead>
                 <tr>
-                  <th>Question</th>
-                  <th>QID</th>
-                  <th>Auto Points</th>
-                  <th>Manual Points</th>
+                  <th>سوال</th>
+                  <th>شناسه سوال (QID)</th>
+                  <th>نمره خودکار</th>
+                  <th>نمره دستی</th>
                   <th colSpan={2} scope="colgroup">
-                    Submissions to grade
+                    ارسال‌های نیازمند تصحیح
                   </th>
-                  <th>Grading assigned to</th>
-                  <th>Graded by</th>
-                  <th>Actions</th>
+                  <th>تخصیص داده‌شده به</th>
+                  <th>تصحیح‌شده توسط</th>
+                  <th>عملیات</th>
                 </tr>
               </thead>
               <tbody>
@@ -197,7 +197,7 @@ function AssessmentQuestionRow({
             href="#"
             className="ms-2 text-info"
             data-bs-toggle="tooltip"
-            data-bs-title="This question uses a rubric"
+            data-bs-title="این سوال دارای معیار نمره‌دهی (Rubric) است"
           >
             <i className="fas fa-list-check" />
           </a>
@@ -234,7 +234,7 @@ function AssessmentQuestionRow({
         {question.num_instance_questions_unassigned > 0 && (
           <>
             <small className="text-muted">
-              ({question.num_instance_questions_unassigned} unassigned)
+              ({question.num_instance_questions_unassigned} تخصیص‌نیافته)
             </small>
             {resLocals.authz_data.has_course_instance_permission_edit && (
               <button
@@ -243,7 +243,7 @@ function AssessmentQuestionRow({
                 data-bs-toggle="modal"
                 data-bs-target="#grader-assignment-modal"
                 data-assessment-question-id={question.id}
-                aria-label="Assign to graders"
+                aria-label="تخصیص به مصححین"
               >
                 <i className="fas fa-pencil" />
               </button>
@@ -257,7 +257,7 @@ function AssessmentQuestionRow({
       <td className="align-middle">
         {showGradingButton && (
           <a className="btn btn-xs btn-primary" href={`${gradingUrl}/next_ungraded`}>
-            Grade next submission
+            تصحیح ارسال بعدی
           </a>
         )}
       </td>
@@ -285,11 +285,11 @@ function GraderAssignmentModal({
 }) {
   return Modal({
     id: 'grader-assignment-modal',
-    title: 'Assign instances to graders',
+    title: 'تخصیص نمونه‌های سوال به مصححین',
     body: renderHtml(
       courseStaff.length > 0 ? (
         <>
-          <p>Assign instances to the following graders:</p>
+          <p>تخصیص نمونه‌های سوال به مصححین زیر:</p>
           {courseStaff.map((staff) => (
             <div key={staff.id} className="form-check">
               <input
@@ -305,15 +305,14 @@ function GraderAssignmentModal({
             </div>
           ))}
           <div className="mt-3 mb-0 small alert alert-info">
-            Only instances that require grading and are not yet assigned to a grader will be
-            affected. If more than one grader is selected, the instances will be randomly split
-            between the graders.
+            تنها نمونه‌های سوالی که نیازمند تصحیح هستند و هنوز به مصححی تخصیص داده نشده‌اند تغییر
+            خواهند کرد. در صورت انتخاب بیش از یک مصحح، نمونه‌ها به‌صورت تصادفی بین مصححین تقسیم
+            می‌شوند.
           </div>
         </>
       ) : (
         <p>
-          There are currently no staff members with Editor permission assigned to this course
-          instance.
+          در حال حاضر هیچ عضو کادر آموزشی با دسترسی ویرایشگر به این دوره تخصیص داده نشده است.
         </p>
       ),
     ),
@@ -323,10 +322,10 @@ function GraderAssignmentModal({
         <input type="hidden" name="__csrf_token" value={csrfToken} />
         <input type="hidden" name="__action" value="assign_graders" />
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-          Cancel
+          انصراف
         </button>
         <button type="submit" className="btn btn-primary" disabled={courseStaff.length === 0}>
-          Assign
+          تخصیص
         </button>
       </>,
     ),

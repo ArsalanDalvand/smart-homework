@@ -14,31 +14,31 @@ export function Pager({
   const { prevPage, currPage, nextPage, lastPage } = pages(chosenPage, count, pageSize);
   const suffix = extraQueryParams ? `&${extraQueryParams}` : '';
   return (
-    <nav aria-label="Change page">
+    <nav aria-label="تغییر صفحه">
       <ul className="pagination justify-content-center mb-0">
         <li className={clsx('page-item', { disabled: currPage === 1 })}>
           <a className="page-link" href={`?page=1${suffix}`}>
-            <i className="fa fa-angle-double-left" aria-hidden="true" /> First
+            <i className="fa fa-angle-double-left" aria-hidden="true" /> اولین
           </a>
         </li>
         <li className={clsx('page-item', { disabled: currPage === 1 })}>
           <a className="page-link" href={`?page=${prevPage}${suffix}`}>
-            <i className="fa fa-angle-left" aria-hidden="true" /> Prev
+            <i className="fa fa-angle-left" aria-hidden="true" /> قبلی
           </a>
         </li>
         <li className="page-item" aria-current="page">
           <a className="page-link" href={`?page=${currPage}${suffix}`}>
-            Page {currPage}/{lastPage}
+            صفحه {currPage}/{lastPage}
           </a>
         </li>
         <li className={clsx('page-item', { disabled: currPage === lastPage })}>
           <a className="page-link" href={`?page=${nextPage}${suffix}`}>
-            Next <i className="fa fa-angle-right" aria-hidden="true" />
+            بعدی <i className="fa fa-angle-right" aria-hidden="true" />
           </a>
         </li>
         <li className={clsx('page-item', { disabled: currPage === lastPage })}>
           <a className="page-link" href={`?page=${lastPage}${suffix}`}>
-            Last <i className="fa fa-angle-double-right" aria-hidden="true" />
+            آخرین <i className="fa fa-angle-double-right" aria-hidden="true" />
           </a>
         </li>
       </ul>

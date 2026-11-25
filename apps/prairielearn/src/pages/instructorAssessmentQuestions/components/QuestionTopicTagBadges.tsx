@@ -42,8 +42,8 @@ export function QuestionTopicTagBadges({
           className="btn btn-badge color-gray2"
           aria-label={
             isExpanded
-              ? 'Show fewer tags'
-              : `Show ${hiddenTagCount} more ${hiddenTagCount === 1 ? 'tag' : 'tags'}`
+              ? 'نمایش برچسب‌های کمتر'
+              : `نمایش ${hiddenTagCount} برچسب دیگر`
           }
           onClick={(e) => {
             e.stopPropagation();
@@ -63,7 +63,7 @@ export function QuestionTopicTagBadges({
             }
           }}
         >
-          <span aria-hidden="true">{isExpanded ? 'Show less' : `+${hiddenTagCount}`}</span>
+          <span aria-hidden="true">{isExpanded ? 'نمایش کمتر' : `+${hiddenTagCount}`}</span>
         </button>
       )}
     </>

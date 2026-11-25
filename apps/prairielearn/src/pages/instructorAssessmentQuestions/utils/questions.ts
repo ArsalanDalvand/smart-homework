@@ -79,10 +79,10 @@ export function compactPoints(pts: number[]): string {
 
 export function validatePositiveInteger(value: number | undefined, fieldName: string) {
   if (value !== undefined && value < 1) {
-    return `${fieldName} must be at least 1.`;
+    return `${fieldName} باید حداقل ۱ باشد.`;
   }
   if (value !== undefined && !Number.isInteger(value)) {
-    return `${fieldName} must be an integer.`;
+    return `${fieldName} باید یک عدد صحیح باشد.`;
   }
 }
 
@@ -335,16 +335,16 @@ type ZonePointsMismatchKind = 'numberChoose' | 'bestQuestions' | 'both';
 
 const ZONE_POINTS_MISMATCH_TEXT: Record<ZonePointsMismatchKind, { label: string; body: string }> = {
   numberChoose: {
-    label: 'Inconsistent points',
-    body: 'Students will receive different total points because this zone randomly selects questions with different point values.',
+    label: 'امتیازهای ناسازگار',
+    body: 'دانشجویان مجموع امتیازهای متفاوتی دریافت خواهند کرد زیرا این بخش سوالات را به صورت تصادفی با مقادیر امتیاز متفاوت انتخاب می‌کند.',
   },
   bestQuestions: {
-    label: 'Inconsistent points',
-    body: 'Students will receive different total points because only the best-scoring questions count and questions have different point values.',
+    label: 'امتیازهای ناسازگار',
+    body: 'دانشجویان مجموع امتیازهای متفاوتی دریافت خواهند کرد زیرا تنها سوالات با بالاترین امتیاز محاسبه می‌شوند و سوالات امتیازهای متفاوتی دارند.',
   },
   both: {
-    label: 'Inconsistent points',
-    body: 'Students will receive different total points because this zone randomly selects questions and only counts the best-scoring ones, and questions have different point values.',
+    label: 'امتیازهای ناسازگار',
+    body: 'دانشجویان مجموع امتیازهای متفاوتی دریافت خواهند کرد زیرا این بخش سوالات را به صورت تصادفی انتخاب کرده و تنها موارد با بالاترین امتیاز را محاسبه می‌کند، و سوالات امتیازهای متفاوتی دارند.',
   },
 };
 
@@ -603,8 +603,8 @@ export function getZoneMixedToolsWarning({
       if (effectiveValue) {
         seenEnabled = true;
       } else if (seenEnabled && currentZone.trackingId === zone.trackingId) {
-        const toolLabel = tool[0].toUpperCase() + tool.slice(1);
-        return `${toolLabel} is enabled in an earlier zone so students can still access it from earlier questions.`;
+        const toolLabel = tool === 'calculator' ? 'ماشین‌حساب' : tool[0].toUpperCase() + tool.slice(1);
+        return `${toolLabel} در یک بخش قبلی فعال است، بنابراین دانشجویان همچنان می‌توانند از سوالات قبلی به آن دسترسی داشته باشند.`;
       }
     }
   }

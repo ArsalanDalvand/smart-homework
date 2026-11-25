@@ -94,9 +94,9 @@ describe('generateDefaultRuleDateTableRows', () => {
     const rows = generateDefaultRuleDateTableRows(makeDefaultRule(), TEST_TIMEZONE);
 
     expect(rows[0]).toMatchObject({
-      label: 'Before release',
+      label: 'پیش از انتشار',
       date: '',
-      access: 'Hidden from students',
+      access: 'پنهان از دانشجویان',
     });
   });
 

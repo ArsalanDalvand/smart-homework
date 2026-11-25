@@ -58,17 +58,17 @@ export function AssessmentUsageModal({
   return (
     <Modal show={show} size="lg" onHide={onHide} onExited={onExited}>
       <Modal.Header closeButton>
-        <Modal.Title>Assessments using "{data?.name}"</Modal.Title>
+        <Modal.Title>تکالیف/آزمون‌های استفاده‌کننده از «{data?.name}»</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {data?.assessments.length === 0 ? (
-          <p className="text-muted mb-0">No assessments use this {entityLabel}.</p>
+          <p className="text-muted mb-0">هیچ تکلیف/آزمونی از این {entityLabel} استفاده نمی‌کند.</p>
         ) : (
           <div className="d-flex flex-column gap-3">
             {groupedAssessments.map(([courseInstanceId, assessments]) => (
               <div key={courseInstanceId}>
                 <div className="fw-bold">
-                  {assessments[0].course_instance_long_name || 'Unnamed instance'}
+                  {assessments[0].course_instance_long_name || 'دوره بدون نام'}
                   {assessments[0].course_instance_short_name && (
                     <span className="text-muted ms-1">
                       ({assessments[0].course_instance_short_name})

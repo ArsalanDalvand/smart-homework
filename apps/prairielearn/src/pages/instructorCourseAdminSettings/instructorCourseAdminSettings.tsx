@@ -211,7 +211,7 @@ router.post(
       if (!preparedEditor.success) {
         flash(
           'error',
-          'Course configuration was modified elsewhere. Please reload the page and try again.',
+          'پیکربندی درس در جای دیگری تغییر کرده است. لطفاً صفحه را بارگذاری مجدد کرده و دوباره تلاش کنید.',
         );
         return res.redirect(req.originalUrl);
       }
@@ -248,7 +248,7 @@ router.post(
         });
       }
 
-      flash('success', 'Course configuration updated successfully');
+      flash('success', 'تنظیمات درس با موفقیت به‌روزرسانی شد');
       return res.redirect(req.originalUrl);
     } else if (req.body.__action === 'add_configuration') {
       const infoJson = {

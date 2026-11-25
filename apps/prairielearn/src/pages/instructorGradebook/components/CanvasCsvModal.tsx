@@ -46,7 +46,7 @@ function AssessmentGroupCheckbox({
       label={group.heading}
       checked={allSelected}
       indeterminate={someSelected}
-      aria-label={`Toggle all assessments in '${group.heading}'`}
+      aria-label={`تغییر وضعیت انتخاب همه آزمون‌های «${group.heading}»`}
       onToggle={() => onToggleGroup(group.setId, !allSelected)}
     >
       {group.assessments.map((assessment) => {
@@ -58,7 +58,7 @@ function AssessmentGroupCheckbox({
                 type="checkbox"
                 className="form-check-input"
                 checked={selectedIds.has(id)}
-                aria-label={`Include '${assessment.label}' in export`}
+                aria-label={`درج «${assessment.label}» در خروجی`}
                 onChange={() => onToggleAssessment(id)}
               />
               <span className="form-check-label ms-2">{assessment.label}</span>
@@ -235,16 +235,16 @@ function CanvasCsvModalContent({
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Export Canvas CSV</Modal.Title>
+        <Modal.Title>خروجی CSV برای Canvas</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h6>Assessments to include</h6>
+        <h6>آزمون‌های مورد نظر</h6>
         <div className="mb-2 d-flex gap-2">
           <Button variant="link" size="sm" className="p-0" onClick={handleSelectAll}>
-            Select all
+            انتخاب همه
           </Button>
           <Button variant="link" size="sm" className="p-0" onClick={handleSelectNone}>
-            Select none
+            لغو انتخاب همه
           </Button>
         </div>
         <div className="border rounded mb-3" style={{ maxHeight: '300px', overflowY: 'auto' }}>
@@ -259,10 +259,10 @@ function CanvasCsvModalContent({
           ))}
         </div>
 
-        <h6>Score format</h6>
+        <h6>قالب نمره</h6>
         <RadioGroup value={scoreFormat} onChange={setScoreFormat}>
-          <Radio value="percentage">Percentage score (0–100)</Radio>
-          <Radio value="points_original">Original point values</Radio>
+          <Radio value="percentage">نمره درصدی (۰ تا ۱۰۰)</Radio>
+          <Radio value="points_original">مقادیر امتیاز اصلی</Radio>
         </RadioGroup>
 
         <hr />
@@ -275,14 +275,14 @@ function CanvasCsvModalContent({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant="primary"
           disabled={selectedAssessmentIds.size === 0}
           onClick={handleDownload}
         >
-          Download CSV
+          دانلود CSV
         </Button>
       </Modal.Footer>
     </>

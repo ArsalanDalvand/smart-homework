@@ -20,26 +20,26 @@ import {
 } from '../instructorQtiImport.types.js';
 
 const PL_ELEMENT_TYPE_MAP: Record<string, string> = {
-  'pl-multiple-choice': 'Multiple choice',
-  'pl-checkbox': 'Checkbox',
-  'pl-matching': 'Matching',
-  'pl-order-blocks': 'Ordering',
-  'pl-number-input': 'Numeric',
-  'pl-integer-input': 'Integer',
-  'pl-string-input': 'Short answer',
-  'pl-dropdown': 'Dropdown',
-  'pl-rich-text-editor': 'Essay',
-  'pl-file-upload': 'File upload',
+  'pl-multiple-choice': 'چندگزینه‌ای',
+  'pl-checkbox': 'چندانتخابی (چک‌باکس)',
+  'pl-matching': 'تطبیق گزینه‌ها',
+  'pl-order-blocks': 'مرتب‌سازی',
+  'pl-number-input': 'عددی',
+  'pl-integer-input': 'عدد صحیح',
+  'pl-string-input': 'پاسخ کوتاه',
+  'pl-dropdown': 'منوی کشویی',
+  'pl-rich-text-editor': 'تشریحی',
+  'pl-file-upload': 'آپلود فایل',
 };
 
 function formatGradingMethod(method: string | undefined): string {
   switch (method) {
     case 'Manual':
-      return 'Manually graded';
+      return 'تصحیح دستی';
     case 'External':
-      return 'Externally graded';
+      return 'تصحیح خارجی (کانتینر)';
     default:
-      return 'Automatically graded';
+      return 'تصحیح خودکار';
   }
 }
 
@@ -48,9 +48,9 @@ function detectQuestionType(html: string): string {
     if (html.includes(`<${element}`)) return label;
   }
   if (html.includes('<pl-question-panel>') && !/<pl-(?!question-panel|answer-panel)/.test(html)) {
-    return 'Text only';
+    return 'فقط متن';
   }
-  return 'Unknown';
+  return 'نامشخص';
 }
 
 interface ExpansionCommand {
@@ -139,7 +139,7 @@ function QuestionReviewPanelImpl({
       entries.push({
         name,
         path: `clientFilesQuestion/${name}`,
-        content: `(binary file - ${filesize(q.clientFiles[name].size, { round: 0 })})`,
+        content: `(فایل باینری - ${filesize(q.clientFiles[name].size, { round: 0 })})`,
         icon: 'bi-file-earmark-image',
       });
     }
@@ -162,7 +162,7 @@ function QuestionReviewPanelImpl({
           id={`q-include-${q.directoryName}`}
           checked={included}
           label=""
-          aria-label={`Include question ${questionNumber}: ${title}`}
+          aria-label={`افزودن سوال ${questionNumber}: ${title}`}
           onChange={(e) => updateOverride({ included: e.target.checked })}
           onClick={(e) => e.stopPropagation()}
         />
@@ -190,15 +190,15 @@ function QuestionReviewPanelImpl({
           {q.skippedVideos.length > 0 && (
             <i
               className="bi bi-exclamation-triangle-fill text-danger flex-grow-1"
-              aria-label={`${q.skippedVideos.length} video file${q.skippedVideos.length !== 1 ? 's' : ''} excluded`}
-              title={`${q.skippedVideos.length} video file${q.skippedVideos.length !== 1 ? 's' : ''} excluded`}
+              aria-label={`${q.skippedVideos.length} فایل ویدیویی حذف شد`}
+              title={`${q.skippedVideos.length} فایل ویدیویی حذف شد`}
             />
           )}
           {warnings.length > 0 && (
             <i
               className="bi bi-exclamation-triangle-fill text-warning flex-grow-1"
-              aria-label={`${warnings.length} warning${warnings.length !== 1 ? 's' : ''}`}
-              title={`${warnings.length} warning${warnings.length !== 1 ? 's' : ''}`}
+              aria-label={`${warnings.length} هشدار`}
+              title={`${warnings.length} هشدار`}
             />
           )}
         </div>
@@ -213,7 +213,7 @@ function QuestionReviewPanelImpl({
         <div className="px-3 py-2 bg-light border-bottom d-flex align-items-center gap-2 small">
           <i className="bi bi-exclamation-circle text-warning" aria-hidden="true" />
           <span>
-            Conflicts with existing question <code>{qo.originalDirName}</code>
+            تداخل با سوال موجود <code dir="ltr">{qo.originalDirName}</code>
           </span>
           <Form.Select
             size="sm"
@@ -225,8 +225,8 @@ function QuestionReviewPanelImpl({
             }
             onClick={(e) => e.stopPropagation()}
           >
-            <option value="overwrite">Replace existing question</option>
-            <option value="rename">Keep both</option>
+            <option value="overwrite">جایگزینی سوال موجود</option>
+            <option value="rename">نگهداری هر دو</option>
           </Form.Select>
           {qo.collisionStrategy === 'rename' && (
             <code className="text-muted">
@@ -245,7 +245,7 @@ function QuestionReviewPanelImpl({
                   aria-hidden="true"
                 />
                 <div>
-                  <strong>Warnings:</strong>
+                  <strong>هشدارها:</strong>
                   <ul className="mb-0 mt-1">
                     {warnings.map((warning) => (
                       <li key={warning.message} className="text-muted">
@@ -267,7 +267,7 @@ function QuestionReviewPanelImpl({
                     htmlFor={`q-title-${q.directoryName}`}
                     className="small text-muted mb-1"
                   >
-                    Title
+                    عنوان سوال
                   </Form.Label>
                   <Form.Control
                     id={`q-title-${q.directoryName}`}
@@ -282,7 +282,7 @@ function QuestionReviewPanelImpl({
                     htmlFor={`q-topic-${q.directoryName}`}
                     className="small text-muted mb-1"
                   >
-                    Topic
+                    مبحث
                   </Form.Label>
                   <Form.Control
                     id={`q-topic-${q.directoryName}`}
@@ -297,7 +297,7 @@ function QuestionReviewPanelImpl({
                     htmlFor={`q-tags-${q.directoryName}`}
                     className="small text-muted mb-1"
                   >
-                    Tags (comma-separated)
+                    برچسب‌ها (جداشده با کاما)
                   </Form.Label>
                   <Form.Control
                     id={`q-tags-${q.directoryName}`}
@@ -319,7 +319,7 @@ function QuestionReviewPanelImpl({
                   />
                 </div>
                 <div>
-                  <div className="small text-muted mb-1">Grading</div>
+                  <div className="small text-muted mb-1">نحوه تصحیح</div>
                   <div>{formatGradingMethod(q.infoJson.gradingMethod)}</div>
                 </div>
               </div>
@@ -345,7 +345,7 @@ function QuestionReviewPanelImpl({
                     <CodeViewer content={selectedContent} filename={selectedFile} />
                   ) : (
                     <div className="d-flex align-items-center justify-content-center h-100 text-muted">
-                      Select a file to view its contents
+                      یک فایل را برای مشاهده محتوای آن انتخاب کنید
                     </div>
                   )}
                 </div>
@@ -359,8 +359,7 @@ function QuestionReviewPanelImpl({
                 />
                 <div>
                   <strong>
-                    {q.skippedVideos.length} video file
-                    {q.skippedVideos.length !== 1 ? 's' : ''} excluded:
+                    {q.skippedVideos.length} فایل ویدیویی حذف شد:
                   </strong>
                   <ul className="mb-0 mt-1">
                     {q.skippedVideos.map((name) => (
@@ -523,7 +522,7 @@ function FileTree({
         <TreeNodes nodes={tree} depth={0} selectedFile={selectedFile} onSelectFile={onSelectFile} />
       </div>
       <div className="text-muted small px-2 mt-auto">
-        You'll be able to edit question files once they've been imported.
+        پس از وارد کردن سوال‌ها، امکان ویرایش فایل‌های آن‌ها را خواهید داشت.
       </div>
     </>
   );

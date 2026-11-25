@@ -95,13 +95,12 @@ export function InstructorEffectiveUser({
 
         <div class="card-footer">
           <small>
-            The <em>authenticated</em> values above are the ones that you logged in with. The
-            <em>effective</em> values below allow you to view PrairieLearn as if you had a different
-            <em>course role</em> or as if you were a specific other person with a different
-            <em>UID</em>. This can be used to test out how PrairieLearn will look from different
-            points of view. The “بازنشانی به مقادیر اصلی” button above will reset all effective values
-            below to your authenticated values. Effective values are also reset when you choose a
-            course instance or when you switch to a different course.
+            مقادیر <em>اصلی (احراز هویت‌شده)</em> در بالا مربوط به حساب کاربری است که با آن وارد شده‌اید.
+            مقادیر <em>موثر</em> در پایین به شما امکان می‌دهند سامانه را طوری مشاهده کنید که گویی
+            <em>نقش درس</em> متفاوتی دارید یا کاربر دیگری با <em>شناسه کاربری (UID)</em> متفاوت هستید.
+            این قابلیت برای بررسی نحوه نمایش سامانه از دیدگاه‌های مختلف کاربرد دارد. دکمه
+            «بازنشانی به مقادیر اصلی» در بالا، تمامی مقادیر موثر زیر را به مقادیر اصلی شما برمی‌گرداند.
+            همچنین هنگام انتخاب یک دوره یا تغییر درس، مقادیر موثر به صورت خودکار بازنشانی می‌شوند.
           </small>
         </div>
       </div>
@@ -145,9 +144,8 @@ export function InstructorEffectiveUser({
 
         <div class="card-footer">
           <small>
-            Changing your effective user identity to another person allows you to see PrairieLearn
-            exactly as they would see it. You cannot emulate an effective user with a higher access
-            level than your own.
+            تغییر هویت کاربر موثر به شخص دیگر به شما امکان می‌دهد سامانه را دقیقاً همان‌طور که او می‌بیند
+            مشاهده کنید. امکان شبیه‌سازی کاربری با سطح دسترسی بالاتر از سطح دسترسی خودتان وجود ندارد.
           </small>
         </div>
       </div>
@@ -197,9 +195,9 @@ export function InstructorEffectiveUser({
 
         <div class="card-footer">
           <small>
-            Your <em>course role</em> determines the permissions that you have to view and edit
-            course content in PrairieLearn. It is specific to this course, so you can be an Editor
-            in one course but a Previewer in a different course.
+            <em>نقش شما در درس</em> مجوزهایی را که برای مشاهده و ویرایش محتوای درس دارید تعیین می‌کند.
+            این نقش مختص همین درس است؛ بنابراین ممکن است در یک درس ویرایشگر (Editor) و در درس دیگر
+            صرفاً مشاهده‌گر پیش‌نمایش (Previewer) باشید.
           </small>
         </div>
       </div>
@@ -257,10 +255,9 @@ export function InstructorEffectiveUser({
 
                 <div class="card-footer">
                   <small>
-                    Your <em>course instance role</em> determines the permissions that you have to
-                    view and edit student data in PrairieLearn. It is specific to this course
-                    instance, so you can be a Student Data Editor in one course instance but a
-                    Student Data Viewer in a different course instance.
+                    <em>نقش شما در دوره</em> مجوزهایی را که برای مشاهده و ویرایش اطلاعات دانشجویان در سامانه
+                    دارید تعیین می‌کند. این نقش مختص همین دوره است؛ بنابراین می‌توانید در یک دوره ویرایشگر
+                    داده‌های دانشجو و در دوره‌ای دیگر مشاهده‌گر داده‌های دانشجو باشید.
                   </small>
                 </div>
               </div>
@@ -298,11 +295,11 @@ export function InstructorEffectiveUser({
 
         <div class="card-footer">
           <small>
-            The <em>date</em> of the server determines which assessments are available. Changing the
-            effective date to something other than the current date allows you to check if homework
-            and exam assessments will be available to students when you mean them to be. The date
-            has the format <code>YYYY-MM-DDTHH:MM:SS</code>, with a suffix that gives the offset
-            from UTC (i.e., the time zone) in the format <code>&plusmn;HH:MM</code>.
+            <em>تاریخ</em> سرور مشخص می‌کند که کدام آزمون‌ها و تکالیف در دسترس هستند. تغییر تاریخ موثر
+            به زمانی غیر از تاریخ فعلی به شما امکان می‌دهد بررسی کنید که آیا تکالیف و آزمون‌ها در زمان
+            مورد نظرتان برای دانشجویان در دسترس خواهند بود یا خیر. قالب تاریخ به صورت
+            <code dir="ltr">YYYY-MM-DDTHH:MM:SS</code> است که در انتهای آن اختلاف ساعت نسبت به UTC
+            (منطقه زمانی) با قالب <code dir="ltr">&plusmn;HH:MM</code> قرار می‌گیرد.
           </small>
         </div>
       </div>

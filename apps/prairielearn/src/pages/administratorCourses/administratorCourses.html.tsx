@@ -167,14 +167,14 @@ const CourseRow = memo(({ row }: { row: CourseWithInstitution }) => {
       <CourseUpdateColumn
         row={row}
         columnName="short_name"
-        label="short name"
+        label="کد درس"
         href={`/pl/course/${row.course.id}`}
       />
-      <CourseUpdateColumn row={row} columnName="title" label="title" />
-      <CourseUpdateColumn row={row} columnName="display_timezone" label="timezone" />
-      <CourseUpdateColumn row={row} columnName="path" label="path" />
-      <CourseUpdateColumn row={row} columnName="repository" label="repository" required={false} />
-      <CourseUpdateColumn row={row} columnName="branch" label="branch" />
+      <CourseUpdateColumn row={row} columnName="title" label="عنوان کامل درس" />
+      <CourseUpdateColumn row={row} columnName="display_timezone" label="منطقه زمانی" />
+      <CourseUpdateColumn row={row} columnName="path" label="مسیر فایل‌ها" />
+      <CourseUpdateColumn row={row} columnName="repository" label="مخزن گیت" required={false} />
+      <CourseUpdateColumn row={row} columnName="branch" label="شاخه" />
       <td className="align-middle text-end">
         <OverlayTrigger
           trigger="click"
@@ -423,7 +423,7 @@ function CourseUpdateColumn({
         trigger="click"
         placement="auto"
         popover={{
-          header: `Change ${label}`,
+          header: `تغییر ${label}`,
           body: (
             <CourseUpdateColumnForm
               row={row}
@@ -441,7 +441,7 @@ function CourseUpdateColumn({
         <button
           type="button"
           className="btn btn-xs btn-secondary ms-1"
-          aria-label={`Edit ${label}`}
+          aria-label={`ویرایش ${label}`}
         >
           <i className="fa fa-edit" aria-hidden="true" />
         </button>
@@ -498,7 +498,7 @@ function CourseUpdateColumnForm({
           className={clsx('form-control', errors.value && 'is-invalid')}
           aria-label={label}
           {...register('value', {
-            required: required && `Enter a ${label}`,
+            required: required && `لطفاً ${label} را وارد کنید`,
           })}
         />
         {errors.value && <div className="invalid-feedback">{errors.value.message}</div>}
@@ -510,10 +510,10 @@ function CourseUpdateColumnForm({
       )}
       <div className="d-flex justify-content-end gap-2">
         <button type="button" className="btn btn-secondary" onClick={onCancel}>
-          Cancel
+          انصراف
         </button>
         <button type="submit" className="btn btn-primary" disabled={mutation.isPending}>
-          Change
+          تغییر
         </button>
       </div>
     </form>

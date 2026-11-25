@@ -13,11 +13,11 @@ export function GitHubButton({
       className={clsx('btn btn-sm d-inline-flex align-items-center gap-2', `btn-${variant}`)}
       target="_blank"
       rel="noreferrer"
-      aria-label="View on GitHub"
+      aria-label="مشاهده در گیت‌هاب"
       href={gitHubLink}
     >
       <i className="bi bi-github" />
-      <span className="d-none d-sm-inline">View on GitHub</span>
+      <span className="d-none d-sm-inline">مشاهده در گیت‌هاب</span>
     </a>
   );
 }

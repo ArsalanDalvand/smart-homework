@@ -67,7 +67,7 @@ function SelectAllCheckbox({ table }: { table: TanstackTableCoreInstance<Student
     <IndeterminateCheckbox
       checked={allSelected}
       indeterminate={table.getIsSomePageRowsSelected() && !allSelected}
-      aria-label="Select all students"
+      aria-label="انتخاب همه دانشجویان"
       onChange={table.getToggleAllPageRowsSelectedHandler()}
     />
   );
@@ -141,14 +141,14 @@ function ManageEnrollmentsDropdown({
   const canEdit = authzData.has_course_instance_permission_edit;
 
   return (
-    <DropdownButton as={ButtonGroup} title="Manage enrollments" size="sm" variant="light">
+    <DropdownButton as={ButtonGroup} title="مدیریت ثبت‌نام‌ها" size="sm" variant="light">
       <Dropdown.Item as="button" type="button" disabled={!canEdit} onClick={onInvite}>
         <i className="bi bi-person-plus me-2" aria-hidden="true" />
-        Invite students
+        دعوت دانشجویان
       </Dropdown.Item>
       <Dropdown.Item as="button" type="button" disabled={!canEdit} onClick={onSync}>
         <i className="bi bi-arrow-left-right me-2" aria-hidden="true" />
-        Synchronize student list
+        همگام‌سازی فهرست دانشجویان
       </Dropdown.Item>
 
       <Dropdown.Divider />
@@ -157,14 +157,14 @@ function ManageEnrollmentsDropdown({
           <OverlayTrigger
             placement="right"
             tooltip={{
-              body: copiedCode ? 'Copied!' : 'Copy',
+              body: copiedCode ? 'کپی شد!' : 'کپی',
               props: { id: 'students-copy-code-tooltip' },
             }}
             show={copiedCode ? true : undefined}
           >
             <Dropdown.Item as="button" type="button" onClick={handleCopyCode}>
               <i className="bi bi-key me-2" aria-hidden="true" />
-              Copy enrollment code
+              کپی کد ثبت‌نام
             </Dropdown.Item>
           </OverlayTrigger>
         )}
@@ -173,20 +173,20 @@ function ManageEnrollmentsDropdown({
         <OverlayTrigger
           placement="right"
           tooltip={{
-            body: copiedLink ? 'Copied!' : 'Copy',
+            body: copiedLink ? 'کپی شد!' : 'کپی',
             props: { id: 'students-copy-link-tooltip' },
           }}
           show={copiedLink ? true : undefined}
         >
           <Dropdown.Item as="button" type="button" onClick={handleCopyLink}>
             <i className="bi bi-link-45deg me-2" aria-hidden="true" />
-            Copy enrollment link
+            کپی لینک ثبت‌نام
           </Dropdown.Item>
         </OverlayTrigger>
       )}
       <Dropdown.Item as="a" href={getSelfEnrollmentSettingsUrl(courseInstance.id)}>
         <i className="bi bi-gear me-2" aria-hidden="true" />
-        Manage settings
+        مدیریت تنظیمات
       </Dropdown.Item>
     </DropdownButton>
   );
@@ -279,10 +279,10 @@ function StudentsCard({
           Accept: 'application/json',
         },
       });
-      if (!res.ok) throw new Error('Failed to fetch students');
+      if (!res.ok) throw new Error('دریافت فهرست دانشجویان ناموفق بود');
       const data = await res.json();
       const parsedData = z.array(StudentRowSchema).safeParse(data);
-      if (!parsedData.success) throw new Error('Failed to parse students');
+      if (!parsedData.success) throw new Error('تجزیه داده‌های دانشجویان ناموفق بود');
       return parsedData.data;
     },
     staleTime: Infinity,
@@ -365,13 +365,13 @@ function StudentsCard({
     },
     onSuccess: async (result, { labelName }) => {
       const parts: string[] = [
-        `Added label "${labelName}" to ${result.added} student${result.added !== 1 ? 's' : ''}.`,
+        `برچسب «${labelName}» به ${result.added} دانشجو اضافه شد.`,
       ];
       if (result.alreadyHaveLabel > 0) {
-        parts.push(`${result.alreadyHaveLabel} already had the label "${labelName}".`);
+        parts.push(`${result.alreadyHaveLabel} نفر از قبل برچسب «${labelName}» را داشتند.`);
       }
       if (result.notFound > 0) {
-        parts.push(`${result.notFound} not found.`);
+        parts.push(`${result.notFound} مورد یافت نشد.`);
       }
       setLabelMutationSuccess(parts.join(' '));
       await queryClient.invalidateQueries({ queryKey: ['enrollments', 'students'] });
@@ -393,13 +393,13 @@ function StudentsCard({
     },
     onSuccess: async (result, { labelName }) => {
       const parts: string[] = [
-        `Removed label "${labelName}" from ${result.removed} student${result.removed !== 1 ? 's' : ''}.`,
+        `برچسب «${labelName}» از ${result.removed} دانشجو حذف شد.`,
       ];
       if (result.didNotHaveLabel > 0) {
-        parts.push(`${result.didNotHaveLabel} did not have the label.`);
+        parts.push(`${result.didNotHaveLabel} نفر این برچسب را نداشتند.`);
       }
       if (result.notFound > 0) {
-        parts.push(`${result.notFound} not found.`);
+        parts.push(`${result.notFound} مورد یافت نشد.`);
       }
       setLabelMutationSuccess(parts.join(' '));
       await queryClient.invalidateQueries({ queryKey: ['enrollments', 'students'] });
@@ -414,11 +414,11 @@ function StudentsCard({
           id: 'select',
           header: ({ table }) => <SelectAllCheckbox table={table} />,
           cell: ({ row }) => {
-            const uid = row.original.user?.uid ?? row.original.enrollment.pending_uid ?? 'student';
+            const uid = row.original.user?.uid ?? row.original.enrollment.pending_uid ?? 'دانشجو';
             return (
               <input
                 type="checkbox"
-                aria-label={`Select ${uid}`}
+                aria-label={`انتخاب ${uid}`}
                 checked={row.getIsSelected()}
                 disabled={!row.getCanSelect()}
                 onChange={row.getToggleSelectedHandler()}
@@ -450,7 +450,7 @@ function StudentsCard({
             if (info.row.original.user) {
               return info.getValue() || '—';
             }
-            return <span className="text-muted">Not available</span>;
+            return <span className="text-muted">در دسترس نیست</span>;
           },
         }),
         columnHelper.accessor((row) => row.enrollment.status, {
@@ -469,7 +469,7 @@ function StudentsCard({
             if (info.row.original.user) {
               return info.getValue() || '—';
             }
-            return <span className="text-muted">Not available</span>;
+            return <span className="text-muted">در دسترس نیست</span>;
           },
         }),
         columnHelper.accessor((row) => row.user?.email, {
@@ -479,14 +479,14 @@ function StudentsCard({
             if (info.row.original.user) {
               return info.getValue() || '—';
             }
-            return <span className="text-muted">Not available</span>;
+            return <span className="text-muted">در دسترس نیست</span>;
           },
         }),
 
         columnHelper.accessor((row) => row.student_label_ids, {
           id: 'student_labels',
           meta: {
-            label: 'Student labels',
+            label: 'برچسب‌های دانشجویان',
           },
           header: 'برچسب‌ها',
           cell: (info) => {
@@ -608,16 +608,16 @@ function StudentsCard({
   const isLabelMutationPending =
     batchAddLabelMutation.isPending || batchRemoveLabelMutation.isPending;
   const emptyStateText = run(() => {
-    const baseMessage = "This course doesn't have any students yet.";
+    const baseMessage = 'هنوز هیچ دانشجویی در این درس ثبت‌نام نکرده است.';
     if (!courseInstance.modern_publishing) {
       // self-enrollment is always enabled for legacy publishing
-      return `${baseMessage} Share the enrollment link to get started.`;
+      return `${baseMessage} برای شروع، لینک ثبت‌نام را به اشتراک بگذارید.`;
     }
 
     if (courseInstance.self_enrollment_enabled) {
-      return `${baseMessage} Share the enrollment link or invite them to get started.`;
+      return `${baseMessage} برای شروع، لینک ثبت‌نام را به اشتراک بگذارید یا آن‌ها را دعوت کنید.`;
     }
-    return `${baseMessage} Invite them to get started.`;
+    return `${baseMessage} برای شروع، آن‌ها را دعوت کنید.`;
   });
 
   const labelMutationError = batchAddLabelMutation.error ?? batchRemoveLabelMutation.error;
@@ -640,15 +640,15 @@ function StudentsCard({
         >
           {labelMutationError instanceof Error
             ? labelMutationError.message
-            : 'Failed to update student labels'}
+            : 'به‌روزرسانی برچسب‌های دانشجو ناموفق بود'}
         </Alert>
       )}
       <TanstackTableCard
         table={table}
-        title="Students"
+        title="دانشجویان"
         className="h-100"
-        singularLabel="student"
-        pluralLabel="students"
+        singularLabel="دانشجو"
+        pluralLabel="دانشجو"
         downloadButtonOptions={{
           filenameBase: `${courseInstanceFilenamePrefix(courseInstance, course)}students`,
           mapRowToData: (row) => {
@@ -688,17 +688,17 @@ function StudentsCard({
                   {tooManySelectedForLabels ? (
                     <OverlayTrigger
                       tooltip={{
-                        body: `Select at most ${MAX_LABEL_UIDS} students to apply labels.`,
+                        body: `برای اعمال برچسب حداکثر ${MAX_LABEL_UIDS} دانشجو را انتخاب کنید.`,
                         props: { id: 'students-label-limit-tooltip' },
                       }}
                     >
                       <Dropdown.Toggle variant="light" size="sm" disabled>
-                        Labels
+                        برچسب‌ها
                       </Dropdown.Toggle>
                     </OverlayTrigger>
                   ) : (
                     <Dropdown.Toggle variant="light" size="sm">
-                      Labels
+                      برچسب‌ها
                     </Dropdown.Toggle>
                   )}
                   <Dropdown.Menu style={{ minWidth: '220px' }}>
@@ -719,7 +719,7 @@ function StudentsCard({
                             checked={isChecked}
                             indeterminate={isIndeterminate}
                             disabled={isLabelMutationPending || tooManySelectedForLabels}
-                            aria-label={`${isChecked ? 'Remove' : 'Add'} label "${label.name}" ${isChecked ? 'from' : 'to'} selected students`}
+                            aria-label={`${isChecked ? 'حذف' : 'افزودن'} برچسب «${label.name}» ${isChecked ? 'از' : 'به'} دانشجویان انتخاب‌شده`}
                             onChange={() => {
                               if (isChecked) {
                                 batchRemoveLabelMutation.mutate({
@@ -746,7 +746,7 @@ function StudentsCard({
                       href={getCourseInstanceStudentLabelsUrl(courseInstance.id)}
                     >
                       <i className="bi bi-gear me-2" />
-                      {authzData.has_course_permission_edit ? 'Manage labels' : 'View labels'}
+                      {authzData.has_course_permission_edit ? 'مدیریت برچسب‌ها' : 'مشاهده برچسب‌ها'}
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -770,7 +770,7 @@ function StudentsCard({
           </>
         }
         globalFilter={{
-          placeholder: 'Search by UID, name, email...',
+          placeholder: 'جستجو بر اساس شناسه کاربری، نام، ایمیل...',
         }}
         tableOptions={{
           filters: {
@@ -804,7 +804,7 @@ function StudentsCard({
             <TanstackTableEmptyState iconName="bi-person-plus">
               <div className="d-flex flex-column align-items-center gap-3">
                 <div className="text-center">
-                  <h5 className="mb-2">No students enrolled</h5>
+                  <h5 className="mb-2">هیچ دانشجویی ثبت‌نام نکرده است</h5>
                   <p className="text-muted mb-0" style={{ textWrap: 'balance' }}>
                     {emptyStateText}
                   </p>
@@ -814,7 +814,7 @@ function StudentsCard({
                     {courseInstance.self_enrollment_enabled && (
                       <CopyButton
                         text={selfEnrollLink}
-                        label="Copy enrollment link"
+                        label="کپی لینک ثبت‌نام"
                         className="btn-primary"
                       />
                     )}
@@ -826,7 +826,7 @@ function StudentsCard({
                         onClick={() => setShowInvite(true)}
                       >
                         <i className="bi bi-person-plus me-2" aria-hidden="true" />
-                        Invite students
+                        دعوت دانشجویان
                       </Button>
                     )}
                   </div>
@@ -839,7 +839,7 @@ function StudentsCard({
           ),
           noResultsState: (
             <TanstackTableEmptyState iconName="bi-search">
-              No students found matching your search criteria.
+              هیچ دانشجویی مطابق با معیارهای جستجوی شما یافت نشد.
             </TanstackTableEmptyState>
           ),
         }}

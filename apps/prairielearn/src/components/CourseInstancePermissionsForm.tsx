@@ -29,9 +29,9 @@ export function CourseInstancePermissionsForm({ formId }: { formId: string }) {
           {...register('course_instance_permission')}
         />
         <label className="form-check-label" htmlFor={`${formId}-permission-none`}>
-          No permissions
+          بدون دسترسی
         </label>
-        <div className="small text-muted">You will not have any course instance permissions.</div>
+        <div className="small text-muted">هیچ دسترسی‌ای به این دوره نخواهید داشت.</div>
       </div>
 
       <div className="mb-3 form-check">
@@ -43,9 +43,9 @@ export function CourseInstancePermissionsForm({ formId }: { formId: string }) {
           {...register('course_instance_permission')}
         />
         <label className="form-check-label" htmlFor={`${formId}-permission-viewer`}>
-          Student data viewer
+          مشاهده‌گر اطلاعات دانشجویان
         </label>
-        <div className="small text-muted">You will be able to view student data and grades.</div>
+        <div className="small text-muted">قادر به مشاهده اطلاعات و نمرات دانشجویان خواهید بود.</div>
       </div>
 
       <div className="mb-3 form-check">
@@ -57,10 +57,10 @@ export function CourseInstancePermissionsForm({ formId }: { formId: string }) {
           {...register('course_instance_permission')}
         />
         <label className="form-check-label" htmlFor={`${formId}-permission-editor`}>
-          Student data editor
+          ویرایشگر اطلاعات دانشجویان
         </label>
         <div className="small text-muted">
-          You will be able to view and edit student data, grades, and manage enrollments.
+          قادر به مشاهده و ویرایش اطلاعات و نمرات دانشجویان و مدیریت ثبت‌نام‌ها خواهید بود.
         </div>
       </div>
     </>

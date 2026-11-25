@@ -244,7 +244,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Issues',
+        pageTitle: 'گزارش اشکالات',
         navContext: {
           type: 'instructor',
           page: 'course_admin',
@@ -277,7 +277,7 @@ router.post(
   '/',
   typedAsyncHandler<'course' | 'course-instance'>(async (req, res) => {
     if (!res.locals.authz_data.has_course_permission_edit) {
-      throw new HttpStatusError(403, 'Access denied (must be a course editor)');
+      throw new HttpStatusError(403, 'دسترسی غیرمجاز (نیازمند دسترسی ویرایشگر درس)');
     }
 
     if (req.body.__action === 'open') {
@@ -307,7 +307,7 @@ router.post(
         },
         z.number(),
       );
-      flash('success', `Closed ${closedCount} ${closedCount === 1 ? 'issue' : 'issues'}.`);
+      flash('success', `${closedCount} گزارش اشکال بسته شد.`);
       res.redirect(req.originalUrl);
     } else {
       throw new HttpStatusError(400, `unknown __action: ${req.body.__action}`);

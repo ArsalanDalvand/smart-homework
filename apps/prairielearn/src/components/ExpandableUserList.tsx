@@ -7,7 +7,7 @@ export function ExpandableUserList({
   users,
   courseInstanceId,
   initialLimit = 3,
-  emptyText = 'No students',
+  emptyText = 'بدون دانشجو',
   nameFallback = 'uid',
 }: {
   users: {
@@ -51,11 +51,11 @@ export function ExpandableUserList({
         >
           {expanded ? (
             <>
-              <i className="bi bi-chevron-up" aria-hidden="true" /> Show less
+              <i className="bi bi-chevron-up" aria-hidden="true" /> نمایش کمتر
             </>
           ) : (
             <>
-              <i className="bi bi-chevron-down" aria-hidden="true" /> +{remaining} more
+              <i className="bi bi-chevron-down" aria-hidden="true" /> +{remaining} مورد دیگر
             </>
           )}
         </button>

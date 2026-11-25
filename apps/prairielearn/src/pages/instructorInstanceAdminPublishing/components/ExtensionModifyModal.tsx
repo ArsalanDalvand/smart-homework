@@ -81,17 +81,17 @@ export function ExtensionModifyModal({
     try {
       uids = parseUniqueValuesFromString(value, MAX_UIDS);
     } catch (error) {
-      return error instanceof Error ? error.message : 'Failed to parse UIDs';
+      return error instanceof Error ? error.message : 'تجزیه شناسه‌های کاربری ناموفق بود';
     }
 
     if (uids.length === 0) {
-      return 'At least one UID is required';
+      return 'حداقل یک شناسه کاربری (UID) الزامی است';
     }
 
     const invalidEmails = uids.filter((uid) => !z.email().safeParse(uid).success);
 
     if (invalidEmails.length > 0) {
-      return `The following UIDs were invalid: "${invalidEmails.join('", "')}"`;
+      return `شناسه‌های کاربری زیر نامعتبر هستند: «${invalidEmails.join('»، «')}»`;
     }
 
     const params = new URLSearchParams();
@@ -100,19 +100,19 @@ export function ExtensionModifyModal({
     try {
       resp = await fetch(`${window.location.pathname}/extension/check?${params.toString()}`);
     } catch {
-      return 'Failed to validate UIDs';
+      return 'اعتبارسنجی شناسه‌های کاربری ناموفق بود';
     }
 
-    if (!resp.ok) return 'Failed to validate UIDs';
+    if (!resp.ok) return 'اعتبارسنجی شناسه‌های کاربری ناموفق بود';
 
     const { success, data } = z
       .object({ invalidUids: z.array(z.string()) })
       .safeParse(await resp.json());
-    if (!success) return 'Failed to check UIDs';
+    if (!success) return 'بررسی شناسه‌های کاربری ناموفق بود';
 
     const validCount = uids.length - data.invalidUids.length;
     if (validCount < 1) {
-      return 'Only enrolled students can be added to an extension';
+      return 'تنها دانشجویان ثبت‌نام‌شده را می‌توان به تمدید اضافه کرد';
     }
 
     if (data.invalidUids.length > 0) {
@@ -153,18 +153,18 @@ export function ExtensionModifyModal({
     return (
       <Modal show={data !== null} backdrop="static" onHide={() => setStage({ type: 'editing' })}>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm unenrolled students</Modal.Title>
+          <Modal.Title>تأیید دانشجویان ثبت‌نام‌نشده</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>The following UIDs are not enrolled in this course instance:</p>
+          <p>شناسه‌های کاربری زیر در این ترم ثبت‌نام نکرده‌اند:</p>
           <div className="mb-3 p-3 bg-light border rounded">
             {stage.unenrolledUids.map((uid) => (
               <div key={uid}>{uid}</div>
             ))}
           </div>
           <p>
-            Do you want to continue editing, or save the extension anyway? Extensions for unenrolled
-            students will be ignored.
+            آیا می‌خواهید به ویرایش ادامه دهید یا تمدید را در هر صورت ذخیره کنید؟ تمدیدها برای
+            دانشجویان ثبت‌نام‌نشده نادیده گرفته می‌شوند.
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -174,7 +174,7 @@ export function ExtensionModifyModal({
             disabled={saveMutation.isPending}
             onClick={() => setStage({ type: 'editing' })}
           >
-            Continue editing
+            ادامه ویرایش
           </button>
           <button
             type="button"
@@ -185,7 +185,7 @@ export function ExtensionModifyModal({
               saveMutation.mutate(data);
             })}
           >
-            {saveMutation.isPending ? 'Saving...' : 'Save anyway'}
+            {saveMutation.isPending ? 'در حال ذخیره...' : 'ذخیره در هر صورت'}
           </button>
         </Modal.Footer>
       </Modal>
@@ -204,27 +204,27 @@ export function ExtensionModifyModal({
       }}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{data?.type === 'add' ? 'Add extension' : 'Edit extension'}</Modal.Title>
+        <Modal.Title>{data?.type === 'add' ? 'افزودن تمدید' : 'ویرایش تمدید'}</Modal.Title>
       </Modal.Header>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <Modal.Body>
           <div className="mb-3">
             <label className="form-label" htmlFor="ext-name">
-              Extension name (optional)
+              نام تمدید (اختیاری)
             </label>
             <input id="ext-name" type="text" className="form-control" {...register('name')} />
           </div>
           <div className="mb-3">
             <div className="d-flex justify-content-between align-items-center mb-2">
               <label className="form-label" htmlFor="ext-date">
-                End date
+                تاریخ پایان
               </label>
               <button
                 type="button"
                 className={clsx('btn btn-outline-primary btn-sm', !currentEndDate && 'disabled')}
                 onClick={handleAddWeek}
               >
-                +1 week
+                +۱ هفته
               </button>
             </div>
             <input
@@ -233,7 +233,7 @@ export function ExtensionModifyModal({
               step="1"
               className={clsx('form-control', errors.end_date && 'is-invalid')}
               {...register('end_date', {
-                required: 'End date is required',
+                required: 'تاریخ پایان الزامی است',
                 validate: (value) => {
                   if (!courseInstanceEndDate) return true;
                   const enteredDate = plainDateTimeStringToDate(value, courseInstanceTimezone);
@@ -241,7 +241,7 @@ export function ExtensionModifyModal({
                   return (
                     data?.type === 'edit' ||
                     enteredDate > courseInstanceEndDate ||
-                    'End date must be after the course end date'
+                    'تاریخ پایان باید بعد از تاریخ پایان دوره باشد'
                   );
                 },
               })}
@@ -249,7 +249,7 @@ export function ExtensionModifyModal({
             {errors.end_date && (
               <div className="form-text text-danger">{errors.end_date.message}</div>
             )}
-            <small className="form-text">Current course end date: {currentUnpublishText}</small>
+            <small className="form-text">تاریخ پایان فعلی دوره: {currentUnpublishText}</small>
           </div>
           {saveMutation.isError && (
             <Alert variant="danger" dismissible onClose={() => saveMutation.reset()}>
@@ -258,7 +258,7 @@ export function ExtensionModifyModal({
           )}
           <div className="mb-0">
             <label className="form-label" htmlFor="ext-uids">
-              UIDs
+              شناسه‌های کاربری (UID)
             </label>
             <textarea
               id="ext-uids"
@@ -276,7 +276,7 @@ export function ExtensionModifyModal({
               </div>
             )}
             <small id="ext-uids-help" className="form-text">
-              Enter UIDs separated by commas, whitespace, or new lines.
+              شناسه‌های کاربری را با کاما، فاصله یا خط جدید از هم جدا کنید.
             </small>
           </div>
         </Modal.Body>
@@ -291,10 +291,10 @@ export function ExtensionModifyModal({
               onHide();
             }}
           >
-            Cancel
+            انصراف
           </button>
           <button type="submit" className="btn btn-primary" disabled={saveMutation.isPending}>
-            {saveMutation.isPending ? 'Saving...' : 'Save'}
+            {saveMutation.isPending ? 'در حال ذخیره...' : 'ذخیره'}
           </button>
         </Modal.Footer>
       </form>

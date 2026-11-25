@@ -15,7 +15,7 @@ export function DragPreview({
     if (zone.trackingId === activeDragId) {
       return (
         <div className="bg-body-secondary border rounded shadow-sm px-3 py-2 fw-semibold">
-          {zone.title || `Zone ${zoneIndex + 1}`}
+          {zone.title || `بخش ${zoneIndex + 1}`}
         </div>
       );
     }
@@ -28,7 +28,7 @@ export function DragPreview({
             {hasTitle ? (
               qData!.question.title
             ) : (
-              <span className="font-monospace">{question.id ?? 'Alternative pool'}</span>
+              <span className="font-monospace">{question.id ?? 'مجموعه جایگزین'}</span>
             )}
           </div>
         );

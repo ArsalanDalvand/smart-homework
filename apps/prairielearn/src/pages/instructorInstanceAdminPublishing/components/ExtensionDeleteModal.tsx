@@ -56,19 +56,19 @@ export function ExtensionDeleteModal({
         {data && (
           <>
             <p>
-              Are you sure you want to delete{' '}
+              آیا از حذف{' '}
               {data.extensionName === null
-                ? 'this extension'
-                : `the extension "${data.extensionName}"`}
-              ?
+                ? 'این تمدید'
+                : `تمدید «${data.extensionName}»`}{' '}
+              اطمینان دارید؟
             </p>
             <details>
-              <summary>Show affected students</summary>
+              <summary>نمایش دانشجویان مشمول</summary>
               <table className="table table-bordered table-sm mb-0">
                 <thead>
                   <tr>
-                    <th>UID</th>
-                    <th>Name</th>
+                    <th>شناسه کاربری (UID)</th>
+                    <th>نام و نام خانوادگی</th>
                   </tr>
                 </thead>
                 <tbody>

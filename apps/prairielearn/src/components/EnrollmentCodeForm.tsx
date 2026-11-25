@@ -221,7 +221,7 @@ export function EnrollmentCodeForm({
       });
     } catch {
       setError('root.serverError', {
-        message: 'An error occurred while looking up the code. Please try again.',
+        message: 'خطایی در استعلام کد ثبت‌نام رخ داد. لطفاً مجدداً تلاش فرمایید.',
       });
       return;
     }

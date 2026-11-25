@@ -27,37 +27,36 @@ export function AssessmentTreeEmptyState({
       style={{ textWrap: 'balance' }}
     >
       <i className="bi bi-card-checklist text-muted display-6 mb-2" aria-hidden="true" />
-      <p className="fw-bold mb-1">This assessment has no questions yet</p>
+      <p className="fw-bold mb-1">این ارزیابی هنوز هیچ سوالی ندارد</p>
       {courseHasQuestions ? (
         <>
           <p className="text-muted mb-3">
-            Questions are organized into zones. Learn more in the{' '}
+            سوالات در بخش‌ها سازمان‌دهی می‌شوند. اطلاعات بیشتر را در{' '}
             <a
               href="https://docs.prairielearn.com/assessment/configuration/#question-specification"
               target="_blank"
               rel="noreferrer"
             >
-              assessment documentation
-            </a>
-            .
+              مستندات ارزیابی
+            </a>{' '}
+            ببینید.
           </p>
           {canAddQuestions && (
             <Button variant="primary" size="sm" type="button" onClick={onAddFirstQuestions}>
               <i className="bi bi-plus-lg me-1" aria-hidden="true" />
-              Add questions
+              افزودن سوالات
             </Button>
           )}
         </>
       ) : (
         <>
           <p className="text-muted mb-3">
-            Your course doesn't have any questions yet. Create your first question to add it to this
-            assessment.
+            درس شما هنوز هیچ سوالی ندارد. اولین سوال خود را بسازید تا به این ارزیابی اضافه شود.
           </p>
           {canEdit && (
             <Button variant="primary" size="sm" href={questionCreateUrl}>
               <i className="bi bi-plus-lg me-1" aria-hidden="true" />
-              Create a question
+              ایجاد سوال
             </Button>
           )}
         </>

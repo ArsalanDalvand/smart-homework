@@ -26,6 +26,12 @@ export const UserDetailSchema = z.object({
 
 export type UserDetail = z.infer<typeof UserDetailSchema>;
 
+const ROLE_LABELS: Record<UserDetail['role'], string> = {
+  Staff: 'کادر آموزشی',
+  Student: 'دانشجو',
+  None: 'هیچ‌کدام',
+};
+
 export function OverviewCard({
   student,
   initialStudentLabels,
@@ -62,7 +68,7 @@ export function OverviewCard({
   return (
     <div className="card mb-4">
       <div className="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-        <h1 className="mb-0">Details</h1>
+        <h1 className="mb-0">جزئیات</h1>
         {user && enrollment.status === 'joined' && (
           <button
             type="button"
@@ -70,7 +76,7 @@ export function OverviewCard({
             onClick={handleViewAsStudent}
           >
             <i className="fas fa-user-graduate" aria-hidden="true" />
-            <span>View as student</span>
+            <span>مشاهده با دید دانشجو</span>
           </button>
         )}
       </div>
@@ -93,7 +99,7 @@ export function OverviewCard({
                     className="btn btn-sm btn-outline-danger d-flex flex-row align-items-center gap-1"
                   >
                     <i className="fas fa-user-slash" aria-hidden="true" />
-                    <span>Block student</span>
+                    <span>مسدود کردن دانشجو</span>
                   </button>
                 </form>
               )}
@@ -105,7 +111,7 @@ export function OverviewCard({
                   data-bs-target="#cancelInvitationModal"
                 >
                   <i className="fas fa-times" aria-hidden="true" />
-                  <span>Cancel invitation</span>
+                  <span>لغو دعوت‌نامه</span>
                 </button>
               )}
               {enrollment.status === 'left' && (
@@ -117,7 +123,7 @@ export function OverviewCard({
                     className="btn btn-sm btn-outline-primary d-flex flex-row align-items-center gap-1"
                   >
                     <i className="fas fa-user-plus" aria-hidden="true" />
-                    <span>Invite student</span>
+                    <span>دعوت دانشجو</span>
                   </button>
                 </form>
               )}
@@ -130,7 +136,7 @@ export function OverviewCard({
                     className="btn btn-sm btn-outline-primary d-flex flex-row align-items-center gap-1"
                   >
                     <i className="fas fa-user-plus" aria-hidden="true" />
-                    <span>Re-invite student</span>
+                    <span>دعوت مجدد دانشجو</span>
                   </button>
                 </form>
               )}
@@ -143,7 +149,7 @@ export function OverviewCard({
                     className="btn btn-sm btn-outline-primary d-flex flex-row align-items-center gap-1"
                   >
                     <i className="fas fa-user-plus" aria-hidden="true" />
-                    <span>Re-enroll student</span>
+                    <span>ثبت‌نام مجدد دانشجو</span>
                   </button>
                 </form>
               )}
@@ -153,37 +159,37 @@ export function OverviewCard({
         {user ? (
           <>
             <div className="d-flex">
-              <div className="fw-bold me-1">UID:</div>
+              <div className="fw-bold me-1">شناسه کاربری (UID):</div>
               {user.uid}
             </div>
             {user.uin && (
               <div className="d-flex">
-                <div className="fw-bold me-1">UIN:</div> {user.uin}
+                <div className="fw-bold me-1">شماره دانشجویی (UIN):</div> {user.uin}
               </div>
             )}
             <div className="d-flex">
-              <div className="fw-bold me-1">Role:</div> {role}
+              <div className="fw-bold me-1">نقش:</div> {ROLE_LABELS[role]}
             </div>
           </>
         ) : (
           <>
             <div className="d-flex">
               <div className="me-1">
-                <i className="bi bi-exclamation-triangle" aria-hidden="true" />
-                User information not available if the student has not accepted the invitation.
+                <i className="bi bi-exclamation-triangle" aria-hidden="true" />{' '}
+                در صورتی که دانشجو دعوت‌نامه را نپذیرفته باشد، اطلاعات کاربری در دسترس نیست.
               </div>
             </div>
           </>
         )}
         {enrollment.first_joined_at && (
           <div className="d-flex">
-            <div className="fw-bold me-1">First joined:</div>
+            <div className="fw-bold me-1">اولین عضویت:</div>
             <FriendlyDate date={enrollment.first_joined_at} />
           </div>
         )}
 
         <div className="mt-3">
-          <div className="fw-bold mb-2">Student labels</div>
+          <div className="fw-bold mb-2">برچسب‌های دانشجو</div>
           <div className="d-flex flex-wrap align-items-center gap-2">
             {studentLabels.map((label) => (
               <StudentLabelBadge key={label.id} label={label}>
@@ -192,7 +198,7 @@ export function OverviewCard({
                     type="button"
                     className="btn p-0 lh-1"
                     disabled={isLabelMutating}
-                    aria-label={`Remove label "${label.name}"`}
+                    aria-label={`حذف برچسب «${label.name}»`}
                     onClick={async () => {
                       setIsLabelMutating(true);
                       try {
@@ -213,16 +219,16 @@ export function OverviewCard({
             ))}
             {studentLabels.length === 0 && availableStudentLabels.length === 0 && (
               <span className="text-muted fst-italic">
-                No labels configured.{' '}
+                هیچ برچسبی تنظیم نشده است.{' '}
                 {canManageLabels && (
                   <a href={getCourseInstanceStudentLabelsUrl(student.course_instance.id)}>
-                    Manage labels
+                    مدیریت برچسب‌ها
                   </a>
                 )}
               </span>
             )}
             {studentLabels.length === 0 && availableStudentLabels.length > 0 && (
-              <span className="text-muted fst-italic">No labels</span>
+              <span className="text-muted fst-italic">بدون برچسب</span>
             )}
             {hasCourseInstancePermissionEdit && availableStudentLabels.length > 0 && (
               <StudentLabelDropdown
@@ -235,7 +241,7 @@ export function OverviewCard({
                     href={getCourseInstanceStudentLabelsUrl(student.course_instance.id)}
                   >
                     <i className="bi bi-gear me-1" aria-hidden="true" />
-                    {canManageLabels ? 'Manage labels' : 'View labels'}
+                    {canManageLabels ? 'مدیریت برچسب‌ها' : 'مشاهده برچسب‌ها'}
                   </a>
                 }
                 onToggle={async (label) => {
@@ -276,30 +282,30 @@ export function OverviewCard({
           <div className="modal-content">
             <div className="modal-header">
               <h2 className="modal-title h4" id="cancelInvitationModalLabel">
-                Confirm cancel invitation
+                تأیید لغو دعوت‌نامه
               </h2>
               <button
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
+                aria-label="بستن"
               />
             </div>
             <div className="modal-body">
               <p>
-                The student will no longer appear in your course and any progress they have made on
-                assessments will be lost.
+                این دانشجو دیگر در درس شما نمایش داده نخواهد شد و تمام پیشرفت‌های او در آزمون‌ها از
+                بین خواهد رفت.
               </p>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                Cancel
+                انصراف
               </button>
               <form method="POST" className="d-inline">
                 <input type="hidden" name="__csrf_token" value={csrfToken} />
                 <input type="hidden" name="__action" value="cancel_invitation" />
                 <button type="submit" className="btn btn-danger">
-                  Cancel invitation
+                  لغو دعوت‌نامه
                 </button>
               </form>
             </div>

@@ -157,10 +157,10 @@ function InstructorInstanceAdminSettingsInner({
         <div className="container d-flex flex-column gap-3 py-3">
           <div className="card">
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">General</h2>
+              <h2 className="h5 card-title mb-3">تنظیمات عمومی</h2>
               <div className="mb-3">
                 <label className="form-label" htmlFor="long_name">
-                  Long name
+                  عنوان کامل
                 </label>
                 <input
                   type="text"
@@ -171,7 +171,7 @@ function InstructorInstanceAdminSettingsInner({
                   aria-invalid={errors.long_name ? 'true' : 'false'}
                   {...(errors.long_name ? { 'aria-errormessage': 'long_name-error' } : {})}
                   defaultValue={defaultValues.long_name}
-                  {...register('long_name', { required: 'Long name is required' })}
+                  {...register('long_name', { required: 'عنوان کامل الزامی است' })}
                   name="long_name"
                 />
                 {errors.long_name && (
@@ -180,12 +180,12 @@ function InstructorInstanceAdminSettingsInner({
                   </div>
                 )}
                 <small id="long_name-help" className="form-text text-muted">
-                  The long name of this course instance (e.g., 'Spring 2015').
+                  عنوان کامل این ترم (مثال: «نیم‌سال اول ۱۴۰۵-۱۴۰۶»).
                 </small>
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="ciid">
-                  Short name
+                  نام اختصاری (کد ترم)
                 </label>
                 <input
                   type="text"
@@ -197,7 +197,7 @@ function InstructorInstanceAdminSettingsInner({
                   defaultValue={defaultValues.ciid}
                   required
                   {...register('ciid', {
-                    required: 'Short name is required',
+                    required: 'نام اختصاری الزامی است',
                     validate: {
                       shortName: (value) => {
                         const result = validateShortName(value, defaultValues.ciid);
@@ -208,7 +208,7 @@ function InstructorInstanceAdminSettingsInner({
                           shortNames.has(value.toLowerCase()) &&
                           value.toLowerCase() !== defaultValues.ciid.toLowerCase()
                         ) {
-                          return 'This ID is already in use';
+                          return 'این شناسه قبلاً استفاده شده است';
                         }
                         return true;
                       },
@@ -226,7 +226,7 @@ function InstructorInstanceAdminSettingsInner({
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="display_timezone">
-                  Timezone
+                  منطقه زمانی
                 </label>
                 <Form.Select
                   id="display_timezone"
@@ -243,20 +243,20 @@ function InstructorInstanceAdminSettingsInner({
                   ))}
                 </Form.Select>
                 <small id="display_timezone-help" className="form-text text-muted">
-                  The allowable timezones are from the{' '}
+                  منطقه‌های زمانی مجاز برگرفته از{' '}
                   <a
                     href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    tz database
-                  </a>
-                  . It's best to use a city-based timezone that has the same times as you.
+                    پایگاه داده tz
+                  </a>{' '}
+                  هستند. بهتر است منطقه زمانی مبتنی بر شهر هم‌زمان با خودتان را انتخاب کنید.
                 </small>
               </div>
               <div>
                 <label className="form-label" htmlFor="group_assessments_by">
-                  Group assessments by
+                  گروه‌بندی آزمون‌ها بر اساس
                 </label>
                 <Form.Select
                   id="group_assessments_by"
@@ -266,11 +266,11 @@ function InstructorInstanceAdminSettingsInner({
                   {...register('group_assessments_by')}
                   name="group_assessments_by"
                 >
-                  <option value="Set">Set</option>
-                  <option value="Module">Module</option>
+                  <option value="Set">مجموعه (Set)</option>
+                  <option value="Module">ماژول (Module)</option>
                 </Form.Select>
                 <small id="group_assessments_by-help" className="form-text text-muted">
-                  Determines how assessments will be grouped on the student assessments page.
+                  نحوه گروه‌بندی آزمون‌ها و تکالیف در صفحه آزمون‌های دانشجو را مشخص می‌کند.
                 </small>
               </div>
             </div>
@@ -280,7 +280,7 @@ function InstructorInstanceAdminSettingsInner({
 
           <div className="card">
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">Self-enrollment</h2>
+              <h2 className="h5 card-title mb-3">ثبت‌نام خودکار</h2>
               <SelfEnrollmentSettings
                 canEdit={canEdit}
                 hasModernPublishing={courseInstance.modern_publishing}
@@ -318,14 +318,14 @@ function InstructorInstanceAdminSettingsInner({
           {(instanceGHLink || canEdit) && (
             <div className="card">
               <div className="card-body">
-                <h2 className="h5 card-title mb-3">Manage course instance</h2>
+                <h2 className="h5 card-title mb-3">مدیریت ترم</h2>
                 <div className="d-flex flex-column gap-3">
                   {instanceGHLink && (
                     <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
                       <div>
-                        <div className="fw-semibold">View source on GitHub</div>
+                        <div className="fw-semibold">مشاهده کد منبع در گیت‌هاب</div>
                         <div className="small text-muted">
-                          Open this course instance's source files in the course's repository.
+                          باز کردن فایل‌های منبع این ترم در مخزن گیت درس.
                         </div>
                       </div>
                       <GitHubButton gitHubLink={instanceGHLink} variant="outline-secondary" />
@@ -340,9 +340,9 @@ function InstructorInstanceAdminSettingsInner({
                         )}
                       >
                         <div>
-                          <div className="fw-semibold">Make a copy of this course instance</div>
+                          <div className="fw-semibold">تهیه کپی از این ترم</div>
                           <div className="small text-muted">
-                            Create a duplicate of this course instance to use as a starting point.
+                            ایجاد یک نسخه کپی از این ترم برای استفاده به عنوان نقطه شروع.
                           </div>
                         </div>
                         <Button
@@ -351,14 +351,14 @@ function InstructorInstanceAdminSettingsInner({
                           onClick={() => setShowCopyModal(true)}
                         >
                           <i className="bi bi-copy me-1" aria-hidden="true" />
-                          Make a copy
+                          ایجاد کپی
                         </Button>
                       </div>
                       <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 border-top pt-3">
                         <div>
-                          <div className="fw-semibold">Delete this course instance</div>
+                          <div className="fw-semibold">حذف این ترم</div>
                           <div className="small text-muted">
-                            Permanently remove this course instance and all associated student data.
+                            حذف دائمی این ترم و تمام داده‌های دانشجویان مرتبط با آن.
                           </div>
                         </div>
                         <Button
@@ -368,7 +368,7 @@ function InstructorInstanceAdminSettingsInner({
                           data-bs-target="#deleteCourseInstanceModal"
                         >
                           <i className="bi bi-trash me-1" aria-hidden="true" />
-                          Delete
+                          حذف
                         </Button>
                       </div>
                     </>

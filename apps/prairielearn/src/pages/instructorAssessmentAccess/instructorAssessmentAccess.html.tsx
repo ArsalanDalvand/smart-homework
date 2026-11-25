@@ -63,7 +63,7 @@ export function InstructorAssessmentAccess({
   );
   return PageLayout({
     resLocals,
-    pageTitle: 'Access',
+    pageTitle: 'کنترل دسترسی',
     navContext: {
       type: 'instructor',
       page: 'assessment',
@@ -153,10 +153,10 @@ export function InstructorAssessmentAccess({
                                 data-bs-toggle="popover"
                                 data-bs-container="body"
                                 data-bs-placement="auto"
-                                data-bs-title="Hidden UIDs"
-                                data-bs-content="This access rule is specific to individual students. You need student data viewer permissions to see which ones."
+                                data-bs-title="شناسه‌های پنهان"
+                                data-bs-content="این قانون دسترسی مختص دانشجویان خاصی است. برای مشاهده آن‌ها به دسترسی مشاهده داده‌های دانشجو نیاز دارید."
                               >
-                                Hidden
+                                پنهان
                               </button>
                             `
                       }
@@ -181,7 +181,7 @@ export function InstructorAssessmentAccess({
                             )
                       }
                     </td>
-                    <td>${access_rule.rule.active ? 'True' : 'False'}</td>
+                    <td>${access_rule.rule.active ? 'بله' : 'خیر'}</td>
                     <td>
                       ${access_rule.rule.credit == null ? '—' : `${access_rule.rule.credit}%`}
                     </td>
@@ -189,7 +189,7 @@ export function InstructorAssessmentAccess({
                       ${
                         access_rule.rule.time_limit_min == null
                           ? '—'
-                          : `${access_rule.rule.time_limit_min} min`
+                          : `${access_rule.rule.time_limit_min} دقیقه`
                       }
                     </td>
                     <td>${access_rule.rule.password ?? '—'}</td>
@@ -208,7 +208,7 @@ export function InstructorAssessmentAccess({
                               ? access_rule.rule.exam_uuid
                               : html`
                                   <span class="text-danger">
-                                    Exam not found: ${access_rule.rule.exam_uuid}
+                                    آزمون یافت نشد: ${access_rule.rule.exam_uuid}
                                   </span>
                                 `
                             : html`&mdash;`
@@ -222,17 +222,19 @@ export function InstructorAssessmentAccess({
         </div>
         <div class="card-footer">
           <small>
-            Instructions on how to change the access rules can be found in the
+            راهنمای نحوه تغییر قوانین دسترسی در
             <a
               href="https://docs.prairielearn.com/assessment/accessControlLegacy/"
               target="_blank"
               rel="noreferrer"
-              >PrairieLearn documentation</a
-            >. Note that changing time limit rules does not affect assessments in progress; to
-            change the time limit for these exams please visit the
+              >مستندات PrairieLearn</a
+            >
+            موجود است. توجه داشته باشید که تغییر قوانین محدودیت زمانی بر آزمون‌های در حال اجرا تاثیر
+            نمی‌گذارد؛ برای تغییر محدودیت زمانی این آزمون‌ها به
             <a href="${resLocals.urlPrefix}/assessment/${resLocals.assessment.id}/instances"
-              >Students tab</a
-            >.</small
+              >بخش دانشجویان</a
+            >
+            مراجعه کنید.</small
           >
         </div>
       </div>
@@ -257,7 +259,7 @@ function MigrationConfirmModal({
 }) {
   return Modal({
     id: 'migrationConfirmModal',
-    title: 'Migrate to modern format',
+    title: 'مهاجرت به قالب جدید',
     size: 'modal-xl',
     content: html`
       <div class="modal-body">
@@ -266,10 +268,9 @@ function MigrationConfirmModal({
             ? html`
                 <div class="alert alert-danger">
                   <i class="bi bi-exclamation-triangle-fill"></i>
-                  This assessment's access rules cannot be automatically migrated. Proceeding will
-                  <strong>remove all existing access rules</strong> and switch to the modern format
-                  with no access control configured. You will need to set up access control from
-                  scratch.
+                  قوانین دسترسی این آزمون به صورت خودکار قابل مهاجرت نیستند. ادامه دادن باعث
+                  <strong>حذف تمام قوانین دسترسی فعلی</strong> و تغییر به قالب جدید بدون تنظیم
+                  قانون دسترسی می‌شود. لازم است کنترل دسترسی را از ابتدا تنظیم کنید.
                 </div>
               `
             : ''
@@ -279,8 +280,8 @@ function MigrationConfirmModal({
             ? html`
                 <div class="alert alert-warning">
                   <i class="bi bi-exclamation-triangle-fill"></i>
-                  This assessment has UID-based access rules that will be dropped during migration.
-                  UID-based rules are not supported in the modern format.
+                  این آزمون دارای قوانین دسترسی مبتنی بر UID است که در هنگام مهاجرت حذف می‌شوند.
+                  قوانین مبتنی بر UID در قالب جدید پشتیبانی نمی‌شوند.
                 </div>
               `
             : ''
@@ -302,7 +303,7 @@ function MigrationConfirmModal({
             ? html`
                 <div class="alert alert-info">
                   <i class="bi bi-info-circle-fill"></i>
-                  <strong>Migration notes:</strong>
+                  <strong>نکات مهاجرت:</strong>
                   <ul class="mb-0 mt-1">
                     ${migrationPreview.notes.map((w) => html`<li>${w}</li>`)}
                   </ul>
@@ -311,21 +312,21 @@ function MigrationConfirmModal({
             : ''
         }
         <p>
-          See the
+          برای جزئیات بیشتر درباره قالب جدید،
           <a
             href="https://docs.prairielearn.com/assessment/accessControl/"
             target="_blank"
             rel="noreferrer"
           >
-            access control documentation
+            مستندات کنترل دسترسی
           </a>
-          for details on the modern format.
+          را ببینید.
         </p>
         <p class="text-muted small mb-2">
-          Compare the current <code>infoAssessment.json</code> with the migrated version below.
-          <strong>Previous state</strong> shows the legacy <code>allowAccess</code> rules.
-          <strong>New state</strong> shows the modern <code>accessControl</code> format that will
-          replace them.
+          فایل <code>infoAssessment.json</code> فعلی را با نسخه مهاجرت‌یافته در زیر مقایسه کنید.
+          <strong>حالت قبلی</strong> قوانین قدیمی <code>allowAccess</code> و
+          <strong>حالت جدید</strong> قالب جدید <code>accessControl</code> را که جایگزین آن‌ها
+          می‌شود نشان می‌دهد.
         </p>
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item" role="presentation">
@@ -338,7 +339,7 @@ function MigrationConfirmModal({
               aria-controls="migration-before"
               aria-selected="true"
             >
-              Previous state
+              حالت قبلی
             </button>
           </li>
           <li class="nav-item" role="presentation">

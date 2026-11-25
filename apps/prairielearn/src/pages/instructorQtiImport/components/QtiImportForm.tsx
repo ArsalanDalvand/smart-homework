@@ -311,14 +311,14 @@ export function QtiImportForm({
     const formData = new FormData(form);
     const file = formData.get('file');
     if (!(file instanceof File)) {
-      throw new Error('No file selected');
+      throw new Error('فایلی انتخاب نشده است');
     }
 
     const trimmed = await trimQtiArchive(file, file.name);
     if (trimmed.blob.size > QTI_IMPORT_MAX_UPLOAD_BYTES) {
       const trimmedSizeLabel = filesize(trimmed.blob.size, { round: 0, standard: 'jedec' });
       throw new Error(
-        `The importable QTI content is ${trimmedSizeLabel}. The maximum import size is ${QTI_IMPORT_MAX_TRIMMED_SIZE_LABEL}.`,
+        `حجم محتوای QTI قابل وارد کردن ${trimmedSizeLabel} است. حداکثر حجم مجاز ${QTI_IMPORT_MAX_TRIMMED_SIZE_LABEL} می‌باشد.`,
       );
     }
     const trimmedFile = new File([trimmed.blob], defaultTrimmedQtiArchiveName(file.name), {
@@ -342,7 +342,7 @@ export function QtiImportForm({
     });
 
     if (!response.ok) {
-      let message = `Upload failed with status ${response.status}`;
+      let message = `بارگذاری با کد خطای ${response.status} ناموفق بود`;
       try {
         const body = await response.json();
         if (typeof body?.error === 'string') {
@@ -372,7 +372,7 @@ export function QtiImportForm({
       const data = await uploadExport(form);
       onSuccess(data);
     } catch (err) {
-      setError({ message: err instanceof Error ? err.message : 'Upload failed' });
+      setError({ message: err instanceof Error ? err.message : 'بارگذاری ناموفق بود' });
     } finally {
       setUploadingBankKey(null);
       setProcessingPhase('idle');
@@ -382,12 +382,12 @@ export function QtiImportForm({
   const handleUpload = async (e: SubmitEvent<HTMLFormElement>) => {
     await handleExportUpload(e, (data) => {
       if (data.results.length === 0 && data.parseWarnings.length === 0) {
-        throw new Error('No QTI content found in the uploaded file');
+        throw new Error('هیچ محتوای QTI در فایل بارگذاری‌شده یافت نشد');
       }
 
       if (data.results.length === 0 && data.parseWarnings.length > 0) {
         throw new Error(
-          `All QTI entries failed to parse:\n${data.parseWarnings.map((w) => `  ${w.filename}: ${w.message}`).join('\n')}`,
+          `تجزیه تمامی بخش‌های QTI ناموفق بود:\n${data.parseWarnings.map((w) => `  ${w.filename}: ${w.message}`).join('\n')}`,
         );
       }
 
@@ -421,15 +421,15 @@ export function QtiImportForm({
       if (unresolvedCount >= previousUnresolvedCount) {
         const refs = results.flatMap((result) => getUnresolvedSourceBankRefs(result));
         const exportType = hasCanvasUnresolvedSourceBankRefs(refs)
-          ? 'Canvas course export'
-          : 'export';
+          ? 'فایل خروجی درس Canvas'
+          : 'فایل خروجی';
         setError({
-          message: `No matching question banks were found in that upload. Try another ${exportType}, or continue without the missing bank questions.`,
+          message: `هیچ بانک سوال منطبقی در فایل بارگذاری‌شده یافت نشد. ${exportType} دیگری را امتحان کنید یا بدون سوال‌های بانک‌های مفقود ادامه دهید.`,
         });
       } else if (unresolvedCount > 0) {
         const matchedCount = previousUnresolvedCount - unresolvedCount;
         setSupplementalSuccessMessage(
-          `Matched ${matchedCount} question bank${matchedCount !== 1 ? 's' : ''} from that upload. Upload the remaining exported content to resolve the rest.`,
+          `${matchedCount} بانک سوال از فایل بارگذاری‌شده تطبیق داده شد. برای تکمیل بقیه موارد، فایل خروجی باقی‌مانده را بارگذاری کنید.`,
         );
       }
       setStep(hasUnresolvedSourceBankRefs(mergedResults) ? 'missing-banks' : 'review');
@@ -454,8 +454,8 @@ export function QtiImportForm({
       const MAX_PAYLOAD_BYTES = 5 * 1024 * 1024;
       if (payloadBytes > MAX_PAYLOAD_BYTES) {
         throw new Error(
-          `The import payload is too large (${(payloadBytes / (1024 * 1024)).toFixed(1)} MB). ` +
-            'Try importing fewer items at once, or remove large image assets from the export before importing.',
+          `حجم داده‌های ارسالی بیش از حد مجاز است (${(payloadBytes / (1024 * 1024)).toFixed(1)} مگابایت). ` +
+            'تعداد کمتری از موارد را هم‌زمان وارد کنید یا پیش از وارد کردن، تصاویر حجیم را از فایل خروجی حذف نمایید.',
         );
       }
 
@@ -480,7 +480,7 @@ export function QtiImportForm({
         setError({ message: appError.message, canRestart: true });
       } else {
         setError({
-          message: err instanceof Error ? err.message : `Failed to create ${createContentLabel}`,
+          message: err instanceof Error ? err.message : `ایجاد ${createContentLabel} ناموفق بود`,
         });
       }
       setStep('review');
@@ -528,16 +528,14 @@ export function QtiImportForm({
   const canImport = includedAssessmentCount > 0 || includedQuestionCount > 0;
   const labelParts: string[] = [];
   if (canImportAssessments && hasAssessmentResults) {
-    labelParts.push(
-      `${includedAssessmentCount} assessment${includedAssessmentCount !== 1 ? 's' : ''}`,
-    );
+    labelParts.push(`${includedAssessmentCount} آزمون`);
   }
   if (includedQuestionCount > 0 || labelParts.length === 0) {
-    labelParts.push(`${includedQuestionCount} question${includedQuestionCount !== 1 ? 's' : ''}`);
+    labelParts.push(`${includedQuestionCount} سوال`);
   }
-  const importButtonLabel = `Import ${labelParts.join(' and ')}`;
+  const importButtonLabel = `وارد کردن ${labelParts.join(' و ')}`;
   const createContentLabel =
-    includedAssessmentCount > 0 ? 'assessments and questions' : 'questions';
+    includedAssessmentCount > 0 ? 'آزمون‌ها و سوال‌ها' : 'سوال‌ها';
   const indexedResults = results.map((result, index) => ({ result, index }));
   const assessmentResults = indexedResults.filter(
     ({ result }) => result.sourceType === 'assessment',
@@ -579,16 +577,16 @@ export function QtiImportForm({
           checked={overrides[i].included}
           disabled={result.questions.length === 0}
           label=""
-          aria-label={`Include ${result.title}`}
+          aria-label={`افزودن ${result.title}`}
           onChange={(e) => updateOverride(i, { included: e.target.checked })}
         />
         <div className="flex-grow-1">
           <strong>{result.title}</strong>
           <span className="text-muted ms-2">
-            ({result.questions.length} question{result.questions.length !== 1 ? 's' : ''})
+            ({result.questions.length} سوال)
           </span>
           {result.sourceType === 'question-bank' && (
-            <span className="badge color-blue3 ms-2">Question bank</span>
+            <span className="badge color-blue3 ms-2">بانک سوال</span>
           )}
         </div>
       </Card.Header>
@@ -596,7 +594,7 @@ export function QtiImportForm({
         <Card.Body>
           <div className="text-muted d-flex align-items-center gap-2">
             <i className="bi bi-info-circle" aria-hidden="true" />
-            This assessment doesn't contain any questions
+            این آزمون هیچ سوالی ندارد
           </div>
         </Card.Body>
       )}
@@ -605,7 +603,7 @@ export function QtiImportForm({
           {canImportAssessments && result.sourceType === 'assessment' && (
             <div className="row g-3 mb-3">
               <div className="col-md-6">
-                <Form.Label htmlFor={`title-${i}`}>Title</Form.Label>
+                <Form.Label htmlFor={`title-${i}`}>عنوان</Form.Label>
                 <Form.Control
                   id={`title-${i}`}
                   type="text"
@@ -614,7 +612,7 @@ export function QtiImportForm({
                 />
               </div>
               <div className="col-md-2">
-                <Form.Label htmlFor={`type-${i}`}>Type</Form.Label>
+                <Form.Label htmlFor={`type-${i}`}>نوع</Form.Label>
                 <Form.Select
                   id={`type-${i}`}
                   value={overrides[i].type}
@@ -624,12 +622,12 @@ export function QtiImportForm({
                     })
                   }
                 >
-                  <option value="Homework">Homework</option>
-                  <option value="Exam">Exam</option>
+                  <option value="Homework">تکلیف (Homework)</option>
+                  <option value="Exam">آزمون (Exam)</option>
                 </Form.Select>
               </div>
               <div className="col-md-2">
-                <Form.Label htmlFor={`set-${i}`}>Set</Form.Label>
+                <Form.Label htmlFor={`set-${i}`}>مجموعه (Set)</Form.Label>
                 <Form.Select
                   id={`set-${i}`}
                   value={overrides[i].set}
@@ -643,7 +641,7 @@ export function QtiImportForm({
                 </Form.Select>
               </div>
               <div className="col-md-2">
-                <Form.Label htmlFor={`number-${i}`}>Number</Form.Label>
+                <Form.Label htmlFor={`number-${i}`}>شماره</Form.Label>
                 <Form.Control
                   id={`number-${i}`}
                   type="text"
@@ -675,7 +673,7 @@ export function QtiImportForm({
   return (
     <Card className="mb-4">
       <Card.Header className="bg-primary text-white">
-        <h1 className="h6 mb-0">Import QTI content</h1>
+        <h1 className="h6 mb-0">وارد کردن محتوای QTI</h1>
       </Card.Header>
       <Card.Body>
         {error && (
@@ -685,14 +683,14 @@ export function QtiImportForm({
               <>
                 {' '}
                 <Alert.Link href={`${urlPrefix}/edit_error/${error.jobSequenceId}`}>
-                  View sync errors
+                  مشاهده خطاهای همگام‌سازی
                 </Alert.Link>
               </>
             )}
             {error.canRestart && (
               <div className="mt-2">
                 <Button variant="outline-danger" size="sm" onClick={resetAll}>
-                  Start over
+                  شروع مجدد
                 </Button>
               </div>
             )}
@@ -736,29 +734,25 @@ export function QtiImportForm({
             <UnresolvedBankWarnings results={results} />
 
             <p className="text-muted">
-              Review the assessments and questions below, then confirm to create them in your
-              PrairieLearn course.
+              آزمون‌ها و سوال‌های زیر را بررسی کرده و سپس برای ایجاد آن‌ها در درس خود تایید کنید.
             </p>
 
             {assessmentResults.length > 0 && (
               <section className="mb-4" aria-labelledby="qti-import-assessments-heading">
                 <h2 id="qti-import-assessments-heading" className="h4 mb-1">
-                  Assessments
+                  آزمون‌ها
                 </h2>
                 {selectedCourseInstance ? (
                   <p className="text-muted mb-3">
-                    Assessments are imported into{' '}
+                    آزمون‌ها به همراه سوال‌ها و ساختار اولیه خود در دوره{' '}
                     <strong>
                       {selectedCourseInstance.shortName}: {selectedCourseInstance.longName}
                     </strong>{' '}
-                    with their questions and basic quiz structure. After import, you can edit their
-                    settings, adjust question order and points, and assign them like any other
-                    assessment.
+                    وارد می‌شوند. پس از وارد کردن، می‌توانید تنظیمات آن‌ها را ویرایش کنید، ترتیب و نمره سوال‌ها را تغییر دهید و مانند سایر آزمون‌ها آن‌ها را منتشر کنید.
                   </p>
                 ) : (
                   <p className="text-muted mb-3">
-                    This course has no course instances yet, so only the questions from these
-                    assessments will be imported.
+                    این درس هنوز هیچ دوره‌ای ندارد؛ بنابراین تنها سوال‌های موجود در این آزمون‌ها وارد خواهند شد.
                   </p>
                 )}
                 {assessmentResults.map(renderResultCard)}
@@ -771,12 +765,10 @@ export function QtiImportForm({
                 aria-labelledby="qti-import-question-banks-heading"
               >
                 <h2 id="qti-import-question-banks-heading" className="h4 mb-1">
-                  Question banks
+                  بانک‌های سوال
                 </h2>
                 <p className="text-muted mb-3">
-                  Question banks are imported as a set of PrairieLearn questions in your course. You
-                  can add them to existing assessments or use them in any new assessments you
-                  create.
+                  بانک‌های سوال به صورت مجموعه‌ای از سوال‌ها در درس شما وارد می‌شوند. می‌توانید آن‌ها را به آزمون‌های فعلی یا آزمون‌های جدید خود اضافه کنید.
                 </p>
                 <QuestionBankDeduplicationWarning
                   deduplicatedQuestionCount={deduplicatedQuestionBankQuestionCount}
@@ -788,7 +780,7 @@ export function QtiImportForm({
             <div className="d-flex gap-2">
               <Button variant="outline-secondary" onClick={resetAll}>
                 <i className="bi bi-arrow-left me-1" aria-hidden="true" />
-                Start over
+                شروع مجدد
               </Button>
               <Button
                 className="ms-auto"
@@ -805,7 +797,7 @@ export function QtiImportForm({
         {step === 'creating' && (
           <div className="text-center py-4">
             <Spinner className="mb-3" />
-            <p>Creating {createContentLabel}...</p>
+            <p>در حال ایجاد {createContentLabel}...</p>
           </div>
         )}
       </Card.Body>

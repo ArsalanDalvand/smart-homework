@@ -312,7 +312,7 @@ function AssessmentEditorInner({
   const questionsInAssessment = useMemo(() => {
     const qidToZones = new Map<string, string[]>();
     zones.forEach((zone, index) => {
-      const zoneName = zone.title || `Zone ${index + 1}`;
+      const zoneName = zone.title || `بخش ${index + 1}`;
       for (const question of zone.questions) {
         if (question.id) {
           const existing = qidToZones.get(question.id) ?? [];
@@ -869,35 +869,35 @@ function AssessmentEditorInner({
     ? run(() => {
         switch (selectedItem?.type) {
           case 'zone':
-            return 'Cannot save: the selected zone has configuration errors';
+            return 'امکان ذخیره وجود ندارد: بخش انتخاب‌شده دارای خطای پیکربندی است';
           case 'question':
-            return 'Cannot save: the selected question has configuration errors';
+            return 'امکان ذخیره وجود ندارد: سوال انتخاب‌شده دارای خطای پیکربندی است';
           case 'altPool':
-            return 'Cannot save: the selected alternative pool has configuration errors';
+            return 'امکان ذخیره وجود ندارد: مجموعه جایگزین انتخاب‌شده دارای خطای پیکربندی است';
           case 'alternative':
-            return 'Cannot save: the selected alternative has configuration errors';
+            return 'امکان ذخیره وجود ندارد: گزینه جایگزین انتخاب‌شده دارای خطای پیکربندی است';
           default:
-            return 'Cannot save: there are configuration errors';
+            return 'امکان ذخیره وجود ندارد: خطاهای پیکربندی وجود دارد';
         }
       })
     : undefined;
   const structuralSaveValidationErrorReason = run(() => {
     switch (structuralSaveValidationErrorKind) {
       case 'zone':
-        return 'Cannot save: one or more zones have configuration errors';
+        return 'امکان ذخیره وجود ندارد: یک یا چند بخش دارای خطای پیکربندی هستند';
       case 'altPool':
-        return 'Cannot save: one or more alternative pools have configuration errors';
+        return 'امکان ذخیره وجود ندارد: یک یا چند مجموعه جایگزین دارای خطای پیکربندی هستند';
       case 'questionPoints':
-        return 'Cannot save: one or more questions have no points configured';
+        return 'امکان ذخیره وجود ندارد: برای یک یا چند سوال امتیازی پیکربندی نشده است';
       default:
         return undefined;
     }
   });
 
   const saveButtonDisabledReason = hasZoneWithNoEffectiveQuestions
-    ? 'Cannot save: one or more zones have no questions'
+    ? 'امکان ذخیره وجود ندارد: یک یا چند بخش هیچ سوالی ندارند'
     : hasEmptyAltPool
-      ? 'Cannot save: one or more alternative pools have no questions'
+      ? 'امکان ذخیره وجود ندارد: یک یا چند مجموعه جایگزین هیچ سوالی ندارند'
       : (selectedFormErrorDisabledReason ?? structuralSaveValidationErrorReason);
 
   const treeState: TreeState = useMemo(
@@ -1020,8 +1020,8 @@ function AssessmentEditorInner({
 
   const zoneDisplayName = (trackingId: string) => {
     const index = zones.findIndex((z) => z.trackingId === trackingId);
-    if (index === -1) return 'Zone';
-    return zones[index].title || `Zone ${index + 1}`;
+    if (index === -1) return 'بخش';
+    return zones[index].title || `بخش ${index + 1}`;
   };
 
   const docsTooltipId = useId();
@@ -1032,13 +1032,13 @@ function AssessmentEditorInner({
       <>
         {label}{' '}
         <OverlayTrigger
-          tooltip={{ body: `View ${docsLabel} documentation`, props: { id: docsTooltipId } }}
+          tooltip={{ body: `مشاهده مستندات ${docsLabel}`, props: { id: docsTooltipId } }}
         >
           <a
             href={`https://docs.prairielearn.com/assessment/configuration/${anchor}`}
             target="_blank"
             rel="noreferrer"
-            aria-label={`View ${docsLabel} documentation`}
+            aria-label={`مشاهده مستندات ${docsLabel}`}
             className="text-muted"
           >
             <i className="bi bi-question-circle" aria-hidden="true" />
@@ -1049,41 +1049,41 @@ function AssessmentEditorInner({
 
     switch (selectedItem.type) {
       case 'zone': {
-        const label = editMode ? 'Edit zone' : zoneDisplayName(selectedItem.zoneTrackingId);
-        return docsLink(label, 'zone', '#question-specification');
+        const label = editMode ? 'ویرایش بخش' : zoneDisplayName(selectedItem.zoneTrackingId);
+        return docsLink(label, 'بخش', '#question-specification');
       }
       case 'question':
         return docsLink(
-          editMode ? 'Edit question' : 'Question',
-          'question',
+          editMode ? 'ویرایش سوال' : 'سوال',
+          'سوال',
           '#question-specification',
         );
       case 'alternative':
         return docsLink(
-          editMode ? 'Edit alternative' : 'Alternative',
-          'alternative',
+          editMode ? 'ویرایش گزینه جایگزین' : 'گزینه جایگزین',
+          'گزینه جایگزین',
           '#question-alternatives',
         );
       case 'altPool':
         return docsLink(
-          editMode ? 'Edit alternative pool' : 'Alternative pool',
-          'alternative pool',
+          editMode ? 'ویرایش مجموعه جایگزین' : 'مجموعه جایگزین',
+          'مجموعه جایگزین',
           '#question-alternatives',
         );
       case 'picker': {
         if (selectedItem.returnToSelection) {
           return selectedItem.returnToSelection.type === 'alternative'
-            ? 'Change alternative'
-            : 'Change question';
+            ? 'تغییر گزینه جایگزین'
+            : 'تغییر سوال';
         }
         const name = zoneDisplayName(selectedItem.zoneTrackingId);
-        return `Adding to "${name}"`;
+        return `افزودن به «${name}»`;
       }
       case 'altPoolPicker': {
         const name = zoneDisplayName(selectedItem.zoneTrackingId);
         return selectedItem.altPoolTrackingId
-          ? `Adding to alternative pool in "${name}"`
-          : `Creating alternative pool in "${name}"`;
+          ? `افزودن به مجموعه جایگزین در «${name}»`
+          : `ایجاد مجموعه جایگزین در «${name}»`;
       }
     }
   });
@@ -1098,7 +1098,7 @@ function AssessmentEditorInner({
           disabled={questionByQidMutation.isPending}
           onClick={handlePickerDone}
         >
-          {isChangeMode ? 'Cancel' : 'Done'}
+          {isChangeMode ? 'انصراف' : 'تایید'}
         </button>
       );
     }

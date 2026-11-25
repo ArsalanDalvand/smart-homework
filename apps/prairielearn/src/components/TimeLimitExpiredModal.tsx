@@ -6,10 +6,10 @@ export function TimeLimitExpiredModal({ showAutomatically }: { showAutomatically
   return html`
     ${Modal({
       id: 'timeLimitExpiredModal',
-      title: 'Time limit expired',
-      body: html`<p>Your time limit expired and your assessment is now finished.</p>`,
+      title: 'پایان مهلت زمانی',
+      body: html`<p>مهلت زمانی شما به پایان رسید و تکلیف/آزمون شما اکنون تمام شده است.</p>`,
       footer: html`
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">تایید</button>
       `,
     })}
     ${

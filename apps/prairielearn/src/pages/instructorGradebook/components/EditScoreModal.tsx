@@ -44,7 +44,7 @@ export function EditScoreButton({
       });
 
       if (!res.ok) {
-        throw new Error('Failed to update score');
+        throw new Error('به‌روزرسانی نمره ناموفق بود');
       }
 
       const data = await res.json();
@@ -74,7 +74,7 @@ export function EditScoreButton({
       <button
         type="button"
         className="btn btn-xs btn-ghost edit-score ms-1"
-        aria-label="Edit score"
+        aria-label="ویرایش نمره"
         onClick={handleOpen}
       >
         <i className="bi-pencil-square" aria-hidden="true" />
@@ -82,7 +82,7 @@ export function EditScoreButton({
       {show && (
         <Modal show={true} onHide={handleClose} onExited={resetModalState}>
           <Modal.Header closeButton>
-            <Modal.Title>Change total percentage score</Modal.Title>
+            <Modal.Title>تغییر درصد نمره کل</Modal.Title>
           </Modal.Header>
           <Form
             onSubmit={(e) => {
@@ -96,7 +96,7 @@ export function EditScoreButton({
                   <Form.Control
                     type="text"
                     value={scoreInput}
-                    aria-label="Score percentage"
+                    aria-label="درصد نمره"
                     disabled={editScoreMutation.isPending}
                     onChange={(e) => setScoreInput(e.currentTarget.value)}
                   />
@@ -107,7 +107,7 @@ export function EditScoreButton({
               {otherUsers.length > 0 && (
                 <Alert variant="info">
                   <small>
-                    This is a group assessment. Updating this grade will also update grades for:
+                    این یک آزمون گروهی است. به‌روزرسانی این نمره، نمره افراد زیر را نیز تغییر می‌دهد:
                   </small>
                   <ul className="mb-0">
                     {otherUsers.map(({ uid, enrollment_id }) => (
@@ -129,7 +129,7 @@ export function EditScoreButton({
 
               <p className="text-muted">
                 <small>
-                  This change will be overwritten if further questions are answered by the student.
+                  اگر دانشجو به سوالات بیشتری پاسخ دهد، این تغییر بازنویسی خواهد شد.
                 </small>
               </p>
 
@@ -150,10 +150,10 @@ export function EditScoreButton({
                 disabled={editScoreMutation.isPending}
                 onClick={handleClose}
               >
-                Cancel
+                انصراف
               </Button>
               <Button type="submit" variant="primary" disabled={editScoreMutation.isPending}>
-                {editScoreMutation.isPending ? 'Saving...' : 'Change'}
+                {editScoreMutation.isPending ? 'در حال ذخیره...' : 'تغییر'}
               </Button>
             </Modal.Footer>
           </Form>

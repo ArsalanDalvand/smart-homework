@@ -171,7 +171,7 @@ router.get(
         },
         options: {
           fullWidth: true,
-          pageNote: `Question ${number_in_alternative_group}`,
+          pageNote: `سوال ${number_in_alternative_group}`,
         },
         content: (
           <>
@@ -231,7 +231,7 @@ router.get(
   '/next_ungraded',
   typedAsyncHandler<'instructor-assessment-question'>(async (req, res) => {
     if (!res.locals.authz_data.has_course_instance_permission_view) {
-      throw new error.HttpStatusError(403, 'Access denied (must be a student data viewer)');
+      throw new error.HttpStatusError(403, 'دسترسی مجاز نیست (باید مجوز مشاهده اطلاعات دانشجویان را داشته باشید)');
     }
     if (
       req.query.prior_instance_question_id != null &&
@@ -275,7 +275,7 @@ router.post(
   '/',
   typedAsyncHandler<'instructor-assessment-question'>(async (req, res) => {
     if (!res.locals.authz_data.has_course_instance_permission_edit) {
-      throw new error.HttpStatusError(403, 'Access denied (must be a student data editor)');
+      throw new error.HttpStatusError(403, 'دسترسی مجاز نیست (باید مجوز ویرایش اطلاعات دانشجویان را داشته باشید)');
     }
     // TODO: parse req.body with Zod
     if (req.accepts('html') && req.body.__action !== 'modify_rubric_settings') {

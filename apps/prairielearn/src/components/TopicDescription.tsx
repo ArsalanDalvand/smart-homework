@@ -7,7 +7,7 @@ export function TopicDescription({ topic }: { topic: Topic }) {
 
   return (
     <span className="text-muted">
-      Auto-generated from use in a question; edit this topic to customize
+      ایجادشده به‌صورت خودکار از طریق استفاده در یک سوال؛ برای سفارشی‌سازی این مبحث را ویرایش کنید
     </span>
   );
 }

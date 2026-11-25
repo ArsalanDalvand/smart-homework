@@ -58,11 +58,11 @@ function ScoringSummary({
           <i className="bi bi-info-circle-fill me-2" aria-hidden="true" />
           {bonusPoints > 0 ? (
             <>
-              Students get up to {totalPoints} points: all points are treated as bonus &mdash; 100%
-              is achieved with 0 points.
+              دانشجویان تا {totalPoints} امتیاز دریافت می‌کنند: تمام امتیازها به عنوان امتیاز تشویقی
+              در نظر گرفته می‌شوند &mdash; نمره ۱۰۰٪ با ۰ امتیاز حاصل می‌شود.
             </>
           ) : (
-            <>Students need 0 points for 100%.</>
+            <>دانشجویان برای کسب نمره ۱۰۰٪ به ۰ امتیاز نیاز دارند.</>
           )}
         </Alert>
       );
@@ -74,11 +74,11 @@ function ScoringSummary({
         <i className="bi bi-info-circle-fill me-2" aria-hidden="true" />
         {bonusPoints > 0 ? (
           <>
-            Students get up to {totalPoints} points: 100% at {customMaxPoints} points, and up to{' '}
-            {maxPerc}% with {bonusPoints} bonus points.
+            دانشجویان تا {totalPoints} امتیاز دریافت می‌کنند: نمره ۱۰۰٪ با {customMaxPoints} امتیاز،
+            و تا {maxPerc}٪ با {bonusPoints} امتیاز تشویقی.
           </>
         ) : (
-          <>Students need {customMaxPoints} points for 100%.</>
+          <>دانشجویان برای کسب نمره ۱۰۰٪ به {customMaxPoints} امتیاز نیاز دارند.</>
         )}
       </Alert>
     );
@@ -88,8 +88,8 @@ function ScoringSummary({
     return (
       <Alert variant="light" className="mb-0 small">
         <i className="bi bi-info-circle-fill me-2" aria-hidden="true" />
-        Students get up to {totalPoints} points: all zone points are treated as bonus &mdash; 100%
-        is achieved with 0 points.
+        دانشجویان تا {totalPoints} امتیاز دریافت می‌کنند: تمام امتیاز بخش‌ها به عنوان امتیاز
+        تشویقی در نظر گرفته می‌شوند &mdash; نمره ۱۰۰٪ با ۰ امتیاز حاصل می‌شود.
       </Alert>
     );
   }
@@ -106,11 +106,11 @@ function ScoringSummary({
       <i className="bi bi-info-circle-fill me-2" aria-hidden="true" />
       {bonusPoints > 0 ? (
         <>
-          Students get up to {totalPoints} points: 100% at {neededText} points, and up to {maxPerc}%
-          with {bonusPoints} bonus points.
+          دانشجویان تا {totalPoints} امتیاز دریافت می‌کنند: نمره ۱۰۰٪ با {neededText} امتیاز، و تا{' '}
+          {maxPerc}٪ با {bonusPoints} امتیاز تشویقی.
         </>
       ) : (
-        <>Students need {neededText} points for 100%.</>
+        <>دانشجویان برای کسب نمره ۱۰۰٪ به {neededText} امتیاز نیاز دارند.</>
       )}
     </Alert>
   );
@@ -287,7 +287,7 @@ function CopyAssessmentModal({
   return (
     <Modal show={show} onHide={onHide} onExited={handleExited}>
       <Modal.Header closeButton>
-        <Modal.Title>Make a copy of this assessment</Modal.Title>
+        <Modal.Title>ایجاد کپی از این ارزیابی</Modal.Title>
       </Modal.Header>
       <form onSubmit={onSubmit}>
         <Modal.Body>
@@ -300,11 +300,11 @@ function CopyAssessmentModal({
             onDismiss={() => copyMutation.reset()}
           />
           <p className="text-muted small mb-3">
-            Making a copy of <code>{assessment.tid}</code>.
+            ایجاد یک کپی از <code>{assessment.tid}</code>.
           </p>
           <div className="mb-3">
             <label className="form-label" htmlFor="copy-assessment-title">
-              Title
+              عنوان
             </label>
             <input
               id="copy-assessment-title"
@@ -314,7 +314,7 @@ function CopyAssessmentModal({
               {...(errors.title ? { 'aria-errormessage': 'copy-assessment-title-error' } : {})}
               defaultValue=""
               {...register('title', {
-                validate: (value) => (value.trim() === '' ? 'Title is required' : true),
+                validate: (value) => (value.trim() === '' ? 'وارد کردن عنوان الزامی است' : true),
               })}
             />
             {errors.title && (
@@ -325,7 +325,7 @@ function CopyAssessmentModal({
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="copy-assessment-aid">
-              Short name
+              کد اختصاری (Short name)
             </label>
             <input
               id="copy-assessment-aid"
@@ -338,10 +338,10 @@ function CopyAssessmentModal({
               {...register('aid', {
                 validate: (value) => {
                   const trimmed = value.trim();
-                  if (trimmed === '') return 'Short name is required';
+                  if (trimmed === '') return 'وارد کردن کد اختصاری الزامی است';
                   const result = validateShortName(trimmed);
                   if (!result.valid) return result.message;
-                  if (tidSet.has(trimmed)) return 'This ID is already in use';
+                  if (tidSet.has(trimmed)) return 'این شناسه قبلاً استفاده شده است';
                   return true;
                 },
               })}
@@ -358,7 +358,7 @@ function CopyAssessmentModal({
           <div className="row">
             <div className="col-md-6 mb-3 mb-md-0">
               <label className="form-label" htmlFor="copy-assessment-set">
-                Set
+                دسته‌بندی (Set)
               </label>
               <Form.Select id="copy-assessment-set" defaultValue={defaultSet} {...register('set')}>
                 {assessmentSets.map((set) => (
@@ -370,7 +370,7 @@ function CopyAssessmentModal({
             </div>
             <div className="col-md-6 mb-0">
               <label className="form-label" htmlFor="copy-assessment-number">
-                Number
+                شماره
               </label>
               <input
                 id="copy-assessment-number"
@@ -385,10 +385,10 @@ function CopyAssessmentModal({
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" disabled={copyMutation.isPending} onClick={onHide}>
-            Cancel
+            انصراف
           </Button>
           <Button type="submit" variant="primary" disabled={copyMutation.isPending}>
-            {copyMutation.isPending ? 'Copying...' : 'Make a copy'}
+            {copyMutation.isPending ? 'در حال کپی...' : 'ایجاد کپی'}
           </Button>
         </Modal.Footer>
       </form>
@@ -397,30 +397,30 @@ function CopyAssessmentModal({
 }
 
 function formatTypeChangeLocation(location: TypeChangeLocation): string {
-  if (location.kind === 'assessment') return 'Assessment';
+  if (location.kind === 'assessment') return 'ارزیابی';
   const zoneLabel = location.zoneTitle
-    ? `Zone ${location.zoneIndex + 1} (${location.zoneTitle})`
-    : `Zone ${location.zoneIndex + 1}`;
+    ? `بخش ${location.zoneIndex + 1} (${location.zoneTitle})`
+    : `بخش ${location.zoneIndex + 1}`;
   if (location.kind === 'zone') return zoneLabel;
   const questionLabel = location.qid
-    ? `${zoneLabel}, question ${location.qid}`
-    : `${zoneLabel}, question ${location.questionIndex + 1}`;
+    ? `${zoneLabel}، سوال ${location.qid}`
+    : `${zoneLabel}، سوال ${location.questionIndex + 1}`;
   if (location.kind === 'question') return questionLabel;
   return location.alternativeQid
-    ? `${questionLabel}, alternative ${location.alternativeQid}`
-    : `${questionLabel}, alternative ${location.alternativeIndex + 1}`;
+    ? `${questionLabel}، گزینه جایگزین ${location.alternativeQid}`
+    : `${questionLabel}، گزینه جایگزین ${location.alternativeIndex + 1}`;
 }
 
 const BLOCKER_FIELD_LABELS: Record<string, string> = {
-  multipleInstance: 'Multiple instances',
-  autoClose: 'Auto close disabled',
-  requireHonorCode: 'Honor code requirement',
-  honorCode: 'Custom honor code',
-  advanceScorePerc: 'Advance score threshold',
-  allowRealTimeGrading: 'Real-time grading disabled',
-  constantQuestionValue: 'Constant question value',
-  maxPoints: 'Max points cap',
-  maxAutoPoints: 'Max auto points cap',
+  multipleInstance: 'چندین بار شرکت در آزمون',
+  autoClose: 'غیرفعال بودن بسته‌شدن خودکار',
+  requireHonorCode: 'الزام تعهدنامه اخلاقی',
+  honorCode: 'متن سفارشی تعهدنامه اخلاقی',
+  advanceScorePerc: 'حد نصاب نمره برای سوال بعدی',
+  allowRealTimeGrading: 'غیرفعال بودن تصحیح هم‌زمان',
+  constantQuestionValue: 'ارزش ثابت سوال',
+  maxPoints: 'سقف حداکثر امتیاز',
+  maxAutoPoints: 'سقف حداکثر امتیاز خودکار',
 };
 
 function ChangeTypeModal({
@@ -485,55 +485,60 @@ function ChangeTypeModal({
     changeMutation.mutate({ newType, origHash }, { onSuccess });
   };
 
+  const formatAssessmentTypeFa = (t: 'Exam' | 'Homework' | null) =>
+    t === 'Exam' ? 'امتحان (Exam)' : t === 'Homework' ? 'تکلیف منزل (Homework)' : '';
+
   return (
     <Modal show={show} backdrop="static" size="lg" onHide={onHide} onExited={handleExited}>
       <Modal.Header closeButton>
-        <Modal.Title>Change assessment type</Modal.Title>
+        <Modal.Title>تغییر نوع ارزیابی</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {hasInstances ? (
           <Alert variant="warning" className="mb-0">
-            Students have already started this assessment. The type can't be changed while
-            assessment instances exist. Delete all instances on the{' '}
-            <Alert.Link href={studentsTabUrl}>Students tab</Alert.Link> to allow changes.
+            دانشجویان قبلاً این ارزیابی را شروع کرده‌اند. تا زمانی که نمونه‌های شرکت در آزمون وجود
+            دارند، امکان تغییر نوع ارزیابی نیست. برای ایجاد تغییر، همه نمونه‌ها را در{' '}
+            <Alert.Link href={studentsTabUrl}>بخش دانشجویان</Alert.Link> حذف کنید.
           </Alert>
         ) : (
           <>
             <p className="mb-3">
-              You are about to change this assessment from <strong>{currentType}</strong> to{' '}
-              <strong>{newType ?? currentType}</strong>.
+              در حال تغییر نوع این ارزیابی از <strong>{formatAssessmentTypeFa(currentType)}</strong>{' '}
+              به <strong>{formatAssessmentTypeFa(newType ?? currentType)}</strong> هستید.
             </p>
 
             <Alert variant="info" className="small mb-3">
-              <strong>What changes:</strong>
+              <strong>تغییرات اعمال‌شده:</strong>
               {newType === 'Homework' ? (
                 <ul className="mb-0 mt-1 ps-3">
                   <li>
-                    Each question generates new variants on each attempt, accumulating points across
-                    them.
+                    هر سوال در هر تلاش نسخه جدیدی تولید می‌کند و امتیازها در طول تلاش‌ها جمع
+                    می‌شوند.
                   </li>
-                  <li>Real-time grading is always enabled and cannot be disabled.</li>
+                  <li>تصحیح هم‌زمان همیشه فعال است و نمی‌توان آن را غیرفعال کرد.</li>
                   <li>
-                    Multiple instances, time limits, passwords, auto-close, and honor code are not
-                    supported.
+                    چندین بار شرکت در آزمون، محدودیت زمانی، رمز عبور، بسته‌شدن خودکار و تعهدنامه
+                    اخلاقی پشتیبانی نمی‌شوند.
                   </li>
-                  <li>Question ordering defaults to fixed order; honor code is off by default.</li>
+                  <li>ترتیب سوالات به صورت پیش‌فرض ثابت است و تعهدنامه اخلاقی خاموش است.</li>
                 </ul>
               ) : newType === 'Exam' ? (
                 <ul className="mb-0 mt-1 ps-3">
                   <li>
-                    Each student gets a single variant per question, retried in place with declining
-                    points.
+                    هر دانشجو برای هر سوال یک نسخه دریافت می‌کند و می‌تواند با امتیاز کاهشی دوباره
+                    تلاش کند.
                   </li>
                   <li>
-                    Multiple instances, time limits, passwords, auto-close, and honor code become
-                    available.
+                    چندین بار شرکت در آزمون، محدودیت زمانی، رمز عبور، بسته‌شدن خودکار و تعهدنامه
+                    اخلاقی در دسترس قرار می‌گیرند.
                   </li>
                   <li>
-                    Real-time grading can be disabled per assessment, zone, question, or
-                    alternative.
+                    تصحیح هم‌زمان را می‌توان در سطح ارزیابی، بخش، سوال یا گزینه جایگزین غیرفعال کرد.
                   </li>
-                  <li>Question ordering defaults to shuffled; honor code is on by default.</li>
+                  <li>
+                    ترتیب سوالات به صورت پیش‌فرض تصادفی (به‌هم‌ریخته) است و تعهدنامه اخلاقی فعال
+                    است.
+                  </li>
                 </ul>
               ) : null}
             </Alert>
@@ -541,23 +546,25 @@ function ChangeTypeModal({
             {analysisQuery.isLoading && (
               <div className="text-center py-3">
                 <Spinner animation="border" role="status" size="sm" />
-                <span className="ms-2 text-muted">Analyzing current configuration...</span>
+                <span className="ms-2 text-muted">در حال تحلیل پیکربندی فعلی...</span>
               </div>
             )}
 
             {analysisQuery.isError && (
-              <Alert variant="danger">Failed to analyze current configuration. Try again.</Alert>
+              <Alert variant="danger">
+                تحلیل پیکربندی فعلی ناموفق بود. لطفاً دوباره تلاش کنید.
+              </Alert>
             )}
 
             {blockers.length > 0 && (
               <Alert variant="warning" className="mb-3">
-                <strong>The following configuration will be removed:</strong>
+                <strong>تنظیمات زیر حذف خواهند شد:</strong>
                 <ul className="mb-0 mt-2 ps-3 small">
                   {blockers.map((b) => {
                     const locationKey = formatTypeChangeLocation(b.location);
                     return (
                       <li key={`${b.field}:${locationKey}`}>
-                        <code>{BLOCKER_FIELD_LABELS[b.field] ?? b.field}</code> on {locationKey}
+                        <code>{BLOCKER_FIELD_LABELS[b.field] ?? b.field}</code> در {locationKey}
                       </li>
                     );
                   })}
@@ -567,7 +574,7 @@ function ChangeTypeModal({
 
             {pointsListCollapses.length > 0 && (
               <Alert variant="warning" className="mb-3">
-                <strong>Question points lists will be collapsed:</strong>
+                <strong>فهرست امتیاز سوالات به یک مقدار خلاصه می‌شود:</strong>
                 <ul className="mb-0 mt-2 ps-3 small">
                   {pointsListCollapses.map((r) => {
                     const locationKey = formatTypeChangeLocation(r.location);
@@ -580,15 +587,15 @@ function ChangeTypeModal({
                   })}
                 </ul>
                 <div className="small mt-2 mb-0">
-                  Homework questions use a single per-variant value. The remaining attempt values
-                  will be lost. You can adjust each question's points after the change.
+                  سوالات تکلیف منزل از یک مقدار امتیاز برای هر نسخه استفاده می‌کنند. مقادیر سایر
+                  تلاش‌ها حذف می‌شوند. پس از تغییر می‌توانید امتیاز هر سوال را تنظیم کنید.
                 </div>
               </Alert>
             )}
 
             {pointsListPromotions.length > 0 && (
               <Alert variant="warning" className="mb-3">
-                <strong>Each question will start as single-attempt:</strong>
+                <strong>هر سوال به صورت تک‌تلاش آغاز می‌شود:</strong>
                 <ul className="mb-0 mt-2 ps-3 small">
                   {pointsListPromotions.map((r) => {
                     const locationKey = formatTypeChangeLocation(r.location);
@@ -601,9 +608,9 @@ function ChangeTypeModal({
                   })}
                 </ul>
                 <div className="small mt-2 mb-0">
-                  Homework grants the same points on every variant attempt; Exam grants points once,
-                  optionally with a declining retry schedule. After the change, you can edit each
-                  question to add retry values (e.g. <code>[10, 7, 5]</code>).
+                  تکلیف منزل در هر تلاش نسخه همان امتیاز را می‌دهد؛ امتحان امتیاز را یک بار و در
+                  صورت تمایل با جدول کاهشی تلاش مجدد اعطا می‌کند. پس از تغییر می‌توانید هر سوال را
+                  برای افزودن امتیازهای تلاش مجدد (مثلاً <code>[10, 7, 5]</code>) ویرایش کنید.
                 </div>
               </Alert>
             )}
@@ -622,7 +629,7 @@ function ChangeTypeModal({
                 id="change-type-acknowledge"
                 type="checkbox"
                 className="mb-0"
-                label="I understand the changes that will be made and that this can't be undone."
+                label="متوجه تغییراتی که اعمال می‌شود هستم و می‌دانم این عملیات غیرقابل بازگشت است."
                 checked={acknowledged}
                 onChange={(e) => setAcknowledged(e.target.checked)}
               />
@@ -632,7 +639,7 @@ function ChangeTypeModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" disabled={changeMutation.isPending} onClick={onHide}>
-          {hasInstances ? 'Close' : 'Cancel'}
+          {hasInstances ? 'بستن' : 'انصراف'}
         </Button>
         {!hasInstances && (
           <Button
@@ -646,7 +653,9 @@ function ChangeTypeModal({
             }
             onClick={handleConfirm}
           >
-            {changeMutation.isPending ? 'Changing type...' : `Change to ${newType ?? ''}`}
+            {changeMutation.isPending
+              ? 'در حال تغییر نوع...'
+              : `تغییر به ${formatAssessmentTypeFa(newType)}`}
           </Button>
         )}
       </Modal.Footer>
@@ -774,7 +783,7 @@ function InstructorAssessmentSettingsInner({
     if (saveMutation.isSuccess) {
       return {
         variant: 'success',
-        message: 'Assessment updated successfully.',
+        message: 'تنظیمات ارزیابی با موفقیت به‌روزرسانی شد.',
         onDismiss: () => saveMutation.reset(),
       };
     }
@@ -865,7 +874,9 @@ function InstructorAssessmentSettingsInner({
             setAssessment(result.assessment);
             setZonePointsRange(result.zonePointsRange);
             setCurrentOrigHash(result.origHash);
-            setTypeChangeMessage(`Assessment type changed to ${result.assessment.type}.`);
+            setTypeChangeMessage(
+              `نوع ارزیابی به ${result.assessment.type === 'Exam' ? 'امتحان (Exam)' : 'تکلیف منزل (Homework)'} تغییر یافت.`,
+            );
             typeChangeModalState.onHide();
           }}
         />
@@ -880,7 +891,7 @@ function InstructorAssessmentSettingsInner({
         }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Delete</Modal.Title>
+          <Modal.Title>حذف</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AppErrorAlert
@@ -892,12 +903,12 @@ function InstructorAssessmentSettingsInner({
             onDismiss={() => deleteMutation.reset()}
           />
           <p>
-            Are you sure you want to delete the assessment <b>{assessment.tid}</b>?
+            آیا از حذف ارزیابی <b>{assessment.tid}</b> مطمئن هستید؟
           </p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={deleteModalState.onHide}>
-            Cancel
+            انصراف
           </Button>
           <Button
             variant="danger"
@@ -910,7 +921,7 @@ function InstructorAssessmentSettingsInner({
               })
             }
           >
-            {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+            {deleteMutation.isPending ? 'در حال حذف...' : 'حذف'}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -919,10 +930,10 @@ function InstructorAssessmentSettingsInner({
         <div className="container d-flex flex-column gap-3 py-3">
           <div className="card">
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">General</h2>
+              <h2 className="h5 card-title mb-3">عمومی</h2>
               <div className="mb-3">
                 <label className="form-label" htmlFor="title">
-                  Title
+                  عنوان
                 </label>
                 <input
                   type="text"
@@ -934,13 +945,13 @@ function InstructorAssessmentSettingsInner({
                   {...register('title')}
                 />
                 <small id="title-help" className="form-text text-muted">
-                  The full name of the assessment, visible to users.
+                  نام کامل ارزیابی که برای کاربران نمایش داده می‌شود.
                 </small>
               </div>
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <label className="form-label" htmlFor="aid">
-                    Short name
+                    کد اختصاری (Short name)
                   </label>
                   <input
                     type="text"
@@ -952,7 +963,7 @@ function InstructorAssessmentSettingsInner({
                     disabled={!canEdit}
                     defaultValue={defaultValues.aid}
                     {...register('aid', {
-                      required: 'Short name is required',
+                      required: 'وارد کردن کد اختصاری الزامی است',
                       validate: {
                         shortName: (value) => {
                           const result = validateShortName(value, defaultValues.aid);
@@ -960,7 +971,7 @@ function InstructorAssessmentSettingsInner({
                         },
                         duplicate: (value) => {
                           if (tidSet.has(value) && value !== defaultValues.aid) {
-                            return 'This ID is already in use';
+                            return 'این شناسه قبلاً استفاده شده است';
                           }
                           return true;
                         },
@@ -978,7 +989,7 @@ function InstructorAssessmentSettingsInner({
                 </div>
                 <div className="col-md-6 mb-3">
                   <label className="form-label" htmlFor="type">
-                    Type
+                    نوع ارزیابی
                   </label>
                   {currentType == null ? (
                     <input
@@ -1005,26 +1016,26 @@ function InstructorAssessmentSettingsInner({
                         }
                       }}
                     >
-                      <option value="Exam">Exam</option>
-                      <option value="Homework">Homework</option>
+                      <option value="Exam">امتحان (Exam)</option>
+                      <option value="Homework">تکلیف منزل (Homework)</option>
                     </Form.Select>
                   )}
                   <small id="type-help" className="form-text text-muted">
-                    The type of the assessment. This can be either{' '}
+                    نوع ارزیابی؛ می‌تواند یکی از گزینه‌های{' '}
                     <a href="https://docs.prairielearn.com/assessment/configuration/#assessment-types">
-                      Homework or Exam
-                    </a>
-                    .{' '}
+                      تکلیف منزل (Homework) یا امتحان (Exam)
+                    </a>{' '}
+                    باشد.{' '}
                     {isDirty
-                      ? 'Save or discard your other changes before switching the type.'
-                      : 'Changing the type may modify or remove existing configuration.'}
+                      ? 'پیش از تغییر نوع ارزیابی، سایر تغییرات خود را ذخیره یا لغو کنید.'
+                      : 'تغییر نوع ممکن است تنظیمات موجود را تغییر دهد یا حذف کند.'}
                   </small>
                 </div>
               </div>
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <label className="form-label" htmlFor="set">
-                    Set
+                    دسته‌بندی (Set)
                   </label>
                   <Form.Select
                     id="set"
@@ -1040,13 +1051,13 @@ function InstructorAssessmentSettingsInner({
                     ))}
                   </Form.Select>
                   <small id="set-help" className="form-text text-muted">
-                    The <a href={`${urlPrefix}/course_admin/sets`}>assessment set</a> this
-                    assessment belongs to.
+                    <a href={`${urlPrefix}/course_admin/sets`}>دسته‌بندی ارزیابی (Set)</a> که این
+                    ارزیابی به آن تعلق دارد.
                   </small>
                 </div>
                 <div className="col-md-6 mb-3">
                   <label className="form-label" htmlFor="number">
-                    Number
+                    شماره
                   </label>
                   <input
                     type="text"
@@ -1058,13 +1069,13 @@ function InstructorAssessmentSettingsInner({
                     {...register('number')}
                   />
                   <small id="number-help" className="form-text text-muted">
-                    The number of the assessment within the set.
+                    شماره ارزیابی در این دسته‌بندی.
                   </small>
                 </div>
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="module">
-                  Module
+                  سرفصل / ماژول
                 </label>
                 <Form.Select
                   id="module"
@@ -1080,13 +1091,13 @@ function InstructorAssessmentSettingsInner({
                   ))}
                 </Form.Select>
                 <small id="module-help" className="form-text text-muted">
-                  The <a href={`${urlPrefix}/course_admin/modules`}>module</a> this assessment
-                  belongs to.
+                  <a href={`${urlPrefix}/course_admin/modules`}>سرفصل (Module)</a> که این ارزیابی
+                  به آن تعلق دارد.
                 </small>
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="text">
-                  Text
+                  متن توضیحات
                 </label>
                 <textarea
                   className="form-control"
@@ -1097,20 +1108,20 @@ function InstructorAssessmentSettingsInner({
                   {...register('text')}
                 />
                 <small id="text-help" className="form-text text-muted">
-                  HTML text shown on the assessment overview page.
+                  متن HTML که در صفحه نمای کلی ارزیابی نمایش داده می‌شود.
                 </small>
               </div>
 
               <StudentLinkSharing
                 studentLink={studentLink}
-                studentLinkMessage="The link that students will use to access this assessment."
+                studentLinkMessage="لینکی که دانشجویان برای دسترسی به این ارزیابی استفاده خواهند کرد."
               />
             </div>
           </div>
 
           <div className="card">
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">Scoring</h2>
+              <h2 className="h5 card-title mb-3">نمره‌دهی</h2>
               <div className="form-check mb-3">
                 <input
                   className="form-check-input"
@@ -1134,16 +1145,16 @@ function InstructorAssessmentSettingsInner({
                   }}
                 />
                 <label className="form-check-label" htmlFor="use_custom_max_points">
-                  Set a custom maximum
+                  تعیین حداکثر امتیاز سفارشی
                 </label>
                 <div className="small text-muted">
-                  By default, the maximum points are the sum of all zone points.
+                  به صورت پیش‌فرض، حداکثر امتیاز برابر مجموع امتیاز تمام بخش‌هاست.
                 </div>
               </div>
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <label className="form-label" htmlFor="max_points">
-                    Maximum points
+                    حداکثر امتیاز
                   </label>
                   {useCustomMaxPoints ? (
                     <input
@@ -1157,7 +1168,7 @@ function InstructorAssessmentSettingsInner({
                       disabled={!canEdit}
                       defaultValue={defaultValues.max_points}
                       {...register('max_points', {
-                        validate: (v) => v === '' || Number(v) >= 0 || 'Must be 0 or greater',
+                        validate: (v) => v === '' || Number(v) >= 0 || 'باید ۰ یا بیشتر باشد',
                       })}
                     />
                   ) : (
@@ -1177,23 +1188,22 @@ function InstructorAssessmentSettingsInner({
                     </div>
                   )}
                   <small id="max-points-help" className="form-text text-muted">
-                    The number of points that must be earned in this assessment to achieve a score
-                    of 100%.
+                    مقدار امتیازی که برای کسب نمره ۱۰۰٪ در این ارزیابی باید به دست آید.
                     {useCustomMaxPoints
-                      ? ` Overriding the computed sum of zone points (${zonePointsRange.min !== zonePointsRange.max ? `${zonePointsRange.min}–${zonePointsRange.max}` : zonePointsRange.max}).`
+                      ? ` جایگزین مجموع محاسبه‌شده امتیاز بخش‌ها (${zonePointsRange.min !== zonePointsRange.max ? `${zonePointsRange.min}–${zonePointsRange.max}` : zonePointsRange.max}).`
                       : ''}
                   </small>
                   {zonePointsRange.min !== zonePointsRange.max && (
                     <Alert variant="warning" className="mt-2 mb-0 py-2 small">
-                      Students may receive different total points because this assessment contains
-                      zones or alternative pools that randomly select questions with different point
-                      values.
+                      دانشجویان ممکن است مجموع امتیاز متفاوتی دریافت کنند زیرا این ارزیابی دارای
+                      بخش‌ها یا مجموعه‌های جایگزینی است که سوالات را به صورت تصادفی با امتیازهای
+                      متفاوت انتخاب می‌کنند.
                     </Alert>
                   )}
                 </div>
                 <div className="col-md-6 mb-3">
                   <label className="form-label" htmlFor="max_bonus_points">
-                    Bonus points
+                    امتیاز تشویقی
                   </label>
                   <input
                     type="number"
@@ -1209,7 +1219,7 @@ function InstructorAssessmentSettingsInner({
                     disabled={!canEdit}
                     defaultValue={defaultValues.max_bonus_points}
                     {...register('max_bonus_points', {
-                      validate: (v) => v === '' || Number(v) >= 0 || 'Must be 0 or greater',
+                      validate: (v) => v === '' || Number(v) >= 0 || 'باید ۰ یا بیشتر باشد',
                     })}
                   />
                   {errors.max_bonus_points && (
@@ -1218,7 +1228,7 @@ function InstructorAssessmentSettingsInner({
                     </div>
                   )}
                   <small id="max-bonus-points-help" className="form-text text-muted">
-                    Additional points students can earn beyond 100% on this assessment.
+                    امتیاز اضافی که دانشجویان می‌توانند فراتر از ۱۰۰٪ در این ارزیابی کسب کنند.
                   </small>
                 </div>
               </div>
@@ -1240,11 +1250,10 @@ function InstructorAssessmentSettingsInner({
                     {...register('constant_question_value')}
                   />
                   <label className="form-check-label" htmlFor="constant_question_value">
-                    Constant question value
+                    ارزش ثابت سوال
                   </label>
                   <div id="constant-question-value-help" className="small text-muted">
-                    Whether to keep the value of a question constant after a student solves it
-                    correctly.
+                    ثابت نگه داشتن ارزش سوال پس از آنکه دانشجو آن را به درستی حل کرد.
                   </div>
                 </div>
               )}
@@ -1253,7 +1262,7 @@ function InstructorAssessmentSettingsInner({
 
           <div className="card">
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">Question behaviour</h2>
+              <h2 className="h5 card-title mb-3">رفتار سوالات</h2>
               <div className="form-check">
                 <input
                   className="form-check-input"
@@ -1265,16 +1274,16 @@ function InstructorAssessmentSettingsInner({
                   {...register('shuffle_questions')}
                 />
                 <label className="form-check-label" htmlFor="shuffle_questions">
-                  Shuffle questions
+                  بر زدن ترتیب سوالات
                 </label>
                 <div id="shuffle-questions-help" className="small text-muted">
-                  Whether the questions will be shuffled in the student view of an assessment.
+                  تعیین می‌کند که آیا سوالات در نمای دانشجو به صورت تصادفی مرتب شوند یا خیر.
                 </div>
               </div>
               {assessment.type === 'Exam' && (
                 <div className="border-top mt-3 pt-3">
                   <label className="form-label" htmlFor="advance_score_perc">
-                    Advance score threshold
+                    حد نصاب نمره برای سوال بعدی
                   </label>
                   <div className="row">
                     <div className="col-md-4">
@@ -1298,7 +1307,7 @@ function InstructorAssessmentSettingsInner({
                             validate: (v) => {
                               if (v === '') return true;
                               const n = Number(v);
-                              if (n < 0 || n > 100) return 'Must be between 0 and 100';
+                              if (n < 0 || n > 100) return 'باید بین ۰ تا ۱۰۰ باشد';
                               return true;
                             },
                           })}
@@ -1313,8 +1322,8 @@ function InstructorAssessmentSettingsInner({
                     </div>
                   )}
                   <small id="advance-score-perc-help" className="form-text text-muted">
-                    Default minimum autograding score percentage on each question to unlock the
-                    following question. May be overridden for individual questions.
+                    حداقل درصد نمره پیش‌فرض تصحیح خودکار در هر سوال برای باز شدن سوال بعدی. می‌توان
+                    آن را برای سوالات جداگانه بازنویسی کرد.
                   </small>
                 </div>
               )}
@@ -1323,7 +1332,7 @@ function InstructorAssessmentSettingsInner({
 
           <div className="card">
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">Grading</h2>
+              <h2 className="h5 card-title mb-3">تصحیح و نمره‌دهی</h2>
               {assessment.type === 'Exam' && (
                 <div className="form-check mb-3 pb-3 border-bottom">
                   <input
@@ -1336,17 +1345,17 @@ function InstructorAssessmentSettingsInner({
                     {...register('allow_real_time_grading')}
                   />
                   <label className="form-check-label" htmlFor="allow_real_time_grading">
-                    Allow real-time grading
+                    اجازه تصحیح هم‌زمان
                   </label>
                   <div id="allow-real-time-grading-help" className="small text-muted">
-                    Allow students to see grading results while the assessment is being taken.
-                    Enabled by default.
+                    اجازه به دانشجویان برای مشاهده نتایج تصحیح در حین شرکت در آزمون. به صورت
+                    پیش‌فرض فعال است.
                   </div>
                 </div>
               )}
               <div>
                 <label className="form-label" htmlFor="grade_rate_minutes">
-                  Grade rate (minutes)
+                  فاصله زمانی تصحیح (دقیقه)
                 </label>
                 <div className="row">
                   <div className="col-md-4">
@@ -1364,7 +1373,7 @@ function InstructorAssessmentSettingsInner({
                       disabled={!canEdit}
                       defaultValue={defaultValues.grade_rate_minutes}
                       {...register('grade_rate_minutes', {
-                        validate: (v) => v === '' || Number(v) >= 0 || 'Must be 0 or greater',
+                        validate: (v) => v === '' || Number(v) >= 0 || 'باید ۰ یا بیشتر باشد',
                       })}
                     />
                     {errors.grade_rate_minutes && (
@@ -1375,8 +1384,7 @@ function InstructorAssessmentSettingsInner({
                   </div>
                 </div>
                 <small id="grade-rate-minutes-help" className="form-text text-muted">
-                  Minimum amount of time (in minutes) between graded submissions to the same
-                  question.
+                  حداقل زمان (به دقیقه) بین دو ارسال نمره‌دهی‌شده برای یک سوال یکسان.
                 </small>
               </div>
             </div>
@@ -1384,7 +1392,7 @@ function InstructorAssessmentSettingsInner({
 
           <div className="card">
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">Student options</h2>
+              <h2 className="h5 card-title mb-3">تنظیمات دانشجو</h2>
               <div className="form-check mb-3">
                 <input
                   className="form-check-input"
@@ -1396,10 +1404,10 @@ function InstructorAssessmentSettingsInner({
                   {...register('allow_issue_reporting')}
                 />
                 <label className="form-check-label" htmlFor="allow_issue_reporting">
-                  Allow issue reporting
+                  اجازه گزارش مشکل
                 </label>
                 <div id="allow-issue-reporting-help" className="small text-muted">
-                  Allow students to report issues for assessment questions.
+                  اجازه به دانشجویان برای گزارش مشکل در سوالات ارزیابی.
                 </div>
               </div>
               <div className="form-check mb-3">
@@ -1413,10 +1421,10 @@ function InstructorAssessmentSettingsInner({
                   {...register('allow_personal_notes')}
                 />
                 <label className="form-check-label" htmlFor="allow_personal_notes">
-                  Allow personal notes
+                  اجازه یادداشت‌های شخصی
                 </label>
                 <div id="allow-personal-notes-help" className="small text-muted">
-                  Allow students to upload personal notes for this assessment.
+                  اجازه به دانشجویان برای بارگذاری یادداشت‌های شخصی برای این ارزیابی.
                 </div>
               </div>
               <div className={clsx('form-check', assessment.type === 'Exam' && 'mb-3')}>
@@ -1430,11 +1438,11 @@ function InstructorAssessmentSettingsInner({
                   {...register('showQuestionTitles')}
                 />
                 <label className="form-check-label" htmlFor="show_question_titles">
-                  Show question titles to students
+                  نمایش عنوان سوالات به دانشجویان
                 </label>
                 <div id="show-question-titles-help" className="small text-muted">
-                  Question titles can help students identify questions, but may contain topic names
-                  or other context intended only for staff.
+                  عنوان سوالات به دانشجویان در شناسایی سوال کمک می‌کند، اما ممکن است شامل نام
+                  موضوع یا اطلاعاتی باشد که فقط برای مدرسین است.
                 </div>
               </div>
               {assessment.type === 'Exam' && (
@@ -1450,10 +1458,10 @@ function InstructorAssessmentSettingsInner({
                       {...register('multiple_instance')}
                     />
                     <label className="form-check-label" htmlFor="multiple_instance">
-                      Multiple instances
+                      چندین بار شرکت در آزمون
                     </label>
                     <div id="multiple-instance-help" className="small text-muted">
-                      Allow students to create additional instances of the assessment.
+                      اجازه به دانشجویان برای ایجاد دفعات بیشتر شرکت در ارزیابی.
                     </div>
                   </div>
                   <div className="form-check mb-3">
@@ -1467,10 +1475,10 @@ function InstructorAssessmentSettingsInner({
                       {...register('auto_close')}
                     />
                     <label className="form-check-label" htmlFor="auto_close">
-                      Auto close
+                      بسته‌شدن خودکار
                     </label>
                     <div id="auto-close-help" className="small text-muted">
-                      Automatically close the assessment after 6 hours of inactivity.
+                      بستن خودکار ارزیابی پس از ۶ ساعت عدم فعالیت.
                     </div>
                   </div>
                   <div className={clsx('form-check', requireHonorCode && 'mb-3')}>
@@ -1484,16 +1492,16 @@ function InstructorAssessmentSettingsInner({
                       {...register('require_honor_code')}
                     />
                     <label className="form-check-label" htmlFor="require_honor_code">
-                      Require honor code
+                      الزام تعهدنامه اخلاقی
                     </label>
                     <div id="require-honor-code-help" className="small text-muted">
-                      Require students to accept an honor code before starting the exam.
+                      الزام دانشجویان به پذیرش تعهدنامه اخلاقی پیش از شروع آزمون.
                     </div>
                   </div>
                   {requireHonorCode && (
                     <div className="mb-0">
                       <label className="form-label" htmlFor="honor_code">
-                        Custom honor code
+                        متن سفارشی تعهدنامه اخلاقی
                       </label>
                       <textarea
                         className="form-control"
@@ -1504,10 +1512,10 @@ function InstructorAssessmentSettingsInner({
                         {...register('honor_code')}
                       />
                       <small id="honor-code-help" className="form-text text-muted">
-                        Custom honor code text shown to students before starting the exam. Supports
-                        Markdown formatting; HTML is not supported. Use{' '}
-                        <code>{'{{user_name}}'}</code> to include the student's name. Leave blank
-                        for the default honor code.
+                        متن تعهدنامه اخلاقی سفارشی که پیش از شروع آزمون به دانشجویان نمایش داده
+                        می‌شود. از قالب‌بندی Markdown پشتیبانی می‌کند؛ HTML پشتیبانی نمی‌شود. برای
+                        درج نام دانشجو از <code>{'{{user_name}}'}</code> استفاده کنید. برای استفاده
+                        از تعهدنامه پیش‌فرض، این بخش را خالی بگذارید.
                       </small>
                     </div>
                   )}
@@ -1518,7 +1526,7 @@ function InstructorAssessmentSettingsInner({
 
           <div className="card">
             <div className="card-body">
-              <h2 className="h5 card-title mb-3">Tools</h2>
+              <h2 className="h5 card-title mb-3">ابزارها</h2>
               {assessmentTools.map(({ name, label, enabled }, i) => (
                 <div
                   key={name}
@@ -1537,7 +1545,7 @@ function InstructorAssessmentSettingsInner({
                       {...register(`tools.${name}`)}
                     />
                     <label className="form-check-label" htmlFor={`tool_${name}`}>
-                      {label}
+                      {name === 'calculator' ? 'ماشین‌حساب' : label}
                     </label>
                   </div>
                   {name === 'calculator' && watch('tools.calculator') && (
@@ -1571,12 +1579,12 @@ function InstructorAssessmentSettingsInner({
                 label: q.qid,
               }))}
               publicLink={publicLink}
-              entityNoun="assessment"
-              childNoun="questions"
+              entityNoun="ارزیابی"
+              childNoun="سوالات"
               unshareBlock={
                 assessment.share_source_publicly && courseInstanceSharedPublicly
                   ? {
-                      parentNoun: 'course instance',
+                      parentNoun: 'ارائه درس',
                       href: getCourseInstanceSettingsUrl(assessment.course_instance_id),
                     }
                   : undefined
@@ -1587,14 +1595,14 @@ function InstructorAssessmentSettingsInner({
           {(currentGHLink || canViewLogs || canEdit) && (
             <div className="card">
               <div className="card-body">
-                <h2 className="h5 card-title mb-3">Manage assessment</h2>
+                <h2 className="h5 card-title mb-3">مدیریت ارزیابی</h2>
                 <div className="d-flex flex-column gap-3">
                   {currentGHLink && (
                     <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
                       <div>
-                        <div className="fw-semibold">View source on GitHub</div>
+                        <div className="fw-semibold">مشاهده کد منبع در GitHub</div>
                         <div className="small text-muted">
-                          Open this assessment's source files in the course's repository.
+                          باز کردن فایل‌های منبع این ارزیابی در مخزن درس.
                         </div>
                       </div>
                       <GitHubButton gitHubLink={currentGHLink} variant="outline-secondary" />
@@ -1608,10 +1616,9 @@ function InstructorAssessmentSettingsInner({
                       )}
                     >
                       <div>
-                        <div className="fw-semibold">View assessment logs</div>
+                        <div className="fw-semibold">مشاهده گزارش‌های ارزیابی</div>
                         <div className="small text-muted">
-                          Review the history of batch operations performed on instances of this
-                          assessment.
+                          مرور تاریخچه عملیات دسته‌ای انجام‌شده روی نمونه‌های این ارزیابی.
                         </div>
                       </div>
                       <a
@@ -1622,7 +1629,7 @@ function InstructorAssessmentSettingsInner({
                         className="btn btn-sm btn-outline-secondary"
                       >
                         <i className="bi bi-clock-history me-1" aria-hidden="true" />
-                        View logs
+                        مشاهده گزارش‌ها
                       </a>
                     </div>
                   )}
@@ -1635,9 +1642,9 @@ function InstructorAssessmentSettingsInner({
                         )}
                       >
                         <div>
-                          <div className="fw-semibold">Make a copy of this assessment</div>
+                          <div className="fw-semibold">ایجاد کپی از این ارزیابی</div>
                           <div className="small text-muted">
-                            Create a duplicate of this assessment to use as a starting point.
+                            ساخت یک نسخه تکراری از این ارزیابی برای استفاده به عنوان نقطه شروع.
                           </div>
                         </div>
                         <Button
@@ -1646,14 +1653,14 @@ function InstructorAssessmentSettingsInner({
                           onClick={() => copyModalState.showWithData(true)}
                         >
                           <i className="bi bi-copy me-1" aria-hidden="true" />
-                          Make a copy
+                          ایجاد کپی
                         </Button>
                       </div>
                       <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 border-top pt-3">
                         <div>
-                          <div className="fw-semibold">Delete this assessment</div>
+                          <div className="fw-semibold">حذف این ارزیابی</div>
                           <div className="small text-muted">
-                            Permanently remove this assessment and all associated student data.
+                            حذف دائمی این ارزیابی و تمامی داده‌های دانشجویان مرتبط با آن.
                           </div>
                         </div>
                         <Button
@@ -1662,7 +1669,7 @@ function InstructorAssessmentSettingsInner({
                           onClick={() => deleteModalState.showWithData(true)}
                         >
                           <i className="bi bi-trash me-1" aria-hidden="true" />
-                          Delete
+                          حذف
                         </Button>
                       </div>
                     </>

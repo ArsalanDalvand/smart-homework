@@ -27,21 +27,21 @@ export function WorkspaceLogs({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Workspace logs',
+    pageTitle: 'گزارش‌های محیط کاری ابری',
     navContext: {
       page: 'workspace',
       type: 'plain',
     },
     content: html`
-      <h1 class="mb-4">Workspace logs</h1>
-      <h2>Versions</h2>
+      <h1 class="mb-4">گزارش‌های محیط کاری ابری</h1>
+      <h2>نسخه‌ها</h2>
       <div class="table-responsive">
-        <table class="table table-sm" aria-label="Workspace versions">
+        <table class="table table-sm" aria-label="نسخه‌های محیط کاری ابری">
           <thead>
             <tr>
-              <th>Version</th>
-              <th>Created</th>
-              <th>Actions</th>
+              <th>نسخه</th>
+              <th>تاریخ ایجاد</th>
+              <th>عملیات</th>
             </tr>
           </thead>
           <tbody>
@@ -52,7 +52,7 @@ export function WorkspaceLogs({
                   <td>${version.version}</td>
                   <td>${formatDate(version.date, timezone)}</td>
                   <td>
-                    <a href="${logsUrl}"> View detailed logs </a>
+                    <a href="${logsUrl}"> مشاهده گزارش‌های جزئی </a>
                   </td>
                 </tr>
               `;
@@ -61,7 +61,7 @@ export function WorkspaceLogs({
         </table>
       </div>
 
-      <h2>History</h2>
+      <h2>تاریخچه</h2>
       ${WorkspaceLogsTable({ workspaceLogs, timezone })}
     `,
   });
@@ -82,15 +82,15 @@ export function WorkspaceVersionLogs({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Workspace version logs',
+    pageTitle: 'گزارش‌های نسخه محیط کاری ابری',
     navContext: {
       page: 'workspace',
       type: 'plain',
     },
     content: html`
-      <h1 class="mb-4">Workspace version logs</h1>
+      <h1 class="mb-4">گزارش‌های نسخه محیط کاری ابری</h1>
 
-      <h2>Container logs</h2>
+      <h2>گزارش‌های کانتینر</h2>
       ${
         containerLogs !== null && containerLogsEnabled && !containerLogsExpired
           ? html`
@@ -109,15 +109,15 @@ export function WorkspaceVersionLogs({
                 <div>
                   ${
                     containerLogsEnabled
-                      ? 'The container logs for this workspace have expired and are no longer available.'
-                      : 'Container logs are not available for this workspace.'
+                      ? 'گزارش‌های کانتینر این محیط کاری ابری منقضی شده و دیگر در دسترس نیستند.'
+                      : 'گزارش‌های کانتینر برای این محیط کاری ابری در دسترس نیستند.'
                   }
                 </div>
               </div>
             `
       }
 
-      <h2>History</h2>
+      <h2>تاریخچه</h2>
       ${WorkspaceLogsTable({
         workspaceLogs,
         includeVersion: false,
@@ -138,13 +138,13 @@ function WorkspaceLogsTable({
 }) {
   return html`
     <div class="table-responsive">
-      <table class="table table-sm" aria-label="Workspace logs">
+      <table class="table table-sm" aria-label="گزارش‌های محیط کاری ابری">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Message</th>
-            <th>State</th>
-            ${includeVersion ? html`<th>Version</th>` : ''}
+            <th>تاریخ</th>
+            <th>پیام</th>
+            <th>وضعیت</th>
+            ${includeVersion ? html`<th>نسخه</th>` : ''}
           </tr>
         </thead>
 

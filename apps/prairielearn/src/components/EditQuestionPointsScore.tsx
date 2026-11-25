@@ -15,10 +15,10 @@ type EditableField = 'points' | 'auto_points' | 'manual_points' | 'score_perc';
 
 function findLabel(field: EditableField) {
   return {
-    points: 'points',
-    auto_points: 'auto points',
-    manual_points: 'manual points',
-    score_perc: 'score percentage',
+    points: 'امتیاز',
+    auto_points: 'امتیاز خودکار',
+    manual_points: 'امتیاز دستی',
+    score_perc: 'درصد نمره',
   }[field];
 }
 
@@ -50,7 +50,7 @@ export function EditQuestionPointsScoreButtonHtml({
     data-bs-container="body"
     data-bs-html="true"
     data-bs-placement="auto"
-    aria-label="Change question ${findLabel(field)}"
+    aria-label="تغییر ${findLabel(field)} سوال"
     data-bs-content="${escapeHtml(editForm)}"
     data-testid="edit-question-points-score-button-${field}"
   >
@@ -79,11 +79,11 @@ function EditQuestionPointsScoreFormHtml({
     return html`
       <div>
         <p>
-          This question is configured to use rubrics for grading. Changes must be performed in
-          <a href="${manualGradingUrl}">the manual grading page</a>.
+          این سوال به گونه‌ای پیکربندی شده است که از روبریک برای تصحیح استفاده کند. تغییرات باید در
+          <a href="${manualGradingUrl}">صفحه تصحیح دستی</a> اعمال شوند.
         </p>
         <div class="text-end">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">انصراف</button>
         </div>
       </div>
     `;
@@ -130,19 +130,19 @@ function EditQuestionPointsScoreFormHtml({
       </div>
       <p>
         <small>
-          This will also recalculate the total points and total score at 100% credit. This change
-          will be overwritten if the question is answered again by the student.
+          این کار مجموع امتیازات و نمره کل را با اعتبار ۱۰۰٪ مجدداً محاسبه می‌کند. در صورت پاسخ مجدد
+          دانشجو به سوال، این تغییر بازنویسی خواهد شد.
           ${
             instance_question.status !== 'unanswered'
-              ? html`You may also update the score
-                  <a href="${manualGradingUrl}">via the manual grading page</a>.`
+              ? html`همچنین می‌توانید نمره را
+                  <a href="${manualGradingUrl}">از طریق صفحه تصحیح دستی</a> به‌روزرسانی کنید.`
               : ''
           }
         </small>
       </p>
       <div class="text-end">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">Cancel</button>
-        <button type="submit" class="btn btn-primary">Change</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">انصراف</button>
+        <button type="submit" class="btn btn-primary">تغییر</button>
       </div>
     </form>
   `;
@@ -239,12 +239,12 @@ function EditQuestionPointsScoreForm({
     return (
       <div>
         <p>
-          This question is configured to use rubrics for grading. Changes must be performed in{' '}
-          <a href={manualGradingUrl}>the manual grading page</a>.
+          این سوال به گونه‌ای پیکربندی شده است که از روبریک برای تصحیح استفاده کند. تغییرات باید در{' '}
+          <a href={manualGradingUrl}>صفحه تصحیح دستی</a> اعمال شوند.
         </p>
         <div className="text-end">
           <Button variant="secondary" onClick={onCancel}>
-            Cancel
+            انصراف
           </Button>
         </div>
       </div>
@@ -257,7 +257,7 @@ function EditQuestionPointsScoreForm({
 
     const numValue = value === '' ? null : Number.parseFloat(value);
     if (value !== '' && Number.isNaN(numValue!)) {
-      setError('Please enter a valid number');
+      setError('لطفاً یک عدد معتبر وارد کنید');
       return;
     }
 
@@ -306,23 +306,23 @@ function EditQuestionPointsScoreForm({
       </div>
       <p>
         <small>
-          This will also recalculate the total points and total score at 100% credit. This change
-          will be overwritten if the question is answered again by the student.
+          این کار مجموع امتیازات و نمره کل را با اعتبار ۱۰۰٪ مجدداً محاسبه می‌کند. در صورت پاسخ مجدد
+          دانشجو به سوال، این تغییر بازنویسی خواهد شد.
           {instanceQuestion.status !== 'unanswered' && (
             <>
               {' '}
-              You may also update the score{' '}
-              <a href={manualGradingUrl}>via the manual grading page</a>.
+              همچنین می‌توانید نمره را{' '}
+              <a href={manualGradingUrl}>از طریق صفحه تصحیح دستی</a> به‌روزرسانی کنید.
             </>
           )}
         </small>
       </p>
       <div className="text-end">
         <Button disabled={mutation.isPending} variant="secondary" onClick={onCancel}>
-          Cancel
+          انصراف
         </Button>
         <Button disabled={mutation.isPending} type="submit" variant="primary">
-          {mutation.isPending ? 'Changing...' : 'Change'}
+          {mutation.isPending ? 'در حال تغییر...' : 'تغییر'}
         </Button>
       </div>
     </form>
@@ -401,7 +401,7 @@ export function EditQuestionPointsScoreButton({
   return (
     <OverlayTrigger
       popover={{
-        header: `Change question ${findLabel(field)}`,
+        header: `تغییر ${findLabel(field)} سوال`,
         body: (
           <EditQuestionPointsScoreForm
             assessmentQuestion={assessmentQuestion}
@@ -425,7 +425,7 @@ export function EditQuestionPointsScoreButton({
         ref={buttonRef}
         type="button"
         className="btn btn-xs btn-ghost text-muted"
-        aria-label={`Change question ${findLabel(field)}`}
+        aria-label={`تغییر ${findLabel(field)} سوال`}
       >
         <i className="bi bi-pencil-square" aria-hidden="true" />
       </button>

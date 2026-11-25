@@ -91,7 +91,7 @@ function StudentLabelsCard({
     <>
       <div className="mb-3">
         <div className="d-flex align-items-center justify-content-between mb-2">
-          <h2 className="h5 mb-0">Student labels</h2>
+          <h2 className="h5 mb-0">برچسب‌های دانشجویان</h2>
           {canEdit && (
             <button
               type="button"
@@ -99,21 +99,22 @@ function StudentLabelsCard({
               disabled={origHash === null || atStudentLabelLimit}
               onClick={() => editModal.showWithData({ type: 'add', origHash })}
             >
-              Add label
+              افزودن برچسب
             </button>
           )}
         </div>
         <small className="text-muted">
-          Organize students for filtering and analysis. Labels can be used to track sections,
-          accommodations, or any custom categorization. Labels are not visible to students.
+          دانشجویان را برای فیلتر کردن و تحلیل سازمان‌دهی کنید. از برچسب‌ها می‌توان برای دسته‌بندی
+          گروه‌ها، تسهیلات ویژه یا هر دسته‌بندی دلخواه دیگر استفاده کرد. برچسب‌ها برای دانشجویان
+          قابل مشاهده نیستند.
         </small>
       </div>
 
       {!canEdit && (
         <Alert variant="info">
           {isExampleCourse
-            ? "You can't edit student labels in the example course."
-            : 'You can view labels on this page, but creating, renaming, deleting, and assigning labels here requires both course editor and student data editor permissions.'}
+            ? 'در درس نمونه نمی‌توانید برچسب‌های دانشجویان را ویرایش کنید.'
+            : 'می‌توانید برچسب‌ها را در این صفحه مشاهده کنید، اما ایجاد، تغییر نام، حذف و تخصیص برچسب در اینجا نیازمند دسترسی ویرایشگر درس و ویرایشگر اطلاعات دانشجویان است.'}
         </Alert>
       )}
 
@@ -125,30 +126,30 @@ function StudentLabelsCard({
 
       {canEdit && origHash === null && (
         <div className="alert alert-info" role="alert">
-          You cannot edit student labels because the <code>infoCourseInstance.json</code> file does
-          not exist.
+          به دلیل وجود نداشتن فایل <code>infoCourseInstance.json</code> امکان ویرایش برچسب‌های
+          دانشجویان وجود ندارد.
         </div>
       )}
 
       {canEdit && atStudentLabelLimit && (
         <Alert variant="info">
-          This course instance has reached the limit of {MAX_STUDENT_LABELS_PER_COURSE_INSTANCE}{' '}
-          student labels. Existing labels can still be edited or deleted.
+          این ترم به سقف مجاز {MAX_STUDENT_LABELS_PER_COURSE_INSTANCE} برچسب دانشجو رسیده است.
+          برچسب‌های موجود همچنان قابل ویرایش یا حذف هستند.
         </Alert>
       )}
 
       {labels.length === 0 ? (
         <div className="text-center text-muted mb-3">
-          <p className="mb-0">No student labels configured.</p>
+          <p className="mb-0">هیچ برچسب دانشجویی تنظیم نشده است.</p>
         </div>
       ) : (
         <div className="table-responsive">
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Students</th>
-                {canEdit && <th style={{ width: '140px' }}>Actions</th>}
+                <th>نام</th>
+                <th>دانشجویان</th>
+                {canEdit && <th style={{ width: '140px' }}>عملیات</th>}
               </tr>
             </thead>
             <tbody>

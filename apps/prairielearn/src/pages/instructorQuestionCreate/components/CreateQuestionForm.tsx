@@ -526,7 +526,7 @@ export function CreateQuestionForm({
                   {/* Live region for search result count */}
                   <div className="visually-hidden" aria-live="polite" aria-atomic="true">
                     {searchQuery
-                      ? `${totalFilteredCount} template${totalFilteredCount !== 1 ? 's' : ''} found`
+                      ? `${totalFilteredCount} قالب یافت شد`
                       : ''}
                   </div>
 

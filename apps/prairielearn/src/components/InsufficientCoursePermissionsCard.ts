@@ -52,18 +52,19 @@ function InsufficientCoursePermissionsCard({
     </div>
     <div class="card-body">
       <p>
-        You don't have permission to view this page. It requires at least
-        &quot;${requiredPermissions}&quot; permissions for this course.
+        شما مجوز مشاهده این صفحه را ندارید. این صفحه حداقل به سطح دسترسی
+        «${requiredPermissions}» برای این درس نیاز دارد.
       </p>
       ${
         hasCoursePermissionOwn
           ? html`<p>
-              You can grant yourself the necessary permissions on the course's
-              <a href="${urlPrefix}/course_admin/staff">Staff page</a>.
+              می‌توانید دسترسی‌های لازم را در
+              <a href="${urlPrefix}/course_admin/staff">صفحه کادر آموزشی</a>
+              به خودتان اعطا کنید.
             </p>`
           : courseOwners.length > 0
             ? html`
-                <p>Contact one of the below course owners to request access.</p>
+                <p>برای درخواست دسترسی با یکی از مالکان درس زیر تماس بگیرید.</p>
                 <ul>
                   ${courseOwners.map(
                     (owner) => html` <li>${owner.uid} ${owner.name ? `(${owner.name})` : ''}</li> `,

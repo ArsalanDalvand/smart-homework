@@ -51,44 +51,44 @@ export function InstructorGradingJob({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h1>Grading Job ${gradingJobRow.grading_job.id}</h1>
+          <h1>گزارش تصحیح خودکار ${gradingJobRow.grading_job.id}</h1>
         </div>
         <div class="table-responsive">
           <table
             class="table table-sm table-hover two-column-description"
-            aria-label="Grading job details"
+            aria-label="جزئیات گزارش تصحیح خودکار"
           >
             <tbody>
               <tr>
-                <th>Question</th>
+                <th>سوال</th>
                 <td><a href="${variantLink}">${gradingJobRow.question_qid}</a></td>
               </tr>
               <tr>
-                <th>User</th>
+                <th>کاربر</th>
                 <td>${gradingJobRow.user_uid}</td>
               </tr>
               <tr>
-                <th>Requested at</th>
+                <th>زمان درخواست</th>
                 <td>${formatGradingJobDate(gradingJobRow.grading_job.grading_requested_at)}</td>
               </tr>
               <tr>
-                <th>Submitted at</th>
+                <th>زمان ارسال</th>
                 <td>${formatGradingJobDate(gradingJobRow.grading_job.grading_submitted_at)}</td>
               </tr>
               <tr>
-                <th>Received at</th>
+                <th>زمان دریافت</th>
                 <td>${formatGradingJobDate(gradingJobRow.grading_job.grading_received_at)}</td>
               </tr>
               <tr>
-                <th>Started at</th>
+                <th>زمان شروع</th>
                 <td>${formatGradingJobDate(gradingJobRow.grading_job.grading_started_at)}</td>
               </tr>
               <tr>
-                <th>Finished at</th>
+                <th>زمان پایان</th>
                 <td>${formatGradingJobDate(gradingJobRow.grading_job.grading_finished_at)}</td>
               </tr>
               <tr>
-                <th>Graded at</th>
+                <th>زمان نمره‌دهی</th>
                 <td>${formatGradingJobDate(gradingJobRow.grading_job.graded_at)}</td>
               </tr>
             </tbody>
@@ -100,13 +100,13 @@ export function InstructorGradingJob({
         gradingJobRow.grading_job.s3_bucket && gradingJobRow.grading_job.s3_root_key
           ? html`
               <div class="card mb-4">
-                <div class="card-header bg-primary text-white">Downloads</div>
+                <div class="card-header bg-primary text-white">فایل‌های قابل دانلود</div>
                 <div class="table-responsive">
-                  <table class="table table-sm table-hover" aria-label="Grading job downloads">
+                  <table class="table table-sm table-hover" aria-label="فایل‌های قابل دانلود تصحیح خودکار">
                     <thead>
                       <tr>
-                        <th>File</th>
-                        <th>Description</th>
+                        <th>فایل</th>
+                        <th>توضیحات</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -123,9 +123,8 @@ export function InstructorGradingJob({
                                   </a>
                                 </td>
                                 <td>
-                                  Contains all files necessary for grading; this is what is mounted
-                                  to
-                                  <code>/grade</code> when your job is run.
+                                  شامل تمام فایل‌های مورد نیاز برای تصحیح؛ این فایل هنگام اجرا در
+                                  مسیر <code>/grade</code> مانت می‌شود.
                                 </td>
                               </tr>
                               <tr>
@@ -138,8 +137,7 @@ export function InstructorGradingJob({
                                   >
                                 </td>
                                 <td>
-                                  A snapshot of <code>/grade</code> after your job has been
-                                  executed.
+                                  تصویری از وضعیت مسیر <code>/grade</code> پس از اجرای فرآیند تصحیح.
                                 </td>
                               </tr>`
                           : ''
@@ -154,9 +152,8 @@ export function InstructorGradingJob({
                           >
                         </td>
                         <td>
-                          Contains the PrairieLearn-generated results, which includes the contents
-                          of your
-                          <code>results.json</code> as well as some PrairieLearn metadata.
+                          شامل نتایج تولیدشده توسط سامانه است که محتوای فایل
+                          <code>results.json</code> و برخی فراداده‌های سامانه را در بر می‌گیرد.
                         </td>
                       </tr>
                       <tr>
@@ -169,9 +166,9 @@ export function InstructorGradingJob({
                           >
                         </td>
                         <td>
-                          Contains the raw output from stdout/stderr for your job. Lines beginning
-                          with <code>container&gt;</code> are from your container; the rest are
-                          diagnostic logs from PrairieLearn.
+                          شامل خروجی خام <code>stdout</code>/<code>stderr</code> برای این تصحیح است.
+                          خطوطی که با <code>container&gt;</code> آغاز می‌شوند مربوط به کانتینر شما
+                          هستند و بقیه خطوط گزارش‌های عیب‌یابی سامانه می‌باشند.
                         </td>
                       </tr>
                     </tbody>
@@ -183,7 +180,7 @@ export function InstructorGradingJob({
       }
 
       <div class="card mb-4">
-        <div class="card-header bg-primary text-white">Job Output</div>
+        <div class="card-header bg-primary text-white">خروجی تصحیح</div>
         <div class="card-body">
           ${
             gradingJobRow.grading_job.s3_bucket && gradingJobRow.grading_job.s3_root_key
@@ -197,7 +194,7 @@ export function InstructorGradingJob({
                   ></pre>
                   <div id="job-output-loading" class="w-100 text-center">
                     <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i>
-                    <span class="visually-hidden">Loading grading job output…</span>
+                    <span class="visually-hidden">در حال بارگذاری خروجی تصحیح…</span>
                   </div>
                 `
               : gradingJobRow.grading_job.output
@@ -207,7 +204,7 @@ ${gradingJobRow.grading_job.output}</pre>
                   `
                 : html`
                     <pre class="bg-dark text-white rounded p-3 mb-0">
-No output was captured for this grading job.</pre>
+هیچ خروجی‌ای برای این تصحیح ثبت نشده است.</pre>
                   `
           }
         </div>

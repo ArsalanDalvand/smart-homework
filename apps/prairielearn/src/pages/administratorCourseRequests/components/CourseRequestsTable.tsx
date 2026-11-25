@@ -128,12 +128,12 @@ function RequesterContact({ request }: { request: CourseRequestRow }) {
       {requesterName && <div>{requesterName}</div>}
       {request.contact_email ? (
         request.contact_email === request.user_uid ? (
-          <span className="text-muted">Contact email is the account UID</span>
+          <span className="text-muted">ایمیل تماس همان شناسه کاربری (UID) است</span>
         ) : (
           <span>{request.contact_email}</span>
         )
       ) : (
-        <span className="text-muted fst-italic">Contact email unavailable</span>
+        <span className="text-muted fst-italic">ایمیل تماس موجود نیست</span>
       )}
     </>
   );
@@ -172,7 +172,7 @@ const CourseRequestTableRow = memo(
             {row.short_name}: {row.title}
           </td>
           <td className="align-middle">
-            <EmptyState value={row.institution} label="No institution" />
+            <EmptyState value={row.institution} label="بدون دانشکده/موسسه" />
           </td>
           <td className="align-middle">
             <RequesterContact request={row} />
@@ -181,10 +181,10 @@ const CourseRequestTableRow = memo(
             <AccountIdentity request={row} />
           </td>
           <td className="align-middle">
-            <EmptyState value={row.github_user} label="No GitHub user" />
+            <EmptyState value={row.github_user} label="بدون کاربر گیت‌هاب" />
           </td>
           <td className="align-middle">
-            <EmptyState value={row.referral_source} label="No referral source" />
+            <EmptyState value={row.referral_source} label="بدون منبع آشنایی" />
           </td>
           <td className="align-middle">
             <CourseRequestStatusIcon status={row.approved_status} />
@@ -192,7 +192,7 @@ const CourseRequestTableRow = memo(
           {showAll && (
             <td className="align-middle">
               {row.approved_status !== 'pending' &&
-                (row.approved_by_name ?? 'Automatically Approved')}
+                (row.approved_by_name ?? 'تایید خودکار')}
             </td>
           )}
           <td className="align-middle py-1">
@@ -202,7 +202,7 @@ const CourseRequestTableRow = memo(
                   trigger="click"
                   placement="auto"
                   popover={{
-                    header: 'Deny course request',
+                    header: 'رد درخواست ایجاد درس',
                     body: (
                       <CourseRequestDenyForm
                         request={row}
@@ -264,7 +264,7 @@ const CourseRequestTableRow = memo(
               {jobsOpen && (
                 <table
                   className="table table-sm table-active mb-0"
-                  aria-label="Course request jobs"
+                  aria-label="جاب‌های درخواست درس"
                 >
                   <thead>
                     <tr>
@@ -450,19 +450,19 @@ function CourseRequestApproveModalContent({
         onSubmit={handleSubmit(onSubmit)}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Approve course request</Modal.Title>
+          <Modal.Title>تایید درخواست ایجاد درس</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="card mb-3">
             <div className="card-header d-flex align-items-center justify-content-between py-2">
-              <strong>Requesting instructor</strong>
+              <strong>استاد متقاضی</strong>
               <OverlayTrigger
                 trigger={['hover', 'focus']}
                 placement="bottom"
                 tooltip={{
                   body: aiSecretsConfigured
-                    ? 'Uses AI web search to verify whether the instructor appears in faculty directories or professional profiles at their stated institution.'
-                    : 'AI features require the corresponding OpenAI key to be configured.',
+                    ? 'از جستجوی وب با هوش مصنوعی برای بررسی حضور استاد در فهرست اعضای هیئت علمی یا پروفایل‌های حرفه‌ای موسسه اعلام‌شده استفاده می‌کند.'
+                    : 'قابلیت‌های هوش مصنوعی نیازمند پیکربندی کلید OpenAI هستند.',
                   props: { id: 'check-instructor-legitimacy-tooltip' },
                 }}
               >
@@ -476,11 +476,11 @@ function CourseRequestApproveModalContent({
                   >
                     {legitimacyQuery.isFetching ? (
                       <>
-                        <i className="fa fa-spinner fa-spin" aria-hidden="true" /> Checking...
+                        <i className="fa fa-spinner fa-spin" aria-hidden="true" /> در حال بررسی...
                       </>
                     ) : (
                       <>
-                        <i className="fa fa-search" aria-hidden="true" /> Check legitimacy
+                        <i className="fa fa-search" aria-hidden="true" /> بررسی اعتبار
                       </>
                     )}
                   </button>
@@ -490,21 +490,21 @@ function CourseRequestApproveModalContent({
             <div className="card-body py-2">
               <div className="row g-2 small">
                 <div className="col-12">
-                  <strong>Requester / contact email:</strong> <RequesterContact request={request} />
+                  <strong>متقاضی / ایمیل تماس:</strong> <RequesterContact request={request} />
                 </div>
                 <div className="col-12">
-                  <strong>PrairieLearn account (UID):</strong> <AccountIdentity request={request} />
+                  <strong>حساب کاربری (UID):</strong> <AccountIdentity request={request} />
                 </div>
                 <div className="col-12">
-                  <strong>Institution:</strong>{' '}
+                  <strong>دانشکده / موسسه:</strong>{' '}
                   {request.institution ? (
                     <span>{request.institution}</span>
                   ) : (
-                    <span className="fst-italic text-muted">Not provided</span>
+                    <span className="fst-italic text-muted">ارائه نشده</span>
                   )}
                 </div>
                 <div className="col-12">
-                  <strong>GitHub:</strong>{' '}
+                  <strong>گیت‌هاب:</strong>{' '}
                   {request.github_user ? (
                     <a
                       href={`https://github.com/${request.github_user}`}
@@ -514,14 +514,14 @@ function CourseRequestApproveModalContent({
                       {request.github_user}
                     </a>
                   ) : (
-                    <span className="fst-italic text-muted">Not provided</span>
+                    <span className="fst-italic text-muted">ارائه نشده</span>
                   )}
                 </div>
               </div>
               <div aria-live="polite" aria-atomic="true">
                 {legitimacyQuery.isError && (
                   <div className="mt-2 text-danger small">
-                    Failed to check legitimacy. Try again.
+                    بررسی اعتبار ناموفق بود. دوباره تلاش کنید.
                   </div>
                 )}
                 {legitimacyQuery.data && (
@@ -539,9 +539,9 @@ function CourseRequestApproveModalContent({
                         })}
                       >
                         {legitimacyQuery.data.legitimate
-                          ? 'Likely legitimate'
-                          : 'Likely not legitimate'}{' '}
-                        &middot; {legitimacyQuery.data.confidence} confidence
+                          ? 'احتمالاً معتبر'
+                          : 'احتمالاً نامعتبر'}{' '}
+                        &middot; اطمینان: {legitimacyQuery.data.confidence}
                       </span>
                     </div>
                     <small className="text-muted">
@@ -549,7 +549,7 @@ function CourseRequestApproveModalContent({
                     </small>
                     {legitimacyQuery.data.sources.length > 0 && (
                       <div className="mt-1">
-                        <span className="small text-muted">Sources</span>
+                        <span className="small text-muted">منابع</span>
                         <div className="d-flex flex-wrap gap-1">
                           {Array.from(
                             new Map(legitimacyQuery.data.sources.map((s) => [s.url, s])).values(),
@@ -587,7 +587,7 @@ function CourseRequestApproveModalContent({
           />
           <div className="mb-3">
             <label className="form-label" htmlFor="courseRequestAddInputGithubCourseOwner">
-              GitHub organization
+              سازمان گیت‌هاب (GitHub Organization)
             </label>
             <input
               type="text"
@@ -602,8 +602,8 @@ function CourseRequestApproveModalContent({
               }
               aria-describedby="courseRequestAddInputGithubCourseOwnerHelp"
               {...register('github_course_owner', {
-                required: 'GitHub organization is required',
-                validate: (value) => value.trim().length > 0 || 'GitHub organization is required',
+                required: 'نام سازمان گیت‌هاب الزامی است',
+                validate: (value) => value.trim().length > 0 || 'نام سازمان گیت‌هاب الزامی است',
               })}
             />
             {errors.github_course_owner && (
@@ -612,13 +612,12 @@ function CourseRequestApproveModalContent({
               </div>
             )}
             <small id="courseRequestAddInputGithubCourseOwnerHelp" className="form-text text-muted">
-              The repository will be created in this GitHub organization. Pre-filled from the
-              selected institution's default; can be overridden for this course.
+              مخزن در این سازمان گیت‌هاب ایجاد خواهد شد. مقدار پیش‌فرض از تنظیمات موسسه انتخاب‌شده پر شده است و برای این درس قابل تغییر است.
             </small>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="courseRequestAddInputGithubUser">
-              GitHub username
+              نام کاربری گیت‌هاب
             </label>
             <input
               type="text"
@@ -646,14 +645,14 @@ function CourseRequestApproveModalContent({
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={onCancel}>
-            Cancel
+            انصراف
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={isSubmitting || mutation.isPending || prefixState.status === 'loading'}
           >
-            Create course
+            ایجاد درس
           </button>
         </Modal.Footer>
       </form>
@@ -674,12 +673,12 @@ function MutationError({
     return (
       <Alert variant="danger" className="mb-3" dismissible onClose={onDismiss}>
         <Alert.Heading as="h6" className="mb-1">
-          <i className="fa fa-times-circle" aria-hidden="true" /> Conflicts detected
+          <i className="fa fa-times-circle" aria-hidden="true" /> تداخل شناسایی شد
         </Alert.Heading>
         <ul className="mb-0 small">
           {appError.repoCourse && (
             <li>
-              A course with this repository name already exists:{' '}
+              درسی با این نام مخزن از قبل وجود دارد:{' '}
               <a href={`/pl/course/${appError.repoCourse.id}`} target="_blank" rel="noreferrer">
                 {appError.repoCourse.short_name}: {appError.repoCourse.title}
               </a>
@@ -687,16 +686,16 @@ function MutationError({
           )}
           {appError.githubRepoUrl && (
             <li>
-              A GitHub repository with this name already exists.{' '}
+              یک مخزن گیت‌هاب با این نام از قبل وجود دارد.{' '}
               <a href={appError.githubRepoUrl} target="_blank" rel="noreferrer">
-                Open repo
+                مشاهده مخزن
               </a>
               .
             </li>
           )}
           {appError.pathCourse && (
             <li>
-              A course with this path already exists:{' '}
+              درسی با این مسیر از قبل وجود دارد:{' '}
               <a href={`/pl/course/${appError.pathCourse.id}`} target="_blank" rel="noreferrer">
                 {appError.pathCourse.short_name}: {appError.pathCourse.title}
               </a>
@@ -734,7 +733,7 @@ function CourseRequestDenyForm({
       )}
       <div className="d-flex justify-content-end gap-2">
         <button type="button" className="btn btn-secondary" onClick={onCancel}>
-          Cancel
+          انصراف
         </button>
         <button
           type="button"
@@ -747,7 +746,7 @@ function CourseRequestDenyForm({
             )
           }
         >
-          Deny
+          رد درخواست
         </button>
       </div>
     </>
@@ -759,31 +758,31 @@ function CourseRequestStatusIcon({ status }: { status: CourseRequestRow['approve
     case 'pending':
       return (
         <span className="badge text-bg-secondary">
-          <i className="fa fa-clock" aria-hidden="true" /> Pending
+          <i className="fa fa-clock" aria-hidden="true" /> در انتظار بررسی
         </span>
       );
     case 'creating':
       return (
         <span className="badge text-bg-info">
-          <i className="fa fa-sync" aria-hidden="true" /> Job in progress
+          <i className="fa fa-sync" aria-hidden="true" /> در حال انجام
         </span>
       );
     case 'failed':
       return (
         <span className="badge text-bg-danger">
-          <i className="fa fa-times" aria-hidden="true" /> Job failed
+          <i className="fa fa-times" aria-hidden="true" /> عملیات ناموفق
         </span>
       );
     case 'approved':
       return (
         <span className="badge text-bg-success">
-          <i className="fa fa-check" aria-hidden="true" /> Approved
+          <i className="fa fa-check" aria-hidden="true" /> تایید شده
         </span>
       );
     case 'denied':
       return (
         <span className="badge text-bg-danger">
-          <i className="fa fa-times" aria-hidden="true" /> Denied
+          <i className="fa fa-times" aria-hidden="true" /> رد شده
         </span>
       );
   }
@@ -819,26 +818,26 @@ function CourseRequestEditNoteForm({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="d-flex gap-2 align-items-center py-2 px-2">
         <label className="visually-hidden" htmlFor={`course-request-note-${request.id}`}>
-          Note for course request {request.short_name}
+          یادداشت برای درخواست درس {request.short_name}
         </label>
         <textarea
           className="form-control flex-grow-1"
           id={`course-request-note-${request.id}`}
           rows={1}
           maxLength={10000}
-          placeholder="Add a note about this course request..."
+          placeholder="یادداشتی درباره این درخواست درس بنویسید..."
           defaultValue={request.note ?? ''}
           {...register('note')}
         />
         <button type="button" className="btn btn-secondary" onClick={onCancel}>
-          Close
+          بستن
         </button>
         <button
           type="submit"
           className="btn btn-primary text-nowrap"
           disabled={!isDirty || isSubmitting || mutation.isPending}
         >
-          <i className="fa fa-save" aria-hidden="true" /> Save note
+          <i className="fa fa-save" aria-hidden="true" /> ذخیره یادداشت
         </button>
       </div>
       {appError && (

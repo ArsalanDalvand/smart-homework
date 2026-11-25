@@ -95,7 +95,7 @@ export function AdministratorQuery({
             <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
             <button type="submit" class="btn btn-primary">
               <i class="fas fa-play"></i>
-              Run query ${query_run ? 'again' : null}
+              ${query_run ? 'اجرای مجدد پرس‌وجو' : 'اجرای پرس‌وجو'}
             </button>
           </form>
         </div>
@@ -104,14 +104,13 @@ export function AdministratorQuery({
           query_run
             ? html`
                 <div class="card-body d-flex align-items-center p-2 bg-secondary text-white">
-                  Query ran at: ${formatDate(query_run.date, 'UTC')}
+                  زمان اجرای پرس‌وجو: <span dir="ltr">${formatDate(query_run.date, 'UTC')}</span>
                   ${
                     query_run.result != null
                       ? html`
                           <div class="ms-auto">
                             <span class="me-2" data-testid="row-count">
-                              ${query_run.result.rows?.length ?? 0}
-                              ${query_run.result.rows?.length === 1 ? 'row' : 'rows'}
+                              ${query_run.result.rows?.length ?? 0} ردیف
                             </span>
                             <a
                               href="${`?query_run_id=${query_run_id}&format=json`}"
@@ -144,7 +143,7 @@ export function AdministratorQuery({
                 <div class="table-responsive">
                   <table
                     class="table table-sm table-hover table-striped tablesorter"
-                    aria-label="Query results"
+                    aria-label="نتایج پرس‌وجو"
                     data-testid="results-table"
                   >
                     <thead>
@@ -175,19 +174,19 @@ export function AdministratorQuery({
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          Recent query runs
+          اجراهای اخیر پرس‌وجو
         </div>
         <div class="table-responsive">
           ${
             recent_query_runs.length > 0
               ? html`
-                  <table class="table table-sm" aria-label="Recent query runs">
+                  <table class="table table-sm" aria-label="اجراهای اخیر پرس‌وجو">
                     <thead>
                       <tr>
-                        <th>Date</th>
-                        <th>Params</th>
-                        <th>User name</th>
-                        <th>User UID</th>
+                        <th>تاریخ</th>
+                        <th>پارامترها</th>
+                        <th>نام کاربر</th>
+                        <th>شناسه کاربر (UID)</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -212,7 +211,7 @@ export function AdministratorQuery({
                 `
               : html`
                   <div class="card-body">
-                    <div class="text-center text-muted">No recent runs found</div>
+                    <div class="text-center text-muted">هیچ اجرای اخیری یافت نشد</div>
                   </div>
                 `
           }

@@ -86,24 +86,23 @@ export function CopyCourseInstanceModal({
     <>
       <Overlay placement="bottom" show={!hasSharingName && show} target={buttonRef}>
         <Tooltip show={!hasSharingName && show}>
-          This course has not set a sharing name. You cannot copy this course instance to your
-          course.
+          برای این درس نام اشتراک‌گذاری (Sharing Name) تنظیم نشده است. امکان کپی کردن این دوره به درس شما وجود ندارد.
         </Tooltip>
       </Overlay>
       <button
         ref={buttonRef}
         className="btn btn-sm btn-outline-light"
         type="button"
-        aria-label="Copy course instance"
+        aria-label="کپی کردن دوره"
         onClick={() => setShow(!show)}
       >
         <i className="fa fa-clone" />
-        <span className="d-none d-sm-inline">Copy course instance</span>
+        <span className="d-none d-sm-inline">کپی کردن دوره</span>
       </button>
 
       <Modal show={show && hasSharingName} size="lg" onHide={() => setShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Copy course instance</Modal.Title>
+          <Modal.Title>کپی کردن دوره</Modal.Title>
         </Modal.Header>
         {canCopy ? (
           <form
@@ -117,13 +116,12 @@ export function CopyCourseInstanceModal({
 
             <Modal.Body>
               <p>
-                This course instance can be copied to any course for which you have editor
-                permissions. Select one of your courses to copy this course instance to.
+                این دوره می‌تواند به هر درسی که در آن دسترسی ویرایش دارید کپی شود. یکی از درس‌های خود را برای کپی کردن این دوره انتخاب کنید.
               </p>
               <select
                 className="form-select"
                 name="to_course_id"
-                aria-label="Destination course"
+                aria-label="درس مقصد"
                 value={selectedCourseId}
                 required
                 onChange={(e) => setSelectedCourseId(e.currentTarget.value)}
@@ -135,24 +133,20 @@ export function CopyCourseInstanceModal({
                 ))}
               </select>
               <hr />
-              If you choose to copy this course instance to your course:
+              در صورت کپی کردن این دوره به درس شما:
               <ul>
                 <li>
-                  <strong>{questionsToCopy}</strong>{' '}
-                  {questionsToCopy === 1 ? 'question' : 'questions'} will be copied to your course.
+                  <strong>{questionsToCopy}</strong> سوال به درس شما کپی خواهد شد.
                 </li>
                 <li>
-                  <strong>{questionsToLink}</strong>{' '}
-                  {questionsToLink === 1 ? 'question' : 'questions'} will be linked from{' '}
-                  {course.short_name} for use in your course
+                  <strong>{questionsToLink}</strong> سوال از درس {course.short_name} برای استفاده در درس شما پیوند (لینک) داده خواهد شد.
                 </li>
               </ul>
               <hr />
               <FormProvider {...methods}>
-                <h3 className="h5">Publishing settings</h3>
+                <h3 className="h5">تنظیمات انتشار</h3>
                 <p className="text-muted small">
-                  Choose the initial publishing status for your new course instance. This can be
-                  changed later.
+                  وضعیت انتشار اولیه دوره جدید خود را انتخاب کنید. این تنظیم بعداً قابل تغییر است.
                 </p>
                 <CourseInstancePublishingForm
                   displayTimezone={courseInstance.display_timezone}
@@ -165,18 +159,17 @@ export function CopyCourseInstanceModal({
 
                 <hr />
 
-                <h3 className="h5">Self-enrollment settings</h3>
+                <h3 className="h5">تنظیمات ثبت‌نام خودکار</h3>
                 <p className="text-muted small">
-                  Configure self-enrollment for your new course instance. This can be changed later.
+                  تنظیمات ثبت‌نام خودکار (Self-enrollment) را برای دوره جدید خود پیکربندی کنید. این مورد بعداً قابل تغییر است.
                 </p>
                 <CourseInstanceSelfEnrollmentForm formId="copy-course-instance" />
 
                 <hr />
 
-                <h3 className="h5">Course instance permissions</h3>
+                <h3 className="h5">دسترسی‌های دوره</h3>
                 <p className="text-muted small">
-                  Choose your initial permissions for this course instance. This can be changed
-                  later.
+                  دسترسی‌های اولیه خود را برای این دوره انتخاب کنید. این مورد بعداً قابل تغییر است.
                 </p>
                 <CourseInstancePermissionsForm formId="copy-course-instance" />
               </FormProvider>
@@ -184,7 +177,7 @@ export function CopyCourseInstanceModal({
 
             <Modal.Footer>
               <button type="button" className="btn btn-secondary" onClick={() => setShow(false)}>
-                Close
+                بستن
               </button>
               <button
                 type="submit"
@@ -192,7 +185,7 @@ export function CopyCourseInstanceModal({
                 value="copy_course_instance"
                 className="btn btn-primary"
               >
-                Copy course instance
+                کپی کردن دوره
               </button>
             </Modal.Footer>
           </form>
@@ -200,14 +193,13 @@ export function CopyCourseInstanceModal({
           <>
             <Modal.Body>
               <p>
-                You can't copy this course instance because you don't have editor permissions in any
-                courses. <a href="/pl/request_course">Request a course</a> if you don't have one
-                already. Otherwise, contact the owner of the course you expected to have access to.
+                به دلیل نداشتن دسترسی ویرایش در هیچ درسی، امکان کپی کردن این دوره را ندارید. اگر هنوز درسی ندارید،{' '}
+                <a href="/pl/request_course">درخواست ایجاد درس</a> ثبت کنید؛ در غیر این صورت با مالک درسی که انتظار داشتید به آن دسترسی داشته باشید تماس بگیرید.
               </p>
             </Modal.Body>
             <Modal.Footer>
               <button type="button" className="btn btn-secondary" onClick={() => setShow(false)}>
-                Close
+                بستن
               </button>
             </Modal.Footer>
           </>

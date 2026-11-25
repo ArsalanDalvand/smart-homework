@@ -114,7 +114,7 @@ router.post(
   '/test',
   typedAsyncHandler<'instructor-question'>(async (req, res) => {
     if (res.locals.question.course_id !== res.locals.course.id) {
-      throw new error.HttpStatusError(403, 'Access denied');
+      throw new error.HttpStatusError(403, 'دسترسی غیرمجاز');
     }
     // We use a separate `test/` POST route so that we can always use the
     // route to distinguish between pages that need to execute course code
@@ -122,7 +122,7 @@ router.post(
     // editing (here the plain '/' POST handler).
     if (req.body.__action === 'test_once') {
       if (!res.locals.authz_data.has_course_permission_view) {
-        throw new error.HttpStatusError(403, 'Access denied (must be a course Viewer)');
+        throw new error.HttpStatusError(403, 'دسترسی غیرمجاز (نیازمند دسترسی مشاهده‌گر درس)');
       }
       const jobSequenceId = await startTestQuestion({
         count: 1,
@@ -139,7 +139,7 @@ router.post(
       res.redirect(res.locals.urlPrefix + '/jobSequence/' + jobSequenceId);
     } else if (req.body.__action === 'test_100') {
       if (!res.locals.authz_data.has_course_permission_view) {
-        throw new error.HttpStatusError(403, 'Access denied (must be a course Viewer)');
+        throw new error.HttpStatusError(403, 'دسترسی غیرمجاز (نیازمند دسترسی مشاهده‌گر درس)');
       }
       if (res.locals.question.grading_method !== 'External') {
         const jobSequenceId = await startTestQuestion({
@@ -156,7 +156,7 @@ router.post(
         });
         res.redirect(res.locals.urlPrefix + '/jobSequence/' + jobSequenceId);
       } else {
-        throw new Error('Not supported for externally-graded questions');
+        throw new Error('برای سوال‌های با تصحیح خارجی پشتیبانی نمی‌شود');
       }
     } else {
       throw new error.HttpStatusError(400, `unknown __action: ${req.body.__action}`);
@@ -168,7 +168,7 @@ router.post(
   '/',
   typedAsyncHandler<'instructor-question'>(async (req, res) => {
     if (res.locals.question.course_id !== res.locals.course.id) {
-      throw new error.HttpStatusError(403, 'Access denied');
+      throw new error.HttpStatusError(403, 'دسترسی غیرمجاز');
     }
     if (req.body.__action === 'update_question') {
       const infoPath = path.join(
@@ -178,7 +178,7 @@ router.post(
         'info.json',
       );
       if (!(await fs.pathExists(infoPath))) {
-        throw new error.HttpStatusError(400, 'Question info file does not exist');
+        throw new error.HttpStatusError(400, 'فایل اطلاعات سوال (info.json) وجود ندارد');
       }
 
       // The preferences editor is a hydrated React component embedded in an
@@ -224,9 +224,9 @@ router.post(
           preferences: z
             .array(
               z.object({
-                name: z.string().min(1, 'Preference name is required'),
+                name: z.string().min(1, 'نام متغیر اختصاصی الزامی است'),
                 type: z.enum(['string', 'number', 'boolean']),
-                default: z.string().min(1, 'Default value is required'),
+                default: z.string().min(1, 'مقدار پیش‌فرض الزامی است'),
                 enum: z
                   .string()
                   .optional()
@@ -242,7 +242,7 @@ router.post(
                     }
                     ctx.addIssue({
                       code: 'custom',
-                      message: 'Invalid enum format',
+                      message: 'فرمت مقادیر مجاز نامعتبر است',
                     });
                     return z.NEVER;
                   }),
@@ -254,7 +254,7 @@ router.post(
                 if (names.has(pref.name)) {
                   ctx.addIssue({
                     code: 'custom',
-                    message: `Duplicate preference name: "${pref.name}"`,
+                    message: `نام متغیر اختصاصی تکراری است: «${pref.name}»`,
                     path: [i, 'name'],
                   });
                 }
@@ -278,7 +278,7 @@ router.post(
       if (!shortNameValidation.valid) {
         throw new error.HttpStatusError(
           400,
-          `Invalid QID: ${shortNameValidation.lowercaseMessage}`,
+          `شناسه سوال (QID) نامعتبر است: ${shortNameValidation.lowercaseMessage}`,
         );
       }
 
@@ -286,7 +286,7 @@ router.post(
         res.locals.question.type !== 'Freeform' &&
         (body.share_publicly || body.share_source_publicly || body.sharing_sets)
       ) {
-        throw new error.HttpStatusError(400, 'Sharing is only supported for v3 questions.');
+        throw new error.HttpStatusError(400, 'اشتراک‌گذاری تنها برای سوال‌های نسخه v3 پشتیبانی می‌شود.');
       }
 
       const sharingEnabled =
@@ -310,7 +310,7 @@ router.post(
         ) {
           throw new error.HttpStatusError(
             400,
-            'This question is used by another course, so it cannot be un-shared publicly.',
+            'این سوال توسط درس دیگری در حال استفاده است، بنابراین امکان لغو اشتراک‌گذاری عمومی آن وجود ندارد.',
           );
         }
 
@@ -321,7 +321,7 @@ router.post(
         ) {
           throw new error.HttpStatusError(
             400,
-            'This question is used in a publicly shared assessment, so it must remain publicly shared or have its source publicly shared for copying.',
+            'این سوال در یک آزمون با اشتراک‌گذاری عمومی استفاده شده است، بنابراین باید به صورت عمومی به اشتراک گذاشته شود یا سورس‌کد آن برای کپی کردن به صورت عمومی در دسترس بماند.',
           );
         }
 
@@ -330,7 +330,7 @@ router.post(
 
         for (const name of requestedSetNames) {
           if (!validSetNames.has(name)) {
-            throw new error.HttpStatusError(400, `Unknown sharing set: "${name}"`);
+            throw new error.HttpStatusError(400, `مجموعه اشتراک‌گذاری ناشناخته است: «${name}»`);
           }
         }
         resolvedSharingSets = [...requestedSetNames];
@@ -546,7 +546,7 @@ router.post(
         } catch {
           throw new error.HttpStatusError(
             400,
-            `Invalid QID (could not be normalized): ${req.body.qid}`,
+            `شناسه سوال (QID) نامعتبر است: ${req.body.qid}`,
           );
         }
       });
@@ -582,7 +582,7 @@ router.post(
         return res.redirect(res.locals.urlPrefix + '/edit_error/' + serverJob.jobSequenceId);
       }
 
-      flash('success', 'Question settings updated successfully');
+      flash('success', 'تنظیمات سوال با موفقیت به‌روزرسانی شد.');
       return res.redirect(req.originalUrl);
     } else if (req.body.__action === 'copy_question') {
       if (idsEqual(req.body.to_course_id, res.locals.course.id)) {
@@ -608,7 +608,7 @@ router.post(
 
         flash(
           'success',
-          'Question copied successfully. You are now viewing your copy of the question.',
+          'سوال با موفقیت کپی شد. اکنون در حال مشاهده نسخه کپی‌شده خود هستید.',
         );
         res.redirect(res.locals.urlPrefix + '/question/' + question.id + '/settings');
       } else {
@@ -627,7 +627,7 @@ router.post(
       if (usedInOtherCourses.length > 0) {
         flash(
           'error',
-          'This question is used by another course and cannot be deleted. Unshare it or remove it from those assessments first.',
+          'این سوال توسط درس دیگری استفاده می‌شود و قابل حذف نیست. ابتدا اشتراک‌گذاری آن را لغو کنید یا آن را از آزمون‌های مربوطه حذف نمایید.',
         );
         return res.redirect(req.originalUrl);
       }
@@ -666,7 +666,7 @@ router.get(
     const userId = res.locals.user.id;
 
     if (question.course_id !== course.id) {
-      throw new error.HttpStatusError(403, 'Access denied');
+      throw new error.HttpStatusError(403, 'دسترسی غیرمجاز');
     }
     // Construct the path of the question test route. We'll do this based on
     // `originalUrl` so that this router doesn't have to be aware of where it's

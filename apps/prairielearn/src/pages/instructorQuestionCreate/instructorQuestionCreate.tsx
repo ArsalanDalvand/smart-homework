@@ -32,7 +32,7 @@ router.get(
     });
 
     if (course.example_course || !(await fs.pathExists(course.path))) {
-      throw new error.HttpStatusError(403, 'Cannot create questions in this course.');
+      throw new error.HttpStatusError(403, 'امکان ایجاد سوال در این درس وجود ندارد.');
     }
 
     const courseInstances = await selectCourseInstancesWithStaffAccess({
@@ -86,28 +86,28 @@ router.post(
       if (res.locals.course.example_course) {
         throw new error.HttpStatusError(
           403,
-          'Access denied. Cannot make changes to example course.',
+          'دسترسی غیرمجاز. امکان اعمال تغییر در درس نمونه وجود ندارد.',
         );
       }
       if (!req.body.qid) {
-        throw new error.HttpStatusError(400, 'QID is required');
+        throw new error.HttpStatusError(400, 'شناسه سوال (QID) الزامی است');
       }
       if (!req.body.title) {
-        throw new error.HttpStatusError(400, 'title is required');
+        throw new error.HttpStatusError(400, 'عنوان سوال الزامی است');
       }
       if (!req.body.start_from) {
-        throw new error.HttpStatusError(400, 'start_from is required');
+        throw new error.HttpStatusError(400, 'انتخاب نقطه شروع الزامی است');
       }
       const shortNameValidation = validateShortName(req.body.qid);
       if (!shortNameValidation.valid) {
         throw new error.HttpStatusError(
           400,
-          `Invalid QID: ${shortNameValidation.lowercaseMessage}`,
+          `شناسه سوال (QID) نامعتبر است: ${shortNameValidation.lowercaseMessage}`,
         );
       }
       const usesTemplate = ['example', 'course'].includes(req.body.start_from);
       if (usesTemplate && !req.body.template_qid) {
-        throw new error.HttpStatusError(400, 'template_qid is required');
+        throw new error.HttpStatusError(400, 'انتخاب قالب سوال الزامی است');
       }
 
       const api = getCourseFilesClient();
@@ -128,7 +128,7 @@ router.post(
         return;
       }
 
-      flash('success', 'Question created successfully.');
+      flash('success', 'سوال با موفقیت ایجاد شد.');
 
       if (usesTemplate) {
         res.redirect(`${res.locals.urlPrefix}/question/${result.question_id}/preview`);

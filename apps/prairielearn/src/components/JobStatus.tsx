@@ -4,18 +4,18 @@ import { assertNever } from '@prairielearn/utils';
 import type { Job } from '../lib/db-types.js';
 
 export function JobStatus({ status }: { status: Job['status'] }) {
-  if (status == null) return <span className="badge text-bg-secondary">Unknown</span>;
+  if (status == null) return <span className="badge text-bg-secondary">نامشخص</span>;
   switch (status) {
     case 'Running':
-      return <span className="badge text-bg-primary">Running</span>;
+      return <span className="badge text-bg-primary">در حال اجرا</span>;
     case 'Stopping':
-      return <span className="badge text-bg-warning">Stopping</span>;
+      return <span className="badge text-bg-warning">در حال توقف</span>;
     case 'Stopped':
-      return <span className="badge text-bg-secondary">Stopped</span>;
+      return <span className="badge text-bg-secondary">متوقف‌شده</span>;
     case 'Success':
-      return <span className="badge text-bg-success">Success</span>;
+      return <span className="badge text-bg-success">موفق</span>;
     case 'Error':
-      return <span className="badge text-bg-danger">Error</span>;
+      return <span className="badge text-bg-danger">خطا</span>;
     default:
       assertNever(status);
   }
@@ -28,18 +28,18 @@ export function JobStatus({ status }: { status: Job['status'] }) {
 // the course syncs page).
 
 export function JobStatusHtml({ status }: { status: Job['status'] }): HtmlSafeString {
-  if (status == null) return html`<span class="badge text-bg-secondary">Unknown</span>`;
+  if (status == null) return html`<span class="badge text-bg-secondary">نامشخص</span>`;
   switch (status) {
     case 'Running':
-      return html`<span class="badge text-bg-primary">Running</span>`;
+      return html`<span class="badge text-bg-primary">در حال اجرا</span>`;
     case 'Stopping':
-      return html`<span class="badge text-bg-warning">Stopping</span>`;
+      return html`<span class="badge text-bg-warning">در حال توقف</span>`;
     case 'Stopped':
-      return html`<span class="badge text-bg-secondary">Stopped</span>`;
+      return html`<span class="badge text-bg-secondary">متوقف‌شده</span>`;
     case 'Success':
-      return html`<span class="badge text-bg-success">Success</span>`;
+      return html`<span class="badge text-bg-success">موفق</span>`;
     case 'Error':
-      return html`<span class="badge text-bg-danger">Error</span>`;
+      return html`<span class="badge text-bg-danger">خطا</span>`;
     default:
       assertNever(status);
   }

@@ -3,6 +3,7 @@ import type React from 'react';
 import type { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 
 import type { InheritanceSource } from '../../types.js';
+import { formatInheritanceSourceFa } from '../../utils/formHelpers.js';
 
 /**
  * A form field that supports value inheritance from a parent scope
@@ -48,6 +49,8 @@ export function InheritableField({
   onReset: () => void;
   showResetButton: boolean;
 }) {
+  const sourceFa = formatInheritanceSourceFa(inheritedFromLabel);
+
   if (!editMode) {
     if (isInherited) {
       return (
@@ -55,7 +58,7 @@ export function InheritableField({
           <dt>{label}</dt>
           <dd>
             {inheritedDisplayValue}{' '}
-            <span className="text-muted">(inherited from {inheritedFromLabel})</span>
+            <span className="text-muted">(به ارث برده‌شده از {sourceFa})</span>
           </dd>
         </>
       );
@@ -87,13 +90,13 @@ export function InheritableField({
           disabled
         />
         <small id={`${id}-help`} className="form-text text-muted">
-          Inherited from {inheritedFromLabel}.{' '}
+          به ارث برده‌شده از {sourceFa}.{' '}
           <button
             type="button"
             className="btn btn-link btn-sm p-0 align-baseline"
             onClick={onOverride}
           >
-            Override
+            بازنویسی
           </button>
         </small>
       </div>
@@ -121,7 +124,7 @@ export function InheritableField({
           <button
             type="button"
             className="btn btn-outline-secondary"
-            title={`Reset to ${inheritedFromLabel} value`}
+            title={`بازنشانی به مقدار ${sourceFa}`}
             onClick={onReset}
           >
             <i className="bi bi-arrow-counterclockwise" />
@@ -154,7 +157,7 @@ export function InheritableField({
       )}
       <small id={`${id}-help`} className="form-text text-muted">
         {showResetButton && inheritedValueLabel
-          ? `Overrides ${inheritedFromLabel} value (${inheritedValueLabel}).`
+          ? `بازنویسی مقدار ${sourceFa} (${inheritedValueLabel}).`
           : helpText}
       </small>
     </div>

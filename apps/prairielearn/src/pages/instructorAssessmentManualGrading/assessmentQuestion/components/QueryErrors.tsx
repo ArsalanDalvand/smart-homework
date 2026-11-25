@@ -16,7 +16,7 @@ export function QueryErrors<T>({
     const appError = getAppError<T>(query.error);
     const message = appError
       ? (messages[appError.code as AppError<T>['code']] ?? appError.message)
-      : 'An unknown error occurred.';
+      : 'خطای ناشناخته‌ای رخ داد.';
 
     return (
       <Alert
@@ -27,7 +27,7 @@ export function QueryErrors<T>({
         dismissible
         onClose={() => query.reset()}
       >
-        <strong>Error:</strong> {message}
+        <strong>خطا:</strong> {message}
       </Alert>
     );
   });

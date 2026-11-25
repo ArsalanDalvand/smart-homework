@@ -544,14 +544,14 @@ router.post(
           getCourseInstanceEditErrorUrl(courseInstance.id, serverJob.jobSequenceId),
         );
       }
-      flash('success', 'Course instance configuration updated successfully');
+      flash('success', 'تنظیمات ترم با موفقیت به‌روزرسانی شد');
       res.redirect(req.originalUrl);
     } else if (req.body.__action === 'generate_enrollment_code') {
       await sqldb.execute(sql.update_enrollment_code, {
         course_instance_id: courseInstance.id,
         enrollment_code: await uniqueEnrollmentCode(),
       });
-      flash('success', 'Self-enrollment key generated successfully');
+      flash('success', 'کلید ثبت‌نام خودکار با موفقیت ایجاد شد');
       res.redirect(req.originalUrl);
     } else {
       throw new error.HttpStatusError(400, `unknown __action: ${req.body.__action}`);

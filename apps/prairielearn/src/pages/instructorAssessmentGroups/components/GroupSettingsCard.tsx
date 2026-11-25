@@ -13,7 +13,7 @@ import type { AssessmentGroupsError } from '../../../trpc/assessment/assessment-
 import { useTRPC } from '../../../trpc/assessment/context.js';
 import type { ActionAccess } from '../types.js';
 
-const SAVE_FAILED_FALLBACK = 'Failed to save group configuration.';
+const SAVE_FAILED_FALLBACK = 'ذخیره پیکربندی گروه‌ها ناموفق بود.';
 
 const numberOrNull = (v: unknown): number | null => {
   if (v === '' || v == null) return null;
@@ -40,37 +40,37 @@ function ApplyRecommendedRolesModal({
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header>
-        <Modal.Title>Apply recommended roles</Modal.Title>
+        <Modal.Title>اعمال نقش‌های پیشنهادی</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="text-muted small">
-          Adds four roles inspired by{' '}
+          چهار نقش برگرفته از{' '}
           <a href="https://pogil.org/what-is-pogil" target="_blank" rel="noreferrer">
             POGIL
-          </a>
-          . You can edit them before saving.
+          </a>{' '}
+          اضافه می‌کند. می‌توانید پیش از ذخیره آن‌ها را ویرایش کنید.
         </p>
         <ul className="mb-0">
           <li>
-            <strong>Manager</strong> — 1 assignee, can assign roles to teammates.
+            <strong>Manager</strong> — ۱ عضو، با دسترسی تعیین نقش برای هم‌گروهی‌ها.
           </li>
           <li>
-            <strong>Recorder</strong> — 1 assignee.
+            <strong>Recorder</strong> — ۱ عضو.
           </li>
           <li>
-            <strong>Reflector</strong> — 1 assignee.
+            <strong>Reflector</strong> — ۱ عضو.
           </li>
           <li>
-            <strong>Contributor</strong> — unlimited assignees.
+            <strong>Contributor</strong> — تعداد اعضای نامحدود.
           </li>
         </ul>
       </Modal.Body>
       <Modal.Footer>
         <button type="button" className="btn btn-secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </button>
         <button type="button" className="btn btn-primary" onClick={onApply}>
-          Apply
+          اعمال
         </button>
       </Modal.Footer>
     </Modal>
@@ -143,19 +143,19 @@ export function GroupSettingsCard({
       );
       if (!hasAssigner) {
         violations.noAssigner =
-          'No roles with the "Can assign roles" permission have a minimum member count of 1 or more.';
+          'هیچ نقشی با دسترسی «تعیین نقش‌ها» حداقل تعداد عضو ۱ یا بیشتر ندارد.';
       }
       if (!watchedRoles.some((r) => r.canView)) {
-        violations.noViewer = 'At least one role must be able to view questions.';
+        violations.noViewer = 'حداقل یک نقش باید دسترسی مشاهده سوالات را داشته باشد.';
       }
       if (!watchedRoles.some((r) => r.canSubmit)) {
-        violations.noSubmitter = 'At least one role must be able to submit answers.';
+        violations.noSubmitter = 'حداقل یک نقش باید دسترسی ارسال پاسخ‌ها را داشته باشد.';
       }
       watchedRoles.forEach((r, idx) => {
         if (!r.canView && !r.canSubmit && !r.canAssignRoles) {
-          const name = r.name || '(unnamed)';
+          const name = r.name || '(بدون نام)';
           violations[`roleNoPermissions${idx}`] =
-            `"${name}" has no permissions — students with this role won't be able to view, submit, or assign roles.`;
+            `«${name}» هیچ دسترسی‌ای ندارد — دانشجویان با این نقش نمی‌توانند سوالی را ببینند، پاسخی ارسال کنند یا نقشی تعیین کنند.`;
         }
       });
     }
@@ -182,10 +182,10 @@ export function GroupSettingsCard({
     if (watchedRoles.length === 0) return [];
     const warnings: string[] = [];
     for (const r of watchedRoles) {
-      const name = r.name || '(unnamed)';
+      const name = r.name || '(بدون نام)';
       if (watchedMin != null && r.minAssignees != null && r.minAssignees > watchedMin) {
         warnings.push(
-          `Role "${name}" has a minimum (${r.minAssignees}) greater than the group's minimum (${watchedMin}).`,
+          `نقش «${name}» دارای حداقل (${r.minAssignees}) بیشتر از حداقل اعضای گروه (${watchedMin}) است.`,
         );
       }
     }
@@ -240,9 +240,9 @@ export function GroupSettingsCard({
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="card-body">
-          <h5 className="mb-1">Group settings</h5>
+          <h5 className="mb-1">تنظیمات گروه</h5>
           <div className="text-muted small mb-4">
-            Configure how groups work for this assessment.
+            نحوه عملکرد گروه‌ها را برای این ارزیابی پیکربندی کنید.
           </div>
           {editAccess.status === 'denied' && (
             <Alert variant="info" className="mb-4">
@@ -251,7 +251,7 @@ export function GroupSettingsCard({
           )}
           <fieldset disabled={!canEdit}>
             <div className="mb-4">
-              <h6>Student permissions</h6>
+              <h6>دسترسی‌های دانشجو</h6>
 
               <div className="form-check mb-2">
                 <input
@@ -270,9 +270,9 @@ export function GroupSettingsCard({
                   })}
                 />
                 <label htmlFor="studentPermissions-canCreateGroup" className="form-check-label">
-                  Can create group
+                  اجازه ایجاد گروه
                 </label>
-                <div className="text-muted small">Allow students to create groups.</div>
+                <div className="text-muted small">اجازه به دانشجویان برای ایجاد گروه.</div>
               </div>
 
               <div className="form-check mb-2">
@@ -285,11 +285,11 @@ export function GroupSettingsCard({
                   {...register('studentPermissions.canNameGroup')}
                 />
                 <label htmlFor="studentPermissions-canNameGroup" className="form-check-label">
-                  Can name group
+                  اجازه نام‌گذاری گروه
                 </label>
                 <div className="text-muted small">
-                  Allow students to choose a group name when creating a group. If set to false, a
-                  default name will be used.
+                  اجازه به دانشجویان برای انتخاب نام گروه هنگام ساخت گروه. در صورت غیرفعال بودن، از
+                  نام پیش‌فرض استفاده می‌شود.
                 </div>
               </div>
 
@@ -302,10 +302,10 @@ export function GroupSettingsCard({
                   {...register('studentPermissions.canJoinGroup')}
                 />
                 <label htmlFor="studentPermissions-canJoinGroup" className="form-check-label">
-                  Can join group
+                  اجازه پیوستن به گروه
                 </label>
                 <div className="text-muted small">
-                  Allow students to join other groups by join code.
+                  اجازه به دانشجویان برای پیوستن به سایر گروه‌ها با کد عضویت.
                 </div>
               </div>
 
@@ -318,24 +318,24 @@ export function GroupSettingsCard({
                   {...register('studentPermissions.canLeaveGroup')}
                 />
                 <label htmlFor="studentPermissions-canLeaveGroup" className="form-check-label">
-                  Can leave group
+                  اجازه ترک گروه
                 </label>
-                <div className="text-muted small">Allow students to leave groups.</div>
+                <div className="text-muted small">اجازه به دانشجویان برای ترک گروه‌ها.</div>
               </div>
             </div>
 
             <div className="mb-4">
-              <h6>Group size</h6>
+              <h6>اندازه گروه</h6>
               <div className="row g-3">
                 <div className="col-md-6">
                   <label htmlFor="groupSettings-minMembers" className="form-label">
-                    Minimum members
+                    حداقل اعضا
                   </label>
                   <input
                     type="number"
                     className={clsx('form-control', errors.minMembers && 'is-invalid')}
                     id="groupSettings-minMembers"
-                    placeholder="None"
+                    placeholder="ندارد"
                     aria-invalid={errors.minMembers ? 'true' : undefined}
                     aria-errormessage={
                       errors.minMembers ? 'groupSettings-minMembersError' : undefined
@@ -345,7 +345,7 @@ export function GroupSettingsCard({
                     }
                     {...register('minMembers', {
                       setValueAs: numberOrNull,
-                      min: { value: 1, message: 'Must be at least 1.' },
+                      min: { value: 1, message: 'باید حداقل ۱ باشد.' },
                       onChange: (e) => {
                         const newMin = numberOrNull(e.target.value);
                         const currentMax = getValues('maxMembers');
@@ -363,17 +363,17 @@ export function GroupSettingsCard({
                       {errors.minMembers.message}
                     </div>
                   )}
-                  <div className="text-muted small">The minimum number of students in a group.</div>
+                  <div className="text-muted small">حداقل تعداد دانشجویان در یک گروه.</div>
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="groupSettings-maxMembers" className="form-label">
-                    Maximum members
+                    حداکثر اعضا
                   </label>
                   <input
                     type="number"
                     className={clsx('form-control', errors.maxMembers && 'is-invalid')}
                     id="groupSettings-maxMembers"
-                    placeholder="None"
+                    placeholder="ندارد"
                     aria-invalid={errors.maxMembers ? 'true' : undefined}
                     aria-errormessage={
                       errors.maxMembers ? 'groupSettings-maxMembersError' : undefined
@@ -383,11 +383,11 @@ export function GroupSettingsCard({
                     }
                     {...register('maxMembers', {
                       setValueAs: numberOrNull,
-                      min: { value: 1, message: 'Must be at least 1.' },
+                      min: { value: 1, message: 'باید حداقل ۱ باشد.' },
                       validate: (value) => {
                         const min = getValues('minMembers');
                         if (value != null && min != null && value < min) {
-                          return 'Maximum members cannot be less than minimum members.';
+                          return 'حداکثر اعضا نمی‌تواند کمتر از حداقل اعضا باشد.';
                         }
                         return true;
                       },
@@ -398,46 +398,46 @@ export function GroupSettingsCard({
                       {errors.maxMembers.message}
                     </div>
                   )}
-                  <div className="text-muted small">The maximum number of students in a group.</div>
+                  <div className="text-muted small">حداکثر تعداد دانشجویان در یک گروه.</div>
                 </div>
               </div>
             </div>
 
             <div>
               <div className="d-flex justify-content-between align-items-center gap-2">
-                <h5 className="mb-0">Roles</h5>
+                <h5 className="mb-0">نقش‌ها</h5>
                 <button
                   type="button"
                   className="btn btn-sm btn-outline-primary"
                   onClick={() => append(makeRole({ canAssignRoles: true, minAssignees: 1 }))}
                 >
-                  <i className="bi bi-plus-lg" aria-hidden="true" /> Add role
+                  <i className="bi bi-plus-lg" aria-hidden="true" /> افزودن نقش
                 </button>
               </div>
 
               <div className="text-muted small mb-3">
-                Configure{' '}
+                پیکربندی{' '}
                 <a href="https://docs.prairielearn.com/assessment/configuration/#enabling-custom-group-roles">
-                  custom group roles
+                  نقش‌های سفارشی گروه
                 </a>
-                , which can be assigned different permissions to facilitate role-based teamwork.
+                ، که می‌توانند دسترسی‌های متفاوتی برای تسهیل کار گروهی مبتنی بر نقش داشته باشند.
               </div>
 
               <div className="card overflow-x-auto">
                 <table className="table table-sm align-middle mb-0">
                   <thead>
                     <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Minimum students</th>
-                      <th scope="col">Maximum students</th>
+                      <th scope="col">نام</th>
+                      <th scope="col">حداقل دانشجو</th>
+                      <th scope="col">حداکثر دانشجو</th>
                       <th scope="col" className="text-center">
-                        Assign roles
+                        تعیین نقش‌ها
                       </th>
                       <th scope="col" className="text-center">
-                        View questions
+                        مشاهده سوالات
                       </th>
                       <th scope="col" className="text-center">
-                        Submit answers
+                        ارسال پاسخ‌ها
                       </th>
                       <th scope="col" />
                     </tr>
@@ -448,14 +448,14 @@ export function GroupSettingsCard({
                         <td colSpan={7} className="py-3">
                           <div>
                             <i className="bi bi-person-badge me-2" aria-hidden="true" />
-                            No roles configured
+                            نقشی پیکربندی نشده است
                           </div>
                           <button
                             type="button"
                             className="btn btn-link btn-sm p-0 mt-2"
                             onClick={() => setShowRecommendedRolesModal(true)}
                           >
-                            Use recommended configuration
+                            استفاده از پیکربندی پیشنهادی
                           </button>
                         </td>
                       </tr>
@@ -483,18 +483,18 @@ export function GroupSettingsCard({
                                     'form-control form-control-sm',
                                     rowErrors?.name && 'is-invalid',
                                   )}
-                                  placeholder="e.g. Manager"
+                                  placeholder="مثلاً Manager"
                                   defaultValue={field.name}
-                                  aria-label={`Role ${rowNumber} name`}
+                                  aria-label={`نام نقش ${rowNumber}`}
                                   aria-invalid={rowErrors?.name ? 'true' : undefined}
                                   aria-errormessage={rowErrors?.name ? nameErrorId : undefined}
                                   {...register(`roles.${index}.name`, {
-                                    required: 'Name is required.',
+                                    required: 'وارد کردن نام الزامی است.',
                                     deps: watchedRoles.map((_, i) => `roles.${i}.name` as const),
                                     validate: (value) => {
                                       const allNames = getValues('roles').map((r) => r.name);
                                       const dupes = allNames.filter((n) => n === value);
-                                      return dupes.length <= 1 || 'Duplicate role name.';
+                                      return dupes.length <= 1 || 'نام نقش تکراری است.';
                                     },
                                   })}
                                 />
@@ -506,19 +506,19 @@ export function GroupSettingsCard({
                                     'form-control form-control-sm',
                                     !!minError && 'is-invalid',
                                   )}
-                                  placeholder="None"
+                                  placeholder="ندارد"
                                   defaultValue={field.minAssignees ?? ''}
-                                  aria-label={`Minimum students for role ${rowNumber}`}
+                                  aria-label={`حداقل دانشجو برای نقش ${rowNumber}`}
                                   aria-invalid={minError ? 'true' : undefined}
                                   aria-errormessage={minError ? minErrorId : undefined}
                                   {...register(`roles.${index}.minAssignees`, {
                                     setValueAs: numberOrNull,
                                     deps: [`roles.${index}.maxAssignees`, 'maxMembers'],
-                                    min: { value: 0, message: 'Must be ≥ 0.' },
+                                    min: { value: 0, message: 'باید ≥ ۰ باشد.' },
                                     validate: (value) => {
                                       const max = getValues(`roles.${index}.maxAssignees`);
                                       if (value != null && max != null && value > max) {
-                                        return 'Must be ≤ max assignees.';
+                                        return 'باید ≤ حداکثر اعضا باشد.';
                                       }
                                       const maxMembers = getValues('maxMembers');
                                       if (
@@ -526,7 +526,7 @@ export function GroupSettingsCard({
                                         maxMembers != null &&
                                         value > maxMembers
                                       ) {
-                                        return `Must be ≤ group maximum (${maxMembers}).`;
+                                        return `باید ≤ حداکثر اعضای گروه (${maxMembers}) باشد.`;
                                       }
                                       return true;
                                     },
@@ -554,19 +554,19 @@ export function GroupSettingsCard({
                                     'form-control form-control-sm',
                                     !!maxError && 'is-invalid',
                                   )}
-                                  placeholder="None"
+                                  placeholder="ندارد"
                                   defaultValue={field.maxAssignees ?? ''}
-                                  aria-label={`Maximum students for role ${rowNumber}`}
+                                  aria-label={`حداکثر دانشجو برای نقش ${rowNumber}`}
                                   aria-invalid={maxError ? 'true' : undefined}
                                   aria-errormessage={maxError ? maxErrorId : undefined}
                                   {...register(`roles.${index}.maxAssignees`, {
                                     setValueAs: numberOrNull,
                                     deps: [`roles.${index}.minAssignees`, 'maxMembers'],
-                                    min: { value: 1, message: 'Must be ≥ 1.' },
+                                    min: { value: 1, message: 'باید ≥ ۱ باشد.' },
                                     validate: (value) => {
                                       const min = getValues(`roles.${index}.minAssignees`);
                                       if (value != null && min != null && min > value) {
-                                        return 'Must be ≥ min assignees.';
+                                        return 'باید ≥ حداقل اعضا باشد.';
                                       }
                                       const maxMembers = getValues('maxMembers');
                                       if (
@@ -574,7 +574,7 @@ export function GroupSettingsCard({
                                         maxMembers != null &&
                                         value > maxMembers
                                       ) {
-                                        return `Must be ≤ group maximum (${maxMembers}).`;
+                                        return `باید ≤ حداکثر اعضای گروه (${maxMembers}) باشد.`;
                                       }
                                       return true;
                                     },
@@ -585,7 +585,7 @@ export function GroupSettingsCard({
                                 <input
                                   type="checkbox"
                                   className="form-check-input"
-                                  aria-label={`Assign roles for ${watchedRoles[index]?.name || 'this role'}`}
+                                  aria-label={`تعیین نقش‌ها برای ${watchedRoles[index]?.name || 'این نقش'}`}
                                   defaultChecked={field.canAssignRoles}
                                   {...register(`roles.${index}.canAssignRoles`)}
                                 />
@@ -594,7 +594,7 @@ export function GroupSettingsCard({
                                 <input
                                   type="checkbox"
                                   className="form-check-input"
-                                  aria-label={`View questions for ${watchedRoles[index]?.name || 'this role'}`}
+                                  aria-label={`مشاهده سوالات برای ${watchedRoles[index]?.name || 'این نقش'}`}
                                   defaultChecked={field.canView}
                                   {...register(`roles.${index}.canView`, {
                                     onChange: (e) => {
@@ -614,8 +614,8 @@ export function GroupSettingsCard({
                                   disabled={!watchedRoles[index]?.canView}
                                   aria-label={
                                     watchedRoles[index]?.canView
-                                      ? `Submit answers for ${watchedRoles[index]?.name || 'this role'}`
-                                      : `Submit answers for ${watchedRoles[index]?.name || 'this role'} (requires viewing questions)`
+                                      ? `ارسال پاسخ‌ها برای ${watchedRoles[index]?.name || 'این نقش'}`
+                                      : `ارسال پاسخ‌ها برای ${watchedRoles[index]?.name || 'این نقش'} (نیازمند مشاهده سوالات)`
                                   }
                                   defaultChecked={field.canSubmit}
                                   {...register(`roles.${index}.canSubmit`)}
@@ -625,7 +625,7 @@ export function GroupSettingsCard({
                                 <button
                                   type="button"
                                   className="btn btn-sm btn-outline-danger"
-                                  aria-label={`Remove role ${index + 1}`}
+                                  aria-label={`حذف نقش ${index + 1}`}
                                   onClick={() => remove(index)}
                                 >
                                   <i className="bi bi-trash" aria-hidden="true" />
@@ -698,7 +698,7 @@ export function GroupSettingsCard({
               disabled={!isDirty}
               onClick={() => reset()}
             >
-              Cancel
+              انصراف
             </button>
             <button
               type="submit"
@@ -707,7 +707,7 @@ export function GroupSettingsCard({
                 !isDirty || !isValid || formLevelRoleErrors.length > 0 || mutation.isPending
               }
             >
-              Save
+              ذخیره
             </button>
           </div>
         )}

@@ -179,7 +179,7 @@ export function AdministratorCourseFormFields({
     <div className="row g-3 mb-3" style={{ fontFamily: 'var(--font-persian)' }}>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormInstitution">
-          ${uiStrings.adminCourses.institutionLabel}
+          {uiStrings.adminCourses.institutionLabel}
         </label>
         <select
           id="courseFormInstitution"
@@ -198,7 +198,7 @@ export function AdministratorCourseFormFields({
           })}
         >
           <option value="" disabled>
-            ${uiStrings.adminCourses.institutionSelectPlaceholder}
+            {uiStrings.adminCourses.institutionSelectPlaceholder}
           </option>
           {institutions.map((i) => (
             <option key={i.id} value={i.id}>
@@ -243,13 +243,13 @@ export function AdministratorCourseFormFields({
 
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormTitle">
-          ${uiStrings.adminCourses.titleLabel}
+          {uiStrings.adminCourses.titleLabel}
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.title && 'is-invalid')}
           id="courseFormTitle"
-          placeholder="${uiStrings.adminCourses.titlePlaceholder}"
+          placeholder={uiStrings.adminCourses.titlePlaceholder}
           aria-invalid={errors.title ? true : undefined}
           aria-errormessage={errors.title ? 'courseFormTitle-error' : undefined}
           maxLength={75}
@@ -266,13 +266,13 @@ export function AdministratorCourseFormFields({
       </div>
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormShortName">
-          ${uiStrings.adminCourses.shortNameLabel}
+          {uiStrings.adminCourses.shortNameLabel}
         </label>
         <input
           type="text"
           className={clsx('form-control', errors.short_name && 'is-invalid')}
           id="courseFormShortName"
-          placeholder="${uiStrings.adminCourses.shortNamePlaceholder}"
+          placeholder={uiStrings.adminCourses.shortNamePlaceholder}
           dir="ltr"
           aria-invalid={errors.short_name ? true : undefined}
           aria-errormessage={errors.short_name ? 'courseFormShortName-error' : undefined}
@@ -287,14 +287,14 @@ export function AdministratorCourseFormFields({
 
       <div className="col-md-6">
         <label className="form-label" htmlFor="courseFormRepositoryName">
-          ${uiStrings.adminCourses.repoLabel}
+          {uiStrings.adminCourses.repoLabel}
         </label>
         <div className="d-flex gap-2">
           <input
             type="text"
             className={clsx('form-control', errors.repository_short_name && 'is-invalid')}
             id="courseFormRepositoryName"
-            placeholder="${uiStrings.adminCourses.repoPlaceholder}"
+            placeholder={uiStrings.adminCourses.repoPlaceholder}
             dir="ltr"
             aria-invalid={errors.repository_short_name ? true : undefined}
             aria-errormessage={
@@ -346,7 +346,7 @@ export function AdministratorCourseFormFields({
         <div className="col-12" aria-live="polite" aria-atomic="true">
           {suggestPrefixQuery.isError && (
             <div className="alert alert-danger small mb-0 py-2">
-              Failed to suggest prefix. Try again.
+              پیشنهاد پیشوند ناموفق بود. دوباره تلاش کنید.
             </div>
           )}
           {suggestPrefixQuery.data && (

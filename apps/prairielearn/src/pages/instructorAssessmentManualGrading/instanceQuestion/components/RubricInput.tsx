@@ -53,13 +53,13 @@ export function RubricInput({
         <div className="d-flex align-items-center gap-2 text-secondary ps-1">
           {aiSelectedRubricItemIds && (
             <>
-              <span title="AI grading">
+              <span title="تصحیح با هوش مصنوعی">
                 <i className="bi bi-stars" aria-hidden="true" />
-                <span className="visually-hidden">AI grading</span>
+                <span className="visually-hidden">تصحیح با هوش مصنوعی</span>
               </span>
-              <span title="Human grading">
+              <span title="تصحیح انسانی">
                 <i className="bi bi-person-fill" aria-hidden="true" />
-                <span className="visually-hidden">Human grading</span>
+                <span className="visually-hidden">تصحیح انسانی</span>
               </span>
             </>
           )}
@@ -82,7 +82,7 @@ export function RubricInput({
             }}
           >
             <i className="bi bi-pencil me-1" aria-hidden="true" />
-            Edit rubric
+            ویرایش معیار نمره‌دهی (Rubric)
           </button>
         )}
       </div>
@@ -115,7 +115,7 @@ export function RubricInput({
                   name="rubric_item_selected_ai"
                   value={id}
                   checked={aiSelected}
-                  title={aiSelected ? 'Selected by AI' : 'Not selected by AI'}
+                  title={aiSelected ? 'انتخاب‌شده توسط هوش مصنوعی' : 'انتخاب‌نشده توسط هوش مصنوعی'}
                   disabled
                   readOnly
                 />
@@ -179,7 +179,7 @@ export function RubricInput({
                 data-key-binding={enableKeyboardShortcuts ? 'a' : undefined}
                 onClick={onShowAdjustment}
               >
-                Apply adjustment
+                اعمال تعدیل نمره
                 {enableKeyboardShortcuts && (
                   <kbd aria-hidden="true" className="pl-kbd kbd-semi-transparent ms-2">
                     A
@@ -208,8 +208,8 @@ export function RubricInput({
           ) : (
             <Form.Group className="w-25" controlId={`rubric-adjustment-${context}`}>
               <Form.Label className="small">
-                Adjustment:
-                <span className="visually-hidden"> {usePercentage ? 'percent' : 'points'}</span>
+                تعدیل:
+                <span className="visually-hidden"> {usePercentage ? 'درصد' : 'امتیاز'}</span>
               </Form.Label>
               <InputGroup size="sm">
                 <Form.Control

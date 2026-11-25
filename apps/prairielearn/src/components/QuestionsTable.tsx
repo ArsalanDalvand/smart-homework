@@ -184,7 +184,7 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
       cell: ({ row }) => (
         <input
           type="checkbox"
-          aria-label={`Select ${displayQid(row.original, qidPrefix)}`}
+          aria-label={`انتخاب ${displayQid(row.original, qidPrefix)}`}
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}
           onChange={row.getToggleSelectedHandler()}
@@ -390,9 +390,9 @@ export function QuestionsTable<TQueryKey extends readonly unknown[]>({
               value: row.external_grading_image,
             },
             { name: 'Workspace image', value: row.workspace_image },
-            { name: 'Single variant', value: row.single_variant ? 'Yes' : 'No' },
-            { name: 'Partial credit', value: row.partial_credit ? 'Yes' : 'No' },
-            { name: 'Has preferences', value: row.has_preferences ? 'Yes' : 'No' },
+            { name: 'Single variant', value: row.single_variant ? 'بله' : 'خیر' },
+            { name: 'Partial credit', value: row.partial_credit ? 'بله' : 'خیر' },
+            { name: 'Has preferences', value: row.has_preferences ? 'بله' : 'خیر' },
           ],
           mapRowToJsonData: (row: SafeQuestionsPageData) => ({
             qid: displayQid(row, qidPrefix),

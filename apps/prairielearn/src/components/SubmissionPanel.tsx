@@ -148,7 +148,7 @@ export function SubmissionPanel({
                     data-bs-target="#submission-feedback-${submission.id}-body"
                     aria-expanded="${expanded ? 'true' : 'false'}"
                     aria-controls="submission-feedback-${submission.id}-body"
-                    aria-label="Toggle feedback details"
+                    aria-label="باز/بسته کردن جزئیات بازخورد"
                   >
                     <i class="fa fa-angle-up ms-1 expand-icon" aria-hidden="true"></i>
                   </button>
@@ -256,7 +256,7 @@ export function SubmissionPanel({
               data-submission-id="${submission.id}"
               data-bs-toggle="modal"
               data-bs-target="#submissionInfoModal-${submission.id}"
-              aria-label="Submission info"
+              aria-label="اطلاعات پاسخ ارسالی"
             >
               <i class="fa fa-info-circle"></i>
             </button>
@@ -269,7 +269,7 @@ export function SubmissionPanel({
               data-bs-target="#submission-${submission.id}-body"
               aria-expanded="${expanded ? 'true' : 'false'}"
               aria-controls="submission-${submission.id}-body"
-              aria-label="Toggle submission details"
+              aria-label="باز/بسته کردن جزئیات پاسخ ارسالی"
             >
               <i class="fa fa-angle-up ms-1 expand-icon" aria-hidden="true"></i>
             </button>
@@ -354,9 +354,7 @@ function SubmissionStatusBadge({
               (manualPoints * 100) /
                 (assessment_question.max_manual_points || assessment_question.max_points),
             ) + '%'
-          : (manualPoints > 0 ? '+' : '') +
-            manualPoints +
-            (Math.abs(manualPoints) > 1 ? ' pts' : ' pt');
+          : (manualPoints > 0 ? '+' : '') + manualPoints + ' امتیاز';
         const badgeType =
           manualPoints <= 0
             ? 'text-bg-danger'
@@ -364,7 +362,7 @@ function SubmissionStatusBadge({
               ? 'text-bg-success'
               : 'text-bg-warning';
         manualGradingBadge = html`
-          <span class="badge ${badgeType}">manual grading: ${manual_percentage}</span><br />
+          <span class="badge ${badgeType}">تصحیح دستی: ${manual_percentage}</span><br />
         `;
       }
     }
@@ -410,7 +408,7 @@ function SubmissionStatusBadge({
       if (submission.v2_score != null && submission.v2_score < 1) {
         autoGradingBadge = html`
           <span class="badge text-bg-success" dir="ltr">
-            ${autoStatusPrefix} 100% (rounded up from ${Math.floor(submission.v2_score * 100)}%)
+            ${autoStatusPrefix} 100% (گردشده به بالا از ${Math.floor(submission.v2_score * 100)}%)
           </span>
         `;
       } else {
@@ -427,7 +425,7 @@ function SubmissionStatusBadge({
     } else if (submission.v2_score != null && submission.v2_score >= 0.01) {
       autoGradingBadge = html`
         <span class="badge text-bg-danger" dir="ltr">
-          ${autoStatusPrefix} 0% (rounded down from ${Math.floor(submission.v2_score * 100)}%)
+          ${autoStatusPrefix} 0% (گردشده به پایین از ${Math.floor(submission.v2_score * 100)}%)
         </span>
       `;
     } else {
@@ -478,7 +476,7 @@ function SubmissionInfoModal({
     body: html`
       <table
         class="table table-sm table-borderless two-column-description mb-0"
-        aria-label="Submission info"
+        aria-label="اطلاعات پاسخ ارسالی"
       >
         <tbody>
           <tr>

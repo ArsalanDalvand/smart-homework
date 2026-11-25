@@ -10,8 +10,14 @@ import { StudentLabelsFilter } from '../../../../components/StudentLabels.js';
 import type { StaffStudentLabel } from '../../../../lib/client/safe-db-types.js';
 import {
   GRADING_STATUS_VALUES,
+  type GradingStatusValue,
   type InstanceQuestionRowWithAIGradingStats as InstanceQuestionRow,
 } from '../assessmentQuestion.types.js';
+
+const GRADING_STATUS_LABELS: Record<GradingStatusValue, string> = {
+  'Requires grading': 'نیازمند تصحیح',
+  Graded: 'تصحیح‌شده',
+};
 
 type ColumnFilter = (props: { header: TanstackTableHeader<InstanceQuestionRow> }) => ReactNode;
 
@@ -36,19 +42,23 @@ export function createColumnFilters({
       <MultiSelectColumnFilter
         column={header.column}
         allColumnValues={[...GRADING_STATUS_VALUES]}
+        getSearchText={(value) => GRADING_STATUS_LABELS[value]}
+        renderValueLabel={({ value }) => (
+          <span className="text-nowrap">{GRADING_STATUS_LABELS[value]}</span>
+        )}
       />
     ),
     assigned_grader_name: ({ header }) => (
       <MultiSelectColumnFilter
         column={header.column}
-        allColumnValues={[...allGraders, 'Unassigned']}
+        allColumnValues={[...allGraders, 'تخصیص‌نیافته']}
         showSearch
       />
     ),
     last_grader_name: ({ header }) => (
       <MultiSelectColumnFilter
         column={header.column}
-        allColumnValues={[...allGraders, 'Unassigned']}
+        allColumnValues={[...allGraders, 'تخصیص‌نیافته']}
         showSearch
       />
     ),
@@ -58,7 +68,7 @@ export function createColumnFilters({
     instance_question_group_name: ({ header }) => (
       <MultiSelectColumnFilter
         column={header.column}
-        allColumnValues={[...allSubmissionGroups, 'No group']}
+        allColumnValues={[...allSubmissionGroups, 'بدون گروه']}
         showSearch
       />
     ),

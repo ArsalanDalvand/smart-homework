@@ -6,7 +6,7 @@ export function TreeEmptyDropZone({ dropRef }: { dropRef: (node: HTMLElement | n
       style={{ padding: '1rem', textAlign: 'center' }}
     >
       <i className="bi bi-exclamation-triangle text-warning me-2" aria-hidden="true" />
-      This zone has no questions. Add questions or delete this zone before saving.
+      این بخش هیچ سوالی ندارد. پیش از ذخیره، سوال اضافه کنید یا این بخش را حذف نمایید.
     </div>
   );
 }

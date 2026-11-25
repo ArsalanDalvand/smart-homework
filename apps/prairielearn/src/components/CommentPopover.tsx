@@ -16,7 +16,7 @@ export function CommentPopover({
     <button
       type="button"
       className="btn btn-xs btn-ghost"
-      aria-label="Access rule comment"
+      aria-label="توضیح قانون دسترسی"
       data-bs-toggle="popover"
       data-bs-container="body"
       data-bs-placement="auto"

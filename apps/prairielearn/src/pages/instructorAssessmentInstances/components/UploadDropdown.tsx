@@ -57,18 +57,18 @@ export function UploadDropdown({
       <Dropdown>
         <Dropdown.Toggle size="sm" variant="light" id="upload-actions">
           <i className="bi bi-upload me-2" aria-hidden="true" />
-          Upload
+          بارگذاری
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => setOpenModal('instanceQuestionScores')}>
-            Upload question scores
+            بارگذاری نمرات سوالات
           </Dropdown.Item>
           <Dropdown.Item onClick={() => setOpenModal('assessmentInstanceScores')}>
-            Upload total scores
+            بارگذاری نمرات کل
           </Dropdown.Item>
           {isDevMode && (
             <Dropdown.Item onClick={() => setOpenModal('submissions')}>
-              Upload submissions
+              بارگذاری ارسال‌ها
             </Dropdown.Item>
           )}
         </Dropdown.Menu>
@@ -76,10 +76,10 @@ export function UploadDropdown({
 
       <UploadCsvModal
         show={openModal === 'instanceQuestionScores'}
-        title="Upload new question scores"
-        description="Set per-question scores and feedback for individual students."
+        title="بارگذاری نمرات جدید سوالات"
+        description="تنظیم نمرات و بازخورد هر سوال برای دانشجویان."
         inputId="upload-instance-question-scores-file"
-        helpTitle="Accepted formats"
+        helpTitle="قالب‌های قابل پذیرش"
         help={<InstanceQuestionScoresHelp groupWork={groupWork} downloadsUrl={downloadsUrl} />}
         isPending={instanceQuestionScores.isPending}
         appError={getAppError<AssessmentUploadsError['instanceQuestionScores']>(
@@ -92,10 +92,10 @@ export function UploadDropdown({
 
       <UploadCsvModal
         show={openModal === 'assessmentInstanceScores'}
-        title="Upload new total scores"
-        description="Set the total assessment score for individual students."
+        title="بارگذاری نمرات کل جدید"
+        description="تنظیم نمره کل ارزیابی برای دانشجویان."
         inputId="upload-assessment-instance-scores-file"
-        helpTitle="Accepted formats"
+        helpTitle="قالب‌های قابل پذیرش"
         help={<AssessmentInstanceScoresHelp groupWork={groupWork} />}
         isPending={assessmentInstanceScores.isPending}
         appError={getAppError<AssessmentUploadsError['assessmentInstanceScores']>(
@@ -109,17 +109,16 @@ export function UploadDropdown({
       {isDevMode && (
         <UploadCsvModal
           show={openModal === 'submissions'}
-          title="Upload submissions CSV"
-          description="Recreate users, assessment instances, questions, variants, and submissions from a downloaded submissions CSV. Available in development mode only."
+          title="بارگذاری فایل CSV ارسال‌ها"
+          description="بازسازی کاربران، نمونه‌های ارزیابی، سوالات، نسخه‌ها و ارسال‌ها از فایل CSV دانلودشده. فقط در حالت توسعه در دسترس است."
           inputId="upload-submissions-file"
           warning={
             <div className="alert alert-danger">
-              This will <strong>delete all existing assessment instances and submissions</strong>{' '}
-              for this assessment and replace them with the contents of the CSV file. This action
-              cannot be undone.
+              این عمل <strong>تمام نمونه‌های ارزیابی و ارسال‌های موجود</strong> برای این ارزیابی را
+              حذف کرده و محتوای فایل CSV را جایگزین آن‌ها می‌کند. این عمل قابل بازگشت نیست.
             </div>
           }
-          helpTitle="Before you upload"
+          helpTitle="پیش از بارگذاری"
           help={<SubmissionsHelp downloadsUrl={downloadsUrl} />}
           isPending={submissions.isPending}
           appError={getAppError<AssessmentUploadsError['submissions']>(submissions.error)}
@@ -179,7 +178,7 @@ function UploadCsvModal({
         {warning}
         <div className="mb-4">
           <label className="form-label fw-semibold" htmlFor={inputId}>
-            Choose CSV file
+            انتخاب فایل CSV
           </label>
           <input
             type="file"
@@ -201,14 +200,14 @@ function UploadCsvModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cancel
+          انصراف
         </Button>
         <Button
           variant="primary"
           disabled={!file || isPending}
           onClick={() => file && onUpload(file)}
         >
-          {isPending ? 'Uploading...' : 'Upload'}
+          {isPending ? 'در حال بارگذاری...' : 'بارگذاری'}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -227,18 +226,18 @@ function InstanceQuestionScoresHelp({
   const id2 = groupWork ? 'group2' : 'student2@example.com';
   return (
     <>
-      <p className="mb-2">Upload a CSV file in either of these formats:</p>
+      <p className="mb-2">یک فایل CSV با یکی از قالب‌های زیر بارگذاری کنید:</p>
       <ul>
         <li>
-          The{' '}
+          فایل{' '}
           <code>
             <i>&lt;assessment&gt;</i>_submissions_for_manual_grading.csv
           </code>{' '}
-          file from the <a href={downloadsUrl}>Downloads tab</a>.
+          از <a href={downloadsUrl}>تب فایل‌های قابل دانلود</a>.
         </li>
         <li>
-          A CSV with <code>{idColumn}</code>, <code>instance</code>, <code>qid</code>,{' '}
-          <code>score_perc</code>, and <code>feedback</code> columns:
+          یک فایل CSV شامل ستون‌های <code>{idColumn}</code>، <code>instance</code>،{' '}
+          <code>qid</code>، <code>score_perc</code> و <code>feedback</code>:
         </li>
       </ul>
       <pre className="ms-4">
@@ -248,16 +247,15 @@ ${id2},1,addTwoNumbers,78.92,
 ${id2},1,matrixMultiply,100,Great job!`}
       </pre>
       <p className="mb-0">
-        To update points instead of a percentage, or to update only the auto or manual portion of a
-        score, see the{' '}
+        برای به‌روزرسانی امتیاز به جای درصد، یا به‌روزرسانی فقط بخش خودکار یا دستی نمره، به{' '}
         <a
           href="https://docs.prairielearn.com/manualGrading/#manual-grading-using-file-uploads"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Manual Grading documentation
-        </a>
-        .
+          مستندات تصحیح دستی
+        </a>{' '}
+        مراجعه کنید.
       </p>
     </>
   );
@@ -267,11 +265,11 @@ function AssessmentInstanceScoresHelp({ groupWork }: { groupWork: boolean }) {
   const idColumn = groupWork ? 'group_name' : 'uid';
   const id1 = groupWork ? 'group1' : 'student1@example.com';
   const id2 = groupWork ? 'group2' : 'student2@example.com';
-  const subject = groupWork ? 'group' : 'student';
+  const subject = groupWork ? 'گروه' : 'دانشجو';
   return (
     <>
       <p className="mb-2">
-        To set percentage scores, upload a CSV file with a <code>score_perc</code> column:
+        برای تنظیم نمرات درصدی، یک فایل CSV با ستون <code>score_perc</code> بارگذاری کنید:
       </p>
       <pre className="ms-4">
         {`${idColumn},instance,score_perc
@@ -279,27 +277,27 @@ ${id1},1,63.5
 ${id2},1,100`}
       </pre>
       <p>
-        This sets the total assessment percentage score for{' '}
+        این کار درصد نمره کل ارزیابی را برای{' '}
         {groupWork ? (
           <>
-            group <code>group1</code>
+            گروه <code>group1</code>
           </>
         ) : (
           <code>student1@example.com</code>
         )}{' '}
-        to 63.5% and for{' '}
+        روی ۶۳.۵٪ و برای{' '}
         {groupWork ? (
           <>
-            group <code>group2</code>
+            گروه <code>group2</code>
           </>
         ) : (
           <code>student2@example.com</code>
         )}{' '}
-        to 100%. The <code>instance</code> column selects which assessment instance to modify, and
-        should be <code>1</code> when there is only one instance per {subject}.
+        روی ۱۰۰٪ تنظیم می‌کند. ستون <code>instance</code> مشخص می‌کند کدام نمونه ارزیابی ویرایش شود
+        و زمانی که تنها یک نمونه به ازای هر {subject} وجود دارد باید برابر با <code>1</code> باشد.
       </p>
       <p className="mb-2">
-        To set total points instead, upload a CSV file with a <code>points</code> column:
+        برای تنظیم نمره امتیازی به جای درصد، یک فایل CSV با ستون <code>points</code> بارگذاری کنید:
       </p>
       <pre className="ms-4 mb-0">
         {`${idColumn},instance,points
@@ -314,19 +312,19 @@ function SubmissionsHelp({ downloadsUrl }: { downloadsUrl: string }) {
   return (
     <ul className="mb-0">
       <li>
-        Upload one of the submissions CSV files (<code>*_all_submissions.csv</code>,{' '}
-        <code>*_final_submissions.csv</code>, or <code>*_best_submissions.csv</code>) from the{' '}
-        <a href={downloadsUrl}>Downloads tab</a>.
+        یکی از فایل‌های CSV ارسال‌ها (<code>*_all_submissions.csv</code>،{' '}
+        <code>*_final_submissions.csv</code> یا <code>*_best_submissions.csv</code>) را از{' '}
+        <a href={downloadsUrl}>تب فایل‌های قابل دانلود</a> بارگذاری کنید.
       </li>
       <li>
-        The download/upload process is lossy. Some information, such as <code>format_errors</code>,{' '}
-        <code>raw_submitted_answers</code>, whether or not a submission was considered gradable, and
-        scores (including manual grading and rubrics) will not be preserved.
+        فرآیند دانلود و بارگذاری مجدد ممکن است همراه با از دست رفتن برخی اطلاعات باشد. اطلاعاتی
+        مانند <code>format_errors</code>، <code>raw_submitted_answers</code>، قابل تصحیح بودن ارسال
+        و نمرات (از جمله تصحیح دستی و معیارهای نمره‌دهی) حفظ نخواهند شد.
       </li>
       <li>
-        If the assessment has questions that use <b>manual rubric grading</b>, upload their rubrics
-        before uploading the CSV. The rubrics must be identical to those used when the submissions
-        were downloaded.
+        اگر ارزیابی دارای سوالاتی است که از <b>معیار نمره‌دهی (Rubric)</b> استفاده می‌کنند، پیش از
+        بارگذاری فایل CSV معیارهای نمره‌دهی آن‌ها را بارگذاری کنید. معیارها باید دقیقاً مطابق با
+        زمان دانلود ارسال‌ها باشند.
       </li>
     </ul>
   );

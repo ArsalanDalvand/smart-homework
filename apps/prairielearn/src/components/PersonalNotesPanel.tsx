@@ -75,14 +75,13 @@ export function PersonalNotesPanel({
                   !assessment_instance.open || !authz_result.active
                     ? html`
                         <p class="small mb-0">
-                          Notes can't be added or deleted because the assessment is closed.
+                          به دلیل بسته بودن تکلیف/آزمون، امکان افزودن یا حذف یادداشت وجود ندارد.
                         </p>
                       `
                     : !authz_result.authorized_edit
                       ? html`
                           <div class="alert alert-warning mb-0" role="alert">
-                            You are viewing the ${context} instance of a different user and so are
-                            not authorized to add or delete personal notes.
+                            شما در حال مشاهده نمونه ${context === 'question' ? 'سوال' : 'تکلیف/آزمون'} کاربر دیگری هستید و مجاز به افزودن یا حذف یادداشت‌های شخصی نیستید.
                           </div>
                         `
                       : html`
@@ -229,7 +228,7 @@ function DeletePersonalNoteButton({
 }) {
   const popoverContent = html`
     <form name="attach-file-delete-form" method="POST">
-      <p>Are you sure you want to delete <strong>${file.display_filename}</strong>?</p>
+      <p>آیا از حذف <strong>${file.display_filename}</strong> اطمینان دارید؟</p>
       <input type="hidden" name="__action" value="delete_file" />
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       ${
@@ -239,8 +238,8 @@ function DeletePersonalNoteButton({
       }
       <input type="hidden" name="file_id" value="${file.id}" />
       <div class="text-end">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">Cancel</button>
-        <button type="submit" class="btn btn-primary">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="popover">انصراف</button>
+        <button type="submit" class="btn btn-primary">حذف</button>
       </div>
     </form>
   `;
@@ -248,12 +247,12 @@ function DeletePersonalNoteButton({
   return html`
     <button
       class="btn btn-xs btn-secondary"
-      aria-label="Delete personal note ${file.display_filename}"
+      aria-label="حذف یادداشت شخصی ${file.display_filename}"
       data-bs-toggle="popover"
       data-bs-container="body"
       data-bs-html="true"
       data-bs-placement="auto"
-      data-bs-title="Confirm delete"
+      data-bs-title="تایید حذف"
       data-bs-content="${escapeHtml(popoverContent)}"
       data-testid="delete-personal-note-button"
     >

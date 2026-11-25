@@ -29,7 +29,7 @@ export function ExtensionTableRow({
         {extension.course_instance_publishing_extension.name ? (
           <strong>{extension.course_instance_publishing_extension.name}</strong>
         ) : (
-          <span className="text-muted">Unnamed</span>
+          <span className="text-muted">بدون نام</span>
         )}
       </td>
       <td className="col-1 align-middle text-nowrap">
@@ -44,13 +44,13 @@ export function ExtensionTableRow({
                 props: {
                   id: `extension-end-date-warning-${extension.course_instance_publishing_extension.id}`,
                 },
-                body: 'This date is before the course instance end date and will be ignored',
+                body: 'این تاریخ پیش از تاریخ پایان ترم است و نادیده گرفته خواهد شد',
               }}
             >
               <button
                 type="button"
                 className="btn btn-xs btn-ghost"
-                aria-label="Extension will be ignored"
+                aria-label="تمدید نادیده گرفته می‌شود"
               >
                 <i className="fas fa-exclamation-triangle text-warning" aria-hidden="true" />
               </button>
@@ -75,14 +75,14 @@ export function ExtensionTableRow({
                 className="btn btn-sm btn-outline-primary"
                 onClick={() => onEdit(extension)}
               >
-                Edit
+                ویرایش
               </button>
               <button
                 type="button"
                 className="btn btn-sm btn-outline-danger"
                 onClick={() => onDelete(extension)}
               >
-                Delete
+                حذف
               </button>
             </>
           )}

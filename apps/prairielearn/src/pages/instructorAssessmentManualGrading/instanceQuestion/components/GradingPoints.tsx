@@ -43,7 +43,7 @@ export function GradingPoints({
     <div className="mb-3">
       <div className="d-flex align-items-center justify-content-between">
         <Form.Label className="mb-0" htmlFor={inputId}>
-          {label} {usePercentage ? 'score' : 'points'}:
+          {usePercentage ? `درصد نمره ${label}` : `نمره ${label}`}:
         </Form.Label>
         {!inputVisible && (
           <span>
@@ -58,7 +58,7 @@ export function GradingPoints({
               <button
                 type="button"
                 className="btn btn-sm btn-outline-secondary ms-2"
-                aria-label={`Edit ${label.toLowerCase()} points`}
+                aria-label={`ویرایش نمره ${label}`}
                 onClick={() => {
                   onEnableEditing();
                   requestAnimationFrame(() => inputRef.current?.focus());
@@ -135,7 +135,7 @@ export function TotalPoints({
 }) {
   return (
     <div className="mb-3 d-flex justify-content-between">
-      <span>Total {usePercentage ? 'score' : 'points'}:</span>
+      <span>{usePercentage ? 'درصد نمره کل:' : 'نمره کل:'}</span>
       <span>{usePercentage ? `${percentageValue}%` : `${pointsValue} / ${maxPoints}`}</span>
     </div>
   );

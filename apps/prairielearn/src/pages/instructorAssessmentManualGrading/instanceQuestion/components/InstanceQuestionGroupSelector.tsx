@@ -35,14 +35,14 @@ export function InstanceQuestionGroupSelector({
   return (
     <li className="list-group-item">
       <Form.Label id="instance-question-group-label" htmlFor="instance-question-group-toggle">
-        Submission group
+        گروه ارسال
       </Form.Label>
       <RichSelect
         id="instance-question-group-toggle"
         aria-labelledby="instance-question-group-label"
         disabled={disabled || updateGroupMutation.isPending}
         errorMessage={
-          updateGroupMutation.isError ? 'Failed to update the submission group.' : undefined
+          updateGroupMutation.isError ? 'بروزرسانی گروه ارسال ناموفق بود.' : undefined
         }
         items={[
           ...groups.map<RichSelectItem>((group) => ({
@@ -50,7 +50,7 @@ export function InstanceQuestionGroupSelector({
             label: group.name,
             description: group.description,
           })),
-          { value: 'null', label: 'No group', description: 'No group assigned.' },
+          { value: 'null', label: 'بدون گروه', description: 'گروهی تخصیص داده نشده است.' },
         ]}
         value={selectedGroupId ?? 'null'}
         onChange={(selected) => updateGroupMutation.mutate(selected === 'null' ? null : selected)}

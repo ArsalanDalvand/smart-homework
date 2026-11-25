@@ -11,11 +11,10 @@ export function AssessmentOpenInstancesAlert({
 
   return (
     <div className="alert alert-warning" role="alert">
-      This assessment currently has{' '}
-      {numOpenInstances === 1 ? 'one open instance.' : `${numOpenInstances} open instances.`} Please
-      ensure all students have completed their assessments before grading. You may close all open
-      instances on the{' '}
-      <a href={`${urlPrefix}/assessment/${assessmentId}/instances`}>Students tab</a>.
+      این تکلیف/آزمون در حال حاضر{' '}
+      {numOpenInstances === 1 ? 'یک نمونه باز دارد.' : `${numOpenInstances} نمونه باز دارد.`} لطفاً
+      پیش از تصحیح، اطمینان حاصل کنید که تمامی دانشجویان تکلیف/آزمون خود را به پایان رسانده‌اند. می‌توانید تمامی نمونه‌های باز را در{' '}
+      <a href={`${urlPrefix}/assessment/${assessmentId}/instances`}>زبانه دانشجویان</a> ببندید.
     </div>
   );
 }

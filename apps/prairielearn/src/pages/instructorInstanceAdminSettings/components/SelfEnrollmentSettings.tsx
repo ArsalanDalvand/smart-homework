@@ -18,7 +18,7 @@ function SelfEnrollmentCode({ enrollmentCode }: { enrollmentCode: string }) {
   return (
     <div className="mb-3">
       <label className="form-label" htmlFor="self_enrollment_code">
-        Self-enrollment code
+        کد ثبت‌نام خودکار
       </label>
       <InputGroup>
         <Form.Control
@@ -29,13 +29,13 @@ function SelfEnrollmentCode({ enrollmentCode }: { enrollmentCode: string }) {
         />
         <CopyButton
           text={enrollmentCodeDashed}
-          ariaLabel="Copy self-enrollment code"
+          ariaLabel="کپی کد ثبت‌نام خودکار"
           className="btn-sm btn-outline-secondary"
         />
       </InputGroup>
       <small className="form-text text-muted">
-        Students can use this code to enroll in the course by entering it on the homepage or after
-        clicking on any link to the course instance.
+        دانشجویان می‌توانند با وارد کردن این کد در صفحه اصلی یا پس از کلیک روی هر لینک مربوط به این
+        ترم، در درس ثبت‌نام کنند.
       </small>
     </div>
   );
@@ -56,25 +56,25 @@ function SelfEnrollmentLink({
     <>
       <div className="mb-0">
         <label className="form-label" htmlFor="self_enrollment_link">
-          Self-enrollment link
+          لینک ثبت‌نام خودکار
         </label>
         <InputGroup>
           <Form.Control id="self_enrollment_link" value={selfEnrollLink} disabled />
           <CopyButton
             text={selfEnrollLink}
-            ariaLabel="Copy self-enrollment link"
+            ariaLabel="کپی لینک ثبت‌نام خودکار"
             className="btn-sm btn-outline-secondary"
           />
           <OverlayTrigger
             tooltip={{
-              body: 'View QR Code',
+              body: 'مشاهده کد QR',
               props: { id: 'self-enrollment-link-qr-code-tooltip' },
             }}
           >
             <Button
               size="sm"
               variant="outline-secondary"
-              aria-label="Self-enrollment Link QR Code"
+              aria-label="کد QR لینک ثبت‌نام خودکار"
               onClick={() => setShowQR(true)}
             >
               <i className="bi bi-qr-code-scan" />
@@ -83,14 +83,14 @@ function SelfEnrollmentLink({
           {canEdit && (
             <OverlayTrigger
               tooltip={{
-                body: 'Regenerate',
+                body: 'تولید مجدد',
                 props: { id: 'self-enrollment-link-regenerate-tooltip' },
               }}
             >
               <Button
                 size="sm"
                 variant="outline-secondary"
-                aria-label="Generate new self-enrollment link"
+                aria-label="تولید لینک ثبت‌نام خودکار جدید"
                 onClick={() => setShowConfirm(true)}
               >
                 <i className="bi bi-arrow-repeat" />
@@ -99,37 +99,37 @@ function SelfEnrollmentLink({
           )}
         </InputGroup>
         <small className="form-text text-muted">
-          Students can use this link to immediately enroll in the course. Students can also enroll
-          by entering the enrollment code on any link to the course instance.
+          دانشجویان می‌توانند از این لینک برای ثبت‌نام فوری در درس استفاده کنند. همچنین می‌توانند با
+          وارد کردن کد ثبت‌نام در هر لینک مربوط به این ترم، ثبت‌نام نمایند.
         </small>
       </div>
 
       <QRCodeModal
         id="selfEnrollmentLinkModal"
-        title="Self-enrollment Link QR Code"
+        title="کد QR لینک ثبت‌نام خودکار"
         content={selfEnrollLink}
         show={showQR}
         onHide={() => setShowQR(false)}
       />
       <Modal show={showConfirm} backdrop="static" onHide={() => setShowConfirm(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Generate new self-enrollment link</Modal.Title>
+          <Modal.Title>تولید لینک ثبت‌نام خودکار جدید</Modal.Title>
         </Modal.Header>
         <form method="POST">
           <Modal.Body>
             <div>
-              Are you sure you want to generate a new self-enrollment link?{' '}
-              <strong>The current link will be deactivated.</strong> This action cannot be undone.
+              آیا از تولید لینک ثبت‌نام خودکار جدید اطمینان دارید؟{' '}
+              <strong>لینک فعلی غیرفعال خواهد شد.</strong> این عملیات قابل بازگشت نیست.
             </div>
           </Modal.Body>
           <Modal.Footer>
             <input type="hidden" name="__action" value="generate_enrollment_code" />
             <input type="hidden" name="__csrf_token" value={csrfToken} />
             <Button variant="secondary" type="button" onClick={() => setShowConfirm(false)}>
-              Cancel
+              انصراف
             </Button>
             <Button variant="danger" type="submit">
-              Generate new link
+              تولید لینک جدید
             </Button>
           </Modal.Footer>
         </form>
@@ -186,16 +186,17 @@ export function SelfEnrollmentSettings({
     <>
       {!hasModernPublishing ? (
         <div className="alert alert-warning">
-          You are using access rules to control who can access the course instance.{' '}
+          شما در حال استفاده از قوانین دسترسی برای کنترل دسترسی به این ترم هستید. برای دسترسی به
+          امکانات بیشتر مدیریت ثبت‌نام،{' '}
           <a
             href="https://docs.prairielearn.com/courseInstance/#migrating-from-allowaccess"
             className="alert-link"
             target="_blank"
             rel="noreferrer"
           >
-            Migrate to publishing
-          </a>{' '}
-          to unlock additional enrollment management features.
+            به سیستم انتشار مهاجرت کنید
+          </a>
+          .
         </div>
       ) : null}
 
@@ -216,10 +217,10 @@ export function SelfEnrollmentSettings({
           />
         )}
         <label className="form-check-label" htmlFor="self_enrollment_enabled">
-          Allow self-enrollment
+          امکان ثبت‌نام خودکار
         </label>
         <div className="small text-muted">
-          If self-enrollment is disabled, students must be invited to this course instance.
+          اگر ثبت‌نام خودکار غیرفعال باشد، دانشجویان باید به این ترم دعوت شوند.
         </div>
       </div>
 
@@ -240,11 +241,11 @@ export function SelfEnrollmentSettings({
           />
         )}
         <label className="form-check-label" htmlFor="self_enrollment_use_enrollment_code">
-          Require enrollment code for self-enrollment
+          الزام کد ثبت‌نام برای ثبت‌نام خودکار
         </label>
         <div className="small text-muted">
-          If an enrollment code is not required, any course instance or assessment link allows
-          self-enrollment.
+          اگر کد ثبت‌نام الزامی نباشد، هر لینک مربوط به ترم یا آزمون امکان ثبت‌نام خودکار را فراهم
+          می‌کند.
         </div>
       </div>
 
@@ -265,10 +266,11 @@ export function SelfEnrollmentSettings({
           />
         )}
         <label className="form-check-label" htmlFor="self_enrollment_restrict_to_institution">
-          Restrict self-enrollment to institution "{institution.long_name}"
+          محدود کردن ثبت‌نام خودکار به مؤسسه «{institution.long_name}»
         </label>
         <div className="small text-muted">
-          If the institution restriction is disabled, users from any institution can self-enroll.
+          اگر محدودیت مؤسسه غیرفعال باشد، کاربران از هر مؤسسه‌ای می‌توانند به صورت خودکار ثبت‌نام
+          کنند.
         </div>
       </div>
 
@@ -295,16 +297,16 @@ export function SelfEnrollmentSettings({
           />
         )}
         <label className="form-check-label" htmlFor="disable_self_enrollment_after_date">
-          Self-enrollment cutoff date
+          مهلت نهایی ثبت‌نام خودکار
         </label>
         <div className="small text-muted">
-          If set, self-enrollment will be disabled after this date. We recommend setting this to the
-          University-imposed deadline for students to add courses.
+          در صورت تنظیم، ثبت‌نام خودکار پس از این تاریخ غیرفعال می‌شود. توصیه می‌کنیم این تاریخ را
+          برابر با مهلت حذف و اضافه دانشگاه تنظیم کنید.
         </div>
 
         <input
           type="datetime-local"
-          aria-label="Self-enrollment cutoff date"
+          aria-label="مهلت نهایی ثبت‌نام خودکار"
           className={clsx(
             'form-control mt-2',
             selfEnrollmentEnabledBeforeDateInvalid && 'is-invalid',
@@ -326,7 +328,7 @@ export function SelfEnrollmentSettings({
           {...control.register('self_enrollment_enabled_before_date', {
             validate: (value, { self_enrollment_enabled_before_date_enabled }) => {
               if (self_enrollment_enabled_before_date_enabled && !value) {
-                return 'Date is required';
+                return 'تاریخ الزامی است';
               }
               return true;
             },
@@ -361,7 +363,7 @@ export function SelfEnrollmentSettings({
       ) : (
         <StudentLinkSharing
           studentLink={studentLink}
-          studentLinkMessage={`This is the link that students will use to ${selfEnrollmentEnabled ? 'access the course' : 'accept invitations'}. You can copy this link to share with students.`}
+          studentLinkMessage={`این لینکی است که دانشجویان برای ${selfEnrollmentEnabled ? 'دسترسی به درس' : 'پذیرش دعوت‌نامه'} از آن استفاده خواهند کرد. می‌توانید این لینک را کپی کرده و با دانشجویان به اشتراک بگذارید.`}
         />
       )}
     </>

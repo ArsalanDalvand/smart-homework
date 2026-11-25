@@ -14,15 +14,15 @@ export function OverrideRuleContent({
     <div className="d-flex flex-column gap-3">
       <OverrideDateControlForm
         index={index}
-        title="Date control"
-        description="Control access and credit to your assessment based on a schedule"
+        title="کنترل تاریخ و زمان"
+        description="کنترل دسترسی و اعتبار نمره ارزیابی بر اساس زمان‌بندی"
         displayTimezone={displayTimezone}
         isExam={isExam}
       />
 
       <OverrideAfterCompleteForm
         index={index}
-        title="After completion"
+        title="پس از اتمام"
         displayTimezone={displayTimezone}
       />
     </div>

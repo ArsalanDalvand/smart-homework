@@ -50,8 +50,8 @@ function NoGroupConfigCard({
 
   const canEdit = enableAccess.status === 'allowed';
   const description = canEdit
-    ? 'Enable group work to allow students to collaborate and submit as groups.'
-    : 'Group work is not enabled for this assessment.';
+    ? 'برای اجازه دادن به دانشجویان جهت همکاری و ارسال پاسخ به صورت گروهی، کار گروهی را فعال کنید.'
+    : 'کار گروهی برای این ارزیابی فعال نیست.';
 
   return (
     <div className="container py-3">
@@ -63,7 +63,7 @@ function NoGroupConfigCard({
             </Alert>
           )}
           <i className="bi bi-people fs-1 mb-2" />
-          <h2 className="h5">This is not a group assessment.</h2>
+          <h2 className="h5">این ارزیابی به صورت گروهی نیست.</h2>
           <div className="text-muted">{description}</div>
           {enableAccess.status === 'denied' && (
             <Alert variant="info" className="mt-3 mb-0">
@@ -85,7 +85,7 @@ function NoGroupConfigCard({
               disabled={mutation.isPending || hasAssessmentInstances}
               onClick={() => mutation.mutate({ origHash }, { onSuccess: onEnable })}
             >
-              Enable group work
+              فعال‌سازی کار گروهی
             </button>
           )}
         </div>
@@ -235,12 +235,12 @@ function InstructorAssessmentGroupsInner({
           if (permissions.isExampleCourse) {
             return {
               status: 'denied',
-              reason: 'Enabling group work is not permitted for the example course.',
+              reason: 'فعال‌سازی کار گروهی برای درس نمونه مجاز نیست.',
             };
           }
           return {
             status: 'denied',
-            reason: 'Enabling group work requires course editor permissions.',
+            reason: 'فعال‌سازی کار گروهی نیازمند دسترسی ویرایشگر درس است.',
           };
         })}
         hasAssessmentInstances={hasAssessmentInstances}
@@ -273,20 +273,20 @@ function InstructorAssessmentGroupsInner({
                   if (permissions.isExampleCourse) {
                     return {
                       status: 'denied',
-                      reason: 'Disabling group work is not permitted for the example course.',
+                      reason: 'غیرفعال‌سازی کار گروهی برای درس نمونه مجاز نیست.',
                     };
                   }
                   if (!permissions.hasCoursePermissionEdit) {
                     return {
                       status: 'denied',
                       reason:
-                        'Disabling group work requires course editor permissions because it changes group settings.',
+                        'غیرفعال‌سازی کار گروهی نیازمند دسترسی ویرایشگر درس است زیرا تنظیمات گروه را تغییر می‌دهد.',
                     };
                   }
                   return {
                     status: 'denied',
                     reason:
-                      'Disabling group work requires student data editor permissions because it permanently removes group memberships.',
+                      'غیرفعال‌سازی کار گروهی نیازمند دسترسی ویرایشگر داده‌های دانشجو است زیرا عضویت گروه‌ها را به صورت دائمی حذف می‌کند.',
                   };
                 })
               : undefined
@@ -307,12 +307,12 @@ function InstructorAssessmentGroupsInner({
             if (permissions.isExampleCourse) {
               return {
                 status: 'denied',
-                reason: 'Editing group settings is not permitted for the example course.',
+                reason: 'ویرایش تنظیمات گروه برای درس نمونه مجاز نیست.',
               };
             }
             return {
               status: 'denied',
-              reason: 'Editing group settings requires course editor permissions.',
+              reason: 'ویرایش تنظیمات گروه نیازمند دسترسی ویرایشگر درس است.',
             };
           })}
           onOrigHashChange={setOrigHash}
@@ -338,12 +338,12 @@ function InstructorAssessmentGroupsInner({
               if (permissions.isExampleCourse) {
                 return {
                   status: 'denied',
-                  reason: 'Editing group memberships is not permitted for the example course.',
+                  reason: 'ویرایش عضویت گروه‌ها برای درس نمونه مجاز نیست.',
                 };
               }
               return {
                 status: 'denied',
-                reason: 'Editing group memberships requires student data editor permissions.',
+                reason: 'ویرایش عضویت گروه‌ها نیازمند دسترسی ویرایشگر داده‌های دانشجو است.',
               };
             })}
             minGroupSize={minGroupSize}
@@ -353,12 +353,12 @@ function InstructorAssessmentGroupsInner({
         ) : (
           <div className="card">
             <div className="card-body">
-              <h5 className="mb-1">Groups</h5>
+              <h5 className="mb-1">گروه‌ها</h5>
               <div className="text-muted small mb-3">
-                View and manage student group memberships for this assessment.
+                مشاهده و مدیریت عضویت دانشجویان در گروه‌ها برای این ارزیابی.
               </div>
               <Alert variant="info" className="mb-0">
-                You must have student data viewer permissions to view student group memberships.
+                برای مشاهده عضویت دانشجویان در گروه‌ها باید دسترسی مشاهده داده‌های دانشجو داشته باشید.
               </Alert>
             </div>
           </div>
@@ -374,7 +374,7 @@ function InstructorAssessmentGroupsInner({
               dismissible
               onClose={() => setSaveStatus(null)}
             >
-              Group configuration saved.
+              پیکربندی گروه‌ها ذخیره شد.
             </Alert>
           )}
           {saveStatus.kind === 'error' && (

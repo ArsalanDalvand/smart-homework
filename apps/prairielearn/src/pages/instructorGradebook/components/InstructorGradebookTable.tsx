@@ -59,6 +59,11 @@ const DEFAULT_SORT: SortingState = [{ id: 'uid', desc: false }];
 const DEFAULT_PINNING: ColumnPinningState = { start: ['uid'], end: [] };
 
 const ROLE_VALUES = ['Staff', 'Student', 'None'] as const;
+const ROLE_LABELS: Record<(typeof ROLE_VALUES)[number], string> = {
+  Staff: 'کادر آموزشی',
+  Student: 'دانشجو',
+  None: 'هیچ‌کدام',
+};
 type RoleValue = (typeof ROLE_VALUES)[number];
 const STATUS_VALUES = [...EnumEnrollmentStatusSchema.options];
 const EMPTY_FILTER: MultiSelectFilterValue = { values: [], mode: 'include' };
@@ -149,10 +154,10 @@ function GradebookTable({
     queryKey: ['gradebook', urlPrefix],
     queryFn: async () => {
       const res = await fetch(`${urlPrefix}/instance_admin/gradebook/raw_data.json`);
-      if (!res.ok) throw new Error('Failed to fetch gradebook data');
+      if (!res.ok) throw new Error('دریافت داده‌های دفتر نمرات ناموفق بود');
       const data = await res.json();
       const parsedData = z.array(GradebookRowSchema).safeParse(data);
-      if (!parsedData.success) throw new Error('Failed to parse gradebook data');
+      if (!parsedData.success) throw new Error('تجزیه داده‌های دفتر نمرات ناموفق بود');
       return parsedData.data;
     },
     staleTime: Infinity,
@@ -211,15 +216,15 @@ function GradebookTable({
         columnHelper.accessor('role', {
           id: 'role',
           meta: {
-            label: 'Role',
+            label: 'نقش',
           },
           header: () => (
             <span>
-              Role{' '}
+              نقش{' '}
               <button
                 className="btn btn-xs btn-ghost"
                 type="button"
-                aria-label="Roles help"
+                aria-label="راهنمای نقش‌ها"
                 data-bs-toggle="modal"
                 data-bs-target="#role-help"
                 onClick={(e) => e.stopPropagation()}
@@ -228,7 +233,7 @@ function GradebookTable({
               </button>
             </span>
           ),
-          cell: (info) => info.getValue(),
+          cell: (info) => ROLE_LABELS[info.getValue() as (typeof ROLE_VALUES)[number]] ?? info.getValue(),
           filterFn: (row, _columnId, filter: MultiSelectFilterValue<RoleValue>) => {
             const current = row.original.role;
             return applyMultiSelectFilter(filter, (values) => values.includes(current));
@@ -254,7 +259,7 @@ function GradebookTable({
         columnHelper.accessor('student_label_ids', {
           id: 'student_labels',
           meta: {
-            label: 'Labels',
+            label: 'برچسب‌ها',
           },
           header: StudentLabelsHeader,
           cell: (info) => (
@@ -267,7 +272,7 @@ function GradebookTable({
         ...Array.from(assessmentsBySet.groups.entries(), ([setId, assessments]) =>
           columnHelper.group({
             id: `group_${setId}`,
-            header: assessmentsBySet.headingById.get(setId) ?? 'Unknown',
+            header: assessmentsBySet.headingById.get(setId) ?? 'نامشخص',
             columns: columnHelper.columns(
               assessments.map((assessment) =>
                 columnHelper.accessor(
@@ -353,11 +358,11 @@ function GradebookTable({
   );
 
   const handleEnrollmentFilterSelect = (
-    optionName: 'All students' | 'All students & staff' | 'Joined students',
+    optionName: 'همه دانشجویان' | 'همه دانشجویان و کادر آموزشی' | 'دانشجویان عضو',
   ) => {
-    if (optionName === 'All students') {
+    if (optionName === 'همه دانشجویان') {
       void setColumnVisibility((prev) => ({ ...prev, role: false, enrollment_status: true }));
-    } else if (optionName === 'All students & staff') {
+    } else if (optionName === 'همه دانشجویان و کادر آموزشی') {
       void setColumnVisibility((prev) => ({ ...prev, enrollment_status: true, role: true }));
     } else {
       void setColumnVisibility((prev) => ({ ...prev, role: false, enrollment_status: false }));
@@ -379,7 +384,7 @@ function GradebookTable({
         <MultiSelectColumnFilter
           column={header.column}
           allColumnValues={ROLE_VALUES}
-          renderValueLabel={({ value }) => <span>{value}</span>}
+          renderValueLabel={({ value }) => <span>{ROLE_LABELS[value]}</span>}
         />
       ),
       enrollment_status: ({ header }) => (
@@ -443,7 +448,7 @@ function GradebookTable({
       disabled={allRows.length === 0}
       onClick={() => setCanvasCsvTarget('all')}
     >
-      All users' grades ({allRows.length}) as Canvas CSV
+      نمرات همه کاربران ({allRows.length}) به قالب Canvas CSV
     </button>,
     <button
       key="filtered"
@@ -453,7 +458,7 @@ function GradebookTable({
       disabled={filteredRows.length === 0}
       onClick={() => setCanvasCsvTarget('filtered')}
     >
-      Filtered users' grades ({filteredRows.length}) as Canvas CSV
+      نمرات کاربران فیلترشده ({filteredRows.length}) به قالب Canvas CSV
     </button>,
   ];
 
@@ -462,8 +467,8 @@ function GradebookTable({
       <TanstackTableCard
         table={table}
         title="دفتر نمرات"
-        singularLabel="user"
-        pluralLabel="users"
+        singularLabel="کاربر"
+        pluralLabel="کاربر"
         className="h-100"
         downloadButtonOptions={{
           filenameBase,
@@ -507,8 +512,8 @@ function GradebookTable({
               score_perc: row.scores[assessment.assessment_id]?.score_perc ?? null,
             })),
           }),
-          pluralLabel: "users' grades",
-          singularLabel: "user's grades",
+          pluralLabel: 'نمرات کاربران',
+          singularLabel: 'نمره کاربر',
           hasSelection: false,
           additionalMenuItems: canvasCsvMenuItems,
         }}
@@ -516,17 +521,17 @@ function GradebookTable({
           buttons: (
             <PresetFilterDropdown
               table={table}
-              label="Filter"
+              label="فیلتر"
               options={{
-                'Joined students': [
+                'دانشجویان عضو': [
                   { id: 'enrollment_status', value: DEFAULT_STATUS_FILTER },
                   { id: 'role', value: DEFAULT_ROLE_FILTER },
                 ],
-                'All students': [
+                'همه دانشجویان': [
                   { id: 'enrollment_status', value: EMPTY_STATUS_FILTER },
                   { id: 'role', value: DEFAULT_ROLE_FILTER },
                 ],
-                'All students & staff': [
+                'همه دانشجویان و کادر آموزشی': [
                   { id: 'enrollment_status', value: EMPTY_STATUS_FILTER },
                   { id: 'role', value: EMPTY_ROLE_FILTER },
                 ],
@@ -536,7 +541,7 @@ function GradebookTable({
           ),
         }}
         globalFilter={{
-          placeholder: 'Search by UID, name...',
+          placeholder: 'جستجو بر اساس شناسه کاربری، نام...',
         }}
         tableOptions={{
           filters,

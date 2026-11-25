@@ -120,7 +120,7 @@ function AssessmentQuestionManualGradingInner({
         render={{
           UNKNOWN: ({ message }) => (
             <>
-              <strong>Error:</strong> {message}
+              <strong>خطا:</strong> {message}
             </>
           ),
         }}
@@ -130,10 +130,10 @@ function AssessmentQuestionManualGradingInner({
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0">
             <li className="breadcrumb-item">
-              <a href={`${urlPrefix}/assessment/${assessment.id}/manual_grading`}>Manual grading</a>
+              <a href={`${urlPrefix}/assessment/${assessment.id}/manual_grading`}>تصحیح دستی</a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Question {questionNumber}. {questionTitle}
+              سوال {questionNumber}. {questionTitle}
             </li>
           </ol>
         </nav>
@@ -167,7 +167,7 @@ function AssessmentQuestionManualGradingInner({
               />
               <label className="form-check-label" htmlFor="switchCheckDefault">
                 <i className="bi bi-stars" />
-                AI grading mode
+                حالت تصحیح با هوش مصنوعی
               </label>
             </div>
           </div>

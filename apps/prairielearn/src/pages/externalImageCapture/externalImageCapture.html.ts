@@ -15,7 +15,7 @@ export function ExternalImageCapture({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'External image capture',
+    pageTitle: 'ثبت تصویر خارجی',
     navContext: {
       type: 'student',
       page: 'assessment_instance',
@@ -35,43 +35,43 @@ export function ExternalImageCapture({
       >
         <div id="external-image-capture-loading-container" class="d-flex align-items-center gap-2">
           <div class="spinning-wheel spinner-border">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">در حال بارگذاری...</span>
           </div>
-          <h1 class="d-flex align-items-center my-0">Loading...</h1>
+          <h1 class="d-flex align-items-center my-0">در حال بارگذاری...</h1>
         </div>
         <div
           id="external-image-capture-uploading-container"
           class="d-none align-items-center gap-2"
         >
           <div class="spinning-wheel spinner-border">
-            <span class="visually-hidden">Uploading...</span>
+            <span class="visually-hidden">در حال بارگذاری فایل...</span>
           </div>
-          <h1 class="d-flex align-items-center my-0">Uploading...</h1>
+          <h1 class="d-flex align-items-center my-0">در حال ارسال...</h1>
         </div>
         <div id="external-image-capture-success-container" class="d-none">
           <h1 class="d-flex align-items-center gap-2">
             <i class="bi bi-check-circle-fill text-success me-2"></i>
-            Upload successful
+            بارگذاری با موفقیت انجام شد
           </h1>
-          <p>You should now see your captured image on the assessment page.</p>
+          <p>اکنون باید تصویر ثبت‌شده خود را در صفحه تکلیف/آزمون مشاهده کنید.</p>
         </div>
         <div id="external-image-capture-connection-failed-container" class="d-none">
           <h1 class="d-flex align-items-center gap-2">
             <i class="bi bi-x-circle-fill text-danger me-2"></i>
-            Connection failed
+            اتصال برقرار نشد
           </h1>
-          <p>Unable to connect to the server. Please try again.</p>
+          <p>امکان اتصال به سرور وجود ندارد. لطفاً دوباره تلاش کنید.</p>
         </div>
         <div id="external-image-capture-upload-failed-container" class="d-none">
           <h1 class="d-flex align-items-center gap-2">
             <i class="bi bi-x-circle-fill text-danger me-2"></i>
-            Upload failed
+            بارگذاری ناموفق بود
           </h1>
-          <p>An error occurred during the submission of your file.</p>
+          <p>هنگام ارسال فایل شما خطایی رخ داد.</p>
         </div>
         <div id="external-image-capture-form-container" class="d-none pb-4">
           <div id="form-items">
-            <h1>Capture image</h1>
+            <h1>ثبت تصویر</h1>
 
             <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
             <input type="hidden" name="file_name" value="${fileName}" />
@@ -88,27 +88,26 @@ export function ExternalImageCapture({
               id="image-preview"
               class="img-fluid rounded border border-secondary mb-3 w-100"
               style="display: none;"
-              alt="Image capture preview"
+              alt="پیش‌نمایش تصویر ثبت‌شده"
             />
             <p class="text-muted my-2">
-              Before uploading, make sure your photo is clear, well-lit, and shows all your work
-              legibly.
+              پیش از بارگذاری، مطمئن شوید عکس شما واضح، با نور کافی و نشان‌دهنده تمامی مراحل حل شما به صورت خوانا است.
             </p>
-            <p class="text-muted">Later, you can crop or rotate the image as needed.</p>
+            <p class="text-muted">بعداً می‌توانید تصویر را برش دهید یا بچرخانید.</p>
           </div>
           <button type="submit" class="btn btn-primary d-none" id="upload-button" disabled>
             <i class="bi bi-check2 me-1"></i>
-            <span>Upload</span>
+            <span>بارگذاری</span>
           </button>
           <label for="camera-input" style="cursor: pointer;">
             <button type="button" class="btn btn-primary pe-none">
               <i class="bi bi-camera-fill me-1"></i>
-              <span>Take photo</span>
+              <span>گرفتن عکس</span>
             </button>
           </label>
           <button type="button" class="btn btn-primary d-none" id="try-again-button">
             <i class="bi bi-arrow-counterclockwise me-1"></i>
-            <span>Try again</span>
+            <span>تلاش مجدد</span>
           </button>
         </div>
       </form>

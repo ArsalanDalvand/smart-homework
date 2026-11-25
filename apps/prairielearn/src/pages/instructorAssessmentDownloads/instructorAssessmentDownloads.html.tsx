@@ -92,7 +92,8 @@ export function InstructorAssessmentDownloads({
   filenames: Filenames;
   students: Student[];
 }) {
-  const identity = isTeamWork ? 'group' : 'student';
+  const identityFa = isTeamWork ? 'گروه' : 'دانشجو';
+  const identityPluralFa = isTeamWork ? 'گروه‌ها' : 'دانشجویان';
   const downloadsBase = `${urlPrefix}/assessment/${assessmentId}/downloads/`;
 
   const [canvasModal, setCanvasModal] = useState<{
@@ -112,7 +113,7 @@ export function InstructorAssessmentDownloads({
           <div className="card-body">
             <p>
               <small>
-                این آزمون دارای <strong>چندین نمونه شرکت در آزمون (Multiple Instance)</strong> است و هر {identity === 'group' ? 'گروه' : 'دانشجو'} ممکن است چند بار در آزمون شرکت کرده باشد. فایل‌های CSV در دو قالب ساده و <strong><code>_all</code></strong> در دسترس هستند. نسخه ساده شامل بهترین نتیجه هر {identity === 'group' ? 'گروه' : 'دانشجو'} و نسخه <code>_all</code> شامل تمامی دفعات شرکت در آزمون می‌باشد.
+                این آزمون دارای <strong>چندین نمونه شرکت در آزمون (Multiple Instance)</strong> است و هر {identityFa} ممکن است چند بار در آزمون شرکت کرده باشد. فایل‌های CSV در دو قالب ساده و <strong><code>_all</code></strong> در دسترس هستند. نسخه ساده شامل بهترین نتیجه هر {identityFa} و نسخه <code>_all</code> شامل تمامی دفعات شرکت در آزمون می‌باشد.
               </small>
             </p>
           </div>
@@ -130,25 +131,25 @@ export function InstructorAssessmentDownloads({
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.scoresCsvFilename}`}
                 filename={filenames.scoresCsvFilename}
-                description="Total percentage score for each student. Scores range from 0 to 100 (or higher if bonus credit was given)."
+                description="درصد نمره کل برای هر دانشجو. نمرات از ۰ تا ۱۰۰ (یا بالاتر در صورت اعطای نمره تشویقی) متغیر است."
               />
               {isMultipleInstance && (
                 <DownloadRow
                   downloadUrl={`${downloadsBase}${filenames.scoresAllCsvFilename}`}
                   filename={filenames.scoresAllCsvFilename}
-                  description="Total percentage score for each assessment instance. Scores range from 0 to 100 (or higher if bonus credit was given)."
+                  description="درصد نمره کل برای هر بار شرکت در آزمون. نمرات از ۰ تا ۱۰۰ (یا بالاتر در صورت اعطای نمره تشویقی) متغیر است."
                 />
               )}
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.pointsCsvFilename}`}
                 filename={filenames.pointsCsvFilename}
-                description="Total points for each student. Points range from 0 to the maximum for this assessment."
+                description="مجموع امتیاز برای هر دانشجو. امتیازها از ۰ تا سقف امتیاز این ارزیابی متغیر است."
               />
               {isMultipleInstance && (
                 <DownloadRow
                   downloadUrl={`${downloadsBase}${filenames.pointsAllCsvFilename}`}
                   filename={filenames.pointsAllCsvFilename}
-                  description="Total points for each assessment instance. Points range from 0 to the maximum for this assessment."
+                  description="مجموع امتیاز برای هر بار شرکت در آزمون. امتیازها از ۰ تا سقف امتیاز این ارزیابی متغیر است."
                 />
               )}
               {isTeamWork && (
@@ -156,30 +157,30 @@ export function InstructorAssessmentDownloads({
                   <DownloadRow
                     downloadUrl={`${downloadsBase}${filenames.groupsCsvFilename}`}
                     filename={filenames.groupsCsvFilename!}
-                    description="Information about current groups, including group names and group members"
+                    description="اطلاعات گروه‌های فعلی شامل نام گروه‌ها و اعضای هر گروه"
                   />
                   <DownloadRow
                     downloadUrl={`${downloadsBase}${filenames.scoresGroupCsvFilename}`}
                     filename={filenames.scoresGroupCsvFilename!}
-                    description="Total percentage score for each group. Scores range from 0 to 100 (or higher if bonus credit was given)."
+                    description="درصد نمره کل برای هر گروه. نمرات از ۰ تا ۱۰۰ (یا بالاتر در صورت اعطای نمره تشویقی) متغیر است."
                   />
                   {isMultipleInstance && (
                     <DownloadRow
                       downloadUrl={`${downloadsBase}${filenames.scoresGroupAllCsvFilename}`}
                       filename={filenames.scoresGroupAllCsvFilename!}
-                      description="Total percentage score for each assessment instance. Scores range from 0 to 100 (or higher if bonus credit was given)."
+                      description="درصد نمره کل برای هر بار شرکت در آزمون. نمرات از ۰ تا ۱۰۰ (یا بالاتر در صورت اعطای نمره تشویقی) متغیر است."
                     />
                   )}
                   <DownloadRow
                     downloadUrl={`${downloadsBase}${filenames.pointsGroupCsvFilename}`}
                     filename={filenames.pointsGroupCsvFilename!}
-                    description="Total points for each group. Points range from 0 to the maximum for this assessment."
+                    description="مجموع امتیاز برای هر گروه. امتیازها از ۰ تا سقف امتیاز این ارزیابی متغیر است."
                   />
                   {isMultipleInstance && (
                     <DownloadRow
                       downloadUrl={`${downloadsBase}${filenames.pointsGroupAllCsvFilename}`}
                       filename={filenames.pointsGroupAllCsvFilename!}
-                      description="Total points for each assessment instance. Points range from 0 to the maximum for this assessment."
+                      description="مجموع امتیاز برای هر بار شرکت در آزمون. امتیازها از ۰ تا سقف امتیاز این ارزیابی متغیر است."
                     />
                   )}
                 </>
@@ -187,30 +188,30 @@ export function InstructorAssessmentDownloads({
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.scoresByUsernameCsvFilename}`}
                 filename={filenames.scoresByUsernameCsvFilename}
-                description="Total percentage score for each student, formatted by username for upload into LMS gradebooks. Scores range from 0 to 100 (or higher if bonus credit was given)."
+                description="درصد نمره کل برای هر دانشجو با قالب نام کاربری برای بارگذاری در دفترچه نمرات سامانه آموزش (LMS). نمرات از ۰ تا ۱۰۰ (یا بالاتر در صورت اعطای نمره تشویقی) متغیر است."
               />
               {isMultipleInstance && (
                 <DownloadRow
                   downloadUrl={`${downloadsBase}${filenames.scoresByUsernameAllCsvFilename}`}
                   filename={filenames.scoresByUsernameAllCsvFilename}
-                  description="Total percentage score for each assessment instance, formatted by username for upload into LMS gradebooks. Scores range from 0 to 100 (or higher if bonus credit was given)."
+                  description="درصد نمره کل برای هر بار شرکت در آزمون با قالب نام کاربری برای بارگذاری در دفترچه نمرات سامانه آموزش (LMS). نمرات از ۰ تا ۱۰۰ (یا بالاتر در صورت اعطای نمره تشویقی) متغیر است."
                 />
               )}
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.pointsByUsernameCsvFilename}`}
                 filename={filenames.pointsByUsernameCsvFilename}
-                description="Total points for each student, formatted by username for upload into LMS gradebooks. Points range from 0 to the maximum for this assessment."
+                description="مجموع امتیاز برای هر دانشجو با قالب نام کاربری برای بارگذاری در دفترچه نمرات سامانه آموزش (LMS). امتیازها از ۰ تا سقف امتیاز این ارزیابی متغیر است."
               />
               {isMultipleInstance && (
                 <DownloadRow
                   downloadUrl={`${downloadsBase}${filenames.pointsByUsernameAllCsvFilename}`}
                   filename={filenames.pointsByUsernameAllCsvFilename}
-                  description="Total points for each assessment instance, formatted by username for upload into LMS gradebooks. Points range from 0 to the maximum for this assessment."
+                  description="مجموع امتیاز برای هر بار شرکت در آزمون با قالب نام کاربری برای بارگذاری در دفترچه نمرات سامانه آموزش (LMS). امتیازها از ۰ تا سقف امتیاز این ارزیابی متغیر است."
                 />
               )}
               <CanvasDownloadRow
                 filename={filenames.canvasScoresCsvFilename}
-                description="Percentage scores for each student, formatted for import into Canvas. Scores range from 0 to 100 (or higher if bonus credit was given)."
+                description="درصد نمرات برای هر دانشجو، قالب‌بندی‌شده برای درون‌ریزی در Canvas. نمرات از ۰ تا ۱۰۰ (یا بالاتر در صورت اعطای نمره تشویقی) متغیر است."
                 onClick={() =>
                   setCanvasModal({
                     filename: filenames.canvasScoresCsvFilename,
@@ -220,7 +221,7 @@ export function InstructorAssessmentDownloads({
               />
               <CanvasDownloadRow
                 filename={filenames.canvasPointsCsvFilename}
-                description="Total points for each student, formatted for import into Canvas. Points range from 0 to the maximum for this assessment (or higher if bonus credit was given)."
+                description="مجموع امتیاز هر دانشجو، قالب‌بندی‌شده برای درون‌ریزی در Canvas. امتیازها از ۰ تا سقف امتیاز این ارزیابی (یا بالاتر در صورت اعطای نمره تشویقی) متغیر است."
                 onClick={() =>
                   setCanvasModal({
                     filename: filenames.canvasPointsCsvFilename,
@@ -231,30 +232,30 @@ export function InstructorAssessmentDownloads({
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.instancesCsvFilename}`}
                 filename={filenames.instancesCsvFilename}
-                description={`Detailed data for each ${identity}. Includes points, maximum points, percentage score, duration, and other information.`}
+                description={`داده‌های تفصیلی برای هر ${identityFa}. شامل امتیاز کسب‌شده، حداکثر امتیاز، درصد نمره، مدت زمان و سایر اطلاعات.`}
               />
               {isMultipleInstance && (
                 <DownloadRow
                   downloadUrl={`${downloadsBase}${filenames.instancesAllCsvFilename}`}
                   filename={filenames.instancesAllCsvFilename}
-                  description="Detailed data for each assessment instance. Includes points, maximum points, percentage score, duration, and other information."
+                  description="داده‌های تفصیلی برای هر بار شرکت در آزمون. شامل امتیاز کسب‌شده، حداکثر امتیاز، درصد نمره، مدت زمان و سایر اطلاعات."
                 />
               )}
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.instanceQuestionsCsvFilename}`}
                 filename={filenames.instanceQuestionsCsvFilename}
-                description={`All questions for all ${identity}s for all assessment instances. Shows the score for each question as well as the best submission score and the number of attempts at the question.`}
+                description={`تمام سوالات برای همه ${identityPluralFa} در تمام دفعات شرکت در آزمون. نمره هر سوال و همچنین بهترین نمره ارسالی و تعداد تلاش‌ها برای آن سوال را نمایش می‌دهد.`}
               />
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.submissionsForManualGradingCsvFilename}`}
                 filename={filenames.submissionsForManualGradingCsvFilename}
                 description={
                   <>
-                    Submitted answers for all {identity}s and all questions, formatted for offline
-                    manual grading and re-upload (see the "Upload" tab). For each {identity} and
-                    each question, only the most recent submission from the most recent assessment
-                    instance is included. Files are stripped from the submitted answer in the CSV
-                    and are available as <code>{filenames.filesForManualGradingZipFilename}</code>.
+                    پاسخ‌های ارسال‌شده برای همه {identityPluralFa} و تمام سوالات، قالب‌بندی‌شده برای
+                    نمره‌دهی دستی آفلاین و بارگذاری مجدد (بخش «بارگذاری» را ببینید). برای هر{' '}
+                    {identityFa} و هر سوال، تنها آخرین ارسال از آخرین بار شرکت در آزمون گنجانده
+                    می‌شود. فایل‌ها از پاسخ ارسال‌شده در CSV حذف شده و در قالب{' '}
+                    <code>{filenames.filesForManualGradingZipFilename}</code> در دسترس هستند.
                   </>
                 }
               />
@@ -263,11 +264,11 @@ export function InstructorAssessmentDownloads({
                 filename={filenames.filesForManualGradingZipFilename}
                 description={
                   <>
-                    Submitted files for all {identity}s and all questions, named for easy use with
-                    offline manual grading. These files match the submissions in{' '}
-                    <code>{filenames.submissionsForManualGradingCsvFilename}</code>. For each{' '}
-                    {identity} and each question, only the most recent submitted file from the most
-                    recent assessment instance is included. The filename format is{' '}
+                    فایل‌های ارسال‌شده برای همه {identityPluralFa} و تمام سوالات، نام‌گذاری‌شده برای
+                    استفاده آسان در نمره‌دهی دستی آفلاین. این فایل‌ها با ارسال‌های موجود در{' '}
+                    <code>{filenames.submissionsForManualGradingCsvFilename}</code> مطابقت دارند.
+                    برای هر {identityFa} و هر سوال، تنها آخرین فایل ارسال‌شده از آخرین بار شرکت در
+                    آزمون گنجانده می‌شود. قالب نام فایل به صورت زیر است:{' '}
                     <code>
                       {isTeamWork ? (
                         <>
@@ -283,27 +284,27 @@ export function InstructorAssessmentDownloads({
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.allSubmissionsCsvFilename}`}
                 filename={filenames.allSubmissionsCsvFilename}
-                description={`All submitted answers for all ${identity}s for all assessment instances. Not all submitted answers will have been used to compute the final score, as some may have been superseded by subsequent attempts.`}
+                description={`تمام پاسخ‌های ارسال‌شده برای همه ${identityPluralFa} در تمام دفعات شرکت در آزمون. ممکن است همه پاسخ‌ها در محاسبه نمره نهایی لحاظ نشده باشند، زیرا برخی با تلاش‌های بعدی جایگزین شده‌اند.`}
               />
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.finalSubmissionsCsvFilename}`}
                 filename={filenames.finalSubmissionsCsvFilename}
-                description={`Final submitted answers for each question for all ${identity}s for all assessment instances.`}
+                description={`پاسخ‌های نهایی ارسال‌شده برای هر سوال برای همه ${identityPluralFa} در تمام دفعات شرکت در آزمون.`}
               />
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.bestSubmissionsCsvFilename}`}
                 filename={filenames.bestSubmissionsCsvFilename}
-                description={`Best submitted answers for each question for all ${identity}s for all assessment instances. If a ${identity} has no graded submissions for a question, then the last submission (if any) is used instead.`}
+                description={`بهترین پاسخ‌های ارسال‌شده برای هر سوال برای همه ${identityPluralFa} در تمام دفعات شرکت در آزمون. اگر ${identityFa} هیچ ارسال نمره‌داده‌شده‌ای برای یک سوال نداشته باشد، آخرین ارسال (در صورت وجود) جایگزین می‌شود.`}
               />
               <DownloadRow
                 downloadUrl={`${downloadsBase}${filenames.allFilesZipFilename}`}
                 filename={filenames.allFilesZipFilename}
                 description={
                   <>
-                    All submitted files for all {identity}s for all assessment instances. Only data
-                    from <code>File</code>-type questions will be included in the zip. Not all
-                    submitted files will have been used to compute the final score, as some may have
-                    been superseded by subsequent attempts. The filename format is{' '}
+                    تمام فایل‌های ارسال‌شده برای همه {identityPluralFa} در تمام دفعات شرکت در آزمون.
+                    تنها داده‌های سوالات نوع <code>File</code> در فایل زیپ گنجانده می‌شوند. ممکن
+                    است همه فایل‌های ارسال‌شده در محاسبه نمره نهایی لحاظ نشده باشند، زیرا برخی با
+                    تلاش‌های بعدی جایگزین شده‌اند. قالب نام فایل به صورت زیر است:{' '}
                     <code>
                       {isTeamWork ? (
                         <>
@@ -323,9 +324,9 @@ export function InstructorAssessmentDownloads({
                 filename={filenames.finalFilesZipFilename}
                 description={
                   <>
-                    Final submitted files for each question for all {identity}s for all assessment
-                    instances. Only data from <code>File</code>-type questions will be included in
-                    the zip.
+                    فایل‌های نهایی ارسال‌شده برای هر سوال برای همه {identityPluralFa} در تمام دفعات
+                    شرکت در آزمون. تنها داده‌های سوالات نوع <code>File</code> در فایل زیپ گنجانده
+                    می‌شوند.
                   </>
                 }
               />
@@ -334,10 +335,10 @@ export function InstructorAssessmentDownloads({
                 filename={filenames.bestFilesZipFilename}
                 description={
                   <>
-                    Best submitted files for each question for all {identity}s for all assessment
-                    instances. Only data from <code>File</code>-type questions will be included in
-                    the zip. If a {identity} has no graded submissions for a question then the last
-                    submission (if any) is used instead.
+                    بهترین فایل‌های ارسال‌شده برای هر سوال برای همه {identityPluralFa} در تمام دفعات
+                    شرکت در آزمون. تنها داده‌های سوالات نوع <code>File</code> در فایل زیپ گنجانده
+                    می‌شوند. اگر {identityFa} هیچ ارسال نمره‌داده‌شده‌ای برای یک سوال نداشته باشد،
+                    آخرین ارسال (در صورت وجود) جایگزین می‌شود.
                   </>
                 }
               />

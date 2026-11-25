@@ -18,7 +18,7 @@ export interface InstanceQuestionGradingConflictModalProps {
 function GradeMetadata({ gradedAt, graderName }: Pick<ConflictGrade, 'gradedAt' | 'graderName'>) {
   return (
     <div className="mb-2">
-      {gradedAt ? `${gradedAt}, ` : ''}by {graderName}
+      {gradedAt ? `${gradedAt}، ` : ''}توسط {graderName}
     </div>
   );
 }
@@ -38,18 +38,18 @@ export function InstanceQuestionGradingConflictModal({
       onHide={() => setShow(false)}
     >
       <Modal.Header className="bg-danger text-light" closeVariant="white" closeButton>
-        <Modal.Title id="grading-conflict-modal-title">Grading conflict identified</Modal.Title>
+        <Modal.Title id="grading-conflict-modal-title">تداخل در تصحیح شناسایی شد</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Alert variant="danger">
-          The submission you have just graded has already been graded by {existingGrade.graderName}.
-          Your score and feedback have not been applied. Please review the feedback below and select
-          how you would like to proceed.
+          ارسالی که هم‌اکنون تصحیح کردید، قبلاً توسط {existingGrade.graderName} تصحیح شده است.
+          نمره و بازخورد شما اعمال نشد. لطفاً بازخوردهای زیر را بررسی کرده و نحوه ادامه را
+          انتخاب کنید.
         </Alert>
         <Row className="mb-2">
           <Col xs={12} lg={6}>
             <div>
-              <strong>Existing score and feedback</strong>
+              <strong>نمره و بازخورد فعلی</strong>
             </div>
             <GradeMetadata
               gradedAt={existingGrade.gradedAt}
@@ -61,7 +61,7 @@ export function InstanceQuestionGradingConflictModal({
           </Col>
           <Col xs={12} lg={6}>
             <div>
-              <strong>Conflicting score and feedback</strong>
+              <strong>نمره و بازخورد متداخل</strong>
             </div>
             <GradeMetadata
               gradedAt={conflictingGrade.gradedAt}

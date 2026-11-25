@@ -4,18 +4,18 @@ import type { JobProgressWithStatus } from './useServerJobProgress.js';
 const STATUS_ICONS = { inProgress: 'bi-stars' };
 
 const STATUS_TEXT = {
-  inProgress: 'AI grading in progress',
-  stopping: 'Stopping AI grading…',
-  stopped: 'AI grading stopped',
-  complete: 'AI grading complete',
-  failed: 'AI grading failed',
+  inProgress: 'تصحیح با هوش مصنوعی در حال انجام است',
+  stopping: 'در حال توقف تصحیح با هوش مصنوعی…',
+  stopped: 'تصحیح با هوش مصنوعی متوقف شد',
+  complete: 'تصحیح با هوش مصنوعی تکمیل شد',
+  failed: 'تصحیح با هوش مصنوعی ناموفق بود',
 };
 
 const STOP_CONFIRMATION = {
-  title: 'Stop AI grading',
-  body: 'In-progress submissions will finish. The rest will be skipped.',
-  confirmLabel: 'Stop grading',
-  cancelLabel: 'Keep grading',
+  title: 'توقف تصحیح با هوش مصنوعی',
+  body: 'ارسال‌های در حال تصحیح به پایان می‌رسند و بقیه نادیده گرفته می‌شوند.',
+  confirmLabel: 'توقف تصحیح',
+  cancelLabel: 'ادامه تصحیح',
 };
 
 export function AiGradingProgressInfo({
@@ -34,7 +34,7 @@ export function AiGradingProgressInfo({
   if (hasCourseInstancePermissionEdit) {
     return (
       <ServerJobsProgressInfo
-        itemNames="submissions graded"
+        itemNames="ارسال تصحیح‌شده"
         jobsProgress={jobsProgress}
         courseInstanceId={courseInstanceId}
         statusIcons={STATUS_ICONS}
@@ -48,7 +48,7 @@ export function AiGradingProgressInfo({
   }
   return (
     <ServerJobsProgressInfo
-      itemNames="submissions graded"
+      itemNames="ارسال تصحیح‌شده"
       jobsProgress={jobsProgress}
       courseInstanceId={courseInstanceId}
       statusIcons={STATUS_ICONS}

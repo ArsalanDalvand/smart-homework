@@ -368,7 +368,7 @@ function IssuePanel({
       <div class="table-responsive">
         <table
           class="table table-sm table-hover two-column-description"
-          aria-label="Issue information"
+          aria-label="اطلاعات گزارش اشکال"
         >
           <tbody>
             ${
@@ -412,11 +412,11 @@ function IssuePanel({
                     `
             }
             <tr>
-              <th>ID:</th>
+              <th>شناسه:</th>
               <td>${issue.id}</td>
             </tr>
             <tr>
-              <th>Date:</th>
+              <th>تاریخ:</th>
               <td>
                 ${formatDate(
                   issue.date!,
@@ -439,7 +439,7 @@ function IssuePanel({
                   issue.system_data?.courseErrData
                     ? html`
                         <li class="list-group-item">
-                          <p class="mb-2"><strong>Console log:</strong></p>
+                          <p class="mb-2"><strong>گزارش کنسول:</strong></p>
                           <pre
                             class="bg-dark text-white rounded p-3 mb-0"
                             style="max-height: 60vh;"
@@ -701,11 +701,11 @@ export function QuestionFooterContent({
                       type="button"
                       class="btn btn-xs btn-ghost me-1"
                       data-bs-toggle="popover"
-                      data-bs-content="Your group role (${getRoleNamesForUser(
+                      data-bs-content="نقش گروهی شما (${getRoleNamesForUser(
                         group_info,
                         user,
-                      ).join(', ')}) is not allowed to submit this question."
-                      aria-label="Submission blocked"
+                      ).join(', ')}) مجاز به ارسال پاسخ برای این سوال نیست."
+                      aria-label="ارسال پاسخ مسدود شده است"
                     >
                       <i class="fa fa-lock" aria-hidden="true"></i>
                     </button>
@@ -814,16 +814,14 @@ function SubmitRateFooter({
   if (!showGradeButton || !assessment_question?.grade_rate_minutes) return '';
   const popoverContent = html`
     <p>
-      Once you have clicked <strong>Save &amp; Grade</strong>, you will need to wait
-      ${assessment_question.grade_rate_minutes}
-      ${assessment_question.grade_rate_minutes > 1 ? 'minutes' : 'minute'} before you can grade
-      again.
+      پس از کلیک روی دکمه <strong>ارسال و تصحیح خودکار</strong>، پیش از آنکه بتوانید دوباره تصحیح
+      را انجام دهید باید ${assessment_question.grade_rate_minutes} دقیقه صبر کنید.
     </p>
     <p>
-      You can still save your answer as frequently as you like.
+      همچنان می‌توانید پاسخ خود را هر چند بار که مایل هستید ذخیره کنید.
       ${
         questionContext === 'student_exam'
-          ? 'If your assessment ends before your last saved answer is graded, it will be automatically graded for you.'
+          ? 'اگر آزمون پیش از تصحیح آخرین پاسخ ذخیره‌شده شما به پایان برسد، پاسخ به‌صورت خودکار برای شما تصحیح خواهد شد.'
           : ''
       }
     </p>
@@ -852,8 +850,7 @@ function SubmitRateFooter({
         </span>
         <span class="d-flex align-self-center">
           <small class="fst-italic">
-            امکان تصحیح مجدد هر ${assessment_question.grade_rate_minutes}
-            ${assessment_question.grade_rate_minutes > 1 ? 'minutes' : 'minute'}
+            امکان تصحیح مجدد هر ${assessment_question.grade_rate_minutes} دقیقه
           </small>
           <button
             type="button"
@@ -908,29 +905,25 @@ function AvailablePointsNotes({
 
   const roundedPoints = instance_question.points_list.map((p: number) => Math.round(p * 100) / 100);
   const maxManualPoints = assessment_question?.max_manual_points ?? 0;
-  const additional = instance_question.points === 0 ? '' : 'additional';
-  const attemptSuffix = assessment_question?.allow_real_time_grading ? 'for this attempt' : '';
+  const additional = instance_question.points === 0 ? '' : ' اضافه';
+  const attemptSuffix = assessment_question?.allow_real_time_grading ? ' برای این تلاش' : '';
 
   return html`
     <small class="fst-italic text-end">
-      ${
-        roundedPoints[0] === 1
-          ? `1 ${additional} point available ${attemptSuffix}`
-          : `${roundedPoints[0]} ${additional} points available ${attemptSuffix}`
-      }
+      ${`${roundedPoints[0]} امتیاز${additional} در دسترس${attemptSuffix}`}
       ${
         maxManualPoints > 0
           ? roundedPoints[0] > maxManualPoints
-            ? html`&mdash; ${Math.round((roundedPoints[0] - maxManualPoints) * 100) / 100}
-              auto-graded, ${maxManualPoints} manually graded`
-            : html`&mdash; manually graded`
+            ? html`&mdash; ${Math.round((roundedPoints[0] - maxManualPoints) * 100) / 100} تصحیح
+              خودکار، ${maxManualPoints} تصحیح دستی`
+            : html`&mdash; تصحیح دستی`
           : ''
       }
       ${
         roundedPoints.length === 2
-          ? html`<br />(following attempt is worth: ${roundedPoints[1]})`
+          ? html`<br />(ارزش تلاش بعدی: ${roundedPoints[1]})`
           : roundedPoints.length > 2
-            ? html`<br />(following attempts are worth: ${roundedPoints.slice(1).join(', ')})`
+            ? html`<br />(ارزش تلاش‌های بعدی: ${roundedPoints.slice(1).join('، ')})`
             : ''
       }
     </small>

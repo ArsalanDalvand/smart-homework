@@ -22,35 +22,35 @@ export function GroupWorkInfoContainer({
       <div class="row">
         <div class="col-sm bg-light py-4 px-4 border">
           <div>
-            <strong>Group name:</strong> <span id="group-name">${groupInfo.groupName}</span>
+            <strong>نام گروه:</strong> <span id="group-name">${groupInfo.groupName}</span>
           </div>
           ${
             groupConfig.student_authz_join
               ? html`
                   <div>
-                    <strong>Join code:</strong> <span id="join-code">${groupInfo.joinCode}</span>
+                    <strong>کد پیوستن:</strong> <span id="join-code">${groupInfo.joinCode}</span>
                   </div>
                   <div class="mt-3">
                     ${
                       (groupConfig.minimum ?? 0) > 1
                         ? html`
-                            This is a group assessment. Use your join code to invite others to join
-                            the group. A group must have
+                            این یک تکلیف/آزمون گروهی است. از کد پیوستن خود برای دعوت سایرین به گروه
+                            استفاده کنید. هر گروه باید
                             ${
                               groupConfig.minimum === groupConfig.maximum
                                 ? groupConfig.minimum
                                 : groupConfig.maximum
-                                  ? `between ${groupConfig.minimum} and ${groupConfig.maximum}`
-                                  : `at least ${groupConfig.minimum}`
+                                  ? `بین ${groupConfig.minimum} تا ${groupConfig.maximum}`
+                                  : `حداقل ${groupConfig.minimum}`
                             }
-                            students.
+                            دانشجو داشته باشد.
                           `
                         : html`
-                            This assessment can be done individually or in groups. Use your join
-                            code if you wish to invite others to join the group.
+                            این تکلیف/آزمون می‌تواند به‌صورت فردی یا گروهی انجام شود. در صورت تمایل
+                            برای دعوت سایرین به گروه، از کد پیوستن خود استفاده کنید.
                             ${
                               groupConfig.maximum
-                                ? `A group must have no more than ${groupConfig.maximum} students.`
+                                ? `هر گروه نباید بیش از ${groupConfig.maximum} دانشجو داشته باشد.`
                                 : ''
                             }
                           `
@@ -71,14 +71,14 @@ export function GroupWorkInfoContainer({
                       data-bs-toggle="modal"
                       data-bs-target="#leaveGroupModal"
                     >
-                      Leave the group
+                      ترک گروه
                     </button>
                   </div>
                   ${LeaveGroupModal({ csrfToken })}
                 `
               : ''
           }
-          <span id="group-member"><b>Group members: </b></span>
+          <span id="group-member"><b>اعضای گروه: </b></span>
           ${groupInfo.groupMembers.map((user) =>
             groupConfig.has_roles
               ? html`
@@ -87,7 +87,7 @@ export function GroupWorkInfoContainer({
                     ${
                       groupInfo.rolesInfo?.roleAssignments[user.uid]
                         ?.map((a) => a.role_name)
-                        .join(', ') || 'No role assigned'
+                        .join(', ') || 'نقشی تخصیص داده نشده است'
                     }
                   </li>
                 `
@@ -103,19 +103,19 @@ export function GroupWorkInfoContainer({
 function LeaveGroupModal({ csrfToken }: { csrfToken: string }) {
   return Modal({
     id: 'leaveGroupModal',
-    title: 'Confirm leave group',
+    title: 'تایید ترک گروه',
     body: html`
-      <p>Are you sure you want to leave the group?</p>
+      <p>آیا مطمئن هستید که می‌خواهید گروه را ترک کنید؟</p>
       <p>
-        You will lose access to any work done by the group and you might not be able to re-join
-        later.
+        دسترسی خود به تمامی کارهای انجام‌شده توسط گروه را از دست خواهید داد و ممکن است بعداً نتوانید
+        دوباره به گروه بپیوندید.
       </p>
     `,
     footer: html`
       <input type="hidden" name="__action" value="leave_group" />
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button id="leave-group" type="submit" class="btn btn-danger">Leave group</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+      <button id="leave-group" type="submit" class="btn btn-danger">ترک گروه</button>
     `,
   });
 }
@@ -140,21 +140,21 @@ function GroupRoleTable({
       roleConfigProblems > 0
         ? html`
             <div class="alert alert-danger mt-2" role="alert">
-              Your group's role configuration is currently invalid. Please review the role
-              requirements and
+              پیکربندی نقش‌های گروه شما در حال حاضر نامعتبر است. لطفاً الزامات نقش‌ها را بررسی کرده
+              و
               ${
                 userCanAssignRoles
-                  ? 'assign a valid role configuration'
-                  : 'ask a user with an assigner role to update the role configuration'
+                  ? 'یک پیکربندی نقش معتبر اختصاص دهید'
+                  : 'از کاربری که نقش تخصیص‌دهنده دارد بخواهید پیکربندی نقش‌ها را به‌روزرسانی کند'
               }.
-              Question submissions are disabled until the role configuration is valid.
+              تا زمانی که پیکربندی نقش‌ها معتبر نشود، امکان ارسال پاسخ به سوالات غیرفعال است.
             </div>
           `
         : ''
     }
     <details class="card mb-2">
       <summary class="card-header bg-secondary text-light">
-        ${userCanAssignRoles ? 'Manage group roles' : 'View group roles'}
+        ${userCanAssignRoles ? 'مدیریت نقش‌های گروه' : 'مشاهده نقش‌های گروه'}
         ${
           roleConfigProblems > 0
             ? html`
@@ -171,20 +171,20 @@ function GroupRoleTable({
       <div class="card-body">
         ${GroupRoleErrors({ rolesInfo, groupSize })}
         <p>
-          This assessment contains group roles, which selectively allow students to view questions,
-          submit answers, and change group role assignments.
+          این تکلیف/آزمون شامل نقش‌های گروهی است که به‌صورت انتخابی به دانشجویان اجازه می‌دهد
+          سوالات را مشاهده کنند، پاسخ ارسال کنند و تخصیص نقش‌های گروه را تغییر دهند.
         </p>
 
         <form id="role-select-form" name="role-select-form" method="POST">
           <div class="table-responsive mb-3">
             <table
               class="table table-bordered table-striped table-sm mb-0"
-              aria-label="Group users and roles"
+              aria-label="کاربران و نقش‌های گروه"
             >
               <thead>
                 <tr>
-                  <th>User</th>
-                  <th>Roles</th>
+                  <th>کاربر</th>
+                  <th>نقش‌ها</th>
                 </tr>
               </thead>
               <tbody>
@@ -239,7 +239,7 @@ function GroupRoleTable({
                   <div class="d-flex justify-content-center">
                     <input type="hidden" name="__action" value="update_group_roles" />
                     <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-                    <button type="submit" class="btn btn-primary">Update Roles</button>
+                    <button type="submit" class="btn btn-primary">به‌روزرسانی نقش‌ها</button>
                   </div>
                 `
               : ''
@@ -250,14 +250,14 @@ function GroupRoleTable({
         <div class="table-responsive">
           <table
             class="table table-bordered table-striped table-sm w-auto mb-0"
-            aria-label="Role requirements and restrictions"
+            aria-label="الزامات و محدودیت‌های نقش"
           >
             <thead>
               <tr>
-                <th>Role</th>
-                <th>Minimum assignments</th>
-                <th>Maximum assignments</th>
-                <th>Can assign roles</th>
+                <th>نقش</th>
+                <th>حداقل تخصیص</th>
+                <th>حداکثر تخصیص</th>
+                <th>امکان تخصیص نقش</th>
               </tr>
             </thead>
             <tbody>
@@ -266,8 +266,8 @@ function GroupRoleTable({
                   <tr>
                     <td>${groupRole.role_name}</td>
                     <td>${groupRole.minimum ?? 0}</td>
-                    <td>${groupRole.maximum ?? 'Unlimited'}</td>
-                    <td>${groupRole.can_assign_roles ? 'Yes' : 'No'}</td>
+                    <td>${groupRole.maximum ?? 'نامحدود'}</td>
+                    <td>${groupRole.can_assign_roles ? 'بله' : 'خیر'}</td>
                   </tr>
                 `,
               )}
@@ -291,8 +291,8 @@ function GroupRoleErrors({
       !rolesInfo.rolesAreBalanced
         ? html`
             <div class="alert alert-danger" role="alert">
-              At least one student has too many roles. In a group with ${groupSize} students, every
-              student must be assigned to exactly <strong>one</strong> role.
+              حداقل یک دانشجو نقش‌های بیش از حد دارد. در گروهی با ${groupSize} دانشجو، به هر
+              دانشجو باید دقیقاً <strong>یک</strong> نقش اختصاص داده شود.
             </div>
           `
         : ''
@@ -303,24 +303,20 @@ function GroupRoleErrors({
           ${
             minimum != null && count < minimum
               ? html`
-                  ${minimum - count} more
-                  ${minimum - count === 1 ? 'student needs' : 'students need'} to be assigned to the
-                  role "${role_name}"
+                  ${minimum - count} دانشجوی دیگر باید به نقش «${role_name}» اختصاص داده شوند
                 `
               : maximum != null && count > maximum
                 ? html`
-                    ${count - maximum} less
-                    ${count - maximum === 1 ? 'student needs' : 'students need'} to be assigned to
-                    the role "${role_name}"
+                    ${count - maximum} دانشجوی کمتر باید به نقش «${role_name}» اختصاص داده شوند
                   `
                 : ''
           }
           ${
             maximum === minimum
-              ? html` (${count} assigned, ${minimum} expected). `
+              ? html` (${count} تخصیص یافته، ${minimum} مورد انتظار). `
               : maximum == null
-                ? html` (${count} assigned, at least ${minimum} expected). `
-                : html` (${count} assigned, between ${minimum ?? 0} and ${maximum} expected). `
+                ? html` (${count} تخصیص یافته، حداقل ${minimum} مورد انتظار). `
+                : html` (${count} تخصیص یافته، بین ${minimum ?? 0} تا ${maximum} مورد انتظار). `
           }
         </div>
       `,
@@ -329,7 +325,7 @@ function GroupRoleErrors({
       rolesInfo.usersWithoutRoles.length > 0
         ? html`
             <div class="alert alert-danger" role="alert">
-              At least one user does not have a role. All users must have a role.
+              حداقل یک کاربر هیچ نقشی ندارد. همه کاربران باید دارای نقش باشند.
             </div>
           `
         : ''

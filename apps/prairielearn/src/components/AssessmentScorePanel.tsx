@@ -35,7 +35,7 @@ export function AssessmentScorePanel({
           </a>
         </div>
       </div>
-      <table class="table table-sm" aria-label="Assessment score">
+      <table class="table table-sm" aria-label="نمره تکلیف/آزمون">
         <tbody>
           <tr>
             <td>مجموع امتیازات:</td>

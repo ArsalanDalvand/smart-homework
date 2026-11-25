@@ -51,6 +51,7 @@ import type { AssessmentInstanceRow } from '../instructorAssessmentInstances.typ
 
 import { type HelpModalId, HelpModals } from './HelpModals.js';
 import { InstanceSelectionToolbar } from './InstanceSelectionToolbar.js';
+import { formatTimeDisplay } from './TimeLimitEditForm.js';
 import { TimeLimitModal } from './TimeLimitModal.js';
 
 type ColumnFilter = (props: { header: TanstackTableHeader<AssessmentInstanceRow> }) => ReactNode;
@@ -60,6 +61,11 @@ const DEFAULT_SORT: SortingState = [];
 
 const ROLE_VALUES = ['Staff', 'Student', 'None'] as const;
 type RoleValue = (typeof ROLE_VALUES)[number];
+const ROLE_LABELS: Record<RoleValue, string> = {
+  Staff: 'کادر آموزشی',
+  Student: 'دانشجو',
+  None: 'بدون نقش',
+};
 const STUDENTS_ONLY_FILTER: MultiSelectFilterValue<RoleValue> = {
   values: ['Student'],
   mode: 'include',
@@ -139,13 +145,15 @@ function autoSizeSampleByMeasure(
 }
 
 function listText(list: (string | null)[] | null): string {
-  if (!list?.[0]) return '(empty)';
+  if (!list?.[0]) return '(خالی)';
   return list.filter((v): v is string => v != null).join(', ');
 }
 
 function uniqueListText(list: string[] | null): string {
-  if (!list?.[0]) return '(empty)';
-  return Array.from(new Set(list)).join(', ');
+  if (!list?.[0]) return '(خالی)';
+  return Array.from(new Set(list))
+    .map((role) => ROLE_LABELS[role as RoleValue] ?? role)
+    .join('، ');
 }
 
 function HelpHeader({
@@ -163,7 +171,7 @@ function HelpHeader({
       <button
         type="button"
         className="btn btn-xs btn-ghost p-0"
-        aria-label={`${label} help`}
+        aria-label={`راهنمای ${label}`}
         onClick={(e) => {
           e.stopPropagation();
           onShowHelp(modalId);
@@ -181,7 +189,7 @@ function SelectAllCheckbox({ table }: { table: TanstackTableCoreInstance<Assessm
     <IndeterminateCheckbox
       checked={allSelected}
       indeterminate={table.getIsSomePageRowsSelected() && !allSelected}
-      aria-label="Select all instances"
+      aria-label="انتخاب همه آزمون‌ها"
       onChange={table.getToggleAllPageRowsSelectedHandler()}
     />
   );
@@ -278,7 +286,7 @@ export function AssessmentInstancesTable({
           cell: ({ row }) => (
             <input
               type="checkbox"
-              aria-label={`Select instance ${row.original.assessment_instance.id}`}
+              aria-label={`انتخاب آزمون ${row.original.assessment_instance.id}`}
               checked={row.getIsSelected()}
               disabled={!row.getCanSelect()}
               onChange={row.getToggleSelectedHandler()}
@@ -297,7 +305,7 @@ export function AssessmentInstancesTable({
     cols.push(
       columnHelper.accessor((row) => row.assessment_instance.id, {
         id: 'identity',
-        header: 'Instance',
+        header: 'نمونه آزمون',
         enableHiding: false,
         cell: (info) => {
           const row = info.row.original;
@@ -317,7 +325,7 @@ export function AssessmentInstancesTable({
             >
               {assessmentSet.abbreviation}
               {assessment.number}
-              {number} for {name}
+              {number} برای {name}
             </a>
           );
         },
@@ -345,29 +353,29 @@ export function AssessmentInstancesTable({
       cols.push(
         columnHelper.accessor((row) => row.group?.name ?? null, {
           id: 'group_name',
-          header: 'Name',
+          header: 'نام',
           cell: (info) => info.getValue(),
           size: 150,
         }),
         columnHelper.accessor((row) => listText(row.uid_list), {
           id: 'uid_list',
-          header: 'Group members',
+          header: 'اعضای گروه',
           cell: (info) => <small>{info.getValue()}</small>,
-          meta: { label: 'Group members' },
+          meta: { label: 'اعضای گروه' },
           size: 200,
         }),
         columnHelper.accessor((row) => listText(row.user_name_list), {
           id: 'user_name_list',
-          header: 'Group member names',
+          header: 'نام اعضای گروه',
           cell: (info) => <small>{info.getValue()}</small>,
-          meta: { label: 'Group member names' },
+          meta: { label: 'نام اعضای گروه' },
           size: 200,
         }),
         columnHelper.accessor((row) => uniqueListText(row.group_roles), {
           id: 'group_roles',
-          header: () => <HelpHeader label="Roles" modalId="roles" onShowHelp={setHelpModal} />,
+          header: () => <HelpHeader label="نقش‌ها" modalId="roles" onShowHelp={setHelpModal} />,
           cell: (info) => <small>{info.getValue()}</small>,
-          meta: { label: 'Roles' },
+          meta: { label: 'نقش‌ها' },
           filterFn: (row, _columnId, filter: MultiSelectFilterValue<RoleValue>) =>
             applyMultiSelectFilter(filter, (values) =>
               values.some((value) => row.original.group_roles?.includes(value) ?? false),
@@ -379,14 +387,14 @@ export function AssessmentInstancesTable({
       cols.push(
         columnHelper.accessor((row) => row.user?.uid ?? null, {
           id: 'uid',
-          header: 'UID',
+          header: 'شناسه کاربری (UID)',
           cell: (info) => info.getValue(),
-          meta: { label: 'UID' },
+          meta: { label: 'شناسه کاربری (UID)' },
           size: 200,
         }),
         columnHelper.accessor((row) => row.user?.name ?? null, {
           id: 'name',
-          header: 'Name',
+          header: 'نام',
           cell: (info) => {
             const name = info.getValue();
             const enrollmentId = info.row.original.enrollment_id;
@@ -398,9 +406,9 @@ export function AssessmentInstancesTable({
         }),
         columnHelper.accessor((row) => row.role, {
           id: 'role',
-          header: () => <HelpHeader label="Role" modalId="roles" onShowHelp={setHelpModal} />,
-          cell: (info) => info.getValue(),
-          meta: { label: 'Role' },
+          header: () => <HelpHeader label="نقش" modalId="roles" onShowHelp={setHelpModal} />,
+          cell: (info) => ROLE_LABELS[info.getValue()],
+          meta: { label: 'نقش' },
           filterFn: (row, _columnId, filter: MultiSelectFilterValue<RoleValue>) =>
             applyMultiSelectFilter(filter, (values) => values.includes(row.original.role)),
           size: 120,
@@ -411,23 +419,23 @@ export function AssessmentInstancesTable({
     cols.push(
       columnHelper.accessor((row) => row.assessment_instance.number, {
         id: 'number',
-        header: 'Instance #',
+        header: 'شماره آزمون',
         cell: (info) => info.getValue(),
-        meta: { label: 'Instance #' },
+        meta: { label: 'شماره آزمون' },
         filterFn: numericColumnFilterFn,
         size: 100,
       }),
       columnHelper.accessor((row) => row.assessment_instance.score_perc, {
         id: 'score_perc',
-        header: 'Score',
+        header: 'نمره',
         cell: (info) => <Scorebar score={info.getValue()} />,
-        meta: { label: 'Score' },
+        meta: { label: 'نمره' },
         filterFn: numericColumnFilterFn,
         size: 150,
       }),
       columnHelper.accessor((row) => row.assessment_instance.date, {
         id: 'date',
-        header: 'Date started',
+        header: 'تاریخ شروع',
         cell: (info) => {
           const date = info.getValue();
           if (!date) return null;
@@ -439,7 +447,7 @@ export function AssessmentInstancesTable({
         },
         sortFn: 'datetime',
         meta: {
-          label: 'Date started',
+          label: 'تاریخ شروع',
           autoSize: true,
           autoSizeSample: (rows) => autoSizeSampleByMeasure(rows, (r) => r.date_formatted.length),
         },
@@ -448,27 +456,27 @@ export function AssessmentInstancesTable({
       }),
       columnHelper.accessor((row) => row.assessment_instance.duration, {
         id: 'duration',
-        header: () => <HelpHeader label="Duration" modalId="duration" onShowHelp={setHelpModal} />,
+        header: () => <HelpHeader label="مدت زمان" modalId="duration" onShowHelp={setHelpModal} />,
         cell: (info) => <span className="text-nowrap">{info.row.original.duration_formatted}</span>,
-        meta: { label: 'Duration' },
+        meta: { label: 'مدت زمان' },
         filterFn: durationMinutesFilterFn,
         size: 130,
       }),
       columnHelper.accessor((row) => row.time_remaining_sec, {
         id: 'time_remaining',
         header: () => (
-          <HelpHeader label="Remaining" modalId="timeRemaining" onShowHelp={setHelpModal} />
+          <HelpHeader label="زمان باقی‌مانده" modalId="timeRemaining" onShowHelp={setHelpModal} />
         ),
         cell: (info) => {
           const row = info.row.original;
           return (
             <span className="text-nowrap d-flex align-items-center">
-              <span className="flex-shrink-1 text-truncate">{row.time_remaining}</span>
+              <span className="flex-shrink-1 text-truncate">{formatTimeDisplay(row.time_remaining)}</span>
               {canEdit ? (
                 <button
                   type="button"
                   className="btn btn-xs btn-ghost text-muted ms-1 flex-shrink-0"
-                  aria-label="Change time limit"
+                  aria-label="تغییر محدودیت زمان"
                   onClick={() => setTimeLimitRow(row)}
                 >
                   <i className="bi bi-pencil-square" aria-hidden="true" />
@@ -486,7 +494,7 @@ export function AssessmentInstancesTable({
           );
         },
         meta: {
-          label: 'Remaining',
+          label: 'زمان باقی‌مانده',
           autoSize: true,
           autoSizeSample: (rows) => autoSizeSampleByMeasure(rows, (r) => r.time_remaining.length),
         },
@@ -496,19 +504,21 @@ export function AssessmentInstancesTable({
       }),
       columnHelper.accessor((row) => row.total_time_sec, {
         id: 'total_time',
-        header: 'Total time limit',
-        cell: (info) => <span className="text-nowrap">{info.row.original.total_time}</span>,
-        meta: { label: 'Total time limit' },
+        header: 'محدودیت زمان کل',
+        cell: (info) => (
+          <span className="text-nowrap">{formatTimeDisplay(info.row.original.total_time)}</span>
+        ),
+        meta: { label: 'محدودیت زمان کل' },
         filterFn: secondsMinutesFilterFn,
         size: 150,
       }),
       columnHelper.accessor((row) => row.assessment_instance.client_fingerprint_id_change_count, {
         id: 'client_fingerprint_id_change_count',
         header: () => (
-          <HelpHeader label="Fingerprint changes" modalId="fingerprint" onShowHelp={setHelpModal} />
+          <HelpHeader label="تغییرات اثرانگشت" modalId="fingerprint" onShowHelp={setHelpModal} />
         ),
         cell: (info) => info.getValue(),
-        meta: { label: 'Fingerprint changes' },
+        meta: { label: 'تغییرات اثرانگشت' },
         filterFn: numericColumnFilterFn,
         size: 150,
       }),
@@ -554,11 +564,16 @@ export function AssessmentInstancesTable({
   const filters = useMemo(() => {
     const map: Record<string, ColumnFilter> = {
       [roleColumnId]: ({ header }) => (
-        <MultiSelectColumnFilter column={header.column} allColumnValues={ROLE_VALUES} />
+        <MultiSelectColumnFilter
+          column={header.column}
+          allColumnValues={ROLE_VALUES}
+          getSearchText={(value) => ROLE_LABELS[value]}
+          renderValueLabel={({ value }) => <span className="text-nowrap">{ROLE_LABELS[value]}</span>}
+        />
       ),
     };
     for (const id of NUMERIC_COLUMN_IDS) {
-      const unit = MINUTES_COLUMN_IDS.has(id) ? 'minutes' : undefined;
+      const unit = MINUTES_COLUMN_IDS.has(id) ? 'دقیقه' : undefined;
       map[id] = ({ header }) => <NumericInputColumnFilter column={header.column} unit={unit} />;
     }
     return map;
@@ -631,24 +646,24 @@ export function AssessmentInstancesTable({
       )}
       <TanstackTableCard
         table={table}
-        title="Students"
+        title="آزمون‌های دانشجویان"
         className="h-100"
-        singularLabel="instance"
-        pluralLabel="instances"
+        singularLabel="آزمون"
+        pluralLabel="آزمون"
         headerButtons={selectionToolbar}
         columnManager={{
           buttons: (
             <PresetFilterDropdown
               table={table}
-              label="Filter"
+              label="فیلتر"
               options={{
-                'Students only': [{ id: roleColumnId, value: STUDENTS_ONLY_FILTER }],
-                All: [{ id: roleColumnId, value: ALL_ROLES_FILTER }],
+                'فقط دانشجویان': [{ id: roleColumnId, value: STUDENTS_ONLY_FILTER }],
+                همه: [{ id: roleColumnId, value: ALL_ROLES_FILTER }],
               }}
               onSelect={(optionName) =>
                 void setColumnVisibility((prev) => ({
                   ...prev,
-                  [roleColumnId]: optionName === 'All',
+                  [roleColumnId]: optionName === 'همه',
                 }))
               }
             />
@@ -698,19 +713,19 @@ export function AssessmentInstancesTable({
         }}
         globalFilter={{
           placeholder: assessment.team_work
-            ? 'Search by group, member, role...'
-            : 'Search by UID, name...',
+            ? 'جستجو بر اساس گروه، عضو، نقش...'
+            : 'جستجو بر اساس شناسه کاربری، نام...',
         }}
         tableOptions={{
           filters,
           emptyState: (
             <TanstackTableEmptyState iconName="bi-person">
-              No assessment instances yet.
+              هنوز آزمونی ثبت نشده است.
             </TanstackTableEmptyState>
           ),
           noResultsState: (
             <TanstackTableEmptyState iconName="bi-search">
-              No assessment instances found matching your search criteria.
+              هیچ آزمونی مطابق با معیارهای جستجوی شما یافت نشد.
             </TanstackTableEmptyState>
           ),
         }}
@@ -726,7 +741,7 @@ export function AssessmentInstancesTable({
           show
           onHide={() => setTimeLimitRow(null)}
           onSuccess={() => {
-            setSuccessMessage('Updated the time limit.');
+            setSuccessMessage('محدودیت زمان به‌روزرسانی شد.');
             setTimeLimitRow(null);
           }}
         />

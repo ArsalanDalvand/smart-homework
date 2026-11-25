@@ -133,7 +133,7 @@ function ModelOption({
       placement="top"
       tooltip={{
         props: { id: `model-tooltip-${model.modelId}` },
-        body: 'No API key configured for this provider',
+        body: 'کلید API برای این ارائه‌دهنده تنظیم نشده است',
       }}
     >
       {option}
@@ -188,23 +188,23 @@ function ModelList({
     <div className="d-flex flex-column gap-4">
       <div className="row g-3">
         <Form.Group className="col-sm-5">
-          <Form.Label htmlFor="grading-provider-filter">Provider</Form.Label>
+          <Form.Label htmlFor="grading-provider-filter">ارائه‌دهنده</Form.Label>
           <Form.Select
             id="grading-provider-filter"
             value={providerFilter}
             onChange={(event) => setProviderFilter(event.target.value)}
           >
-            <option value="all">All providers</option>
+            <option value="all">همه ارائه‌دهندگان</option>
             {(['openai', 'google', 'anthropic'] as const).map((provider) => (
               <option key={provider} value={provider}>
                 {AI_GRADING_PROVIDER_DISPLAY_NAMES[provider]}
               </option>
             ))}
-            {showCustom && <option value="openai-compatible">OpenAI-compatible</option>}
+            {showCustom && <option value="openai-compatible">سازگار با OpenAI</option>}
           </Form.Select>
         </Form.Group>
         <Form.Group className="col-sm-7">
-          <Form.Label htmlFor="grading-model-search">Search models</Form.Label>
+          <Form.Label htmlFor="grading-model-search">جستجوی مدل‌ها</Form.Label>
           <Form.Control
             id="grading-model-search"
             type="search"
@@ -219,14 +219,14 @@ function ModelList({
       {recommended.length > 0 && (
         <div>
           <div className="d-flex flex-wrap justify-content-between align-items-baseline gap-2 mb-2">
-            <span className="fw-semibold">Recommended</span>
+            <span className="fw-semibold">پیشنهادی</span>
             <span className="text-muted small text-end">
-              Relative cost{' '}
+              هزینه نسبی{' '}
               <OverlayTrigger
                 placement="top"
                 tooltip={{
                   props: { id: 'cost-tooltip' },
-                  body: 'Relative cost compared to the default model, based on standard token usage.',
+                  body: 'هزینه نسبی در مقایسه با مدل پیش‌فرض، بر اساس مصرف استاندارد توکن.',
                 }}
               >
                 <i className="bi bi-question-circle" aria-hidden="true" />
@@ -252,30 +252,31 @@ function ModelList({
         </div>
       )}
       {showCustom && (providerFilter === 'all' || providerFilter === 'openai-compatible') && (
-        <section aria-label="Custom provider models">
-          <h2 className="h6 mb-2">Custom provider models</h2>
+        <section aria-label="مدل‌های ارائه‌دهنده سفارشی">
+          <h2 className="h6 mb-2">مدل‌های ارائه‌دهنده سفارشی</h2>
           {customProvider && (
             <p className="text-muted small text-break mb-2">{customProvider.base_url}</p>
           )}
           <p className="small text-muted">
-            Pricing is unavailable for custom models, even when their names match official models.
+            قیمت‌گذاری برای مدل‌های سفارشی در دسترس نیست، حتی اگر نام آن‌ها با مدل‌های رسمی یکسان
+            باشد.
           </p>
           {customLoading && (
             <div role="status">
               <Spinner size="sm" className="me-2" />
-              Loading custom models...
+              در حال بارگذاری مدل‌های سفارشی...
             </div>
           )}
           {customError && (
             <Alert variant="warning">
               {customError}{' '}
               <Button size="sm" variant="outline-secondary" onClick={onRetryCustom}>
-                Try again
+                تلاش مجدد
               </Button>
             </Alert>
           )}
           {!customLoading && !customError && customModels.length === 0 && (
-            <p className="text-muted small">No models were found for this provider.</p>
+            <p className="text-muted small">هیچ مدلی برای این ارائه‌دهنده یافت نشد.</p>
           )}
           <div className="d-flex flex-column gap-1 overflow-auto" style={{ maxHeight: '24rem' }}>
             {customProvider &&
@@ -292,7 +293,7 @@ function ModelList({
                   }
                   isAvailable={true}
                   aiGradingEnabled={aiGradingEnabled && !customLoading}
-                  relativeCost="Price unknown"
+                  relativeCost="قیمت نامشخص"
                   onSelect={() =>
                     onSelect({
                       provider: 'openai-compatible',
@@ -318,7 +319,7 @@ function ModelList({
               className={`bi bi-chevron-${otherExpanded ? 'down' : 'right'} me-1`}
               aria-hidden="true"
             />
-            Other models
+            سایر مدل‌ها
           </button>
           <div id={otherModelsId} hidden={!otherExpanded}>
             <div className="d-flex flex-column gap-1 mt-2">
@@ -370,7 +371,7 @@ function NoCreditsAlertContent({
   const canRedeem = freeCreditRedemptionsRemaining > 0;
   return (
     <>
-      <div>No AI grading credits added.</div>
+      <div>اعتباری برای تصحیح با هوش مصنوعی اضافه نشده است.</div>
       <div className="d-flex flex-wrap gap-2 mt-2">
         {canRedeem && (
           <Button
@@ -381,8 +382,8 @@ function NoCreditsAlertContent({
             onClick={onRedeem}
           >
             {isRedeeming
-              ? 'Redeeming...'
-              : `Redeem ${formatMilliDollars(FREE_AI_GRADING_CREDIT_MILLI_DOLLARS_PER_REDEMPTION)} in free credit`}
+              ? 'در حال دریافت...'
+              : `دریافت ${formatMilliDollars(FREE_AI_GRADING_CREDIT_MILLI_DOLLARS_PER_REDEMPTION)} اعتبار رایگان`}
           </Button>
         )}
         <Button
@@ -393,7 +394,7 @@ function NoCreditsAlertContent({
           target="_blank"
           rel="noopener noreferrer"
         >
-          {canRedeem ? 'Purchase more' : 'Purchase credits'}
+          {canRedeem ? 'خرید بیشتر' : 'خرید اعتبار'}
         </Button>
       </div>
       <AppErrorAlert
@@ -455,8 +456,8 @@ function buildBeforeYouGradeItems({
   if (!hasRubric) {
     items.push({
       key: 'no_rubric',
-      title: 'Create a rubric',
-      description: 'Rubrics significantly improve accuracy and consistency.',
+      title: 'ایجاد معیار نمره‌دهی (Rubric)',
+      description: 'معیار نمره‌دهی دقت و یکپارچگی تصحیح را به‌طور چشمگیری افزایش می‌دهد.',
       onClick: onOpenRubricSettings,
     });
   }
@@ -464,8 +465,8 @@ function buildBeforeYouGradeItems({
     const n = Math.min(5, totalSubmissionCount);
     items.push({
       key: 'test_with_n',
-      title: `Test with ${n} ${n === 1 ? 'submission' : 'submissions'}`,
-      description: 'Confirm your rubric works well before running on all submissions.',
+      title: `آزمایش روی ${n} ارسال`,
+      description: 'پیش از اجرا روی همه ارسال‌ها، عملکرد معیار نمره‌دهی را بررسی کنید.',
       onClick: () => onSelectFirstSubmissions(n),
     });
   }
@@ -501,7 +502,7 @@ function BeforeYouGradeSection({ items }: { items: BeforeYouGradeItem[] }) {
   return (
     <div className="mt-4">
       <div className="d-flex flex-wrap justify-content-between align-items-baseline gap-2 mb-2">
-        <span className="fw-semibold">Before you grade</span>
+        <span className="fw-semibold">پیش از تصحیح</span>
       </div>
       <div className="d-flex flex-column gap-2">
         {items.map((item) => (
@@ -542,7 +543,7 @@ function AiGradingAvailabilityAlert({
           content: (
             <span className="d-flex align-items-center gap-2">
               <Spinner animation="border" size="sm" />
-              Loading AI grading status...
+              در حال بارگذاری وضعیت تصحیح هوش مصنوعی...
             </span>
           ),
         };
@@ -552,7 +553,7 @@ function AiGradingAvailabilityAlert({
           small: true,
           content: (
             <>
-              Unable to load AI grading status.{' '}
+              بارگذاری وضعیت تصحیح هوش مصنوعی امکان‌پذیر نیست.{' '}
               <Button
                 type="button"
                 variant="link"
@@ -560,7 +561,7 @@ function AiGradingAvailabilityAlert({
                 style={{ fontSize: 'inherit' }}
                 onClick={onRetryAvailability}
               >
-                Try again.
+                تلاش مجدد.
               </Button>
             </>
           ),
@@ -571,8 +572,8 @@ function AiGradingAvailabilityAlert({
           small: true,
           content: (
             <>
-              You've reached the limit of {state.maxConcurrentJobs} concurrent AI grading jobs.
-              Please wait for running jobs to finish.
+              شما به سقف {state.maxConcurrentJobs} کار همزمان تصحیح هوش مصنوعی رسیده‌اید. لطفاً
+              تا پایان کارهای در حال اجرا صبر کنید.
             </>
           ),
         };
@@ -582,8 +583,8 @@ function AiGradingAvailabilityAlert({
           small: true,
           content: (
             <>
-              Billing to custom API key &middot;{' '}
-              <SettingsLink url={aiGradingSettingsUrl} text="Manage keys" />
+              پرداخت از کلید API سفارشی &middot;{' '}
+              <SettingsLink url={aiGradingSettingsUrl} text="مدیریت کلیدها" />
             </>
           ),
         };
@@ -593,8 +594,8 @@ function AiGradingAvailabilityAlert({
           small: true,
           content: (
             <>
-              No custom API keys configured &middot;{' '}
-              <SettingsLink url={aiGradingSettingsUrl} text="Manage keys" />
+              کلید API سفارشی تنظیم نشده است &middot;{' '}
+              <SettingsLink url={aiGradingSettingsUrl} text="مدیریت کلیدها" />
             </>
           ),
         };
@@ -604,15 +605,15 @@ function AiGradingAvailabilityAlert({
           small: true,
           content: (
             <>
-              Billing to credit pool &middot; {formatMilliDollars(state.creditBalanceMilliDollars)}{' '}
-              available &middot; <SettingsLink url={aiGradingSettingsUrl} text="Manage credits" />{' '}
-              &middot;{' '}
+              پرداخت از موجودی اعتبار &middot;{' '}
+              {formatMilliDollars(state.creditBalanceMilliDollars)} موجود &middot;{' '}
+              <SettingsLink url={aiGradingSettingsUrl} text="مدیریت اعتبار" /> &middot;{' '}
               <a
                 href="https://docs.prairielearn.com/aiGrading/#factors-affecting-cost-and-runtime"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Factors affecting cost
+                عوامل موثر بر هزینه
               </a>
             </>
           ),
@@ -871,14 +872,14 @@ function AiGradingModelSelectionModalInner({
     >
       <form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title id="select-grading-model-title">Select grading model</Modal.Title>
+          <Modal.Title id="select-grading-model-title">انتخاب مدل تصحیح</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           {isRedeemSuccess && (
             <Alert variant="success" className="mb-3 py-2 small">
-              {formatMilliDollars(FREE_AI_GRADING_CREDIT_MILLI_DOLLARS_PER_REDEMPTION)} in credit
-              added!
+              {formatMilliDollars(FREE_AI_GRADING_CREDIT_MILLI_DOLLARS_PER_REDEMPTION)} اعتبار اضافه
+              شد!
             </Alert>
           )}
           <AiGradingAvailabilityAlert
@@ -918,7 +919,7 @@ function AiGradingModelSelectionModalInner({
             !customError &&
             !isSelectedModelAvailable && (
               <Alert variant="warning" className="mt-3">
-                The previously selected custom model is no longer available. Select a model again.
+                مدل سفارشی انتخاب‌شده قبلی دیگر در دسترس نیست. لطفاً مدل دیگری انتخاب کنید.
               </Alert>
             )}
           <BeforeYouGradeSection items={beforeYouGradeItems} />
@@ -928,12 +929,12 @@ function AiGradingModelSelectionModalInner({
           <div className="m-0 w-100">
             {isError && (
               <Alert variant="danger" className="mb-2" dismissible onClose={() => reset()}>
-                <strong>Error:</strong> {error.message}
+                <strong>خطا:</strong> {error.message}
               </Alert>
             )}
             <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center justify-content-end gap-2 mb-1">
               <Button variant="secondary" disabled={isPending} onClick={handleClose}>
-                Cancel
+                انصراف
               </Button>
               <Button
                 variant="primary"
@@ -941,14 +942,14 @@ function AiGradingModelSelectionModalInner({
                 type="submit"
               >
                 {isPending
-                  ? 'Submitting...'
+                  ? 'در حال ارسال...'
                   : modalState
-                    ? `Grade ${modalState.numToGrade} ${modalState.numToGrade === 1 ? 'submission' : 'submissions'}`
-                    : 'Grade submissions'}
+                    ? `تصحیح ${modalState.numToGrade} ارسال`
+                    : 'تصحیح ارسال‌ها'}
               </Button>
             </div>
             <small className="text-muted mt-2 mb-0 text-end d-block">
-              AI can make mistakes. Review grades before finalizing.
+              هوش مصنوعی ممکن است اشتباه کند. پیش از نهایی‌سازی، نمرات را بررسی نمایید.
             </small>
           </div>
         </Modal.Footer>

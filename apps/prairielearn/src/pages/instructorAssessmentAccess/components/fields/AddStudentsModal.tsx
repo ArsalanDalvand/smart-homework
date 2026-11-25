@@ -50,12 +50,12 @@ export function AddStudentsModal({
       ) : (
         <button type="button" className="btn btn-outline-secondary btn-sm" onClick={handleOpen}>
           <i className="bi bi-people me-1" aria-hidden="true" />
-          Manage students
+          مدیریت دانشجویان
         </button>
       )}
       <Modal show={show} centered onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Select students</Modal.Title>
+          <Modal.Title>انتخاب دانشجویان</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {isLoading ? (
@@ -63,7 +63,7 @@ export function AddStudentsModal({
               <Spinner animation="border" size="sm" />
             </div>
           ) : !allStudents || allStudents.length === 0 ? (
-            <div className="text-muted text-center py-2">No students enrolled</div>
+            <div className="text-muted text-center py-2">هیچ دانشجویی ثبت‌نام نشده است</div>
           ) : (
             <StudentSearchInput
               allStudents={allStudents}
@@ -75,14 +75,14 @@ export function AddStudentsModal({
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Cancel
+            انصراف
           </Button>
           <Button
             variant="primary"
             disabled={isLoading || selectedUids.size > maxStudents}
             onClick={handleSave}
           >
-            Done{selectedUids.size > 0 ? ` (${selectedUids.size} selected)` : ''}
+            تایید{selectedUids.size > 0 ? ` (${selectedUids.size} انتخاب‌شده)` : ''}
           </Button>
         </Modal.Footer>
       </Modal>

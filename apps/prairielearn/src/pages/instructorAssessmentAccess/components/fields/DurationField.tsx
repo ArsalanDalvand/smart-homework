@@ -27,9 +27,9 @@ function DurationDetails({
           <InputGroup className="mt-2">
             <Form.Control
               type="number"
-              aria-label="Duration in minutes"
+              aria-label="مدت زمان به دقیقه"
               aria-invalid={!!error}
-              placeholder="Duration in minutes"
+              placeholder="مدت زمان به دقیقه"
               value={value === 0 ? '' : value}
               min={1}
               max={MAX_ACCESS_CONTROL_DURATION_MINUTES}
@@ -47,7 +47,7 @@ function DurationDetails({
                 }
               }}
             />
-            <InputGroup.Text>minutes</InputGroup.Text>
+            <InputGroup.Text>دقیقه</InputGroup.Text>
           </InputGroup>
           {error && (
             <Form.Text id={`${idPrefix}-duration-error`} className="text-danger" role="alert">
@@ -59,10 +59,10 @@ function DurationDetails({
       {!error && (
         <Form.Text className="text-muted">
           {value !== null && value > 0
-            ? `Students will have ${value} minutes to complete the assessment.`
+            ? `دانشجویان ${value} دقیقه برای تکمیل ارزیابی فرصت خواهند داشت.`
             : value !== null
-              ? 'Enter a duration in minutes.'
-              : 'Add a time limit to the assessment.'}
+              ? 'مدت زمان را به دقیقه وارد کنید.'
+              : 'افزودن محدودیت زمانی به ارزیابی.'}
         </Form.Text>
       )}
     </>
@@ -82,7 +82,7 @@ function DurationToggle({
   return (
     <ToggleTitle
       id={`${idPrefix}-time-limit-enabled`}
-      label="Time limit"
+      label="محدودیت زمانی"
       checked={value !== null}
       disabled={!ruleEditable}
       onChange={(checked) => onChange(checked ? 60 : null)}
@@ -128,7 +128,7 @@ export function OverrideDurationField({ index }: { index: number }) {
   return (
     <FieldWrapper
       isOverridden={isOverridden}
-      label="Time limit"
+      label="محدودیت زمانی"
       headerToggle={
         <DurationToggle
           value={field.value}

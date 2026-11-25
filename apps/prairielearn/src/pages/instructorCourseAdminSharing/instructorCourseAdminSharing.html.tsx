@@ -150,52 +150,52 @@ function InstructorCourseAdminSharingInner({
 
       <div className="card mb-4">
         <div className="card-header bg-primary text-white d-flex">
-          <h1>Course sharing details</h1>
+          <h1>جزئیات اشتراک‌گذاری درس</h1>
         </div>
         <div className="table-responsive">
           <table
             className="table table-sm table-hover two-column-description"
-            aria-label="Course sharing details"
+            aria-label="جزئیات اشتراک‌گذاری درس"
           >
             <tbody>
               <tr>
-                <th>Sharing name</th>
+                <th>نام اشتراک‌گذاری</th>
                 <td data-testid="sharing-name">
                   {sharingName !== null ? sharingName : ''}
                   {canEdit && canChooseSharingName && (
                     <button
                       type="button"
                       className="btn btn-xs btn-secondary mx-2"
-                      aria-label="Choose sharing name"
+                      aria-label="انتخاب نام اشتراک‌گذاری"
                       onClick={() => chooseSharingNameModal.showWithData(null)}
                     >
                       <i className="bi bi-share-fill" aria-hidden="true" />
-                      <span className="d-none d-sm-inline"> Choose sharing name</span>
+                      <span className="d-none d-sm-inline"> انتخاب نام اشتراک‌گذاری</span>
                     </button>
                   )}
                 </td>
               </tr>
               <tr>
-                <th>Sharing Token</th>
+                <th>توکن اشتراک‌گذاری</th>
                 <td>
                   {sharingToken}
                   <CopyButton
                     text={sharingToken}
-                    label="Copy"
+                    label="کپی"
                     className="btn-xs btn-secondary mx-2"
                   />
                   {canEdit && <RegenerateSharingTokenButton onRegenerated={setSharingToken} />}
                 </td>
               </tr>
               <tr>
-                <th>Public Questions Page</th>
+                <th>صفحه سوالات عمومی</th>
                 <td className="align-middle">
                   <a href={publicSharingLink} target="_blank" rel="noreferrer">
                     {publicSharingLink}
                   </a>
                   <CopyButton
                     text={publicSharingLink}
-                    label="Copy"
+                    label="کپی"
                     className="btn-xs btn-secondary mx-2"
                   />
                 </td>
@@ -207,25 +207,25 @@ function InstructorCourseAdminSharingInner({
 
       <div className="card mb-4">
         <div className="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-          <h2>Sharing sets</h2>
+          <h2>مجموعه‌های اشتراک‌گذاری</h2>
           {canEdit && (
             <button
               type="button"
               className="btn btn-sm btn-light"
               onClick={() => addSharingSetModal.showWithData(null)}
             >
-              <i className="bi bi-plus-lg" aria-hidden="true" /> Add sharing set
+              <i className="bi bi-plus-lg" aria-hidden="true" /> افزودن مجموعه اشتراک‌گذاری
             </button>
           )}
         </div>
         <div className="table-responsive">
-          <table className="table table-sm table-hover table-striped" aria-label="Sharing sets">
+          <table className="table table-sm table-hover table-striped" aria-label="مجموعه‌های اشتراک‌گذاری">
             <thead>
               <tr>
-                <th>Sharing Set Name</th>
-                <th>Description</th>
-                <th>Shared With</th>
-                {canEdit && <th className="text-end">Actions</th>}
+                <th>نام مجموعه اشتراک‌گذاری</th>
+                <th>توضیحات</th>
+                <th>اشتراک‌گذاری شده با</th>
+                {canEdit && <th className="text-end">عملیات</th>}
               </tr>
             </thead>
             <tbody>
@@ -235,7 +235,7 @@ function InstructorCourseAdminSharingInner({
                     colSpan={canEdit ? 4 : 3}
                     className="text-center text-muted align-middle py-3"
                   >
-                    No sharing sets defined yet.
+                    هنوز هیچ مجموعه اشتراک‌گذاری تعریف نشده است.
                   </td>
                 </tr>
               ) : (
@@ -295,8 +295,7 @@ function SharingSetTableRow({
             {sharingSet.name}
           </button>{' '}
           <span className="text-muted small">
-            ({sharingSet.question_count}{' '}
-            {sharingSet.question_count === 1 ? 'question' : 'questions'})
+            ({sharingSet.question_count} سوال)
           </span>
         </td>
         <td className="align-middle text-muted">{sharingSet.description ?? ''}</td>
@@ -311,10 +310,10 @@ function SharingSetTableRow({
               <button
                 type="button"
                 className="btn btn-sm btn-outline-dark"
-                aria-label="Add course to sharing set"
+                aria-label="افزودن درس به مجموعه اشتراک‌گذاری"
                 onClick={onAddCourse}
               >
-                Add...
+                افزودن...
                 <i className="bi bi-plus-lg" aria-hidden="true" />
               </button>
             </div>
@@ -326,33 +325,33 @@ function SharingSetTableRow({
               <button
                 type="button"
                 className="btn btn-sm btn-outline-secondary"
-                aria-label={`Edit description for ${sharingSet.name}`}
+                aria-label={`ویرایش توضیحات برای ${sharingSet.name}`}
                 onClick={onEditDescription}
               >
-                <i className="bi bi-pencil" aria-hidden="true" /> Edit
+                <i className="bi bi-pencil" aria-hidden="true" /> ویرایش
               </button>
               {inUse ? (
                 <span
                   className="d-inline-block"
-                  title="Cannot delete: sharing set contains questions or has been shared with other courses."
+                  title="امکان حذف وجود ندارد: مجموعه اشتراک‌گذاری شامل سوال است یا با درس‌های دیگر به اشتراک گذاشته شده است."
                 >
                   <button
                     type="button"
                     className="btn btn-sm btn-outline-danger"
-                    aria-label={`Delete sharing set ${sharingSet.name}`}
+                    aria-label={`حذف مجموعه اشتراک‌گذاری ${sharingSet.name}`}
                     disabled
                   >
-                    <i className="bi bi-trash" aria-hidden="true" /> Delete
+                    <i className="bi bi-trash" aria-hidden="true" /> حذف
                   </button>
                 </span>
               ) : (
                 <button
                   type="button"
                   className="btn btn-sm btn-outline-danger"
-                  aria-label={`Delete sharing set ${sharingSet.name}`}
+                  aria-label={`حذف مجموعه اشتراک‌گذاری ${sharingSet.name}`}
                   onClick={onDelete}
                 >
-                  <i className="bi bi-trash" aria-hidden="true" /> Delete
+                  <i className="bi bi-trash" aria-hidden="true" /> حذف
                 </button>
               )}
             </div>
@@ -363,7 +362,7 @@ function SharingSetTableRow({
         <tr id={detailsId}>
           <td colSpan={canEdit ? 4 : 3} className="bg-light">
             {sharingSet.questions.length === 0 ? (
-              <div className="small text-muted">No questions in this sharing set yet.</div>
+              <div className="small text-muted">هنوز سوالی در این مجموعه اشتراک‌گذاری وجود ندارد.</div>
             ) : (
               <div className="d-flex flex-wrap gap-1">
                 {sharingSet.questions.map((q) => (
@@ -403,7 +402,7 @@ function RegenerateSharingTokenButton({
           })
         }
       >
-        <i className="bi bi-arrow-clockwise" aria-hidden="true" /> <span>Regenerate</span>
+        <i className="bi bi-arrow-clockwise" aria-hidden="true" /> <span>تولید مجدد</span>
       </button>
       <AppErrorAlert
         error={getAppError<SharingError['RegenerateSharingToken']>(mutation.error)}
@@ -465,19 +464,19 @@ function ChooseSharingNameModal({
     return (
       <Modal show={show} onHide={handleHide} onExited={handleExited}>
         <Modal.Header closeButton>
-          <Modal.Title>Choose sharing name</Modal.Title>
+          <Modal.Title>انتخاب نام اشتراک‌گذاری</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <strong>Unable to change your course's sharing name.</strong>
+          <strong>امکان تغییر نام اشتراک‌گذاری درس وجود ندارد.</strong>
           <p>
-            Your course's sharing name cannot be changed because at least one question has been
-            shared. Doing so would break the assessments of other courses that have imported your
-            questions.
+            نام اشتراک‌گذاری درس شما قابل تغییر نیست زیرا حداقل یک سوال به اشتراک گذاشته شده است.
+            تغییر آن باعث از کار افتادن آزمون‌های درس‌های دیگری می‌شود که سوالات شما را وارد
+            کرده‌اند.
           </p>
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-secondary" onClick={handleHide}>
-            Close
+            بستن
           </button>
         </Modal.Footer>
       </Modal>
@@ -488,7 +487,7 @@ function ChooseSharingNameModal({
     <Modal show={show} onHide={handleHide} onExited={handleExited}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header closeButton>
-          <Modal.Title>Choose sharing name</Modal.Title>
+          <Modal.Title>انتخاب نام اشتراک‌گذاری</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AppErrorAlert
@@ -499,10 +498,10 @@ function ChooseSharingNameModal({
             }}
             onDismiss={() => mutation.reset()}
           />
-          <p className="form-text">Enter the sharing name you would like for your course.</p>
+          <p className="form-text">نام اشتراک‌گذاری مورد نظر خود را برای این درس وارد کنید.</p>
           <div className="mb-3">
             <label className="form-label" htmlFor="course_sharing_name">
-              Sharing name
+              نام اشتراک‌گذاری
             </label>
             <input
               className={clsx('form-control', errors.courseSharingName && 'is-invalid')}
@@ -520,7 +519,7 @@ function ChooseSharingNameModal({
               })}
             />
             <div id="course_sharing_name_help" className="form-text">
-              Use 1–64 characters: letters, numbers, hyphens, or underscores.
+              از ۱ تا ۶۴ نویسه استفاده کنید: حروف، اعداد، خط تیره یا زیرخط.
             </div>
             {errors.courseSharingName && (
               <div id="course_sharing_name_error" className="invalid-feedback">
@@ -530,17 +529,17 @@ function ChooseSharingNameModal({
           </div>
           <Alert variant="secondary" className="py-2 small">
             <strong>
-              Once you have shared a question either publicly or with another course, you will no
-              longer be able to change your sharing name.
+              پس از اشتراک‌گذاری یک سوال به صورت عمومی یا با درس دیگر، دیگر امکان تغییر نام
+              اشتراک‌گذاری خود را نخواهید داشت.
             </strong>{' '}
-            Doing so would break the assessments of other courses that have imported your questions.
+            تغییر آن باعث از کار افتادن آزمون‌های درس‌های دیگری می‌شود که سوالات شما را وارد
+            کرده‌اند.
           </Alert>
           <p className="form-text mb-0">
-            It is recommended that you choose something short but descriptive. For example, if
-            you're teaching a calculus course at a university that goes by the abbreviation{' '}
-            <code>XYZ</code>, then you could choose the sharing name <code>xyz-calculus</code>. Then
-            other courses will import questions from your course with the syntax{' '}
-            <code>@xyz-calculus/&lt;qid&gt;</code>.
+            توصیه می‌شود نامی کوتاه اما گویا انتخاب کنید. برای مثال، اگر درس حسابان را در دانشگاهی
+            با نام اختصاری <code>XYZ</code> تدریس می‌کنید، می‌توانید نام اشتراک‌گذاری{' '}
+            <code>xyz-calculus</code> را انتخاب کنید. در این صورت سایر درس‌ها سوالات شما را با قالب{' '}
+            <code>@xyz-calculus/&lt;qid&gt;</code> وارد خواهند کرد.
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -550,14 +549,14 @@ function ChooseSharingNameModal({
             disabled={isSubmitting || mutation.isPending}
             onClick={handleHide}
           >
-            Cancel
+            انصراف
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={isSubmitting || mutation.isPending}
           >
-            Choose sharing name
+            انتخاب نام اشتراک‌گذاری
           </button>
         </Modal.Footer>
       </form>
@@ -630,7 +629,7 @@ function AddSharingSetModal({
     <Modal show={show} onHide={handleHide} onExited={handleExited}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header closeButton>
-          <Modal.Title>Add sharing set</Modal.Title>
+          <Modal.Title>افزودن مجموعه اشتراک‌گذاری</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AppErrorAlert
@@ -642,29 +641,29 @@ function AddSharingSetModal({
             onDismiss={() => mutation.reset()}
           />
           <p className="small text-muted">
-            A{' '}
+            یک{' '}
             <a
               href="https://docs.prairielearn.com/contentSharing/#sharing-sets"
               target="_blank"
               rel="noopener noreferrer"
             >
-              sharing set
+              مجموعه اشتراک‌گذاری
             </a>{' '}
-            is a named set of questions which you can share to another course. This lets you share
-            different sets of your questions &mdash; for example, share some questions only with
-            other courses in your department. See the{' '}
+            مجموعه‌ای نام‌گذاری‌شده از سوالات است که می‌توانید با درس دیگری به اشتراک بگذارید. این
+            امکان به شما اجازه می‌دهد مجموعه‌های متفاوتی از سوالات خود را به اشتراک بگذارید؛ برای
+            مثال برخی سوالات را فقط با درس‌های دانشکده خود به اشتراک بگذارید. برای جزئیات بیشتر{' '}
             <a
               href="https://docs.prairielearn.com/contentSharing/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              content sharing docs
+              مستندات اشتراک‌گذاری محتوا
             </a>{' '}
-            for details.
+            را ببینید.
           </p>
           <div className="mb-3">
             <label className="form-label" htmlFor="new_sharing_set_name">
-              Name
+              نام
             </label>
             <input
               type="text"
@@ -674,10 +673,10 @@ function AddSharingSetModal({
               aria-invalid={errors.name ? 'true' : undefined}
               aria-errormessage={errors.name ? 'new_sharing_set_name_error' : undefined}
               {...register('name', {
-                required: 'Sharing set name is required.',
+                required: 'نام مجموعه اشتراک‌گذاری الزامی است.',
                 validate: (v) =>
                   (!v.includes('/') && !v.includes('@')) ||
-                  'Sharing set names cannot contain "/" or "@".',
+                  'نام مجموعه اشتراک‌گذاری نمی‌تواند شامل "/" یا "@" باشد.',
               })}
             />
             {errors.name ? (
@@ -687,13 +686,13 @@ function AddSharingSetModal({
               </div>
             ) : (
               <small className="form-text text-muted">
-                A short identifier, e.g. <code>exam-questions</code>. Cannot contain "/" or "@".
+                یک شناسه کوتاه، مثلاً <code>exam-questions</code>. نمی‌تواند شامل "/" یا "@" باشد.
               </small>
             )}
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="new_sharing_set_description">
-              Description (optional)
+              توضیحات (اختیاری)
             </label>
             <textarea
               className="form-control"
@@ -711,14 +710,14 @@ function AddSharingSetModal({
             disabled={isSubmitting || mutation.isPending}
             onClick={handleHide}
           >
-            Cancel
+            انصراف
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={isSubmitting || mutation.isPending}
           >
-            Add sharing set
+            افزودن مجموعه اشتراک‌گذاری
           </button>
         </Modal.Footer>
       </form>
@@ -776,7 +775,7 @@ function AddCourseToSharingSetModal({
     <Modal show={show} onHide={handleHide} onExited={handleExited}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header closeButton>
-          <Modal.Title>Add course to sharing set</Modal.Title>
+          <Modal.Title>افزودن درس به مجموعه اشتراک‌گذاری</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AppErrorAlert
@@ -787,12 +786,12 @@ function AddCourseToSharingSetModal({
             onDismiss={() => mutation.reset()}
           />
           <p className="form-text text-wrap">
-            To allow another course to access questions in the sharing set "{data.name}", enter
-            their course sharing token below.
+            برای اجازه دسترسی به درس دیگری به سوالات مجموعه اشتراک‌گذاری «{data.name}»، توکن
+            اشتراک‌گذاری آن درس را در زیر وارد کنید.
           </p>
           <div className="mb-3">
             <label className="form-label" htmlFor="course_sharing_token">
-              Course sharing token
+              توکن اشتراک‌گذاری درس
             </label>
             <input
               className="form-control"
@@ -804,7 +803,7 @@ function AddCourseToSharingSetModal({
                 errors.courseSharingToken ? 'course_sharing_token_error' : undefined
               }
               {...register('courseSharingToken', {
-                required: 'Course sharing token is required.',
+                required: 'توکن اشتراک‌گذاری درس الزامی است.',
               })}
             />
             {errors.courseSharingToken && (
@@ -822,14 +821,14 @@ function AddCourseToSharingSetModal({
             disabled={isSubmitting || mutation.isPending}
             onClick={handleHide}
           >
-            Cancel
+            انصراف
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={isSubmitting || mutation.isPending}
           >
-            Add course
+            افزودن درس
           </button>
         </Modal.Footer>
       </form>
@@ -901,7 +900,7 @@ function EditSharingSetDescriptionModal({
     <Modal show={show} onHide={handleHide} onExited={handleExited}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit sharing set "{data.name}"</Modal.Title>
+          <Modal.Title>ویرایش مجموعه اشتراک‌گذاری «{data.name}»</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AppErrorAlert
@@ -914,7 +913,7 @@ function EditSharingSetDescriptionModal({
           />
           <div className="mb-3">
             <label className="form-label" htmlFor={`sharing_set_description_${data.id}`}>
-              Description
+              توضیحات
             </label>
             <textarea
               className="form-control"
@@ -923,7 +922,7 @@ function EditSharingSetDescriptionModal({
               defaultValue={defaultDescription}
               {...register('description')}
             />
-            <small className="form-text text-muted">Leave blank to remove the description.</small>
+            <small className="form-text text-muted">برای حذف توضیحات، این بخش را خالی بگذارید.</small>
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -933,14 +932,14 @@ function EditSharingSetDescriptionModal({
             disabled={isSubmitting || mutation.isPending}
             onClick={handleHide}
           >
-            Cancel
+            انصراف
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={isSubmitting || mutation.isPending}
           >
-            Save
+            ذخیره
           </button>
         </Modal.Footer>
       </form>
@@ -1002,7 +1001,7 @@ function DeleteSharingSetModal({
   return (
     <Modal show={show} onHide={handleHide} onExited={handleExited}>
       <Modal.Header closeButton>
-        <Modal.Title>Delete sharing set</Modal.Title>
+        <Modal.Title>حذف مجموعه اشتراک‌گذاری</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <AppErrorAlert
@@ -1015,7 +1014,7 @@ function DeleteSharingSetModal({
           onDismiss={() => mutation.reset()}
         />
         <p className="form-text text-wrap">
-          Delete the sharing set "{data.name}"? This cannot be undone.
+          مجموعه اشتراک‌گذاری «{data.name}» حذف شود؟ این عملیات قابل بازگشت نیست.
         </p>
       </Modal.Body>
       <Modal.Footer>
@@ -1025,7 +1024,7 @@ function DeleteSharingSetModal({
           disabled={mutation.isPending}
           onClick={handleHide}
         >
-          Cancel
+          انصراف
         </button>
         <button
           type="button"
@@ -1033,7 +1032,7 @@ function DeleteSharingSetModal({
           disabled={mutation.isPending}
           onClick={handleDelete}
         >
-          Delete
+          حذف
         </button>
       </Modal.Footer>
     </Modal>

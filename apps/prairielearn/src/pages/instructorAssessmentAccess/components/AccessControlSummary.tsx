@@ -180,7 +180,7 @@ const DefaultRuleSummaryContent = memo(function DefaultRuleSummaryContent({
           className="rounded text-center py-3 text-body-secondary"
           style={{ border: '2px dashed var(--bs-border-color)' }}
         >
-          No access settings configured.
+          هیچ تنظیم دسترسی پیکربندی نشده است.
         </div>
       )}
     </div>
@@ -266,9 +266,6 @@ export function AccessControlSummary({
 
   const defaultRuleErrorCount = countErrors(errors.defaultRule);
   const overridesErrorCount = countErrors(errors.overrides);
-  const hiddenEnrollmentRuleNoun =
-    hiddenEnrollmentRuleCount === 1 ? 'student-specific override' : 'student-specific overrides';
-  const hiddenEnrollmentRuleVerb = hiddenEnrollmentRuleCount === 1 ? 'is' : 'are';
   const addOverrideDisabledReasonId = `${dndId}-add-override-disabled-reason`;
 
   return (
@@ -281,10 +278,10 @@ export function AccessControlSummary({
       <section className="mb-4">
         <div className="d-flex justify-content-between align-items-center gap-2 mb-1">
           <h2 className="h5 mb-0 d-flex align-items-center">
-            Defaults
+            تنظیمات پیش‌فرض
             {defaultRuleErrorCount > 0 && (
               <Badge bg="danger" className="ms-2" style={{ fontSize: '0.7rem' }}>
-                {defaultRuleErrorCount} {defaultRuleErrorCount === 1 ? 'error' : 'errors'}
+                {defaultRuleErrorCount} خطا
               </Badge>
             )}
           </h2>
@@ -292,7 +289,7 @@ export function AccessControlSummary({
             <Button
               variant="outline-primary"
               size="sm"
-              aria-label={canEditAccessSettings ? 'Edit' : 'View'}
+              aria-label={canEditAccessSettings ? 'ویرایش' : 'مشاهده'}
               className="d-inline-flex align-items-center"
               onClick={onEditDefaultRule}
             >
@@ -301,25 +298,25 @@ export function AccessControlSummary({
                 aria-hidden="true"
               />
               <span className="toolbar-btn-label ms-1">
-                {canEditAccessSettings ? 'Edit' : 'View'}
+                {canEditAccessSettings ? 'ویرایش' : 'مشاهده'}
               </span>
             </Button>
             {canEditAccessSettings && (
               <Button
                 variant="outline-danger"
                 size="sm"
-                aria-label="Clear"
+                aria-label="پاک کردن"
                 className="d-inline-flex align-items-center"
                 onClick={onClearDefaultRule}
               >
                 <i className="bi bi-trash" aria-hidden="true" />
-                <span className="toolbar-btn-label ms-1">Clear</span>
+                <span className="toolbar-btn-label ms-1">پاک کردن</span>
               </Button>
             )}
           </div>
         </div>
         <small className="text-body-secondary d-block mb-3">
-          Access settings that apply to all students by default.
+          تنظیمات دسترسی که به صورت پیش‌فرض برای همه دانشجویان اعمال می‌شود.
         </small>
 
         <DefaultRuleSummaryContent
@@ -335,10 +332,10 @@ export function AccessControlSummary({
       <section>
         <div className="d-flex justify-content-between align-items-center gap-2 mb-1">
           <h2 className="h5 mb-0 d-flex align-items-center">
-            Overrides
+            استثناها
             {overridesErrorCount > 0 && (
               <Badge bg="danger" className="ms-2" style={{ fontSize: '0.7rem' }}>
-                {overridesErrorCount} {overridesErrorCount === 1 ? 'error' : 'errors'}
+                {overridesErrorCount} خطا
               </Badge>
             )}
           </h2>
@@ -352,13 +349,13 @@ export function AccessControlSummary({
               aria-describedby={addOverrideDisabledReason ? addOverrideDisabledReasonId : undefined}
               onClick={onAddOverride}
             >
-              <i className="bi bi-plus-lg me-1" /> Add override
+              <i className="bi bi-plus-lg me-1" /> افزودن استثنا
             </Button>
           )}
         </div>
         <small className="text-body-secondary d-block mb-3">
-          Customize settings for specific students or students with specific labels. Fields not
-          overridden are inherited from the defaults and any earlier overrides.
+          شخصی‌سازی تنظیمات برای دانشجویان خاص یا دانشجویان دارای برچسب‌های خاص. فیلدهایی که
+          بازنویسی نشوند از تنظیمات پیش‌فرض و استثناهای قبلی به ارث برده می‌شوند.
         </small>
 
         {addOverrideDisabledReason && (
@@ -369,17 +366,16 @@ export function AccessControlSummary({
 
         {canEditAccessSettings && !canEditEnrollmentRules && (
           <Alert variant="info" className="mb-3">
-            You can edit defaults and overrides for students with specific labels. Student-specific
-            overrides require student data editor permissions.
+            می‌توانید تنظیمات پیش‌فرض و استثناهای مربوط به برچسب‌های دانشجویی را ویرایش کنید.
+            استثناهای مختص دانشجو نیازمند دسترسی ویرایشگر داده‌های دانشجو است.
           </Alert>
         )}
 
         {hiddenEnrollmentRuleCount > 0 && (
           <Alert variant="info" className="mb-3">
-            This assessment has {hiddenEnrollmentRuleCount} {hiddenEnrollmentRuleNoun} that{' '}
-            {hiddenEnrollmentRuleVerb} hidden because you do not have student data viewer
-            permissions. These overrides remain in place when you save, but visible changes may
-            still affect them through inherited settings.
+            این ارزیابی دارای {hiddenEnrollmentRuleCount} استثنای مختص دانشجو است که به دلیل نداشتن
+            دسترسی مشاهده داده‌های دانشجو پنهان شده است. این استثناها هنگام ذخیره حفظ می‌شوند، اما
+            تغییرات قابل مشاهده ممکن است از طریق تنظیمات به ارث برده‌شده بر آن‌ها تاثیر بگذارد.
           </Alert>
         )}
 
@@ -389,8 +385,8 @@ export function AccessControlSummary({
             style={{ border: '2px dashed var(--bs-border-color)' }}
           >
             {hiddenEnrollmentRuleCount > 0
-              ? 'No visible overrides configured.'
-              : 'No overrides configured.'}
+              ? 'هیچ استثنای قابل مشاهده‌ای پیکربندی نشده است.'
+              : 'هیچ استثنایی پیکربندی نشده است.'}
           </div>
         ) : (
           <DndContext
@@ -407,8 +403,8 @@ export function AccessControlSummary({
                     override.appliesTo.targetType;
                 const sectionLabel =
                   override.appliesTo.targetType === 'enrollment'
-                    ? 'Overrides for specific students'
-                    : 'Overrides for student labels';
+                    ? 'استثناها برای دانشجویان خاص'
+                    : 'استثناها برای برچسب‌های دانشجویی';
                 const canEditOverride = isOverrideEditable(override, {
                   canEditAccessSettings,
                   canEditEnrollmentRules,
@@ -444,9 +440,9 @@ export function AccessControlSummary({
 
         <div className="rounded p-3 mt-3" style={{ backgroundColor: 'var(--bs-tertiary-bg)' }}>
           <p className="text-body-secondary small mb-0">
-            If a student matches multiple overrides, student-specific overrides take priority over
-            student-label overrides. Within each section, overrides lower in the list take priority
-            over those higher up.
+            اگر دانشجویی با چند استثنا مطابقت داشته باشد، استثناهای مختص دانشجو بر استثناهای برچسب
+            دانشجویی اولویت دارند. در هر بخش، استثناهایی که در پایین‌تر فهرست قرار دارند نسبت به
+            موارد بالاتر اولویت دارند.
           </p>
         </div>
       </section>

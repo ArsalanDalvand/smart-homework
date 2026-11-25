@@ -55,20 +55,20 @@ export function DeleteCourseInstanceModal({
         <div className="modal-content">
           <div className="modal-header">
             <h2 className="modal-title h4" id={labelId}>
-              Delete course instance
+              حذف دوره آموزشی
             </h2>
             <button
               type="button"
               className="btn-close"
               data-bs-dismiss="modal"
-              aria-label="Close"
+              aria-label="بستن"
             />
           </div>
           <div className="modal-body">
             {step === 1 && (
               <div>
                 <div role="alert" className="alert alert-warning mb-3">
-                  Bad things will happen if you don't read this!
+                  لطفاً پیش از ادامه این موارد را با دقت مطالعه کنید!
                 </div>
                 <div className="form-check mb-2">
                   <input
@@ -81,9 +81,8 @@ export function DeleteCourseInstanceModal({
                     }}
                   />
                   <label className="form-check-label" htmlFor="impact">
-                    I understand that <strong>{enrolledCount}</strong> enrolled{' '}
-                    {enrolledCount === 1 ? 'student' : 'students'} will lose access to this course
-                    instance.
+                    متوجه هستم که <strong>{enrolledCount}</strong> دانشجوی ثبت‌نام‌شده دسترسی خود
+                    به این دوره آموزشی را از دست خواهند داد.
                   </label>
                 </div>
                 <div className="form-check mb-3">
@@ -97,8 +96,8 @@ export function DeleteCourseInstanceModal({
                     }}
                   />
                   <label className="form-check-label" htmlFor="irreversible">
-                    I understand that once deleted, this course instance cannot be restored through
-                    the PrairieLearn web interface.
+                    متوجه هستم که پس از حذف، این دوره آموزشی از طریق رابط وب سامانه قابل بازیابی
+                    نخواهد بود.
                   </label>
                 </div>
                 <div className="form-check mb-2">
@@ -112,8 +111,7 @@ export function DeleteCourseInstanceModal({
                     }
                   />
                   <label className="form-check-label" htmlFor="recovery">
-                    I understand data recovery requires manual Git operations on the course
-                    repository.
+                    متوجه هستم که بازیابی داده‌ها نیازمند انجام عملیات دستی Git روی مخزن درس است.
                   </label>
                 </div>
               </div>
@@ -122,21 +120,19 @@ export function DeleteCourseInstanceModal({
               <div>
                 <div className="card text-bg-light mb-3">
                   <div className="card-body">
-                    <h3 className="h5 card-title">Recovery information</h3>
-                    <p>If you need to recover this course instance, you will need to:</p>
+                    <h3 className="h5 card-title">اطلاعات بازیابی</h3>
+                    <p>در صورت نیاز به بازیابی این دوره آموزشی، باید مراحل زیر را انجام دهید:</p>
                     <ol className="mb-0">
-                      <li>Access the course's Git repository</li>
-                      <li>
-                        Use Git commands to restore the course instance from the commit history
-                      </li>
-                      <li>Push your changes</li>
-                      <li>Sync your changes to PrairieLearn</li>
+                      <li>دسترسی به مخزن Git درس</li>
+                      <li>استفاده از دستورات Git برای بازیابی دوره آموزشی از تاریخچه کامیت‌ها</li>
+                      <li>ارسال (Push) تغییرات به مخزن</li>
+                      <li>همگام‌سازی تغییرات در سامانه</li>
                     </ol>
                   </div>
                 </div>
                 <div>
                   <label htmlFor="confirmShortName" className="form-label">
-                    Type <strong>{shortName}</strong> to confirm deletion:
+                    برای تایید حذف، عبارت <strong>{shortName}</strong> را وارد کنید:
                   </label>
                   <input
                     id="confirmShortName"
@@ -153,7 +149,7 @@ export function DeleteCourseInstanceModal({
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-              Cancel
+              انصراف
             </button>
             {step === 1 && (
               <button
@@ -162,7 +158,7 @@ export function DeleteCourseInstanceModal({
                 disabled={!canContinue}
                 onClick={() => setStep(2)}
               >
-                Continue
+                ادامه
               </button>
             )}
             {/* Hide with CSS, not conditional rendering, so that the tests can find the form */}
@@ -170,7 +166,7 @@ export function DeleteCourseInstanceModal({
               <input type="hidden" name="__action" value="delete_course_instance" />
               <input type="hidden" name="__csrf_token" value={csrfToken} />
               <button type="submit" className="btn btn-danger" disabled={!canContinue}>
-                Delete
+                حذف
               </button>
             </form>
           </div>

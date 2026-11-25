@@ -255,7 +255,7 @@ router.post(
       );
 
       if (!(await fs.pathExists(infoCourseInstancePath))) {
-        flash('error', 'infoCourseInstance.json does not exist');
+        flash('error', 'فایل infoCourseInstance.json وجود ندارد');
         res.redirect(req.originalUrl);
         return;
       }
@@ -316,7 +316,7 @@ router.post(
         return;
       }
 
-      flash('success', 'Publishing settings updated successfully');
+      flash('success', 'تنظیمات انتشار با موفقیت به‌روزرسانی شد');
       res.redirect(req.originalUrl);
       return;
     }

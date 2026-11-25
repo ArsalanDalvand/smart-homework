@@ -80,7 +80,7 @@ async function prepareLocalsForRender(
 
   // If student never loaded question or never submitted anything (submission is null)
   if (variant_with_submission_id == null) {
-    throw new error.HttpStatusError(404, 'Instance question does not have a gradable submission.');
+    throw new error.HttpStatusError(404, 'این نمونه سوال دارای ارسال قابل تصحیح نیست.');
   }
   await getAndRenderVariant(variant_with_submission_id, null, resLocals, {
     questionRenderContext: 'manual_grading',
@@ -287,7 +287,7 @@ router.put(
       res.locals,
     );
     if (!aiSubmissionGroupingEnabled) {
-      throw new error.HttpStatusError(403, 'Access denied (feature not available)');
+      throw new error.HttpStatusError(403, 'دسترسی مجاز نیست (این قابلیت در دسترس نیست)');
     }
 
     const manualInstanceQuestionGroupId = req.body.manualInstanceQuestionGroupId;
@@ -499,10 +499,10 @@ router.post(
     const body = parseRequestBody(req, PostBodySchema);
     if (body.__action === 'next_instance_question') {
       if (!res.locals.authz_data.has_course_instance_permission_view) {
-        throw new error.HttpStatusError(403, 'Access denied (must be a student data viewer)');
+        throw new error.HttpStatusError(403, 'دسترسی مجاز نیست (باید مجوز مشاهده اطلاعات دانشجویان را داشته باشید)');
       }
     } else if (!res.locals.authz_data.has_course_instance_permission_edit) {
-      throw new error.HttpStatusError(403, 'Access denied (must be a student data editor)');
+      throw new error.HttpStatusError(403, 'دسترسی مجاز نیست (باید مجوز ویرایش اطلاعات دانشجویان را داشته باشید)');
     }
     if (body.__action === 'add_manual_grade') {
       req.session.skip_graded_submissions = body.skip_graded_submissions;
@@ -591,7 +591,7 @@ router.post(
       );
 
       if (!aiSubmissionGroupingEnabled) {
-        throw new error.HttpStatusError(403, 'Access denied (feature not available)');
+        throw new error.HttpStatusError(403, 'دسترسی مجاز نیست (این قابلیت در دسترس نیست)');
       }
 
       const useInstanceQuestionGroups = await run(async () => {
@@ -606,7 +606,7 @@ router.post(
       if (!useInstanceQuestionGroups) {
         // This should not happen, since the UI only lets users grade by instance question group if
         // instance question groups were previously generated.
-        throw new error.HttpStatusError(400, 'Submission groups not generated.');
+        throw new error.HttpStatusError(400, 'گروه‌های ارسال هنوز ایجاد نشده‌اند.');
       }
 
       const selected_instance_question_group_id =
@@ -614,7 +614,7 @@ router.post(
         res.locals.instance_question.ai_instance_question_group_id;
 
       if (!selected_instance_question_group_id) {
-        throw new error.HttpStatusError(404, 'Selected instance question group not found');
+        throw new error.HttpStatusError(404, 'گروه ارسال انتخاب‌شده یافت نشد');
       }
 
       const instanceQuestionsInGroup = await sqldb.queryRows(
@@ -634,7 +634,7 @@ router.post(
       if (instanceQuestionsInGroup.length === 0) {
         flash(
           'warning',
-          `No ${body.__action === 'add_manual_grade_for_instance_question_group_ungraded' ? 'ungraded ' : ''}instance questions in the submission group.`,
+          `هیچ سوال ${body.__action === 'add_manual_grade_for_instance_question_group_ungraded' ? 'تصحیح‌نشده‌ای ' : ''}در این گروه ارسال وجود ندارد.`,
         );
         return res.redirect(req.baseUrl);
       }
@@ -667,14 +667,14 @@ router.post(
         });
 
         if (modified_at_conflict) {
-          flash('error', 'A conflict occurred while grading the submission. Please try again.');
+          flash('error', 'هنگام تصحیح ارسال تداخل رخ داد. لطفاً دوباره تلاش کنید.');
           return res.redirect(req.baseUrl);
         }
       }
 
       flash(
         'success',
-        `Successfully applied grade and feedback to ${instanceQuestionsInGroup.length} instance questions.`,
+        `نمره و بازخورد با موفقیت برای ${instanceQuestionsInGroup.length} سوال اعمال شد.`,
       );
 
       res.redirect(
@@ -724,7 +724,7 @@ router.post(
         if (!courseStaff.some((staff) => idsEqual(staff.id, assigned_grader))) {
           throw new error.HttpStatusError(
             400,
-            'The assigned grader does not have student data editor permissions.',
+            'مصحح تخصیص‌یافته دسترسی ویرایش اطلاعات دانشجویان را ندارد.',
           );
         }
       }

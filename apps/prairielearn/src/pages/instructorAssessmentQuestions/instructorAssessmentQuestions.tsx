@@ -102,8 +102,8 @@ router.get(
           navContext: { type: 'instructor', page: 'assessment', subPage: 'questions' },
           content: (
             <Alert variant="warning">
-              Some questions in this assessment could not be resolved. Fix any sync errors for this
-              assessment and sync the course again.
+              برخی از سوالات در این ارزیابی قابل شناسایی نیستند. خطاهای همگام‌سازی این ارزیابی را
+              برطرف کرده و درس را دوباره همگام‌سازی کنید.
             </Alert>
           ),
         }),
@@ -298,7 +298,7 @@ router.post(
         return res.redirect(res.locals.urlPrefix + '/edit_error/' + serverJob.jobSequenceId);
       }
 
-      flash('success', 'Assessment questions updated successfully');
+      flash('success', 'سوالات ارزیابی با موفقیت به‌روزرسانی شدند');
       return res.redirect(req.originalUrl);
     } else {
       throw new HttpStatusError(400, `unknown __action: ${req.body.__action}`);

@@ -14,7 +14,7 @@ export function AssessmentModuleHeadingHtml({
   return html`
     ${assessment_module.name}
     <span class="text-muted">
-      (Auto-generated from use in an assessment; edit this assessment module to customize)
+      (ایجادشده به‌صورت خودکار از طریق استفاده در یک تکلیف/آزمون؛ برای سفارشی‌سازی این بخش را ویرایش کنید)
     </span>
   `;
 }
@@ -33,7 +33,7 @@ export function AssessmentModuleHeading({
       {assessmentModule.name}
       <span className="text-muted">
         {' '}
-        (Auto-generated from use in an assessment; edit this assessment module to customize)
+        (ایجادشده به‌صورت خودکار از طریق استفاده در یک تکلیف/آزمون؛ برای سفارشی‌سازی این بخش را ویرایش کنید)
       </span>
     </>
   );

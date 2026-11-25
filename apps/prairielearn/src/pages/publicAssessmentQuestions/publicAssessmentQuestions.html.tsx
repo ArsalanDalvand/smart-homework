@@ -30,7 +30,7 @@ export function PublicAssessmentQuestions({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Questions',
+    pageTitle: 'سوال‌ها',
     navContext: {
       type: 'public',
       page: 'public_assessment',
@@ -39,7 +39,7 @@ export function PublicAssessmentQuestions({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          ${assessment_set.name} ${assessment.number}: Questions
+          ${assessment_set.name} ${assessment.number}: سوال‌ها
         </div>
         ${AssessmentQuestionsTable({
           questions,
@@ -78,11 +78,11 @@ function AssessmentQuestionsTable({
       <table class="table table-sm table-hover">
         <thead>
           <tr>
-            <th><span class="visually-hidden">Name</span></th>
-            <th>QID</th>
-            <th>Topic</th>
-            <th>Tags</th>
-            <th>Other Assessments</th>
+            <th><span class="visually-hidden">نام</span></th>
+            <th>شناسه سوال (QID)</th>
+            <th>مبحث</th>
+            <th>برچسب‌ها</th>
+            <th>سایر آزمون‌ها</th>
           </tr>
         </thead>
         ${questionGroups.map(

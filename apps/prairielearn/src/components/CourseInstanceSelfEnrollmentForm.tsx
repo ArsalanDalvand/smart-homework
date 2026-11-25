@@ -42,10 +42,10 @@ export function CourseInstanceSelfEnrollmentForm({ formId }: { formId: string })
           {...register('self_enrollment_enabled')}
         />
         <label className="form-check-label" htmlFor={`${formId}-self-enrollment-enabled`}>
-          Allow self-enrollment
+          اجازه خودثبت‌نامی
         </label>
         <div className="small text-muted">
-          If self-enrollment is disabled, students must be invited to this course instance.
+          اگر خودثبت‌نامی غیرفعال باشد، دانشجویان باید به این دوره دعوت شوند.
         </div>
       </div>
 
@@ -66,11 +66,10 @@ export function CourseInstanceSelfEnrollmentForm({ formId }: { formId: string })
           className="form-check-label"
           htmlFor={`${formId}-self-enrollment-use-enrollment-code`}
         >
-          Require enrollment code for self-enrollment
+          الزام کد ثبت‌نام برای خودثبت‌نامی
         </label>
         <div className="small text-muted">
-          If an enrollment code is not required, any course instance or assessment link allows
-          self-enrollment.
+          اگر کد ثبت‌نام الزامی نباشد، هر پیوند دوره یا تکلیف/آزمون امکان خودثبت‌نامی را فراهم می‌کند.
         </div>
       </div>
     </>

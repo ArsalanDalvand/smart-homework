@@ -12,22 +12,22 @@ export function AuthPassword({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Password',
+    pageTitle: 'رمز عبور',
     navContext: {
       type: 'plain',
       page: 'password',
     },
     content: html`
-      <h1 class="visually-hidden">Assessment Password</h1>
+      <h1 class="visually-hidden">رمز عبور آزمون</h1>
       <div class="card mb-4">
         <div class="card-body">
-          <p class="text-center">A password is required to access this assessment.</p>
+          <p class="text-center">برای دسترسی به این آزمون، وارد کردن رمز عبور الزامی است.</p>
 
           ${
             passwordInvalid
               ? html`
                   <p class="text-center text-danger">
-                    Previous password invalid or expired. Please try again.
+                    رمز عبور قبلی نامعتبر یا منقضی شده است. لطفاً دوباره تلاش کنید.
                   </p>
                 `
               : ''
@@ -36,7 +36,7 @@ export function AuthPassword({
           <form method="POST">
             <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
             <div class="mb-3">
-              <label class="form-label" for="password">Password</label>
+              <label class="form-label" for="password">رمز عبور</label>
               <input
                 type="password"
                 class="form-control"
@@ -46,7 +46,7 @@ export function AuthPassword({
                 required
               />
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">تایید</button>
           </form>
         </div>
       </div>

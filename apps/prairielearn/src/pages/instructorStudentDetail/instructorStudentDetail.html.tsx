@@ -69,7 +69,7 @@ export function InstructorStudentDetail({
 
       <div className="card mb-4">
         <div className="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-          <h2 className="mb-0">Gradebook</h2>
+          <h2 className="mb-0">دفتر نمرات</h2>
           {user && (
             <button
               type="button"
@@ -77,7 +77,7 @@ export function InstructorStudentDetail({
               onClick={handleViewGradebookAsStudent}
             >
               <i className="fas fa-book" aria-hidden="true" />
-              <span>View gradebook as student</span>
+              <span>مشاهده دفتر نمرات با دید دانشجو</span>
             </button>
           )}
         </div>
@@ -86,7 +86,7 @@ export function InstructorStudentDetail({
 
       <div className="card mb-4">
         <div className="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-          <h2 className="mb-0">Audit events</h2>
+          <h2 className="mb-0">رویدادهای ممیزی</h2>
         </div>
         <StudentAuditEventsTable events={auditEvents} />
       </div>

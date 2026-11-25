@@ -4,7 +4,7 @@ export function DragHandle({
   attributes,
   listeners,
   disabled,
-  ariaLabel = 'Drag to reorder',
+  ariaLabel = 'برای تغییر ترتیب بکشید',
 }: {
   attributes?: DraggableAttributes;
   listeners?: DraggableSyntheticListeners;

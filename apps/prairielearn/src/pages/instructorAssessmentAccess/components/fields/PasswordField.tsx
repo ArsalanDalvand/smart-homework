@@ -22,7 +22,7 @@ function PasswordToggle({
   return (
     <ToggleTitle
       id={`${idPrefix}-password-enabled`}
-      label="Password"
+      label="رمز عبور"
       checked={value !== null}
       disabled={!ruleEditable}
       onChange={(checked) => onChange(checked ? '' : null)}
@@ -56,10 +56,10 @@ function PasswordDetails({
               autoComplete="off"
               data-form-type="other"
               data-lpignore="true"
-              aria-label="Assessment password"
+              aria-label="رمز عبور ارزیابی"
               aria-invalid={isInvalid}
               aria-errormessage={isInvalid ? errorId : undefined}
-              placeholder="Password"
+              placeholder="رمز عبور"
               value={value}
               maxLength={MAX_ACCESS_CONTROL_PASSWORD_LENGTH}
               isInvalid={isInvalid}
@@ -69,7 +69,7 @@ function PasswordDetails({
             />
             <Button
               variant="outline-secondary"
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              aria-label={showPassword ? 'پنهان‌کردن رمز عبور' : 'نمایش رمز عبور'}
               onClick={() => setShowPassword(!showPassword)}
             >
               <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`} aria-hidden="true" />
@@ -84,8 +84,8 @@ function PasswordDetails({
       )}
       <Form.Text className="text-muted">
         {value !== null
-          ? 'This password will be required to start the assessment.'
-          : 'Require a password in order to start the assessment.'}
+          ? 'این رمز عبور برای شروع ارزیابی لازم خواهد بود.'
+          : 'الزام وارد کردن رمز عبور برای شروع ارزیابی.'}
       </Form.Text>
     </>
   );
@@ -129,7 +129,7 @@ export function OverridePasswordField({ index }: { index: number }) {
   return (
     <FieldWrapper
       isOverridden={isOverridden}
-      label="Password"
+      label="رمز عبور"
       headerToggle={
         <PasswordToggle
           value={field.value}

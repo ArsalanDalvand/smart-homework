@@ -364,7 +364,7 @@ export function QuestionDetailPanel({
                     {!hasTitle && (
                       <CopyButton
                         text={question.id}
-                        ariaLabel="Copy QID"
+                        ariaLabel="کپی شناسه سوال (QID)"
                         className="btn-xs btn-ghost ms-1"
                       />
                     )}
@@ -384,7 +384,7 @@ export function QuestionDetailPanel({
                 {question.id}
                 <CopyButton
                   text={question.id}
-                  ariaLabel="Copy QID"
+                  ariaLabel="کپی شناسه سوال (QID)"
                   className="btn-xs btn-ghost ms-1"
                 />
               </span>
@@ -417,18 +417,17 @@ export function QuestionDetailPanel({
 
       {!questionData && (
         <Alert variant="warning" className="small">
-          This question is unavailable in this PrairieLearn instance and cannot be previewed. Its
-          assessment settings will be preserved when saving.
+          این سوال در این سرور PrairieLearn در دسترس نیست و قابل پیش‌نمایش نمی‌باشد. تنظیمات آن در ارزیابی هنگام ذخیره حفظ خواهد شد.
         </Alert>
       )}
 
-      <DetailSectionHeader>Settings</DetailSectionHeader>
+      <DetailSectionHeader>تنظیمات</DetailSectionHeader>
 
       {/* QID field — edit mode only */}
       {editMode && onPickQuestion && (
         <div className="mb-3">
           <label htmlFor={`${idPrefix}-id`} className="form-label">
-            QID
+            شناسه سوال (QID)
           </label>
           <div className="input-group input-group-sm">
             <input
@@ -453,7 +452,7 @@ export function QuestionDetailPanel({
                 );
               }}
             >
-              Change
+              تغییر
             </button>
           </div>
         </div>
@@ -464,19 +463,19 @@ export function QuestionDetailPanel({
         <>
           {questionData && (
             <p className="text-muted small">
-              Point settings are read-only while grading information is unavailable locally.
+              تنظیمات امتیاز تا زمانی که اطلاعات تصحیح به‌صورت محلی در دسترس نباشد، فقط خواندنی است.
             </p>
           )}
           <dl className={clsx(editMode ? 'mb-3' : 'mb-2')}>
             {legacyPoints != null && (
               <>
-                <dt>Points</dt>
+                <dt>امتیاز</dt>
                 <dd>{formatPoints(legacyPoints)}</dd>
               </>
             )}
             {legacyMaxPoints != null && (
               <>
-                <dt>Max points</dt>
+                <dt>حداکثر امتیاز</dt>
                 <dd>{formatPoints(legacyMaxPoints)}</dd>
               </>
             )}
@@ -520,7 +519,7 @@ export function QuestionDetailPanel({
           (isAlternative ? (
             <InheritableField
               id={`${idPrefix}-triesPerVariant`}
-              label="Tries per variant"
+              label="تعداد تلاش در هر نسخه"
               inputType="number"
               editMode={editMode}
               isInherited={isTriesPerVariantInherited}
@@ -532,10 +531,10 @@ export function QuestionDetailPanel({
               }
               registerProps={register('triesPerVariant', {
                 setValueAs: coerceToNumber,
-                validate: (v) => validatePositiveInteger(v, 'Tries per variant'),
+                validate: (v) => validatePositiveInteger(v, 'تعداد تلاش در هر نسخه'),
               })}
               error={errors.triesPerVariant}
-              helpText="Number of submission attempts allowed per question variant."
+              helpText="تعداد دفعات مجاز ارسال پاسخ برای هر نسخه سوال."
               inheritedValueLabel={
                 inheritedTriesPerVariant != null ? String(inheritedTriesPerVariant) : undefined
               }
@@ -556,10 +555,10 @@ export function QuestionDetailPanel({
             <FormField
               editMode={editMode}
               id={`${idPrefix}-triesPerVariant`}
-              label="Tries per variant"
+              label="تعداد تلاش در هر نسخه"
               viewValue={question.triesPerVariant}
               error={errors.triesPerVariant}
-              helpText="Number of submission attempts allowed per question variant."
+              helpText="تعداد دفعات مجاز ارسال پاسخ برای هر نسخه سوال."
               hideWhenEmpty
             >
               {(aria) => (
@@ -569,7 +568,7 @@ export function QuestionDetailPanel({
                   {...aria.inputProps}
                   {...register('triesPerVariant', {
                     setValueAs: coerceToNumber,
-                    validate: (v) => validatePositiveInteger(v, 'Tries per variant'),
+                    validate: (v) => validatePositiveInteger(v, 'تعداد تلاش در هر نسخه'),
                   })}
                 />
               )}
@@ -580,13 +579,13 @@ export function QuestionDetailPanel({
         <FormField
           editMode={editMode}
           id={`${idPrefix}-comment`}
-          label="Comment"
+          label="یادداشت"
           viewValue={
             question.comment != null ? (
               <span className="text-break">{commentToString(question.comment)}</span>
             ) : undefined
           }
-          helpText="Internal note, not shown to students."
+          helpText="یادداشت داخلی، به دانشجویان نمایش داده نمی‌شود."
           hideWhenEmpty
         >
           {(aria) => (
@@ -603,7 +602,7 @@ export function QuestionDetailPanel({
       {questionData?.question.preferences_schema &&
         Object.keys(questionData.question.preferences_schema).length > 0 && (
           <>
-            <DetailSectionHeader>Preferences</DetailSectionHeader>
+            <DetailSectionHeader>تنظیمات ترجیحی</DetailSectionHeader>
             <Wrapper className={clsx(!editMode && 'mb-0')}>
               {Object.entries(questionData.question.preferences_schema).map(([name, schema]) => (
                 <PreferenceField
@@ -624,13 +623,13 @@ export function QuestionDetailPanel({
 
       {!isAlternative && groupsConfigured && (
         <>
-          <DetailSectionHeader>Role permissions</DetailSectionHeader>
+          <DetailSectionHeader>دسترسی نقش‌ها</DetailSectionHeader>
           {hasRoles ? (
             <Wrapper className={clsx(!editMode && 'mb-0')}>
               <InheritableRolesField
                 id={`${idPrefix}-canView`}
-                label="Can view"
-                helpText="Roles allowed to view this question."
+                label="مجاز به مشاهده"
+                helpText="نقش‌های مجاز به مشاهده این سوال."
                 editMode={editMode}
                 isInherited={watch('canView') == null}
                 inheritedValue={canViewParent.value}
@@ -648,8 +647,8 @@ export function QuestionDetailPanel({
               />
               <InheritableRolesField
                 id={`${idPrefix}-canSubmit`}
-                label="Can submit"
-                helpText="Roles allowed to submit answers to this question."
+                label="مجاز به ارسال"
+                helpText="نقش‌های مجاز به ارسال پاسخ برای این سوال."
                 editMode={editMode}
                 isInherited={watch('canSubmit') == null}
                 inheritedValue={canSubmitParent.value}
@@ -668,7 +667,7 @@ export function QuestionDetailPanel({
             </Wrapper>
           ) : (
             <p className="text-muted small mb-3">
-              No <a href={groupsPageUrl}>custom roles</a> defined for this assessment.
+              هیچ <a href={groupsPageUrl}>نقش سفارشی</a> برای این ارزیابی تعریف نشده است.
             </p>
           )}
         </>
@@ -694,7 +693,7 @@ export function QuestionDetailPanel({
               placement="top"
               tooltip={{
                 props: { id: 'reset-variants-tooltip' },
-                body: 'Resets all existing variants for this question on this assessment, so students will get new variants on their next visit.',
+                body: 'تمام نسخه‌های موجود این سوال در این ارزیابی را بازنشانی می‌کند تا دانشجویان در مراجعه بعدی نسخه‌های جدید دریافت کنند.',
               }}
             >
               <button
@@ -702,7 +701,7 @@ export function QuestionDetailPanel({
                 className="btn btn-sm btn-outline-secondary"
                 onClick={() => onResetButtonClick(questionData.assessment_question_id!)}
               >
-                Reset question variants
+                بازنشانی نسخه‌های سوال
               </button>
             </OverlayTrigger>
           )}
@@ -776,7 +775,7 @@ function PointsFields({
     validateAtLeastOnePointsField(formValues, parentValues);
 
   const nonNegativePointsValidation = (v: number | number[] | undefined) => {
-    if (typeof v === 'number' && v < 0) return 'Points must be non-negative.';
+    if (typeof v === 'number' && v < 0) return 'امتیاز باید نامنفی باشد.';
   };
 
   const resolveEffectivePoints = (formValues: QuestionFormData) => {
@@ -788,10 +787,10 @@ function PointsFields({
   const homeworkAutoPointsValidation = (_value: unknown, formValues: QuestionFormData) => {
     const { points, maxPoints } = resolveEffectivePoints(formValues);
     if (typeof points === 'number' && points === 0 && maxPoints != null && maxPoints > 0) {
-      return 'Auto points cannot be 0 when max auto points is greater than 0.';
+      return 'وقتی حداکثر امتیاز خودکار بیشتر از ۰ است، امتیاز خودکار نمی‌تواند ۰ باشد.';
     }
     if (typeof points === 'number' && typeof maxPoints === 'number' && points > maxPoints) {
-      return 'Auto points cannot exceed max auto points.';
+      return 'امتیاز خودکار نمی‌تواند از حداکثر امتیاز خودکار بیشتر باشد.';
     }
     return pointsValidation(_value, formValues);
   };
@@ -799,12 +798,12 @@ function PointsFields({
   const homeworkMaxPointsValidation = (_value: unknown, formValues: QuestionFormData) => {
     const { points, maxPoints } = resolveEffectivePoints(formValues);
     if (typeof points === 'number' && points === 0 && maxPoints != null && maxPoints > 0) {
-      return 'Max auto points must be 0 or empty when auto points is 0.';
+      return 'وقتی امتیاز خودکار ۰ است، حداکثر امتیاز خودکار باید ۰ یا خالی باشد.';
     }
     if (typeof points === 'number' && typeof maxPoints === 'number' && maxPoints < points) {
-      return 'Max auto points must be at least auto points.';
+      return 'حداکثر امتیاز خودکار باید حداقل برابر با امتیاز خودکار باشد.';
     }
-    if (maxPoints != null && maxPoints < 0) return 'Max auto points must be non-negative.';
+    if (maxPoints != null && maxPoints < 0) return 'حداکثر امتیاز خودکار باید نامنفی باشد.';
   };
 
   const viewAutoPoints = formatPoints(autoPointsValue);
@@ -814,27 +813,27 @@ function PointsFields({
     const effectiveMax = maxAutoPointsValue ?? autoPointsValue;
     if (effectiveMax == null) return undefined;
     const val = Array.isArray(effectiveMax) ? effectiveMax[0] : effectiveMax;
-    return isDefault ? `${val} (default)` : String(val);
+    return isDefault ? `${val} (پیش‌فرض)` : String(val);
   });
 
   const autoPointsId = `${idPrefix}-${isHomework ? 'autoPoints' : 'pointsList'}`;
   const autoPointsInputType = isHomework ? 'number' : 'text';
   const autoPointsHelpText = isHomework ? (
     <>
-      Points awarded for the auto-graded component.{' '}
+      امتیاز اختصاص‌یافته به بخش تصحیح خودکار.{' '}
       {constantQuestionValue
-        ? 'Each correct answer is worth this many points.'
-        : 'Each consecutive correct answer is worth more; an incorrect answer resets the value.'}{' '}
+        ? 'هر پاسخ صحیح این مقدار امتیاز دارد.'
+        : 'هر پاسخ صحیح پیاپی امتیاز بیشتری دارد؛ پاسخ نادرست مقدار را بازنشانی می‌کند.'}{' '}
       <a
         href="https://docs.prairielearn.com/assessment/configuration/#question-points-for-homework-assessments"
         target="_blank"
         rel="noreferrer"
       >
-        Learn more about question points
+        اطلاعات بیشتر درباره امتیاز سوالات
       </a>
     </>
   ) : (
-    'Points for each attempt, as a comma-separated list (e.g. "10, 5, 2, 1").'
+    'امتیاز هر تلاش، به‌صورت فهرست جداشده با ویرگول (مثلاً "10, 5, 2, 1").'
   );
   const autoPointsRegisterOptions: RegisterOptions<QuestionFormData, 'autoPoints'> = isHomework
     ? {
@@ -849,7 +848,7 @@ function PointsFields({
     : {
         pattern: {
           value: /^[0-9., ]*$/,
-          message: 'Points must be a number or a comma-separated list of numbers.',
+          message: 'امتیازها باید یک عدد یا فهرستی از اعداد جداشده با ویرگول باشند.',
         },
         setValueAs: parsePointsListValue,
         deps: ['manualPoints'],
@@ -866,7 +865,7 @@ function PointsFields({
     deps: ['autoPoints'],
     validate: homeworkMaxPointsValidation,
   };
-  const maxAutoPointsHelpText = 'Maximum total auto-graded points.';
+  const maxAutoPointsHelpText = 'حداکثر مجموع امتیاز تصحیح خودکار.';
 
   const manualPointsRegisterOptions: RegisterOptions<QuestionFormData, 'manualPoints'> = {
     setValueAs: coerceToNumber,
@@ -880,7 +879,7 @@ function PointsFields({
   const manualPointsField = isAlternative ? (
     <InheritableField
       id={`${idPrefix}-manualPoints`}
-      label="Manual points"
+      label="امتیاز دستی"
       inputType="number"
       step="any"
       editMode={editMode}
@@ -893,7 +892,7 @@ function PointsFields({
       }
       registerProps={register('manualPoints', manualPointsRegisterOptions)}
       error={errors.manualPoints}
-      helpText="Points awarded for the manually graded component."
+      helpText="امتیاز اختصاص‌یافته به بخش تصحیح دستی."
       inheritedValueLabel={
         inheritedManualPoints != null ? String(inheritedManualPoints) : undefined
       }
@@ -914,10 +913,10 @@ function PointsFields({
     <FormField
       editMode={editMode}
       id={`${idPrefix}-manualPoints`}
-      label="Manual points"
+      label="امتیاز دستی"
       viewValue={manualPointsValue != null ? String(manualPointsValue) : undefined}
       error={errors.manualPoints}
-      helpText="Points awarded for the manually graded component."
+      helpText="امتیاز اختصاص‌یافته به بخش تصحیح دستی."
       hideWhenEmpty
     >
       {(aria) => (
@@ -937,22 +936,21 @@ function PointsFields({
       {showManualPointsOnlyForAutoGraded && (
         <div className="alert alert-info small py-2 mb-2" role="alert">
           <i className="bi bi-info-circle-fill me-1" aria-hidden="true" />
-          This question is auto-graded but only has manual points. Auto-grading results will not
-          contribute to the score.
+          این سوال دارای تصحیح خودکار است اما فقط امتیاز دستی دارد. نتایج تصحیح خودکار در نمره لحاظ نخواهد شد.
         </div>
       )}
       {isManualGrading && manualPointsField}
       {(showAutoPointsForManual || showMaxAutoPointsForManual) && (
         <div className="alert alert-warning small py-2 mb-2" role="alert">
           <i className="bi bi-exclamation-triangle-fill me-1" aria-hidden="true" />
-          Auto points have no effect on manually-graded questions.
+          امتیاز خودکار بر سوالات با تصحیح دستی تاثیری ندارد.
         </div>
       )}
       {(!isManualGrading || showAutoPointsForManual) &&
         (isAlternative ? (
           <InheritableField
             id={autoPointsId}
-            label="Auto points"
+            label="امتیاز خودکار"
             inputType={autoPointsInputType}
             step={isHomework ? 'any' : undefined}
             editMode={editMode}
@@ -980,7 +978,7 @@ function PointsFields({
           <FormField
             editMode={editMode}
             id={autoPointsId}
-            label="Auto points"
+            label="امتیاز خودکار"
             viewValue={viewAutoPoints}
             error={errors.autoPoints}
             helpText={autoPointsHelpText}
@@ -1002,7 +1000,7 @@ function PointsFields({
         (isAlternative ? (
           <InheritableField
             id={`${idPrefix}-maxAutoPoints`}
-            label="Max auto points"
+            label="حداکثر امتیاز خودکار"
             inputType="number"
             step="any"
             editMode={editMode}
@@ -1033,7 +1031,7 @@ function PointsFields({
           <FormField
             editMode={editMode}
             id={`${idPrefix}-maxAutoPoints`}
-            label="Max auto points"
+            label="حداکثر امتیاز خودکار"
             viewValue={viewMaxAutoPoints}
             error={errors.maxAutoPoints}
             helpText={maxAutoPointsHelpText}
@@ -1110,7 +1108,7 @@ function PreferenceField({
         editMode={false}
         id={id}
         label={<span className="font-monospace">{name}</span>}
-        viewValue={hasOverride ? String(currentValue) : `${defaultDisplay} (default)`}
+        viewValue={hasOverride ? String(currentValue) : `${defaultDisplay} (پیش‌فرض)`}
       >
         {() => null}
       </FormField>
@@ -1132,13 +1130,13 @@ function PreferenceField({
           disabled
         />
         <small id={`${id}-help`} className="form-text text-muted">
-          Using question default.{' '}
+          در حال استفاده از پیش‌فرض سوال.{' '}
           <button
             type="button"
             className="btn btn-link btn-sm p-0 align-baseline"
             onClick={() => setOverride(schema.default)}
           >
-            Override
+            بازنویسی
           </button>
         </small>
       </div>
@@ -1147,14 +1145,14 @@ function PreferenceField({
 
   const resetHelpText = (
     <small id={`${id}-help`} className="form-text text-muted">
-      Overrides question default ({defaultDisplay}).{' '}
+      بازنویسی پیش‌فرض سوال ({defaultDisplay}).{' '}
       <button
         type="button"
         className="btn btn-link btn-sm p-0 align-baseline"
-        title="Reset to question default"
+        title="بازنشانی به پیش‌فرض سوال"
         onClick={clearOverride}
       >
-        Reset
+        بازنشانی
       </button>
     </small>
   );
@@ -1172,8 +1170,8 @@ function PreferenceField({
           aria-describedby={`${id}-help`}
           onChange={(e) => setOverride(e.target.value === 'true')}
         >
-          <option value="true">true</option>
-          <option value="false">false</option>
+          <option value="true">درست (true)</option>
+          <option value="false">نادرست (false)</option>
         </select>
         {resetHelpText}
       </div>

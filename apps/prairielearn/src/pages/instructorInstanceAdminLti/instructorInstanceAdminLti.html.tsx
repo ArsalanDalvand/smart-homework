@@ -76,36 +76,36 @@ export function InstructorInstanceAdminLti({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h1>LTI configuration</h1>
+          <h1>تنظیمات LTI</h1>
         </div>
         <div class="card-body">
           <p>
-            The LTI (Learning Tools Interoperability) standard allows other online learning websites
-            to embed PrairieLearn assessments within them. PrairieLearn acts as a
-            <em>Tool Provider</em> for LTI. See the
+            استاندارد LTI (Learning Tools Interoperability) به وب‌سایت‌های آموزش آنلاین دیگر اجازه
+            می‌دهد آزمون‌های PrairieLearn را در خود تعبیه کنند. PrairieLearn به عنوان یک
+            <em>ارائه‌دهنده ابزار (Tool Provider)</em> برای LTI عمل می‌کند. برای اطلاعات بیشتر به
             <a
               href="https://www.imsglobal.org/basic-overview-how-lti-works"
               target="_blank"
               rel="noreferrer"
             >
-              LTI overview
+              نمای کلی LTI
             </a>
-            for more information.
+            مراجعه کنید.
           </p>
           <p>
             <strong>
-              This version of LTI is deprecated.
+              این نسخه از LTI منسوخ شده است.
               ${
                 isEnterprise()
-                  ? html`See the "LMS connections" tab for more information about newer integration
-                    methods.`
-                  : html`Check with your PrairieLearn admins about newer integration methods.`
+                  ? html`برای اطلاعات بیشتر درباره روش‌های یکپارچه‌سازی جدیدتر، تب «اتصال‌های LMS»
+                    را ببینید.`
+                  : html`برای روش‌های یکپارچه‌سازی جدیدتر با مدیران سامانه مشورت کنید.`
               }
             </strong>
           </p>
           ${
             !resLocals.lti11_enabled
-              ? html`<p><em>LTI 1.1 is not enabled for this course instance.</em></p>`
+              ? html`<p><em>نسخه LTI 1.1 برای این ترم فعال نیست.</em></p>`
               : ''
           }
         </div>
@@ -143,23 +143,23 @@ function LtiCredentialCard({
 }) {
   return html`
     <div class="card mb-4">
-      <div class="card-header bg-primary text-white">LTI credentials</div>
+      <div class="card-header bg-primary text-white">اعتبارنامه‌های LTI</div>
       <div class="card-body">
         <p class="mb-0">
-          Use these credentials with your LMS (Learning Management System) to connect into this
-          course instance. A single credential can be shared with multiple links.
+          از این اعتبارنامه‌ها در سامانه مدیریت یادگیری (LMS) خود برای اتصال به این ترم استفاده
+          کنید. یک اعتبارنامه را می‌توان برای چندین لینک به اشتراک گذاشت.
         </p>
       </div>
 
       <div class="table-responsive">
-        <table class="table table-sm table-hover" aria-label="LTI credentials">
+        <table class="table table-sm table-hover" aria-label="اعتبارنامه‌های LTI">
           <thead>
             <tr>
-              <th>Launch URL</th>
-              <th>Consumer key</th>
-              <th>Shared secret</th>
-              <th>Created</th>
-              <th>Deleted</th>
+              <th>نشانی راه‌اندازی (Launch URL)</th>
+              <th>کلید مصرف‌کننده (Consumer key)</th>
+              <th>رمز مشترک (Shared secret)</th>
+              <th>تاریخ ایجاد</th>
+              <th>تاریخ حذف</th>
             </tr>
           </thead>
           <tbody>
@@ -174,7 +174,7 @@ function LtiCredentialCard({
                             type="button"
                             class="btn btn-sm btn-ghost js-copy-button"
                             data-clipboard-text="${config.ltiRedirectUrl}"
-                            aria-label="Copy redirect URL to clipboard"
+                            aria-label="کپی نشانی تغییرمسیر در حافظه"
                           >
                             <i class="bi bi-clipboard"></i>
                           </button>
@@ -185,7 +185,7 @@ function LtiCredentialCard({
                             type="button"
                             class="btn btn-sm btn-ghost js-copy-button"
                             data-clipboard-text="${tc.consumer_key}"
-                            aria-label="Copy consumer key to clipboard"
+                            aria-label="کپی کلید مصرف‌کننده در حافظه"
                           >
                             <i class="bi bi-clipboard"></i>
                           </button>
@@ -196,7 +196,7 @@ function LtiCredentialCard({
                             type="button"
                             class="btn btn-sm btn-ghost js-copy-button"
                             data-clipboard-text="${tc.secret}"
-                            aria-label="Copy shared secret to clipboard"
+                            aria-label="کپی رمز مشترک در حافظه"
                           >
                             <i class="bi bi-clipboard"></i>
                           </button>
@@ -214,7 +214,7 @@ function LtiCredentialCard({
                                     data-bs-container="body"
                                     data-bs-html="true"
                                     data-bs-placement="auto"
-                                    data-bs-title="Confirm delete"
+                                    data-bs-title="تأیید حذف"
                                     data-bs-content="${escapeHtml(html`
                                       <form method="post">
                                         <input type="hidden" name="__action" value="lti_del_cred" />
@@ -227,12 +227,12 @@ function LtiCredentialCard({
                                         <input
                                           type="submit"
                                           class="btn btn-danger"
-                                          value="Delete"
+                                          value="حذف"
                                         />
                                       </form>
                                     `)}"
                                   >
-                                    Delete
+                                    حذف
                                   </button>
                                 `
                           }
@@ -243,7 +243,7 @@ function LtiCredentialCard({
                 : html`
                     <tr>
                       <td colspan="5">
-                        <em>No LTI credentials have been created.</em>
+                        <em>هیچ اعتبارنامه LTI ایجاد نشده است.</em>
                       </td>
                     </tr>
                   `
@@ -256,7 +256,7 @@ function LtiCredentialCard({
         <form method="post">
           <input type="hidden" name="__action" value="lti_new_cred" />
           <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-          <button type="submit" class="btn btn-success">Create new LTI credential</button>
+          <button type="submit" class="btn btn-success">ایجاد اعتبارنامه LTI جدید</button>
         </form>
       </div>
     </div>
@@ -276,24 +276,24 @@ function LtiLinkTargetsCard({
 }) {
   return html`
     <div class="card mb-4">
-      <div class="card-header bg-primary text-white">LTI link targets</div>
+      <div class="card-header bg-primary text-white">مقصد لینک‌های LTI</div>
       <div class="card-body">
         <p>
-          LTI links connect an assessment from your LMS directly into a PrairieLearn assessment.
-          This is required for PrairieLearn to update scores in your LMS.
+          لینک‌های LTI یک آزمون در LMS شما را مستقیماً به یک آزمون در PrairieLearn متصل می‌کنند.
+          این کار برای به‌روزرسانی نمرات توسط PrairieLearn در LMS شما ضروری است.
         </p>
         <p class="mb-0">
-          To create a link, first create and follow the link in your LMS, then configure it here.
+          برای ایجاد لینک، ابتدا لینک را در LMS خود ساخته و باز کنید، سپس آن را در اینجا تنظیم نمایید.
         </p>
       </div>
 
       <div class="table-responsive">
-        <table class="table table-sm table-hover" aria-label="LTI link targets">
+        <table class="table table-sm table-hover" aria-label="مقصد لینک‌های LTI">
           <thead>
             <tr>
-              <th>Link info</th>
-              <th>Assessment</th>
-              <th>Link first seen</th>
+              <th>اطلاعات لینک</th>
+              <th>آزمون</th>
+              <th>اولین مشاهده لینک</th>
             </tr>
           </thead>
           <tbody>
@@ -316,7 +316,7 @@ function LtiLinkTargetsCard({
                               name="newAssessment"
                             >
                               <option value="" ${!link.assessment_id ? 'selected' : ''}>
-                                -- None
+                                -- هیچ‌کدام
                               </option>
                               ${assessments?.map(
                                 (a) => html`
@@ -343,7 +343,7 @@ function LtiLinkTargetsCard({
                 : html`
                     <tr>
                       <td colspan="3">
-                        <em>No LTI links have been created.</em>
+                        <em>هیچ لینک LTI ایجاد نشده است.</em>
                       </td>
                     </tr>
                   `

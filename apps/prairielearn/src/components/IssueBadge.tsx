@@ -62,7 +62,7 @@ export function IssueBadge({
     <a
       className={clsx('badge', 'rounded-pill', 'text-bg-danger', className)}
       href={href}
-      aria-label={`${count} open ${count === 1 ? 'issue' : 'issues'}`}
+      aria-label={`${count} گزارش مشکل باز`}
       onClick={onClick}
     >
       {count}

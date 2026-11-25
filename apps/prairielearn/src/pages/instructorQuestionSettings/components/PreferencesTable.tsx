@@ -252,16 +252,16 @@ function PreferenceRow({
           )}
           id={`pref-${index}-name`}
           disabled={!canEdit}
-          placeholder="e.g. show_hints"
+          placeholder="مثلاً show_hints"
           defaultValue={field.name}
           aria-invalid={!!errors?.name || undefined}
           aria-errormessage={errors?.name ? `pref-${index}-name-error` : undefined}
           {...register(`preferences.${index}.name`, {
-            required: 'Name is required',
+            required: 'نام متغیر الزامی است',
             validate: {
               unique: (value) => {
                 const duplicates = allPreferences.filter((p, i) => i !== index && p.name === value);
-                return duplicates.length === 0 || 'Name must be unique';
+                return duplicates.length === 0 || 'نام متغیر باید یکتا باشد';
               },
             },
           })}
@@ -290,9 +290,9 @@ function PreferenceRow({
             },
           })}
         >
-          <option value="string">String</option>
-          <option value="number">Number</option>
-          <option value="boolean">Boolean</option>
+          <option value="string">رشته (String)</option>
+          <option value="number">عدد (Number)</option>
+          <option value="boolean">منطقی (Boolean)</option>
         </select>
       </div>
       <div>
@@ -305,11 +305,11 @@ function PreferenceRow({
             aria-invalid={!!errors?.default || undefined}
             aria-errormessage={errors?.default ? `pref-${index}-default-error` : undefined}
             {...register(`preferences.${index}.default`, {
-              required: 'A default value is required',
+              required: 'مقدار پیش‌فرض الزامی است',
             })}
           >
-            <option value="true">true</option>
-            <option value="false">false</option>
+            <option value="true">درست (true)</option>
+            <option value="false">نادرست (false)</option>
           </select>
         ) : enumValues.length > 0 ? (
           <select
@@ -320,11 +320,11 @@ function PreferenceRow({
             aria-invalid={!!errors?.default || undefined}
             aria-errormessage={errors?.default ? `pref-${index}-default-error` : undefined}
             {...register(`preferences.${index}.default`, {
-              required: 'A default value is required',
+              required: 'مقدار پیش‌فرض الزامی است',
             })}
           >
             <option value="" disabled>
-              Select a default
+              انتخاب مقدار پیش‌فرض
             </option>
             {enumValues.map((val) => (
               <option key={val} value={val}>
@@ -343,12 +343,12 @@ function PreferenceRow({
             aria-invalid={!!errors?.default || undefined}
             aria-errormessage={errors?.default ? `pref-${index}-default-error` : undefined}
             {...register(`preferences.${index}.default`, {
-              required: 'A default value is required',
+              required: 'مقدار پیش‌فرض الزامی است',
               validate: {
                 matchesType: (value) => {
                   const currentType = watch(`preferences.${index}.type`);
                   if (currentType === 'number' && !Number.isFinite(Number(value))) {
-                    return 'Must be a finite number';
+                    return 'باید یک عدد متناهی باشد';
                   }
                   return true;
                 },
@@ -359,7 +359,7 @@ function PreferenceRow({
       </div>
       <div>
         {prefType === 'boolean' ? (
-          <span className="text-muted small">N/A</span>
+          <span className="text-muted small">ندارد</span>
         ) : (
           <EnumInput
             index={index}
@@ -376,7 +376,7 @@ function PreferenceRow({
           <button
             type="button"
             className="btn btn-sm btn-outline-danger"
-            aria-label={`Remove preference ${index + 1}`}
+            aria-label={`حذف متغیر ${index + 1}`}
             onClick={() => remove(index)}
           >
             <i className="bi bi-trash" aria-hidden="true" />
@@ -478,14 +478,14 @@ function EnumInput({
               <button
                 type="button"
                 className="btn-close preferences-enum-remove"
-                aria-label={`Remove ${val}`}
+                aria-label={`حذف ${val}`}
                 onClick={() => removeValue(val)}
               />
             )}
           </span>
         ))}
         {enumValues.length === 0 && !adding && (
-          <span className="badge bg-light text-muted border border-transparent">Any</span>
+          <span className="badge bg-light text-muted border border-transparent">همه مقادیر</span>
         )}
         {canEdit &&
           (adding ? (
@@ -494,7 +494,7 @@ function EnumInput({
               type={prefType === 'number' ? 'number' : 'text'}
               step={prefType === 'number' ? 'any' : undefined}
               className="form-control form-control-sm preferences-enum-input"
-              placeholder="Add value"
+              placeholder="افزودن مقدار"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
@@ -515,7 +515,7 @@ function EnumInput({
               onClick={startAdding}
             >
               <i className="bi bi-plus" aria-hidden="true" />
-              {enumValues.length === 0 ? 'Restrict' : ''}
+              {enumValues.length === 0 ? 'محدودسازی' : ''}
             </button>
           ))}
       </div>

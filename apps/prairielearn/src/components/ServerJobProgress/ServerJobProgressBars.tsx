@@ -97,18 +97,18 @@ export function ServerJobsProgressInfo({
 }
 
 const DEFAULT_STOP_CONFIRMATION = {
-  title: 'Stop jobs?',
-  body: 'In-progress jobs will finish; no new jobs will be started.',
-  confirmLabel: 'Stop',
-  cancelLabel: 'Keep running',
+  title: 'توقف پردازش‌ها؟',
+  body: 'پردازش‌های در حال انجام به پایان می‌رسند؛ هیچ پردازش جدیدی شروع نخواهد شد.',
+  confirmLabel: 'توقف',
+  cancelLabel: 'ادامه اجرا',
 };
 
 const DEFAULT_DISPLAY: Record<JobStatus, { text: string; icon: string; variant: string }> = {
-  inProgress: { text: 'Job in progress', icon: 'bi-hourglass-split', variant: 'info' },
-  stopping: { text: 'Stopping…', icon: 'bi-stop-circle-fill', variant: 'secondary' },
-  stopped: { text: 'Stopped', icon: 'bi-stop-circle-fill', variant: 'secondary' },
-  complete: { text: 'Job complete', icon: 'bi-check-circle-fill', variant: 'success' },
-  failed: { text: 'Job failed', icon: 'bi-exclamation-triangle-fill', variant: 'danger' },
+  inProgress: { text: 'پردازش در حال انجام است', icon: 'bi-hourglass-split', variant: 'info' },
+  stopping: { text: 'در حال توقف…', icon: 'bi-stop-circle-fill', variant: 'secondary' },
+  stopped: { text: 'متوقف شد', icon: 'bi-stop-circle-fill', variant: 'secondary' },
+  complete: { text: 'پردازش تکمیل شد', icon: 'bi-check-circle-fill', variant: 'success' },
+  failed: { text: 'پردازش ناموفق بود', icon: 'bi-exclamation-triangle-fill', variant: 'danger' },
 };
 
 /**
@@ -190,22 +190,22 @@ function ServerJobProgressInfo(
       return null;
     }
     const avg = formatMilliDollars(Math.round(totalCostMilliDollars / numItemsIncurredCost));
-    return `${avg.startsWith('<') ? avg : `~${avg}`}/submission`;
+    return `${avg.startsWith('<') ? avg : `~${avg}`} / هر ارسال`;
   }, [totalCostMilliDollars, numItemsIncurredCost]);
 
   const progressLabel = useMemo(() => {
     switch (status) {
       case 'inProgress':
       case 'stopping': {
-        const failedSuffix = nums.failed > 0 ? ` (${nums.failed} failed)` : '';
+        const failedSuffix = nums.failed > 0 ? ` (${nums.failed} ناموفق)` : '';
         return `${nums.complete}/${nums.total} ${itemNames}${failedSuffix}`;
       }
       case 'failed':
-        return `${successCount}/${nums.total} ${itemNames} (${nums.failed} failed)`;
+        return `${successCount}/${nums.total} ${itemNames} (${nums.failed} ناموفق)`;
       case 'complete':
         return `${nums.total} ${itemNames}`;
       case 'stopped': {
-        const failedSuffix = nums.failed > 0 ? `, ${nums.failed} failed` : '';
+        const failedSuffix = nums.failed > 0 ? `، ${nums.failed} ناموفق` : '';
         return `${successCount} ${itemNames}${failedSuffix}`;
       }
     }
@@ -276,7 +276,7 @@ function ServerJobProgressInfo(
                   </>
                 )}
                 <span className="text-body-secondary fw-medium">
-                  Total: {formatMilliDollars(totalCostMilliDollars)}
+                  مجموع: {formatMilliDollars(totalCostMilliDollars)}
                 </span>
               </>
             )}
@@ -289,9 +289,9 @@ function ServerJobProgressInfo(
               className="text-decoration-none"
               target="_blank"
               rel="noreferrer"
-              aria-label="View job logs"
+              aria-label="مشاهده گزارش‌های پردازش"
             >
-              View logs <i className="bi bi-box-arrow-up-right" style={{ fontSize: '0.7em' }} />
+              مشاهده گزارش‌ها <i className="bi bi-box-arrow-up-right" style={{ fontSize: '0.7em' }} />
             </a>
 
             {showStopButton && (
@@ -303,10 +303,10 @@ function ServerJobProgressInfo(
                   type="button"
                   className="btn btn-link p-0 align-baseline border-0 text-decoration-none link-danger"
                   style={{ fontSize: 'inherit' }}
-                  aria-label="Stop job"
+                  aria-label="توقف پردازش"
                   onClick={() => setShowStopConfirm(true)}
                 >
-                  Stop
+                  توقف
                 </button>
               </>
             )}
@@ -314,7 +314,7 @@ function ServerJobProgressInfo(
         </div>
         {status === 'failed' && jobFailureDetail && (
           <div className="small text-body-secondary mt-2">
-            <strong>Error:</strong> {jobFailureDetail}
+            <strong>خطا:</strong> {jobFailureDetail}
           </div>
         )}
       </Alert>

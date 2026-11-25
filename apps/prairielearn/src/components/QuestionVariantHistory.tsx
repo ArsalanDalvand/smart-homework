@@ -29,7 +29,7 @@ export function QuestionVariantHistory({
             <button
               id="${collapseButtonId}"
               class="bg-white text-body p-0 m-0 border-0 rounded-0"
-              aria-label="Show older variants"
+              aria-label="نمایش گونه‌های قدیمی‌تر"
               onclick="
                 // show all the hidden variant score buttons
                 document.querySelectorAll('.${collapseClass}').forEach(e => e.style.display = '');
@@ -62,7 +62,7 @@ export function QuestionVariantHistory({
           ${variant.open ? 'فعال' : `${Math.floor(variant.max_submission_score * 100)}%`}
           ${
             currentVariantId != null && idsEqual(variant.id, currentVariantId)
-              ? html`<span class="visually-hidden">(current)</span>`
+              ? html`<span class="visually-hidden">(فعلی)</span>`
               : ''
           }
         </a>

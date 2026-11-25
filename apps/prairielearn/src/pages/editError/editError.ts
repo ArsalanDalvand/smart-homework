@@ -16,7 +16,7 @@ router.get(
   '/:job_sequence_id',
   typedAsyncHandler<'course' | 'course-instance'>(async (req, res) => {
     if (!res.locals.authz_data.has_course_permission_edit) {
-      throw new HttpStatusError(403, 'Access denied (must be course editor)');
+      throw new HttpStatusError(403, 'دسترسی غیرمجاز (نیازمند دسترسی ویرایشگر درس)');
     }
 
     const job_sequence_id = req.params.job_sequence_id;
@@ -51,7 +51,7 @@ router.post(
   '/:job_sequence_id',
   typedAsyncHandler<'course' | 'course-instance'>(async (req, res) => {
     if (!res.locals.authz_data.has_course_permission_edit) {
-      throw new HttpStatusError(403, 'Access denied (must be course editor)');
+      throw new HttpStatusError(403, 'دسترسی غیرمجاز (نیازمند دسترسی ویرایشگر درس)');
     }
 
     if (req.body.__action === 'pull') {

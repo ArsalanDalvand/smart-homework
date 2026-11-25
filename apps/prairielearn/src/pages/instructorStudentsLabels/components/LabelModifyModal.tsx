@@ -89,7 +89,7 @@ export function LabelModifyModal({
       uids = parseUniqueValuesFromString(formData.uids, MAX_LABEL_UIDS);
     } catch (err) {
       setError('uids', {
-        message: err instanceof Error ? err.message : 'Invalid UIDs',
+        message: err instanceof Error ? err.message : 'شناسه‌های کاربری نامعتبر هستند',
       });
       return;
     }
@@ -105,8 +105,8 @@ export function LabelModifyModal({
         setError('uids', {
           message:
             err instanceof Error
-              ? `Failed to validate UIDs: ${err.message}`
-              : 'Failed to validate UIDs',
+              ? `اعتبارسنجی شناسه‌های کاربری ناموفق بود: ${err.message}`
+              : 'اعتبارسنجی شناسه‌های کاربری ناموفق بود',
         });
         return;
       }
@@ -137,7 +137,7 @@ export function LabelModifyModal({
           <Alert variant="danger" dismissible onClose={() => saveMutation.reset()}>
             {appError.message}{' '}
             <a href={getCourseInstanceJobSequenceUrl(courseInstanceId, appError.jobSequenceId)}>
-              View job logs
+              مشاهده گزارش‌های کار
             </a>
           </Alert>
         );
@@ -156,18 +156,19 @@ export function LabelModifyModal({
     return (
       <Modal show={show} backdrop="static" onHide={() => setStage({ type: 'editing' })}>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm unknown UIDs</Modal.Title>
+          <Modal.Title>تأیید شناسه‌های کاربری ناشناس</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {renderMutationError()}
-          <p>The following UIDs are not found in this course instance:</p>
+          <p>شناسه‌های کاربری زیر در این ترم یافت نشدند:</p>
           <div className="mb-3 p-3 bg-light border rounded">
             {stage.unknownUids.map((uid) => (
               <div key={uid}>{uid}</div>
             ))}
           </div>
           <p>
-            Do you want to continue editing, or save the label anyway? Unknown UIDs will be ignored.
+            آیا می‌خواهید به ویرایش ادامه دهید یا برچسب را در هر صورت ذخیره کنید؟ شناسه‌های کاربری
+            ناشناس نادیده گرفته می‌شوند.
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -177,7 +178,7 @@ export function LabelModifyModal({
             disabled={saveMutation.isPending}
             onClick={() => setStage({ type: 'editing' })}
           >
-            Continue editing
+            ادامه ویرایش
           </button>
           <button
             type="button"
@@ -185,7 +186,7 @@ export function LabelModifyModal({
             disabled={saveMutation.isPending}
             onClick={() => submitMutation(watch())}
           >
-            {saveMutation.isPending ? 'Saving...' : 'Save anyway'}
+            {saveMutation.isPending ? 'در حال ذخیره...' : 'ذخیره در هر صورت'}
           </button>
         </Modal.Footer>
       </Modal>
@@ -205,19 +206,19 @@ export function LabelModifyModal({
       }}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{data?.type === 'add' ? 'Add label' : 'Edit label'}</Modal.Title>
+        <Modal.Title>{data?.type === 'add' ? 'افزودن برچسب' : 'ویرایش برچسب'}</Modal.Title>
       </Modal.Header>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <Modal.Body>
           {renderMutationError()}
           <div className="d-flex flex-column align-items-center mb-4">
             <span className={clsx('badge', `color-${selectedColor}`)}>
-              {watch('name') || 'Label preview'}
+              {watch('name') || 'پیش‌نمایش برچسب'}
             </span>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="label-name">
-              Label name
+              نام برچسب
             </label>
             <input
               id="label-name"
@@ -228,10 +229,11 @@ export function LabelModifyModal({
               {...register('name', {
                 validate: (value) => {
                   const trimmed = value.trim();
-                  if (trimmed.length === 0) return 'Label name is required';
-                  if (trimmed.includes(';')) return 'Student label names cannot contain semicolons';
+                  if (trimmed.length === 0) return 'نام برچسب الزامی است';
+                  if (trimmed.includes(';'))
+                    return 'نام برچسب دانشجو نمی‌تواند شامل نقطه‌ویرگول (;) باشد';
                   if (trimmed.length > MAX_STUDENT_LABEL_NAME_LENGTH) {
-                    return `Label name must be at most ${MAX_STUDENT_LABEL_NAME_LENGTH} characters.`;
+                    return `نام برچسب نباید بیشتر از ${MAX_STUDENT_LABEL_NAME_LENGTH} نویسه باشد.`;
                   }
                   return true;
                 },
@@ -245,7 +247,7 @@ export function LabelModifyModal({
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="label-color">
-              Color
+              رنگ
             </label>
             <Controller
               control={control}
@@ -257,7 +259,7 @@ export function LabelModifyModal({
           </div>
           <div className="mb-0">
             <label className="form-label" htmlFor="label-uids">
-              UIDs (optional)
+              شناسه‌های کاربری (UID) (اختیاری)
             </label>
             <textarea
               id="label-uids"
@@ -274,7 +276,7 @@ export function LabelModifyModal({
               </div>
             )}
             <small id="label-uids-help" className="form-text">
-              Enter UIDs separated by commas, whitespace, or new lines.
+              شناسه‌های کاربری را با کاما، فاصله یا خط جدید از هم جدا کنید.
             </small>
           </div>
         </Modal.Body>
@@ -289,10 +291,10 @@ export function LabelModifyModal({
               onHide();
             }}
           >
-            Cancel
+            انصراف
           </button>
           <button type="submit" className="btn btn-primary" disabled={saveMutation.isPending}>
-            {saveMutation.isPending ? 'Saving...' : 'Save'}
+            {saveMutation.isPending ? 'در حال ذخیره...' : 'ذخیره'}
           </button>
         </Modal.Footer>
       </form>

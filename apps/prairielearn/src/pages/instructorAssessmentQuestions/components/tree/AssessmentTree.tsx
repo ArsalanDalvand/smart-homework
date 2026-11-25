@@ -84,7 +84,7 @@ export function AssessmentTree({
                     onClick={onAddZone}
                   >
                     <i className="bi bi-plus-lg me-1" aria-hidden="true" />
-                    Add zone
+                    افزودن بخش
                   </button>
                 </div>
               )}

@@ -24,21 +24,21 @@ type AfterCompleteVisibilityMode =
 const AFTER_COMPLETE_VISIBILITY_ITEMS: RichSelectItem<AfterCompleteVisibilityMode>[] = [
   {
     value: 'show_questions_and_score',
-    label: 'Show questions and score',
+    label: 'نمایش سوالات و نمره',
     description:
-      'Students see questions, their submissions, and their overall assessment score after finishing while the reservation is still active',
+      'دانشجویان پس از اتمام و تا زمانی که رزرو فعال است، سوالات، ارسال‌ها و نمره کل ارزیابی خود را می‌بینند',
   },
   {
     value: 'show_score_only',
-    label: 'Show score only',
+    label: 'نمایش فقط نمره',
     description:
-      'Students see their overall assessment score, but not questions or submissions, after finishing while the reservation is still active',
+      'دانشجویان پس از اتمام و تا زمانی که رزرو فعال است، نمره کل ارزیابی خود را می‌بینند، اما سوالات و ارسال‌ها را نمی‌بینند',
   },
   {
     value: 'hide_questions_and_score',
-    label: 'Hide questions and score',
+    label: 'پنهان‌کردن سوالات و نمره',
     description:
-      'Students do not see questions, submissions, or their overall assessment score after finishing while the reservation is still active',
+      'دانشجویان پس از اتمام و تا زمانی که رزرو فعال است، سوالات، ارسال‌ها و نمره کل ارزیابی خود را نمی‌بینند',
   },
 ];
 
@@ -85,12 +85,12 @@ function ExamAfterCompleteFields({ index }: { index: number }) {
   return (
     <div className="mt-3">
       <Form.Label className="fw-bold" htmlFor={`defaultRule-exam-after-complete-${index}`}>
-        After completion
+        پس از اتمام
       </Form.Label>
       <RichSelect
         items={AFTER_COMPLETE_VISIBILITY_ITEMS}
         value={mode}
-        aria-label="After completion visibility during reservation"
+        aria-label="وضعیت نمایش پس از اتمام در طول رزرو"
         id={`defaultRule-exam-after-complete-${index}`}
         minWidth={300}
         disabled={!ruleEditable || readOnly}
@@ -101,8 +101,7 @@ function ExamAfterCompleteFields({ index }: { index: number }) {
       )}
       {readOnly && (
         <Form.Text className="text-muted d-block">
-          Questions, submissions, and the overall assessment score are always shown during read-only
-          reservations.
+          سوالات، ارسال‌ها و نمره کل ارزیابی در طول رزروهای فقط-خواندنی همیشه نمایش داده می‌شوند.
         </Form.Text>
       )}
     </div>
@@ -125,7 +124,7 @@ export function PrairieTestControlForm() {
 
   const addExamDisabled = examFields.length >= MAX_ACCESS_CONTROL_PRAIRIETEST_EXAMS;
   const addExamDisabledTitle = addExamDisabled
-    ? `A rule can have at most ${MAX_ACCESS_CONTROL_PRAIRIETEST_EXAMS} PrairieTest exams.`
+    ? `یک قانون می‌تواند حداکثر ${MAX_ACCESS_CONTROL_PRAIRIETEST_EXAMS} آزمون PrairieTest داشته باشد.`
     : undefined;
 
   const getExamUuidError = (index: number): string | undefined => {
@@ -142,16 +141,16 @@ export function PrairieTestControlForm() {
         >
           <Form.Group className="mb-3" controlId={`defaultRule-exam-uuid-${index}`}>
             <div className="d-flex justify-content-between align-items-center mb-2">
-              <Form.Label className="mb-0">Exam UUID</Form.Label>
+              <Form.Label className="mb-0">شناسه یکتای آزمون (Exam UUID)</Form.Label>
               {ruleEditable && (
                 <Button
                   size="sm"
                   variant="outline-danger"
-                  aria-label={`Remove exam ${index + 1}`}
+                  aria-label={`حذف آزمون ${index + 1}`}
                   onClick={() => removeExam(index)}
                 >
                   <i className="bi bi-trash me-1" aria-hidden="true" />
-                  Remove
+                  حذف
                 </Button>
               )}
             </div>
@@ -165,7 +164,7 @@ export function PrairieTestControlForm() {
               aria-describedby={`defaultRule-exam-uuid-${index}-help`}
               defaultValue=""
               disabled={!ruleEditable}
-              placeholder="e.g., 11e89892-3eff-4d7f-90a2-221372f14e5c"
+              placeholder="مثلاً 11e89892-3eff-4d7f-90a2-221372f14e5c"
               {...register(`defaultRule.prairieTestExams.${index}.examUuid`)}
             />
             {getExamUuidError(index) && (
@@ -178,14 +177,14 @@ export function PrairieTestControlForm() {
               </Form.Text>
             )}
             <Form.Text id={`defaultRule-exam-uuid-${index}-help`} className="text-muted">
-              You can find this UUID in the PrairieTest exam settings.
+              این UUID را می‌توانید در تنظیمات آزمون در PrairieTest پیدا کنید.
             </Form.Text>
           </Form.Group>
           <Form.Group>
             <Form.Check
               type="checkbox"
               id={`defaultRule-exam-readonly-${index}`}
-              label="Read-only mode"
+              label="حالت فقط-خواندنی"
               defaultChecked={false}
               disabled={!ruleEditable}
               {...register(`defaultRule.prairieTestExams.${index}.readOnly`, {
@@ -210,8 +209,8 @@ export function PrairieTestControlForm() {
               aria-describedby={`defaultRule-exam-readonly-${index}-help`}
             />
             <Form.Text id={`defaultRule-exam-readonly-${index}-help`} className="text-muted">
-              During a read-only reservation, students can view their previous submissions, but
-              cannot submit new answers or start the assessment if they haven't already.
+              در طول رزرو فقط-خواندنی، دانشجویان می‌توانند ارسال‌های قبلی خود را ببینند، اما
+              نمی‌توانند پاسخ جدیدی ارسال کنند یا در صورت شروع نکردن، ارزیابی را آغاز کنند.
             </Form.Text>
           </Form.Group>
           <ExamAfterCompleteFields index={index} />
@@ -239,7 +238,7 @@ export function PrairieTestControlForm() {
             }}
           >
             <i className="bi bi-plus-circle me-1" aria-hidden="true" />
-            Add exam
+            افزودن آزمون
           </Button>
         </>
       )}

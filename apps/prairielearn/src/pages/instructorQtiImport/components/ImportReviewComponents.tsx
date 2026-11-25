@@ -30,9 +30,9 @@ function CanvasCourseIdList({ courseIds }: { courseIds: string[] }) {
     <ul className="mb-0">
       {courseIds.map((id) => (
         <li key={id}>
-          Canvas course ID <strong>{id}</strong>{' '}
+          شناسه درس Canvas: <strong>{id}</strong>{' '}
           <span className="text-muted">
-            (find it at <code>/courses/{id}</code> on your Canvas instance)
+            (در نشانی <code dir="ltr">/courses/{id}</code> در سامانه Canvas قابل مشاهده است)
           </span>
         </li>
       ))}
@@ -70,16 +70,14 @@ export function UnresolvedBankWarnings({ results }: { results: SerializedConvers
       <div className="d-flex align-items-start gap-2">
         <i className="bi bi-exclamation-triangle-fill mt-1" aria-hidden="true" />
         <div>
-          <strong>Some question banks were not resolved</strong>
+          <strong>برخی از بانک‌های سوال یافت نشدند</strong>
           <p className="mb-2 mt-1">
-            {refs.length} question bank reference{refs.length !== 1 ? 's' : ''} could not be matched
-            to uploaded bank content. Those questions will not be imported unless you start over and
-            upload {isCanvasExport ? 'a Canvas course export' : 'an export'} that contains the
-            referenced banks.
+            {refs.length} ارجاع به بانک سوال با محتوای بارگذاری‌شده تطبیق داده نشد. این سوال‌ها وارد نخواهند شد، مگر اینکه از ابتدا شروع کرده و{' '}
+            {isCanvasExport ? 'فایل خروجی درس Canvas' : 'فایل خروجی'} حاوی بانک‌های مورد نظر را بارگذاری کنید.
           </p>
           {courseIds.length > 0 && (
             <>
-              <p className="mb-1">Canvas identified these source courses:</p>
+              <p className="mb-1">Canvas این درس‌های مبدا را شناسایی کرده است:</p>
               <CanvasCourseIdList courseIds={courseIds} />
             </>
           )}
@@ -101,10 +99,9 @@ export function QuestionBankDeduplicationWarning({
       <div className="d-flex align-items-start gap-2">
         <i className="bi bi-info-circle-fill mt-1" aria-hidden="true" />
         <div>
-          <strong>Duplicate question bank questions were deduplicated</strong>
+          <strong>سوال‌های تکراری بانک‌های سوال حذف شدند</strong>
           <p className="mb-0 mt-1">
-            {deduplicatedQuestionCount} question{deduplicatedQuestionCount !== 1 ? 's' : ''}{' '}
-            appeared in multiple question banks and will only be imported once.
+            {deduplicatedQuestionCount} سوال در چند بانک سوال تکرار شده بودند و تنها یک بار وارد خواهند شد.
           </p>
         </div>
       </div>
@@ -137,14 +134,14 @@ export function NonRubricWarnings({
 
   return (
     <Alert variant="warning" className="mb-3">
-      <strong>Warnings:</strong>
+      <strong>هشدارها:</strong>
       <ul className="mb-0 mt-1">
         <DuplicateQuestionTitleWarningListItem duplicateTitles={duplicateQuestionTitles} />
         {individualWarnings.map((w) => {
           const q = questionById.get(w.questionId);
           return (
             <li key={warningKey(w)}>
-              {q ? `For question "${q.title}" (#${q.number}): ${w.message}` : w.message}
+              {q ? `برای سوال «${q.title}» (شماره ${q.number}): ${w.message}` : w.message}
             </li>
           );
         })}
@@ -176,13 +173,11 @@ function DuplicateQuestionTitleWarningListItem({ duplicateTitles }: { duplicateT
 
   return duplicateTitles.length === 1 ? (
     <li key="duplicate-question-title">
-      We detected several questions named &ldquo;{duplicateTitles[0]}&rdquo;. We recommend you add
-      meaningful names to these questions to find and edit them more easily in PrairieLearn.
+      چند سوال با عنوان یکسان &laquo;{duplicateTitles[0]}&raquo; شناسایی شد. پیشنهاد می‌کنیم برای یافتن و ویرایش آسان‌تر در سامانه، نام‌های معنادار و متمایز برای این سوال‌ها انتخاب کنید.
     </li>
   ) : (
     <li key="duplicate-question-titles">
-      We detected several questions with the same names. We recommend you add meaningful names to
-      these questions to find and edit them more easily in PrairieLearn.
+      چندین سوال با عنوان‌های تکراری شناسایی شد. پیشنهاد می‌کنیم برای یافتن و ویرایش آسان‌تر در سامانه، نام‌های معنادار و متمایز برای این سوال‌ها انتخاب کنید.
     </li>
   );
 }
@@ -243,16 +238,16 @@ export function ImportSummary({
   const notImportedItems: string[] = [];
   if (!canImportAssessments && totalAssessments > 0) {
     notImportedItems.push(
-      `${totalAssessments} assessment${totalAssessments !== 1 ? 's' : ''} (create a course instance to import them; their questions will still be imported)`,
+      `${totalAssessments} آزمون (برای وارد کردن آزمون‌ها یک دوره ایجاد کنید؛ سوال‌های آن‌ها همچنان وارد می‌شوند)`,
     );
   }
-  if (hasRubricIssues) notImportedItems.push('Rubrics (not supported in QTI quiz exports)');
-  if (strippedAccessRules?.hasTimeLimits) notImportedItems.push('Time limits');
-  if (strippedAccessRules?.hasPasswords) notImportedItems.push('Access passwords');
-  if (strippedAccessRules?.hasDates) notImportedItems.push('Access dates (start/end dates)');
+  if (hasRubricIssues) notImportedItems.push('روبریک‌ها (در خروجی آزمون QTI پشتیبانی نمی‌شوند)');
+  if (strippedAccessRules?.hasTimeLimits) notImportedItems.push('محدودیت‌های زمانی');
+  if (strippedAccessRules?.hasPasswords) notImportedItems.push('رمزهای دسترسی');
+  if (strippedAccessRules?.hasDates) notImportedItems.push('تاریخ‌های دسترسی (زمان شروع و پایان)');
   if (totalSkippedVideos > 0) {
     notImportedItems.push(
-      `${totalSkippedVideos} video file${totalSkippedVideos !== 1 ? 's' : ''} (see individual questions for details)`,
+      `${totalSkippedVideos} فایل ویدیویی (برای جزئیات به هر سوال مراجعه کنید)`,
     );
   }
   notImportedItems.push(...uniqueUnsupported);
@@ -269,33 +264,28 @@ export function ImportSummary({
           <Card.Body>
             <h2 className="h6 mb-2">
               <i className="bi bi-check-circle text-success me-2" aria-hidden="true" />
-              What can be imported
+              موارد قابل وارد کردن
             </h2>
             <ul className="mb-0">
               {canImportAssessments && totalAssessments > 0 && (
                 <li>
-                  <strong>{totalAssessments}</strong> assessment
-                  {totalAssessments !== 1 ? 's' : ''}
+                  <strong>{totalAssessments}</strong> آزمون
                 </li>
               )}
               {totalQuestionBanks > 0 && (
                 <li>
-                  <strong>{totalQuestionBanks}</strong> question bank
-                  {totalQuestionBanks !== 1 ? 's' : ''}
+                  <strong>{totalQuestionBanks}</strong> بانک سوال
                 </li>
               )}
               <li>
-                <strong>{totalQuestions}</strong> question{totalQuestions !== 1 ? 's' : ''}
+                <strong>{totalQuestions}</strong> سوال
               </li>
               {totalAssets > 0 && (
                 <li>
-                  <strong>{totalAssets}</strong> image{totalAssets !== 1 ? 's' : ''} and other asset
-                  {totalAssets !== 1 ? 's' : ''}
+                  <strong>{totalAssets}</strong> تصویر و فایل منبع دیگر
                   {totalExternalImageFilesCopied > 0 && (
                     <>
-                      , including <strong>{totalExternalImageFilesCopied}</strong> image
-                      {totalExternalImageFilesCopied !== 1 ? 's' : ''} that will be copied from
-                      external websites
+                      ، شامل <strong>{totalExternalImageFilesCopied}</strong> تصویر که از وب‌سایت‌های خارجی کپی خواهند شد
                     </>
                   )}
                 </li>
@@ -310,7 +300,7 @@ export function ImportSummary({
             <Card.Body>
               <h2 className="h6 mb-2">
                 <i className="bi bi-info-circle text-muted me-2" aria-hidden="true" />
-                What won't be imported
+                مواردی که وارد نخواهند شد
               </h2>
               <ul className="mb-0">
                 {notImportedItems.map((item) => (
@@ -329,8 +319,8 @@ export type ProcessingPhase = 'idle' | 'trimming' | 'uploading';
 
 const PROCESSING_PHASE_LABELS: Record<ProcessingPhase, string> = {
   idle: '',
-  trimming: 'Extracting QTI content\u2026',
-  uploading: 'Uploading\u2026',
+  trimming: 'در حال استخراج محتوای QTI\u2026',
+  uploading: 'در حال بارگذاری\u2026',
 };
 
 export function UploadStep({
@@ -354,35 +344,32 @@ export function UploadStep({
   return (
     <form encType="multipart/form-data" onSubmit={onSubmit}>
       <p>
-        Import quiz and question content from Canvas or another LMS. Upload a quiz export (
-        <code>.zip</code>) or a full course export (<code>.imscc</code>) in the QTI 1.2 format.{' '}
+        محتوای آزمون و سوال را از Canvas یا سایر سامانه‌های مدیریت یادگیری (LMS) وارد کنید. فایل خروجی آزمون (<code dir="ltr">.zip</code>) یا خروجی کامل درس (<code dir="ltr">.imscc</code>) را با فرمت QTI 1.2 بارگذاری نمایید.{' '}
         <a href="https://docs.prairielearn.com/importingContent/" target="_blank" rel="noreferrer">
-          Learn more about importing content into PrairieLearn
+          اطلاعات بیشتر درباره وارد کردن محتوا
         </a>
       </p>
       {courseInstances.length === 0 && (
         <Alert variant="info" className="mb-3">
-          This course doesn't have any course instances yet, so quizzes can't be imported as
-          assessments. Their questions will be imported as standalone questions that you can add to
-          assessments after you{' '}
-          <Alert.Link href={courseInstancesUrl}>create a course instance</Alert.Link>.
+          این درس هنوز هیچ دوره‌ای ندارد؛ بنابراین آزمون‌ها به عنوان آزمون قابل وارد کردن نیستند. سوال‌های آن‌ها به صورت سوال‌های مستقل وارد می‌شوند تا پس از{' '}
+          <Alert.Link href={courseInstancesUrl}>ایجاد یک دوره</Alert.Link> بتوانید آن‌ها را به آزمون‌ها اضافه کنید.
         </Alert>
       )}
       {courseInstances.length === 1 && (
         <div className="mb-3">
-          <Form.Label htmlFor="course-instance-target">Target course instance</Form.Label>
+          <Form.Label htmlFor="course-instance-target">دوره مقصد</Form.Label>
           <Form.Control
             id="course-instance-target"
             defaultValue={`${courseInstances[0].shortName}: ${courseInstances[0].longName}`}
             plaintext
             readOnly
           />
-          <Form.Text>Assessments will be created in this course instance.</Form.Text>
+          <Form.Text>آزمون‌ها در این دوره ایجاد خواهند شد.</Form.Text>
         </div>
       )}
       {courseInstances.length > 1 && (
         <div className="mb-3">
-          <Form.Label htmlFor="course-instance-select">Target course instance</Form.Label>
+          <Form.Label htmlFor="course-instance-select">دوره مقصد</Form.Label>
           <Form.Select
             id="course-instance-select"
             value={selectedCourseInstanceId ?? ''}
@@ -395,11 +382,11 @@ export function UploadStep({
               </option>
             ))}
           </Form.Select>
-          <Form.Text>Assessments will be created in this course instance.</Form.Text>
+          <Form.Text>آزمون‌ها در این دوره ایجاد خواهند شد.</Form.Text>
         </div>
       )}
       <div className="mb-3">
-        <Form.Label htmlFor="qti-file">Export file</Form.Label>
+        <Form.Label htmlFor="qti-file">فایل خروجی (Export)</Form.Label>
         <Form.Control
           id="qti-file"
           type="file"
@@ -410,7 +397,7 @@ export function UploadStep({
           required
         />
         <Form.Text id="qti-file-help">
-          Supported formats: .zip (quiz export), .imscc (course export).
+          فرمت‌های پشتیبانی‌شده: <span dir="ltr">.zip</span> (خروجی آزمون)، <span dir="ltr">.imscc</span> (خروجی درس).
         </Form.Text>
       </div>
       <Button type="submit" variant="primary" disabled={uploading}>
@@ -422,7 +409,7 @@ export function UploadStep({
         ) : (
           <>
             <i className="bi bi-cloud-arrow-up me-2" aria-hidden="true" />
-            Import content
+            وارد کردن محتوا
           </>
         )}
       </Button>
@@ -456,7 +443,7 @@ export function MissingBanksStep({
   const missingQuestionCount = countReferencedBankQuestions(refs);
   const totalQuestionCount = importedQuestionCount + missingQuestionCount;
   const hasUnknownCounts = refs.some((ref) => ref.numberChoose == null);
-  const countPrefix = hasUnknownCounts ? 'At least ' : '';
+  const countPrefix = hasUnknownCounts ? 'حداقل ' : '';
   const isCanvasExport = hasCanvasUnresolvedSourceBankRefs(refs);
 
   return (
@@ -474,25 +461,21 @@ export function MissingBanksStep({
         <div className="d-flex align-items-start gap-2">
           <i className="bi bi-exclamation-triangle-fill mt-1" aria-hidden="true" />
           <div>
-            <strong>Some questions are in question banks</strong>
+            <strong>برخی سوال‌ها در بانک‌های سوال قرار دارند</strong>
             <p className="mb-2 mt-1">
-              This export references {refs.length} question bank{refs.length !== 1 ? 's' : ''} that
-              {isCanvasExport ? ' Canvas did not include' : ' were not included'}. Use the file
-              inputs below to upload exported content for each missing bank, and PrairieLearn will
-              add matching bank questions to the original assessment review.
+              این فایل خروجی به {refs.length} بانک سوال ارجاع داده است که{' '}
+              {isCanvasExport ? 'توسط Canvas در خروجی قرار نگرفته‌اند' : 'در خروجی گنجانده نشده‌اند'}.
+              از بخش‌های زیر برای بارگذاری فایل خروجی هر بانک مفقود استفاده کنید تا سوال‌های منطبق به بخش بررسی آزمون اضافه شوند.
             </p>
             {isCanvasExport && courseIds.length > 1 && (
               <p className="mb-2">
-                Each input identifies the Canvas course that should contain that bank when Canvas
-                provided a course ID.
+                هر بخش، درس Canvas حاوی آن بانک سوال را (در صورت ارائه شناسه درس توسط Canvas) مشخص می‌کند.
               </p>
             )}
             <p className="mb-2">
               {countPrefix}
-              <strong>{missingQuestionCount}</strong> of <strong>{totalQuestionCount}</strong>{' '}
-              question
-              {totalQuestionCount !== 1 ? 's' : ''} in this import will be missing without the
-              additional exported content.
+              <strong>{missingQuestionCount}</strong> سوال از مجموع <strong>{totalQuestionCount}</strong>{' '}
+              سوال در این فایل بدون بارگذاری محتوای تکمیلی مفقود خواهند بود.
             </p>
           </div>
         </div>
@@ -504,8 +487,8 @@ export function MissingBanksStep({
           const refKey = sourceBankRefKey(ref);
           const isUploadingThisBank = uploading && uploadingBankKey === refKey;
           const label = ref.externalCourseId
-            ? `Supplemental export for "${ref.title}" from Canvas course ${ref.externalCourseId}`
-            : `Supplemental export for "${ref.title}"`;
+            ? `فایل خروجی تکمیلی برای «${ref.title}» از درس Canvas شماره ${ref.externalCourseId}`
+            : `فایل خروجی تکمیلی برای «${ref.title}»`;
           const hasCanvasRef = ref.sourceBankExportId != null || ref.externalCourseId != null;
 
           return (
@@ -520,16 +503,15 @@ export function MissingBanksStep({
               <div className="text-muted small mb-2">
                 {ref.externalCourseId ? (
                   <>
-                    Canvas course ID <strong>{ref.externalCourseId}</strong>{' '}
+                    شناسه درس Canvas: <strong>{ref.externalCourseId}</strong>{' '}
                     <span>
-                      (find it at <code>/courses/{ref.externalCourseId}</code> on your Canvas
-                      instance)
+                      (در نشانی <code dir="ltr">/courses/{ref.externalCourseId}</code> در سامانه Canvas قابل مشاهده است)
                     </span>
                   </>
                 ) : hasCanvasRef ? (
-                  'Canvas did not identify the source course ID for this bank.'
+                  'Canvas شناسه درس مبدا را برای این بانک سوال مشخص نکرده است.'
                 ) : (
-                  'Upload an export that contains this bank.'
+                  'فایل خروجی حاوی این بانک سوال را بارگذاری کنید.'
                 )}
               </div>
               <Form.Label htmlFor={inputId}>{label}</Form.Label>
@@ -545,8 +527,7 @@ export function MissingBanksStep({
                     required
                   />
                   <Form.Text id={`${inputId}-help`}>
-                    Upload {hasCanvasRef ? 'the Canvas course export' : 'an export'} that contains
-                    this bank.
+                    {hasCanvasRef ? 'فایل خروجی درس Canvas' : 'فایل خروجی'} حاوی این بانک سوال را بارگذاری کنید.
                   </Form.Text>
                 </div>
                 <Button
@@ -554,7 +535,7 @@ export function MissingBanksStep({
                   className="flex-shrink-0"
                   variant="primary"
                   disabled={uploading}
-                  aria-label={`Upload export for ${ref.title}`}
+                  aria-label={`بارگذاری فایل خروجی برای ${ref.title}`}
                 >
                   {isUploadingThisBank ? (
                     <>
@@ -564,7 +545,7 @@ export function MissingBanksStep({
                   ) : (
                     <>
                       <i className="bi bi-cloud-arrow-up me-2" aria-hidden="true" />
-                      Upload export
+                      بارگذاری فایل خروجی
                     </>
                   )}
                 </Button>
@@ -582,10 +563,10 @@ export function MissingBanksStep({
           onClick={onStartOver}
         >
           <i className="bi bi-arrow-left me-1" aria-hidden="true" />
-          Start over
+          شروع مجدد
         </Button>
         <Button variant="outline-secondary" type="button" disabled={uploading} onClick={onSkip}>
-          Continue without additional content
+          ادامه بدون محتوای تکمیلی
         </Button>
       </div>
     </>
@@ -631,28 +612,27 @@ export function AssessmentQuestionsSection({
         <div className="d-flex align-items-center gap-2 p-2 bg-light border rounded mb-2 small">
           <i className="bi bi-exclamation-circle text-warning" aria-hidden="true" />
           <span className="flex-grow-1">
-            {conflictCount} question{conflictCount !== 1 ? 's' : ''} conflict
-            {conflictCount === 1 ? 's' : ''} with existing questions
+            {conflictCount} سوال با سوال‌های موجود تداخل دارد
           </span>
           <Button
             variant="outline-secondary"
             size="sm"
             onClick={() => setAllConflictStrategy('overwrite')}
           >
-            Overwrite all
+            جایگزینی همه
           </Button>
           <Button
             variant="outline-secondary"
             size="sm"
             onClick={() => setAllConflictStrategy('rename')}
           >
-            Rename all
+            تغییر نام همه
           </Button>
         </div>
       )}
 
       <details>
-        <summary>Questions ({questions.length})</summary>
+        <summary>سوال‌ها ({questions.length})</summary>
 
         <div className="d-flex gap-2 mb-2 mt-1 small">
           <button
@@ -662,7 +642,7 @@ export function AssessmentQuestionsSection({
               setExpansionCommand(({ version }) => ({ version: version + 1, expanded: true }))
             }
           >
-            Expand all
+            باز کردن همه
           </button>
           <button
             type="button"
@@ -671,7 +651,7 @@ export function AssessmentQuestionsSection({
               setExpansionCommand(({ version }) => ({ version: version + 1, expanded: false }))
             }
           >
-            Collapse all
+            بستن همه
           </button>
         </div>
 

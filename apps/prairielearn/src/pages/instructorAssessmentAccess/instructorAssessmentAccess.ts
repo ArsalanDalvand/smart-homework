@@ -203,7 +203,7 @@ router.post(
         const data = replaceJsonKey(JSON.parse(content), 'allowAccess', 'accessControl', []);
         formattedJson = await formatJsonWithPrettier(JSON.stringify(data));
       } else {
-        flash('error', 'This assessment cannot be automatically migrated.');
+        flash('error', 'این ارزیابی به صورت خودکار قابل مهاجرت نیست.');
         return res.redirect(req.originalUrl);
       }
 
@@ -229,8 +229,8 @@ router.post(
       flash(
         'success',
         migrationResult
-          ? 'Access rules migrated to modern format.'
-          : 'Legacy access rules removed. You can now configure access rules in the modern format.',
+          ? 'قوانین دسترسی به قالب جدید منتقل شدند.'
+          : 'قوانین دسترسی قدیمی حذف شدند. اکنون می‌توانید قوانین دسترسی را در قالب جدید پیکربندی کنید.',
       );
       return res.redirect(req.originalUrl);
     } else {

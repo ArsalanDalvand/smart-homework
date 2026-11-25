@@ -10,8 +10,7 @@ export function AssessmentSetHeadingHtml({ assessment_set }: { assessment_set: A
   return html`
     ${assessment_set.name}
     <span class="text-muted">
-      (Auto-generated from use in an assessment; add this assessment set to your infoCourse.json
-      file to customize)
+      (ایجادشده به‌صورت خودکار از طریق استفاده در یک تکلیف/آزمون؛ برای سفارشی‌سازی این مجموعه ارزیابی را به فایل <code>infoCourse.json</code> خود اضافه کنید)
     </span>
   `;
 }
@@ -30,7 +29,7 @@ export function AssessmentSetHeading({
       {assessmentSet.name}
       <span className="text-muted">
         {' '}
-        (Auto-generated from use in an assessment; edit this assessment set to customize)
+        (ایجادشده به‌صورت خودکار از طریق استفاده در یک تکلیف/آزمون؛ برای سفارشی‌سازی این مجموعه ارزیابی را ویرایش کنید)
       </span>
     </>
   );

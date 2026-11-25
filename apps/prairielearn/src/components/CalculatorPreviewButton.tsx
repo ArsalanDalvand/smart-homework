@@ -22,7 +22,7 @@ export function CalculatorPreviewButton({ type }: { type: CalculatorType }) {
         }}
       >
         <i className="bi bi-calculator me-1" aria-hidden="true" />
-        Calculator
+        ماشین‌حساب
       </Button>
       {mounted &&
         createPortal(<div ref={previewRef} data-calculator-preview={type} />, document.body)}

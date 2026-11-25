@@ -204,7 +204,7 @@ export function TreeQuestionBlockNode({
         <DragHandle attributes={attributes} listeners={listeners} disabled={!editMode} />
         <CollapseToggleButton
           isCollapsed={isCollapsed}
-          ariaLabel={isCollapsed ? 'Expand alternatives' : 'Collapse alternatives'}
+          ariaLabel={isCollapsed ? 'باز کردن گزینه‌های جایگزین' : 'بستن گزینه‌های جایگزین'}
           onToggle={toggleCollapse}
         />
         <div className="flex-grow-1" style={{ minWidth: 0 }}>
@@ -215,13 +215,13 @@ export function TreeQuestionBlockNode({
                 const { min, max } = computeAltPoolChosenRange(zone, zoneQuestionBlock);
                 const allChosen = min === displayCount && max === displayCount;
                 const chosenLabel = allChosen
-                  ? 'all chosen'
+                  ? 'همه انتخاب می‌شوند'
                   : min === max
-                    ? `${min} chosen`
-                    : `${min}-${max} chosen`;
+                    ? `${min} انتخابی`
+                    : `${min} تا ${max} انتخابی`;
                 return (
                   <>
-                    {displayCount} alternative{displayCount !== 1 ? 's' : ''}{' '}
+                    {displayCount} گزینه جایگزین{' '}
                     <span className="text-secondary">({chosenLabel})</span>
                   </>
                 );
@@ -237,15 +237,15 @@ export function TreeQuestionBlockNode({
               {pointsMismatch && (
                 <WarningIndicator
                   tooltipId={`points-mismatch-${zoneQuestionBlock.trackingId}`}
-                  label="Inconsistent points"
-                  body="Students will receive different total points because this pool has alternatives with different point values"
+                  label="امتیازهای ناسازگار"
+                  body="دانشجویان مجموع امتیازهای متفاوتی دریافت خواهند کرد زیرا گزینه‌های این مجموعه دارای امتیازهای متفاوتی هستند"
                 />
               )}
               {chooseExceeds && (
                 <WarningIndicator
                   tooltipId={`choose-exceeds-${zoneQuestionBlock.trackingId}`}
-                  label="Choose exceeds count"
-                  body="Number to choose exceeds the number of alternatives in this pool"
+                  label="تعداد انتخاب بیش از حد"
+                  body="تعداد برای انتخاب از تعداد گزینه‌های جایگزین موجود در این مجموعه بیشتر است"
                 />
               )}
             </span>
@@ -280,13 +280,13 @@ export function TreeQuestionBlockNode({
                   placement="top"
                   tooltip={{
                     props: { id: `shared-tags-${zoneQuestionBlock.trackingId}` },
-                    body: 'Tags shared across all alternatives',
+                    body: 'برچسب‌های مشترک بین تمام گزینه‌های جایگزین',
                   }}
                 >
                   <button
                     type="button"
                     className="btn btn-xs btn-ghost p-0"
-                    aria-label="Tags shared across all alternatives"
+                    aria-label="برچسب‌های مشترک بین تمام گزینه‌های جایگزین"
                   >
                     <i className="bi bi-question-circle text-muted" aria-hidden="true" />
                   </button>
@@ -319,8 +319,8 @@ export function TreeQuestionBlockNode({
               'btn btn-sm border-0 text-muted ms-1 tree-delete-btn',
               !isAltPoolSelected && 'hover-show',
             )}
-            aria-label="Delete alternative pool"
-            title="Delete alternative pool"
+            aria-label="حذف مجموعه جایگزین"
+            title="حذف مجموعه جایگزین"
             onClick={(e) => {
               e.stopPropagation();
               onDeleteQuestion(zoneQuestionBlock.trackingId, '');
@@ -334,7 +334,7 @@ export function TreeQuestionBlockNode({
       {/* Alternatives */}
       {!isCollapsed && alternativeCount === 0 && editMode && (
         <div className="text-muted fst-italic border-bottom py-2" style={{ paddingLeft: '4.5rem' }}>
-          No alternatives yet. Use "Add alternative" to add questions.
+          هنوز هیچ گزینه جایگزینی وجود ندارد. برای افزودن سوال از «افزودن گزینه جایگزین» استفاده کنید.
         </div>
       )}
       {!isCollapsed && (
@@ -412,7 +412,7 @@ export function TreeQuestionBlockNode({
             onClick={() => onAddToAltPool(zoneQuestionBlock.trackingId)}
           >
             <i className="bi bi-plus-lg me-1" aria-hidden="true" />
-            Add alternative
+            افزودن گزینه جایگزین
           </button>
         </div>
       )}

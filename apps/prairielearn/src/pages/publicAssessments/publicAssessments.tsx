@@ -26,7 +26,7 @@ router.get(
     // so it requires the instance itself to be shared publicly. Individual shared
     // assessments are reachable without this via their own share flag.
     if (!res.locals.course_instance.share_source_publicly) {
-      throw new HttpStatusError(404, 'Not Found');
+      throw new HttpStatusError(404, 'یافت نشد');
     }
 
     const courseInstanceCopyTargets = await getCourseInstanceCopyTargets({
@@ -55,7 +55,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Assessments',
+        pageTitle: 'آزمون‌ها',
         navContext: {
           type: 'public',
           page: 'assessments',

@@ -34,7 +34,7 @@ export function AssessmentNavigation({
         type="button"
         class="btn btn-ghost text-start assessment-switcher-button"
         style="max-width: 100%;"
-        aria-label="Change assessment"
+        aria-label="تغییر تکلیف/آزمون"
         aria-haspopup="true"
         aria-expanded="false"
         hx-get="/pl/navbar/course_instance/${courseInstanceId}/assessment/${assessment.id}/switcher${
@@ -97,13 +97,13 @@ function MiddleTruncatedText({
 export function AssessmentNavigationModal() {
   return Modal({
     id: 'assessmentNavigationModal',
-    title: 'Select assessment',
+    title: 'انتخاب تکلیف/آزمون',
     form: false,
     body: html`
       <div id="assessmentNavigationModalContent">
         <div style="width: 100%;" class="d-flex justify-content-center align-items-center">
           <div class="spinner-border spinner-border-sm" role="status">
-            <span class="visually-hidden">Loading assessments...</span>
+            <span class="visually-hidden">در حال بارگذاری تکالیف و آزمون‌ها...</span>
           </div>
         </div>
       </div>
