@@ -2,10 +2,10 @@ import { QueryClient, useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import { formatDate } from '@prairielearn/formatter';
 import { getAppError } from '@prairielearn/trpc/client';
 import { AppErrorAlert, QueryClientProviderDebug } from '@prairielearn/trpc/react';
 
+import { FriendlyDate } from '../../../components/FriendlyDate.js';
 import { uiStrings } from '../../../lib/branding.js';
 import type { UserAccessToken } from '../../../lib/client/safe-db-types.js';
 import { createUserTrpcClient } from '../../../trpc/user/client.js';
@@ -251,11 +251,16 @@ function TokenList({
         <li key={token.id} className="list-group-item d-flex align-items-center">
           <div className="d-flex flex-column me-3">
             <strong>{token.name}</strong>
-            <span className="text-muted small">تاریخ ایجاد: {formatDate(token.created_at, 'Asia/Tehran')}</span>
+            <span className="text-muted small">تاریخ ایجاد: <FriendlyDate date={token.created_at} timezone="Asia/Tehran" /></span>
             <span className="text-muted small">
-              {token.last_used_at !== null
-                ? `آخرین استفاده: ${formatDate(token.last_used_at, 'Asia/Tehran')}`
-                : 'تاکنون استفاده نشده'}
+              {token.last_used_at !== null ? (
+                <>
+                  آخرین استفاده:{' '}
+                  <FriendlyDate date={token.last_used_at} timezone="Asia/Tehran" />
+                </>
+              ) : (
+                'تاکنون استفاده نشده'
+              )}
             </span>
           </div>
           <button

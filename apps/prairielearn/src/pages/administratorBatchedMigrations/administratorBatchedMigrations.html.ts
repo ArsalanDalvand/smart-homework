@@ -1,4 +1,3 @@
-import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 import type {
   BatchedMigrationJobRow,
@@ -7,6 +6,7 @@ import type {
 } from '@prairielearn/migrations';
 
 import { PageLayout } from '../../components/PageLayout.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import { uiStrings } from '../../lib/branding.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
 
@@ -115,15 +115,15 @@ export function AdministratorBatchedMigration({
               </tr>
               <tr>
                 <th>${uiStrings.batchedMigrations.createdAt}</th>
-                <td dir="ltr" class="text-end">${formatDate(batchedMigration.created_at, 'Asia/Tehran')}</td>
+                <td class="text-end">${html`<span title="${formatGregorianTooltip(batchedMigration.created_at, 'Asia/Tehran')}">${formatJalaliFriendly(batchedMigration.created_at, 'Asia/Tehran')}</span>`}</td>
               </tr>
               <tr>
                 <th>${uiStrings.batchedMigrations.updatedAt}</th>
-                <td dir="ltr" class="text-end">${formatDate(batchedMigration.updated_at, 'Asia/Tehran')}</td>
+                <td class="text-end">${html`<span title="${formatGregorianTooltip(batchedMigration.updated_at, 'Asia/Tehran')}">${formatJalaliFriendly(batchedMigration.updated_at, 'Asia/Tehran')}</span>`}</td>
               </tr>
               <tr>
                 <th>${uiStrings.batchedMigrations.startedAt}</th>
-                <td dir="ltr" class="text-end">${batchedMigration.started_at ? formatDate(batchedMigration.started_at, 'Asia/Tehran') : '—'}</td>
+                <td class="text-end">${batchedMigration.started_at ? html`<span title="${formatGregorianTooltip(batchedMigration.started_at, 'Asia/Tehran')}">${formatJalaliFriendly(batchedMigration.started_at, 'Asia/Tehran')}</span>` : '—'}</td>
               </tr>
               <tr>
                 <th>${uiStrings.batchedMigrations.actions}</th>
@@ -226,7 +226,7 @@ function MigrationJobsCard({
                               class="text-muted text-small"
                               style="font-variant-numeric: tabular-nums;"
                             >
-                              شناسه #${job.id} &mdash; اجرا شده در <span dir="ltr">${formatDate(job.started_at, 'Asia/Tehran')}</span> به مدت ${duration} میلی‌ثانیه
+                              شناسه #${job.id} &mdash; اجرا شده در <span>${html`<span title="${formatGregorianTooltip(job.started_at, 'Asia/Tehran')}">${formatJalaliFriendly(job.started_at, 'Asia/Tehran')}</span>`}</span> به مدت ${duration} میلی‌ثانیه
                               &mdash; ${job.attempts} تلاش
                             </span>
                           `

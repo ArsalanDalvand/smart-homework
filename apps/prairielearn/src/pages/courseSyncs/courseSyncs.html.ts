@@ -1,12 +1,12 @@
 import { filesize } from 'filesize';
 import { z } from 'zod';
 
-import { formatDate } from '@prairielearn/formatter';
 import { escapeHtml, html } from '@prairielearn/html';
 import { IdSchema } from '@prairielearn/zod';
 
 import { JobStatusHtml } from '../../components/JobStatus.js';
 import { PageLayout } from '../../components/PageLayout.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import { getCourseAdminQuestionsUrl } from '../../lib/client/url.js';
 import { config } from '../../lib/config.js';
 import { type Course, JobSequenceSchema, QuestionSchema, UserSchema } from '../../lib/db-types.js';
@@ -154,11 +154,11 @@ export function CourseSyncs({
                 (jobSequence) => html`
                   <tr>
                     <td>${jobSequence.number}</td>
-                    <td dir="ltr" class="text-end">
+                    <td class="text-end">
                       ${
                         jobSequence.start_date == null
                           ? html`&mdash;`
-                          : formatDate(jobSequence.start_date, course.display_timezone)
+                          : html`<span title="${formatGregorianTooltip(jobSequence.start_date, course.display_timezone)}">${formatJalaliFriendly(jobSequence.start_date, course.display_timezone)}</span>`
                       }
                     </td>
                     <td>${jobSequence.description}</td>
@@ -260,7 +260,7 @@ function ImageTable({
                     image.imageSyncNeeded
                       ? html`<span class="text-warning">در رجیستری محلی یافت نشد</span>`
                       : image.pushed_at
-                        ? formatDate(image.pushed_at, course.display_timezone)
+                        ? html`<span title="${formatGregorianTooltip(image.pushed_at, course.display_timezone)}">${formatJalaliFriendly(image.pushed_at, course.display_timezone)}</span>`
                         : html`&mdash;`
                   }
                 </td>

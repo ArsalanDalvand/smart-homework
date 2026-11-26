@@ -4,13 +4,13 @@ import type { ReactNode } from 'react';
 import { EncodedData } from '@prairielearn/browser-utils';
 import { compiledScriptTag, compiledStylesheetTag } from '@prairielearn/compiled-assets';
 import type { PageLocation } from '@prairielearn/course-agent-types';
-import { formatDateFriendly } from '@prairielearn/formatter';
 import { HtmlSafeString, html, unsafeHtml } from '@prairielearn/html';
 import { renderHtml } from '@prairielearn/react';
 import { run } from '@prairielearn/run';
 import { assertNever } from '@prairielearn/utils';
 
 import { getNavPageTabs } from '../lib/navPageTabs.js';
+import { formatJalaliFriendly } from '../lib/jalali.js';
 import { computeStatus } from '../lib/publishing.js';
 import type { UntypedResLocals } from '../lib/res-locals.types.js';
 
@@ -184,11 +184,11 @@ function UnpublishedBannerComponent({
     switch (status) {
       case 'unpublished':
         if (courseInstance.publishing_end_date) {
-          return `این دوره از تاریخ ${formatDateFriendly(courseInstance.publishing_end_date, courseInstance.display_timezone, { timeFirst: true })} از حالت انتشار خارج شده و دیگر برای دانشجویان قابل دسترسی نیست.`;
+          return `این دوره از تاریخ ${formatJalaliFriendly(courseInstance.publishing_end_date, courseInstance.display_timezone, { timeFirst: true })} از حالت انتشار خارج شده و دیگر برای دانشجویان قابل دسترسی نیست.`;
         }
         return 'این دوره به دلیل منتشر نشدن برای دانشجویان قابل دسترسی نیست.';
       case 'publish_scheduled':
-        return `این دوره پس از تاریخ انتشار زمان‌بندی‌شده یعنی ${formatDateFriendly(courseInstance.publishing_start_date, courseInstance.display_timezone, { timeFirst: true })} برای دانشجویان قابل دسترسی خواهد بود.`;
+        return `این دوره پس از تاریخ انتشار زمان‌بندی‌شده یعنی ${formatJalaliFriendly(courseInstance.publishing_start_date, courseInstance.display_timezone, { timeFirst: true })} برای دانشجویان قابل دسترسی خواهد بود.`;
       default:
         assertNever(status);
     }

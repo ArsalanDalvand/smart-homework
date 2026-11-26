@@ -5,7 +5,6 @@ import { Alert, Dropdown, Modal } from 'react-bootstrap';
 import { FormProvider, useForm } from 'react-hook-form';
 import ReactMarkdown from 'react-markdown';
 
-import { formatDate } from '@prairielearn/formatter';
 import { type AppError, getAppError } from '@prairielearn/trpc/client';
 import { OverlayTrigger, useModalState } from '@prairielearn/ui';
 import type { Timezone } from '@prairielearn/utils/timezone';
@@ -16,6 +15,7 @@ import {
   buildRepoShortName,
   useInstitutionPrefix,
 } from '../../../components/AdminstratorCourseFormFields.js';
+import { FriendlyDate } from '../../../components/FriendlyDate.js';
 import { JobStatus } from '../../../components/JobStatus.js';
 import {
   type AdminInstitution,
@@ -283,8 +283,8 @@ const CourseRequestTableRow = memo(
                       return (
                         <tr key={job.id}>
                           <td>{job.number}</td>
-                          <td dir="ltr">{formatDate(job.start_date, 'Asia/Tehran')}</td>
-                          <td dir="ltr">{job.finish_date ? formatDate(job.finish_date, 'Asia/Tehran') : '—'}</td>
+                          <td>{job.start_date ? <FriendlyDate date={job.start_date} timezone="Asia/Tehran" /> : '—'}</td>
+                          <td>{job.finish_date ? <FriendlyDate date={job.finish_date} timezone="Asia/Tehran" /> : '—'}</td>
                           <td>{job.authn_user_name}</td>
                           <td>
                             <JobStatus status={job.status} />

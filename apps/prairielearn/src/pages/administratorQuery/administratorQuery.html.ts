@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 
 import { type AdministratorQuerySpecs } from '../../admin_queries/lib/util.js';
 import { PageLayout } from '../../components/PageLayout.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import { nodeModulesAssetPath } from '../../lib/assets.js';
 import { type QueryRun, QueryRunSchema } from '../../lib/db-types.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
@@ -104,7 +104,7 @@ export function AdministratorQuery({
           query_run
             ? html`
                 <div class="card-body d-flex align-items-center p-2 bg-secondary text-white">
-                  زمان اجرای پرس‌وجو: <span dir="ltr">${formatDate(query_run.date, 'UTC')}</span>
+                  زمان اجرای پرس‌وجو: <span>${html`<span title="${formatGregorianTooltip(query_run.date, 'UTC')}">${formatJalaliFriendly(query_run.date, 'UTC')}</span>`}</span>
                   ${
                     query_run.result != null
                       ? html`
@@ -195,7 +195,7 @@ export function AdministratorQuery({
                           <tr>
                             <td>
                               <a href="${`?query_run_id=${run.id}`}">
-                                ${formatDate(run.date, 'UTC')}
+                                ${html`<span title="${formatGregorianTooltip(run.date, 'UTC')}">${formatJalaliFriendly(run.date, 'UTC')}</span>`}
                               </a>
                             </td>
                             <td>

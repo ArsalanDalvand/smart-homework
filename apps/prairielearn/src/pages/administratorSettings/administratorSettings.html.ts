@@ -1,7 +1,7 @@
-import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 
 import { PageLayout } from '../../components/PageLayout.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import { uiStrings } from '../../lib/branding.js';
 import { config } from '../../lib/config.js';
 import { type NewsItem } from '../../lib/db-types.js';
@@ -138,7 +138,7 @@ export function AdministratorSettings({
                                 ${item.title}
                               </a>
                             </td>
-                            <td class="align-middle">${formatDate(item.pub_date, 'UTC')}</td>
+                            <td class="align-middle">${html`<span title="${formatGregorianTooltip(item.pub_date, 'UTC')}">${formatJalaliFriendly(item.pub_date, 'UTC')}</span>`}</td>
                             <td class="align-middle">
                               ${
                                 item.managed_by === 'admin' && item.hidden_at != null

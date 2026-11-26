@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-import { formatDateYMDHM } from '@prairielearn/formatter';
 import { html, unsafeHtml } from '@prairielearn/html';
 import { markdownToHtml } from '@prairielearn/markdown';
 import { hydrateHtml } from '@prairielearn/react/server';
 
 import { InstructorInfoPanel } from '../../../components/InstructorInfoPanel.js';
+import { formatJalaliFriendly } from '../../../lib/jalali.js';
 import { PageLayout } from '../../../components/PageLayout.js';
 import { PersonalNotesPanel } from '../../../components/PersonalNotesPanel.js';
 import { QuestionContainer } from '../../../components/QuestionContainer.js';
@@ -441,9 +441,10 @@ export function InstanceQuestion({
                     <InstanceQuestionGradingConflictModal
                       conflictingGrade={{
                         gradedAt: conflict_grading_job.date
-                          ? formatDateYMDHM(
+                          ? formatJalaliFriendly(
                               conflict_grading_job.date,
                               resLocals.course_instance.display_timezone,
+                              { includeTz: false },
                             )
                           : null,
                         graderName: conflict_grading_job.grader_name ?? 'مصحح ناشناس',
@@ -460,9 +461,10 @@ export function InstanceQuestion({
                         }),
                       }}
                       existingGrade={{
-                        gradedAt: formatDateYMDHM(
+                        gradedAt: formatJalaliFriendly(
                           resLocals.instance_question.modified_at,
                           resLocals.course_instance.display_timezone,
+                          { includeTz: false },
                         ),
                         graderName: lastGrader?.name ?? lastGrader?.uid ?? 'مصحح ناشناس',
                         gradingPanelData: buildInstanceQuestionGradingPanelProps({

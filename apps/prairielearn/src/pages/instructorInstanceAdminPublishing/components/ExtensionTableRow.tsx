@@ -1,7 +1,7 @@
-import { formatDateFriendly } from '@prairielearn/formatter';
 import { OverlayTrigger } from '@prairielearn/ui';
 
 import { ExpandableUserList } from '../../../components/ExpandableUserList.js';
+import { FriendlyDate } from '../../../components/FriendlyDate.js';
 import type { StaffCourseInstance } from '../../../lib/client/safe-db-types.js';
 import type { CourseInstancePublishingExtensionRow } from '../instructorInstanceAdminPublishing.types.js';
 
@@ -34,10 +34,10 @@ export function ExtensionTableRow({
       </td>
       <td className="col-1 align-middle text-nowrap">
         <div className="d-flex align-items-center gap-1">
-          {formatDateFriendly(
-            extension.course_instance_publishing_extension.end_date,
-            courseInstance.display_timezone,
-          )}
+          <FriendlyDate
+            date={extension.course_instance_publishing_extension.end_date}
+            timezone={courseInstance.display_timezone}
+          />
           {isBeforeInstanceEndDate && (
             <OverlayTrigger
               tooltip={{

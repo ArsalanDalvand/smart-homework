@@ -3,11 +3,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 
-import { formatDate } from '@prairielearn/formatter';
 import { getAppError } from '@prairielearn/trpc/client';
 import { assertNever } from '@prairielearn/utils';
 
 import { JalaliDateTimePicker } from '../../../components/JalaliDateTimePicker.js';
+import { formatJalaliFriendly } from '../../../lib/jalali.js';
 import { useTRPC } from '../../../trpc/assessment/context.js';
 
 import { useInvalidateAssessmentInstancesList } from './useInvalidateAssessmentInstancesList.js';
@@ -179,7 +179,7 @@ export function TimeLimitEditForm({
         startDate = startDate.add({ seconds: totalTime }).subtract({ minutes: timeAddValue });
       }
 
-      return formatDate(new Date(startDate.epochMilliseconds), timezone);
+      return formatJalaliFriendly(new Date(startDate.epochMilliseconds), timezone);
     } catch (err) {
       // Errors here may be due to large values or invalid inputs.
       console.error('Error calculating proposed closing time:', err);

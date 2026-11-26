@@ -1,5 +1,4 @@
 import { EncodedData } from '@prairielearn/browser-utils';
-import { formatDate } from '@prairielearn/formatter';
 import { type HtmlValue, escapeHtml, html, unsafeHtml } from '@prairielearn/html';
 import { run } from '@prairielearn/run';
 
@@ -8,6 +7,7 @@ import type {
   InstanceQuestionAIGradingInfo,
 } from '../ee/lib/ai-grading/types.js';
 import { formatStudentQuestionTitle } from '../lib/assessment.shared.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../lib/jalali.js';
 import { ansiToHtml } from '../lib/chalk.js';
 import { config } from '../lib/config.js';
 import { type CopyTarget } from '../lib/copy-content.js';
@@ -418,10 +418,7 @@ function IssuePanel({
             <tr>
               <th>تاریخ:</th>
               <td>
-                ${formatDate(
-                  issue.date!,
-                  course_instance?.display_timezone ?? course.display_timezone,
-                )}
+                ${html`<span title="${formatGregorianTooltip(issue.date!, course_instance?.display_timezone ?? course.display_timezone)}">${formatJalaliFriendly(issue.date!, course_instance?.display_timezone ?? course.display_timezone)}</span>`}
               </td>
             </tr>
           </tbody>

@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 
 import { PageLayout } from '../../components/PageLayout.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import { compiledScriptTag } from '../../lib/assets.js';
 import { GradingJobSchema, QuestionSchema, UserSchema, VariantSchema } from '../../lib/db-types.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
@@ -26,14 +26,12 @@ export function InstructorGradingJob({
   resLocals: ResLocalsForPage<'course' | 'course-instance'>;
   gradingJobRow: GradingJobRow;
 }) {
-  const formatGradingJobDate = (date: Date | null) =>
-    date
-      ? formatDate(
-          date,
-          resLocals.course_instance?.display_timezone ?? resLocals.course.display_timezone,
-          { includeMs: true },
-        )
+  const formatGradingJobDate = (date: Date | null) => {
+    const tz = resLocals.course_instance?.display_timezone ?? resLocals.course.display_timezone;
+    return date
+      ? html`<span title="${formatGregorianTooltip(date, tz)}">${formatJalaliFriendly(date, tz)}</span>`
       : html`&mdash;`;
+  };
 
   const variantLink =
     gradingJobRow.instance_question_id != null && gradingJobRow.course_instance_id

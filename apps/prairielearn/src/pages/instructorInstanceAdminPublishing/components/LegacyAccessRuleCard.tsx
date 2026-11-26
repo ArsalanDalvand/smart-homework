@@ -1,7 +1,7 @@
-import { formatDate } from '@prairielearn/formatter';
 import { run } from '@prairielearn/run';
 
 import { CommentPopover } from '../../../components/CommentPopover.js';
+import { FriendlyDate } from '../../../components/FriendlyDate.js';
 import type { CourseInstance, CourseInstanceAccessRule } from '../../../lib/db-types.js';
 
 export function LegacyAccessRuleCard({
@@ -117,8 +117,8 @@ function AccessRuleRow({
         </td>
       )}
       <td>{uidContent}</td>
-      <td>{accessRule.start_date == null ? '—' : formatDate(accessRule.start_date, timeZone)}</td>
-      <td>{accessRule.end_date == null ? '—' : formatDate(accessRule.end_date, timeZone)}</td>
+      <td>{accessRule.start_date == null ? '—' : <FriendlyDate date={accessRule.start_date} timezone={timeZone} />}</td>
+      <td>{accessRule.end_date == null ? '—' : <FriendlyDate date={accessRule.end_date} timezone={timeZone} />}</td>
       <td>{accessRule.institution ?? '—'}</td>
     </tr>
   );

@@ -2,9 +2,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Alert } from 'react-bootstrap';
 import z from 'zod';
 
-import { formatDateFriendly } from '@prairielearn/formatter';
 import { useModalState } from '@prairielearn/ui';
 
+import { FriendlyDate } from '../../../components/FriendlyDate.js';
 import type { StaffCourseInstance } from '../../../lib/client/safe-db-types.js';
 import {
   type CourseInstancePublishingExtensionRow,
@@ -55,9 +55,14 @@ export function PublishingExtensions({
   const modifyModalState = useModalState<ExtensionModifyModalData>(null);
   const deleteModalState = useModalState<ExtensionDeleteModalData>(null);
 
-  const currentInstanceEndDate = courseInstance.publishing_end_date
-    ? formatDateFriendly(courseInstance.publishing_end_date, courseInstance.display_timezone)
-    : '—';
+  const currentInstanceEndDate = courseInstance.publishing_end_date ? (
+    <FriendlyDate
+      date={courseInstance.publishing_end_date}
+      timezone={courseInstance.display_timezone}
+    />
+  ) : (
+    '—'
+  );
   return (
     <>
       <div className="mb-3">

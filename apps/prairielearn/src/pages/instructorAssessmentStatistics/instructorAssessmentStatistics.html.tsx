@@ -3,13 +3,13 @@ import { z } from 'zod';
 
 import {
   SECOND_IN_MILLISECONDS,
-  formatDate,
-  formatDateYMD,
   formatInterval,
 } from '@prairielearn/formatter';
 import { DateFromISOString, IdSchema } from '@prairielearn/zod';
 
+import { FriendlyDate } from '../../components/FriendlyDate.js';
 import { Scorebar } from '../../components/Scorebar.js';
+import { formatJalaliFriendly } from '../../lib/jalali.js';
 import {
   getAssessmentStatisticsDownloadUrl,
   getManualGradingAssessmentQuestionUrl,
@@ -103,9 +103,14 @@ export function InstructorAssessmentStatistics({
   // updated the assessment instance statistics stored in the assessments
   // row itself).
   const statsLastUpdated =
-    assessment.stats_last_updated == null
-      ? 'تاکنون محاسبه نشده'
-      : formatDate(assessment.stats_last_updated, courseInstance.display_timezone);
+    assessment.stats_last_updated == null ? (
+      'تاکنون محاسبه نشده'
+    ) : (
+      <FriendlyDate
+        date={assessment.stats_last_updated}
+        timezone={courseInstance.display_timezone}
+      />
+    );
 
   return (
     <>
@@ -315,7 +320,7 @@ export function InstructorAssessmentStatistics({
                       // The date is already extracted from the timestamp in the
                       // query and returned as UTC, so we can safely format it
                       // without worrying about timezones here.
-                      label: formatDateYMD(day.date, 'UTC'),
+                      label: formatJalaliFriendly(day.date, 'UTC', { dateOnly: true, includeTz: false }),
                       mean: day.mean_score_perc,
                       histogram: day.histogram,
                     })),

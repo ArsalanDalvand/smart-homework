@@ -1,13 +1,14 @@
 import { UAParser } from 'ua-parser-js';
 import { z } from 'zod';
 
-import { formatDate, formatInterval } from '@prairielearn/formatter';
+import { formatInterval } from '@prairielearn/formatter';
 import { escapeHtml, html } from '@prairielearn/html';
 import { hydrateHtml } from '@prairielearn/react/server';
 import { run } from '@prairielearn/run';
 import { DateFromISOString, IdSchema } from '@prairielearn/zod';
 
 import { EditQuestionPointsScoreButtonHtml } from '../../components/EditQuestionPointsScore.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import { Modal } from '../../components/Modal.js';
 import { PageLayout } from '../../components/PageLayout.js';
 import { InstanceQuestionPoints } from '../../components/QuestionScore.js';
@@ -331,10 +332,7 @@ export function InstructorAssessmentInstance({
               <tr>
                 <th>زمان شروع آزمون</th>
                 <td colspan="2">
-                  ${formatDate(
-                    resLocals.assessment_instance.date!,
-                    resLocals.course_instance.display_timezone,
-                  )}
+                  ${html`<span title="${formatGregorianTooltip(resLocals.assessment_instance.date!, resLocals.course_instance.display_timezone)}">${formatJalaliFriendly(resLocals.assessment_instance.date!, resLocals.course_instance.display_timezone)}</span>`}
                 </td>
               </tr>
               <tr>
@@ -412,10 +410,7 @@ export function InstructorAssessmentInstance({
                                         ${
                                           firstQuestion.lockpoint_crossed_at
                                             ? html`در زمان
-                                              ${formatDate(
-                                                firstQuestion.lockpoint_crossed_at,
-                                                resLocals.course_instance.display_timezone,
-                                              )}`
+                                              ${html`<span title="${formatGregorianTooltip(firstQuestion.lockpoint_crossed_at, resLocals.course_instance.display_timezone)}">${formatJalaliFriendly(firstQuestion.lockpoint_crossed_at, resLocals.course_instance.display_timezone)}</span>`}`
                                             : ''
                                         }
                                         عبور داده شد
@@ -743,7 +738,7 @@ export function InstructorAssessmentInstance({
                 return html`
                   <tr>
                     <td class="text-nowrap">
-                      ${formatDate(row.event_date, resLocals.course_instance.display_timezone)}
+                      ${html`<span title="${formatGregorianTooltip(row.event_date, resLocals.course_instance.display_timezone)}">${formatJalaliFriendly(row.event_date, resLocals.course_instance.display_timezone)}</span>`}
                     </td>
                     <td>${row.auth_user_uid ?? html`&mdash;`}</td>
                     ${

@@ -1,9 +1,9 @@
 import { type CSSProperties, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-import { formatDate } from '@prairielearn/formatter';
 
 import type { JobSequenceResultsJob, JobSequenceResultsProps } from './JobSequenceResults.types.js';
+import { FriendlyDate } from './FriendlyDate.js';
 import { JobStatus } from './JobStatus.js';
 
 function redirectWithReferrer() {
@@ -80,10 +80,10 @@ function JobSequenceResultsJobItem({
           </>
         )}
         <p className="mb-1">
-          شروع {job.start_date ? `در ${formatDate(job.start_date, timeZone)}` : ''}{' '}
+          شروع {job.start_date && <>در <FriendlyDate date={job.start_date} timezone={timeZone} /></>}{' '}
           {userUid ? `توسط ${userUid}` : ''}{' '}
           {authnUserUid !== userUid ? `(کاربر واقعی: ${authnUserUid})` : ''}{' '}
-          {job.finish_date && <>&mdash; پایان در {formatDate(job.finish_date, timeZone)}</>}
+          {job.finish_date && <>&mdash; پایان در <FriendlyDate date={job.finish_date} timezone={timeZone} /></>}
         </p>
         <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-1">
           <div>

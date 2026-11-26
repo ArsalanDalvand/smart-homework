@@ -1,6 +1,6 @@
-import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 
+import { formatJalaliFriendly } from '../../../lib/jalali.js';
 import type { InstanceQuestionRow } from '../studentAssessmentInstance.types.js';
 
 export function LockpointRow({
@@ -24,7 +24,7 @@ export function LockpointRow({
       parts.push(`توسط ${row.lockpoint_crossed_authn_user_uid}`);
     }
     if (row.lockpoint_crossed_at) {
-      parts.push(`در تاریخ ${formatDate(row.lockpoint_crossed_at, displayTimezone)}`);
+      parts.push(`در تاریخ ${formatJalaliFriendly(row.lockpoint_crossed_at, displayTimezone)}`);
     }
 
     return html`

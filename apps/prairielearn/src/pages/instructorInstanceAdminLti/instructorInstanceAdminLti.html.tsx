@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { formatDate } from '@prairielearn/formatter';
 import { escapeHtml, html } from '@prairielearn/html';
 
 import { PageLayout } from '../../components/PageLayout.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import { config } from '../../lib/config.js';
 import { AssessmentSchema, LtiCredentialSchema, LtiLinkSchema } from '../../lib/db-types.js';
 import { idsEqual } from '../../lib/id.js';
@@ -201,11 +201,11 @@ function LtiCredentialCard({
                             <i class="bi bi-clipboard"></i>
                           </button>
                         </td>
-                        <td>${formatDate(tc.created_at!, timezone)}</td>
+                        <td>${html`<span title="${formatGregorianTooltip(tc.created_at!, timezone)}">${formatJalaliFriendly(tc.created_at!, timezone)}</span>`}</td>
                         <td>
                           ${
                             tc.deleted_at != null
-                              ? formatDate(tc.deleted_at, timezone)
+                              ? html`<span title="${formatGregorianTooltip(tc.deleted_at, timezone)}">${formatJalaliFriendly(tc.deleted_at, timezone)}</span>`
                               : html`
                                   <button
                                     type="button"
@@ -336,7 +336,7 @@ function LtiLinkTargetsCard({
                             </select>
                           </form>
                         </td>
-                        <td>${formatDate(link.created_at, timezone)}</td>
+                        <td>${html`<span title="${formatGregorianTooltip(link.created_at, timezone)}">${formatJalaliFriendly(link.created_at, timezone)}</span>`}</td>
                       </tr>
                     `,
                   )

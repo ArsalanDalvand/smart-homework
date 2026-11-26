@@ -1,6 +1,8 @@
-import { formatDate, formatInterval } from '@prairielearn/formatter';
+import { formatInterval } from '@prairielearn/formatter';
 import { type HtmlValue, html } from '@prairielearn/html';
 import { DateFromISOString, IntervalSchema } from '@prairielearn/zod';
+
+import { formatGregorianTooltip, formatJalaliFriendly } from '../lib/jalali.js';
 
 import {
   type Assessment,
@@ -235,7 +237,7 @@ function VariantInfo({
         ? html`
             <div class="d-flex flex-wrap align-items-center">
               <div class="pe-2">زمان شروع:</div>
-              <div dir="ltr">${date ? formatDate(date, timeZone) : '(نامشخص)'}</div>
+              <div>${date ? html`<span title="${formatGregorianTooltip(date, timeZone)}">${formatJalaliFriendly(date, timeZone)}</span>` : '(نامشخص)'}</div>
             </div>
             <div class="d-flex flex-wrap align-items-center mt-1">
               <div class="pe-2">مدت زمان:</div>
@@ -286,7 +288,7 @@ function AssessmentInstanceInfo({
 
     <div class="d-flex flex-wrap align-items-center mt-1">
       <div class="pe-2">زمان شروع:</div>
-      <div dir="ltr">${date ? formatDate(date, timeZone) : '(نامشخص)'}</div>
+      <div>${date ? html`<span title="${formatGregorianTooltip(date, timeZone)}">${formatJalaliFriendly(date, timeZone)}</span>` : '(نامشخص)'}</div>
     </div>
 
     <div class="d-flex flex-wrap align-items-center mt-1">

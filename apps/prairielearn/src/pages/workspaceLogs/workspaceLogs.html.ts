@@ -1,7 +1,7 @@
-import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 
 import { PageLayout } from '../../components/PageLayout.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import type { WorkspaceLog } from '../../lib/db-types.js';
 import type { UntypedResLocals } from '../../lib/res-locals.types.js';
 
@@ -50,7 +50,7 @@ export function WorkspaceLogs({
               return html`
                 <tr>
                   <td>${version.version}</td>
-                  <td>${formatDate(version.date, timezone)}</td>
+                  <td>${html`<span title="${formatGregorianTooltip(version.date, timezone)}">${formatJalaliFriendly(version.date, timezone)}</span>`}</td>
                   <td>
                     <a href="${logsUrl}"> مشاهده گزارش‌های جزئی </a>
                   </td>
@@ -152,7 +152,7 @@ function WorkspaceLogsTable({
           ${workspaceLogs.map((log) => {
             return html`
               <tr>
-                <td>${formatDate(log.date!, timezone)}</td>
+                <td>${html`<span title="${formatGregorianTooltip(log.date!, timezone)}">${formatJalaliFriendly(log.date!, timezone)}</span>`}</td>
                 <td>${log.message}</td>
                 <td>${log.state}</td>
                 ${includeVersion ? html`<td>${log.version}</td>` : ''}

@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
-import { formatDate } from '@prairielearn/formatter';
 import { html } from '@prairielearn/html';
 import { Hydrate } from '@prairielearn/react/server';
 
 import { CommentPopoverHtml } from '../../components/CommentPopover.js';
 import { Modal } from '../../components/Modal.js';
 import { PageLayout } from '../../components/PageLayout.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../../lib/jalali.js';
 import type { AssessmentMigrationAnalysis } from '../../lib/assessment-access-control/migration.js';
 import { compiledStylesheetTag } from '../../lib/assets.js';
 import { extractPageContext } from '../../lib/client/page-context.js';
@@ -165,20 +165,14 @@ export function InstructorAssessmentAccess({
                       ${
                         access_rule.rule.start_date == null
                           ? '—'
-                          : formatDate(
-                              access_rule.rule.start_date,
-                              resLocals.course_instance.display_timezone,
-                            )
+                          : html`<span title="${formatGregorianTooltip(access_rule.rule.start_date, resLocals.course_instance.display_timezone)}">${formatJalaliFriendly(access_rule.rule.start_date, resLocals.course_instance.display_timezone)}</span>`
                       }
                     </td>
                     <td>
                       ${
                         access_rule.rule.end_date == null
                           ? '—'
-                          : formatDate(
-                              access_rule.rule.end_date,
-                              resLocals.course_instance.display_timezone,
-                            )
+                          : html`<span title="${formatGregorianTooltip(access_rule.rule.end_date, resLocals.course_instance.display_timezone)}">${formatJalaliFriendly(access_rule.rule.end_date, resLocals.course_instance.display_timezone)}</span>`
                       }
                     </td>
                     <td>${access_rule.rule.active ? 'بله' : 'خیر'}</td>

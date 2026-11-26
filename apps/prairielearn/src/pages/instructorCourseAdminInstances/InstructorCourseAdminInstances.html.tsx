@@ -2,10 +2,10 @@ import { QueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { formatDate } from '@prairielearn/formatter';
 import { QueryClientProviderDebug } from '@prairielearn/trpc/react';
 import { OverlayTrigger } from '@prairielearn/ui';
 
+import { FriendlyDate } from '../../components/FriendlyDate.js';
 import { SyncProblemButton } from '../../components/SyncProblemButton.js';
 import type { StaffCourse } from '../../lib/client/safe-db-types.js';
 
@@ -107,16 +107,8 @@ function InstructorCourseAdminInstancesInner({
                 {courseInstances.map((row) => {
                   const isLegacyStartDate = row.start_date !== null;
                   const isLegacyEndDate = row.end_date !== null;
-                  const startDate = row.publishing_start_date
-                    ? `${formatDate(row.publishing_start_date, row.display_timezone)}`
-                    : row.start_date
-                      ? `${formatDate(row.start_date, row.display_timezone)}`
-                      : '—';
-                  const endDate = row.publishing_end_date
-                    ? `${formatDate(row.publishing_end_date, row.display_timezone)}`
-                    : row.end_date
-                      ? `${formatDate(row.end_date, row.display_timezone)}`
-                      : '—';
+                  const startDate = row.publishing_start_date ?? row.start_date;
+                  const endDate = row.publishing_end_date ?? row.end_date;
                   return (
                     <tr key={row.id}>
                       <td className="align-middle">
@@ -130,8 +122,12 @@ function InstructorCourseAdminInstancesInner({
                         </a>
                       </td>
                       <td className="align-middle font-monospace" dir="ltr">{row.short_name}</td>
-                      <td className="align-middle" dir="ltr">
-                        {startDate}
+                      <td className="align-middle">
+                        {startDate ? (
+                          <FriendlyDate date={startDate} timezone={row.display_timezone} />
+                        ) : (
+                          '—'
+                        )}
                         {isLegacyStartDate ? (
                           <OverlayTrigger
                             placement="bottom"
@@ -155,8 +151,12 @@ function InstructorCourseAdminInstancesInner({
                           </OverlayTrigger>
                         ) : null}
                       </td>
-                      <td className="align-middle" dir="ltr">
-                        {endDate}
+                      <td className="align-middle">
+                        {endDate ? (
+                          <FriendlyDate date={endDate} timezone={row.display_timezone} />
+                        ) : (
+                          '—'
+                        )}
                         {isLegacyEndDate ? (
                           <OverlayTrigger
                             placement="bottom"

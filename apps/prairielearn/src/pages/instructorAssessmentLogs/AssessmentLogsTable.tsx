@@ -7,6 +7,8 @@ import { type ReactNode, useMemo, useState } from 'react';
 import { z } from 'zod';
 
 import { formatDate } from '@prairielearn/formatter';
+
+import { FriendlyDate } from '../../components/FriendlyDate.js';
 import {
   type ColumnFilterEntry,
   MultiSelectColumnFilter,
@@ -199,7 +201,7 @@ function AssessmentLogsTableInner({
           },
           cell: (info) => {
             const date = info.getValue();
-            return date ? formatDate(date, timezone) : '—';
+            return date ? <FriendlyDate date={date} timezone={timezone} /> : '—';
           },
         }),
         columnHelper.accessor((row) => row.job_sequence.description ?? '', {
