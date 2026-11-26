@@ -233,8 +233,8 @@ export function SubmissionPanel({
             <span class="small">
               ${
                 !submission.user_uid || questionContext === 'manual_grading'
-                  ? `ثبت‌شده در تاریخ ${formattedDate} `
-                  : `توسط ${submission.user_uid} در ${formattedDate}`
+                  ? html`ثبت‌شده در تاریخ ${formattedDate} `
+                  : html`توسط ${submission.user_uid} در ${formattedDate}`
               }
             </span>
           </div>

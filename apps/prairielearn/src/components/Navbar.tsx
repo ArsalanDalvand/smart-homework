@@ -5,6 +5,7 @@ import { run } from '@prairielearn/run';
 import { assetPath } from '../lib/assets.js';
 import { getEffectiveBrandName, platformBranding, uiStrings } from '../lib/branding.js';
 import { config } from '../lib/config.js';
+import { isEnterprise } from '../lib/license.js';
 import type { UntypedResLocals } from '../lib/res-locals.types.js';
 import type { Override } from '../middlewares/authzCourseOrInstance.js';
 import { generateCsrfToken } from '../middlewares/csrfToken.js';
@@ -915,7 +916,9 @@ function NavbarButtons({
         { text: 'دانشکده‌ها و موسسات', href: '/pl/administrator/institutions' },
         {
           text: resLocals.institution.short_name,
-          href: `/pl/administrator/institution/${resLocals.institution.id}`,
+          href: isEnterprise()
+            ? `/pl/administrator/institution/${resLocals.institution.id}`
+            : '/pl/administrator/institutions',
         },
       );
     } else if (resLocals.is_institution_administrator) {
@@ -931,7 +934,9 @@ function NavbarButtons({
       if (resLocals.is_administrator) {
         allNavbarButtons.push({
           text: 'درس‌ها',
-          href: `/pl/administrator/institution/${resLocals.institution.id}/courses`,
+          href: isEnterprise()
+            ? `/pl/administrator/institution/${resLocals.institution.id}/courses`
+            : '/pl/administrator/courses',
         });
       } else if (resLocals.is_institution_administrator) {
         allNavbarButtons.push({

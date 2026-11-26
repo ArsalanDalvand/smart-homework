@@ -53,7 +53,9 @@ def parse(element_html: str, data: pl.QuestionData) -> None:
     missing_files = [
         r for r in workspace_required_file_names if r not in submitted_file_names
     ]
-    if missing_files:
+    # Allow dual-mode questions (inline <pl-file-editor> + optional <pl-workspace>):
+    # only require workspace gradedFiles when no other code file was submitted.
+    if missing_files and not submitted_file_names:
         pl.add_files_format_error(
             data,
             f"فایل‌های الزامی زیر یافت نشدند: {', '.join(missing_files)}",
