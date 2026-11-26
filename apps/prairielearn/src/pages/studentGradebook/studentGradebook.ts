@@ -18,6 +18,7 @@ import {
   getStudentActivityAndBadges,
   getStudentAnalyticsData,
 } from '../../lib/student-engagement.js';
+import { getStudentGamificationProfile } from '../../lib/student-gamification.js';
 import logPageView from '../../middlewares/logPageView.js';
 
 import { StudentGradebook, type StudentGradebookTableRow } from './studentGradebook.html.js';
@@ -51,7 +52,16 @@ router.get(
   '/',
   logPageView('studentGradebook'),
   typedAsyncHandler<'course-instance'>(async (req, res) => {
-    const [rawRows, analyticsEnabled, heatmapEnabled] = await Promise.all([
+    const isExamMode = res.locals.authz_data.mode === 'Exam';
+    const [
+      rawRows,
+      analyticsEnabled,
+      heatmapEnabled,
+      xpLevelsEnabled,
+      achievementsEnabled,
+      weeklyQuestsEnabled,
+      skillTreeEnabled,
+    ] = await Promise.all([
       getGradebookRows({
         courseInstance: res.locals.course_instance,
         userId: res.locals.user.id,
@@ -59,11 +69,29 @@ router.get(
         reqDate: res.locals.req_date,
         auth: 'student',
       }),
-      features.enabledFromLocals('student-analytics', res.locals),
-      features.enabledFromLocals('student-activity-heatmap', res.locals),
+      isExamMode
+        ? Promise.resolve(false)
+        : features.enabledFromLocals('student-analytics', res.locals),
+      isExamMode
+        ? Promise.resolve(false)
+        : features.enabledFromLocals('student-activity-heatmap', res.locals),
+      isExamMode
+        ? Promise.resolve(false)
+        : features.enabledFromLocals('student-xp-levels', res.locals),
+      isExamMode
+        ? Promise.resolve(false)
+        : features.enabledFromLocals('student-achievements', res.locals),
+      isExamMode
+        ? Promise.resolve(false)
+        : features.enabledFromLocals('student-weekly-quests', res.locals),
+      isExamMode
+        ? Promise.resolve(false)
+        : features.enabledFromLocals('student-skill-tree', res.locals),
     ]);
 
-    const [analyticsData, activityData] = await Promise.all([
+    const needGamificationProfile = xpLevelsEnabled || achievementsEnabled || weeklyQuestsEnabled;
+
+    const [analyticsData, activityData, gamificationProfile] = await Promise.all([
       analyticsEnabled
         ? getStudentAnalyticsData({
             courseInstanceId: res.locals.course_instance.id,
@@ -77,6 +105,13 @@ router.get(
             timezone: res.locals.course_instance.display_timezone,
           })
         : Promise.resolve(null),
+      needGamificationProfile
+        ? getStudentGamificationProfile({
+            courseInstanceId: res.locals.course_instance.id,
+            userId: res.locals.user.id,
+            timezone: res.locals.course_instance.display_timezone,
+          }).catch(() => null)
+        : Promise.resolve(null),
     ]);
 
     const rows = rawRows.map((row, index) => mapRow(row, rawRows[index - 1]));
@@ -87,6 +122,11 @@ router.get(
         csvFilename: buildCsvFilename(res.locals),
         analyticsData,
         activityData,
+        gamificationProfile,
+        showXpLevels: xpLevelsEnabled,
+        showAchievements: achievementsEnabled,
+        showWeeklyQuests: weeklyQuestsEnabled,
+        showSkillTreeLink: skillTreeEnabled,
       }),
     );
   }),

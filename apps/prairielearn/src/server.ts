@@ -1544,6 +1544,9 @@ export async function initExpress(): Promise<Express> {
   app.use('/pl/course_instance/:course_instance_id(\\d+)/leaderboard', [
     (await import('./pages/studentLeaderboard/studentLeaderboard.js')).default,
   ]);
+  app.use('/pl/course_instance/:course_instance_id(\\d+)/skills', [
+    (await import('./pages/studentSkills/studentSkills.js')).default,
+  ]);
   app.use(
     '/pl/course_instance/:course_instance_id(\\d+)/assessments',
     (await import('./pages/studentAssessments/studentAssessments.js')).default,

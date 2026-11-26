@@ -14,21 +14,22 @@ export function Scorebar({
   className?: string;
 }) {
   if (score == null) return '';
+  const tier = score >= 100 ? 'perfect' : score >= 70 ? 'high' : score >= 40 ? 'mid' : 'low';
+  const clampedPct = Math.max(0, Math.floor(Math.min(100, score)));
+
   return (
     <div
-      className={clsx('progress', 'border', 'border-success', className)}
+      className={clsx('progress', 'border', 'sh-scorebar', 'sh-tabular', className)}
       style={{ minWidth, maxWidth }}
       data-testid="scorebar"
+      data-score-tier={tier}
     >
-      <div
-        className="progress-bar bg-success"
-        style={{ width: `${Math.floor(Math.min(100, score))}%` }}
-      >
+      <div className="progress-bar" style={{ width: `${clampedPct}%` }}>
         {score >= 50 ? `${Math.floor(score)}%` : ''}
       </div>
       <div
-        className="d-flex flex-column justify-content-center text-center"
-        style={{ width: `${100 - Math.floor(Math.min(100, score))}%` }}
+        className="d-flex flex-column justify-content-center text-center sh-scorebar-remainder"
+        style={{ width: `${100 - clampedPct}%` }}
       >
         {score >= 50 ? '' : `${Math.floor(score)}%`}
       </div>

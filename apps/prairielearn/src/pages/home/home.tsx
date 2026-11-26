@@ -287,6 +287,10 @@ router.get(
         options: {
           showFooter: true,
           showInstructorSupport: instructorCourses.some((course) => !course.example_course),
+          studentSurface:
+            !res.locals.is_administrator &&
+            adminInstitutions.length === 0 &&
+            instructorCourses.length === 0,
         },
         content: (
           <Home

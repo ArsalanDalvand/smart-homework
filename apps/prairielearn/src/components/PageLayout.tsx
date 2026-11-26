@@ -9,8 +9,8 @@ import { renderHtml } from '@prairielearn/react';
 import { run } from '@prairielearn/run';
 import { assertNever } from '@prairielearn/utils';
 
-import { getNavPageTabs } from '../lib/navPageTabs.js';
 import { formatJalaliFriendly } from '../lib/jalali.js';
+import { getNavPageTabs } from '../lib/navPageTabs.js';
 import { computeStatus } from '../lib/publishing.js';
 import type { UntypedResLocals } from '../lib/res-locals.types.js';
 
@@ -246,6 +246,8 @@ export function PageLayout({
     dataAttributes?: Record<string, string>;
     /** Whether or not the navbar should be shown. */
     enableNavbar?: boolean;
+    /** Whether to apply the Ink & Paper student design system and theme toggle. */
+    studentSurface?: boolean;
     /** Whether the navbar should hide all controls associated with the current session. */
     hideNavbarSessionControls?: boolean;
     /** Enables instructor support on pages without a course authorization context. */
@@ -289,6 +291,17 @@ export function PageLayout({
     showCourseAgentPanel: true,
     ...options,
   };
+
+  const isStudentSurface = resolvedOptions.studentSurface ?? navContext.type === 'student';
+  const showStudentMobileNav =
+    isStudentSurface &&
+    navContext.type === 'student' &&
+    Boolean(resLocals.course_instance) &&
+    resLocals.authz_data?.mode !== 'Exam' &&
+    !resLocals.lockdown_browser;
+  const studentUrlPrefix =
+    resLocals.urlPrefix ||
+    (resLocals.course_instance ? `/pl/course_instance/${resLocals.course_instance.id}` : '');
 
   const headContentString = asHtmlSafe(headContent);
   const preContentString = asHtmlSafe(preContent);
@@ -366,13 +379,14 @@ export function PageLayout({
 
   return html`
     <!doctype html>
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" ${isStudentSurface ? html`data-surface="student"` : ''}>
       <head>
         ${[
           HeadContents({
             resLocals,
             pageTitle,
             pageNote: resolvedOptions.pageNote,
+            isStudentSurface,
           }),
           compiledStylesheetTag('pageLayout.css'),
           courseAgentPanel ? compiledStylesheetTag('courseAgent.css') : '',
@@ -385,6 +399,7 @@ export function PageLayout({
           'd-flex flex-column': resolvedOptions.fullHeight || resolvedOptions.showFooter,
           'h-100': resolvedOptions.fullHeight,
           'min-vh-100': resolvedOptions.showFooter,
+          'sh-has-mobile-nav': showStudentMobileNav,
         })}"
         hx-ext="${resolvedOptions.hxExt}"
         ${unsafeHtml(
@@ -419,6 +434,7 @@ export function PageLayout({
                     hideSessionControls: resolvedOptions.hideNavbarSessionControls,
                     showInstructorSupport: resolvedOptions.showInstructorSupport,
                     courseAgentPanel,
+                    isStudentSurface,
                   })}
                 </div>`
               : ''
@@ -540,6 +556,62 @@ export function PageLayout({
           ${courseAgentPage}
         </div>
         ${resolvedOptions.showFooter ? renderHtml(<PageFooter />) : ''}
+        ${
+          showStudentMobileNav
+            ? html`
+                <nav class="sh-mobile-nav d-md-none" aria-label="ناوبری سریع دانشجو">
+                  <a
+                    href="${studentUrlPrefix}/assessments"
+                    class="sh-mobile-nav-link ${navContext.page === 'assessments' ? 'active' : ''}"
+                    ${navContext.page === 'assessments' ? html`aria-current="page"` : ''}
+                  >
+                    <i class="bi bi-journal-text" aria-hidden="true"></i>
+                    <span>تکالیف</span>
+                  </a>
+                  <a
+                    href="${studentUrlPrefix}/gradebook"
+                    class="sh-mobile-nav-link ${navContext.page === 'gradebook' ? 'active' : ''}"
+                    ${navContext.page === 'gradebook' ? html`aria-current="page"` : ''}
+                  >
+                    <i class="bi bi-bar-chart-line" aria-hidden="true"></i>
+                    <span>کارنامه</span>
+                  </a>
+                  ${
+                    resLocals.student_skill_tree_enabled
+                      ? html`
+                          <a
+                            href="${studentUrlPrefix}/skills"
+                            class="sh-mobile-nav-link ${
+                              navContext.page === 'skills' ? 'active' : ''
+                            }"
+                            ${navContext.page === 'skills' ? html`aria-current="page"` : ''}
+                          >
+                            <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                            <span>مهارت‌ها</span>
+                          </a>
+                        `
+                      : ''
+                  }
+                  ${
+                    resLocals.student_leaderboard_enabled
+                      ? html`
+                          <a
+                            href="${studentUrlPrefix}/leaderboard"
+                            class="sh-mobile-nav-link ${
+                              navContext.page === 'leaderboard' ? 'active' : ''
+                            }"
+                            ${navContext.page === 'leaderboard' ? html`aria-current="page"` : ''}
+                          >
+                            <i class="bi bi-trophy" aria-hidden="true"></i>
+                            <span>امتیازات</span>
+                          </a>
+                        `
+                      : ''
+                  }
+                </nav>
+              `
+            : ''
+        }
       </body>
     </html>
   `.toString();

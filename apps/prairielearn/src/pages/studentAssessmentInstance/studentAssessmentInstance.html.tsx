@@ -20,11 +20,13 @@ import { StudentDeadlineRadar } from '../../components/StudentDeadlineRadar.js';
 import { TimeLimitExpiredModal } from '../../components/TimeLimitExpiredModal.js';
 import type { AssessmentInstanceAuthzResult } from '../../lib/assessment-access-control/authz-result.js';
 import { assetPath, compiledScriptTag } from '../../lib/assets.js';
-import type { QuestionClassStat } from '../../lib/student-engagement.js';
+import { getInstanceQuestionUrl } from '../../lib/client/url.js';
 import { type Assessment, type AssessmentInstance, type GroupConfig } from '../../lib/db-types.js';
 import { formatPoints } from '../../lib/format.js';
 import { type GroupInfo, getRoleNamesForUser } from '../../lib/groups.shared.js';
+import { toPersianDigits } from '../../lib/jalali.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
+import type { QuestionClassStat } from '../../lib/student-engagement.js';
 
 import { ExamFooterContent } from './components/ExamFooterContent.js';
 import { QuestionTableBody } from './components/QuestionTableBody.js';
@@ -39,6 +41,8 @@ export function StudentAssessmentInstance({
   userCanDeleteAssessmentInstance,
   questionStatsMap = null,
   showDeadlineRadar = false,
+  oneshotAqIds = [],
+  firstBloodAqIds = [],
   resLocals,
 }: {
   instance_question_rows: InstanceQuestionRow[];
@@ -46,6 +50,8 @@ export function StudentAssessmentInstance({
   userCanDeleteAssessmentInstance: boolean;
   questionStatsMap?: Map<string, QuestionClassStat> | null;
   showDeadlineRadar?: boolean;
+  oneshotAqIds?: string[];
+  firstBloodAqIds?: string[];
   resLocals: ResLocalsForPage<'assessment-instance'> & {
     has_manual_grading_question: boolean;
     has_auto_grading_question: boolean;
@@ -165,6 +171,26 @@ export function StudentAssessmentInstance({
       isLockpointCrossable(row),
   );
 
+  const oneshotAqSet = new Set(oneshotAqIds);
+  const firstBloodAqSet = new Set(firstBloodAqIds);
+  const totalQuestionCount = instance_question_rows.length;
+  const solvedQuestionCount = instance_question_rows.filter(
+    (row) =>
+      (row.instance_question.highest_submission_score ?? 0) >= 0.9999 ||
+      (row.instance_question.score_perc ?? 0) >= 99.99,
+  ).length;
+  const firstUnsolvedRow =
+    resLocals.assessment_instance.open && resLocals.authz_result.active
+      ? instance_question_rows.find(
+          (row) =>
+            row.question_access_mode !== 'blocked_sequence' &&
+            row.question_access_mode !== 'blocked_lockpoint' &&
+            (row.group_role_permissions?.can_view ?? true) &&
+            (row.instance_question.highest_submission_score ?? 0) < 0.9999 &&
+            (row.instance_question.score_perc ?? 0) < 99.99,
+        )
+      : undefined;
+
   return PageLayout({
     resLocals,
     pageTitle: '', // Calculated automatically
@@ -173,14 +199,13 @@ export function StudentAssessmentInstance({
       page: 'assessment_instance',
     },
     headContent: html`
-      ${
-        showDeadlineRadar || questionStatsMap
-          ? html`<link href="${assetPath('stylesheets/student-engagement.css')}" rel="stylesheet" />`
-          : ''
-      }
+      <link href="${assetPath('stylesheets/student-engagement.css')}" rel="stylesheet" />
       ${
         showDeadlineRadar
-          ? html`<script defer src="${assetPath('javascripts/student-deadline-radar.js')}"></script>`
+          ? html`<script
+              defer
+              src="${assetPath('javascripts/student-deadline-radar.js')}"
+            ></script>`
           : ''
       }
       ${
@@ -270,12 +295,44 @@ export function StudentAssessmentInstance({
     content: html`
       ${userCanDeleteAssessmentInstance ? RegenerateInstanceAlert() : ''}
       <div class="card mb-4">
-        <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1>
-            ${resLocals.assessment_set.abbreviation}${resLocals.assessment.number}:
-            ${resLocals.assessment.title}
-          </h1>
-          ${resLocals.assessment.team_work ? html`&nbsp;<i class="fas fa-users"></i>` : ''}
+        <div
+          class="card-header bg-primary text-white d-flex flex-wrap align-items-center justify-content-between gap-2"
+        >
+          <div class="d-flex align-items-center gap-2">
+            <h1>
+              ${resLocals.assessment_set.abbreviation}${resLocals.assessment.number}:
+              ${resLocals.assessment.title}
+            </h1>
+            ${resLocals.assessment.team_work ? html`<i class="fas fa-users" aria-hidden="true"></i>` : ''}
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            ${
+              totalQuestionCount > 0
+                ? html`
+                    <span class="badge bg-body-tertiary text-body border sh-tabular">
+                      ${toPersianDigits(solvedQuestionCount)} از
+                      ${toPersianDigits(totalQuestionCount)} سوال کامل
+                    </span>
+                  `
+                : ''
+            }
+            ${
+              firstUnsolvedRow
+                ? html`
+                    <a
+                      href="${getInstanceQuestionUrl({
+                        courseInstanceId: resLocals.course_instance.id,
+                        instanceQuestionId: firstUnsolvedRow.instance_question.id,
+                      })}"
+                      class="btn btn-primary btn-sm"
+                    >
+                      <span>ادامه از سوال ${firstUnsolvedRow.question_number}</span>
+                      <i class="bi bi-arrow-left ms-1" aria-hidden="true"></i>
+                    </a>
+                  `
+                : ''
+            }
+          </div>
         </div>
 
         <div class="card-body">
@@ -315,9 +372,10 @@ export function StudentAssessmentInstance({
                 : html`
                     <div class="col-md-3 col-sm-6">
                       نمره کسب‌شده:
-                      <span dir="ltr"><strong>${formatPoints(resLocals.assessment_instance.points)}</strong> / ${formatPoints(
-                        resLocals.assessment_instance.max_points,
-                      )}</span>
+                      <span dir="ltr"
+                        ><strong>${formatPoints(resLocals.assessment_instance.points)}</strong> /
+                        ${formatPoints(resLocals.assessment_instance.max_points)}</span
+                      >
                       ${
                         resLocals.assessment_instance.max_bonus_points
                           ? html`
@@ -422,6 +480,8 @@ export function StudentAssessmentInstance({
               isLockpointCrossable,
               hasUnmetAdvanceScorePercBeforeLockpoint,
               questionStatsMap,
+              oneshotAqIds: oneshotAqSet,
+              firstBloodAqIds: firstBloodAqSet,
             })}
           </table>
         </div>
@@ -502,7 +562,10 @@ function AssessmentStatus({
   authz_result: AssessmentInstanceAuthzResult;
 }) {
   if (assessment_instance.open && authz_result.active) {
-    const localizedCredit = (authz_result.credit_date_string ?? '').replace('(Staff override)', '(دسترسی کادر آموزشی)');
+    const localizedCredit = (authz_result.credit_date_string ?? '').replace(
+      '(Staff override)',
+      '(دسترسی کادر آموزشی)',
+    );
     return html`
       تکلیف هم‌اکنون <strong>فعال (باز)</strong> است و می‌توانید به سوالات پاسخ دهید.
       <br />
@@ -520,7 +583,8 @@ function AssessmentStatus({
     `;
   }
 
-  return html`مهلت این ارزیابی <strong>به پایان رسیده (بسته شده)</strong> و امکان ارسال پاسخ جدید وجود ندارد.`;
+  return html`مهلت این ارزیابی <strong>به پایان رسیده (بسته شده)</strong> و امکان ارسال پاسخ جدید
+    وجود ندارد.`;
 }
 
 function RealTimeGradingInformationAlert({
@@ -540,13 +604,15 @@ function RealTimeGradingInformationAlert({
   if (allQuestionsDisabled && assessment_instance.open) {
     return html`
       <div class="alert alert-warning">
-        این ارزیابی پس از پایان مهلت و ثبت نهایی تصحیح خواهد شد. پاسخ‌های خود را در هر سوال ذخیره نمایید.
+        این ارزیابی پس از پایان مهلت و ثبت نهایی تصحیح خواهد شد. پاسخ‌های خود را در هر سوال ذخیره
+        نمایید.
       </div>
     `;
   } else if (someQuestionsDisabled && assessment_instance.open) {
     return html`
       <div class="alert alert-info">
-        برخی از سوالات به صورت خودکار و بلادرنگ تصحیح می‌شوند و برخی دیگر پس از پایان مهلت تصحیح خواهند شد.
+        برخی از سوالات به صورت خودکار و بلادرنگ تصحیح می‌شوند و برخی دیگر پس از پایان مهلت تصحیح خواهند
+        شد.
       </div>
     `;
   }
@@ -699,11 +765,14 @@ function ConfirmFinishModal({
     body: html`
       ${
         !all_questions_answered
-          ? html`<div class="alert alert-warning">هنوز سوالاتی وجود دارند که پاسخ داده نشده‌اند.</div>`
+          ? html`<div class="alert alert-warning">
+              هنوز سوالاتی وجود دارند که پاسخ داده نشده‌اند.
+            </div>`
           : ''
       }
       <p class="text-danger">
-        <strong>هشدار</strong>: پس از اتمام آزمون، امکان پاسخگویی مجدد یا ویرایش پاسخ‌ها را نخواهید داشت.
+        <strong>هشدار</strong>: پس از اتمام آزمون، امکان پاسخگویی مجدد یا ویرایش پاسخ‌ها را نخواهید
+        داشت.
       </p>
       <p>آیا از پایان قطعی آزمون و بستن آن اطمینان دارید؟</p>
     `,

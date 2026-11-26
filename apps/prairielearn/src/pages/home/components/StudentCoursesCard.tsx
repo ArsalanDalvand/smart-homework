@@ -65,14 +65,105 @@ export function StudentCoursesCard({
             {canAddCourses && ` ${uiStrings.home.joinCourseHint}`}
           </div>
         ) : isDevMode ? (
-          <div className="card-body text-secondary">
-            {uiStrings.home.noCoursesDevMode}
-          </div>
+          <div className="card-body text-secondary">{uiStrings.home.noCoursesDevMode}</div>
         ) : (
-          <div className="card-body text-secondary">
-            {uiStrings.home.noCoursesGeneral}
-          </div>
+          <div className="card-body text-secondary">{uiStrings.home.noCoursesGeneral}</div>
         )
+      ) : !hasInstructorCourses ? (
+        <div className="card-body">
+          {uidInvitations.length > 0 && (
+            <div className="d-flex flex-column gap-2 mb-3">
+              {uidInvitations.map((entry) => (
+                <div
+                  key={`invite-${entry.course_instance.id}`}
+                  className="sh-course-invite d-flex flex-wrap align-items-center justify-content-between gap-2 p-3 border rounded"
+                >
+                  <div>
+                    <span className="fw-semibold text-body">
+                      {entry.course.short_name}: {entry.course.title}،{' '}
+                      {entry.course_instance.long_name}
+                    </span>
+                    <span className="ms-2 badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                      {uiStrings.home.invitationBadge}
+                    </span>
+                  </div>
+                  <div className="d-flex gap-2">
+                    <form method="POST">
+                      <input type="hidden" name="__action" value="accept_invitation" />
+                      <input type="hidden" name="__csrf_token" value={csrfToken} />
+                      <input
+                        type="hidden"
+                        name="enrollment_id"
+                        value={entry.invitation_enrollment_id}
+                      />
+                      <input
+                        type="hidden"
+                        name="course_instance_id"
+                        value={entry.course_instance.id}
+                      />
+                      <button type="submit" className="btn btn-primary btn-sm">
+                        {uiStrings.home.acceptInvitation}
+                      </button>
+                    </form>
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={() =>
+                        rejectInvitationModal.showWithData({
+                          courseInstanceId: entry.course_instance.id,
+                          enrollmentId: entry.invitation_enrollment_id,
+                        })
+                      }
+                    >
+                      {uiStrings.home.rejectInvitation}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="sh-course-grid">
+            {accessibleCourses.map((entry) => (
+              <div key={entry.course_instance.id} className="sh-course-card">
+                <div className="d-flex align-items-start justify-content-between gap-2">
+                  <span className="sh-course-code" dir="ltr">
+                    {entry.course.short_name}
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm p-1"
+                    aria-label={`${uiStrings.home.removeCourse} ${entry.course.title}`}
+                    title={uiStrings.home.removeCourse}
+                    onClick={() =>
+                      removeCourseModal.showWithData({
+                        courseInstanceId: entry.course_instance.id,
+                        ...(entry.access_type === 'institution_access'
+                          ? { invitationEnrollmentId: entry.invitation_enrollment_id }
+                          : {}),
+                      })
+                    }
+                  >
+                    <i className="bi bi-x-lg" aria-hidden="true" />
+                  </button>
+                </div>
+                <div className="mt-2 mb-3">
+                  <a
+                    href={`${urlPrefix}/course_instance/${entry.course_instance.id}`}
+                    className="sh-course-title stretched-link"
+                  >
+                    {entry.course.title}
+                  </a>
+                  <div className="sh-course-term">{entry.course_instance.long_name}</div>
+                </div>
+                <div className="mt-auto pt-2 border-top d-flex align-items-center justify-content-between small text-body-secondary">
+                  <span>مشاهده تکالیف و کارنامه</span>
+                  <i className="bi bi-arrow-left" aria-hidden="true" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
         <div className="table-responsive">
           <table className="table table-sm table-hover table-striped" aria-label={heading}>
@@ -86,7 +177,9 @@ export function StudentCoursesCard({
                           {entry.course.short_name}: {entry.course.title},{' '}
                           {entry.course_instance.long_name}
                         </span>
-                        <span className="ms-2 badge bg-warning text-dark">{uiStrings.home.invitationBadge}</span>
+                        <span className="ms-2 badge bg-warning text-dark">
+                          {uiStrings.home.invitationBadge}
+                        </span>
                       </div>
                       <div className="d-flex gap-2">
                         <form method="POST">
@@ -155,11 +248,11 @@ export function StudentCoursesCard({
       )}
 
       <Modal
-        show={rejectInvitationModal.show}
         backdrop="static"
-        onHide={rejectInvitationModal.onHide}
-        onExited={rejectInvitationModal.onExited}
+        show={rejectInvitationModal.show}
         style={{ fontFamily: 'var(--font-persian)' }}
+        onExited={rejectInvitationModal.onExited}
+        onHide={rejectInvitationModal.onHide}
       >
         <Modal.Header closeButton>
           <Modal.Title>{uiStrings.home.rejectModalTitle}</Modal.Title>
@@ -192,11 +285,11 @@ export function StudentCoursesCard({
       </Modal>
 
       <Modal
-        show={removeCourseModal.show}
         backdrop="static"
-        onHide={removeCourseModal.onHide}
-        onExited={removeCourseModal.onExited}
+        show={removeCourseModal.show}
         style={{ fontFamily: 'var(--font-persian)' }}
+        onExited={removeCourseModal.onExited}
+        onHide={removeCourseModal.onHide}
       >
         <Modal.Header closeButton>
           <Modal.Title>{uiStrings.home.removeModalTitle}</Modal.Title>

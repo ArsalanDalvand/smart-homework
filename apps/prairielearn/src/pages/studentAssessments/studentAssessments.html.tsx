@@ -5,21 +5,25 @@ import { IdSchema } from '@prairielearn/zod';
 
 import { PageLayout } from '../../components/PageLayout.js';
 import { ScorebarHtml } from '../../components/Scorebar.js';
-import { type DeadlineMiniItem, StudentDeadlineRadarStrip } from '../../components/StudentDeadlineRadar.js';
-import { assetPath } from '../../lib/assets.js';
-import { formatJalaliFriendly } from '../../lib/jalali.js';
 import {
   StudentAccessRulesSchedule,
   StudentAccessTimelineSchedule,
 } from '../../components/StudentAccessSchedules.js';
+import {
+  type DeadlineMiniItem,
+  StudentDeadlineRadarStrip,
+} from '../../components/StudentDeadlineRadar.js';
 import type { AssessmentAuthzResult } from '../../lib/assessment-access-control/authz-result.js';
+import { assetPath } from '../../lib/assets.js';
 import {
   AssessmentInstanceSchema,
   AssessmentSchema,
   AssessmentSetSchema,
 } from '../../lib/db-types.js';
 import { idsEqual } from '../../lib/id.js';
+import { formatJalaliFriendly, toPersianDigits } from '../../lib/jalali.js';
 import { type ResLocalsForPage } from '../../lib/res-locals.js';
+import type { WeeklyQuestsBundle } from '../../lib/student-gamification.js';
 
 export const StudentAssessmentsRowBaseSchema = z.object({
   assessment_id: AssessmentSchema.shape.id,
@@ -44,14 +48,99 @@ export type StudentAssessmentsRow = z.infer<typeof StudentAssessmentsRowBaseSche
   authz_result: AssessmentAuthzResult;
 };
 
+function getRowState(row: StudentAssessmentsRow): 'upcoming' | 'completed' | 'active' | 'closed' {
+  if (
+    row.authz_result.show_before_release ||
+    (row.modern_access_control &&
+      row.assessment_instance_id == null &&
+      !row.authz_result.authorized)
+  ) {
+    return 'upcoming';
+  }
+  if ((row.assessment_instance_score_perc ?? 0) >= 99.99) {
+    return 'completed';
+  }
+  if (row.assessment_instance_open === false || !row.authz_result.active) {
+    return 'closed';
+  }
+  return 'active';
+}
+
+function WeeklyQuestsMiniStrip({
+  weeklyQuests,
+  gradebookUrl,
+}: {
+  weeklyQuests: WeeklyQuestsBundle;
+  gradebookUrl: string;
+}) {
+  return html`
+    <section class="se-section mb-4" aria-label="ماموریت‌های هفتگی">
+      <div class="se-card">
+        <div class="se-card-header">
+          <h2 class="se-card-title">
+            <i class="bi bi-flag text-body-secondary" aria-hidden="true"></i>
+            <span class="sh-en-term">Weekly Quests</span>
+            <span class="small text-body-secondary fw-normal">— ${weeklyQuests.weekLabel}</span>
+          </h2>
+          <div class="d-flex align-items-center gap-2 small">
+            <span class="badge bg-body-tertiary text-body border sh-tabular">
+              ${toPersianDigits(weeklyQuests.completedCount)} از
+              ${toPersianDigits(weeklyQuests.quests.length)} تکمیل
+            </span>
+            <a href="${gradebookUrl}#tab-activity" class="small text-decoration-none">
+              جزئیات بیشتر
+            </a>
+          </div>
+        </div>
+        <div class="p-3">
+          <div class="sh-quest-strip">
+            ${weeklyQuests.quests.map(
+              (quest) => html`
+                <div class="sh-quest-card ${quest.completed ? 'is-completed' : ''}">
+                  <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+                    <span class="fw-bold small d-flex align-items-center gap-1">
+                      <i
+                        class="${quest.completed ? 'bi bi-check-circle-fill text-success' : quest.iconClass}"
+                        aria-hidden="true"
+                      ></i>
+                      <span class="sh-en-term">${quest.title}</span>
+                    </span>
+                    <span class="badge bg-body-tertiary text-body border sh-en-term sh-tabular">
+                      +${toPersianDigits(quest.xpReward)} XP
+                    </span>
+                  </div>
+                  <div class="small text-body-secondary mb-2">${quest.description}</div>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="progress flex-grow-1" style="height: 6px;">
+                      <div
+                        class="progress-bar ${quest.completed ? 'bg-success' : 'bg-dark'}"
+                        style="width: ${quest.progressPerc}%"
+                      ></div>
+                    </div>
+                    <span class="small text-body-secondary sh-tabular">
+                      ${toPersianDigits(quest.current)}/${toPersianDigits(quest.target)}
+                    </span>
+                  </div>
+                </div>
+              `,
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 export function StudentAssessments({
   resLocals,
   rows,
   showDeadlineRadar = false,
+  weeklyQuests = null,
 }: {
   resLocals: ResLocalsForPage<'course-instance'>;
   rows: StudentAssessmentsRow[];
   showDeadlineRadar?: boolean;
+  weeklyQuests?: WeeklyQuestsBundle | null;
 }) {
   const { urlPrefix, authz_data } = resLocals;
 
@@ -98,21 +187,84 @@ export function StudentAssessments({
       type: 'student',
       page: 'assessments',
     },
-    headContent: showDeadlineRadar
-      ? html`
-          <link href="${assetPath('stylesheets/student-engagement.css')}" rel="stylesheet" />
-          <script defer src="${assetPath('javascripts/student-deadline-radar.js')}"></script>
-        `
-      : undefined,
+    headContent: html`
+      <link href="${assetPath('stylesheets/student-engagement.css')}" rel="stylesheet" />
+      <script defer src="${assetPath('javascripts/student-ux.js')}"></script>
+      ${
+        showDeadlineRadar
+          ? html`<script
+              defer
+              src="${assetPath('javascripts/student-deadline-radar.js')}"
+            ></script>`
+          : ''
+      }
+    `,
     content: html`
       ${topRadarItems.length > 0 ? StudentDeadlineRadarStrip({ items: topRadarItems }) : ''}
+      ${
+        weeklyQuests
+          ? WeeklyQuestsMiniStrip({
+              weeklyQuests,
+              gradebookUrl: `${urlPrefix}/gradebook`,
+            })
+          : ''
+      }
       <div class="card mb-4" style="font-family: var(--font-persian);">
-        <div class="card-header bg-primary text-white">
+        <div
+          class="card-header bg-primary text-white d-flex flex-wrap align-items-center justify-content-between gap-2"
+        >
           <h1 class="h3 mb-0">تکالیف و ارزیابی‌ها</h1>
+          <span class="badge bg-body-tertiary text-body border sh-tabular">
+            ${toPersianDigits(rows.length)} مورد
+          </span>
         </div>
 
+        ${
+          rows.length > 0
+            ? html`
+                <div class="sh-filter-bar" role="group" aria-label="فیلتر تکالیف">
+                  <button
+                    type="button"
+                    class="sh-filter-pill is-active"
+                    data-sh-assessment-filter="all"
+                    aria-pressed="true"
+                  >
+                    همه
+                  </button>
+                  <button
+                    type="button"
+                    class="sh-filter-pill"
+                    data-sh-assessment-filter="active"
+                    aria-pressed="false"
+                  >
+                    فعال
+                  </button>
+                  <button
+                    type="button"
+                    class="sh-filter-pill"
+                    data-sh-assessment-filter="completed"
+                    aria-pressed="false"
+                  >
+                    کامل‌شده
+                  </button>
+                  <button
+                    type="button"
+                    class="sh-filter-pill"
+                    data-sh-assessment-filter="upcoming"
+                    aria-pressed="false"
+                  >
+                    آینده
+                  </button>
+                </div>
+              `
+            : ''
+        }
+
         <div class="table-responsive">
-          <table class="table table-sm table-hover" aria-label="ارزیابی‌ها">
+          <table
+            class="table table-sm table-hover sh-assessments-table mb-0"
+            aria-label="ارزیابی‌ها"
+          >
             <thead>
               <tr>
                 <th style="width: 5%">کد</th>
@@ -123,15 +275,26 @@ export function StudentAssessments({
             </thead>
             ${assessmentGroups.map(
               (groupRows) => html`
-                <tbody>
+                <tbody data-assessment-group>
                   <tr>
                     <th colspan="4" scope="rowgroup" data-testid="assessment-group-heading">
                       ${groupRows[0].assessment_group_heading}
                     </th>
                   </tr>
-                  ${groupRows.map(
-                    (row) => html`
-                      <tr>
+                  ${groupRows.map((row) => {
+                    const rowState = getRowState(row);
+                    const stateIcon =
+                      rowState === 'completed'
+                        ? 'bi-check-circle-fill text-success'
+                        : rowState === 'upcoming'
+                          ? 'bi-clock text-body-secondary'
+                          : rowState === 'closed'
+                            ? 'bi-lock text-body-secondary'
+                            : (row.assessment_instance_score_perc ?? 0) > 0
+                              ? 'bi-circle-half text-warning'
+                              : 'bi-circle text-body-secondary';
+                    return html`
+                      <tr data-assessment-state="${rowState}">
                         <td class="align-middle" style="width: 1%">
                           <span
                             class="badge color-${row.assessment_set_color}"
@@ -141,27 +304,36 @@ export function StudentAssessments({
                           </span>
                         </td>
                         <td class="align-middle">
-                          ${
-                            row.authz_result.show_before_release
-                              ? html`<span class="text-muted">${row.title}</span>`
-                              : row.multiple_instance_header ||
-                                  (!row.authz_result.active && row.assessment_instance_id == null)
-                                ? row.title
-                                : html`
-                                    <a href="${urlPrefix}${row.link}">
-                                      ${row.title}
-                                      ${
-                                        row.team_work
-                                          ? html`<i class="fas fa-users" aria-hidden="true"></i>`
-                                          : ''
-                                      }
-                                    </a>
-                                  `
-                          }
-                          ${AccessSchedule({
-                            row,
-                            displayTimezone: resLocals.course_instance.display_timezone,
-                          })}
+                          <div class="d-flex align-items-center gap-2">
+                            <i class="bi ${stateIcon} flex-shrink-0" aria-hidden="true"></i>
+                            <div class="min-w-0">
+                              ${
+                                row.authz_result.show_before_release
+                                  ? html`<span class="text-body-secondary">${row.title}</span>`
+                                  : row.multiple_instance_header ||
+                                      (!row.authz_result.active &&
+                                        row.assessment_instance_id == null)
+                                    ? row.title
+                                    : html`
+                                        <a href="${urlPrefix}${row.link}" class="fw-medium">
+                                          ${row.title}
+                                          ${
+                                            row.team_work
+                                              ? html`<i
+                                                  class="fas fa-users"
+                                                  aria-hidden="true"
+                                                ></i>`
+                                              : ''
+                                          }
+                                        </a>
+                                      `
+                              }
+                              ${AccessSchedule({
+                                row,
+                                displayTimezone: resLocals.course_instance.display_timezone,
+                              })}
+                            </div>
+                          </div>
                         </td>
                         <td class="text-center align-middle">${AvailableCredit({ row })}</td>
                         <td class="text-center align-middle">
@@ -172,19 +344,27 @@ export function StudentAssessments({
                           }
                         </td>
                       </tr>
-                    `,
-                  )}
+                    `;
+                  })}
                 </tbody>
               `,
             )}
           </table>
+        </div>
+        <div
+          id="sh-assessments-filter-empty"
+          class="p-4 text-center text-body-secondary small d-none"
+        >
+          موردی با این فیلتر یافت نشد.
         </div>
       </div>
       ${
         authz_data.mode === 'Exam'
           ? html`
               <p>
-                آزمون خود را مشاهده نمی‌کنید؟ آزمون‌های این درس صرفاً برای دانشجویانی که نوبت حضوری آن‌ها ثبت شده و توسط مراقب تأیید گردیده در دسترس قرار می‌گیرد. لطفاً به مراقب آزمون مراجعه فرمایید.
+                آزمون خود را مشاهده نمی‌کنید؟ آزمون‌های این درس صرفاً برای دانشجویانی که نوبت حضوری
+                آن‌ها ثبت شده و توسط مراقب تأیید گردیده در دسترس قرار می‌گیرد. لطفاً به مراقب آزمون
+                مراجعه فرمایید.
               </p>
             `
           : ''
@@ -203,9 +383,7 @@ function NewInstanceButton({ urlPrefix, row }: { urlPrefix: string; row: Student
   if (row.authz_result.active) {
     return html`<a href="${urlPrefix}${row.link}" class="btn btn-primary btn-sm">تلاش جدید</a>`;
   } else {
-    return html`<button type="button" disabled class="btn btn-primary btn-sm">
-      تلاش جدید
-    </button>`;
+    return html`<button type="button" disabled class="btn btn-primary btn-sm">تلاش جدید</button>`;
   }
 }
 

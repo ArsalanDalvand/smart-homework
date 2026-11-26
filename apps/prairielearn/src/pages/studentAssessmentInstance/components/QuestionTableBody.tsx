@@ -7,8 +7,8 @@ import { InstanceQuestionPoints } from '../../../components/QuestionScore.js';
 import { QuestionVariantHistory } from '../../../components/QuestionVariantHistory.js';
 import { formatStudentQuestionTitle } from '../../../lib/assessment.shared.js';
 import type { EnumAssessmentType } from '../../../lib/db-types.js';
-import type { QuestionClassStat } from '../../../lib/student-engagement.js';
 import { formatPoints } from '../../../lib/format.js';
+import type { QuestionClassStat } from '../../../lib/student-engagement.js';
 import type { InstanceQuestionRow } from '../studentAssessmentInstance.types.js';
 
 import { LockpointRow } from './LockpointRow.js';
@@ -31,6 +31,8 @@ export function QuestionTableBody({
   isLockpointCrossable,
   hasUnmetAdvanceScorePercBeforeLockpoint,
   questionStatsMap = null,
+  oneshotAqIds = null,
+  firstBloodAqIds = null,
 }: {
   rows: InstanceQuestionRow[];
   courseInstanceId: string;
@@ -48,6 +50,8 @@ export function QuestionTableBody({
   isLockpointCrossable: (row: InstanceQuestionRow) => boolean;
   hasUnmetAdvanceScorePercBeforeLockpoint: (zone_number: number) => boolean;
   questionStatsMap?: Map<string, QuestionClassStat> | null;
+  oneshotAqIds?: Set<string> | null;
+  firstBloodAqIds?: Set<string> | null;
 }) {
   const zoneGroups: InstanceQuestionRow[][] = [];
   rows.forEach((row) => {
@@ -148,6 +152,8 @@ export function QuestionTableBody({
                     userGroupRoles,
                     hasStatusColumn: assessmentType === 'Exam',
                     questionStat: questionStatsMap?.get(row.assessment_question.id) ?? null,
+                    isOneShot: oneshotAqIds?.has(row.assessment_question.id) ?? false,
+                    isFirstBlood: firstBloodAqIds?.has(row.assessment_question.id) ?? false,
                     rowLabelText: formatStudentQuestionTitle({
                       assessmentType,
                       questionNumber: row.question_number,

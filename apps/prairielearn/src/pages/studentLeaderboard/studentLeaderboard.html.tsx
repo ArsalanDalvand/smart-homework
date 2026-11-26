@@ -4,16 +4,93 @@ import { assetPath } from '../../lib/assets.js';
 import { toPersianDigits } from '../../lib/jalali.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
 import type { LeaderboardEntry, StudentLeaderboardData } from '../../lib/student-engagement.js';
+import type {
+  CohortGamificationBundle,
+  HallOfFameEntry,
+  ShowcaseBadge,
+} from '../../lib/student-gamification.js';
 
-function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
+function ShowcaseBadgesRow({ badges }: { badges: ShowcaseBadge[] }) {
+  if (badges.length === 0) return null;
+  return (
+    <span className="d-inline-flex align-items-center gap-1">
+      {badges.map((b) => (
+        <span
+          key={b.id}
+          className={`sh-showcase-badge sh-tier-${b.tier}`}
+          title={b.tooltip}
+          aria-label={b.title}
+        >
+          <i className={b.iconClass} aria-hidden="true" />
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function HallOfFameCard({
+  title,
+  subtitle,
+  iconClass,
+  entries,
+}: {
+  title: string;
+  subtitle: string;
+  iconClass: string;
+  entries: HallOfFameEntry[];
+}) {
+  return (
+    <div className="sh-hof-card">
+      <div className="d-flex align-items-center gap-2 mb-1">
+        <i className={`${iconClass} text-body-secondary`} aria-hidden="true" />
+        <span className="fw-bold small text-body sh-en-term">{title}</span>
+      </div>
+      <div className="text-body-secondary mb-2" style={{ fontSize: '0.73rem' }}>
+        {subtitle}
+      </div>
+      {entries.length === 0 ? (
+        <div className="small text-body-secondary">هنوز رکوردی ثبت نشده</div>
+      ) : (
+        <div className="d-flex flex-column gap-1">
+          {entries.map((entry, idx) => (
+            <div
+              key={entry.userId}
+              className="d-flex align-items-center justify-content-between gap-2 small py-1 border-top"
+            >
+              <span className="text-truncate fw-medium text-body">
+                <span className="text-body-secondary me-1 sh-tabular">
+                  {toPersianDigits(idx + 1)}.
+                </span>
+                {entry.displayName}
+              </span>
+              <span className="badge bg-body-tertiary text-body border flex-shrink-0 sh-tabular">
+                {entry.metricLabel}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LeaderboardRow({
+  entry,
+  level,
+  showcaseBadges,
+}: {
+  entry: LeaderboardEntry;
+  level: number | null;
+  showcaseBadges: ShowcaseBadge[];
+}) {
   const rankBadgeClass =
     entry.rank === 1
-      ? 'bg-warning text-dark'
+      ? 'is-rank-1'
       : entry.rank === 2
-        ? 'bg-secondary text-white'
+        ? 'is-rank-2'
         : entry.rank === 3
-          ? 'bg-danger-subtle text-danger-emphasis border border-danger-subtle'
-          : 'bg-light text-dark border';
+          ? 'is-rank-3'
+          : '';
 
   return (
     <tr className={entry.isCurrentUser ? 'se-row-me' : ''}>
@@ -22,14 +99,18 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
       </td>
       <td className="align-middle">
         <div className="d-flex flex-wrap align-items-center gap-2">
-          <span className="fw-semibold text-dark">{entry.displayName}</span>
-          {entry.isCurrentUser && <span className="badge text-bg-primary">شما</span>}
+          <span className="fw-semibold text-body">{entry.displayName}</span>
+          {level !== null && <span className="sh-lv-chip sh-en-term sh-tabular">Lv.{level}</span>}
+          <ShowcaseBadgesRow badges={showcaseBadges} />
+          {entry.isCurrentUser && <span className="badge text-bg-dark">شما</span>}
         </div>
       </td>
-      <td className="text-center align-middle">{toPersianDigits(entry.solvedQuestions)} سوال</td>
-      <td className="text-center align-middle" dir="ltr">
+      <td className="text-center align-middle sh-tabular">
+        {toPersianDigits(entry.solvedQuestions)} سوال
+      </td>
+      <td className="text-center align-middle sh-tabular" dir="ltr">
         <strong>{toPersianDigits(entry.totalPoints)}</strong>
-        <span className="text-secondary small"> / {toPersianDigits(entry.maxPoints)}</span>
+        <span className="text-body-secondary small"> / {toPersianDigits(entry.maxPoints)}</span>
       </td>
       <td className="text-center align-middle" style={{ width: '24%' }}>
         <Scorebar score={entry.scorePerc} className="mx-auto" />
@@ -41,13 +122,29 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
 export function StudentLeaderboard({
   resLocals,
   data,
+  cohortBundle = null,
+  showXpLevels = false,
+  showAchievements = false,
+  showHallOfFame = false,
 }: {
   resLocals: ResLocalsForPage<'course-instance'>;
   data: StudentLeaderboardData;
+  cohortBundle?: CohortGamificationBundle | null;
+  showXpLevels?: boolean;
+  showAchievements?: boolean;
+  showHallOfFame?: boolean;
 }) {
   const { urlPrefix } = resLocals;
   const podium = data.topEntries.slice(0, 3);
   const currentInTop = data.topEntries.some((e) => e.isCurrentUser);
+  const rivalGap =
+    data.currentUserEntry && data.nextRivalEntry
+      ? Math.max(
+          0.1,
+          Math.round((data.nextRivalEntry.totalPoints - data.currentUserEntry.totalPoints) * 10) /
+            10,
+        )
+      : null;
 
   return PageLayout({
     resLocals,
@@ -61,26 +158,27 @@ export function StudentLeaderboard({
       <div className="se-section" style={{ fontFamily: 'var(--font-persian)' }}>
         {/* Filter Header */}
         <div className="se-card mb-4">
-          <div className="se-card-header bg-primary text-white border-0 py-3">
+          <div className="se-card-header py-3">
             <div>
-              <h1 className="h4 fw-bold text-white mb-1">
-                <i className="fas fa-trophy text-warning me-2" aria-hidden="true" />
+              <h1 className="h4 fw-bold text-body mb-1">
+                <i className="bi bi-trophy me-2 text-warning" aria-hidden="true" />
                 جدول امتیازات و رتبه‌بندی تمرین‌ها
               </h1>
-              <div className="small text-white-50">
-                رتبه‌بندی فقط بر اساس تمرین‌های هفتگی (Homework) محاسبه شده و کادر آموزشی در جدول لحاظ نمی‌شوند.
+              <div className="se-card-subtitle">
+                رتبه‌بندی فقط بر اساس تمرین‌های هفتگی (Homework) محاسبه شده و کادر آموزشی در جدول لحاظ
+                نمی‌شوند.
               </div>
             </div>
-            <span className="badge text-bg-light text-dark px-3 py-2">
+            <span className="badge bg-body-tertiary text-body border px-3 py-2 sh-tabular">
               {toPersianDigits(data.totalParticipants)} دانشجوی فعال
             </span>
           </div>
 
-          <div className="p-3 bg-light d-flex flex-wrap align-items-center gap-2">
-            <span className="small text-secondary fw-semibold me-1">بازه رتبه‌بندی:</span>
+          <div className="sh-filter-bar">
+            <span className="small text-body-secondary fw-semibold me-1">بازه رتبه‌بندی:</span>
             <a
               href={`${urlPrefix}/leaderboard`}
-              className={`btn btn-sm rounded-pill ${data.selectedAssessmentId === null ? 'btn-primary' : 'btn-outline-secondary bg-white'}`}
+              className={`sh-filter-pill ${data.selectedAssessmentId === null ? 'is-active' : ''}`}
             >
               کل ترم (مجموع تمرین‌ها)
             </a>
@@ -88,7 +186,7 @@ export function StudentLeaderboard({
               <a
                 key={a.assessmentId}
                 href={`${urlPrefix}/leaderboard?assessment_id=${a.assessmentId}`}
-                className={`btn btn-sm rounded-pill ${data.selectedAssessmentId === a.assessmentId ? 'btn-primary' : 'btn-outline-secondary bg-white'}`}
+                className={`sh-filter-pill ${data.selectedAssessmentId === a.assessmentId ? 'is-active' : ''}`}
               >
                 <span dir="ltr" className="me-1">
                   {a.label}
@@ -99,34 +197,108 @@ export function StudentLeaderboard({
           </div>
         </div>
 
+        {/* Next-Rank Rival Nudge */}
+        {data.currentUserEntry && data.nextRivalEntry && rivalGap !== null && (
+          <div className="sh-rival-nudge mb-4">
+            <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 small">
+              <span>
+                <i className="bi bi-graph-up-arrow me-1 text-success" aria-hidden="true" />
+                رتبه فعلی شما:{' '}
+                <strong className="sh-tabular">
+                  #{toPersianDigits(data.currentUserEntry.rank)}
+                </strong>
+                {' · '}
+                فقط <strong className="sh-tabular">{toPersianDigits(rivalGap)} امتیاز</strong> تا
+                رسیدن به رتبه{' '}
+                <strong className="sh-tabular">#{toPersianDigits(data.nextRivalEntry.rank)}</strong>{' '}
+                ({data.nextRivalEntry.displayName}) فاصله دارید!
+              </span>
+              <a
+                href={`${urlPrefix}/assessments`}
+                className="small fw-semibold text-decoration-none"
+              >
+                حل تمرین بعدی ←
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* Hall of Fame Spotlight */}
+        {showHallOfFame && cohortBundle && (
+          <section className="mb-4" aria-label="تالار افتخار">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <h2 className="h6 fw-bold mb-0 d-flex align-items-center gap-2">
+                <i className="bi bi-stars text-warning" aria-hidden="true" />
+                <span className="sh-en-term">Hall of Fame</span>
+                <span className="small text-body-secondary fw-normal">
+                  — برترین‌های بخش‌های مختلف
+                </span>
+              </h2>
+            </div>
+            <div className="sh-hof-grid">
+              <HallOfFameCard
+                title="Rising Stars"
+                subtitle="بیشترین حل سوال در ۷ روز اخیر"
+                iconClass="bi bi-graph-up-arrow"
+                entries={cohortBundle.hallOfFame.risingStars}
+              />
+              <HallOfFameCard
+                title="Accuracy Kings"
+                subtitle="بالاترین نرخ قبولی و One-Shot"
+                iconClass="bi bi-crosshair"
+                entries={cohortBundle.hallOfFame.accuracyKings}
+              />
+              <HallOfFameCard
+                title="Streak Legends"
+                subtitle="طولانی‌ترین زنجیره فعالیت روزانه"
+                iconClass="bi bi-fire"
+                entries={cohortBundle.hallOfFame.streakLegends}
+              />
+              <HallOfFameCard
+                title="First Blood Hunters"
+                subtitle="بیشترین تعداد حل به عنوان نفر اول"
+                iconClass="bi bi-lightning-charge"
+                entries={cohortBundle.hallOfFame.firstBloodHunters}
+              />
+            </div>
+          </section>
+        )}
+
         {/* Top 3 Podium */}
         {podium.length >= 3 && (
           <div className="row g-3 mb-4">
             {podium.map((entry) => {
               const medalIcon =
                 entry.rank === 1
-                  ? 'fas fa-crown text-warning'
-                  : entry.rank === 2
-                    ? 'fas fa-medal text-secondary'
-                    : 'fas fa-award text-danger';
+                  ? 'bi bi-award-fill text-warning'
+                  : 'bi bi-award text-body-secondary';
+              const userMeta = cohortBundle?.byUserId[entry.userId];
               return (
                 <div key={entry.userId} className="col-md-4">
                   <div className={`se-podium-card se-podium-${entry.rank}`}>
                     <div className="fs-2 mb-1">
                       <i className={medalIcon} aria-hidden="true" />
                     </div>
-                    <div className="small text-secondary fw-semibold">
+                    <div className="small text-body-secondary fw-semibold sh-tabular">
                       رتبه {toPersianDigits(entry.rank)}
                     </div>
-                    <div className="h6 fw-bold text-dark mt-1 mb-2">
-                      {entry.displayName}
-                      {entry.isCurrentUser && (
-                        <span className="badge text-bg-primary ms-1">شما</span>
+                    <div className="h6 fw-bold text-body mt-1 mb-2 d-flex flex-wrap align-items-center justify-content-center gap-1">
+                      <span>{entry.displayName}</span>
+                      {showXpLevels && userMeta && (
+                        <span className="sh-lv-chip sh-en-term sh-tabular">
+                          Lv.{userMeta.level}
+                        </span>
                       )}
+                      {entry.isCurrentUser && <span className="badge text-bg-dark ms-1">شما</span>}
                     </div>
-                    <div className="d-flex justify-content-center gap-3 small text-secondary">
+                    {showAchievements && userMeta && userMeta.showcaseBadges.length > 0 && (
+                      <div className="mb-2 d-flex justify-content-center">
+                        <ShowcaseBadgesRow badges={userMeta.showcaseBadges} />
+                      </div>
+                    )}
+                    <div className="d-flex justify-content-center gap-3 small text-body-secondary sh-tabular">
                       <span>
-                        <strong className="text-dark">{toPersianDigits(entry.totalPoints)}</strong>{' '}
+                        <strong className="text-body">{toPersianDigits(entry.totalPoints)}</strong>{' '}
                         امتیاز
                       </span>
                       <span>
@@ -147,11 +319,11 @@ export function StudentLeaderboard({
         <div className="se-card mb-4">
           <div className="se-card-header">
             <h2 className="se-card-title">
-              <i className="fas fa-list-ol text-primary" aria-hidden="true" />
+              <i className="bi bi-list-ol text-body-secondary" aria-hidden="true" />
               <span>رتبه‌بندی ۲۰ نفر برتر</span>
             </h2>
             {data.currentUserEntry && (
-              <span className="small text-primary fw-bold">
+              <span className="small text-body fw-bold sh-tabular">
                 رتبه فعلی شما: #{toPersianDigits(data.currentUserEntry.rank)} از{' '}
                 {toPersianDigits(data.totalParticipants)}
               </span>
@@ -159,13 +331,13 @@ export function StudentLeaderboard({
           </div>
 
           {data.topEntries.length === 0 ? (
-            <div className="p-4 text-center text-muted">
+            <div className="p-4 text-center text-body-secondary">
               هنوز هیچ تمرینی توسط دانشجویان حل نشده است؛ با اولین ارسال جایگاه خود را ثبت کنید!
             </div>
           ) : (
             <div className="table-responsive">
               <table className="table table-hover mb-0" aria-label="جدول امتیازات">
-                <thead className="table-light">
+                <thead>
                   <tr>
                     <th className="text-center">رتبه</th>
                     <th>دانشجو</th>
@@ -175,17 +347,40 @@ export function StudentLeaderboard({
                   </tr>
                 </thead>
                 <tbody>
-                  {data.topEntries.map((entry) => (
-                    <LeaderboardRow key={entry.userId} entry={entry} />
-                  ))}
+                  {data.topEntries.map((entry) => {
+                    const userMeta = cohortBundle?.byUserId[entry.userId];
+                    return (
+                      <LeaderboardRow
+                        key={entry.userId}
+                        entry={entry}
+                        level={showXpLevels && userMeta ? userMeta.level : null}
+                        showcaseBadges={showAchievements && userMeta ? userMeta.showcaseBadges : []}
+                      />
+                    );
+                  })}
                   {!currentInTop && data.currentUserEntry && (
                     <>
                       <tr>
-                        <td colSpan={5} className="text-center text-muted small bg-light py-1">
+                        <td
+                          colSpan={5}
+                          className="text-center text-body-secondary small bg-body-tertiary py-1"
+                        >
                           ••• جایگاه شما خارج از ۲۰ نفر اول •••
                         </td>
                       </tr>
-                      <LeaderboardRow entry={data.currentUserEntry} />
+                      <LeaderboardRow
+                        entry={data.currentUserEntry}
+                        level={
+                          showXpLevels && cohortBundle?.byUserId[data.currentUserEntry.userId]
+                            ? cohortBundle.byUserId[data.currentUserEntry.userId].level
+                            : null
+                        }
+                        showcaseBadges={
+                          showAchievements && cohortBundle?.byUserId[data.currentUserEntry.userId]
+                            ? cohortBundle.byUserId[data.currentUserEntry.userId].showcaseBadges
+                            : []
+                        }
+                      />
                     </>
                   )}
                 </tbody>

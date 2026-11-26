@@ -12,6 +12,8 @@ export function RowLabel({
   rowLabelText,
   hasStatusColumn,
   questionStat = null,
+  isOneShot = false,
+  isFirstBlood = false,
 }: {
   courseInstanceId: string;
   row: InstanceQuestionRow;
@@ -19,6 +21,8 @@ export function RowLabel({
   rowLabelText: string;
   hasStatusColumn: boolean;
   questionStat?: QuestionClassStat | null;
+  isOneShot?: boolean;
+  isFirstBlood?: boolean;
 }) {
   let lockMessage: string | null = null;
   let showLink = true;
@@ -35,11 +39,25 @@ export function RowLabel({
     showLink = false;
     lockMessage = `نقش فعلی گروهی شما (${userGroupRoles}) دسترسی به این سوال را محدود کرده است.`;
   } else if (row.question_access_mode === 'read_only_lockpoint') {
-    lockMessage =
-      'به دلیل عبور از مرحله عطف، دیگر امکان ارسال پاسخ برای این سوال وجود ندارد.';
+    lockMessage = 'به دلیل عبور از مرحله عطف، دیگر امکان ارسال پاسخ برای این سوال وجود ندارد.';
   }
 
+  const isSolved =
+    (row.instance_question.highest_submission_score ?? 0) >= 0.9999 ||
+    (row.instance_question.score_perc ?? 0) >= 99.99;
+  const isPartial =
+    !isSolved &&
+    (row.instance_question.number_attempts > 0 || (row.instance_question.score_perc ?? 0) > 0);
+  const statusIconClass = !showLink
+    ? 'bi bi-lock-fill text-body-secondary'
+    : isSolved
+      ? 'bi bi-check-circle-fill text-success'
+      : isPartial
+        ? 'bi bi-circle-half text-warning'
+        : 'bi bi-circle text-body-secondary';
+
   return html`
+    <i class="${statusIconClass} me-2 flex-shrink-0" aria-hidden="true"></i>
     ${
       showLink
         ? html`
@@ -48,10 +66,11 @@ export function RowLabel({
                 courseInstanceId,
                 instanceQuestionId: row.instance_question.id,
               })}"
+              class="fw-medium"
               >${rowLabelText}</a
             >
           `
-        : html`<span class="text-muted">${rowLabelText}</span>`
+        : html`<span class="text-body-secondary">${rowLabelText}</span>`
     }
     ${
       // On exams, blocked_lockpoint questions show "Locked" in the Status column,
@@ -117,6 +136,26 @@ export function RowLabel({
                   ? html`<span>• میانگین ${toPersianDigits(questionStat.avgAttempts)} تلاش</span>`
                   : ''
               }
+            </span>
+          `
+        : ''
+    }
+    ${
+      isOneShot
+        ? html`
+            <span class="sh-honor-chip sh-en-term" title="حل کامل این سوال در اولین ارسال">
+              <i class="bi bi-lightning-charge-fill text-warning" aria-hidden="true"></i>
+              One-Shot
+            </span>
+          `
+        : ''
+    }
+    ${
+      isFirstBlood
+        ? html`
+            <span class="sh-honor-chip sh-en-term" title="نفر اول کلاس در حل کامل این سوال">
+              <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
+              First Blood
             </span>
           `
         : ''

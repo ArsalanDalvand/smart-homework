@@ -11,6 +11,7 @@ import { formatLegacyAssessmentAccess } from '../../lib/assessment-access-contro
 import { SprocAuthzAssessmentSchema } from '../../lib/db-types.js';
 import { features } from '../../lib/features/index.js';
 import { typedAsyncHandler } from '../../lib/res-locals.js';
+import { getStudentWeeklyQuests } from '../../lib/student-gamification.js';
 import logPageView from '../../middlewares/logPageView.js';
 
 import {
@@ -87,15 +88,28 @@ router.get(
         return row.authz_result.authorized;
       });
 
-    const deadlineRadarEnabled = await features.enabledFromLocals(
-      'student-deadline-radar',
-      res.locals,
-    );
+    const isExamMode = res.locals.authz_data.mode === 'Exam';
+    const [deadlineRadarEnabled, weeklyQuestsEnabled] = await Promise.all([
+      features.enabledFromLocals('student-deadline-radar', res.locals),
+      isExamMode
+        ? Promise.resolve(false)
+        : features.enabledFromLocals('student-weekly-quests', res.locals),
+    ]);
+
+    const weeklyQuests = weeklyQuestsEnabled
+      ? await getStudentWeeklyQuests({
+          courseInstanceId: res.locals.course_instance.id,
+          userId: res.locals.user.id,
+          timezone: res.locals.course_instance.display_timezone,
+        }).catch(() => null)
+      : null;
+
     res.send(
       StudentAssessments({
         resLocals: res.locals,
         rows: resolvedRows,
         showDeadlineRadar: deadlineRadarEnabled,
+        weeklyQuests,
       }),
     );
   }),

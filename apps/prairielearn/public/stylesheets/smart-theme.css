@@ -1,0 +1,1096 @@
+/******************************************************************************
+ * Smart-Homework Theme & RTL Foundation
+ * Layer 1: Global RTL typography, code isolation, and legacy staff/admin styles.
+ * Layer 2: "Ink & Paper" student surface (html[data-surface="student"]) with
+ *          native Bootstrap 5.3 light & dark mode CSS variables.
+ ******************************************************************************/
+
+:root {
+  --font-persian:
+    'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-code:
+    'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+}
+
+html,
+body {
+  direction: rtl;
+  text-align: right;
+  font-family: var(--font-persian);
+  line-height: 1.7;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.navbar,
+.btn,
+.nav-link,
+.dropdown-item,
+.card-header,
+th {
+  font-family: var(--font-persian);
+}
+
+/* Strict LTR isolation for code, math, and terminals */
+pre,
+code,
+kbd,
+samp,
+.ace_editor,
+.ace-monokai,
+.terminal,
+.katex,
+.katex-display,
+.math-display,
+.font-monospace {
+  direction: ltr !important;
+  text-align: left !important;
+  font-family: var(--font-code) !important;
+  unicode-bidi: isolate;
+}
+
+.ace_editor {
+  border-radius: 6px;
+  border: 1px solid #334155 !important;
+}
+
+/* LTR technical inputs & RTL placeholder handling */
+input,
+textarea,
+select {
+  text-align: right;
+}
+
+::placeholder {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+input.js-effective-uid-input,
+#effective-uid {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+input[type='email'],
+input[type='url'],
+input[type='password'] {
+  direction: ltr;
+  text-align: right;
+}
+
+input[type='email']:focus,
+input[type='url']:focus,
+input[type='password']:focus,
+input[type='email']:not(:placeholder-shown),
+input[type='url']:not(:placeholder-shown),
+input[type='password']:not(:placeholder-shown) {
+  text-align: left;
+}
+
+/* RTL Dropdown menu alignment */
+.dropdown-menu {
+  text-align: right;
+}
+
+.dropdown-menu-end {
+  --bs-position: start;
+  right: auto !important;
+  left: 0 !important;
+}
+
+.dropdown-item i,
+.btn i {
+  margin-inline-end: 0.4rem;
+  margin-inline-start: 0;
+}
+
+/* RTL Table & Grid */
+.table {
+  text-align: right;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+table.two-column-description-no-header tr td:first-of-type {
+  text-align: right;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+}
+
+table.two-column-description-no-header tr td:last-of-type {
+  text-align: left;
+}
+
+/* Badges & Alerts */
+.badge {
+  font-family: var(--font-persian);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.alert {
+  border-radius: 8px;
+  line-height: 1.8;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+/* ============================================================================
+ * Layer 1b: Legacy Instructor / Admin / Auth Surfaces (Untouched Visuals)
+ * ============================================================================ */
+
+html:not([data-surface='student']) {
+  --iust-navy: #0f2b48;
+  --iust-navy-dark: #071524;
+  --iust-navy-light: #163c63;
+  --iust-teal: #0d9488;
+  --iust-teal-light: #14b8a6;
+  --iust-gold: #f59e0b;
+}
+
+html:not([data-surface='student']),
+html:not([data-surface='student']) body {
+  color: #1e293b;
+  background-color: #f8fafc;
+}
+
+html:not([data-surface='student']) .navbar-dark.bg-dark,
+html:not([data-surface='student']) .navbar-dark {
+  background-color: var(--iust-navy) !important;
+  border-bottom: 3px solid var(--iust-teal) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+html:not([data-surface='student']) .navbar-brand {
+  margin-right: 0 !important;
+  margin-left: 1.5rem !important;
+}
+
+html:not([data-surface='student']) .navbar-brand-label {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 1.15rem;
+}
+
+html:not([data-surface='student']) .navbar-brand-hover-label {
+  font-family: var(--font-persian);
+}
+
+html:not([data-surface='student']) .btn-primary {
+  background-color: var(--iust-navy);
+  border-color: var(--iust-navy);
+}
+
+html:not([data-surface='student']) .btn-primary:hover,
+html:not([data-surface='student']) .btn-primary:focus {
+  background-color: var(--iust-navy-dark);
+  border-color: var(--iust-navy-dark);
+}
+
+html:not([data-surface='student']) .card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+html:not([data-surface='student']) .card-header.bg-primary {
+  background: linear-gradient(135deg, var(--iust-navy) 0%, var(--iust-navy-light) 100%) !important;
+  border-bottom: 2px solid var(--iust-teal) !important;
+}
+
+html:not([data-surface='student']) .table-hover tbody tr:hover {
+  background-color: rgba(13, 148, 136, 0.04) !important;
+}
+
+html:not([data-surface='student']) footer.footer {
+  background-color: #ffffff !important;
+  border-top: 1px solid #e2e8f0 !important;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.02);
+}
+
+/* ============================================================================
+ * Layer 2: Student Surface — "Ink & Paper" Design System
+ * ============================================================================ */
+
+html[data-surface='student'] {
+  --sh-bg-canvas: #fafaf9;
+  --sh-bg-surface: #ffffff;
+  --sh-bg-subtle: #f4f4f2;
+  --sh-bg-hover: #ecece9;
+  --sh-border: #e4e4e7;
+  --sh-border-strong: #d4d4d8;
+  --sh-ink: #18181b;
+  --sh-ink-secondary: #52525b;
+  --sh-ink-muted: #6e6e77;
+  --sh-accent: #18181b;
+  --sh-accent-fg: #fafafa;
+  --sh-accent-hover: #27272a;
+  --sh-link: #0f4c81;
+  --sh-link-hover: #0a355c;
+  --sh-success: #15803d;
+  --sh-success-bg: #ecfdf3;
+  --sh-success-border: #bbf7d0;
+  --sh-warning: #b45309;
+  --sh-warning-bg: #fffbeb;
+  --sh-warning-border: #fde68a;
+  --sh-danger: #b91c1c;
+  --sh-danger-bg: #fef2f2;
+  --sh-danger-border: #fecaca;
+  --sh-radius-control: 6px;
+  --sh-radius-surface: 8px;
+  --sh-shadow-popover: 0 8px 24px -6px rgba(24, 24, 27, 0.12);
+
+  /* Bootstrap 5.3 Token Overrides */
+  --bs-body-bg: var(--sh-bg-canvas);
+  --bs-body-color: var(--sh-ink);
+  --bs-emphasis-color: var(--sh-ink);
+  --bs-secondary-color: var(--sh-ink-secondary);
+  --bs-tertiary-color: var(--sh-ink-muted);
+  --bs-tertiary-bg: var(--sh-bg-subtle);
+  --bs-secondary-bg: var(--sh-bg-subtle);
+  --bs-border-color: var(--sh-border);
+  --bs-border-color-translucent: rgba(24, 24, 27, 0.1);
+  --bs-link-color: var(--sh-link);
+  --bs-link-color-rgb: 15, 76, 129;
+  --bs-link-hover-color: var(--sh-link-hover);
+  --bs-link-hover-color-rgb: 10, 53, 92;
+  --bs-border-radius: var(--sh-radius-control);
+  --bs-border-radius-sm: 4px;
+  --bs-border-radius-lg: var(--sh-radius-surface);
+  --bs-card-bg: var(--sh-bg-surface);
+  --bs-card-border-color: var(--sh-border);
+  --bs-card-cap-bg: var(--sh-bg-subtle);
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(24, 24, 27, 0.02);
+  --bs-table-hover-bg: var(--sh-bg-subtle);
+  --bs-table-border-color: var(--sh-border);
+  color-scheme: light;
+}
+
+html[data-surface='student'][data-bs-theme='dark'] {
+  --sh-bg-canvas: #111113;
+  --sh-bg-surface: #18181b;
+  --sh-bg-subtle: #202024;
+  --sh-bg-hover: #27272c;
+  --sh-border: #27272a;
+  --sh-border-strong: #3f3f46;
+  --sh-ink: #f4f4f5;
+  --sh-ink-secondary: #a1a1aa;
+  --sh-ink-muted: #8b8b96;
+  --sh-accent: #f4f4f5;
+  --sh-accent-fg: #111113;
+  --sh-accent-hover: #e4e4e7;
+  --sh-link: #7db4e8;
+  --sh-link-hover: #a5ccf2;
+  --sh-success: #4ade80;
+  --sh-success-bg: rgba(74, 222, 128, 0.12);
+  --sh-success-border: rgba(74, 222, 128, 0.28);
+  --sh-warning: #fbbf24;
+  --sh-warning-bg: rgba(251, 191, 36, 0.12);
+  --sh-warning-border: rgba(251, 191, 36, 0.28);
+  --sh-danger: #f87171;
+  --sh-danger-bg: rgba(248, 113, 113, 0.12);
+  --sh-danger-border: rgba(248, 113, 113, 0.28);
+  --sh-shadow-popover: 0 12px 28px -6px rgba(0, 0, 0, 0.55);
+
+  --bs-body-bg: var(--sh-bg-canvas);
+  --bs-body-color: var(--sh-ink);
+  --bs-emphasis-color: var(--sh-ink);
+  --bs-secondary-color: var(--sh-ink-secondary);
+  --bs-tertiary-color: var(--sh-ink-muted);
+  --bs-tertiary-bg: var(--sh-bg-subtle);
+  --bs-secondary-bg: var(--sh-bg-subtle);
+  --bs-border-color: var(--sh-border);
+  --bs-border-color-translucent: rgba(255, 255, 255, 0.09);
+  --bs-link-color: var(--sh-link);
+  --bs-link-color-rgb: 125, 180, 232;
+  --bs-link-hover-color: var(--sh-link-hover);
+  --bs-link-hover-color-rgb: 165, 204, 242;
+  --bs-card-bg: var(--sh-bg-surface);
+  --bs-card-border-color: var(--sh-border);
+  --bs-card-cap-bg: var(--sh-bg-subtle);
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.025);
+  --bs-table-hover-bg: var(--sh-bg-subtle);
+  --bs-table-border-color: var(--sh-border);
+  color-scheme: dark;
+}
+
+html[data-surface='student'],
+html[data-surface='student'] body {
+  background-color: var(--sh-bg-canvas);
+  color: var(--sh-ink);
+}
+
+/* Browser surfaces: selection, caret, scrollbars, focus, links */
+html[data-surface='student'] ::selection {
+  background-color: var(--sh-accent);
+  color: var(--sh-accent-fg);
+}
+
+html[data-surface='student'] input,
+html[data-surface='student'] textarea {
+  caret-color: var(--sh-ink);
+}
+
+html[data-surface='student'] a:not(.btn):not(.nav-link):not(.dropdown-item):not(.badge) {
+  text-underline-offset: 0.2em;
+}
+
+html[data-surface='student'] :focus-visible {
+  outline: 2px solid var(--sh-link);
+  outline-offset: 2px;
+}
+
+html[data-surface='student'] {
+  scrollbar-color: var(--sh-border-strong) transparent;
+}
+
+.sh-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.sh-en-term {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+  font-weight: 600;
+}
+
+/* ============================================================================
+ * Student Navbar (.sh-navbar)
+ * ============================================================================ */
+
+html[data-surface='student'] .sh-navbar {
+  background-color: var(--sh-bg-surface);
+  border-bottom: 1px solid var(--sh-border);
+  min-height: 56px;
+  padding-block: 0.35rem;
+}
+
+html[data-surface='student'] .sh-navbar .navbar-brand {
+  color: var(--sh-ink);
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: -0.01em;
+  margin-inline-end: 1rem !important;
+  margin-inline-start: 0 !important;
+  padding-block: 0.25rem;
+}
+
+html[data-surface='student'] .sh-navbar .navbar-brand:hover {
+  color: var(--sh-ink);
+}
+
+html[data-surface='student'] .sh-brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--sh-radius-control);
+  background-color: var(--sh-accent);
+  color: var(--sh-accent-fg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+html[data-surface='student'] .sh-course-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.6rem;
+  border-radius: var(--sh-radius-control);
+  background-color: var(--sh-bg-subtle);
+  border: 1px solid var(--sh-border);
+  color: var(--sh-ink-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+html[data-surface='student'] .sh-navbar .nav-link {
+  color: var(--sh-ink-secondary);
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.42rem 0.7rem;
+  border-radius: var(--sh-radius-control);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  position: relative;
+  transition:
+    color 0.14s ease,
+    background-color 0.14s ease;
+}
+
+html[data-surface='student'] .sh-navbar .nav-link:hover {
+  color: var(--sh-ink);
+  background-color: var(--sh-bg-subtle);
+}
+
+html[data-surface='student'] .sh-navbar .nav-link.active,
+html[data-surface='student'] .sh-navbar .nav-item.active > .nav-link {
+  color: var(--sh-ink);
+  font-weight: 700;
+  background-color: var(--sh-bg-subtle);
+}
+
+@media (min-width: 768px) {
+  html[data-surface='student'] .sh-navbar #main-nav .nav-link.active::after,
+  html[data-surface='student'] .sh-navbar #main-nav .nav-item.active > .nav-link::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.55rem;
+    bottom: -9px;
+    height: 2px;
+    background-color: var(--sh-ink);
+    border-radius: 2px 2px 0 0;
+  }
+}
+
+html[data-surface='student'] .sh-navbar .navbar-toggler {
+  color: var(--sh-ink);
+  border: 1px solid var(--sh-border);
+  background-color: var(--sh-bg-surface);
+  border-radius: var(--sh-radius-control);
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0.25rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-surface='student'] .sh-navbar .navbar-toggler:hover {
+  background-color: var(--sh-bg-subtle);
+}
+
+/* Theme toggle button */
+.sh-theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--sh-radius-control);
+  border: 1px solid var(--sh-border);
+  background-color: var(--sh-bg-surface);
+  color: var(--sh-ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    color 0.14s ease,
+    background-color 0.14s ease,
+    border-color 0.14s ease;
+}
+
+.sh-theme-toggle:hover {
+  color: var(--sh-ink);
+  background-color: var(--sh-bg-subtle);
+  border-color: var(--sh-border-strong);
+}
+
+.sh-theme-toggle .sh-icon-sun {
+  display: none;
+}
+
+.sh-theme-toggle .sh-icon-moon {
+  display: inline-block;
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .sh-theme-toggle .sh-icon-sun {
+  display: inline-block;
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .sh-theme-toggle .sh-icon-moon {
+  display: none;
+}
+
+/* ============================================================================
+ * Mobile Bottom Navigation Bar (.sh-mobile-nav)
+ * ============================================================================ */
+
+.sh-mobile-nav {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1025;
+  background-color: var(--sh-bg-surface);
+  border-top: 1px solid var(--sh-border);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  padding: 0.25rem 0.5rem calc(0.25rem + env(safe-area-inset-bottom));
+}
+
+.sh-mobile-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  min-height: 48px;
+  padding: 0.35rem 0.25rem;
+  border-radius: var(--sh-radius-control);
+  color: var(--sh-ink-secondary);
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.sh-mobile-nav-link i {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.sh-mobile-nav-link.active {
+  color: var(--sh-ink);
+  font-weight: 700;
+  background-color: var(--sh-bg-subtle);
+}
+
+@media (max-width: 767.98px) {
+  body.sh-has-mobile-nav {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ============================================================================
+ * Student Surface Cards, Buttons, Tables, Footers & Dark Mode Compatibility
+ * ============================================================================ */
+
+html[data-surface='student'] .card {
+  background-color: var(--sh-bg-surface);
+  border: 1px solid var(--sh-border);
+  border-radius: var(--sh-radius-surface);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+html[data-surface='student'] .card-header {
+  background-color: var(--sh-bg-subtle);
+  border-bottom: 1px solid var(--sh-border);
+  color: var(--sh-ink);
+  padding: 0.8rem 1.15rem;
+}
+
+html[data-surface='student'] .card-header.bg-primary,
+html[data-surface='student'] .card-header.bg-secondary {
+  background-color: var(--sh-bg-subtle) !important;
+  color: var(--sh-ink) !important;
+  border-bottom: 1px solid var(--sh-border) !important;
+}
+
+html[data-surface='student'] .card-header.bg-primary h1,
+html[data-surface='student'] .card-header.bg-primary h2,
+html[data-surface='student'] .card-header.bg-primary h3,
+html[data-surface='student'] .card-header.bg-primary a,
+html[data-surface='student'] .card-header.bg-secondary h1,
+html[data-surface='student'] .card-header.bg-secondary h2,
+html[data-surface='student'] .card-header.bg-secondary a {
+  color: var(--sh-ink) !important;
+  text-decoration: none;
+}
+
+html[data-surface='student'] .card-header.bg-primary .text-white,
+html[data-surface='student'] .card-header.bg-secondary .text-white {
+  color: var(--sh-ink) !important;
+}
+
+html[data-surface='student'] .card-header.bg-primary .text-white-50 {
+  color: var(--sh-ink-secondary) !important;
+}
+
+html[data-surface='student'] .card-header.bg-primary .btn-light {
+  background-color: var(--sh-bg-surface);
+  border-color: var(--sh-border-strong);
+  color: var(--sh-ink);
+}
+
+html[data-surface='student'] .card-header.bg-primary .btn-light:hover {
+  background-color: var(--sh-bg-hover);
+  color: var(--sh-ink);
+}
+
+html[data-surface='student'] .btn-primary {
+  --bs-btn-bg: var(--sh-accent);
+  --bs-btn-border-color: var(--sh-accent);
+  --bs-btn-color: var(--sh-accent-fg);
+  --bs-btn-hover-bg: var(--sh-accent-hover);
+  --bs-btn-hover-border-color: var(--sh-accent-hover);
+  --bs-btn-hover-color: var(--sh-accent-fg);
+  --bs-btn-active-bg: var(--sh-accent-hover);
+  --bs-btn-active-border-color: var(--sh-accent-hover);
+  --bs-btn-active-color: var(--sh-accent-fg);
+  --bs-btn-disabled-bg: var(--sh-accent);
+  --bs-btn-disabled-border-color: var(--sh-accent);
+  --bs-btn-disabled-color: var(--sh-accent-fg);
+}
+
+html[data-surface='student'] .btn-info {
+  --bs-btn-bg: var(--sh-bg-subtle);
+  --bs-btn-border-color: var(--sh-border-strong);
+  --bs-btn-color: var(--sh-ink) !important;
+  --bs-btn-hover-bg: var(--sh-bg-hover);
+  --bs-btn-hover-border-color: var(--sh-border-strong);
+  --bs-btn-hover-color: var(--sh-ink) !important;
+}
+
+html[data-surface='student'] .btn.btn-ghost {
+  --bs-btn-color: var(--sh-ink);
+  --bs-btn-hover-color: var(--sh-ink);
+  --bs-btn-hover-bg: var(--sh-bg-hover);
+  --bs-btn-hover-border-color: var(--sh-border);
+  --bs-btn-active-color: var(--sh-ink);
+  --bs-btn-active-bg: var(--sh-bg-subtle);
+  --bs-btn-disabled-color: var(--sh-ink-muted);
+  --bs-btn-disabled-bg: transparent;
+}
+
+html[data-surface='student'] table.two-column-description-no-header tr td:first-of-type {
+  color: var(--sh-ink-secondary);
+}
+
+html[data-surface='student'] .table thead th {
+  color: var(--sh-ink-secondary);
+  font-weight: 600;
+  font-size: 0.84rem;
+  border-bottom-color: var(--sh-border);
+}
+
+html[data-surface='student'] .table > :not(caption) > * > * {
+  border-bottom-color: var(--sh-border);
+}
+
+html[data-surface='student'] .table-hover > tbody > tr:hover > * {
+  --bs-table-bg-state: var(--sh-bg-subtle);
+}
+
+/* Footer theming on student surface */
+html[data-surface='student'] footer.sh-footer {
+  background-color: var(--sh-bg-surface) !important;
+  border-top: 1px solid var(--sh-border) !important;
+  color: var(--sh-ink-secondary);
+}
+
+html[data-surface='student'] .sh-footer-brand {
+  color: var(--sh-ink);
+}
+
+html:not([data-surface='student']) .sh-footer-brand {
+  color: #0f2b48;
+}
+
+/* Dark mode fixes for legacy Bootstrap utility classes & elements */
+html[data-surface='student'][data-bs-theme='dark'] .bg-light,
+html[data-surface='student'][data-bs-theme='dark'] .bg-white {
+  background-color: var(--sh-bg-subtle) !important;
+  color: var(--sh-ink) !important;
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .text-dark {
+  color: var(--sh-ink) !important;
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .table-light {
+  --bs-table-bg: var(--sh-bg-subtle);
+  --bs-table-color: var(--sh-ink);
+  --bs-table-border-color: var(--sh-border);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .dropdown-menu {
+  background-color: var(--sh-bg-surface);
+  border-color: var(--sh-border-strong);
+  box-shadow: var(--sh-shadow-popover);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .modal-content {
+  background-color: var(--sh-bg-surface);
+  border-color: var(--sh-border-strong);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .popover {
+  --bs-popover-bg: var(--sh-bg-surface);
+  --bs-popover-border-color: var(--sh-border-strong);
+  --bs-popover-header-bg: var(--sh-bg-subtle);
+  --bs-popover-header-color: var(--sh-ink);
+  --bs-popover-body-color: var(--sh-ink);
+}
+
+html[data-surface='student'][data-bs-theme='dark']
+  .nav-tabs.pl-nav-tabs-bar
+  .nav-link:not(.active) {
+  color: var(--sh-ink-secondary);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .user-output-invalid {
+  color: var(--sh-danger);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .badge-invalid {
+  background: var(--sh-bg-subtle);
+  color: var(--sh-ink);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .badge-missing-input {
+  background: var(--sh-bg-subtle);
+  color: var(--sh-ink);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .ace_editor {
+  border-color: var(--sh-border-strong) !important;
+}
+
+/* ============================================================================
+ * Shared Ink & Paper Primitives (.sh-stat-strip, .sh-scorebar, .sh-filter-bar)
+ * ============================================================================ */
+
+/* Hairline-divided horizontal stat strip (replaces boxed KPI icon cards) */
+.sh-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background-color: var(--sh-bg-surface, #ffffff);
+  border: 1px solid var(--sh-border, #e4e4e7);
+  border-radius: var(--sh-radius-surface, 8px);
+  overflow: hidden;
+}
+
+.sh-stat-cell {
+  padding: 0.95rem 1.15rem;
+  border-inline-end: 1px solid var(--sh-border, #e4e4e7);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.sh-stat-cell:last-child {
+  border-inline-end: 0;
+}
+
+.sh-stat-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--sh-ink-secondary, #52525b);
+}
+
+.sh-stat-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--sh-ink, #18181b);
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+
+.sh-stat-sub {
+  font-size: 0.76rem;
+  color: var(--sh-ink-muted, #6e6e77);
+}
+
+@media (max-width: 991.98px) {
+  .sh-stat-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sh-stat-cell:nth-child(2n) {
+    border-inline-end: 0;
+  }
+
+  .sh-stat-cell:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--sh-border, #e4e4e7);
+  }
+}
+
+/* Scorebar refinement */
+.sh-scorebar.progress {
+  height: 1.25rem;
+  background-color: var(--sh-bg-subtle, #f4f4f2);
+  border-color: var(--sh-border-strong, #d4d4d8) !important;
+  border-radius: var(--sh-radius-control, 6px);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.sh-scorebar .sh-scorebar-remainder {
+  color: var(--sh-ink, #18181b);
+  font-weight: 700;
+}
+
+.sh-scorebar[data-score-tier='perfect'] {
+  border-color: var(--sh-success-border, #bbf7d0) !important;
+}
+
+.sh-scorebar[data-score-tier='perfect'] .progress-bar,
+.sh-scorebar[data-score-tier='high'] .progress-bar {
+  background-color: #16a34a !important;
+  color: #ffffff;
+}
+
+.sh-scorebar[data-score-tier='mid'] .progress-bar {
+  background-color: #d97706 !important;
+  color: #ffffff;
+}
+
+.sh-scorebar[data-score-tier='low'] .progress-bar {
+  background-color: #71717a !important;
+  color: #ffffff;
+}
+
+html[data-surface='student'][data-bs-theme='dark']
+  .sh-scorebar[data-score-tier='perfect']
+  .progress-bar,
+html[data-surface='student'][data-bs-theme='dark']
+  .sh-scorebar[data-score-tier='high']
+  .progress-bar {
+  background-color: #15803d !important;
+  color: #f4f4f5;
+}
+
+html[data-surface='student'][data-bs-theme='dark']
+  .sh-scorebar[data-score-tier='mid']
+  .progress-bar {
+  background-color: #b45309 !important;
+  color: #f4f4f5;
+}
+
+/* Filter Bar & Pills */
+.sh-filter-bar {
+  background-color: var(--sh-bg-subtle, #f4f4f2);
+  border-top: 1px solid var(--sh-border, #e4e4e7);
+  padding: 0.75rem 1.15rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.sh-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  min-height: 32px;
+  border-radius: var(--sh-radius-control, 6px);
+  border: 1px solid var(--sh-border, #e4e4e7);
+  background-color: var(--sh-bg-surface, #ffffff);
+  color: var(--sh-ink-secondary, #52525b);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    color 0.14s ease,
+    background-color 0.14s ease,
+    border-color 0.14s ease;
+}
+
+.sh-filter-pill:hover {
+  color: var(--sh-ink, #18181b);
+  border-color: var(--sh-border-strong, #d4d4d8);
+  background-color: var(--sh-bg-hover, #ecece9);
+}
+
+.sh-filter-pill.is-active {
+  background-color: var(--sh-accent, #18181b);
+  border-color: var(--sh-accent, #18181b);
+  color: var(--sh-accent-fg, #fafafa);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================================
+ * Phase 2–4 Student Shell Additions (Navbar Pulse, Course Cards, Copy Button)
+ * ============================================================================ */
+
+.sh-pulse-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 36px;
+  padding: 0 0.65rem;
+  border-radius: var(--sh-radius-control, 6px);
+  border: 1px solid var(--sh-border, #e4e4e7);
+  background-color: var(--sh-bg-subtle, #f4f4f2);
+  color: var(--sh-ink, #18181b);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    border-color 0.14s ease,
+    background-color 0.14s ease;
+}
+
+.sh-pulse-pill:hover {
+  color: var(--sh-ink, #18181b);
+  border-color: var(--sh-border-strong, #d4d4d8);
+  background-color: var(--sh-bg-hover, #ecece9);
+}
+
+.sh-pulse-bar {
+  width: 34px;
+  height: 5px;
+  border-radius: 3px;
+  background-color: var(--sh-border-strong, #d4d4d8);
+  overflow: hidden;
+  display: inline-block;
+}
+
+.sh-pulse-bar-fill {
+  display: block;
+  height: 100%;
+  background-color: var(--sh-accent, #18181b);
+}
+
+.sh-pulse-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--sh-warning, #b45309);
+}
+
+/* Student Home Course Grid */
+.sh-course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.9rem;
+}
+
+.sh-course-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.1rem;
+  background-color: var(--sh-bg-surface, #ffffff);
+  border: 1px solid var(--sh-border, #e4e4e7);
+  border-radius: var(--sh-radius-surface, 8px);
+  transition: border-color 0.14s ease;
+}
+
+.sh-course-card:hover {
+  border-color: var(--sh-border-strong, #d4d4d8);
+}
+
+.sh-course-card .btn-ghost {
+  position: relative;
+  z-index: 2;
+}
+
+.sh-course-code {
+  display: inline-block;
+  font-family: var(--font-code);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.16rem 0.5rem;
+  border-radius: 4px;
+  background-color: var(--sh-bg-subtle, #f4f4f2);
+  border: 1px solid var(--sh-border, #e4e4e7);
+  color: var(--sh-ink, #18181b);
+}
+
+.sh-course-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sh-ink, #18181b);
+  text-decoration: none;
+  margin-bottom: 0.25rem;
+}
+
+.sh-course-term {
+  font-size: 0.82rem;
+  color: var(--sh-ink-secondary, #52525b);
+}
+
+/* One-click Code Copy Button */
+.sh-pre-wrap {
+  position: relative;
+}
+
+.sh-copy-btn {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  z-index: 2;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid var(--sh-border-strong, #d4d4d8);
+  background-color: var(--sh-bg-surface, #ffffff);
+  color: var(--sh-ink, #18181b);
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.12s ease;
+}
+
+.sh-copy-btn:hover {
+  opacity: 1;
+}
+
+.sh-copy-btn.is-copied {
+  background-color: var(--sh-success-bg, #ecfdf3);
+  border-color: var(--sh-success-border, #bbf7d0);
+  color: var(--sh-success, #15803d);
+}
+
+/* Mobile Stacking for Assessments Table */
+@media (max-width: 767.98px) {
+  .sh-assessments-table thead {
+    display: none;
+  }
+
+  .sh-assessments-table tbody tr:not(:has(th[colspan])) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.65rem 0.85rem;
+    border-bottom: 1px solid var(--sh-border, #e4e4e7);
+  }
+
+  .sh-assessments-table tbody tr:not(:has(th[colspan])) td {
+    border: 0 !important;
+    padding: 0.1rem 0 !important;
+    width: auto !important;
+    text-align: start !important;
+  }
+
+  .sh-assessments-table .sh-scorebar {
+    margin-inline: 0 !important;
+  }
+}

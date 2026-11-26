@@ -2,11 +2,12 @@ import { type FlashMessageType, flash } from '@prairielearn/flash';
 import { type HtmlValue, html, unsafeHtml } from '@prairielearn/html';
 import { run } from '@prairielearn/run';
 
-import { assetPath } from '../lib/assets.js';
 import { getEffectiveBrandName, platformBranding, uiStrings } from '../lib/branding.js';
 import { config } from '../lib/config.js';
+import { toPersianDigits } from '../lib/jalali.js';
 import { isEnterprise } from '../lib/license.js';
 import type { UntypedResLocals } from '../lib/res-locals.types.js';
+import type { StudentNavbarPulse } from '../lib/student-gamification.js';
 import type { Override } from '../middlewares/authzCourseOrInstance.js';
 import { generateCsrfToken } from '../middlewares/csrfToken.js';
 
@@ -22,6 +23,7 @@ export function Navbar({
   hideSessionControls = false,
   showInstructorSupport = false,
   courseAgentPanel,
+  isStudentSurface = false,
 }: {
   resLocals: UntypedResLocals;
   navPage?: NavPage;
@@ -35,6 +37,7 @@ export function Navbar({
   /** Enables instructor support on pages without a course authorization context. */
   showInstructorSupport?: boolean;
   courseAgentPanel?: HtmlValue;
+  isStudentSurface?: boolean;
 }) {
   const navbarResLocals = hideSessionControls ? {} : resLocals;
   const { __csrf_token, course } = navbarResLocals;
@@ -94,7 +97,14 @@ export function Navbar({
         : ''
     }
 
-    <nav class="navbar navbar-dark bg-dark navbar-expand-md" aria-label="ناوبری سراسری">
+    <nav
+      class="${
+        isStudentSurface
+          ? 'navbar navbar-expand-md sh-navbar'
+          : 'navbar navbar-dark bg-dark navbar-expand-md'
+      }"
+      aria-label="ناوبری سراسری"
+    >
       <div class="container-fluid position-relative">
         ${
           sideNavEnabled
@@ -111,37 +121,112 @@ export function Navbar({
               `
             : ''
         }
-        <a class="navbar-brand d-flex align-items-center gap-2 text-truncate" style="max-width: 65vw; min-width: 0;" href="/" aria-label="${uiStrings.nav.brandAria}">
-          <i class="fas fa-graduation-cap text-info fs-5 flex-shrink-0" aria-hidden="true"></i>
-          <span class="navbar-brand-label text-truncate">
-            <span class="d-inline d-md-none">${platformBranding.brandShortName}</span>
-            <span class="d-none d-md-inline">${getEffectiveBrandName(resLocals.institution)}</span>
-          </span>
-          <span class="navbar-brand-hover-label">
-            ${uiStrings.common.home} <i class="fa fa-angle-left" aria-hidden="true"></i>
-          </span>
-        </a>
-        <div class="d-flex d-md-none align-items-center gap-2">
-          ${courseAgentPanel ? html`<div id="course-agent-mobile-launcher" class="d-flex"></div>` : ''}
-          <button
-            id="course-nav-toggler"
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#course-nav"
-            data-bs-animation="false"
-            aria-expanded="false"
-            aria-label="باز/بسته کردن منوی ناوبری"
-          >
-            <span class="${sideNavEnabled ? 'bi bi-person-circle' : 'navbar-toggler-icon'}"></span>
-          </button>
-        </div>
-        <div id="course-nav" class="collapse navbar-collapse mobile-collapsed">
+        ${
+          isStudentSurface
+            ? html`
+                <a
+                  class="navbar-brand d-flex align-items-center gap-2 text-truncate"
+                  style="max-width: 65vw; min-width: 0;"
+                  href="/"
+                  aria-label="${uiStrings.nav.brandAria}"
+                >
+                  <span class="sh-brand-mark" aria-hidden="true">
+                    <i class="bi bi-code-square"></i>
+                  </span>
+                  <span class="navbar-brand-label text-truncate">
+                    <span class="d-inline d-md-none">${platformBranding.brandShortName}</span>
+                    <span class="d-none d-md-inline">
+                      ${getEffectiveBrandName(resLocals.institution)}
+                    </span>
+                  </span>
+                </a>
+                <div class="d-flex align-items-center gap-2 order-md-3">
+                  ${
+                    navbarType === 'student' &&
+                    navbarResLocals.student_xp_pulse &&
+                    navbarResLocals.authz_data?.mode !== 'Exam' &&
+                    navbarResLocals.urlPrefix
+                      ? StudentPulsePill({
+                          pulse: navbarResLocals.student_xp_pulse as StudentNavbarPulse,
+                          urlPrefix: navbarResLocals.urlPrefix,
+                        })
+                      : ''
+                  }
+                  <button
+                    type="button"
+                    class="sh-theme-toggle"
+                    data-sh-theme-toggle
+                    aria-label="تغییر به حالت تاریک"
+                    title="تغییر به حالت تاریک"
+                    aria-pressed="false"
+                  >
+                    <i class="bi bi-moon sh-icon-moon" aria-hidden="true"></i>
+                    <i class="bi bi-sun sh-icon-sun" aria-hidden="true"></i>
+                  </button>
+                  <button
+                    id="course-nav-toggler"
+                    class="navbar-toggler d-md-none"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#course-nav"
+                    data-bs-animation="false"
+                    aria-expanded="false"
+                    aria-label="باز/بسته کردن منوی ناوبری"
+                  >
+                    <i class="bi bi-list fs-4" aria-hidden="true"></i>
+                  </button>
+                </div>
+              `
+            : html`
+                <a
+                  class="navbar-brand d-flex align-items-center gap-2 text-truncate"
+                  style="max-width: 65vw; min-width: 0;"
+                  href="/"
+                  aria-label="${uiStrings.nav.brandAria}"
+                >
+                  <i
+                    class="fas fa-graduation-cap text-info fs-5 flex-shrink-0"
+                    aria-hidden="true"
+                  ></i>
+                  <span class="navbar-brand-label text-truncate">
+                    <span class="d-inline d-md-none">${platformBranding.brandShortName}</span>
+                    <span class="d-none d-md-inline"
+                      >${getEffectiveBrandName(resLocals.institution)}</span
+                    >
+                  </span>
+                  <span class="navbar-brand-hover-label">
+                    ${uiStrings.common.home} <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  </span>
+                </a>
+                <div class="d-flex d-md-none align-items-center gap-2">
+                  ${courseAgentPanel ? html`<div id="course-agent-mobile-launcher" class="d-flex"></div>` : ''}
+                  <button
+                    id="course-nav-toggler"
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#course-nav"
+                    data-bs-animation="false"
+                    aria-expanded="false"
+                    aria-label="باز/بسته کردن منوی ناوبری"
+                  >
+                    <span
+                      class="${sideNavEnabled ? 'bi bi-person-circle' : 'navbar-toggler-icon'}"
+                    ></span>
+                  </button>
+                </div>
+              `
+        }
+        <div
+          id="course-nav"
+          class="collapse navbar-collapse mobile-collapsed ${isStudentSurface ? 'order-md-2' : ''}"
+        >
           <ul class="nav navbar-nav me-auto" id="main-nav">
             ${NavbarByType({
               resLocals: navbarResLocals,
               navPage,
               navbarType,
+              isStudentSurface,
             })}
           </ul>
 
@@ -166,8 +251,14 @@ export function Navbar({
                 ? html`
                     <button
                       type="button"
-                      class="btn btn-outline-light btn-sm ms-md-2 me-md-2 mb-2 mb-md-0"
-                      style="--bs-btn-color: var(--bs-navbar-color); --bs-btn-border-color: var(--bs-navbar-color)"
+                      class="btn ${
+                        isStudentSurface ? 'btn-outline-secondary' : 'btn-outline-light'
+                      } btn-sm ms-md-2 me-md-2 mb-2 mb-md-0"
+                      style="${
+                        isStudentSurface
+                          ? ''
+                          : '--bs-btn-color: var(--bs-navbar-color); --bs-btn-border-color: var(--bs-navbar-color)'
+                      }"
                       data-bs-toggle="modal tooltip"
                       data-bs-target="#supportModal"
                       data-bs-title="راهنمایی و پشتیبانی سامانه یادگیری"
@@ -188,7 +279,12 @@ export function Navbar({
           ${
             hideSessionControls
               ? ''
-              : UserDropdownMenu({ resLocals: navbarResLocals, navPage, navbarType })
+              : UserDropdownMenu({
+                  resLocals: navbarResLocals,
+                  navPage,
+                  navbarType,
+                  isStudentSurface,
+                })
           }
         </div>
       </div>
@@ -247,7 +343,8 @@ function EndExamModal({ csrfToken }: { csrfToken: string }) {
     formClass: 'js-end-exam-form',
     body: html`
       <p class="js-end-exam-confirm">
-        آیا از پایان دادن به آزمون خود اطمینان دارید؟ لطفاً فقط در صورتی که تمام پاسخ‌های خود را بررسی و ذخیره کرده‌اید این گزینه را تایید فرمایید. با این کار، مرورگر آزمون بسته خواهد شد.
+        آیا از پایان دادن به آزمون خود اطمینان دارید؟ لطفاً فقط در صورتی که تمام پاسخ‌های خود را بررسی
+        و ذخیره کرده‌اید این گزینه را تایید فرمایید. با این کار، مرورگر آزمون بسته خواهد شد.
       </p>
       <div
         class="js-end-exam-loading d-none d-flex align-items-center text-muted"
@@ -261,7 +358,8 @@ function EndExamModal({ csrfToken }: { csrfToken: string }) {
         <div>
           <strong>خطا در پایان دادن به آزمون.</strong>
           <div>
-            لطفاً مجدداً تلاش نمایید یا از مراقب آزمون خود بخواهید تا جلسه آزمون شما را به پایان برساند.
+            لطفاً مجدداً تلاش نمایید یا از مراقب آزمون خود بخواهید تا جلسه آزمون شما را به پایان
+            برساند.
           </div>
         </div>
       </div>
@@ -323,7 +421,9 @@ function ReportCheatingModal({ csrfToken }: { csrfToken: string }) {
     body: html`
       <div class="js-report-cheating-fields">
         <p>
-          در صورتی که نقض قوانین آزمون (مانند استفاده از تلفن همراه، برگه تقلب یا سایر موارد غیرمجاز) را مشاهده کرده‌اید، جزئیات آن را در کادر زیر بنویسید. این گزارش کاملاً محرمانه بوده و تنها برای کادر آموزشی و مراقبان آزمون ارسال خواهد شد.
+          در صورتی که نقض قوانین آزمون (مانند استفاده از تلفن همراه، برگه تقلب یا سایر موارد
+          غیرمجاز) را مشاهده کرده‌اید، جزئیات آن را در کادر زیر بنویسید. این گزارش کاملاً محرمانه بوده
+          و تنها برای کادر آموزشی و مراقبان آزمون ارسال خواهد شد.
         </p>
         <div class="mb-0">
           <label class="form-label" for="report-cheating-text">شرح تخلف مشاهده شده:</label>
@@ -371,13 +471,15 @@ function NavbarByType({
   resLocals,
   navPage,
   navbarType,
+  isStudentSurface = false,
 }: {
   resLocals: UntypedResLocals;
   navPage: NavPage;
   navbarType: NavbarType;
+  isStudentSurface?: boolean;
 }) {
   if (navbarType === 'student') {
-    return NavbarStudent({ resLocals, navPage });
+    return NavbarStudent({ resLocals, navPage, isStudentSurface });
   } else if (navbarType === 'public') {
     return NavbarPublic({ resLocals });
   } else {
@@ -393,10 +495,12 @@ function UserDropdownMenu({
   resLocals,
   navPage,
   navbarType,
+  isStudentSurface = false,
 }: {
   resLocals: UntypedResLocals;
   navPage: NavPage;
   navbarType: NavbarType;
+  isStudentSurface?: boolean;
 }) {
   const {
     authz_data,
@@ -463,11 +567,7 @@ function UserDropdownMenu({
             authn_is_administrator
               ? html`
                   <button type="button" class="dropdown-item" id="navbar-administrator-toggle">
-                    ${
-                      access_as_administrator
-                        ? 'غیرفعال‌سازی دسترسی مدیر'
-                        : 'فعال‌سازی دسترسی مدیر'
-                    }
+                    ${access_as_administrator ? 'غیرفعال‌سازی دسترسی مدیر' : 'فعال‌سازی دسترسی مدیر'}
                   </button>
 
                   <div class="dropdown-divider"></div>
@@ -486,7 +586,11 @@ function UserDropdownMenu({
               : ''
           }
           ${
-            !authz_data || authz_data?.mode === 'Public'
+            (!authz_data || authz_data?.mode === 'Public') &&
+            (!isStudentSurface ||
+              authn_is_administrator ||
+              authz_data?.authn_has_course_permission_preview ||
+              authz_data?.authn_has_course_instance_permission_view)
               ? html`<a class="dropdown-item" href="/pl/request_course">درخواست ایجاد درس جدید</a>`
               : ''
           }
@@ -970,44 +1074,164 @@ function NavbarButtons({
   `;
 }
 
-function NavbarStudent({ resLocals, navPage }: { resLocals: UntypedResLocals; navPage: NavPage }) {
+function NavbarStudent({
+  resLocals,
+  navPage,
+  isStudentSurface = false,
+}: {
+  resLocals: UntypedResLocals;
+  navPage: NavPage;
+  isStudentSurface?: boolean;
+}) {
   const { course, course_instance, assessment_instance, assessment_instance_label, urlPrefix } =
     resLocals;
 
+  if (!isStudentSurface) {
+    return html`
+      <li class="nav-item navbar-text me-4">
+        ${course?.short_name ?? ''}, ${course_instance?.short_name ?? ''}
+      </li>
+
+      <li class="nav-item ${navPage === 'assessments' ? 'active' : ''}">
+        <a class="nav-link" href="${urlPrefix}/assessments">تکالیف و ارزیابی‌ها</a>
+      </li>
+      <li class="nav-item ${navPage === 'gradebook' ? 'active' : ''}">
+        <a class="nav-link" href="${urlPrefix}/gradebook">کارنامه و نمرات</a>
+      </li>
+      ${
+        resLocals.student_leaderboard_enabled
+          ? html`
+              <li class="nav-item ${navPage === 'leaderboard' ? 'active' : ''}">
+                <a class="nav-link" href="${urlPrefix}/leaderboard">
+                  <i class="fas fa-trophy me-1 text-warning" aria-hidden="true"></i>جدول امتیازات
+                </a>
+              </li>
+            `
+          : ''
+      }
+      ${
+        assessment_instance_label != null && assessment_instance != null
+          ? html`
+              <li class="nav-item ${navPage === 'assessment_instance' ? 'active' : ''}">
+                <a
+                  class="nav-link"
+                  href="${urlPrefix}/assessment_instance/${assessment_instance.id}"
+                >
+                  ${assessment_instance_label}
+                </a>
+              </li>
+            `
+          : ''
+      }
+    `;
+  }
+
   return html`
-    <li class="nav-item navbar-text me-4">
-      ${course?.short_name ?? ''}, ${course_instance?.short_name ?? ''}
+    <li class="nav-item d-flex align-items-center ms-md-2 me-md-2 my-1 my-md-0">
+      <span class="sh-course-pill">
+        <span dir="ltr">${course?.short_name ?? ''}</span>
+        ${
+          course_instance?.short_name
+            ? html`<span aria-hidden="true">•</span>
+                <span dir="ltr">${course_instance.short_name}</span>`
+            : ''
+        }
+      </span>
     </li>
 
     <li class="nav-item ${navPage === 'assessments' ? 'active' : ''}">
-      <a class="nav-link" href="${urlPrefix}/assessments">تکالیف و ارزیابی‌ها</a>
+      <a
+        class="nav-link ${navPage === 'assessments' ? 'active' : ''}"
+        ${navPage === 'assessments' ? html`aria-current="page"` : ''}
+        href="${urlPrefix}/assessments"
+      >
+        <i class="bi bi-journal-text" aria-hidden="true"></i>
+        <span>تکالیف و ارزیابی‌ها</span>
+      </a>
     </li>
     <li class="nav-item ${navPage === 'gradebook' ? 'active' : ''}">
-      <a class="nav-link" href="${urlPrefix}/gradebook">کارنامه و نمرات</a>
+      <a
+        class="nav-link ${navPage === 'gradebook' ? 'active' : ''}"
+        ${navPage === 'gradebook' ? html`aria-current="page"` : ''}
+        href="${urlPrefix}/gradebook"
+      >
+        <i class="bi bi-bar-chart-line" aria-hidden="true"></i>
+        <span>کارنامه و نمرات</span>
+      </a>
     </li>
     ${
-      resLocals.student_leaderboard_enabled
+      resLocals.student_skill_tree_enabled && resLocals.authz_data?.mode !== 'Exam'
         ? html`
-            <li class="nav-item ${navPage === 'leaderboard' ? 'active' : ''}">
-              <a class="nav-link" href="${urlPrefix}/leaderboard">
-                <i class="fas fa-trophy me-1 text-warning" aria-hidden="true"></i>جدول امتیازات
+            <li class="nav-item ${navPage === 'skills' ? 'active' : ''}">
+              <a
+                class="nav-link ${navPage === 'skills' ? 'active' : ''}"
+                ${navPage === 'skills' ? html`aria-current="page"` : ''}
+                href="${urlPrefix}/skills"
+              >
+                <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                <span class="sh-en-term">Skill Tree</span>
               </a>
             </li>
           `
         : ''
     }
-
+    ${
+      resLocals.student_leaderboard_enabled && resLocals.authz_data?.mode !== 'Exam'
+        ? html`
+            <li class="nav-item ${navPage === 'leaderboard' ? 'active' : ''}">
+              <a
+                class="nav-link ${navPage === 'leaderboard' ? 'active' : ''}"
+                ${navPage === 'leaderboard' ? html`aria-current="page"` : ''}
+                href="${urlPrefix}/leaderboard"
+              >
+                <i class="bi bi-trophy" aria-hidden="true"></i>
+                <span>جدول امتیازات</span>
+              </a>
+            </li>
+          `
+        : ''
+    }
     ${
       assessment_instance_label != null && assessment_instance != null
         ? html`
             <li class="nav-item ${navPage === 'assessment_instance' ? 'active' : ''}">
-              <a class="nav-link" href="${urlPrefix}/assessment_instance/${assessment_instance.id}">
-                ${assessment_instance_label}
+              <a
+                class="nav-link ${navPage === 'assessment_instance' ? 'active' : ''}"
+                ${navPage === 'assessment_instance' ? html`aria-current="page"` : ''}
+                href="${urlPrefix}/assessment_instance/${assessment_instance.id}"
+              >
+                <i class="bi bi-file-earmark-code" aria-hidden="true"></i>
+                <span>${assessment_instance_label}</span>
               </a>
             </li>
           `
         : ''
     }
+  `;
+}
+
+function StudentPulsePill({ pulse, urlPrefix }: { pulse: StudentNavbarPulse; urlPrefix: string }) {
+  return html`
+    <a
+      href="${urlPrefix}/gradebook#tab-achievements"
+      class="sh-pulse-pill d-none d-sm-inline-flex"
+      title="${pulse.levelTitle} — ${toPersianDigits(pulse.totalXp)} XP (${toPersianDigits(pulse.unlockedCount)} دستاورد)"
+    >
+      <span class="sh-pulse-lv sh-en-term sh-tabular">Lv.${pulse.level}</span>
+      <span class="sh-pulse-bar" aria-hidden="true">
+        <span class="sh-pulse-bar-fill" style="width: ${pulse.progressPerc}%"></span>
+      </span>
+      ${
+        pulse.currentStreakDays > 0
+          ? html`
+              <span class="sh-pulse-streak sh-tabular">
+                <i class="bi bi-fire" aria-hidden="true"></i>
+                <span>${toPersianDigits(pulse.currentStreakDays)}</span>
+              </span>
+            `
+          : ''
+      }
+    </a>
   `;
 }
 

@@ -15,12 +15,12 @@ import {
   type RubricGradingItem,
   SubmissionSchema,
 } from '../lib/db-types.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../lib/jalali.js';
 import type {
   RenderedRubricItem,
   RubricData,
   RubricGradingData,
 } from '../lib/manualGrading.types.js';
-import { formatGregorianTooltip, formatJalaliFriendly } from '../lib/jalali.js';
 import { gradingJobStatus } from '../models/grading-job.js';
 
 import { AiGradingHtmlPreview } from './AiGradingHtmlPreview.js';
@@ -98,7 +98,10 @@ export function SubmissionPanel({
   renderSubmissionSearchParams?: URLSearchParams;
 }) {
   const displayTimezone = course_instance?.display_timezone || course.display_timezone;
-  const formattedDate = html`<span title="${formatGregorianTooltip(submission.date!, displayTimezone)}">${formatJalaliFriendly(submission.date!, displayTimezone)}</span>`;
+  const formattedDate = html`<span
+    title="${formatGregorianTooltip(submission.date!, displayTimezone)}"
+    >${formatJalaliFriendly(submission.date!, displayTimezone)}</span
+  >`;
   const isLatestSubmission = submission.submission_number === submissionCount;
   expanded = expanded || isLatestSubmission;
 
@@ -118,6 +121,7 @@ export function SubmissionPanel({
       data-testid="submission-with-feedback"
       data-grading-job-status="${gradingJobStatus(submission.grading_job)}"
       data-grading-job-id="${submission.grading_job?.id}"
+      ${submission.score != null ? html`data-submission-score="${Math.round(submission.score * 100)}"` : ''}
       id="submission-${submission.id}"
     >
       ${
@@ -132,9 +136,7 @@ export function SubmissionPanel({
                   <div class="me-auto">
                     بازخورد و بررسی کادر آموزشی
                     ${
-                      submissionCount > 1
-                        ? `(برای پاسخ شماره ${submission.submission_number})`
-                        : ''
+                      submissionCount > 1 ? `(برای پاسخ شماره ${submission.submission_number})` : ''
                     }
                   </div>
                   <button
@@ -342,7 +344,8 @@ function SubmissionStatusBadge({
           `;
         } else {
           manualGradingBadge = html`
-            <span class="badge text-bg-secondary">تصحیح دستی: در انتظار بررسی کادر آموزشی</span><br />
+            <span class="badge text-bg-secondary">تصحیح دستی: در انتظار بررسی کادر آموزشی</span
+            ><br />
           `;
         }
       } else {
@@ -427,7 +430,9 @@ function SubmissionStatusBadge({
         </span>
       `;
     } else {
-      autoGradingBadge = html`<span class="badge text-bg-danger" dir="ltr">${autoStatusPrefix} 0%</span>`;
+      autoGradingBadge = html`<span class="badge text-bg-danger" dir="ltr"
+        >${autoStatusPrefix} 0%</span
+      >`;
     }
   }
 

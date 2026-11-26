@@ -3,10 +3,10 @@ import { z } from 'zod';
 import * as sqldb from '@prairielearn/postgres';
 
 import {
+  JALALI_MONTH_NAMES,
   getTodayJalali,
   gregorianToJalali,
   jalaliToGregorian,
-  JALALI_MONTH_NAMES,
   toPersianDigits,
 } from './jalali.js';
 
@@ -106,6 +106,7 @@ export interface StudentLeaderboardData {
   assessments: LeaderboardFilterAssessment[];
   topEntries: LeaderboardEntry[];
   currentUserEntry: LeaderboardEntry | null;
+  nextRivalEntry: { rank: number; displayName: string; totalPoints: number } | null;
   totalParticipants: number;
 }
 
@@ -292,12 +293,13 @@ export async function getStudentAnalyticsData({
       label: row.label,
       title: row.title,
       participantCount: row.participant_count,
-      classAvg: showClassStats && row.avg_score !== null ? Math.round(row.avg_score * 10) / 10 : null,
+      classAvg:
+        showClassStats && row.avg_score !== null ? Math.round(row.avg_score * 10) / 10 : null,
       classMedian:
         showClassStats && row.median_score !== null ? Math.round(row.median_score * 10) / 10 : null,
-      classMax: showClassStats && row.max_score !== null ? Math.round(row.max_score * 10) / 10 : null,
-      studentScore:
-        row.student_score !== null ? Math.round(row.student_score * 10) / 10 : null,
+      classMax:
+        showClassStats && row.max_score !== null ? Math.round(row.max_score * 10) / 10 : null,
+      studentScore: row.student_score !== null ? Math.round(row.student_score * 10) / 10 : null,
     };
   });
 
@@ -390,7 +392,7 @@ export async function getStudentActivityAndBadges({
       const [gy, gm, gd] = key.split('-').map(Number);
       const j = gregorianToJalali(gy, gm, gd);
       const isFuture = key > todayKey;
-      const count = isFuture ? 0 : countsByDay.get(key) ?? 0;
+      const count = isFuture ? 0 : (countsByDay.get(key) ?? 0);
 
       if (!isFuture && count > 0) {
         activeDaysCount += 1;
@@ -444,19 +446,19 @@ export async function getStudentActivityAndBadges({
   const badges: StudentBadge[] = [
     {
       id: 'one-shot',
-      title: 'تک‌ضرب',
+      title: 'One-Shot',
       description: 'کسب نمره کامل در همان اولین ارسال یک سوال بدون خطا',
       iconClass: 'fas fa-bolt',
       accentColor: 'warning',
       earned: badgeSignals.oneshot_count > 0,
       progressText:
         badgeSignals.oneshot_count > 0
-          ? `${toPersianDigits(badgeSignals.oneshot_count)} سوال تک‌ضرب`
+          ? `${toPersianDigits(badgeSignals.oneshot_count)} سوال One-Shot`
           : 'اولین سوال را در تلاش اول حل کنید',
     },
     {
       id: 'early-bird',
-      title: 'سحرخیز',
+      title: 'Early Bird',
       description: 'تکمیل ۹۰٪+ یک سری تمرین حداقل ۴۸ ساعت پیش از ددلاین',
       iconClass: 'fas fa-sun',
       accentColor: 'info',
@@ -468,7 +470,7 @@ export async function getStudentActivityAndBadges({
     },
     {
       id: 'edge-hunter',
-      title: 'شکارچی Edge Case',
+      title: 'Edge Case Hunter',
       description: 'پاس کردن کامل یک سوال چالشی پس از ۴ ارسال یا بیشتر بدون تسلیم شدن',
       iconClass: 'fas fa-crosshairs',
       accentColor: 'purple',
@@ -480,16 +482,16 @@ export async function getStudentActivityAndBadges({
     },
     {
       id: 'streak',
-      title: longestStreakDays >= 7 ? 'پشتکار ۷ روزه' : 'پشتکار پیوسته',
+      title: longestStreakDays >= 7 ? '7-Day Streak' : 'Streak',
       description: 'تمرین و ارسال کد در حداقل ۳ روز پیاپی (طلایی در ۷ روز متوالی)',
       iconClass: 'fas fa-fire',
       accentColor: 'success',
       earned: longestStreakDays >= 3,
-      progressText: `بیشترین زنجیره: ${toPersianDigits(longestStreakDays)} روز`,
+      progressText: `بیشترین Streak: ${toPersianDigits(longestStreakDays)} روز`,
     },
     {
       id: 'perfectionist',
-      title: 'کامل‌حل‌کن',
+      title: 'Perfectionist',
       description: 'کسب نمره کامل ۱۰۰٪ در حداقل یک سری تمرین هفتگی',
       iconClass: 'fas fa-crown',
       accentColor: 'primary',
@@ -548,7 +550,16 @@ export async function getStudentLeaderboardData({
   }));
 
   const topEntries = allEntries.slice(0, 20);
-  const currentUserEntry = allEntries.find((e) => e.isCurrentUser) ?? null;
+  const currentUserIdx = allEntries.findIndex((e) => e.isCurrentUser);
+  const currentUserEntry = currentUserIdx >= 0 ? allEntries[currentUserIdx] : null;
+  const prevEntry = currentUserIdx > 0 ? allEntries[currentUserIdx - 1] : null;
+  const nextRivalEntry = prevEntry
+    ? {
+        rank: prevEntry.rank,
+        displayName: prevEntry.displayName,
+        totalPoints: prevEntry.totalPoints,
+      }
+    : null;
 
   return {
     selectedAssessmentId: assessmentId || null,
@@ -559,6 +570,7 @@ export async function getStudentLeaderboardData({
     })),
     topEntries,
     currentUserEntry,
+    nextRivalEntry,
     totalParticipants: allEntries.length,
   };
 }

@@ -13,6 +13,7 @@ import {
 } from '../../lib/assessment.js';
 import { canDeleteAssessmentInstance } from '../../lib/assessment.shared.js';
 import type { File } from '../../lib/db-types.js';
+import { features } from '../../lib/features/index.js';
 import { deleteFile, uploadFile } from '../../lib/file-store.js';
 import {
   getGroupConfig,
@@ -22,10 +23,10 @@ import {
   updateGroupRoles,
 } from '../../lib/groups.js';
 import { canUserAssignGroupRoles } from '../../lib/groups.shared.js';
-import { features } from '../../lib/features/index.js';
 import { idsEqual } from '../../lib/id.js';
-import { getAssessmentQuestionStats } from '../../lib/student-engagement.js';
 import { type ResLocalsForPage, typedAsyncHandler } from '../../lib/res-locals.js';
+import { getAssessmentQuestionStats } from '../../lib/student-engagement.js';
+import { getStudentGamificationProfile } from '../../lib/student-gamification.js';
 import clientFingerprint from '../../middlewares/clientFingerprint.js';
 import logPageView from '../../middlewares/logPageView.js';
 import selectAndAuthzAssessmentInstance from '../../middlewares/selectAndAuthzAssessmentInstance.js';
@@ -273,16 +274,31 @@ router.get(
     res.locals.assessment_text_templated = assessment_text_templated;
 
     const showTimeLimitExpiredModal = req.query.timeLimitExpired === 'true';
-    const [questionStatsEnabled, deadlineRadarEnabled] = await Promise.all([
+    const isHomework = res.locals.assessment.type === 'Homework';
+    const [questionStatsEnabled, deadlineRadarEnabled, achievementsEnabled] = await Promise.all([
       features.enabledFromLocals('student-question-stats', res.locals),
       features.enabledFromLocals('student-deadline-radar', res.locals),
+      isHomework
+        ? features.enabledFromLocals('student-achievements', res.locals)
+        : Promise.resolve(false),
     ]);
-    const questionStatsMap = questionStatsEnabled
-      ? await getAssessmentQuestionStats({
-          assessmentId: res.locals.assessment.id,
-          courseInstanceId: res.locals.course_instance.id,
-        })
-      : null;
+    const [questionStatsMap, gamificationProfile] = await Promise.all([
+      questionStatsEnabled
+        ? getAssessmentQuestionStats({
+            assessmentId: res.locals.assessment.id,
+            courseInstanceId: res.locals.course_instance.id,
+          })
+        : Promise.resolve(null),
+      achievementsEnabled
+        ? getStudentGamificationProfile({
+            courseInstanceId: res.locals.course_instance.id,
+            userId: res.locals.user.id,
+            timezone: res.locals.course_instance.display_timezone,
+          }).catch(() => null)
+        : Promise.resolve(null),
+    ]);
+    const oneshotAqIds = gamificationProfile ? gamificationProfile.oneshotAqIds : [];
+    const firstBloodAqIds = gamificationProfile ? gamificationProfile.firstBloodAqIds : [];
 
     if (!res.locals.assessment.team_work) {
       res.send(
@@ -292,6 +308,8 @@ router.get(
           userCanDeleteAssessmentInstance: canDeleteAssessmentInstance(res.locals),
           questionStatsMap,
           showDeadlineRadar: deadlineRadarEnabled,
+          oneshotAqIds,
+          firstBloodAqIds,
           resLocals: res.locals,
         }),
       );
@@ -330,6 +348,8 @@ router.get(
         userCanDeleteAssessmentInstance: canDeleteAssessmentInstance(res.locals),
         questionStatsMap,
         showDeadlineRadar: deadlineRadarEnabled,
+        oneshotAqIds,
+        firstBloodAqIds,
         resLocals: res.locals,
       }),
     );

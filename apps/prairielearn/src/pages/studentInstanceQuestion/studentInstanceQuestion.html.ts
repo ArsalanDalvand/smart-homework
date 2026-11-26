@@ -23,9 +23,31 @@ import { assetPath, compiledScriptTag, nodeModulesAssetPath } from '../../lib/as
 import { type CopyTarget } from '../../lib/copy-content.js';
 import type { AssessmentTool, User } from '../../lib/db-types.js';
 import { getRoleNamesForUser } from '../../lib/groups.shared.js';
+import { toPersianDigits } from '../../lib/jalali.js';
 import type { ResLocalsInstanceQuestionRender } from '../../lib/question-render.types.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
+import type { QuestionClassStat } from '../../lib/student-engagement.js';
 import { CalculatorSettingsSchema } from '../../schemas/infoAssessment.js';
+
+export interface StepperQuestionItem {
+  instanceQuestionId: string;
+  questionNumber: string;
+  isCurrent: boolean;
+  isSolved: boolean;
+  isPartial: boolean;
+  isLocked: boolean;
+}
+
+export interface QuestionDelightConfig {
+  courseInstanceId: string;
+  instanceQuestionId: string;
+  submissionId: string | null;
+  scorePerc: number | null;
+  isOneShot: boolean;
+  estimatedXp: number;
+  nextQuestionUrl: string | null;
+  unlockedAchievements: { id: string; title: string; description: string }[];
+}
 
 export function StudentInstanceQuestion({
   resLocals,
@@ -36,6 +58,9 @@ export function StudentInstanceQuestion({
   lastGrader,
   questionCopyTargets,
   enabledTools = [],
+  stepperQuestions = [],
+  questionStat = null,
+  delightConfig = null,
 }: {
   independentScrolling: boolean;
   resLocals: ResLocalsForPage<'instance-question'>;
@@ -45,6 +70,9 @@ export function StudentInstanceQuestion({
   lastGrader?: User | null;
   questionCopyTargets?: CopyTarget[] | null;
   enabledTools?: AssessmentTool[];
+  stepperQuestions?: StepperQuestionItem[];
+  questionStat?: QuestionClassStat | null;
+  delightConfig?: QuestionDelightConfig | null;
 }) {
   const questionContext =
     resLocals.assessment.type === 'Exam' ? 'student_exam' : 'student_homework';
@@ -65,6 +93,13 @@ export function StudentInstanceQuestion({
     },
     headContent: html`
       ${independentScrolling ? compiledStylesheetTag('questionLayout.css') : ''}
+      <link href="${assetPath('stylesheets/student-engagement.css')}" rel="stylesheet" />
+      <script defer src="${assetPath('javascripts/student-ux.js')}"></script>
+      ${
+        delightConfig
+          ? html`<script defer src="${assetPath('javascripts/student-delight.js')}"></script>`
+          : ''
+      }
       <meta
         name="mathjax-fonts-path"
         content="${nodeModulesAssetPath('@mathjax/mathjax-newcm-font')}"
@@ -139,7 +174,8 @@ export function StudentInstanceQuestion({
             resLocals.instance_question_info.question_access_mode === 'read_only_lockpoint'
               ? html`
                   <div class="alert alert-warning">
-                    این سوال فقط-خواندنی است زیرا از مرحله عطف عبور کرده‌اید. می‌توانید پاسخ‌های قبلی خود را مرور کنید اما امکان ثبت پاسخ جدید وجود ندارد.
+                    این سوال فقط-خواندنی است زیرا از مرحله عطف عبور کرده‌اید. می‌توانید پاسخ‌های قبلی
+                    خود را مرور کنید اما امکان ثبت پاسخ جدید وجود ندارد.
                   </div>
                 `
               : ''
@@ -159,7 +195,8 @@ export function StudentInstanceQuestion({
                       </h1>
                     </div>
                     <div class="card-body">
-                      این سوال در زمان باز بودن ارزیابی مشاهده نشد، بنابراین نمونه‌ای برای آن تولید نشده است.
+                      این سوال در زمان باز بودن ارزیابی مشاهده نشد، بنابراین نمونه‌ای برای آن تولید
+                      نشده است.
                     </div>
                   </div>
                 `
@@ -255,6 +292,76 @@ export function StudentInstanceQuestion({
               : null,
           })}
           ${
+            stepperQuestions.length > 1
+              ? html`
+                  <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h2>سوالات سری</h2>
+                      <span class="small text-body-secondary sh-tabular">
+                        ${toPersianDigits(stepperQuestions.filter((q) => q.isSolved).length)} از
+                        ${toPersianDigits(stepperQuestions.length)}
+                      </span>
+                    </div>
+                    <div class="card-body">
+                      <div class="sh-q-stepper">
+                        ${stepperQuestions.map((item) => {
+                          const stepClass = [
+                            'sh-q-step',
+                            item.isCurrent ? 'is-current' : '',
+                            item.isSolved ? 'is-solved' : '',
+                            item.isPartial ? 'is-partial' : '',
+                            item.isLocked ? 'is-locked' : '',
+                          ]
+                            .filter(Boolean)
+                            .join(' ');
+                          return item.isLocked
+                            ? html`<span class="${stepClass}" title="سوال قفل‌شده">
+                                <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                              </span>`
+                            : html`<a
+                                href="${resLocals.urlPrefix}/instance_question/${item.instanceQuestionId}/"
+                                class="${stepClass}"
+                                ${item.isCurrent ? html`aria-current="step"` : ''}
+                                title="سوال ${item.questionNumber}"
+                              >
+                                ${item.questionNumber}
+                              </a>`;
+                        })}
+                      </div>
+                      <div class="text-body-secondary mt-2" style="font-size: 0.72rem;">
+                        میانبر: <kbd dir="ltr">Alt + ← / →</kbd> برای سوال بعدی و قبلی
+                      </div>
+                    </div>
+                  </div>
+                `
+              : ''
+          }
+          ${
+            questionStat && questionStat.attemptedCount >= 1
+              ? html`
+                  <div class="card mb-4">
+                    <div
+                      class="card-body py-2 px-3 d-flex align-items-center justify-content-between small"
+                    >
+                      <span class="text-body-secondary">نرخ حل کلاس</span>
+                      <span
+                        class="se-qstat-pill m-0 ${
+                          questionStat.solveRatePerc >= 70
+                            ? 'se-qstat-easy'
+                            : questionStat.solveRatePerc >= 40
+                              ? 'se-qstat-medium'
+                              : 'se-qstat-hard'
+                        }"
+                      >
+                        ${toPersianDigits(questionStat.solveRatePerc)}٪ •
+                        ${toPersianDigits(questionStat.avgAttempts)} تلاش
+                      </span>
+                    </div>
+                  </div>
+                `
+              : ''
+          }
+          ${
             resLocals.assessment.allow_personal_notes
               ? PersonalNotesPanel({
                   fileList: resLocals.file_list,
@@ -290,6 +397,15 @@ export function StudentInstanceQuestion({
           })}
         </div>
       </div>
+      ${
+        delightConfig
+          ? html`
+              <script id="sh-delight-config" type="application/json">
+                ${unsafeHtml(JSON.stringify(delightConfig).replaceAll('<', '\\u003c'))}
+              </script>
+            `
+          : ''
+      }
     `,
   });
 }

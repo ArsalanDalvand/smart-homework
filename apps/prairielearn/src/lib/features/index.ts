@@ -30,6 +30,12 @@ const featureNames = [
   'student-activity-heatmap',
   'student-question-stats',
   'student-deadline-radar',
+  'student-xp-levels',
+  'student-achievements',
+  'student-weekly-quests',
+  'student-skill-tree',
+  'student-hall-of-fame',
+  'student-micro-delight',
 ] as const;
 
 const features = new FeatureManager(featureNames);

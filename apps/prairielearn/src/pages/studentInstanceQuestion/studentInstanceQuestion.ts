@@ -1,9 +1,10 @@
 import assert from 'assert';
 
 import { type Request, type Response, Router } from 'express';
+import { z } from 'zod';
 
 import { HttpStatusError } from '@prairielearn/error';
-import { loadSqlEquiv, queryOptionalScalar } from '@prairielearn/postgres';
+import { loadSqlEquiv, queryOptionalScalar, queryRows } from '@prairielearn/postgres';
 import { IdSchema } from '@prairielearn/zod';
 
 import checkPlanGrantsForQuestion from '../../ee/middlewares/checkPlanGrantsForQuestion.js';
@@ -19,6 +20,8 @@ import { reportIssueFromForm } from '../../lib/issues.js';
 import { getAndRenderVariant, renderPanelsForSubmission } from '../../lib/question-render.js';
 import { processSubmission } from '../../lib/question-submission.js';
 import { typedAsyncHandler } from '../../lib/res-locals.js';
+import { getAssessmentQuestionStats } from '../../lib/student-engagement.js';
+import { getStudentGamificationProfile } from '../../lib/student-gamification.js';
 import { getCanonicalHost } from '../../lib/url.js';
 import clientFingerprint from '../../middlewares/clientFingerprint.js';
 import { enterpriseOnly } from '../../middlewares/enterpriseOnly.js';
@@ -27,7 +30,25 @@ import { selectEnabledToolsForInstanceQuestion } from '../../models/assessment.j
 import { selectUserById } from '../../models/user.js';
 import { selectAndAuthzVariant, selectVariantsByInstanceQuestion } from '../../models/variant.js';
 
-import { StudentInstanceQuestion } from './studentInstanceQuestion.html.js';
+import {
+  type QuestionDelightConfig,
+  type StepperQuestionItem,
+  StudentInstanceQuestion,
+} from './studentInstanceQuestion.html.js';
+
+const StepperQuestionRowSchema = z.object({
+  instance_question_id: z.string(),
+  question_number: z.string(),
+  score_perc: z.coerce.number(),
+  highest_submission_score: z.coerce.number().nullable(),
+  number_attempts: z.coerce.number(),
+  question_access_mode: z.enum([
+    'default',
+    'blocked_sequence',
+    'blocked_lockpoint',
+    'read_only_lockpoint',
+  ]),
+});
 
 const sql = loadSqlEquiv(import.meta.url);
 
@@ -404,6 +425,108 @@ router.get(
     const lastGrader = res.locals.instance_question.last_grader
       ? await selectUserById(res.locals.instance_question.last_grader)
       : null;
+
+    const isHomework = res.locals.assessment.type === 'Homework';
+    const [stepperRows, questionStatsEnabled, microDelightEnabled, achievementsEnabled] =
+      await Promise.all([
+        queryRows(
+          sql.select_assessment_question_stepper,
+          { assessment_instance_id: res.locals.assessment_instance.id },
+          StepperQuestionRowSchema,
+        ).catch(() => []),
+        isHomework
+          ? features.enabledFromLocals('student-question-stats', res.locals)
+          : Promise.resolve(false),
+        isHomework
+          ? features.enabledFromLocals('student-micro-delight', res.locals)
+          : Promise.resolve(false),
+        isHomework
+          ? features.enabledFromLocals('student-achievements', res.locals)
+          : Promise.resolve(false),
+      ]);
+
+    const stepperQuestions: StepperQuestionItem[] = stepperRows.map((row) => ({
+      instanceQuestionId: row.instance_question_id,
+      questionNumber: row.question_number,
+      isCurrent: idsEqual(row.instance_question_id, res.locals.instance_question.id),
+      isSolved: (row.highest_submission_score ?? 0) >= 0.9999 || row.score_perc >= 99.99,
+      isPartial:
+        (row.highest_submission_score ?? 0) < 0.9999 &&
+        row.score_perc < 99.99 &&
+        (row.number_attempts > 0 || row.score_perc > 0),
+      isLocked:
+        row.question_access_mode === 'blocked_sequence' ||
+        row.question_access_mode === 'blocked_lockpoint',
+    }));
+
+    const [questionStatsMap, gamificationProfile] = await Promise.all([
+      questionStatsEnabled
+        ? getAssessmentQuestionStats({
+            assessmentId: res.locals.assessment.id,
+            courseInstanceId: res.locals.course_instance.id,
+          }).catch(() => null)
+        : Promise.resolve(null),
+      microDelightEnabled || achievementsEnabled
+        ? getStudentGamificationProfile({
+            courseInstanceId: res.locals.course_instance.id,
+            userId: res.locals.user.id,
+            timezone: res.locals.course_instance.display_timezone,
+          }).catch(() => null)
+        : Promise.resolve(null),
+    ]);
+
+    const questionStat = questionStatsMap?.get(res.locals.assessment_question.id) ?? null;
+
+    let delightConfig: QuestionDelightConfig | null = null;
+    if (microDelightEnabled) {
+      const latestSubmission = res.locals.submissions.at(0) ?? null;
+      const nextId = res.locals.instance_question_info.next_instance_question.id;
+      const nextAccessible =
+        nextId != null &&
+        res.locals.instance_question_info.next_instance_question.question_access_mode !==
+          'blocked_sequence' &&
+        res.locals.instance_question_info.next_instance_question.question_access_mode !==
+          'blocked_lockpoint' &&
+        (res.locals.next_instance_question_role_permissions?.can_view ?? true);
+
+      const solveRate = questionStat?.solveRatePerc ?? 100;
+      const diffMultiplier =
+        questionStat && questionStat.attemptedCount >= 5
+          ? solveRate < 40
+            ? 1.5
+            : solveRate < 70
+              ? 1.25
+              : 1.0
+          : 1.0;
+      const isOneShot =
+        (res.locals.instance_question.first_submission_score ?? 0) >= 0.9999 ||
+        (res.locals.instance_question.number_attempts === 1 &&
+          (res.locals.instance_question.highest_submission_score ?? 0) >= 0.9999);
+
+      delightConfig = {
+        courseInstanceId: res.locals.course_instance.id,
+        instanceQuestionId: res.locals.instance_question.id,
+        submissionId: latestSubmission?.id ?? null,
+        scorePerc:
+          latestSubmission?.score != null ? Math.round(latestSubmission.score * 100) : null,
+        isOneShot,
+        estimatedXp: Math.round(100 * diffMultiplier) + (isOneShot ? 35 : 0),
+        nextQuestionUrl: nextAccessible
+          ? `${res.locals.urlPrefix}/instance_question/${nextId}/`
+          : null,
+        unlockedAchievements:
+          achievementsEnabled && gamificationProfile
+            ? gamificationProfile.achievements
+                .filter((a) => a.earned)
+                .map((a) => ({
+                  id: a.id,
+                  title: a.title,
+                  description: a.description,
+                }))
+            : [],
+      };
+    }
+
     res.send(
       StudentInstanceQuestion({
         independentScrolling,
@@ -414,6 +537,9 @@ router.get(
         lastGrader,
         questionCopyTargets,
         enabledTools,
+        stepperQuestions,
+        questionStat,
+        delightConfig,
       }),
     );
   }),

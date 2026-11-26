@@ -26,6 +26,7 @@ import { InstitutionSchema, UserSchema } from '../lib/db-types.js';
 import { getModeForRequest } from '../lib/exam-mode.js';
 import { features } from '../lib/features/index.js';
 import { idsEqual } from '../lib/id.js';
+import { type StudentNavbarPulse, getStudentNavbarPulse } from '../lib/student-gamification.js';
 import { selectCourseHasCourseInstances } from '../models/course-instances.js';
 
 const sql = sqldb.loadSqlEquiv(import.meta.url);
@@ -348,6 +349,8 @@ export interface ResLocalsCourse {
   course_has_course_instances: boolean;
   question_sharing_enabled: boolean;
   student_leaderboard_enabled?: boolean;
+  student_skill_tree_enabled?: boolean;
+  student_xp_pulse?: StudentNavbarPulse | null;
   is_administrator: boolean;
   /** Set by the course agent panel middleware (EE) on instructor pages. */
   course_agent_panel?: HtmlSafeString;
@@ -719,6 +722,30 @@ export async function authzCourseOrInstance(req: Request, res: Response) {
     'student-leaderboard',
     res.locals,
   );
+
+  res.locals.student_skill_tree_enabled = await features.enabledFromLocals(
+    'student-skill-tree',
+    res.locals,
+  );
+
+  if (
+    req.method === 'GET' &&
+    res.locals.course_instance &&
+    res.locals.viewType === 'student' &&
+    effectiveAuthzData.mode !== 'Exam' &&
+    !req.originalUrl.includes('/instructor/') &&
+    (await features.enabledFromLocals('student-xp-levels', res.locals))
+  ) {
+    try {
+      res.locals.student_xp_pulse = await getStudentNavbarPulse({
+        courseInstanceId: res.locals.course_instance.id,
+        userId: effectiveAuthzData.user.id,
+        timezone: res.locals.course_instance.display_timezone,
+      });
+    } catch {
+      res.locals.student_xp_pulse = null;
+    }
+  }
 }
 
 export default asyncHandler(async (req, res, next) => {
