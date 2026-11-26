@@ -1,6 +1,8 @@
 import { html } from '@prairielearn/html';
 
 import { getInstanceQuestionUrl } from '../../../lib/client/url.js';
+import { toPersianDigits } from '../../../lib/jalali.js';
+import type { QuestionClassStat } from '../../../lib/student-engagement.js';
 import type { InstanceQuestionRow } from '../studentAssessmentInstance.types.js';
 
 export function RowLabel({
@@ -9,12 +11,14 @@ export function RowLabel({
   userGroupRoles,
   rowLabelText,
   hasStatusColumn,
+  questionStat = null,
 }: {
   courseInstanceId: string;
   row: InstanceQuestionRow;
   userGroupRoles: string | null;
   rowLabelText: string;
   hasStatusColumn: boolean;
+  questionStat?: QuestionClassStat | null;
 }) {
   let lockMessage: string | null = null;
   let showLink = true;
@@ -90,6 +94,30 @@ export function RowLabel({
             >
               <i class="fas fa-paperclip"></i>
             </button>
+          `
+        : ''
+    }
+    ${
+      questionStat && questionStat.attemptedCount >= 1
+        ? html`
+            <span
+              class="se-qstat-pill ${
+                questionStat.solveRatePerc >= 70
+                  ? 'se-qstat-easy'
+                  : questionStat.solveRatePerc >= 40
+                    ? 'se-qstat-medium'
+                    : 'se-qstat-hard'
+              }"
+              title="بر اساس ${toPersianDigits(questionStat.attemptedCount)} دانشجوی شرکت‌کننده"
+            >
+              <i class="fas fa-users" aria-hidden="true"></i>
+              <span>${toPersianDigits(questionStat.solveRatePerc)}٪ حل کرده‌اند</span>
+              ${
+                questionStat.avgAttempts > 0
+                  ? html`<span>• میانگین ${toPersianDigits(questionStat.avgAttempts)} تلاش</span>`
+                  : ''
+              }
+            </span>
           `
         : ''
     }

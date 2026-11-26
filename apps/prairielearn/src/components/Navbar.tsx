@@ -985,6 +985,17 @@ function NavbarStudent({ resLocals, navPage }: { resLocals: UntypedResLocals; na
     <li class="nav-item ${navPage === 'gradebook' ? 'active' : ''}">
       <a class="nav-link" href="${urlPrefix}/gradebook">کارنامه و نمرات</a>
     </li>
+    ${
+      resLocals.student_leaderboard_enabled
+        ? html`
+            <li class="nav-item ${navPage === 'leaderboard' ? 'active' : ''}">
+              <a class="nav-link" href="${urlPrefix}/leaderboard">
+                <i class="fas fa-trophy me-1 text-warning" aria-hidden="true"></i>جدول امتیازات
+              </a>
+            </li>
+          `
+        : ''
+    }
 
     ${
       assessment_instance_label != null && assessment_instance != null

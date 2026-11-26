@@ -16,9 +16,11 @@ import {
   StudentAccessRulesSchedule,
   StudentAccessTimelineSchedule,
 } from '../../components/StudentAccessSchedules.js';
+import { StudentDeadlineRadar } from '../../components/StudentDeadlineRadar.js';
 import { TimeLimitExpiredModal } from '../../components/TimeLimitExpiredModal.js';
 import type { AssessmentInstanceAuthzResult } from '../../lib/assessment-access-control/authz-result.js';
-import { compiledScriptTag } from '../../lib/assets.js';
+import { assetPath, compiledScriptTag } from '../../lib/assets.js';
+import type { QuestionClassStat } from '../../lib/student-engagement.js';
 import { type Assessment, type AssessmentInstance, type GroupConfig } from '../../lib/db-types.js';
 import { formatPoints } from '../../lib/format.js';
 import { type GroupInfo, getRoleNamesForUser } from '../../lib/groups.shared.js';
@@ -35,11 +37,15 @@ export function StudentAssessmentInstance({
   groupInfo,
   userCanAssignRoles,
   userCanDeleteAssessmentInstance,
+  questionStatsMap = null,
+  showDeadlineRadar = false,
   resLocals,
 }: {
   instance_question_rows: InstanceQuestionRow[];
   showTimeLimitExpiredModal: boolean;
   userCanDeleteAssessmentInstance: boolean;
+  questionStatsMap?: Map<string, QuestionClassStat> | null;
+  showDeadlineRadar?: boolean;
   resLocals: ResLocalsForPage<'assessment-instance'> & {
     has_manual_grading_question: boolean;
     has_auto_grading_question: boolean;
@@ -167,6 +173,16 @@ export function StudentAssessmentInstance({
       page: 'assessment_instance',
     },
     headContent: html`
+      ${
+        showDeadlineRadar || questionStatsMap
+          ? html`<link href="${assetPath('stylesheets/student-engagement.css')}" rel="stylesheet" />`
+          : ''
+      }
+      ${
+        showDeadlineRadar
+          ? html`<script defer src="${assetPath('javascripts/student-deadline-radar.js')}"></script>`
+          : ''
+      }
       ${
         resLocals.assessment.type === 'Exam'
           ? html`${compiledScriptTag('examTimeLimitCountdown.ts')}
@@ -357,6 +373,16 @@ export function StudentAssessmentInstance({
               : ''
           }
           ${
+            showDeadlineRadar &&
+            resLocals.assessment.type === 'Homework' &&
+            resLocals.assessment_instance.open
+              ? StudentDeadlineRadar({
+                  authzResult: resLocals.authz_result,
+                  displayTimezone: resLocals.course_instance.display_timezone,
+                })
+              : ''
+          }
+          ${
             resLocals.assessment_text_templated
               ? html`
                   <div class="card bg-light mb-0 mt-4">
@@ -395,6 +421,7 @@ export function StudentAssessmentInstance({
               userGroupRoles,
               isLockpointCrossable,
               hasUnmetAdvanceScorePercBeforeLockpoint,
+              questionStatsMap,
             })}
           </table>
         </div>

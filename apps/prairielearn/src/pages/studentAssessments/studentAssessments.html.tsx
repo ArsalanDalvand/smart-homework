@@ -5,6 +5,9 @@ import { IdSchema } from '@prairielearn/zod';
 
 import { PageLayout } from '../../components/PageLayout.js';
 import { ScorebarHtml } from '../../components/Scorebar.js';
+import { type DeadlineMiniItem, StudentDeadlineRadarStrip } from '../../components/StudentDeadlineRadar.js';
+import { assetPath } from '../../lib/assets.js';
+import { formatJalaliFriendly } from '../../lib/jalali.js';
 import {
   StudentAccessRulesSchedule,
   StudentAccessTimelineSchedule,
@@ -44,9 +47,11 @@ export type StudentAssessmentsRow = z.infer<typeof StudentAssessmentsRowBaseSche
 export function StudentAssessments({
   resLocals,
   rows,
+  showDeadlineRadar = false,
 }: {
   resLocals: ResLocalsForPage<'course-instance'>;
   rows: StudentAssessmentsRow[];
+  showDeadlineRadar?: boolean;
 }) {
   const { urlPrefix, authz_data } = resLocals;
 
@@ -64,6 +69,28 @@ export function StudentAssessments({
     }
   });
 
+  const tz = resLocals.course_instance.display_timezone || 'Asia/Tehran';
+  const radarItems: DeadlineMiniItem[] = [];
+  if (showDeadlineRadar) {
+    for (const row of rows) {
+      if (!row.authz_result.authorized || row.assessment_instance_open === false) continue;
+      const curSeg = row.authz_result.access_timeline.find(
+        (s) => s.current && s.kind === 'deadline' && s.submittable && s.endDate != null,
+      );
+      if (!curSeg?.endDate) continue;
+      radarItems.push({
+        title: row.title,
+        label: row.label,
+        href: `${urlPrefix}${row.link}`,
+        endDateIso: curSeg.endDate.toISOString(),
+        endDateJalali: formatJalaliFriendly(curSeg.endDate, tz, { includeTz: false }),
+        credit: curSeg.credit,
+      });
+    }
+    radarItems.sort((a, b) => a.endDateIso.localeCompare(b.endDateIso));
+  }
+  const topRadarItems = radarItems.slice(0, 3);
+
   return PageLayout({
     resLocals,
     pageTitle: 'تکالیف و ارزیابی‌ها',
@@ -71,7 +98,14 @@ export function StudentAssessments({
       type: 'student',
       page: 'assessments',
     },
+    headContent: showDeadlineRadar
+      ? html`
+          <link href="${assetPath('stylesheets/student-engagement.css')}" rel="stylesheet" />
+          <script defer src="${assetPath('javascripts/student-deadline-radar.js')}"></script>
+        `
+      : undefined,
     content: html`
+      ${topRadarItems.length > 0 ? StudentDeadlineRadarStrip({ items: topRadarItems }) : ''}
       <div class="card mb-4" style="font-family: var(--font-persian);">
         <div class="card-header bg-primary text-white">
           <h1 class="h3 mb-0">تکالیف و ارزیابی‌ها</h1>

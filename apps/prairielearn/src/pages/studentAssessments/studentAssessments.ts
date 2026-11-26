@@ -9,6 +9,7 @@ import {
 } from '../../lib/assessment-access-control/authz.js';
 import { formatLegacyAssessmentAccess } from '../../lib/assessment-access-control/legacy.js';
 import { SprocAuthzAssessmentSchema } from '../../lib/db-types.js';
+import { features } from '../../lib/features/index.js';
 import { typedAsyncHandler } from '../../lib/res-locals.js';
 import logPageView from '../../middlewares/logPageView.js';
 
@@ -86,7 +87,17 @@ router.get(
         return row.authz_result.authorized;
       });
 
-    res.send(StudentAssessments({ resLocals: res.locals, rows: resolvedRows }));
+    const deadlineRadarEnabled = await features.enabledFromLocals(
+      'student-deadline-radar',
+      res.locals,
+    );
+    res.send(
+      StudentAssessments({
+        resLocals: res.locals,
+        rows: resolvedRows,
+        showDeadlineRadar: deadlineRadarEnabled,
+      }),
+    );
   }),
 );
 

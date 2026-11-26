@@ -347,6 +347,7 @@ export interface ResLocalsCourse {
   user: ResLocalsCourseAuthz['user'];
   course_has_course_instances: boolean;
   question_sharing_enabled: boolean;
+  student_leaderboard_enabled?: boolean;
   is_administrator: boolean;
   /** Set by the course agent panel middleware (EE) on instructor pages. */
   course_agent_panel?: HtmlSafeString;
@@ -711,6 +712,11 @@ export async function authzCourseOrInstance(req: Request, res: Response) {
 
   res.locals.question_sharing_enabled = await features.enabledFromLocals(
     'question-sharing',
+    res.locals,
+  );
+
+  res.locals.student_leaderboard_enabled = await features.enabledFromLocals(
+    'student-leaderboard',
     res.locals,
   );
 }

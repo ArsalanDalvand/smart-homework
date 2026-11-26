@@ -5,6 +5,7 @@ import { Router } from 'express';
 import { stringifyNonblocking } from '@prairielearn/csv';
 import { HttpStatusError } from '@prairielearn/error';
 
+import { features } from '../../lib/features/index.js';
 import { getGradebookRows } from '../../lib/gradebook.js';
 import {
   type StudentGradebookRow,
@@ -13,6 +14,10 @@ import {
 } from '../../lib/gradebook.shared.js';
 import { type ResLocalsForPage, typedAsyncHandler } from '../../lib/res-locals.js';
 import { courseInstanceFilenamePrefix } from '../../lib/sanitize-name.js';
+import {
+  getStudentActivityAndBadges,
+  getStudentAnalyticsData,
+} from '../../lib/student-engagement.js';
 import logPageView from '../../middlewares/logPageView.js';
 
 import { StudentGradebook, type StudentGradebookTableRow } from './studentGradebook.html.js';
@@ -22,9 +27,6 @@ const router = Router();
 function buildCsvFilename(locals: ResLocalsForPage<'course-instance'>) {
   return courseInstanceFilenamePrefix(locals.course_instance, locals.course) + 'gradebook.csv';
 }
-
-// TODO: The student gradebook should be refactored to use the new data model, rather than the old SQL data model.
-// This was done to avoid substantial changes to the gradebook code, while still allowing for reuse of the gradebook SQL query.
 
 function mapRow(
   raw: StudentGradebookRow,
@@ -49,19 +51,42 @@ router.get(
   '/',
   logPageView('studentGradebook'),
   typedAsyncHandler<'course-instance'>(async (req, res) => {
-    const rawRows = await getGradebookRows({
-      courseInstance: res.locals.course_instance,
-      userId: res.locals.user.id,
-      authzData: res.locals.authz_data,
-      reqDate: res.locals.req_date,
-      auth: 'student',
-    });
+    const [rawRows, analyticsEnabled, heatmapEnabled] = await Promise.all([
+      getGradebookRows({
+        courseInstance: res.locals.course_instance,
+        userId: res.locals.user.id,
+        authzData: res.locals.authz_data,
+        reqDate: res.locals.req_date,
+        auth: 'student',
+      }),
+      features.enabledFromLocals('student-analytics', res.locals),
+      features.enabledFromLocals('student-activity-heatmap', res.locals),
+    ]);
+
+    const [analyticsData, activityData] = await Promise.all([
+      analyticsEnabled
+        ? getStudentAnalyticsData({
+            courseInstanceId: res.locals.course_instance.id,
+            userId: res.locals.user.id,
+          })
+        : Promise.resolve(null),
+      heatmapEnabled
+        ? getStudentActivityAndBadges({
+            courseInstanceId: res.locals.course_instance.id,
+            userId: res.locals.user.id,
+            timezone: res.locals.course_instance.display_timezone,
+          })
+        : Promise.resolve(null),
+    ]);
+
     const rows = rawRows.map((row, index) => mapRow(row, rawRows[index - 1]));
     res.send(
       StudentGradebook({
         resLocals: res.locals,
         rows,
         csvFilename: buildCsvFilename(res.locals),
+        analyticsData,
+        activityData,
       }),
     );
   }),

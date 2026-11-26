@@ -23,6 +23,13 @@ const featureNames = [
 
   // LTI 1.1. Deprecated so keep scope to course instance, where possible.
   'lti11',
+
+  // Student engagement & motivation modules (course/course-instance toggleable).
+  'student-analytics',
+  'student-leaderboard',
+  'student-activity-heatmap',
+  'student-question-stats',
+  'student-deadline-radar',
 ] as const;
 
 const features = new FeatureManager(featureNames);

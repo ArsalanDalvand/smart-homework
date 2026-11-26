@@ -32,6 +32,7 @@ export const NavPageSchema = z
     'institution_admin',
     'assessments',
     'gradebook',
+    'leaderboard',
     'assessment_instance',
     'workspace',
     'effective',

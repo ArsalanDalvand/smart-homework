@@ -22,7 +22,9 @@ import {
   updateGroupRoles,
 } from '../../lib/groups.js';
 import { canUserAssignGroupRoles } from '../../lib/groups.shared.js';
+import { features } from '../../lib/features/index.js';
 import { idsEqual } from '../../lib/id.js';
+import { getAssessmentQuestionStats } from '../../lib/student-engagement.js';
 import { type ResLocalsForPage, typedAsyncHandler } from '../../lib/res-locals.js';
 import clientFingerprint from '../../middlewares/clientFingerprint.js';
 import logPageView from '../../middlewares/logPageView.js';
@@ -271,6 +273,16 @@ router.get(
     res.locals.assessment_text_templated = assessment_text_templated;
 
     const showTimeLimitExpiredModal = req.query.timeLimitExpired === 'true';
+    const [questionStatsEnabled, deadlineRadarEnabled] = await Promise.all([
+      features.enabledFromLocals('student-question-stats', res.locals),
+      features.enabledFromLocals('student-deadline-radar', res.locals),
+    ]);
+    const questionStatsMap = questionStatsEnabled
+      ? await getAssessmentQuestionStats({
+          assessmentId: res.locals.assessment.id,
+          courseInstanceId: res.locals.course_instance.id,
+        })
+      : null;
 
     if (!res.locals.assessment.team_work) {
       res.send(
@@ -278,6 +290,8 @@ router.get(
           instance_question_rows,
           showTimeLimitExpiredModal,
           userCanDeleteAssessmentInstance: canDeleteAssessmentInstance(res.locals),
+          questionStatsMap,
+          showDeadlineRadar: deadlineRadarEnabled,
           resLocals: res.locals,
         }),
       );
@@ -314,6 +328,8 @@ router.get(
         groupInfo,
         userCanAssignRoles,
         userCanDeleteAssessmentInstance: canDeleteAssessmentInstance(res.locals),
+        questionStatsMap,
+        showDeadlineRadar: deadlineRadarEnabled,
         resLocals: res.locals,
       }),
     );
