@@ -4,7 +4,7 @@ import chevron
 import lxml.html
 import prairielearn as pl
 
-LABEL_DEFAULT = "Open workspace"
+LABEL_DEFAULT = "باز کردن محیط کاری ابری"
 
 
 def prepare(element_html: str, data: pl.QuestionData) -> None:
@@ -56,5 +56,5 @@ def parse(element_html: str, data: pl.QuestionData) -> None:
     if missing_files:
         pl.add_files_format_error(
             data,
-            f"The following required files were missing: {', '.join(missing_files)}",
+            f"فایل‌های الزامی زیر یافت نشدند: {', '.join(missing_files)}",
         )
