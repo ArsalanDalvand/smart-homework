@@ -7,6 +7,7 @@ import { formatDate } from '@prairielearn/formatter';
 import { getAppError } from '@prairielearn/trpc/client';
 import { assertNever } from '@prairielearn/utils';
 
+import { JalaliDateTimePicker } from '../../../components/JalaliDateTimePicker.js';
 import { useTRPC } from '../../../trpc/assessment/context.js';
 
 import { useInvalidateAssessmentInstancesList } from './useInvalidateAssessmentInstancesList.js';
@@ -303,16 +304,18 @@ export function TimeLimitEditForm({
         </div>
       ) : null}
       {showTimeLimitOptions && form.action === 'set_exact' ? (
-        <div className="input-group date-picker mb-2">
-          <input
-            className="form-control date-picker"
-            type="datetime-local"
-            name="date"
-            aria-label="تاریخ و ساعت بسته شدن"
-            value={form.date}
-            required
-            onChange={(e) => updateFormState('date', e.currentTarget.value)}
-          />
+        <div className="d-flex align-items-stretch gap-2 date-picker mb-2">
+          <div className="flex-grow-1">
+            <JalaliDateTimePicker
+              className="date-picker"
+              name="date"
+              aria-label="تاریخ و ساعت بسته شدن"
+              value={form.date}
+              timezone={timezone}
+              required
+              onChange={(val) => updateFormState('date', val)}
+            />
+          </div>
           <span className="input-group-text date-picker">{timezone}</span>
         </div>
       ) : null}

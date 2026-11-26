@@ -1,6 +1,8 @@
+import clsx from 'clsx';
 import { Form } from 'react-bootstrap';
 import { useController, useWatch } from 'react-hook-form';
 
+import { JalaliDateTimePicker } from '../../../../components/JalaliDateTimePicker.js';
 import { useAccessControlRuleEditable } from '../AccessControlEditabilityContext.js';
 import { FieldWrapper } from '../FieldWrapper.js';
 import { useOverrideField } from '../hooks/useOverrideField.js';
@@ -75,15 +77,15 @@ function ReleaseDateInput({
           }}
         />
       </div>
-      <Form.Control
-        type="datetime-local"
-        step={1}
+      <JalaliDateTimePicker
         aria-label="تاریخ انتشار"
         aria-invalid={!!error}
         aria-errormessage={error ? `${idPrefix}-release-date-error` : undefined}
+        className={clsx(error && 'is-invalid')}
         value={date ?? ''}
+        timezone={displayTimezone}
         disabled={!ruleEditable}
-        onChange={({ currentTarget }) => onChangeDate(currentTarget.value)}
+        onChange={(val) => onChangeDate(val)}
       />
       {error && (
         <Form.Text id={`${idPrefix}-release-date-error`} className="text-danger" role="alert">

@@ -1,8 +1,10 @@
+import clsx from 'clsx';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { get, useController, useFormState, useWatch } from 'react-hook-form';
 
 import { OverlayTrigger, RichSelect, type RichSelectItem } from '@prairielearn/ui';
 
+import { JalaliDateTimePicker } from '../../../components/JalaliDateTimePicker.js';
 import { useAccessControlRuleEditable } from './AccessControlEditabilityContext.js';
 import { FieldWrapper } from './FieldWrapper.js';
 import { useOverrideField } from './hooks/useOverrideField.js';
@@ -173,12 +175,11 @@ function QuestionVisibilityInput({
             <Form.Label htmlFor={`${idPrefix}-show-questions-between-start`}>
               نمایش سوالات از تاریخ
             </Form.Label>
-            <Form.Control
+            <JalaliDateTimePicker
               id={`${idPrefix}-show-questions-between-start`}
-              type="datetime-local"
-              step={1}
               value={value.visibleFromDate ?? ''}
-              isInvalid={visibleFromDateInvalid}
+              timezone={displayTimezone}
+              className={clsx(visibleFromDateInvalid && 'is-invalid')}
               disabled={!ruleEditable}
               aria-invalid={visibleFromDateInvalid}
               aria-errormessage={
@@ -186,10 +187,10 @@ function QuestionVisibilityInput({
                   ? `${idPrefix}-show-questions-between-start-error`
                   : undefined
               }
-              onChange={({ currentTarget }) =>
+              onChange={(val) =>
                 onChange({
                   hidden: true,
-                  visibleFromDate: currentTarget.value,
+                  visibleFromDate: val,
                   visibleUntilDate: value.visibleUntilDate,
                 })
               }
@@ -197,6 +198,7 @@ function QuestionVisibilityInput({
             {visibleFromDateInvalid && (
               <Form.Control.Feedback
                 type="invalid"
+                className="d-block"
                 id={`${idPrefix}-show-questions-between-start-error`}
               >
                 {visibleFromDateEmpty ? DATE_REQUIRED_MESSAGE : visibleFromDateError}
@@ -207,28 +209,28 @@ function QuestionVisibilityInput({
             <Form.Label htmlFor={`${idPrefix}-hide-questions-between-end`}>
               پنهان‌کردن مجدد سوالات در تاریخ
             </Form.Label>
-            <Form.Control
+            <JalaliDateTimePicker
               id={`${idPrefix}-hide-questions-between-end`}
-              type="datetime-local"
-              step={1}
               value={value.visibleUntilDate ?? ''}
-              isInvalid={visibleUntilDateInvalid}
+              timezone={displayTimezone}
+              className={clsx(visibleUntilDateInvalid && 'is-invalid')}
               disabled={!ruleEditable}
               aria-invalid={visibleUntilDateInvalid}
               aria-errormessage={
                 visibleUntilDateInvalid ? `${idPrefix}-hide-questions-between-end-error` : undefined
               }
-              onChange={({ currentTarget }) =>
+              onChange={(val) =>
                 onChange({
                   hidden: true,
                   visibleFromDate: value.visibleFromDate,
-                  visibleUntilDate: currentTarget.value,
+                  visibleUntilDate: val,
                 })
               }
             />
             {visibleUntilDateInvalid && (
               <Form.Control.Feedback
                 type="invalid"
+                className="d-block"
                 id={`${idPrefix}-hide-questions-between-end-error`}
               >
                 {visibleUntilDateEmpty ? DATE_REQUIRED_MESSAGE : visibleUntilDateError}
@@ -239,24 +241,25 @@ function QuestionVisibilityInput({
       )}
       {hideQuestionsMode === 'hide_questions_until_date' && (
         <div>
-          <Form.Control
+          <JalaliDateTimePicker
             id={`${idPrefix}-show-questions-date`}
-            type="datetime-local"
-            step={1}
             aria-label="نمایش سوالات در تاریخ"
             value={value.visibleFromDate ?? ''}
-            isInvalid={visibleFromDateInvalid}
+            timezone={displayTimezone}
+            className={clsx(visibleFromDateInvalid && 'is-invalid')}
             disabled={!ruleEditable}
             aria-invalid={visibleFromDateInvalid}
             aria-errormessage={
               visibleFromDateInvalid ? `${idPrefix}-show-questions-date-error` : undefined
             }
-            onChange={({ currentTarget }) =>
-              onChange({ hidden: true, visibleFromDate: currentTarget.value })
-            }
+            onChange={(val) => onChange({ hidden: true, visibleFromDate: val })}
           />
           {visibleFromDateInvalid && (
-            <Form.Control.Feedback type="invalid" id={`${idPrefix}-show-questions-date-error`}>
+            <Form.Control.Feedback
+              type="invalid"
+              className="d-block"
+              id={`${idPrefix}-show-questions-date-error`}
+            >
               {visibleFromDateEmpty ? DATE_REQUIRED_MESSAGE : visibleFromDateError}
             </Form.Control.Feedback>
           )}
@@ -337,24 +340,25 @@ function ScoreVisibilityInput({
       </div>
       {hideScoreMode === 'hide_score_until_date' && (
         <div>
-          <Form.Control
+          <JalaliDateTimePicker
             id={`${idPrefix}-show-score-date`}
-            type="datetime-local"
-            step={1}
             aria-label="نمایش نمره در تاریخ"
             value={value.visibleFromDate ?? ''}
-            isInvalid={visibleFromDateInvalid}
+            timezone={displayTimezone}
+            className={clsx(visibleFromDateInvalid && 'is-invalid')}
             disabled={!ruleEditable}
             aria-invalid={visibleFromDateInvalid}
             aria-errormessage={
               visibleFromDateInvalid ? `${idPrefix}-show-score-date-error` : undefined
             }
-            onChange={({ currentTarget }) =>
-              onChange({ hidden: true, visibleFromDate: currentTarget.value })
-            }
+            onChange={(val) => onChange({ hidden: true, visibleFromDate: val })}
           />
           {visibleFromDateInvalid && (
-            <Form.Control.Feedback type="invalid" id={`${idPrefix}-show-score-date-error`}>
+            <Form.Control.Feedback
+              type="invalid"
+              className="d-block"
+              id={`${idPrefix}-show-score-date-error`}
+            >
               {visibleFromDateEmpty ? DATE_REQUIRED_MESSAGE : visibleFromDateError}
             </Form.Control.Feedback>
           )}

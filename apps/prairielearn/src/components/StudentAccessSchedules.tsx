@@ -1,8 +1,8 @@
-import { formatDate } from '@prairielearn/formatter';
-import { escapeHtml, html } from '@prairielearn/html';
+import { type HtmlValue, escapeHtml, html } from '@prairielearn/html';
 
 import type { LegacyAssessmentAccessRuleResult } from '../lib/assessment-access-control/authz-result.js';
 import type { AccessTimelineEntry } from '../lib/assessment-access-control/timeline.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../lib/jalali.js';
 
 export function StudentAccessRulesSchedule({
   accessRules,
@@ -33,13 +33,22 @@ export function StudentAccessTimelineSchedule({
   return CreditSchedule({
     rows: visibleEntries.map((entry) => ({
       credit: `${entry.credit}%`,
-      start: entry.startDate ? formatDate(entry.startDate, displayTimezone) : '—',
-      end: entry.endDate ? formatDate(entry.endDate, displayTimezone) : '—',
+      start: formatScheduleDate(entry.startDate, displayTimezone),
+      end: formatScheduleDate(entry.endDate, displayTimezone),
     })),
   });
 }
 
-function CreditSchedule({ rows }: { rows: { credit: string; start: string; end: string }[] }) {
+function formatScheduleDate(date: Date | null | undefined, displayTimezone: string): HtmlValue {
+  if (!date) return '—';
+  return html`<span title="${formatGregorianTooltip(date, displayTimezone)}">${formatJalaliFriendly(date, displayTimezone)}</span>`;
+}
+
+function CreditSchedule({
+  rows,
+}: {
+  rows: { credit: string; start: HtmlValue; end: HtmlValue }[];
+}) {
   if (rows.length === 0) return '';
 
   const content = html`

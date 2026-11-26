@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
-import { type Control, type UseFormTrigger, useWatch } from 'react-hook-form';
+import { type Control, Controller, type UseFormTrigger, useWatch } from 'react-hook-form';
 
 import { OverlayTrigger } from '@prairielearn/ui';
 
 import { CopyButton } from '../../../components/CopyButton.js';
+import { JalaliDateTimePicker } from '../../../components/JalaliDateTimePicker.js';
 import { StudentLinkSharing } from '../../../components/LinkSharing.js';
 import { QRCodeModal } from '../../../components/QRCodeModal.js';
 import type { StaffInstitution } from '../../../lib/client/safe-db-types.js';
@@ -304,36 +305,45 @@ export function SelfEnrollmentSettings({
           برابر با مهلت حذف و اضافه دانشگاه تنظیم کنید.
         </div>
 
-        <input
-          type="datetime-local"
-          aria-label="مهلت نهایی ثبت‌نام خودکار"
-          className={clsx(
-            'form-control mt-2',
-            selfEnrollmentEnabledBeforeDateInvalid && 'is-invalid',
-          )}
-          aria-invalid={selfEnrollmentEnabledBeforeDateInvalid}
-          aria-errormessage={
-            selfEnrollmentEnabledBeforeDateInvalid
-              ? 'self-enrollment-enabled-before-date-error'
-              : undefined
-          }
-          disabled={
-            !canEdit ||
-            !selfEnrollmentEnabledBeforeDateEnabled ||
-            !hasModernPublishing ||
-            !selfEnrollmentEnabled
-          }
-          step="1"
-          defaultValue={selfEnrollmentEnabledBeforeDate}
-          {...control.register('self_enrollment_enabled_before_date', {
-            validate: (value, { self_enrollment_enabled_before_date_enabled }) => {
-              if (self_enrollment_enabled_before_date_enabled && !value) {
-                return 'تاریخ الزامی است';
-              }
-              return true;
-            },
-          })}
-        />
+        <div className="mt-2">
+          <Controller
+            control={control}
+            name="self_enrollment_enabled_before_date"
+            defaultValue={selfEnrollmentEnabledBeforeDate}
+            rules={{
+              validate: (value, { self_enrollment_enabled_before_date_enabled }) => {
+                if (self_enrollment_enabled_before_date_enabled && !value) {
+                  return 'تاریخ الزامی است';
+                }
+                return true;
+              },
+            }}
+            render={({ field }) => {
+              const isDisabled =
+                !canEdit ||
+                !selfEnrollmentEnabledBeforeDateEnabled ||
+                !hasModernPublishing ||
+                !selfEnrollmentEnabled;
+              return (
+                <JalaliDateTimePicker
+                  aria-label="مهلت نهایی ثبت‌نام خودکار"
+                  name={isDisabled ? undefined : field.name}
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  disabled={isDisabled}
+                  className={clsx(selfEnrollmentEnabledBeforeDateInvalid && 'is-invalid')}
+                  aria-invalid={selfEnrollmentEnabledBeforeDateInvalid}
+                  aria-errormessage={
+                    selfEnrollmentEnabledBeforeDateInvalid
+                      ? 'self-enrollment-enabled-before-date-error'
+                      : undefined
+                  }
+                />
+              );
+            }}
+          />
+        </div>
         {(!canEdit ||
           !selfEnrollmentEnabledBeforeDateEnabled ||
           !hasModernPublishing ||
@@ -345,7 +355,7 @@ export function SelfEnrollmentSettings({
           />
         )}
         {selfEnrollmentEnabledBeforeDateError && (
-          <div className="invalid-feedback" id="self-enrollment-enabled-before-date-error">
+          <div className="invalid-feedback d-block" id="self-enrollment-enabled-before-date-error">
             {selfEnrollmentEnabledBeforeDateError.message}
           </div>
         )}

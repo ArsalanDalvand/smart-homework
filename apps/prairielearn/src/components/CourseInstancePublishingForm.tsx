@@ -1,7 +1,7 @@
 import { Temporal } from '@js-temporal/polyfill';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { type PublishingStatus, computeStatus } from '../lib/publishing.js';
 import {
@@ -11,6 +11,7 @@ import {
 } from '../pages/instructorInstanceAdminPublishing/utils/dateUtils.js';
 
 import { FriendlyDate } from './FriendlyDate.js';
+import { JalaliDateTimePicker } from './JalaliDateTimePicker.js';
 
 function normalizeDateTimeLocal(value: string): string {
   // This works around a bug in Chrome where seconds are omitted from the input value when they're 0.
@@ -60,7 +61,7 @@ export function CourseInstancePublishingForm({
   const [selectedStatus, setSelectedStatus] = useState<PublishingStatus>(originalStatus);
 
   const {
-    register,
+    control,
     watch,
     setValue,
     trigger,
@@ -322,24 +323,35 @@ export function CourseInstancePublishingForm({
                       </button>
                     )}
                   </div>
-                  <div className="input-group mt-2">
-                    <input
-                      type="datetime-local"
-                      className={clsx('form-control', errors.start_date && 'is-invalid')}
-                      id={`${formId}-start-date`}
-                      step="1"
-                      disabled={!canEdit}
-                      aria-invalid={!!errors.start_date}
-                      aria-errormessage={
-                        errors.start_date ? `${formId}-start-date-error` : undefined
-                      }
-                      defaultValue={startDate}
-                      {...register('start_date', {
-                        validate: validateStartDate,
-                        setValueAs: normalizeDateTimeLocal,
-                        deps: ['end_date'],
-                      })}
-                    />
+                  <div className="d-flex align-items-stretch gap-2 mt-2">
+                    <div className="flex-grow-1">
+                      <Controller
+                        control={control}
+                        name="start_date"
+                        rules={{
+                          validate: validateStartDate,
+                        }}
+                        render={({ field }) => (
+                          <JalaliDateTimePicker
+                            id={`${formId}-start-date`}
+                            name={field.name}
+                            value={field.value ?? ''}
+                            onChange={(val) => {
+                              field.onChange(normalizeDateTimeLocal(val));
+                              void trigger('end_date');
+                            }}
+                            onBlur={field.onBlur}
+                            timezone={displayTimezone}
+                            disabled={!canEdit}
+                            className={clsx(errors.start_date && 'is-invalid')}
+                            aria-invalid={!!errors.start_date}
+                            aria-errormessage={
+                              errors.start_date ? `${formId}-start-date-error` : undefined
+                            }
+                          />
+                        )}
+                      />
+                    </div>
                     <span className="input-group-text">{displayTimezone}</span>
                   </div>
                   {errors.start_date && (
@@ -365,21 +377,32 @@ export function CourseInstancePublishingForm({
                       </button>
                     )}
                   </div>
-                  <div className="input-group mt-2">
-                    <input
-                      type="datetime-local"
-                      className={clsx('form-control', errors.end_date && 'is-invalid')}
-                      id={`${formId}-end-date`}
-                      step="1"
-                      disabled={!canEdit}
-                      aria-invalid={!!errors.end_date}
-                      aria-errormessage={errors.end_date ? `${formId}-end-date-error` : undefined}
-                      defaultValue={endDate}
-                      {...register('end_date', {
-                        validate: validateEndDate,
-                        setValueAs: normalizeDateTimeLocal,
-                      })}
-                    />
+                  <div className="d-flex align-items-stretch gap-2 mt-2">
+                    <div className="flex-grow-1">
+                      <Controller
+                        control={control}
+                        name="end_date"
+                        rules={{
+                          validate: validateEndDate,
+                        }}
+                        render={({ field }) => (
+                          <JalaliDateTimePicker
+                            id={`${formId}-end-date`}
+                            name={field.name}
+                            value={field.value ?? ''}
+                            onChange={(val) => field.onChange(normalizeDateTimeLocal(val))}
+                            onBlur={field.onBlur}
+                            timezone={displayTimezone}
+                            disabled={!canEdit}
+                            className={clsx(errors.end_date && 'is-invalid')}
+                            aria-invalid={!!errors.end_date}
+                            aria-errormessage={
+                              errors.end_date ? `${formId}-end-date-error` : undefined
+                            }
+                          />
+                        )}
+                      />
+                    </div>
                     <span className="input-group-text">{displayTimezone}</span>
                   </div>
                   {errors.end_date && (
@@ -455,21 +478,32 @@ export function CourseInstancePublishingForm({
                       </button>
                     )}
                   </div>
-                  <div className="input-group mt-2">
-                    <input
-                      type="datetime-local"
-                      className={clsx('form-control', errors.end_date && 'is-invalid')}
-                      id={`${formId}-end-date`}
-                      step="1"
-                      disabled={!canEdit}
-                      aria-invalid={!!errors.end_date}
-                      aria-errormessage={errors.end_date ? `${formId}-end-date-error` : undefined}
-                      defaultValue={endDate}
-                      {...register('end_date', {
-                        validate: validateEndDate,
-                        setValueAs: normalizeDateTimeLocal,
-                      })}
-                    />
+                  <div className="d-flex align-items-stretch gap-2 mt-2">
+                    <div className="flex-grow-1">
+                      <Controller
+                        control={control}
+                        name="end_date"
+                        rules={{
+                          validate: validateEndDate,
+                        }}
+                        render={({ field }) => (
+                          <JalaliDateTimePicker
+                            id={`${formId}-end-date`}
+                            name={field.name}
+                            value={field.value ?? ''}
+                            onChange={(val) => field.onChange(normalizeDateTimeLocal(val))}
+                            onBlur={field.onBlur}
+                            timezone={displayTimezone}
+                            disabled={!canEdit}
+                            className={clsx(errors.end_date && 'is-invalid')}
+                            aria-invalid={!!errors.end_date}
+                            aria-errormessage={
+                              errors.end_date ? `${formId}-end-date-error` : undefined
+                            }
+                          />
+                        )}
+                      />
+                    </div>
                     <span className="input-group-text">{displayTimezone}</span>
                   </div>
                   {errors.end_date && (

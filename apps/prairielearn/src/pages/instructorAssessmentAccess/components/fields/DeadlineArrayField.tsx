@@ -1,7 +1,9 @@
 import { Temporal } from '@js-temporal/polyfill';
+import clsx from 'clsx';
 import { memo } from 'react';
 import { Alert, Button, Form, InputGroup } from 'react-bootstrap';
 import {
+  Controller,
   type FieldArrayWithId,
   type UseFieldArrayAppend,
   type UseFieldArrayRemove,
@@ -15,6 +17,7 @@ import {
 import { run } from '@prairielearn/run';
 
 import { FriendlyDate } from '../../../../components/FriendlyDate.js';
+import { JalaliDateTimePicker } from '../../../../components/JalaliDateTimePicker.js';
 import { MAX_ACCESS_CONTROL_EARLY_OR_LATE_DEADLINES_PER_RULE } from '../../../../schemas/accessControl.js';
 import { useAccessControlRuleEditable } from '../AccessControlEditabilityContext.js';
 import { FieldWrapper } from '../FieldWrapper.js';
@@ -193,7 +196,7 @@ function DeadlineArrayInput({
   removeDeadline: UseFieldArrayRemove;
 }) {
   const ruleEditable = useAccessControlRuleEditable();
-  const { register } = useFormContext<AccessControlFormData>();
+  const { control, register } = useFormContext<AccessControlFormData>();
   const isEarly = type === 'early';
   const addEarlyDisabledTitle = isEarly ? getAddEarlyDisabledTitle(dueCredit) : undefined;
   const addLimitDisabledTitle = getDeadlineLimitDisabledTitle(type, deadlineFields.length);
@@ -276,20 +279,29 @@ function DeadlineArrayInput({
         <div key={deadlineField.id} className="mb-3">
           <div className="d-flex gap-2 mb-1 flex-wrap align-items-start">
             <div className="flex-grow-1">
-              <Form.Control
-                type="datetime-local"
-                step={1}
+              <Controller
+                control={control}
+                name={`${fieldArrayName}.${index}.date`}
                 defaultValue={deadlineField.date}
-                aria-label={`تاریخ ددلاین ${isEarly ? 'زودهنگام' : 'تاخیر'} ${index + 1}`}
-                aria-invalid={!!getDateError(index)}
-                aria-errormessage={
-                  getDateError(index)
-                    ? `${idPrefix}-${type}-deadline-${index}-date-error`
-                    : undefined
-                }
-                placeholder="تاریخ ددلاین"
-                disabled={!ruleEditable}
-                {...register(`${fieldArrayName}.${index}.date`)}
+                render={({ field }) => (
+                  <JalaliDateTimePicker
+                    name={field.name}
+                    value={field.value ?? ''}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    timezone={displayTimezone}
+                    aria-label={`تاریخ ددلاین ${isEarly ? 'زودهنگام' : 'تاخیر'} ${index + 1}`}
+                    aria-invalid={!!getDateError(index)}
+                    aria-errormessage={
+                      getDateError(index)
+                        ? `${idPrefix}-${type}-deadline-${index}-date-error`
+                        : undefined
+                    }
+                    className={clsx(getDateError(index) && 'is-invalid')}
+                    placeholder="تاریخ ددلاین"
+                    disabled={!ruleEditable}
+                  />
+                )}
               />
             </div>
             <div className="d-flex gap-2 align-items-center">

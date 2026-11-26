@@ -3,7 +3,6 @@ import * as url from 'node:url';
 import { differenceInMilliseconds } from 'date-fns';
 import { z } from 'zod';
 
-import { formatDate } from '@prairielearn/formatter';
 import { type HtmlValue, html, unsafeHtml } from '@prairielearn/html';
 
 import {
@@ -21,6 +20,7 @@ import type {
   RubricData,
   RubricGradingData,
 } from '../lib/manualGrading.types.js';
+import { formatGregorianTooltip, formatJalaliFriendly } from '../lib/jalali.js';
 import { gradingJobStatus } from '../models/grading-job.js';
 
 import { AiGradingHtmlPreview } from './AiGradingHtmlPreview.js';
@@ -97,10 +97,8 @@ export function SubmissionPanel({
   expanded?: boolean;
   renderSubmissionSearchParams?: URLSearchParams;
 }) {
-  const formattedDate = formatDate(
-    submission.date!,
-    course_instance?.display_timezone || course.display_timezone,
-  );
+  const displayTimezone = course_instance?.display_timezone || course.display_timezone;
+  const formattedDate = html`<span title="${formatGregorianTooltip(submission.date!, displayTimezone)}">${formatJalaliFriendly(submission.date!, displayTimezone)}</span>`;
   const isLatestSubmission = submission.submission_number === submissionCount;
   expanded = expanded || isLatestSubmission;
 
@@ -461,7 +459,7 @@ function SubmissionInfoModal({
   assessment_question?: AssessmentQuestion | null;
   course_id: string;
   course_instance_id?: string | null;
-  formattedDate: string;
+  formattedDate: HtmlValue;
 }) {
   const gradingJobStats = buildGradingJobStats(submission.grading_job);
   const gradingJobUrl =

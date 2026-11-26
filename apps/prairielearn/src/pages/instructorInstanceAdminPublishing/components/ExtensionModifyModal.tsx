@@ -3,11 +3,12 @@ import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { Alert, Modal } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 
 import { run } from '@prairielearn/run';
 
+import { JalaliDateTimePicker } from '../../../components/JalaliDateTimePicker.js';
 import { parseUniqueValuesFromString } from '../../../lib/string-util.js';
 import { plainDateTimeStringToDate } from '../utils/dateUtils.js';
 
@@ -55,6 +56,7 @@ export function ExtensionModifyModal({
   });
 
   const {
+    control,
     register,
     handleSubmit,
     setValue,
@@ -227,12 +229,10 @@ export function ExtensionModifyModal({
                 +۱ هفته
               </button>
             </div>
-            <input
-              id="ext-date"
-              type="datetime-local"
-              step="1"
-              className={clsx('form-control', errors.end_date && 'is-invalid')}
-              {...register('end_date', {
+            <Controller
+              control={control}
+              name="end_date"
+              rules={{
                 required: 'تاریخ پایان الزامی است',
                 validate: (value) => {
                   if (!courseInstanceEndDate) return true;
@@ -244,7 +244,19 @@ export function ExtensionModifyModal({
                     'تاریخ پایان باید بعد از تاریخ پایان دوره باشد'
                   );
                 },
-              })}
+              }}
+              render={({ field }) => (
+                <JalaliDateTimePicker
+                  id="ext-date"
+                  name={field.name}
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  timezone={courseInstanceTimezone}
+                  className={clsx(errors.end_date && 'is-invalid')}
+                  aria-invalid={!!errors.end_date}
+                />
+              )}
             />
             {errors.end_date && (
               <div className="form-text text-danger">{errors.end_date.message}</div>

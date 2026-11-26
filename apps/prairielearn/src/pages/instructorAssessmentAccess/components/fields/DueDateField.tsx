@@ -1,8 +1,10 @@
 import { Temporal } from '@js-temporal/polyfill';
+import clsx from 'clsx';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useController, useWatch } from 'react-hook-form';
 
 import { FriendlyDate } from '../../../../components/FriendlyDate.js';
+import { JalaliDateTimePicker } from '../../../../components/JalaliDateTimePicker.js';
 import { useAccessControlRuleEditable } from '../AccessControlEditabilityContext.js';
 import { FieldWrapper } from '../FieldWrapper.js';
 import { useOverrideField } from '../hooks/useOverrideField.js';
@@ -96,15 +98,15 @@ function DueDateInput({
       </div>
       {value.date !== null && (
         <>
-          <Form.Control
-            type="datetime-local"
-            step={1}
+          <JalaliDateTimePicker
             aria-label="ددلاین اصلی"
             aria-invalid={!!dateError}
             aria-errormessage={dateError ? `${idPrefix}-due-date-error` : undefined}
+            className={clsx(dateError && 'is-invalid')}
             value={value.date}
+            timezone={displayTimezone}
             disabled={!ruleEditable}
-            onChange={({ currentTarget }) => onChange({ ...value, date: currentTarget.value })}
+            onChange={(val) => onChange({ ...value, date: val })}
           />
           {dateError && (
             <Form.Text id={`${idPrefix}-due-date-error`} className="text-danger" role="alert">
