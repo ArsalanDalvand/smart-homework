@@ -378,6 +378,7 @@ export async function getStudentActivityAndBadges({
 
   const weeks: HeatmapWeekColumn[] = [];
   let prevMonth = -1;
+  let lastMonthLabelWeek = -10;
   let activeDaysCount = 0;
   let longestStreakDays = 0;
   let runningStreak = 0;
@@ -402,12 +403,15 @@ export async function getStudentActivityAndBadges({
         runningStreak = 0;
       }
 
-      if (d === 0 && j.jm !== prevMonth) {
-        weekMonthLabel = JALALI_MONTH_NAMES[j.jm - 1];
+      const monthTransition =
+        (d === 0 && j.jm !== prevMonth) ||
+        (d > 0 && j.jd === 1 && j.jm !== prevMonth && weekMonthLabel === null);
+      if (monthTransition) {
         prevMonth = j.jm;
-      } else if (d > 0 && j.jd === 1 && j.jm !== prevMonth && weekMonthLabel === null) {
-        weekMonthLabel = JALALI_MONTH_NAMES[j.jm - 1];
-        prevMonth = j.jm;
+        if (w - lastMonthLabelWeek >= 3) {
+          weekMonthLabel = JALALI_MONTH_NAMES[j.jm - 1];
+          lastMonthLabelWeek = w;
+        }
       }
 
       let level: 0 | 1 | 2 | 3 | 4 = 0;

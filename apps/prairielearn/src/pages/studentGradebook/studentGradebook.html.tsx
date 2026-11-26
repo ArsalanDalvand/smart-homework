@@ -224,7 +224,13 @@ function StudentAnalyticsSection({ data }: { data: StudentAnalyticsData }) {
   );
 }
 
-function StudentHeatmapAndBadgesSection({ data }: { data: StudentActivityAndBadges }) {
+function StudentHeatmapAndBadgesSection({
+  data,
+  showLegacyBadges = true,
+}: {
+  data: StudentActivityAndBadges;
+  showLegacyBadges?: boolean;
+}) {
   const weekdayLabels = [
     { id: 'sat', label: 'ش' },
     { id: 'sun', label: '' },
@@ -242,7 +248,7 @@ function StudentHeatmapAndBadgesSection({ data }: { data: StudentActivityAndBadg
         <div className="se-card-header">
           <h2 className="se-card-title">
             <i className="bi bi-calendar3 text-body-secondary" aria-hidden="true" />
-            <span>نقشه فعالیت روزانه (تقویم شمسی) و دستاوردها</span>
+            <span>نقشه فعالیت روزانه (تقویم شمسی){showLegacyBadges ? ' و دستاوردها' : ''}</span>
           </h2>
           <div className="d-flex flex-wrap align-items-center gap-2 small sh-tabular">
             <span className="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1">
@@ -290,7 +296,11 @@ function StudentHeatmapAndBadgesSection({ data }: { data: StudentActivityAndBadg
             </div>
           </div>
 
-          <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 small text-body-secondary mb-3 pb-3 border-bottom">
+          <div
+            className={`d-flex align-items-center justify-content-between flex-wrap gap-2 small text-body-secondary ${
+              showLegacyBadges ? 'mb-3 pb-3 border-bottom' : ''
+            }`}
+          >
             <span>۲۰ هفته اخیر (ستون‌ها از شنبه تا جمعه بر اساس تقویم شمسی)</span>
             <div className="d-flex align-items-center gap-1" dir="ltr">
               <span className="me-1">کمتر</span>
@@ -303,42 +313,46 @@ function StudentHeatmapAndBadgesSection({ data }: { data: StudentActivityAndBadg
             </div>
           </div>
 
-          {/* Badges Row */}
-          <div className="d-flex align-items-center justify-content-between mb-2">
-            <h3 className="h6 fw-bold mb-0">
-              <i className="bi bi-award text-body-secondary me-1" aria-hidden="true" />
-              نشان‌ها و دستاوردها ({toPersianDigits(earnedCount)} از{' '}
-              {toPersianDigits(data.badges.length)})
-            </h3>
-          </div>
-          <div className="row g-2">
-            {data.badges.map((badge) => (
-              <div key={badge.id} className="col-md-6 col-xl">
-                <div className={`se-badge-card ${badge.earned ? 'is-earned' : 'is-locked'}`}>
-                  <span className={`se-badge-medal se-medal-${badge.accentColor}`}>
-                    <i className={badge.iconClass} aria-hidden="true" />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="fw-bold small text-body d-flex align-items-center gap-1">
-                      <span className="sh-en-term">{badge.title}</span>
-                      {badge.earned && (
-                        <i className="bi bi-check-circle-fill text-success" title="کسب شده" />
-                      )}
-                    </div>
-                    <div className="text-body-secondary" style={{ fontSize: '0.73rem' }}>
-                      {badge.description}
-                    </div>
-                    <div
-                      className={`mt-1 fw-medium ${badge.earned ? 'text-success' : 'text-body-secondary'}`}
-                      style={{ fontSize: '0.72rem' }}
-                    >
-                      {badge.progressText}
+          {showLegacyBadges && (
+            <>
+              {/* Badges Row */}
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <h3 className="h6 fw-bold mb-0">
+                  <i className="bi bi-award text-body-secondary me-1" aria-hidden="true" />
+                  نشان‌ها و دستاوردها ({toPersianDigits(earnedCount)} از{' '}
+                  {toPersianDigits(data.badges.length)})
+                </h3>
+              </div>
+              <div className="row g-2">
+                {data.badges.map((badge) => (
+                  <div key={badge.id} className="col-md-6 col-xl">
+                    <div className={`se-badge-card ${badge.earned ? 'is-earned' : 'is-locked'}`}>
+                      <span className={`se-badge-medal se-medal-${badge.accentColor}`}>
+                        <i className={badge.iconClass} aria-hidden="true" />
+                      </span>
+                      <div className="min-w-0">
+                        <div className="fw-bold small text-body d-flex align-items-center gap-1">
+                          <span className="sh-en-term">{badge.title}</span>
+                          {badge.earned && (
+                            <i className="bi bi-check-circle-fill text-success" title="کسب شده" />
+                          )}
+                        </div>
+                        <div className="text-body-secondary" style={{ fontSize: '0.73rem' }}>
+                          {badge.description}
+                        </div>
+                        <div
+                          className={`mt-1 fw-medium ${badge.earned ? 'text-success' : 'text-body-secondary'}`}
+                          style={{ fontSize: '0.72rem' }}
+                        >
+                          {badge.progressText}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </div>
       </div>
     </section>
@@ -369,8 +383,8 @@ function LevelHeroBanner({
                 <span className="text-body-secondary small">— {level.subtitleFa}</span>
               </div>
               <div className="small text-body-secondary mt-1 sh-tabular">
-                مجموع تجربه:{' '}
-                <strong className="text-body sh-en-term">{toPersianDigits(xp.totalXp)} XP</strong>
+                مجموع تجربه: <strong className="text-body">{toPersianDigits(xp.totalXp)}</strong>{' '}
+                <span className="sh-en-term fw-bold text-body">XP</span>
                 {' · '}
                 <span>
                   {toPersianDigits(unlockedAchievementIds.length)} از{' '}
@@ -389,7 +403,7 @@ function LevelHeroBanner({
               </span>
             )}
             {skillsUrl && (
-              <a href={skillsUrl} className="btn btn-outline-secondary btn-sm">
+              <a href={skillsUrl} className="btn btn-outline-primary btn-sm">
                 <i className="bi bi-diagram-3 me-1" aria-hidden="true" />
                 <span className="sh-en-term">Skill Tree</span>
               </a>
@@ -407,8 +421,11 @@ function LevelHeroBanner({
               {toPersianDigits(level.progressPerc)}٪)
             </span>
           </div>
-          <div className="progress" style={{ height: '8px' }}>
-            <div className="progress-bar bg-dark" style={{ width: `${level.progressPerc}%` }} />
+          <div className="progress" style={{ height: '9px' }}>
+            <div
+              className="progress-bar sh-progress-brand"
+              style={{ width: `${level.progressPerc}%` }}
+            />
           </div>
         </div>
       </div>
@@ -453,14 +470,14 @@ function WeeklyQuestsSection({ weeklyQuests }: { weeklyQuests: WeeklyQuestsBundl
               </div>
               <div className="small text-body-secondary mb-2">{quest.description}</div>
               <div className="d-flex align-items-center gap-2">
-                <div className="progress flex-grow-1" style={{ height: '6px' }}>
+                <div className="progress flex-grow-1" style={{ height: '7px' }}>
                   <div
-                    className={`progress-bar ${quest.completed ? 'bg-success' : 'bg-dark'}`}
+                    className={`progress-bar ${quest.completed ? 'sh-progress-success' : 'sh-progress-brand'}`}
                     style={{ width: `${quest.progressPerc}%` }}
                   />
                 </div>
                 <span className="small text-body-secondary sh-tabular">
-                  {toPersianDigits(quest.current)} / {toPersianDigits(quest.target)}
+                  {toPersianDigits(quest.current)} از {toPersianDigits(quest.target)}
                 </span>
               </div>
             </div>
@@ -526,9 +543,9 @@ function TieredAndSecretAchievementsSection({
                         </div>
                         <div className="small text-body-secondary mt-1">{ach.description}</div>
                         <div className="d-flex align-items-center gap-2 mt-2">
-                          <div className="progress flex-grow-1" style={{ height: '6px' }}>
+                          <div className="progress flex-grow-1" style={{ height: '7px' }}>
                             <div
-                              className={`progress-bar ${ach.earned ? 'bg-success' : 'bg-secondary'}`}
+                              className={`progress-bar ${ach.earned ? 'sh-progress-success' : 'sh-progress-brand'}`}
                               style={{ width: `${ach.progressPerc}%` }}
                             />
                           </div>
@@ -654,7 +671,7 @@ export function StudentGradebook({
   const showLevelHero = Boolean(showXpLevels && gamificationProfile);
   const gradebookTableCard = (
     <div className="card mb-4">
-      <div className="card-header bg-primary text-white d-flex align-items-center">
+      <div className="card-header bg-primary text-white sh-hero-header d-flex align-items-center">
         {showLevelHero ? (
           <h2 className="h4 mb-0">کارنامه و نمرات دانشجو</h2>
         ) : (
@@ -676,7 +693,7 @@ export function StudentGradebook({
         </div>
       ) : (
         <div className="table-responsive">
-          <table className="table table-sm table-hover" aria-label="کارنامه">
+          <table className="table table-sm table-hover sh-question-table mb-0" aria-label="کارنامه">
             <thead>
               <tr>
                 <th style={{ width: '5%' }}>کد</th>
@@ -688,7 +705,7 @@ export function StudentGradebook({
             </thead>
             {assessmentGroups.map((groupRows) => (
               <tbody key={groupRows[0].assessment_id}>
-                <tr>
+                <tr className="sh-zone-row">
                   <th colSpan={3} scope="rowgroup">
                     {groupRows[0].assessment_set_heading}
                   </th>
@@ -821,7 +838,12 @@ export function StudentGradebook({
                   {showWeeklyQuests && gamificationProfile && (
                     <WeeklyQuestsSection weeklyQuests={gamificationProfile.weeklyQuests} />
                   )}
-                  {activityData && <StudentHeatmapAndBadgesSection data={activityData} />}
+                  {activityData && (
+                    <StudentHeatmapAndBadgesSection
+                      data={activityData}
+                      showLegacyBadges={!showAchievements || !gamificationProfile}
+                    />
+                  )}
                 </div>
               )}
 

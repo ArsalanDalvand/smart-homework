@@ -110,6 +110,7 @@ function InstructorCoursesCard({ instructorCourses, urlPrefix }: InstructorCours
         <h2>{uiStrings.home.instructorCoursesTitle}</h2>
         <a
           href={`${urlPrefix}/request_course`}
+          aria-label={uiStrings.nav.requestCourse}
           className="btn btn-light btn-sm ms-auto d-inline-flex align-items-center gap-1 shadow-xs"
         >
           <i className="bi bi-plus-circle" aria-hidden="true" />

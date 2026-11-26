@@ -66,7 +66,7 @@ export function RowLabel({
                 courseInstanceId,
                 instanceQuestionId: row.instance_question.id,
               })}"
-              class="fw-medium"
+              class="sh-q-link"
               >${rowLabelText}</a
             >
           `

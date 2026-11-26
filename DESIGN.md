@@ -1,95 +1,78 @@
-# Smart-Homework Design System — «Ink & Paper» (`DESIGN.md`)
+# Smart-Homework Design System — «Nova Studio» (`DESIGN.md`)
 
-## Visual Direction: Minimal Ink & Paper
+## Visual Direction: Expressive Studio + IDE Precision
 
-Smart-Homework uses a calm, high-craft **Ink & Paper** design language inspired by Notion, GitHub, and Read.cv — engineered specifically for RTL Persian + LTR code coexistence.
-Over 90% of every screen stays crisp, matte neutral so that semantic signals — passing test cases, earned badges, active streaks, and urgent deadlines — earn immediate visual clarity without visual fatigue.
+Smart-Homework uses the **Nova Studio** design language — pairing a luminous **Daylight Studio** light surface with an **Obsidian IDE Studio** dark mode tailored for Persian RTL engineering workflows and LTR Python code execution.
 
-### Anti-AI-Slop Rules (Strict)
+Unlike harsh monochrome UIs, Nova Studio pairs clean neutral surfaces with a disciplined **Electric Cobalt** primary accent (`#2563EB` / `#3B82F6`), warm **Amber** streak/medal cues, **Emerald** mastery/AC signals, and **Cyan** gradient accents — giving students tactile depth, clear focal hierarchy, and comfortable readability across problem statements, scoreboards, skill trees, and cloud VS Code.
 
-1. **No multi-color icon-box KPI cards:** Never render grids of identical rounded boxes containing pastel square icon badges + big numbers. Use a hairline-divided horizontal `.sh-stat-strip` with `tabular-nums` typography.
-2. **No decorative gradients or glassmorphism:** Separate elevation with subtle tonal contrast and crisp `1px` hairline borders, not gradient headers, translucent blur bars, or puffy multi-layer drop shadows.
-3. **No uniform bubbly radii:** Use disciplined engineering geometry — `6px` for controls/inputs/buttons (`--bs-border-radius`) and `8px` for cards/panels (`--sh-radius-surface`).
-4. **True matte neutrals in Dark Mode:** Never use generic blue-tinted `slate-950` backgrounds. Use calibrated matte graphite (`#111113` / `#18181B`) that pairs naturally with the dark cloud VS Code workspace (`#0D1117`).
-5. **Consistent icon system:** Use Bootstrap Icons (`bi-*`) and FontAwesome consistently — never use raw emojis as UI icons.
+### Core Craft Rules
+
+1. **Guaranteed CTA Contrast:** Primary actions (`.btn-primary`) ALWAYS carry an Electric Cobalt surface with crisp `#FFFFFF` foreground across rest, hover, focus, and active states — even inside `.card-header`.
+2. **Unified Problem-Statement & IDE Surfaces:** Course-styled question cards (`.bp-task-box`), callouts, sample I/O tables, inline `code` pills, and the Ace code editor automatically synchronize with `data-bs-theme="dark" | "light"` (`github_dark` / `github_light_default`).
+3. **Dimensional Separation:** Cards use `14px` radius (`--sh-radius-surface`), controls use `10px` radius (`--sh-radius-control`), subtle ambient depth (`--sh-shadow-card`), and a sticky frosted navbar (`backdrop-filter: blur(14px)`).
+4. **Directional Integrity:** Persian copy uses `Vazirmatn` (`dir="rtl"`, `line-height: 1.75`); code, sample I/O, math, and tabular scores isolate via `JetBrains Mono` / `.sh-tabular` / `.sh-en-term` (`unicode-bidi: isolate`) so RTL counters never invert around English tokens.
+5. **Consistent Iconography:** Bootstrap Icons (`bi-*`) and FontAwesome icons across all UI chrome (never raw emojis inside UI chrome).
 
 ---
 
 ## Color Tokens (`html[data-surface="student"]`)
 
-All tokens are scoped under `html[data-surface="student"]` in `apps/prairielearn/public/stylesheets/smart-theme.css`.
+All tokens live in [apps/prairielearn/public/stylesheets/smart-theme.css](file:///home/a7vat4r/projects/arsalandalvand/PrairieLearn/apps/prairielearn/public/stylesheets/smart-theme.css). Instructor, TA, and admin pages outside `data-surface="student"` keep Layer 1b untouched.
 
-### Light Mode (Default Light)
+### Light Mode — Crisp Daylight Studio (`data-bs-theme="light"`)
 
-| Token                | Hex       | Role                                    | Contrast Notes                    |
-| -------------------- | --------- | --------------------------------------- | --------------------------------- |
-| `--sh-bg-canvas`     | `#fafaf9` | Warm neutral paper page canvas          | Base canvas                       |
-| `--sh-bg-surface`    | `#ffffff` | Card, table, navbar, modal surface      | Crisp separation via `1px` border |
-| `--sh-bg-subtle`     | `#f4f4f2` | Header strips, hoverable rows, tracks   | Subtle surface shift              |
-| `--sh-bg-hover`      | `#ecece9` | Interactive hover / active pill surface | —                                 |
-| `--sh-border`        | `#e4e4e7` | Default hairline borders & dividers     | —                                 |
-| `--sh-border-strong` | `#d4d4d8` | Emphasized controls & inputs            | —                                 |
-| `--sh-ink`           | `#18181b` | Primary headings & body text            | 17.4:1 on `#ffffff`               |
-| `--sh-ink-secondary` | `#52525b` | Subtitles, metadata, table labels       | 7.5:1 on `#ffffff`                |
-| `--sh-ink-muted`     | `#6e6e77` | Captions, placeholders, locked hints    | 5.0:1 on `#ffffff` (passes AA)    |
-| `--sh-accent`        | `#18181b` | Primary CTA fill (inverted ink)         | 17.4:1 with `#fafafa`             |
-| `--sh-accent-fg`     | `#fafafa` | Text/icon on primary CTA                | —                                 |
-| `--sh-link`          | `#0f4c81` | Editorial ink-blue hyperlinks           | 8.6:1 on `#ffffff`                |
-| `--sh-success`       | `#15803d` | AC / solved / mastery semantic text     | 5.1:1 on `#ffffff`                |
-| `--sh-warning`       | `#b45309` | Streak / medals / warning semantic text | 5.0:1 on `#ffffff`                |
-| `--sh-danger`        | `#b91c1c` | Errors / urgent deadline semantic text  | 6.4:1 on `#ffffff`                |
+| Token                | Value     | Role                                          |
+| -------------------- | --------- | --------------------------------------------- |
+| `--sh-bg-canvas`     | `#f3f6fb` | Cool daylight canvas with subtle top radial   |
+| `--sh-bg-surface`    | `#ffffff` | Elevated card, table, and modal surface       |
+| `--sh-bg-subtle`     | `#f8fafc` | Section headers, tracks, hover base           |
+| `--sh-bg-hover`      | `#eef2f9` | Interactive hover & neutral pill fill         |
+| `--sh-border`        | `#e2e8f0` | Crisp card & table dividers                   |
+| `--sh-border-strong` | `#cbd5e1` | Emphasized controls, inputs, `<kbd>` borders  |
+| `--sh-ink`           | `#0f172a` | Primary slate-900 ink for headings & prose    |
+| `--sh-ink-secondary` | `#475569` | Subtitles, metadata, labels                   |
+| `--sh-ink-muted`     | `#64748b` | Captions & locked hints                       |
+| `--sh-primary`       | `#2563eb` | Electric Cobalt primary action accent         |
+| `--sh-primary-hover` | `#1d4ed8` | Hover state on Cobalt primary CTAs            |
+| `--sh-primary-fg`    | `#ffffff` | High-contrast foreground on primary CTAs      |
+| `--sh-primary-soft`  | `#eff6ff` | Tinted Cobalt surface for `.btn-info` / zones |
+| `--sh-cyan`          | `#0891b2` | Companion cyan for XP & progress gradients    |
+| `--sh-success`       | `#059669` | Solved / AC / Mastered state                  |
+| `--sh-warning`       | `#d97706` | Streak, Gold tier, and warning signals        |
+| `--sh-danger`        | `#dc2626` | Errors & urgent deadline countdown            |
 
-### Dark Mode (`html[data-surface="student"][data-bs-theme="dark"]`)
+### Dark Mode — Obsidian IDE Studio (`data-bs-theme="dark"`)
 
-| Token                | Hex / Value | Role                                    | Contrast Notes                 |
-| -------------------- | ----------- | --------------------------------------- | ------------------------------ |
-| `--sh-bg-canvas`     | `#111113`   | Matte graphite page canvas              | Zero blue-slate tint           |
-| `--sh-bg-surface`    | `#18181b`   | Card, table, navbar, modal surface      | Clean step above canvas        |
-| `--sh-bg-subtle`     | `#202024`   | Header strips, hover tracks             | Subtle elevated layer          |
-| `--sh-bg-hover`      | `#27272c`   | Interactive hover & active surfaces     | —                              |
-| `--sh-border`        | `#27272a`   | Default hairline borders & dividers     | —                              |
-| `--sh-border-strong` | `#3f3f46`   | Inputs, strong separators               | —                              |
-| `--sh-ink`           | `#f4f4f5`   | Primary headings & body text            | 15.8:1 on `#18181b`            |
-| `--sh-ink-secondary` | `#a1a1aa`   | Subtitles, metadata, table labels       | 6.9:1 on `#18181b`             |
-| `--sh-ink-muted`     | `#8b8b96`   | Captions, hints                         | 5.2:1 on `#18181b` (passes AA) |
-| `--sh-accent`        | `#f4f4f5`   | Primary CTA fill (inverted paper)       | 15.8:1 with `#111113`          |
-| `--sh-accent-fg`     | `#111113`   | Text/icon on primary CTA                | —                              |
-| `--sh-link`          | `#7db4e8`   | Editorial ink-blue hyperlinks           | 7.9:1 on `#18181b`             |
-| `--sh-success`       | `#4ade80`   | AC / solved / mastery semantic text     | 10.6:1 on `#18181b`            |
-| `--sh-warning`       | `#fbbf24`   | Streak / medals / warning semantic text | 10.9:1 on `#18181b`            |
-| `--sh-danger`        | `#f87171`   | Errors / urgent deadline semantic text  | 6.6:1 on `#18181b`             |
-
-### Theme Switching Behavior
-
-- **Default:** Follows OS `prefers-color-scheme` automatically until the user explicitly toggles the header theme button.
-- **Persistence:** Stores manual choice in `localStorage` under `sh-theme` (`"light"` | `"dark"`).
-- **Zero-FOUC:** A minimal inline script in `HeadContents.tsx` resolves the theme and writes `data-bs-theme` onto `<html>` before stylesheets paint.
+| Token                | Value                      | Role                                    |
+| -------------------- | -------------------------- | --------------------------------------- |
+| `--sh-bg-canvas`     | `#0b101b`                  | Deep obsidian IDE canvas                |
+| `--sh-bg-surface`    | `#121927`                  | Card, navbar, and panel surface         |
+| `--sh-bg-subtle`     | `#182132`                  | Elevated subtle strips & input wells    |
+| `--sh-bg-hover`      | `#1f2b40`                  | Interactive hover fill                  |
+| `--sh-border`        | `#223047`                  | Hairline obsidian borders               |
+| `--sh-border-strong` | `#324565`                  | Control borders, `<kbd>`, tracks        |
+| `--sh-ink`           | `#f1f5f9`                  | Crisp high-legibility foreground        |
+| `--sh-ink-secondary` | `#94a3b8`                  | Secondary labels & descriptions         |
+| `--sh-ink-muted`     | `#64748b`                  | Muted timestamps & locked captions      |
+| `--sh-primary`       | `#3b82f6`                  | Luminous Electric Cobalt accent         |
+| `--sh-primary-hover` | `#60a5fa`                  | Brightened hover Cobalt                 |
+| `--sh-primary-fg`    | `#ffffff`                  | Guaranteed `#FFFFFF` CTA text           |
+| `--sh-primary-soft`  | `rgba(59, 130, 246, 0.15)` | Translucent Cobalt surface              |
+| `--sh-cyan`          | `#22d3ee`                  | Companion cyan accent                   |
+| `--sh-success`       | `#34d399`                  | Luminous emerald for AC & mastery       |
+| `--sh-warning`       | `#fbbf24`                  | Warm amber for Streak, Sun toggle, Gold |
+| `--sh-danger`        | `#f87171`                  | Soft coral red for errors/urgent alerts |
 
 ---
 
-## Typography & Directionality
+## Shared Component Primitives (`.sh-*`)
 
-- **Persian UI & Prose:** `Vazirmatn` (`line-height: 1.7`), RTL (`dir="rtl"`).
-- **Code, IDs, & Technical Tokens:** `JetBrains Mono` (`direction: ltr; text-align: left; unicode-bidi: isolate`).
-- **Tabular Numerals:** Apply `.sh-tabular` (`font-variant-numeric: tabular-nums`) on all scores, percentages, ranks, countdowns, and table numeric columns to prevent horizontal jitter.
-- **Inline English Isolation:** Wrap standalone English titles/terms (`First Blood`, `One-Shot`, `Streak`, etc.) inside `.sh-en-term` (`direction: ltr; unicode-bidi: isolate; display: inline-block;`).
-
----
-
-## Shared Component Inventory (`.sh-*`)
-
-- `.sh-navbar` — 56px matte surface header with `1px solid var(--sh-border)` bottom divider, `.sh-brand-mark`, `.sh-course-pill`, active link underline indicator, and `.sh-theme-toggle`.
+- `.sh-navbar` — Sticky 58px frosted glass topbar (`backdrop-filter: blur(14px)`), Cobalt-to-Cyan `.sh-brand-mark`, `.sh-course-pill`, `.sh-pulse-pill` (live Level + XP progress + Streak), high-contrast `.sh-theme-toggle` (sun in dark, moon in light), and compact `.sh-role-pill`.
+- `.sh-hero-header` — Directional Cobalt wash banner header on primary student pages.
+- `.sh-q-topbar` — Horizontal question stepper ribbon directly above the question card (`HW0.1`..`HW0.6` status pills + `Alt + ← / →` shortcut hint).
+- `.sh-question-table` / `.sh-zone-row` / `.sh-q-link` — Bordered zone section dividers with Cobalt start-border accent stripe and clean non-underlined titles.
+- `.sh-attempt-pill` — Semantic status chips (`is-active`, `is-perfect`, `is-partial`) for submission variant history.
+- `.sh-pre-inline` / `.sh-copy-btn-inline` — Inline icon-only clipboard copy triggers inside sample I/O table cells.
+- `.sh-scorebar` / `.sh-progress-brand` / `.sh-progress-success` — Rounded progress tracks with gradient fills and `tabular-nums` clarity even at `0%`.
 - `.sh-mobile-nav` — Fixed bottom tab bar below `768px` (outside `Exam` / LockDown Browser) with safe-area bottom inset and `44px+` touch targets.
-- `.sh-stat-strip` / `.sh-stat-cell` — Hairline-divided 4-column desktop / 2×2 mobile summary strip replacing boxed KPI cards.
-- `.sh-scorebar` — Compact progress indicator with `[data-score-tier="perfect"|"high"|"mid"|"low"]` and `tabular-nums` percentage readout.
-- `.sh-filter-bar` / `.sh-filter-pill` — Clean horizontal filter bar for assessments and leaderboard scopes.
-- `.sh-en-term` — Inline LTR bidi-isolated span for English technical & achievement labels.
-
----
-
-## Accessibility & Browser Surfaces (WCAG 2.2 AA)
-
-- All interactive controls meet ≥ `36px` (desktop) / `44px` (mobile nav & icon buttons) target sizing.
-- Distinct `:focus-visible` `2px` outline in `var(--sh-ink)` / `var(--sh-link)` with `2px` offset.
-- Styled browser surfaces (`::selection`, `caret-color`, `scrollbar-color`, `text-underline-offset: 0.2em`).
-- Full `@media (prefers-reduced-motion: reduce)` support collapsing transitions and animations.

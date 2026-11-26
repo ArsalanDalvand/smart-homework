@@ -100,25 +100,40 @@
     blocks.forEach(function (pre) {
       if (pre.closest('.ace_editor') || pre.closest('.sh-pre-wrap')) return;
       var text = (pre.textContent || '').trim();
-      if (!text || text.length < 2) return;
+      if (!text) return;
 
+      var inTableCell = Boolean(pre.closest('td, th'));
       var wrapper = document.createElement('div');
-      wrapper.className = 'sh-pre-wrap';
+      wrapper.className = inTableCell ? 'sh-pre-wrap sh-pre-inline' : 'sh-pre-wrap';
       pre.parentNode.insertBefore(wrapper, pre);
       wrapper.appendChild(pre);
 
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'sh-copy-btn';
+      btn.className = inTableCell ? 'sh-copy-btn sh-copy-btn-inline' : 'sh-copy-btn';
       btn.setAttribute('aria-label', 'کپی محتوای بلوک');
-      btn.textContent = 'کپی';
+      btn.setAttribute('title', 'کپی');
+
+      function setButtonState(copied) {
+        if (inTableCell) {
+          btn.innerHTML = copied
+            ? '<i class="bi bi-check2" aria-hidden="true"></i>'
+            : '<i class="bi bi-clipboard" aria-hidden="true"></i>';
+        } else {
+          btn.innerHTML = copied
+            ? '<i class="bi bi-check2" aria-hidden="true"></i> <span>کپی شد</span>'
+            : '<i class="bi bi-clipboard" aria-hidden="true"></i> <span>کپی</span>';
+        }
+      }
+
+      setButtonState(false);
 
       btn.addEventListener('click', function () {
         copyText(pre.textContent || '').then(function () {
-          btn.textContent = 'کپی شد';
+          setButtonState(true);
           btn.classList.add('is-copied');
           setTimeout(function () {
-            btn.textContent = 'کپی';
+            setButtonState(false);
             btn.classList.remove('is-copied');
           }, 1600);
         });

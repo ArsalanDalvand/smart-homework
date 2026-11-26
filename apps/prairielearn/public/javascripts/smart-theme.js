@@ -34,9 +34,32 @@
     });
   }
 
+  function syncAceEditors(theme) {
+    if (!window.ace || typeof window.ace.edit !== 'function') return;
+    try {
+      if (window.localStorage.getItem('pl-file-editor-theme')) return;
+    } catch (_err) {
+      // Ignore storage errors
+    }
+    var targetTheme = theme === 'dark' ? 'ace/theme/github_dark' : 'ace/theme/github_light_default';
+    document.querySelectorAll('.ace_editor').forEach(function (el) {
+      try {
+        window.ace.edit(el).setTheme(targetTheme);
+      } catch (_err) {
+        // Ignore uninitialized editors
+      }
+    });
+  }
+
   function applyTheme(theme) {
     root.setAttribute('data-bs-theme', theme);
     syncToggleButtons(theme);
+    syncAceEditors(theme);
+    try {
+      document.dispatchEvent(new CustomEvent('sh-theme-change', { detail: { theme: theme } }));
+    } catch (_err) {
+      // Ignore CustomEvent error in legacy browsers
+    }
   }
 
   function onToggleClick() {

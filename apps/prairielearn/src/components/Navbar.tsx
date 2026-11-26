@@ -100,7 +100,7 @@ export function Navbar({
     <nav
       class="${
         isStudentSurface
-          ? 'navbar navbar-expand-md sh-navbar'
+          ? 'navbar navbar-expand-lg sh-navbar'
           : 'navbar navbar-dark bg-dark navbar-expand-md'
       }"
       aria-label="ناوبری سراسری"
@@ -125,22 +125,21 @@ export function Navbar({
           isStudentSurface
             ? html`
                 <a
-                  class="navbar-brand d-flex align-items-center gap-2 text-truncate"
-                  style="max-width: 65vw; min-width: 0;"
+                  class="navbar-brand d-flex align-items-center gap-2"
                   href="/"
                   aria-label="${uiStrings.nav.brandAria}"
                 >
                   <span class="sh-brand-mark" aria-hidden="true">
                     <i class="bi bi-code-square"></i>
                   </span>
-                  <span class="navbar-brand-label text-truncate">
+                  <span class="navbar-brand-label">
                     <span class="d-inline d-md-none">${platformBranding.brandShortName}</span>
                     <span class="d-none d-md-inline">
                       ${getEffectiveBrandName(resLocals.institution)}
                     </span>
                   </span>
                 </a>
-                <div class="d-flex align-items-center gap-2 order-md-3">
+                <div class="d-flex align-items-center gap-2 order-lg-3">
                   ${
                     navbarType === 'student' &&
                     navbarResLocals.student_xp_pulse &&
@@ -165,7 +164,7 @@ export function Navbar({
                   </button>
                   <button
                     id="course-nav-toggler"
-                    class="navbar-toggler d-md-none"
+                    class="navbar-toggler d-lg-none"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#course-nav"
@@ -219,7 +218,7 @@ export function Navbar({
         }
         <div
           id="course-nav"
-          class="collapse navbar-collapse mobile-collapsed ${isStudentSurface ? 'order-md-2' : ''}"
+          class="collapse navbar-collapse mobile-collapsed ${isStudentSurface ? 'order-lg-2' : ''}"
         >
           <ul class="nav navbar-nav me-auto" id="main-nav">
             ${NavbarByType({
@@ -251,9 +250,11 @@ export function Navbar({
                 ? html`
                     <button
                       type="button"
-                      class="btn ${
-                        isStudentSurface ? 'btn-outline-secondary' : 'btn-outline-light'
-                      } btn-sm ms-md-2 me-md-2 mb-2 mb-md-0"
+                      class="${
+                        isStudentSurface
+                          ? 'sh-nav-icon-btn ms-lg-2 me-lg-2 mb-2 mb-lg-0'
+                          : 'btn btn-outline-light btn-sm ms-md-2 me-md-2 mb-2 mb-md-0'
+                      }"
                       style="${
                         isStudentSurface
                           ? ''
@@ -262,8 +263,13 @@ export function Navbar({
                       data-bs-toggle="modal tooltip"
                       data-bs-target="#supportModal"
                       data-bs-title="راهنمایی و پشتیبانی سامانه یادگیری"
+                      aria-label="راهنمایی"
                     >
-                      راهنمایی
+                      ${
+                        isStudentSurface
+                          ? html`<i class="bi bi-question-circle" aria-hidden="true"></i>`
+                          : 'راهنمایی'
+                      }
                     </button>
                   `
                 : ''
@@ -532,9 +538,19 @@ function UserDropdownMenu({
     (authz_data?.authn_has_course_permission_preview ||
       authz_data?.authn_has_course_instance_permission_view)
   ) {
-    displayedName = html`${displayedName} <span class="badge text-bg-warning">دانشجو</span>`;
+    displayedName = html`${displayedName}
+    ${
+      isStudentSurface
+        ? html`<span class="sh-role-pill ms-1">دانشجو</span>`
+        : html`<span class="badge text-bg-warning">دانشجو</span>`
+    }`;
   } else if (authz_data?.overrides?.length > 0) {
-    displayedName = html`${displayedName} <span class="badge text-bg-warning">سفارشی‌شده</span>`;
+    displayedName = html`${displayedName}
+    ${
+      isStudentSurface
+        ? html`<span class="sh-role-pill ms-1">سفارشی‌شده</span>`
+        : html`<span class="badge text-bg-warning">سفارشی‌شده</span>`
+    }`;
   } else if (navbarType === 'instructor') {
     displayedName = html`${displayedName} <span class="badge text-bg-success">کادر آموزشی</span>`;
   }
@@ -1127,13 +1143,13 @@ function NavbarStudent({
   }
 
   return html`
-    <li class="nav-item d-flex align-items-center ms-md-2 me-md-2 my-1 my-md-0">
+    <li class="nav-item d-flex align-items-center ms-lg-2 me-lg-1 my-1 my-lg-0">
       <span class="sh-course-pill">
         <span dir="ltr">${course?.short_name ?? ''}</span>
         ${
           course_instance?.short_name
-            ? html`<span aria-hidden="true">•</span>
-                <span dir="ltr">${course_instance.short_name}</span>`
+            ? html`<span class="d-none d-xl-inline" aria-hidden="true">•</span>
+                <span class="d-none d-xl-inline" dir="ltr">${course_instance.short_name}</span>`
             : ''
         }
       </span>
@@ -1146,7 +1162,7 @@ function NavbarStudent({
         href="${urlPrefix}/assessments"
       >
         <i class="bi bi-journal-text" aria-hidden="true"></i>
-        <span>تکالیف و ارزیابی‌ها</span>
+        <span>تکالیف</span>
       </a>
     </li>
     <li class="nav-item ${navPage === 'gradebook' ? 'active' : ''}">
@@ -1156,7 +1172,7 @@ function NavbarStudent({
         href="${urlPrefix}/gradebook"
       >
         <i class="bi bi-bar-chart-line" aria-hidden="true"></i>
-        <span>کارنامه و نمرات</span>
+        <span>کارنامه</span>
       </a>
     </li>
     ${
@@ -1185,7 +1201,7 @@ function NavbarStudent({
                 href="${urlPrefix}/leaderboard"
               >
                 <i class="bi bi-trophy" aria-hidden="true"></i>
-                <span>جدول امتیازات</span>
+                <span>امتیازات</span>
               </a>
             </li>
           `

@@ -44,27 +44,29 @@ export function QuestionVariantHistory({
     }
     ${previousVariants.map((variant, index) => {
       const hidden = hasOverflow && index < previousVariants.length - MAX_DISPLAYED_VARIANTS;
+      const pct = Math.floor(variant.max_submission_score * 100);
+      const isCurrent = currentVariantId != null && idsEqual(variant.id, currentVariantId);
+      const statusClass = variant.open
+        ? 'is-active'
+        : pct >= 100
+          ? 'is-perfect'
+          : pct > 0
+            ? 'is-partial'
+            : '';
 
       return html`
         <a
-          class="badge ${
-            currentVariantId != null && idsEqual(variant.id, currentVariantId)
-              ? 'text-bg-info'
-              : 'text-bg-secondary'
-          } ${collapseClass}"
+          class="sh-attempt-pill ${statusClass} ${collapseClass}"
           ${hidden ? 'style="display: none"' : ''}
+          ${isCurrent ? html`aria-current="true"` : ''}
           href="${getInstanceQuestionUrl({
             courseInstanceId,
             instanceQuestionId,
             variantId: variant.id,
           })}"
         >
-          ${variant.open ? 'فعال' : `${Math.floor(variant.max_submission_score * 100)}%`}
-          ${
-            currentVariantId != null && idsEqual(variant.id, currentVariantId)
-              ? html`<span class="visually-hidden">(فعلی)</span>`
-              : ''
-          }
+          ${variant.open ? 'فعال' : `${pct}%`}
+          ${isCurrent ? html`<span class="visually-hidden">(فعلی)</span>` : ''}
         </a>
       `;
     })}

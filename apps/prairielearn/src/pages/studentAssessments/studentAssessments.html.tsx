@@ -111,14 +111,14 @@ function WeeklyQuestsMiniStrip({
                   </div>
                   <div class="small text-body-secondary mb-2">${quest.description}</div>
                   <div class="d-flex align-items-center gap-2">
-                    <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress flex-grow-1" style="height: 7px;">
                       <div
-                        class="progress-bar ${quest.completed ? 'bg-success' : 'bg-dark'}"
+                        class="progress-bar ${quest.completed ? 'sh-progress-success' : 'sh-progress-brand'}"
                         style="width: ${quest.progressPerc}%"
                       ></div>
                     </div>
                     <span class="small text-body-secondary sh-tabular">
-                      ${toPersianDigits(quest.current)}/${toPersianDigits(quest.target)}
+                      ${toPersianDigits(quest.current)} از ${toPersianDigits(quest.target)}
                     </span>
                   </div>
                 </div>
@@ -211,7 +211,7 @@ export function StudentAssessments({
       }
       <div class="card mb-4" style="font-family: var(--font-persian);">
         <div
-          class="card-header bg-primary text-white d-flex flex-wrap align-items-center justify-content-between gap-2"
+          class="card-header bg-primary text-white sh-hero-header d-flex flex-wrap align-items-center justify-content-between gap-2"
         >
           <h1 class="h3 mb-0">تکالیف و ارزیابی‌ها</h1>
           <span class="badge bg-body-tertiary text-body border sh-tabular">
@@ -262,7 +262,7 @@ export function StudentAssessments({
 
         <div class="table-responsive">
           <table
-            class="table table-sm table-hover sh-assessments-table mb-0"
+            class="table table-sm table-hover sh-question-table sh-assessments-table mb-0"
             aria-label="ارزیابی‌ها"
           >
             <thead>
@@ -276,7 +276,7 @@ export function StudentAssessments({
             ${assessmentGroups.map(
               (groupRows) => html`
                 <tbody data-assessment-group>
-                  <tr>
+                  <tr class="sh-zone-row">
                     <th colspan="4" scope="rowgroup" data-testid="assessment-group-heading">
                       ${groupRows[0].assessment_group_heading}
                     </th>
@@ -315,7 +315,7 @@ export function StudentAssessments({
                                         row.assessment_instance_id == null)
                                     ? row.title
                                     : html`
-                                        <a href="${urlPrefix}${row.link}" class="fw-medium">
+                                        <a href="${urlPrefix}${row.link}" class="sh-q-link">
                                           ${row.title}
                                           ${
                                             row.team_work
@@ -335,8 +335,10 @@ export function StudentAssessments({
                             </div>
                           </div>
                         </td>
-                        <td class="text-center align-middle">${AvailableCredit({ row })}</td>
-                        <td class="text-center align-middle">
+                        <td class="text-center align-middle" data-label="مهلت تحویل">
+                          ${AvailableCredit({ row })}
+                        </td>
+                        <td class="text-center align-middle" data-label="نمره">
                           ${
                             row.multiple_instance_header
                               ? NewInstanceButton({ urlPrefix, row })
@@ -398,8 +400,10 @@ function AvailableCredit({ row }: { row: StudentAssessmentsRow }) {
   const creditDateString = authzResult.credit_date_string ?? 'None';
   if (creditDateString === 'None') return null;
   if (row.assessment_instance_open !== false) {
-    const localizedCredit = creditDateString.replace('(Staff override)', '(دسترسی کادر آموزشی)');
-    return html`<span dir="rtl">${localizedCredit}</span>`;
+    const localizedCredit = creditDateString
+      .replace('(Staff override)', '(دسترسی کادر آموزشی)')
+      .replace(/\b(\d+)%/g, (_m, n: string) => `${toPersianDigits(n)}٪`);
+    return html`<span dir="rtl" class="sh-tabular">${localizedCredit}</span>`;
   }
   return html`تکلیف به پایان رسیده است.`;
 }

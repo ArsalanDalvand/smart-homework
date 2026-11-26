@@ -265,12 +265,15 @@ function LoginPageContainer({
       <head>
         ${HeadContents({ resLocals })}
         <style>
-          ${unsafeHtml(AUTH_STYLE)}
-          html,
+          ${unsafeHtml(AUTH_STYLE)} html,
           body {
             min-height: 100vh;
             background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 60%, #e2e8f0 100%);
-            font-family: var(--font-persian), system-ui, -apple-system, sans-serif;
+            font-family:
+              var(--font-persian),
+              system-ui,
+              -apple-system,
+              sans-serif;
             color: #1e293b;
           }
 
@@ -292,7 +295,9 @@ function LoginPageContainer({
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 20px;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+            box-shadow:
+              0 10px 25px -5px rgba(15, 23, 42, 0.08),
+              0 8px 10px -6px rgba(15, 23, 42, 0.04);
           }
 
           .benefit-card {
@@ -397,22 +402,22 @@ function LoginPageContainer({
             direction: rtl !important;
           }
 
-          .login-form-card input[type="text"],
-          .login-form-card input:not([type="email"]):not([type="password"]) {
+          .login-form-card input[type='text'],
+          .login-form-card input:not([type='email']):not([type='password']) {
             direction: rtl !important;
             text-align: right !important;
           }
 
-          .login-form-card input[type="email"],
-          .login-form-card input[type="password"] {
+          .login-form-card input[type='email'],
+          .login-form-card input[type='password'] {
             direction: ltr !important;
             text-align: right !important;
           }
 
-          .login-form-card input[type="email"]:focus,
-          .login-form-card input[type="password"]:focus,
-          .login-form-card input[type="email"]:not(:placeholder-shown),
-          .login-form-card input[type="password"]:not(:placeholder-shown) {
+          .login-form-card input[type='email']:focus,
+          .login-form-card input[type='password']:focus,
+          .login-form-card input[type='email']:not(:placeholder-shown),
+          .login-form-card input[type='password']:not(:placeholder-shown) {
             text-align: left !important;
           }
         </style>
@@ -420,13 +425,20 @@ function LoginPageContainer({
       <body class="d-flex flex-column min-vh-100" style="font-family: var(--font-persian);">
         <!-- Top Navigation Header -->
         <header class="bg-white border-bottom py-2 py-sm-3 shadow-xs">
-          <div class="container d-flex justify-content-between align-items-center gap-2" style="max-width: 1140px;">
-            <a href="/" class="text-decoration-none d-flex align-items-center gap-2 gap-sm-3 min-w-0" style="min-width: 0;">
+          <div
+            class="container d-flex justify-content-between align-items-center gap-2"
+            style="max-width: 1140px;"
+          >
+            <a
+              href="/"
+              class="text-decoration-none d-flex align-items-center gap-2 gap-sm-3 min-w-0"
+              style="min-width: 0;"
+            >
               ${
                 platformBranding.logoUrl
                   ? html`<img
                       src="${platformBranding.logoUrl}"
-                      alt="${getEffectiveBrandName(resLocals?.institution)}"
+                      alt="${getEffectiveBrandName(resLocals.institution)}"
                       class="flex-shrink-0"
                       style="height: 40px; width: auto;"
                     />`
@@ -440,9 +452,15 @@ function LoginPageContainer({
                     `
               }
               <div class="min-w-0" style="min-width: 0;">
-                <span class="fw-bold text-dark fs-6 d-block d-md-none text-truncate">${platformBranding.brandShortName}</span>
-                <span class="fw-bold text-dark fs-5 d-none d-md-block text-truncate">${getEffectiveBrandName(resLocals?.institution)}</span>
-                <span class="text-secondary small d-none d-lg-block text-truncate">${platformBranding.brandSubtitle}</span>
+                <span class="fw-bold text-dark fs-6 d-block d-md-none text-truncate"
+                  >${platformBranding.brandShortName}</span
+                >
+                <span class="fw-bold text-dark fs-5 d-none d-md-block text-truncate"
+                  >${getEffectiveBrandName(resLocals.institution)}</span
+                >
+                <span class="text-secondary small d-none d-lg-block text-truncate"
+                  >${platformBranding.brandSubtitle}</span
+                >
               </div>
             </a>
             <div class="d-flex align-items-center gap-1 gap-sm-2 flex-shrink-0">
@@ -473,13 +491,16 @@ function LoginPageContainer({
         <!-- Main Content Area: Split Showcase & Login Panel -->
         <main class="login-wrapper py-4 py-lg-5">
           <div class="container" style="max-width: 1140px;">
-            <div class="row g-4 align-items-stretch justify-content-center">
-              
+            <div class="row g-4 align-items-start justify-content-center">
               <!-- Right Column (Showcase & Benefits + Guidance Box) -->
               <div class="col-12 col-lg-7 order-2 order-lg-1">
-                <div class="landing-showcase-panel h-100 d-flex flex-column justify-content-between p-4 p-md-5">
+                <div
+                  class="landing-showcase-panel h-100 d-flex flex-column justify-content-between p-4 p-md-5"
+                >
                   <div>
-                    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill bg-primary-subtle text-primary border border-primary-subtle small fw-medium">
+                    <div
+                      class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill bg-primary-subtle text-primary border border-primary-subtle small fw-medium"
+                    >
                       <i class="fas fa-sparkles text-primary"></i>
                       <span>${uiStrings.landing.badge}</span>
                     </div>
@@ -495,32 +516,47 @@ function LoginPageContainer({
                     <!-- 3 Pillar Feature Cards -->
                     <div class="d-flex flex-column gap-3 mb-4">
                       <div class="benefit-card d-flex align-items-start gap-3 p-3">
-                        <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                        <div
+                          class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
+                          style="width: 44px; height: 44px; font-size: 1.2rem;"
+                        >
                           <i class="fas fa-shapes"></i>
                         </div>
                         <div>
                           <h6 class="fw-bold mb-1 text-dark">${uiStrings.landing.benefit1Title}</h6>
-                          <small class="text-secondary d-block lh-base">${uiStrings.landing.benefit1Desc}</small>
+                          <small class="text-secondary d-block lh-base"
+                            >${uiStrings.landing.benefit1Desc}</small
+                          >
                         </div>
                       </div>
 
                       <div class="benefit-card d-flex align-items-start gap-3 p-3">
-                        <div class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                        <div
+                          class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center flex-shrink-0"
+                          style="width: 44px; height: 44px; font-size: 1.2rem;"
+                        >
                           <i class="fas fa-code"></i>
                         </div>
                         <div>
                           <h6 class="fw-bold mb-1 text-dark">${uiStrings.landing.benefit2Title}</h6>
-                          <small class="text-secondary d-block lh-base">${uiStrings.landing.benefit2Desc}</small>
+                          <small class="text-secondary d-block lh-base"
+                            >${uiStrings.landing.benefit2Desc}</small
+                          >
                         </div>
                       </div>
 
                       <div class="benefit-card d-flex align-items-start gap-3 p-3">
-                        <div class="rounded-circle bg-warning-subtle text-warning-emphasis d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                        <div
+                          class="rounded-circle bg-warning-subtle text-warning-emphasis d-flex align-items-center justify-content-center flex-shrink-0"
+                          style="width: 44px; height: 44px; font-size: 1.2rem;"
+                        >
                           <i class="fas fa-check-double"></i>
                         </div>
                         <div>
                           <h6 class="fw-bold mb-1 text-dark">${uiStrings.landing.benefit3Title}</h6>
-                          <small class="text-secondary d-block lh-base">${uiStrings.landing.benefit3Desc}</small>
+                          <small class="text-secondary d-block lh-base"
+                            >${uiStrings.landing.benefit3Desc}</small
+                          >
                         </div>
                       </div>
                     </div>
@@ -535,13 +571,15 @@ function LoginPageContainer({
                     <div class="d-flex flex-column gap-2 text-secondary small lh-lg">
                       <div>
                         <strong class="text-primary d-inline-block me-1">
-                          <i class="fas fa-user-graduate me-1"></i> ${uiStrings.landing.learnerHeading}
+                          <i class="fas fa-user-graduate me-1"></i>
+                          ${uiStrings.landing.learnerHeading}
                         </strong>
                         <span>${uiStrings.landing.learnerDesc}</span>
                       </div>
                       <div>
                         <strong class="text-success d-inline-block me-1">
-                          <i class="fas fa-chalkboard-teacher me-1"></i> ${uiStrings.landing.instructorHeading}
+                          <i class="fas fa-chalkboard-teacher me-1"></i>
+                          ${uiStrings.landing.instructorHeading}
                         </strong>
                         <span>${uiStrings.landing.instructorDesc}</span>
                       </div>
@@ -550,7 +588,8 @@ function LoginPageContainer({
                           ? html`
                               <div class="mt-2 pt-2 border-top border-success-subtle">
                                 <strong class="text-dark d-inline-block me-1">
-                                  <i class="fas fa-bolt text-warning me-1"></i> ${uiStrings.landing.devModeNoteHeading}
+                                  <i class="fas fa-bolt text-warning me-1"></i>
+                                  ${uiStrings.landing.devModeNoteHeading}
                                 </strong>
                                 <span class="text-muted">${uiStrings.landing.devModeNoteDesc}</span>
                               </div>
@@ -565,7 +604,8 @@ function LoginPageContainer({
                         data-bs-toggle="modal"
                         data-bs-target="#courseRequestWarningModal"
                       >
-                        <i class="fas fa-plus-circle me-1"></i> ${uiStrings.landing.requestCourseBtn}
+                        <i class="fas fa-plus-circle me-1"></i>
+                        ${uiStrings.landing.requestCourseBtn}
                       </button>
                       <button
                         type="button"
@@ -582,26 +622,35 @@ function LoginPageContainer({
 
               <!-- Left Column: The Login & Fast Registration Card -->
               <div class="col-12 col-lg-5 order-1 order-lg-2">
-                <div class="login-form-card h-100 p-4 p-md-4 d-flex flex-column justify-content-between">
+                <div class="login-form-card p-4 p-md-4 d-flex flex-column justify-content-between">
                   <div>
                     ${
                       errorMessage
                         ? html`
-                            <div class="alert alert-danger py-2 px-3 small mb-3 border-0 bg-danger-subtle text-danger-emphasis d-flex align-items-center gap-2" role="alert">
+                            <div
+                              class="alert alert-danger py-2 px-3 small mb-3 border-0 bg-danger-subtle text-danger-emphasis d-flex align-items-center gap-2"
+                              role="alert"
+                            >
                               <i class="fas fa-exclamation-circle text-danger flex-shrink-0"></i>
                               <span>${errorMessage}</span>
                             </div>
                           `
                         : ''
                     }
-
                     ${
                       isCourseRequestService
                         ? html`
-                            <div class="alert alert-warning py-3 px-3 mb-3 border-0 bg-warning-subtle text-warning-emphasis d-flex align-items-start gap-2 shadow-xs rounded-3 text-end" role="alert">
-                              <i class="fas fa-exclamation-triangle fs-4 text-warning flex-shrink-0 mt-1"></i>
+                            <div
+                              class="alert alert-warning py-3 px-3 mb-3 border-0 bg-warning-subtle text-warning-emphasis d-flex align-items-start gap-2 shadow-xs rounded-3 text-end"
+                              role="alert"
+                            >
+                              <i
+                                class="fas fa-exclamation-triangle fs-4 text-warning flex-shrink-0 mt-1"
+                              ></i>
                               <div>
-                                <h3 class="h6 fw-bold mb-1 text-dark">${uiStrings.auth.courseRequestWarningHeader}</h3>
+                                <h3 class="h6 fw-bold mb-1 text-dark">
+                                  ${uiStrings.auth.courseRequestWarningHeader}
+                                </h3>
                                 <p class="small mb-0 text-secondary">
                                   ${uiStrings.auth.courseRequestInstructorNotice}
                                 </p>
@@ -612,7 +661,10 @@ function LoginPageContainer({
                     }
 
                     <div class="text-center mb-3">
-                      <div class="bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 52px; height: 52px;">
+                      <div
+                        class="bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                        style="width: 52px; height: 52px;"
+                      >
                         <i class="fas fa-user-circle fs-3"></i>
                       </div>
                       <h2 class="h5 fw-bold text-dark mb-1">${uiStrings.landing.loginCardTitle}</h2>
@@ -644,12 +696,16 @@ function LoginPageContainer({
                     ${children}
                   </div>
 
-                  <div class="pt-3 border-top text-center mt-3">
-                    <small class="text-muted d-block mb-2">${uiStrings.landing.loginFooterHelp}</small>
-                    <div class="d-flex justify-content-center gap-3">
+                  <div class="pt-3 border-top text-center mt-4">
+                    <small class="text-muted d-block mb-2"
+                      >${uiStrings.landing.loginFooterHelp}</small
+                    >
+                    <div
+                      class="d-flex flex-wrap justify-content-center align-items-center gap-2 row-gap-1"
+                    >
                       <button
                         type="button"
-                        class="btn btn-link p-0 text-decoration-none small text-primary fw-medium border-0 align-baseline"
+                        class="btn btn-link p-0 text-decoration-none small text-primary fw-medium border-0 align-baseline text-nowrap"
                         data-bs-toggle="modal"
                         data-bs-target="#courseRequestWarningModal"
                       >
@@ -660,7 +716,7 @@ function LoginPageContainer({
                         href="#"
                         data-bs-toggle="modal"
                         data-bs-target="#supportModal"
-                        class="text-decoration-none small text-secondary"
+                        class="text-decoration-none small text-primary fw-medium text-nowrap"
                       >
                         ${uiStrings.landing.supportBtn}
                       </a>
@@ -668,31 +724,53 @@ function LoginPageContainer({
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </main>
 
         <!-- Cohesive Clean Footer -->
         <footer class="bg-white border-top py-3 mt-auto">
-          <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2" style="max-width: 1140px;">
+          <div
+            class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2"
+            style="max-width: 1140px;"
+          >
             <span class="text-secondary small">
               توسعه و نگه‌داری:
-              <a href="${platformBranding.developer.telegramUrl}" target="_blank" rel="noreferrer" class="text-secondary text-decoration-none fw-medium">
+              <a
+                href="${platformBranding.developer.telegramUrl}"
+                target="_blank"
+                rel="noreferrer"
+                class="text-secondary text-decoration-none fw-medium"
+              >
                 ${platformBranding.developer.name}
               </a>
               (${platformBranding.developer.affiliation})
             </span>
             <div class="d-flex gap-3 small">
-              <a href="${platformBranding.docsUrl}" target="_blank" rel="noreferrer" class="text-secondary text-decoration-none">
+              <a
+                href="${platformBranding.docsUrl}"
+                target="_blank"
+                rel="noreferrer"
+                class="text-secondary text-decoration-none"
+              >
                 <i class="fas fa-book me-1"></i> ${uiStrings.landing.footerDocsLink}
               </a>
               <span class="text-muted">•</span>
-              <a href="${platformBranding.repoUrl}" target="_blank" rel="noreferrer" class="text-secondary text-decoration-none">
+              <a
+                href="${platformBranding.repoUrl}"
+                target="_blank"
+                rel="noreferrer"
+                class="text-secondary text-decoration-none"
+              >
                 <i class="fab fa-github me-1"></i> ${uiStrings.landing.footerRepoLink}
               </a>
               <span class="text-muted">•</span>
-              <a href="#" data-bs-toggle="modal" data-bs-target="#supportModal" class="text-secondary text-decoration-none">
+              <a
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#supportModal"
+                class="text-secondary text-decoration-none"
+              >
                 <i class="fas fa-headset me-1"></i> ${uiStrings.landing.footerSupportLink}
               </a>
             </div>
@@ -707,13 +785,25 @@ function LoginPageContainer({
             const registerPane = document.getElementById('register-form-pane');
 
             if (mode === 'register' || mode === 'signup') {
-              if (loginBtn) { loginBtn.classList.remove('active'); loginBtn.classList.add('text-secondary'); }
-              if (signupBtn) { signupBtn.classList.add('active'); signupBtn.classList.remove('text-secondary'); }
+              if (loginBtn) {
+                loginBtn.classList.remove('active');
+                loginBtn.classList.add('text-secondary');
+              }
+              if (signupBtn) {
+                signupBtn.classList.add('active');
+                signupBtn.classList.remove('text-secondary');
+              }
               if (loginPane) loginPane.classList.add('d-none');
               if (registerPane) registerPane.classList.remove('d-none');
             } else {
-              if (signupBtn) { signupBtn.classList.remove('active'); signupBtn.classList.add('text-secondary'); }
-              if (loginBtn) { loginBtn.classList.add('active'); loginBtn.classList.remove('text-secondary'); }
+              if (signupBtn) {
+                signupBtn.classList.remove('active');
+                signupBtn.classList.add('text-secondary');
+              }
+              if (loginBtn) {
+                loginBtn.classList.add('active');
+                loginBtn.classList.remove('text-secondary');
+              }
               if (registerPane) registerPane.classList.add('d-none');
               if (loginPane) loginPane.classList.remove('d-none');
             }
@@ -732,11 +822,10 @@ function LoginPageContainer({
         </script>
 
         <script>
-          ${unsafeHtml(AUTH_CLIENT_SCRIPT)}
+          ${unsafeHtml(AUTH_CLIENT_SCRIPT)};
         </script>
 
-        ${CourseRequestWarningModal()}
-        ${SupportModal()}
+        ${CourseRequestWarningModal()} ${SupportModal()}
       </body>
     </html>
   `;
@@ -755,8 +844,13 @@ function CourseRequestWarningModal() {
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
-          <div class="modal-header bg-warning-subtle text-warning-emphasis border-bottom border-warning-subtle py-3 px-4">
-            <h5 class="modal-title fw-bold fs-6 d-flex align-items-center gap-2 m-0" id="courseRequestWarningModalLabel">
+          <div
+            class="modal-header bg-warning-subtle text-warning-emphasis border-bottom border-warning-subtle py-3 px-4"
+          >
+            <h5
+              class="modal-title fw-bold fs-6 d-flex align-items-center gap-2 m-0"
+              id="courseRequestWarningModalLabel"
+            >
               <i class="fas fa-exclamation-triangle fs-5 text-warning"></i>
               <span>ورود یا ثبت‌نام الزامی است</span>
             </h5>
@@ -769,7 +863,10 @@ function CourseRequestWarningModal() {
           </div>
           <div class="modal-body p-4 text-secondary lh-lg">
             <div class="d-flex align-items-center gap-3 mb-3">
-              <div class="bg-primary-subtle text-primary p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+              <div
+                class="bg-primary-subtle text-primary p-3 rounded-circle d-flex align-items-center justify-content-center"
+                style="width: 50px; height: 50px;"
+              >
                 <i class="fas fa-chalkboard-teacher fs-4"></i>
               </div>
               <div>
@@ -777,11 +874,11 @@ function CourseRequestWarningModal() {
                 <small class="text-muted">مخصوص اساتید، مدرسان و طراحان دوره</small>
               </div>
             </div>
-            <p class="mb-2 text-dark fw-medium">
-              استاد یا متقاضی گرامی؛
-            </p>
+            <p class="mb-2 text-dark fw-medium">استاد یا متقاضی گرامی؛</p>
             <p class="small text-secondary mb-0">
-              برای ثبت درخواست دوره جدید و اتصال به مخزن اختصاصی، ابتدا لازم است در سامانه <strong>ثبت‌نام</strong> فرمایید یا در صورت داشتن حساب، <strong>وارد شوید</strong>. پس از ورود موفق، فرم ایجاد درس بلافاصله در اختیار شما قرار خواهد گرفت.
+              برای ثبت درخواست دوره جدید و اتصال به مخزن اختصاصی، ابتدا لازم است در سامانه
+              <strong>ثبت‌نام</strong> فرمایید یا در صورت داشتن حساب، <strong>وارد شوید</strong>. پس
+              از ورود موفق، فرم ایجاد درس بلافاصله در اختیار شما قرار خواهد گرفت.
             </p>
           </div>
           <div class="modal-footer bg-light border-0 py-3 px-4 d-flex justify-content-end gap-2">
@@ -890,7 +987,9 @@ function LocalLoginForm({
         name="__action"
         value="local_login"
       >
-        <span class="fw-bold"><i class="fas fa-sign-in-alt me-1"></i> ${uiStrings.auth.loginBtn}</span>
+        <span class="fw-bold"
+          ><i class="fas fa-sign-in-alt me-1"></i> ${uiStrings.auth.loginBtn}</span
+        >
       </button>
       <div class="text-center mt-2">
         <small class="text-muted">${uiStrings.auth.forgotPasswordHint}</small>
@@ -975,7 +1074,11 @@ function LocalRegisterForm({
         </div>
       </div>
       <div class="mb-3 mt-n2">
-        <small id="reg_password_strength" class="form-text d-block text-muted" aria-live="polite"></small>
+        <small
+          id="reg_password_strength"
+          class="form-text d-block text-muted"
+          aria-live="polite"
+        ></small>
         <small id="reg_password_match" class="form-text d-block" aria-live="polite"></small>
       </div>
       <div class="mb-3">
@@ -995,7 +1098,8 @@ function LocalRegisterForm({
           aria-describedby="reg_uin_help"
         />
         <small id="reg_uin_help" class="form-text text-muted d-block">
-          شماره دانشجویی ۹ رقمی گلستان دانشگاه علم و صنعت (مثلاً <code>405441001</code>) — ارقام فارسی خودکار تبدیل می‌شوند.
+          شماره دانشجویی ۹ رقمی گلستان دانشگاه علم و صنعت (مثلاً <code>405441001</code>) — ارقام فارسی
+          خودکار تبدیل می‌شوند.
         </small>
         <small id="reg_uin_live" class="form-text d-block text-muted" aria-live="polite"></small>
         <div class="form-check mt-2">
@@ -1019,7 +1123,9 @@ function LocalRegisterForm({
         name="__action"
         value="local_register"
       >
-        <span class="fw-bold"><i class="fas fa-user-plus me-1"></i> ${uiStrings.auth.registerBtn}</span>
+        <span class="fw-bold"
+          ><i class="fas fa-user-plus me-1"></i> ${uiStrings.auth.registerBtn}</span
+        >
       </button>
       <div class="text-center mt-2">
         <small class="text-muted">${uiStrings.auth.registerNotice}</small>
@@ -1111,7 +1217,9 @@ export function AuthLogin({
       ${
         institutionAuthnProviders?.length
           ? html`
-              <div class="institution-header text-muted my-3">${uiStrings.auth.institutionHeader}</div>
+              <div class="institution-header text-muted my-3">
+                ${uiStrings.auth.institutionHeader}
+              </div>
               <input
                 type="search"
                 id="js-institution-search"
@@ -1283,7 +1391,9 @@ export function AuthLoginInstitution({
               ${
                 hasNonDefaultProviders
                   ? html`
-                      <small class="text-muted text-center d-block mt-4 mb-2">${uiStrings.auth.otherMethods}</small>
+                      <small class="text-muted text-center d-block mt-4 mb-2"
+                        >${uiStrings.auth.otherMethods}</small
+                      >
                     `
                   : ''
               }
@@ -1307,7 +1417,8 @@ function DevModeBypass() {
     <a class="btn btn-success w-100" href="/pl/dev_login">
       <span class="fw-bold"><i class="fas fa-bolt me-1"></i> ${uiStrings.auth.devBypassBtn}</span>
     </a>
-    <small class="text-muted d-block text-center mt-1">${uiStrings.auth.devBypassHint} <code>${config.authUid}</code></small>
+    <small class="text-muted d-block text-center mt-1"
+      >${uiStrings.auth.devBypassHint} <code>${config.authUid}</code></small
+    >
   `;
 }
-

@@ -171,6 +171,55 @@ export function StudentInstanceQuestion({
         >
           ${independentScrolling ? regenerateAlert : ''}
           ${
+            stepperQuestions.length > 1
+              ? html`
+                  <nav class="sh-q-topbar mb-3" aria-label="ناوبری سوالات سری">
+                    <div class="sh-q-topbar-pills">
+                      ${stepperQuestions.map((item) => {
+                        const stepClass = [
+                          'sh-q-topbar-pill',
+                          item.isCurrent ? 'is-current' : '',
+                          item.isSolved ? 'is-solved' : '',
+                          item.isPartial ? 'is-partial' : '',
+                          item.isLocked ? 'is-locked' : '',
+                        ]
+                          .filter(Boolean)
+                          .join(' ');
+                        return item.isLocked
+                          ? html`<span class="${stepClass}" title="سوال قفل‌شده">
+                              <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                              <span>${item.questionNumber}</span>
+                            </span>`
+                          : html`<a
+                              href="${resLocals.urlPrefix}/instance_question/${item.instanceQuestionId}/"
+                              class="${stepClass}"
+                              ${item.isCurrent ? html`aria-current="step"` : ''}
+                              title="سوال ${item.questionNumber}"
+                            >
+                              ${
+                                item.isSolved && !item.isCurrent
+                                  ? html`<i class="bi bi-check-circle-fill" aria-hidden="true"></i>`
+                                  : ''
+                              }
+                              <span>${item.questionNumber}</span>
+                            </a>`;
+                      })}
+                    </div>
+                    <div class="d-flex align-items-center gap-2 small text-body-secondary">
+                      <span class="badge sh-chip-neutral sh-tabular">
+                        ${toPersianDigits(stepperQuestions.filter((q) => q.isSolved).length)} از
+                        ${toPersianDigits(stepperQuestions.length)} کامل
+                      </span>
+                      <span class="d-none d-xl-inline-flex align-items-center gap-1">
+                        <span>میانبر:</span>
+                        <kbd dir="ltr">Alt + ← / →</kbd>
+                      </span>
+                    </div>
+                  </nav>
+                `
+              : ''
+          }
+          ${
             resLocals.instance_question_info.question_access_mode === 'read_only_lockpoint'
               ? html`
                   <div class="alert alert-warning">
@@ -291,51 +340,6 @@ export function StudentInstanceQuestion({
               ? getRoleNamesForUser(resLocals.group_info, resLocals.user).join(', ')
               : null,
           })}
-          ${
-            stepperQuestions.length > 1
-              ? html`
-                  <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h2>سوالات سری</h2>
-                      <span class="small text-body-secondary sh-tabular">
-                        ${toPersianDigits(stepperQuestions.filter((q) => q.isSolved).length)} از
-                        ${toPersianDigits(stepperQuestions.length)}
-                      </span>
-                    </div>
-                    <div class="card-body">
-                      <div class="sh-q-stepper">
-                        ${stepperQuestions.map((item) => {
-                          const stepClass = [
-                            'sh-q-step',
-                            item.isCurrent ? 'is-current' : '',
-                            item.isSolved ? 'is-solved' : '',
-                            item.isPartial ? 'is-partial' : '',
-                            item.isLocked ? 'is-locked' : '',
-                          ]
-                            .filter(Boolean)
-                            .join(' ');
-                          return item.isLocked
-                            ? html`<span class="${stepClass}" title="سوال قفل‌شده">
-                                <i class="bi bi-lock-fill" aria-hidden="true"></i>
-                              </span>`
-                            : html`<a
-                                href="${resLocals.urlPrefix}/instance_question/${item.instanceQuestionId}/"
-                                class="${stepClass}"
-                                ${item.isCurrent ? html`aria-current="step"` : ''}
-                                title="سوال ${item.questionNumber}"
-                              >
-                                ${item.questionNumber}
-                              </a>`;
-                        })}
-                      </div>
-                      <div class="text-body-secondary mt-2" style="font-size: 0.72rem;">
-                        میانبر: <kbd dir="ltr">Alt + ← / →</kbd> برای سوال بعدی و قبلی
-                      </div>
-                    </div>
-                  </div>
-                `
-              : ''
-          }
           ${
             questionStat && questionStat.attemptedCount >= 1
               ? html`

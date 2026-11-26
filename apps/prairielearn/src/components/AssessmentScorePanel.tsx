@@ -28,10 +28,10 @@ export function AssessmentScorePanel({
       <div class="card-body">
         <div class="d-flex justify-content-center">
           <a
-            class="btn btn-info text-white"
+            class="btn btn-info w-100"
             href="${urlPrefix}/assessment_instance/${assessment_instance.id}/"
           >
-            <i class="fa fa-th-list me-1"></i> نمای کلی تکلیف
+            <i class="bi bi-grid me-1" aria-hidden="true"></i> نمای کلی تکلیف
           </a>
         </div>
       </div>
@@ -40,9 +40,10 @@ export function AssessmentScorePanel({
           <tr>
             <td>مجموع امتیازات:</td>
             <td>
-              <span dir="ltr">${formatPoints(assessment_instance.points)} / ${formatPoints(
-                assessment_instance.max_points,
-              )}</span>
+              <span dir="ltr"
+                >${formatPoints(assessment_instance.points)} /
+                ${formatPoints(assessment_instance.max_points)}</span
+              >
             </td>
           </tr>
           <tr>

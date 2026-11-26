@@ -97,7 +97,7 @@ export function QuestionTableBody({
         ${
           showZoneInfo
             ? html`
-                <tr>
+                <tr class="sh-zone-row">
                   <th colspan="${zoneTitleColspan}" scope="rowgroup">
                     ${
                       zoneHasInfo

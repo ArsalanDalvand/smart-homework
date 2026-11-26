@@ -18,10 +18,10 @@ window.PLFileEditor = function (uuid, options) {
   this.restoreOriginalConfirmContainer = this.element.find('.restore-original-confirm-container');
   this.restoreOriginalConfirm = this.element.find('.restore-original-confirm');
   this.restoreOriginalCancel = this.element.find('.restore-original-cancel');
+  this.aceThemeOption = options.aceTheme || null;
   this.editor = ace.edit(this.editorElement.get(0), {
     enableKeyboardAccessibility: true,
   });
-  this.editor.setTheme('ace/theme/chrome');
   this.editor.getSession().setUseWrapMode(true);
   this.editor.setShowPrintMargin(false);
   this.editor.setReadOnly(options.readOnly);
@@ -35,12 +35,19 @@ window.PLFileEditor = function (uuid, options) {
     this.editor.getSession().setMode(options.aceMode);
   }
 
+  const getAutoSurfaceTheme = () => {
+    const isStudentDark =
+      document.documentElement.getAttribute('data-surface') === 'student' &&
+      document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    return isStudentDark ? 'ace/theme/github_dark' : 'ace/theme/github_light_default';
+  };
+
   if (localStorage.getItem('pl-file-editor-theme')) {
     this.editor.setTheme(localStorage.getItem('pl-file-editor-theme'));
   } else if (options.aceTheme) {
     this.editor.setTheme(options.aceTheme);
   } else {
-    this.editor.setTheme('ace/theme/chrome');
+    this.editor.setTheme(getAutoSurfaceTheme());
   }
 
   if (localStorage.getItem('pl-file-editor-fontsize')) {
@@ -48,7 +55,7 @@ window.PLFileEditor = function (uuid, options) {
   } else if (options.fontSize) {
     this.editor.setFontSize(options.fontSize);
   } else {
-    this.editor.setFontSize(12);
+    this.editor.setFontSize(14);
   }
 
   this.editor.setKeyboardHandler(localStorage.getItem('pl-file-editor-keyboardHandler'));
@@ -116,6 +123,12 @@ window.PLFileEditor.prototype.syncSettings = function () {
     this.editor.setTheme(localStorage.getItem('pl-file-editor-theme'));
     this.editor.setFontSize(localStorage.getItem('pl-file-editor-fontsize'));
     this.editor.setKeyboardHandler(localStorage.getItem('pl-file-editor-keyboardHandler'));
+  });
+
+  document.addEventListener('sh-theme-change', (event) => {
+    if (localStorage.getItem('pl-file-editor-theme') || this.aceThemeOption) return;
+    const isDark = event.detail && event.detail.theme === 'dark';
+    this.editor.setTheme(isDark ? 'ace/theme/github_dark' : 'ace/theme/github_light_default');
   });
 };
 

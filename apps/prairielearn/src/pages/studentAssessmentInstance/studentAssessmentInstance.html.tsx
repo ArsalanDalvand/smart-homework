@@ -296,7 +296,7 @@ export function StudentAssessmentInstance({
       ${userCanDeleteAssessmentInstance ? RegenerateInstanceAlert() : ''}
       <div class="card mb-4">
         <div
-          class="card-header bg-primary text-white d-flex flex-wrap align-items-center justify-content-between gap-2"
+          class="card-header bg-primary text-white sh-hero-header d-flex flex-wrap align-items-center justify-content-between gap-2"
         >
           <div class="d-flex align-items-center gap-2">
             <h1>
@@ -372,15 +372,21 @@ export function StudentAssessmentInstance({
                 : html`
                     <div class="col-md-3 col-sm-6">
                       نمره کسب‌شده:
-                      <span dir="ltr"
-                        ><strong>${formatPoints(resLocals.assessment_instance.points)}</strong> /
-                        ${formatPoints(resLocals.assessment_instance.max_points)}</span
-                      >
+                      <strong class="sh-tabular">
+                        ${toPersianDigits(formatPoints(resLocals.assessment_instance.points))}
+                      </strong>
+                      از
+                      <span class="sh-tabular">
+                        ${toPersianDigits(formatPoints(resLocals.assessment_instance.max_points))}
+                      </span>
                       ${
                         resLocals.assessment_instance.max_bonus_points
                           ? html`
                               <br />
-                              (${resLocals.assessment_instance.max_bonus_points} نمره بونوس)
+                              <span class="small text-body-secondary sh-tabular">
+                                (${toPersianDigits(resLocals.assessment_instance.max_bonus_points)}
+                                نمره بونوس)
+                              </span>
                             `
                           : ''
                       }
@@ -453,7 +459,7 @@ export function StudentAssessmentInstance({
 
         <div class="table-responsive">
           <table
-            class="table table-sm table-hover"
+            class="table table-sm table-hover sh-question-table mb-0"
             aria-label="Questions"
             data-testid="assessment-questions"
           >
@@ -562,14 +568,13 @@ function AssessmentStatus({
   authz_result: AssessmentInstanceAuthzResult;
 }) {
   if (assessment_instance.open && authz_result.active) {
-    const localizedCredit = (authz_result.credit_date_string ?? '').replace(
-      '(Staff override)',
-      '(دسترسی کادر آموزشی)',
-    );
+    const localizedCredit = (authz_result.credit_date_string ?? '')
+      .replace('(Staff override)', '(دسترسی کادر آموزشی)')
+      .replace(/\b(\d+)%/g, (_m, n: string) => `${toPersianDigits(n)}٪`);
     return html`
       تکلیف هم‌اکنون <strong>فعال (باز)</strong> است و می‌توانید به سوالات پاسخ دهید.
       <br />
-      مهلت و اعتبار: <span dir="rtl">${localizedCredit}</span>
+      مهلت و اعتبار: <span dir="rtl" class="sh-tabular">${localizedCredit}</span>
       ${
         assessment.modern_access_control
           ? StudentAccessTimelineSchedule({

@@ -81,7 +81,7 @@ export function StudentSkills({
       <div className="se-section" style={{ fontFamily: 'var(--font-persian)' }}>
         {/* Header Card */}
         <div className="se-card mb-4">
-          <div className="se-card-header py-3">
+          <div className="se-card-header sh-hero-header py-3">
             <div>
               <h1 className="h4 fw-bold text-body mb-1">
                 <i className="bi bi-diagram-3 me-2" aria-hidden="true" />
@@ -218,7 +218,7 @@ export function StudentSkills({
                           <a
                             key={q.assessmentQuestionId}
                             href={q.href}
-                            className="list-group-item list-group-item-action d-flex align-items-center justify-content-between gap-2 py-2"
+                            className="list-group-item list-group-item-action d-flex align-items-center justify-content-between gap-3 px-3 py-2"
                           >
                             <div className="d-flex align-items-center gap-2 min-w-0">
                               <i className={`bi ${icon} flex-shrink-0`} aria-hidden="true" />

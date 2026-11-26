@@ -1,49 +1,50 @@
-/* Student Engagement Suite — Ink & Paper Theme-Aware Styles (Light & Dark) */
+/* Student Engagement & Gamification Suite — Nova Studio Design System (Light & Dark) */
 
 .se-section {
   font-family: var(--font-persian), system-ui, -apple-system, sans-serif;
 }
 
-/* Panel Card */
+/* Elevated Panel Card */
 .se-card {
   background-color: var(--sh-bg-surface, #ffffff);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-surface, 8px);
+  border: 1px solid var(--sh-border, #e2e8f0);
+  border-radius: var(--sh-radius-surface, 14px);
+  box-shadow: var(--sh-shadow-card);
   overflow: hidden;
 }
 
 .se-card-header {
-  padding: 0.85rem 1.15rem;
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  border-bottom: 1px solid var(--sh-border, #e4e4e7);
+  padding: 0.9rem 1.2rem;
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  border-bottom: 1px solid var(--sh-border, #e2e8f0);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.65rem;
 }
 
 .se-card-title {
   margin: 0;
-  font-size: 0.96rem;
+  font-size: 0.98rem;
   font-weight: 700;
-  color: var(--sh-ink, #18181b);
+  color: var(--sh-ink, #0f172a);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .se-card-subtitle {
-  font-size: 0.82rem;
-  color: var(--sh-ink-secondary, #52525b);
+  font-size: 0.83rem;
+  color: var(--sh-ink-secondary, #475569);
 }
 
 /* Class Distribution Histogram */
 .se-hist-wrap {
   display: flex;
   align-items: flex-end;
-  gap: 0.7rem;
-  height: 170px;
+  gap: 0.75rem;
+  height: 174px;
   padding: 1.25rem 0.5rem 0.25rem;
 }
 
@@ -60,59 +61,60 @@
 .se-hist-count {
   font-size: 0.74rem;
   font-weight: 700;
-  color: var(--sh-ink-secondary, #52525b);
+  color: var(--sh-ink-secondary, #475569);
   margin-bottom: 0.25rem;
   font-variant-numeric: tabular-nums;
 }
 
 .se-hist-bar-track {
   width: 100%;
-  max-width: 52px;
+  max-width: 54px;
   height: 112px;
   display: flex;
   align-items: flex-end;
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-control, 6px);
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  border: 1px solid var(--sh-border, #e2e8f0);
+  border-radius: var(--sh-radius-control, 10px);
   overflow: hidden;
-  padding: 2px;
+  padding: 3px;
 }
 
 .se-hist-bar {
   width: 100%;
-  border-radius: 4px;
-  background-color: var(--sh-border-strong, #a1a1aa);
+  border-radius: 6px;
+  background-color: var(--sh-border-strong, #cbd5e1);
   transition: height 0.3s ease;
   min-height: 4px;
 }
 
 .se-hist-col.se-bar-mine .se-hist-bar {
-  background-color: var(--sh-accent, #18181b);
+  background: linear-gradient(180deg, var(--sh-cyan, #0891b2) 0%, var(--sh-primary, #2563eb) 100%);
+  box-shadow: 0 2px 10px -2px var(--sh-primary-glow);
 }
 
 .se-hist-label {
   margin-top: 0.45rem;
   font-size: 0.72rem;
-  color: var(--sh-ink-secondary, #52525b);
+  color: var(--sh-ink-secondary, #475569);
   text-align: center;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
 
 .se-hist-mine-tag {
-  font-size: 0.66rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  color: var(--sh-accent-fg, #fafafa);
-  background-color: var(--sh-accent, #18181b);
-  padding: 0.08rem 0.45rem;
-  border-radius: 4px;
+  color: #ffffff;
+  background-color: var(--sh-primary, #2563eb);
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
   margin-bottom: 0.25rem;
 }
 
 /* Assessment Comparison Bars */
 .se-cmp-row {
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--sh-border, #e4e4e7);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--sh-border, #e2e8f0);
 }
 
 .se-cmp-row:last-child {
@@ -121,87 +123,92 @@
 
 .se-cmp-track {
   position: relative;
-  height: 8px;
-  border-radius: 4px;
-  background-color: var(--sh-bg-subtle, #e4e4e7);
-  margin: 0.45rem 0 0.3rem;
+  height: 9px;
+  border-radius: 999px;
+  background-color: var(--sh-track-bg, #e2e8f0);
+  margin: 0.48rem 0 0.32rem;
 }
 
 .se-cmp-fill {
   height: 100%;
-  border-radius: 4px;
-  background-color: var(--sh-accent, #18181b);
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--sh-primary, #2563eb), var(--sh-cyan, #0891b2));
 }
 
 .se-cmp-avg-pin {
   position: absolute;
   top: -4px;
   width: 3px;
-  height: 16px;
+  height: 17px;
   border-radius: 2px;
-  background-color: var(--sh-warning, #b45309);
+  background-color: var(--sh-warning, #d97706);
   box-shadow: 0 0 0 2px var(--sh-bg-surface, #ffffff);
 }
 
 /* GitHub-Style Jalali Heatmap */
 .se-heatmap-scroll {
   overflow-x: auto;
-  padding-bottom: 0.35rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--sh-radius-control, 10px);
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  border: 1px solid var(--sh-border, #e2e8f0);
+  display: flex;
+  justify-content: center;
 }
 
 .se-heatmap-board {
   display: inline-flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 10px;
   direction: ltr;
 }
 
 .se-heatmap-weekdays {
   display: grid;
-  grid-template-rows: 18px repeat(7, 13px);
-  gap: 3px;
-  font-size: 0.66rem;
-  color: var(--sh-ink-muted, #6e6e77);
+  grid-template-rows: 20px repeat(7, 15px);
+  gap: 4px;
+  font-size: 0.7rem;
+  color: var(--sh-ink-secondary, #475569);
   text-align: right;
   padding-right: 4px;
 }
 
 .se-heatmap-weeks {
   display: flex;
-  gap: 3px;
+  gap: 4px;
 }
 
 .se-heatmap-col {
   display: grid;
-  grid-template-rows: 18px repeat(7, 13px);
-  gap: 3px;
+  grid-template-rows: 20px repeat(7, 15px);
+  gap: 4px;
 }
 
 .se-heatmap-month {
-  font-size: 0.66rem;
-  color: var(--sh-ink-secondary, #52525b);
+  font-size: 0.68rem;
+  color: var(--sh-ink-secondary, #475569);
   font-weight: 600;
   white-space: nowrap;
   overflow: visible;
-  line-height: 18px;
+  line-height: 20px;
 }
 
 .se-hm-cell {
-  width: 13px;
-  height: 13px;
-  border-radius: 3px;
-  background-color: var(--sh-bg-subtle, #ebedf0);
-  border: 1px solid rgba(24, 24, 27, 0.08);
-  transition: transform 0.1s ease;
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  background-color: var(--sh-track-bg, #e2e8f0);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  transition: transform 0.12s ease;
 }
 
 .se-hm-cell:hover {
   transform: scale(1.22);
-  border-color: var(--sh-ink-secondary, #52525b);
+  border-color: var(--sh-primary, #2563eb);
 }
 
 .se-hm-l0 {
-  background-color: #ebedf0;
+  background-color: #e2e8f0;
 }
 .se-hm-l1 {
   background-color: #9be9a8;
@@ -213,10 +220,10 @@
   background-color: #30a14e;
 }
 .se-hm-l4 {
-  background-color: #216e39;
+  background-color: #166534;
 }
 .se-hm-today {
-  outline: 2px solid var(--sh-ink, #18181b);
+  outline: 2px solid var(--sh-primary, #2563eb);
   outline-offset: -1px;
 }
 
@@ -224,8 +231,8 @@ html[data-surface='student'][data-bs-theme='dark'] .se-hm-cell {
   border-color: rgba(255, 255, 255, 0.06);
 }
 html[data-surface='student'][data-bs-theme='dark'] .se-hm-l0 {
-  background-color: #202024;
-  border-color: #27272a;
+  background-color: #1c273b;
+  border-color: #273752;
 }
 html[data-surface='student'][data-bs-theme='dark'] .se-hm-l1 {
   background-color: #0e4429;
@@ -240,120 +247,131 @@ html[data-surface='student'][data-bs-theme='dark'] .se-hm-l4 {
   background-color: #39d353;
 }
 
-/* Motivation Badges (Ink & Paper monochrome tiles + restrained icon accent) */
+/* Compact Activity Badges */
 .se-badge-card {
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-surface, 8px);
-  padding: 0.85rem;
+  border: 1px solid var(--sh-border, #e2e8f0);
+  border-radius: var(--sh-radius-control, 10px);
+  padding: 0.9rem;
   height: 100%;
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
   background-color: var(--sh-bg-surface, #ffffff);
-  transition: border-color 0.16s ease;
+  transition:
+    border-color 0.16s ease,
+    transform 0.14s ease;
 }
 
 .se-badge-card.is-earned {
-  border-color: var(--sh-border-strong, #d4d4d8);
+  border-color: var(--sh-primary-border, #bfdbfe);
 }
 
 .se-badge-card.is-locked {
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  opacity: 0.68;
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  opacity: 0.72;
 }
 
 .se-badge-medal {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--sh-radius-control, 6px);
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  color: var(--sh-ink-secondary, #52525b);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--sh-radius-control, 10px);
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  border: 1px solid var(--sh-border, #e2e8f0);
+  color: var(--sh-ink-secondary, #475569);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.98rem;
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
 .se-badge-card.is-earned .se-medal-warning {
   background-color: var(--sh-warning-bg, #fffbeb);
   border-color: var(--sh-warning-border, #fde68a);
-  color: var(--sh-warning, #b45309);
+  color: var(--sh-warning, #d97706);
 }
 
 .se-badge-card.is-earned .se-medal-success {
-  background-color: var(--sh-success-bg, #ecfdf3);
-  border-color: var(--sh-success-border, #bbf7d0);
-  color: var(--sh-success, #15803d);
+  background-color: var(--sh-success-bg, #ecfdf5);
+  border-color: var(--sh-success-border, #a7f3d0);
+  color: var(--sh-success, #059669);
 }
 
 .se-badge-card.is-earned .se-medal-info,
 .se-badge-card.is-earned .se-medal-purple,
 .se-badge-card.is-earned .se-medal-primary {
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  border-color: var(--sh-border-strong, #d4d4d8);
-  color: var(--sh-ink, #18181b);
+  background-color: var(--sh-primary-soft, #eff6ff);
+  border-color: var(--sh-primary-border, #bfdbfe);
+  color: var(--sh-primary, #2563eb);
 }
 
 /* Leaderboard Podium & Table */
 .se-podium-card {
-  border-radius: var(--sh-radius-surface, 8px);
-  padding: 1.1rem;
+  border-radius: var(--sh-radius-surface, 14px);
+  padding: 1.25rem 1.1rem;
   text-align: center;
-  border: 1px solid var(--sh-border, #e4e4e7);
+  border: 1px solid var(--sh-border, #e2e8f0);
   background-color: var(--sh-bg-surface, #ffffff);
+  box-shadow: var(--sh-shadow-card);
   height: 100%;
+  transition: transform 0.14s ease;
+}
+
+.se-podium-card:hover {
+  transform: translateY(-2px);
 }
 
 .se-podium-1 {
   border-color: var(--sh-warning-border, #fde68a);
-  background-color: var(--sh-bg-surface, #ffffff);
+  border-top: 3px solid var(--sh-warning, #d97706);
+  background: linear-gradient(180deg, var(--sh-warning-bg) 0%, var(--sh-bg-surface) 45%);
 }
 
-.se-podium-2,
+.se-podium-2 {
+  border-top: 3px solid #94a3b8;
+}
+
 .se-podium-3 {
-  border-color: var(--sh-border-strong, #d4d4d8);
+  border-top: 3px solid #c28858;
 }
 
 .se-rank-badge {
-  width: 30px;
-  height: 30px;
-  border-radius: var(--sh-radius-control, 6px);
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
   font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
-  border: 1px solid var(--sh-border, #e4e4e7);
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  color: var(--sh-ink, #18181b);
+  border: 1px solid var(--sh-border, #e2e8f0);
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  color: var(--sh-ink, #0f172a);
 }
 
 .se-rank-badge.is-rank-1 {
   background-color: var(--sh-warning-bg, #fffbeb);
   border-color: var(--sh-warning-border, #fde68a);
-  color: var(--sh-warning, #b45309);
+  color: var(--sh-warning, #d97706);
 }
 
 .se-rank-badge.is-rank-2,
 .se-rank-badge.is-rank-3 {
-  border-color: var(--sh-border-strong, #d4d4d8);
-  font-weight: 800;
+  border-color: var(--sh-border-strong, #cbd5e1);
 }
 
 .se-row-me > * {
-  background-color: var(--sh-bg-subtle, #f4f4f2) !important;
+  background-color: var(--sh-primary-soft, #eff6ff) !important;
   font-weight: 600;
 }
 
 /* Deadline Radar Banner */
 .se-deadline-radar {
-  border-radius: var(--sh-radius-surface, 8px);
-  padding: 0.9rem 1.1rem;
-  border: 1px solid var(--sh-border, #e4e4e7);
-  background-color: var(--sh-bg-subtle, #f4f4f2);
+  border-radius: var(--sh-radius-surface, 14px);
+  padding: 0.95rem 1.15rem;
+  border: 1px solid var(--sh-primary-border, #bfdbfe);
+  background-color: var(--sh-primary-soft, #eff6ff);
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
@@ -374,31 +392,31 @@ html[data-surface='student'][data-bs-theme='dark'] .se-hm-l4 {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.25rem 0.7rem;
-  border-radius: var(--sh-radius-control, 6px);
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
   font-weight: 700;
   font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
-  background-color: var(--sh-accent, #18181b);
-  color: var(--sh-accent-fg, #fafafa);
+  background-color: var(--sh-primary, #2563eb);
+  color: #ffffff;
 }
 
 .se-credit-step {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.22rem 0.6rem;
-  border-radius: var(--sh-radius-control, 6px);
+  padding: 0.24rem 0.65rem;
+  border-radius: 8px;
   font-size: 0.76rem;
   background-color: var(--sh-bg-surface, #ffffff);
-  color: var(--sh-ink-secondary, #52525b);
-  border: 1px solid var(--sh-border, #e4e4e7);
+  color: var(--sh-ink-secondary, #475569);
+  border: 1px solid var(--sh-border, #e2e8f0);
 }
 
 .se-credit-step.is-active {
-  background-color: var(--sh-success-bg, #ecfdf3);
-  color: var(--sh-success, #15803d);
-  border-color: var(--sh-success-border, #bbf7d0);
+  background-color: var(--sh-success-bg, #ecfdf5);
+  color: var(--sh-success, #059669);
+  border-color: var(--sh-success-border, #a7f3d0);
   font-weight: 700;
 }
 
@@ -407,8 +425,8 @@ html[data-surface='student'][data-bs-theme='dark'] .se-hm-l4 {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.14rem 0.5rem;
-  border-radius: var(--sh-radius-control, 6px);
+  padding: 0.16rem 0.55rem;
+  border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -417,95 +435,55 @@ html[data-surface='student'][data-bs-theme='dark'] .se-hm-l4 {
 }
 
 .se-qstat-easy {
-  background-color: var(--sh-success-bg, #ecfdf3);
-  color: var(--sh-success, #15803d);
-  border: 1px solid var(--sh-success-border, #bbf7d0);
+  background-color: var(--sh-success-bg, #ecfdf5);
+  color: var(--sh-success, #059669);
+  border: 1px solid var(--sh-success-border, #a7f3d0);
 }
 
 .se-qstat-medium {
   background-color: var(--sh-warning-bg, #fffbeb);
-  color: var(--sh-warning, #b45309);
+  color: var(--sh-warning, #d97706);
   border: 1px solid var(--sh-warning-border, #fde68a);
 }
 
 .se-qstat-hard {
   background-color: var(--sh-danger-bg, #fef2f2);
-  color: var(--sh-danger, #b91c1c);
+  color: var(--sh-danger, #dc2626);
   border: 1px solid var(--sh-danger-border, #fecaca);
 }
 
 .se-radar-strip {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
 .se-radar-mini-card {
   background-color: var(--sh-bg-surface, #ffffff);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-surface, 8px);
-  padding: 0.75rem 0.95rem;
-  color: var(--sh-ink, #18181b);
-  transition: border-color 0.14s ease;
+  border: 1px solid var(--sh-border, #e2e8f0);
+  border-radius: var(--sh-radius-surface, 14px);
+  box-shadow: var(--sh-shadow-card);
+  padding: 0.85rem 1rem;
+  color: var(--sh-ink, #0f172a);
+  transition:
+    border-color 0.14s ease,
+    transform 0.14s ease;
 }
 
 .se-radar-mini-card:hover {
-  border-color: var(--sh-border-strong, #d4d4d8);
+  border-color: var(--sh-primary-border, #bfdbfe);
+  transform: translateY(-1px);
 }
 
 /* ============================================================================
- * Phase 2–4 Gamification, Skill Tree, Quests, Hall of Fame & Micro-Delight
+ * Phase 2 Gamification, Skill Tree, Quests, Hall of Fame & Micro-Delight
  * ============================================================================ */
 
-/* Question Stepper Sidebar */
+/* Question Stepper Grid (fallback if rendered in sidebar) */
 .sh-q-stepper {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
   gap: 0.4rem;
-}
-
-.sh-q-step {
-  height: 36px;
-  border-radius: var(--sh-radius-control, 6px);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  background-color: var(--sh-bg-surface, #ffffff);
-  color: var(--sh-ink-secondary, #52525b);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  text-decoration: none;
-  transition: border-color 0.12s ease;
-}
-
-.sh-q-step:hover {
-  color: var(--sh-ink, #18181b);
-  border-color: var(--sh-border-strong, #d4d4d8);
-}
-
-.sh-q-step.is-solved {
-  background-color: var(--sh-success-bg, #ecfdf3);
-  border-color: var(--sh-success-border, #bbf7d0);
-  color: var(--sh-success, #15803d);
-}
-
-.sh-q-step.is-partial {
-  background-color: var(--sh-warning-bg, #fffbeb);
-  border-color: var(--sh-warning-border, #fde68a);
-  color: var(--sh-warning, #b45309);
-}
-
-.sh-q-step.is-current {
-  outline: 2px solid var(--sh-ink, #18181b);
-  outline-offset: 1px;
-  color: var(--sh-ink, #18181b);
-}
-
-.sh-q-step.is-locked {
-  opacity: 0.55;
-  background-color: var(--sh-bg-subtle, #f4f4f2);
 }
 
 /* Inline Honor Chips (One-Shot / First Blood) */
@@ -513,11 +491,11 @@ html[data-surface='student'][data-bs-theme='dark'] .se-hm-l4 {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.12rem 0.45rem;
-  border-radius: 4px;
-  border: 1px solid var(--sh-border, #e4e4e7);
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  color: var(--sh-ink, #18181b);
+  padding: 0.14rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--sh-warning-border, #fde68a);
+  background-color: var(--sh-warning-bg, #fffbeb);
+  color: var(--sh-warning, #d97706);
   font-size: 0.7rem;
   font-weight: 700;
   margin-inline-start: 0.4rem;
@@ -526,18 +504,34 @@ html[data-surface='student'][data-bs-theme='dark'] .se-hm-l4 {
 
 /* Gradebook Level Hero */
 .sh-level-hero {
-  background-color: var(--sh-bg-surface, #ffffff);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-surface, 8px);
-  padding: 1.1rem 1.25rem;
+  background: linear-gradient(
+    135deg,
+    var(--sh-primary-soft, #eff6ff) 0%,
+    var(--sh-bg-surface, #ffffff) 58%,
+    var(--sh-bg-subtle, #f8fafc) 100%
+  );
+  border: 1px solid var(--sh-primary-border, #bfdbfe);
+  border-radius: var(--sh-radius-surface, 14px);
+  box-shadow: var(--sh-shadow-card);
+  padding: 1.2rem 1.35rem;
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .sh-level-hero {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.16) 0%,
+    rgba(34, 211, 238, 0.06) 46%,
+    var(--sh-bg-surface, #121927) 100%
+  );
 }
 
 .sh-level-emblem {
-  width: 54px;
-  height: 54px;
-  border-radius: var(--sh-radius-surface, 8px);
-  background-color: var(--sh-accent, #18181b);
-  color: var(--sh-accent-fg, #fafafa);
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--sh-primary, #2563eb) 0%, var(--sh-cyan, #0891b2) 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px -2px var(--sh-primary-glow);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -547,117 +541,147 @@ html[data-surface='student'][data-bs-theme='dark'] .se-hm-l4 {
 }
 
 .sh-level-num {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
 }
 
 /* Gradebook Tabs */
 .sh-tabs {
-  border-bottom: 1px solid var(--sh-border, #e4e4e7);
-  gap: 0.25rem;
+  border-bottom: 1px solid var(--sh-border, #e2e8f0);
+  gap: 0.35rem;
 }
 
 .sh-tabs .nav-link {
   border: 0;
-  border-bottom: 2px solid transparent;
-  border-radius: 0;
-  color: var(--sh-ink-secondary, #52525b);
+  border-bottom: 2.5px solid transparent;
+  border-radius: 8px 8px 0 0;
+  color: var(--sh-ink-secondary, #475569);
   font-weight: 600;
   font-size: 0.9rem;
-  padding: 0.6rem 0.9rem;
+  padding: 0.65rem 1rem;
   background: transparent;
+  transition:
+    color 0.14s ease,
+    background-color 0.14s ease;
 }
 
 .sh-tabs .nav-link:hover {
-  color: var(--sh-ink, #18181b);
-  border-bottom-color: var(--sh-border-strong, #d4d4d8);
+  color: var(--sh-ink, #0f172a);
+  background-color: var(--sh-bg-subtle, #f8fafc);
 }
 
 .sh-tabs .nav-link.active {
-  color: var(--sh-ink, #18181b);
-  border-bottom-color: var(--sh-ink, #18181b);
-  background: transparent;
+  color: var(--sh-primary, #2563eb);
+  border-bottom-color: var(--sh-primary, #2563eb);
+  background-color: var(--sh-primary-soft, #eff6ff);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .sh-tabs .nav-link.active {
+  color: #93c5fd;
 }
 
 /* Weekly Quests */
 .sh-quest-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.85rem;
 }
 
 .sh-quest-card {
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-control, 6px);
-  padding: 0.85rem 0.95rem;
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  border: 1px solid var(--sh-border, #e2e8f0);
+  border-radius: 12px;
+  padding: 0.95rem 1.05rem;
+  transition: border-color 0.14s ease;
+}
+
+.sh-quest-card:hover {
+  border-color: var(--sh-primary-border, #bfdbfe);
+}
+
+.sh-quest-card .progress {
+  background-color: var(--sh-track-bg, #e2e8f0);
+  height: 7px !important;
 }
 
 .sh-quest-card.is-completed {
-  background-color: var(--sh-success-bg, #ecfdf3);
-  border-color: var(--sh-success-border, #bbf7d0);
+  background-color: var(--sh-success-bg, #ecfdf5);
+  border-color: var(--sh-success-border, #a7f3d0);
 }
 
 /* Tiered & Secret Achievements */
 .sh-ach-card {
   background-color: var(--sh-bg-surface, #ffffff);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-surface, 8px);
-  padding: 0.9rem 1rem;
+  border: 1px solid var(--sh-border, #e2e8f0);
+  border-radius: 12px;
+  padding: 0.95rem 1.05rem;
+  transition:
+    border-color 0.15s ease,
+    transform 0.14s ease;
+}
+
+.sh-ach-card.is-earned {
+  border-color: var(--sh-primary-border, #bfdbfe);
+}
+
+.sh-ach-card.is-earned:hover {
+  transform: translateY(-2px);
 }
 
 .sh-ach-card.is-locked,
 .sh-ach-card.is-secret-locked {
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  opacity: 0.75;
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  opacity: 0.78;
 }
 
 .sh-ach-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--sh-radius-control, 6px);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  color: var(--sh-ink-secondary, #52525b);
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--sh-border, #e2e8f0);
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  color: var(--sh-ink-secondary, #475569);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
 }
 
 .sh-tier-pill {
   font-size: 0.7rem;
   font-weight: 700;
-  padding: 0.14rem 0.45rem;
-  border-radius: 4px;
-  border: 1px solid var(--sh-border, #e4e4e7);
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  color: var(--sh-ink-secondary, #52525b);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--sh-border, #e2e8f0);
+  background-color: var(--sh-bg-subtle, #f8fafc);
+  color: var(--sh-ink-secondary, #475569);
 }
 
 .sh-tier-bronze {
   border-color: #c28858;
+  background-color: rgba(194, 136, 88, 0.12);
   color: #9a5b25;
 }
 .sh-tier-silver {
   border-color: #94a3b8;
+  background-color: rgba(148, 163, 184, 0.16);
   color: #475569;
 }
 .sh-tier-gold {
   border-color: var(--sh-warning-border, #fde68a);
   background-color: var(--sh-warning-bg, #fffbeb);
-  color: var(--sh-warning, #b45309);
+  color: var(--sh-warning, #d97706);
 }
 .sh-tier-diamond {
-  border-color: var(--sh-ink, #18181b);
-  background-color: var(--sh-accent, #18181b);
-  color: var(--sh-accent-fg, #fafafa);
+  border-color: var(--sh-cyan, #0891b2);
+  background: linear-gradient(135deg, var(--sh-primary, #2563eb) 0%, var(--sh-cyan, #0891b2) 100%);
+  color: #ffffff;
 }
 .sh-tier-secret {
-  border-color: var(--sh-success-border, #bbf7d0);
-  background-color: var(--sh-success-bg, #ecfdf3);
-  color: var(--sh-success, #15803d);
+  border-color: var(--sh-success-border, #a7f3d0);
+  background-color: var(--sh-success-bg, #ecfdf5);
+  color: var(--sh-success, #059669);
 }
 
 html[data-surface='student'][data-bs-theme='dark'] .sh-tier-bronze {
@@ -671,14 +695,14 @@ html[data-surface='student'][data-bs-theme='dark'] .sh-tier-silver {
 
 .sh-tier-pips {
   display: flex;
-  gap: 4px;
+  gap: 5px;
 }
 
 .sh-tier-pip {
-  height: 4px;
+  height: 5px;
   flex: 1 1 0;
-  border-radius: 2px;
-  background-color: var(--sh-border, #e4e4e7);
+  border-radius: 999px;
+  background-color: var(--sh-track-bg, #e2e8f0);
 }
 
 .sh-tier-pip.is-filled.sh-tier-bronze {
@@ -688,118 +712,153 @@ html[data-surface='student'][data-bs-theme='dark'] .sh-tier-silver {
   background-color: #64748b;
 }
 .sh-tier-pip.is-filled.sh-tier-gold {
-  background-color: var(--sh-warning, #b45309);
+  background-color: var(--sh-warning, #d97706);
 }
 .sh-tier-pip.is-filled.sh-tier-diamond {
-  background-color: var(--sh-ink, #18181b);
+  background: linear-gradient(90deg, var(--sh-primary), var(--sh-cyan));
 }
 
-/* Skill Tree */
+/* Skill Tree — Connected Progression Spine */
 .sh-skill-grid {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.85rem;
+}
+
+@media (min-width: 576px) {
+  .sh-skill-grid::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 2.45rem;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 2px;
+    background-color: var(--sh-border-strong, #cbd5e1);
+    z-index: 0;
+  }
 }
 
 .sh-skill-node {
+  position: relative;
+  z-index: 1;
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.9rem;
-  padding: 0.9rem 1rem;
-  border-radius: var(--sh-radius-surface, 8px);
-  border: 1px solid var(--sh-border, #e4e4e7);
+  gap: 0.95rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--sh-radius-surface, 14px);
+  border: 1px solid var(--sh-border, #e2e8f0);
   background-color: var(--sh-bg-surface, #ffffff);
+  box-shadow: var(--sh-shadow-card);
   cursor: pointer;
-  transition: border-color 0.14s ease;
+  transition:
+    border-color 0.14s ease,
+    box-shadow 0.14s ease,
+    transform 0.14s ease;
 }
 
 .sh-skill-node:hover {
-  border-color: var(--sh-border-strong, #d4d4d8);
+  border-color: var(--sh-primary-border, #bfdbfe);
+  transform: translateY(-1px);
 }
 
 .sh-skill-node.is-selected {
-  border-color: var(--sh-ink, #18181b);
-  box-shadow: inset 0 0 0 1px var(--sh-ink, #18181b);
+  border-color: var(--sh-primary, #2563eb);
+  box-shadow:
+    inset 0 0 0 1px var(--sh-primary, #2563eb),
+    0 6px 20px -6px var(--sh-primary-glow);
 }
 
 .sh-skill-ring {
   flex-shrink: 0;
+  background-color: var(--sh-bg-surface, #ffffff);
+  border-radius: 50%;
 }
 
 .sh-skill-ring-track {
   fill: none;
-  stroke: var(--sh-border, #e4e4e7);
+  stroke: var(--sh-track-bg, #e2e8f0);
 }
 
 .sh-skill-ring-fill {
   fill: none;
-  stroke: var(--sh-ink, #18181b);
+  stroke: var(--sh-primary, #2563eb);
   stroke-linecap: round;
   transition: stroke-dashoffset 0.35s ease;
 }
 
 .sh-skill-ring.is-mastered .sh-skill-ring-fill {
-  stroke: var(--sh-success, #15803d);
+  stroke: var(--sh-success, #059669);
 }
 
 .sh-skill-ring.is-learning .sh-skill-ring-fill {
-  stroke: var(--sh-warning, #b45309);
+  stroke: var(--sh-warning, #d97706);
 }
 
 .sh-skill-ring-text {
   font-size: 10px;
   font-weight: 700;
-  fill: var(--sh-ink, #18181b);
+  fill: var(--sh-ink, #0f172a);
   font-family: var(--font-persian), sans-serif;
 }
 
 .sh-skill-detail {
   position: sticky;
-  top: 1rem;
+  top: 4.5rem;
 }
 
 /* Leaderboard Hall of Fame, Rival Nudge & Showcase Badges */
 .sh-rival-nudge {
-  background-color: var(--sh-bg-surface, #ffffff);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-surface, 8px);
-  padding: 0.75rem 1.05rem;
+  background-color: var(--sh-primary-soft, #eff6ff);
+  border: 1px solid var(--sh-primary-border, #bfdbfe);
+  border-radius: var(--sh-radius-surface, 14px);
+  padding: 0.8rem 1.1rem;
 }
 
 .sh-hof-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+  gap: 0.85rem;
 }
 
 .sh-hof-card {
   background-color: var(--sh-bg-surface, #ffffff);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  border-radius: var(--sh-radius-surface, 8px);
-  padding: 0.9rem 1rem;
+  border: 1px solid var(--sh-border, #e2e8f0);
+  border-radius: var(--sh-radius-surface, 14px);
+  box-shadow: var(--sh-shadow-card);
+  padding: 0.95rem 1.05rem;
+  transition: border-color 0.14s ease;
+}
+
+.sh-hof-card:hover {
+  border-color: var(--sh-primary-border, #bfdbfe);
 }
 
 .sh-lv-chip {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
-  background-color: var(--sh-bg-subtle, #f4f4f2);
-  border: 1px solid var(--sh-border, #e4e4e7);
-  color: var(--sh-ink-secondary, #52525b);
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+  background-color: var(--sh-primary-soft, #eff6ff);
+  border: 1px solid var(--sh-primary-border, #bfdbfe);
+  color: var(--sh-primary, #2563eb);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .sh-lv-chip {
+  color: #93c5fd;
 }
 
 .sh-showcase-badge {
-  width: 22px;
-  height: 22px;
-  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.72rem;
-  border: 1px solid var(--sh-border, #e4e4e7);
-  background-color: var(--sh-bg-subtle, #f4f4f2);
+  font-size: 0.75rem;
+  border: 1px solid var(--sh-border, #e2e8f0);
+  background-color: var(--sh-bg-subtle, #f8fafc);
 }
 
 /* Micro-Delight Toasts & Canvas */
@@ -831,12 +890,12 @@ html[data-surface='student'][data-bs-theme='dark'] .sh-tier-silver {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  padding: 0.9rem 1rem;
-  border-radius: var(--sh-radius-surface, 8px);
-  border: 1px solid var(--sh-border-strong, #d4d4d8);
+  padding: 0.95rem 1.05rem;
+  border-radius: var(--sh-radius-surface, 14px);
+  border: 1px solid var(--sh-border-strong, #cbd5e1);
   background-color: var(--sh-bg-surface, #ffffff);
-  color: var(--sh-ink, #18181b);
-  box-shadow: var(--sh-shadow-popover, 0 10px 24px -6px rgba(0, 0, 0, 0.16));
+  color: var(--sh-ink, #0f172a);
+  box-shadow: var(--sh-shadow-popover);
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
@@ -848,16 +907,16 @@ html[data-surface='student'][data-bs-theme='dark'] .sh-tier-silver {
 }
 
 .sh-toast.is-success {
-  border-color: var(--sh-success-border, #bbf7d0);
+  border-color: var(--sh-success-border, #a7f3d0);
 }
 
 .sh-toast.is-success .sh-toast-icon {
-  color: var(--sh-success, #15803d);
+  color: var(--sh-success, #059669);
 }
 
 .sh-toast.is-achievement .sh-toast-icon,
 .sh-toast.is-partial .sh-toast-icon {
-  color: var(--sh-warning, #b45309);
+  color: var(--sh-warning, #d97706);
 }
 
 .sh-toast-icon {
@@ -878,22 +937,23 @@ html[data-surface='student'][data-bs-theme='dark'] .sh-tier-silver {
 
 .sh-toast-sub {
   font-size: 0.78rem;
-  color: var(--sh-ink-secondary, #52525b);
+  color: var(--sh-ink-secondary, #475569);
   margin-top: 0.15rem;
 }
 
 .sh-toast-chip {
   font-size: 0.7rem;
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
-  border: 1px solid var(--sh-border, #e4e4e7);
-  background-color: var(--sh-bg-subtle, #f4f4f2);
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+  border: 1px solid var(--sh-primary-border, #bfdbfe);
+  background-color: var(--sh-primary-soft, #eff6ff);
+  color: var(--sh-primary, #2563eb);
 }
 
 .sh-toast-close {
   border: 0;
   background: transparent;
-  color: var(--sh-ink-secondary, #52525b);
+  color: var(--sh-ink-secondary, #475569);
   padding: 0.15rem;
   cursor: pointer;
   line-height: 1;

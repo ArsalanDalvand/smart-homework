@@ -102,7 +102,7 @@ function LeaderboardRow({
           <span className="fw-semibold text-body">{entry.displayName}</span>
           {level !== null && <span className="sh-lv-chip sh-en-term sh-tabular">Lv.{level}</span>}
           <ShowcaseBadgesRow badges={showcaseBadges} />
-          {entry.isCurrentUser && <span className="badge text-bg-dark">شما</span>}
+          {entry.isCurrentUser && <span className="badge sh-badge-me">شما</span>}
         </div>
       </td>
       <td className="text-center align-middle sh-tabular">
@@ -158,7 +158,7 @@ export function StudentLeaderboard({
       <div className="se-section" style={{ fontFamily: 'var(--font-persian)' }}>
         {/* Filter Header */}
         <div className="se-card mb-4">
-          <div className="se-card-header py-3">
+          <div className="se-card-header sh-hero-header py-3">
             <div>
               <h1 className="h4 fw-bold text-body mb-1">
                 <i className="bi bi-trophy me-2 text-warning" aria-hidden="true" />
@@ -289,7 +289,7 @@ export function StudentLeaderboard({
                           Lv.{userMeta.level}
                         </span>
                       )}
-                      {entry.isCurrentUser && <span className="badge text-bg-dark ms-1">شما</span>}
+                      {entry.isCurrentUser && <span className="badge sh-badge-me ms-1">شما</span>}
                     </div>
                     {showAchievements && userMeta && userMeta.showcaseBadges.length > 0 && (
                       <div className="mb-2 d-flex justify-content-center">
@@ -336,7 +336,10 @@ export function StudentLeaderboard({
             </div>
           ) : (
             <div className="table-responsive">
-              <table className="table table-hover mb-0" aria-label="جدول امتیازات">
+              <table
+                className="table table-hover sh-question-table mb-0"
+                aria-label="جدول امتیازات"
+              >
                 <thead>
                   <tr>
                     <th className="text-center">رتبه</th>

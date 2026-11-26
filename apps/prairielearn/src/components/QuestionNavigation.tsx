@@ -28,7 +28,7 @@ export function QuestionNavSideGroup({
   userGroupRoles: string | null;
 }) {
   return html`
-    <div class="text-center mb-2">
+    <div class="sh-q-nav-grid mb-3">
       ${QuestionNavSideButton({
         instanceQuestionId: prevInstanceQuestionId,
         urlPrefix,
@@ -72,26 +72,35 @@ export function QuestionNavSideButton({
 }) {
   const { buttonId, buttonContent } =
     whichButton === 'next'
-      ? { buttonId: 'question-nav-next', buttonContent: html`سوال بعدی <i class="fa fa-arrow-left ms-1"></i>` }
-      : { buttonId: 'question-nav-prev', buttonContent: html`<i class="fa fa-arrow-right me-1"></i> سوال قبلی` };
+      ? {
+          buttonId: 'question-nav-next',
+          buttonContent: html`سوال بعدی <i class="fa fa-arrow-left ms-1"></i>`,
+        }
+      : {
+          buttonId: 'question-nav-prev',
+          buttonContent: html`<i class="fa fa-arrow-right me-1"></i> سوال قبلی`,
+        };
   let disabledExplanation: HtmlValue | null = null;
 
   if (instanceQuestionId != null) {
     if (groupRolePermissions?.can_view === false) {
-      disabledExplanation = html`دسترسی به این سوال برای نقش شما محدود است.`;
+      disabledExplanation = userGroupRoles
+        ? html`دسترسی به این سوال برای نقش شما (${userGroupRoles}) محدود است.`
+        : html`دسترسی به این سوال برای نقش شما محدود است.`;
     } else if (nextQuestionAccessMode === 'blocked_sequence') {
-      disabledExplanation = html`برای باز شدن سوال بعدی باید حداقل <b>${advanceScorePerc}%</b> نمره این سوال را کسب کنید.`;
+      disabledExplanation = html`برای باز شدن سوال بعدی باید حداقل <b>${advanceScorePerc}%</b> نمره
+        این سوال را کسب کنید.`;
     } else if (nextQuestionAccessMode === 'blocked_lockpoint') {
-      disabledExplanation = html`از بخش <a href="${urlPrefix}/assessment_instance/${assessmentInstanceId}/">نمای کلی ارزیابی</a> مرحله را رد کنید.`;
+      disabledExplanation = html`از بخش
+        <a href="${urlPrefix}/assessment_instance/${assessmentInstanceId}/">نمای کلی ارزیابی</a>
+        مرحله را رد کنید.`;
     }
   }
 
+  const defaultBtnClass = whichButton === 'next' ? 'btn-primary' : 'btn-secondary';
+
   return html`
-    <span
-      id="${buttonId}-container"
-      class="d-inline-block align-top mx-1 mb-3"
-      style="max-width: 22rem"
-    >
+    <span id="${buttonId}-container" class="sh-q-nav-cell">
       ${
         instanceQuestionId == null || disabledExplanation != null
           ? html`
@@ -99,7 +108,7 @@ export function QuestionNavSideButton({
                 id="${buttonId}"
                 type="button"
                 class="btn ${
-                  disabledExplanation != null ? 'btn-secondary pl-sequence-locked' : 'btn-primary'
+                  disabledExplanation != null ? 'btn-secondary pl-sequence-locked' : defaultBtnClass
                 }"
                 disabled
               >
@@ -114,7 +123,7 @@ export function QuestionNavSideButton({
           : html`
               <a
                 id="${buttonId}"
-                class="btn btn-primary"
+                class="btn ${defaultBtnClass}"
                 href="${urlPrefix}/instance_question/${instanceQuestionId}/"
               >
                 ${buttonContent}
@@ -124,7 +133,10 @@ export function QuestionNavSideButton({
       ${
         disabledExplanation != null
           ? html`
-              <span id="${buttonId}-reason" class="d-block small lh-sm text-muted mt-2">
+              <span
+                id="${buttonId}-reason"
+                class="d-block small lh-sm text-body-secondary mt-2 text-center"
+              >
                 ${disabledExplanation}
               </span>
             `

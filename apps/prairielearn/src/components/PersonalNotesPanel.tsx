@@ -35,7 +35,9 @@ export function PersonalNotesPanel({
       </div>
       ${
         fileList.length === 0
-          ? html`<div class="card-body"><span class="text-muted small">یادداشتی پیوست نشده است.</span></div>`
+          ? html`<div class="card-body">
+              <span class="text-muted small">یادداشتی پیوست نشده است.</span>
+            </div>`
           : html`
               <ul class="list-group list-group-flush">
                 ${fileList.map(
@@ -81,10 +83,42 @@ export function PersonalNotesPanel({
                     : !authz_result.authorized_edit
                       ? html`
                           <div class="alert alert-warning mb-0" role="alert">
-                            شما در حال مشاهده نمونه ${context === 'question' ? 'سوال' : 'تکلیف/آزمون'} کاربر دیگری هستید و مجاز به افزودن یا حذف یادداشت‌های شخصی نیستید.
+                            شما در حال مشاهده نمونه
+                            ${context === 'question' ? 'سوال' : 'تکلیف/آزمون'} کاربر دیگری هستید و
+                            مجاز به افزودن یا حذف یادداشت‌های شخصی نیستید.
                           </div>
                         `
                       : html`
+                          <div class="d-flex flex-wrap align-items-center gap-2">
+                            ${
+                              lockdownBrowser
+                                ? ''
+                                : html`
+                                    <button
+                                      class="btn btn-xs btn-secondary"
+                                      type="button"
+                                      data-bs-toggle="collapse"
+                                      data-bs-target="#attachFileCollapse"
+                                      aria-expanded="false"
+                                      aria-controls="attachFileCollapse"
+                                    >
+                                      <i class="bi bi-paperclip me-1" aria-hidden="true"></i>
+                                      پیوست فایل
+                                    </button>
+                                  `
+                            }
+                            <button
+                              class="btn btn-xs btn-secondary"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#attachTextCollapse"
+                              aria-expanded="false"
+                              aria-controls="attachTextCollapse"
+                            >
+                              <i class="bi bi-journal-plus me-1" aria-hidden="true"></i>
+                              افزودن یادداشت متنی
+                            </button>
+                          </div>
                           ${lockdownBrowser ? '' : AttachFileForm({ variantId, csrfToken })}
                           ${UploadTextForm({
                             variantId,
@@ -105,57 +139,45 @@ export function PersonalNotesPanel({
 
 function AttachFileForm({ variantId, csrfToken }: { variantId?: string; csrfToken: string }) {
   return html`
-    <div>
-      <button
-        class="btn btn-xs btn-secondary"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#attachFileCollapse"
-        aria-expanded="false"
-        aria-controls="attachFileCollapse"
+    <div class="collapse" id="attachFileCollapse">
+      <form
+        class="attach-file-form mb-2"
+        name="attach-file-form"
+        method="POST"
+        enctype="multipart/form-data"
       >
-        <i class="fa fa-paperclip me-1"></i> پیوست فایل <i class="far fa-caret-square-down ms-1"></i>
-      </button>
-      <div class="collapse" id="attachFileCollapse">
-        <form
-          class="attach-file-form mb-3"
-          name="attach-file-form"
-          method="POST"
-          enctype="multipart/form-data"
-        >
-          <p class="small mt-3">
-            فایل‌های پیوست‌شده در این بخش به عنوان یادداشت شخصی ذخیره می‌شوند و نقشی در نمره‌دهی ندارند.
-          </p>
-          <div class="mb-3">
-            <label class="form-label" for="attachFileInput">انتخاب فایل</label>
-            <input type="file" name="file" class="form-control" id="attachFileInput" />
-            <small class="form-text text-muted">
-              حداکثر حجم مجاز: ${filesize(config.fileUploadMaxBytes, { base: 10, round: 0 })}
-            </small>
-          </div>
-          <div class="mb-3">
-            <input type="hidden" name="__action" value="attach_file" />
-            ${
-              variantId != null
-                ? html`<input type="hidden" name="__variant_id" value="${variantId}" />`
-                : ''
-            }
-            <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-            <button type="submit" class="btn btn-primary" disabled>بارگذاری پیوست</button>
-          </div>
-        </form>
+        <p class="small text-body-secondary mt-3">
+          فایل‌های پیوست‌شده در این بخش به عنوان یادداشت شخصی ذخیره می‌شوند و نقشی در نمره‌دهی ندارند.
+        </p>
+        <div class="mb-3">
+          <label class="form-label" for="attachFileInput">انتخاب فایل</label>
+          <input type="file" name="file" class="form-control" id="attachFileInput" />
+          <small class="form-text text-body-secondary">
+            حداکثر حجم مجاز: ${filesize(config.fileUploadMaxBytes, { base: 10, round: 0 })}
+          </small>
+        </div>
+        <div class="mb-2">
+          <input type="hidden" name="__action" value="attach_file" />
+          ${
+            variantId != null
+              ? html`<input type="hidden" name="__variant_id" value="${variantId}" />`
+              : ''
+          }
+          <input type="hidden" name="__csrf_token" value="${csrfToken}" />
+          <button type="submit" class="btn btn-primary btn-sm" disabled>بارگذاری پیوست</button>
+        </div>
+      </form>
 
-        <script type="module">
-          // This script is type="module" so that it is deferred and runs after the DOM is ready.
-          const form = document.querySelector('form.attach-file-form');
-          const fileInput = form.querySelector('#attachFileInput');
-          const submitButton = form.querySelector('button[type="submit"]');
-          fileInput.addEventListener('change', (e) => {
-            // Only enable the "submit" button if a file is selected.
-            submitButton.disabled = fileInput.files.length === 0;
-          });
-        </script>
-      </div>
+      <script type="module">
+        // This script is type="module" so that it is deferred and runs after the DOM is ready.
+        const form = document.querySelector('form.attach-file-form');
+        const fileInput = form.querySelector('#attachFileInput');
+        const submitButton = form.querySelector('button[type="submit"]');
+        fileInput.addEventListener('change', () => {
+          // Only enable the "submit" button if a file is selected.
+          submitButton.disabled = fileInput.files.length === 0;
+        });
+      </script>
     </div>
   `;
 }
@@ -170,49 +192,37 @@ function UploadTextForm({
   defaultFilename: string;
 }) {
   return html`
-    <div>
-      <button
-        class="btn btn-xs btn-secondary"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#attachTextCollapse"
-        aria-expanded="false"
-        aria-controls="attachTextCollapse"
-      >
-        <i class="fa fa-sticky-note me-1"></i> افزودن یادداشت متنی <i class="far fa-caret-square-down ms-1"></i>
-      </button>
-      <div class="collapse" id="attachTextCollapse">
-        <form method="POST" class="attach-text-form">
-          <p class="small mt-3">
-            یادداشت‌های متنی ذخیره‌شده صرفاً برای مرور و استفاده شخصی شماست و در نمره‌دهی تاثیری ندارد.
-          </p>
-          <input
-            type="text"
+    <div class="collapse" id="attachTextCollapse">
+      <form method="POST" class="attach-text-form">
+        <p class="small text-body-secondary mt-3">
+          یادداشت‌های متنی ذخیره‌شده صرفاً برای مرور و استفاده شخصی شماست و در نمره‌دهی تاثیری ندارد.
+        </p>
+        <input
+          type="text"
+          class="form-control"
+          aria-label="نام فایل یادداشت"
+          name="filename"
+          value="${defaultFilename}"
+        />
+        <div class="mt-2 mb-3">
+          <textarea
             class="form-control"
-            aria-label="نام فایل یادداشت"
-            name="filename"
-            value="${defaultFilename}"
-          />
-          <div class="mt-1 mb-3">
-            <textarea
-              class="form-control"
-              rows="5"
-              aria-label="محتوای یادداشت"
-              name="contents"
-              placeholder="متن یادداشت یا نکات خود را اینجا تایپ کنید..."
-            ></textarea>
-          </div>
-          ${
-            variantId != null
-              ? html`<input type="hidden" name="__variant_id" value="${variantId}" />`
-              : ''
-          }
-          <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-          <button type="submit" class="btn btn-sm btn-primary" name="__action" value="attach_text">
-            ذخیره یادداشت
-          </button>
-        </form>
-      </div>
+            rows="5"
+            aria-label="محتوای یادداشت"
+            name="contents"
+            placeholder="متن یادداشت یا نکات خود را اینجا تایپ کنید..."
+          ></textarea>
+        </div>
+        ${
+          variantId != null
+            ? html`<input type="hidden" name="__variant_id" value="${variantId}" />`
+            : ''
+        }
+        <input type="hidden" name="__csrf_token" value="${csrfToken}" />
+        <button type="submit" class="btn btn-sm btn-primary" name="__action" value="attach_text">
+          ذخیره یادداشت
+        </button>
+      </form>
     </div>
   `;
 }
