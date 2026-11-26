@@ -1,22 +1,263 @@
+/* Modern Dark IDE Shell for PrairieLearn Cloud Workspace */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: #0d1117 !important;
+  color: #e6edf3;
+  overflow: hidden;
+}
+
+/* Hide global site footer in full-screen IDE workspace so VS Code gets 100% height */
+body footer,
+footer.bg-white {
+  display: none !important;
+}
+
+main#content {
+  height: calc(100vh - 50px) !important;
+  min-height: calc(100vh - 50px) !important;
+  background-color: #0d1117;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.ws-topbar {
+  min-height: 50px;
+  background: linear-gradient(90deg, #0f172a 0%, #111827 55%, #0f172a 100%);
+  border-bottom: 1px solid #263042;
+  padding: 0.35rem 0.9rem;
+  z-index: 1030;
+}
+
+.ws-brand-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ws-title-link {
+  color: #f8fafc !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: color 0.15s ease;
+}
+
+.ws-title-link:hover {
+  color: #38bdf8 !important;
+}
+
+.ws-subtitle {
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+/* Live Status Pill */
+.ws-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  background: rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.ws-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #94a3b8;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.ws-status-pill.ws-state-running {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.35);
+  color: #86efac;
+}
+
+.ws-status-pill.ws-state-running .ws-status-dot {
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  animation: ws-pulse 2s infinite;
+}
+
+.ws-status-pill.ws-state-launching {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fcd34d;
+}
+
+.ws-status-pill.ws-state-launching .ws-status-dot {
+  background: #f59e0b;
+  animation: ws-pulse 1.2s infinite;
+}
+
+.ws-status-pill.ws-state-stopped {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+
+.ws-status-pill.ws-state-stopped .ws-status-dot {
+  background: #ef4444;
+}
+
+@keyframes ws-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
 .badge-workspace {
-  padding: 0.3rem 0.4rem;
+  padding: 0;
+  background: transparent !important;
+  color: inherit !important;
+  font-size: inherit;
 }
 
-.badge-prepend {
-  border-radius: 0.25rem 0 0 0.25rem;
+.ws-msg-pill {
+  font-size: 0.74rem;
+  color: #94a3b8;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.badge-append {
-  border-radius: 0 0.25rem 0.25rem 0;
-  border-left: 1px solid var(--secondary);
-  opacity: 0.95;
+.ws-msg-pill:empty {
+  display: none;
+}
+
+/* Save & Grade Tip Chip */
+.ws-save-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 8px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: #bae6fd;
+  font-size: 0.75rem;
+}
+
+.ws-save-tip kbd {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  padding: 0.08rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Action Buttons */
+.ws-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: 8px;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  transition: all 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ws-btn:hover,
+.ws-btn:focus {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(148, 163, 184, 0.42);
+}
+
+.ws-btn-primary {
+  color: #e0f2fe;
+  background: rgba(14, 165, 233, 0.18);
+  border-color: rgba(56, 189, 248, 0.38);
+}
+
+.ws-btn-primary:hover {
+  color: #ffffff;
+  background: rgba(14, 165, 233, 0.3);
+  border-color: rgba(56, 189, 248, 0.6);
+}
+
+.ws-btn-danger {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.28);
+}
+
+.ws-btn-danger:hover {
+  color: #ffffff;
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.55);
+}
+
+/* Dark Loading / Stopped / Failed Overlay States */
+.ws-state-screen {
+  background: radial-gradient(circle at top, #172033 0%, #0d1117 70%);
+  color: #e2e8f0;
+}
+
+.ws-state-card {
+  max-width: 460px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid #263042;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.ws-spinner-ring {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid rgba(56, 189, 248, 0.2);
+  border-top-color: #38bdf8;
+  animation: ws-spin 0.9s linear infinite;
+  margin: 0 auto 1.1rem;
+}
+
+@keyframes ws-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .badge-outline {
-  border: 1px solid var(--dark);
-  font-weight: 400;
+  border: 1px solid #cbd5e1;
+  font-weight: 500;
 }
 
 .popover {
-  max-width: 30rem;
+  max-width: 28rem;
+  direction: rtl;
+  text-align: right;
 }
