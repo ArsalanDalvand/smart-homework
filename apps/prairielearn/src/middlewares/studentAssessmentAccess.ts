@@ -87,7 +87,7 @@ export default asyncHandler(async (req, res, next) => {
       res.locals.authn_user.id,
     );
 
-    flash('success', 'Your previous assessment instance was deleted.');
+    flash('success', 'نمونه آزمون قبلی شما حذف شد.');
     res.redirect(`${res.locals.urlPrefix}/assessment/${res.locals.assessment.id}`);
     return;
   }

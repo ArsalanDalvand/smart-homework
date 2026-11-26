@@ -26,7 +26,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Public Questions',
+        pageTitle: 'سوالات عمومی',
         navContext: {
           type: 'public',
           page: 'public_questions',

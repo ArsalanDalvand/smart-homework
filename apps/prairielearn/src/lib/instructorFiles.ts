@@ -152,7 +152,7 @@ export function getPaths(
   const specialDirs: InstructorFilePaths['specialDirs'] = [];
   if (workingPath === rootPath) {
     specialDirs.push({
-      label: 'Client',
+      label: 'کلاینت',
       path: clientDir,
       info: html`These files will be placed in the subdirectory
         <code>${path.basename(clientDir)}</code> and will be accessible from the student's web
@@ -160,7 +160,7 @@ export function getPaths(
     });
     if (serverDir) {
       specialDirs.push({
-        label: 'Server',
+        label: 'سرور',
         path: serverDir,
         info: html`These files will be placed in the subdirectory
           <code>${path.basename(serverDir)}</code> and will be accessible only from the server. They
@@ -169,7 +169,7 @@ export function getPaths(
     }
     if (testsDir) {
       specialDirs.push({
-        label: 'Test',
+        label: 'تست',
         path: testsDir,
         info: html`These files will be placed in the subdirectory
           <code>${path.basename(testsDir)}</code> and will be accessible only from the server. They

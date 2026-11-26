@@ -242,7 +242,7 @@ router.post(
         throw new error.HttpStatusError(403, 'Access denied (must be a course editor)');
       }
       if (!courseInstance.modern_publishing) {
-        flash('error', 'Cannot update publishing when legacy allowAccess rules are present');
+        flash('error', 'در صورت وجود قوانین قدیمی allowAccess امکان به‌روزرسانی تنظیمات انتشار وجود ندارد.');
         res.redirect(req.originalUrl);
         return;
       }

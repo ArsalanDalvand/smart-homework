@@ -349,7 +349,7 @@ router.post(
           decision.invitationCandidate === null ||
           !idsEqual(decision.invitationCandidate.enrollment.id, body.enrollment_id)
         ) {
-          flash('error', 'Failed to accept invitation');
+          flash('error', 'پذیرش دعوت‌نامه با خطا مواجه شد.');
           break;
         }
 
@@ -364,7 +364,7 @@ router.post(
           });
         } catch (error) {
           if (!(error instanceof EnrollmentAdmissionDeniedError)) throw error;
-          flash('error', 'Failed to accept invitation');
+          flash('error', 'پذیرش دعوت‌نامه با خطا مواجه شد.');
         }
         break;
       }
@@ -379,7 +379,7 @@ router.post(
           });
         } catch (error) {
           if (!(error instanceof EnrollmentAdmissionDeniedError)) throw error;
-          flash('error', 'Failed to reject invitation');
+          flash('error', 'رد دعوت‌نامه با خطا مواجه شد.');
         }
         break;
       }
@@ -392,7 +392,7 @@ router.post(
         });
 
         if (!enrollment || !['joined', 'left', 'removed'].includes(enrollment.status)) {
-          flash('error', 'Failed to unenroll');
+          flash('error', 'لغو عضویت در درس با خطا مواجه شد.');
           break;
         }
 
@@ -419,7 +419,7 @@ router.post(
           });
         } catch (error) {
           if (!(error instanceof EnrollmentAdmissionDeniedError)) throw error;
-          flash('error', 'Failed to remove course');
+          flash('error', 'حذف درس با خطا مواجه شد.');
         }
         break;
       }

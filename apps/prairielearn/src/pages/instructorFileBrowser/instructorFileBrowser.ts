@@ -38,7 +38,7 @@ router.get(
               page: res.locals.navPage,
               subPage: 'file_view',
             },
-            pageTitle: 'Files',
+            pageTitle: 'فایل‌ها',
             requiredPermissions: 'Viewer',
           }),
         );

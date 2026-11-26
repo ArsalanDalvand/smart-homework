@@ -131,19 +131,19 @@ router.post(
       error = true;
     }
     if (title.length === 0) {
-      flash('error', 'The course title should not be empty.');
+      flash('error', 'عنوان درس نمی‌تواند خالی باشد.');
       error = true;
     }
     if (title.length > 75) {
-      flash('error', 'The course title must be at most 75 characters.');
+      flash('error', 'عنوان درس باید حداکثر ۷۵ کاراکتر باشد.');
       error = true;
     }
     if (first_name.length === 0) {
-      flash('error', 'The first name should not be empty.');
+      flash('error', 'نام نمی‌تواند خالی باشد.');
       error = true;
     }
     if (last_name.length === 0) {
-      flash('error', 'The last name should not be empty.');
+      flash('error', 'نام خانوادگی نمی‌تواند خالی باشد.');
       error = true;
     }
     if (github_user !== null && !isValidGithubUsername(github_user)) {
@@ -152,15 +152,15 @@ router.post(
     }
 
     if (isDefaultInstitution && work_email?.length === 0) {
-      flash('error', 'The work email should not be empty.');
+      flash('error', 'ایمیل سازمانی/کاری نمی‌تواند خالی باشد.');
       error = true;
     }
     if (institution.length === 0) {
-      flash('error', 'The institution should not be empty.');
+      flash('error', 'نام موسسه یا دانشگاه نمی‌تواند خالی باشد.');
       error = true;
     }
     if (referral_source.length === 0) {
-      flash('error', 'The referral source should not be empty.');
+      flash('error', 'نحوه آشنایی نمی‌تواند خالی باشد.');
       error = true;
     }
 
@@ -174,7 +174,7 @@ router.post(
     );
 
     if (hasExistingCourseRequest) {
-      flash('error', 'You already have a request for this course.');
+      flash('error', 'شما قبلاً برای این درس درخواست ثبت کرده‌اید.');
       error = true;
     }
 

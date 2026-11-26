@@ -6,7 +6,7 @@ import type { UntypedResLocals } from '../lib/res-locals.types.js';
 export function AccessDenied({ resLocals }: { resLocals: UntypedResLocals }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Assessment unavailable',
+    pageTitle: 'آزمون در دسترس نیست',
     navContext: {
       type: 'student',
       page: 'assessment_instance',

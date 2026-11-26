@@ -10,7 +10,7 @@ export function EnrollmentLimitExceededMessage({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Enrollment - Courses',
+    pageTitle: 'ثبت‌نام در درس‌ها',
     navContext: {
       type: 'plain',
       page: 'enroll',

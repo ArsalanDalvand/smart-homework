@@ -781,7 +781,7 @@ const deleteAssessment = t.procedure.use(requireCoursePermissionEdit).mutation(a
     });
   }
 
-  flash('success', 'Assessment deleted successfully.');
+  flash('success', 'آزمون با موفقیت حذف شد.');
 });
 
 export const assessmentSettingsRouter = t.router({

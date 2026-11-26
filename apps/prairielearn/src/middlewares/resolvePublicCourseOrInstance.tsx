@@ -51,7 +51,7 @@ async function enforcePublicCourseSharing(res: Response, course: Course): Promis
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Missing sharing name',
+        pageTitle: 'نام اشتراک‌گذاری یافت نشد',
         navContext: {
           type: 'public',
           page: 'error',

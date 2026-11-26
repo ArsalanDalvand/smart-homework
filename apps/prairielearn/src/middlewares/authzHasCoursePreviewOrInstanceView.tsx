@@ -79,7 +79,7 @@ export async function authzHasCoursePreviewOrInstanceView(
           type: pageContext.navbarType,
           page: 'error',
         },
-        pageTitle: 'Insufficient access',
+        pageTitle: 'عدم دسترسی کافی',
         content: (
           <Hydrate>
             <AuthzAccessMismatch

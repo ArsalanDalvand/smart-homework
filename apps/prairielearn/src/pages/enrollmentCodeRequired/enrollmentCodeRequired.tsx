@@ -82,7 +82,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Enrollment Code Required',
+        pageTitle: 'کد ثبت‌نام الزامی است',
         navContext: {
           type: 'student',
           page: 'enroll',
