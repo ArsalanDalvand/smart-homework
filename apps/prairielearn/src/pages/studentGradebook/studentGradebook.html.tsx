@@ -8,12 +8,15 @@ import {
   type StudentActivityAndBadges,
   type StudentAnalyticsData,
 } from '../../lib/student-engagement.js';
-import type {
-  AchievementTier,
-  StudentAchievement,
-  StudentGamificationProfile,
-  WeeklyQuestsBundle,
+import {
+  type AchievementTier,
+  type StudentAchievement,
+  type StudentGamificationProfile,
+  WEEKLY_GOAL_TIERS,
+  type WeeklyGoalTier,
+  type WeeklyQuestsBundle,
 } from '../../lib/student-gamification.js';
+import type { PersonalWeeklyGoalState } from '../../lib/student-phase3.js';
 
 export interface StudentGradebookTableRow {
   assessment_id: string;
@@ -260,6 +263,14 @@ function StudentHeatmapAndBadgesSection({
               رکورد <span className="sh-en-term">Streak</span>:{' '}
               {toPersianDigits(data.longestStreakDays)} روز
             </span>
+            <span
+              className="badge bg-info-subtle text-info-emphasis border border-info-subtle px-2 py-1"
+              title="در هر ماه شمسی حداکثر ۲ روز غیبت تک‌روزه به صورت خودکار برای حفظ Streak محافظت می‌شود"
+            >
+              <i className="bi bi-snow me-1" aria-hidden="true" />
+              محافظ زنجیره این ماه: {toPersianDigits(data.freezesRemainingThisMonth)} از{' '}
+              {toPersianDigits(data.maxFreezesPerMonth)}
+            </span>
             <span className="badge bg-body-tertiary text-body border px-2 py-1">
               {toPersianDigits(data.totalSubmissions140d)} ارسال در{' '}
               {toPersianDigits(data.activeDaysCount)} روز فعال
@@ -286,8 +297,12 @@ function StudentHeatmapAndBadgesSection({
                     {week.cells.map((cell) => (
                       <div
                         key={cell.dateKey}
-                        className={`se-hm-cell se-hm-l${cell.level} ${cell.isToday ? 'se-hm-today' : ''}`}
-                        title={`${cell.jalaliDateLabel}: ${toPersianDigits(cell.count)} ارسال`}
+                        className={`se-hm-cell se-hm-l${cell.level} ${cell.isToday ? 'se-hm-today' : ''} ${cell.isFrozen ? 'se-hm-freeze' : ''}`}
+                        title={
+                          cell.isFrozen
+                            ? `${cell.jalaliDateLabel}: محافظت‌شده با Streak Freeze ❄️`
+                            : `${cell.jalaliDateLabel}: ${toPersianDigits(cell.count)} ارسال`
+                        }
                       />
                     ))}
                   </div>
@@ -302,14 +317,20 @@ function StudentHeatmapAndBadgesSection({
             }`}
           >
             <span>۲۰ هفته اخیر (ستون‌ها از شنبه تا جمعه بر اساس تقویم شمسی)</span>
-            <div className="d-flex align-items-center gap-1" dir="ltr">
-              <span className="me-1">کمتر</span>
-              <span className="se-hm-cell se-hm-l0" />
-              <span className="se-hm-cell se-hm-l1" />
-              <span className="se-hm-cell se-hm-l2" />
-              <span className="se-hm-cell se-hm-l3" />
-              <span className="se-hm-cell se-hm-l4" />
-              <span className="ms-1">بیشتر</span>
+            <div className="d-flex flex-wrap align-items-center gap-2">
+              <span className="d-inline-flex align-items-center gap-1" title="محافظ زنجیره خودکار">
+                <span className="se-hm-cell se-hm-freeze" />
+                <span>محافظ ❄️</span>
+              </span>
+              <div className="d-flex align-items-center gap-1" dir="ltr">
+                <span className="me-1">کمتر</span>
+                <span className="se-hm-cell se-hm-l0" />
+                <span className="se-hm-cell se-hm-l1" />
+                <span className="se-hm-cell se-hm-l2" />
+                <span className="se-hm-cell se-hm-l3" />
+                <span className="se-hm-cell se-hm-l4" />
+                <span className="ms-1">بیشتر</span>
+              </div>
             </div>
           </div>
 
@@ -362,9 +383,11 @@ function StudentHeatmapAndBadgesSection({
 function LevelHeroBanner({
   profile,
   skillsUrl,
+  showTermWrapUp = false,
 }: {
   profile: StudentGamificationProfile;
   skillsUrl: string | null;
+  showTermWrapUp?: boolean;
 }) {
   const { level, streak, xp, unlockedAchievementIds, achievements } = profile;
 
@@ -402,12 +425,27 @@ function LevelHeroBanner({
                 روز
               </span>
             )}
+            {showTermWrapUp && (
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#sh-term-wrapup-modal"
+              >
+                <i className="bi bi-stars me-1" aria-hidden="true" />
+                کارت افتخارات ترم
+              </button>
+            )}
             {skillsUrl && (
               <a href={skillsUrl} className="btn btn-outline-primary btn-sm">
                 <i className="bi bi-diagram-3 me-1" aria-hidden="true" />
                 <span className="sh-en-term">Skill Tree</span>
               </a>
             )}
+            <a href="/pl/settings#public-profile" className="btn btn-outline-secondary btn-sm">
+              <i className="bi bi-person-badge me-1" aria-hidden="true" />
+              ویرایش پروفایل
+            </a>
           </div>
         </div>
 
@@ -604,7 +642,7 @@ function TieredAndSecretAchievementsSection({
                         <span className="fw-bold small text-body sh-en-term">
                           {sec.earned ? sec.title : 'Secret Achievement'}
                         </span>
-                        {sec.earned && (
+                        {sec.earned && sec.xpReward > 0 && (
                           <span className="badge bg-body-tertiary text-body border sh-en-term sh-tabular">
                             +{toPersianDigits(sec.xpReward)} XP
                           </span>
@@ -630,6 +668,312 @@ function TieredAndSecretAchievementsSection({
   );
 }
 
+function PersonalWeeklyGoalSection({
+  personalGoal,
+  csrfToken,
+}: {
+  personalGoal: PersonalWeeklyGoalState;
+  csrfToken: string;
+}) {
+  const tiers: WeeklyGoalTier[] = ['light', 'balanced', 'pro'];
+  return (
+    <div id="sh-weekly-goal" className="se-card sh-weekly-goal-card mb-4">
+      <div className="se-card-header">
+        <h2 className="se-card-title">
+          <i className="bi bi-bullseye text-primary" aria-hidden="true" />
+          <span>تعهد هفتگی من — {personalGoal.weekLabel}</span>
+        </h2>
+        <span className="badge bg-body-tertiary text-body border sh-en-term sh-tabular">
+          +{toPersianDigits(personalGoal.xpReward)} XP
+        </span>
+      </div>
+      <div className="p-3">
+        <form method="POST" className="d-flex flex-wrap gap-2 mb-3">
+          <input name="__csrf_token" type="hidden" value={csrfToken} />
+          <input name="__action" type="hidden" value="set_weekly_goal" />
+          {tiers.map((tierKey) => {
+            const meta = WEEKLY_GOAL_TIERS[tierKey];
+            const isSelected = personalGoal.tier === tierKey;
+            return (
+              <button
+                key={tierKey}
+                aria-pressed={isSelected ? 'true' : 'false'}
+                className={`sh-goal-pill ${isSelected ? 'is-active' : ''}`}
+                name="tier"
+                type="submit"
+                value={tierKey}
+              >
+                {meta.labelFa}
+              </button>
+            );
+          })}
+        </form>
+        <div className="d-flex justify-content-between small text-body-secondary mb-1 sh-tabular">
+          <span>
+            {personalGoal.hasExplicitGoal
+              ? `پیشرفت این هفته: ${toPersianDigits(personalGoal.solvedThisWeek)} از ${toPersianDigits(personalGoal.targetQuestions)} سوال`
+              : 'سطح هدف این هفته خود را انتخاب کنید تا با تکمیل آن XP جایزه بگیرید'}
+          </span>
+          <span>{toPersianDigits(personalGoal.progressPerc)}٪</span>
+        </div>
+        <div className="progress" style={{ height: '8px' }}>
+          <div
+            className={`progress-bar ${personalGoal.completed ? 'sh-progress-success' : 'sh-progress-brand'}`}
+            style={{ width: `${personalGoal.progressPerc}%` }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WhatIfSimulatorSection({ analyticsData }: { analyticsData: StudentAnalyticsData | null }) {
+  const comparisons = analyticsData?.assessmentComparisons ?? [];
+  const completedItems = comparisons.filter((i) => i.studentScore !== null);
+  const completedCount = completedItems.length;
+  const currentAvgPerc =
+    completedCount > 0
+      ? Math.round(
+          (completedItems.reduce((sum, i) => sum + (i.studentScore ?? 0), 0) / completedCount) * 10,
+        ) / 10
+      : (analyticsData?.studentOverallScore ?? 0);
+  const defaultRemainingCount = Math.max(comparisons.length - completedCount, 4);
+
+  const payload = {
+    completedCount,
+    currentAvgPerc,
+    defaultRemainingCount,
+  };
+
+  return (
+    <section id="sh-whatif-card" className="se-section mb-4" aria-label="شبیه‌ساز نمره پایان ترم">
+      <div id="sh-whatif-data" className="d-none" data-config={JSON.stringify(payload)} />
+      <div className="se-card sh-whatif-card">
+        <div className="se-card-header">
+          <h2 className="se-card-title">
+            <i className="bi bi-calculator text-primary" aria-hidden="true" />
+            <span>شبیه‌ساز نمره تمرین‌ها (What-If)</span>
+          </h2>
+          <span className="small text-body-secondary sh-tabular">
+            عملکرد فعلی: <strong>{toPersianDigits(currentAvgPerc)}٪</strong> در{' '}
+            {toPersianDigits(completedCount)} سری
+          </span>
+        </div>
+        <div className="p-3">
+          <div className="row g-3 align-items-center">
+            <div className="col-lg-7">
+              <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                <label className="small fw-semibold text-body mb-0" htmlFor="sh-whatif-slider">
+                  اگر سری‌های باقی‌مانده را با میانگین{' '}
+                  <strong id="sh-whatif-slider-label" className="text-primary sh-tabular">
+                    ۸۵٪
+                  </strong>{' '}
+                  حل کنم:
+                </label>
+                <div className="d-flex align-items-center gap-1">
+                  {[70, 85, 100].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      className="btn btn-xs btn-outline-secondary sh-tabular"
+                      data-sh-whatif-preset={String(preset)}
+                    >
+                      {toPersianDigits(preset)}٪
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <input
+                id="sh-whatif-slider"
+                className="form-range"
+                defaultValue={85}
+                max={100}
+                min={0}
+                step={5}
+                type="range"
+              />
+              <div className="d-flex align-items-center gap-2 mt-2 small text-body-secondary">
+                <label className="mb-0" htmlFor="sh-whatif-remaining">
+                  تعداد سری‌های باقی‌مانده ترم:
+                </label>
+                <select
+                  id="sh-whatif-remaining"
+                  className="form-select form-select-sm w-auto sh-tabular"
+                  defaultValue={String(defaultRemainingCount)}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                    <option key={n} value={String(n)}>
+                      {toPersianDigits(n)} سری
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="col-lg-5">
+              <div className="p-3 rounded border bg-body-tertiary text-center">
+                <div className="small text-body-secondary mb-1">میانگین پیش‌بینی‌شده نهایی</div>
+                <div id="sh-whatif-result-perc" className="h3 fw-bold text-primary mb-2 sh-tabular">
+                  {toPersianDigits(currentAvgPerc)}٪
+                </div>
+                <div className="progress mb-2" style={{ height: '8px' }}>
+                  <div
+                    id="sh-whatif-progress-bar"
+                    className="progress-bar sh-progress-brand"
+                    style={{ width: `${Math.min(100, currentAvgPerc)}%` }}
+                  />
+                </div>
+                <div id="sh-whatif-advice" className="small text-body-secondary" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TermWrapUpModal({
+  resLocals,
+  profile,
+  analyticsData,
+}: {
+  resLocals: ResLocalsForPage<'course-instance'>;
+  profile: StudentGamificationProfile;
+  analyticsData: StudentAnalyticsData | null;
+}) {
+  const studentName = resLocals.user.name?.trim() || 'دانشجو';
+  const topBadges = profile.showcaseBadges.map((b) => b.title);
+  const overallScorePerc = analyticsData?.studentOverallScore ?? 0;
+
+  const wrapUpPayload = {
+    studentName,
+    courseName: resLocals.course.short_name,
+    termName: resLocals.course_instance.short_name,
+    level: profile.level.level,
+    levelTitle: profile.level.title,
+    levelSubtitleFa: profile.level.subtitleFa,
+    totalXp: profile.xp.totalXp,
+    solvedQuestions: profile.solvedAqIds.length,
+    overallScorePerc,
+    longestStreak: profile.streak.longest,
+    unlockedCount: profile.unlockedAchievementIds.length,
+    topBadges,
+  };
+
+  return (
+    <div
+      id="sh-term-wrapup-modal"
+      aria-hidden="true"
+      aria-labelledby="sh-term-wrapup-label"
+      className="modal fade"
+      tabIndex={-1}
+    >
+      <div id="sh-wrapup-data" className="d-none" data-config={JSON.stringify(wrapUpPayload)} />
+      <div className="modal-dialog modal-lg modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 id="sh-term-wrapup-label" className="modal-title h6 fw-bold">
+              <i className="bi bi-stars me-1 text-warning" aria-hidden="true" />
+              کارت خلاصه افتخارات ترم (Term Wrap-Up)
+            </h2>
+            <button aria-label="بستن" className="btn-close" data-bs-dismiss="modal" type="button" />
+          </div>
+          <div className="modal-body p-3">
+            <div className="sh-wrapup-poster">
+              <div className="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                <div>
+                  <div className="small text-info-emphasis fw-semibold sh-en-term">
+                    SMART HOMEWORK · TERM WRAP-UP
+                  </div>
+                  <h3 className="h4 fw-bold text-white mt-1 mb-1">{studentName}</h3>
+                  <div className="small text-white-50">
+                    {resLocals.course.short_name} · {resLocals.course_instance.short_name}
+                  </div>
+                </div>
+                <span className="sh-wrapup-lv-badge sh-en-term sh-tabular">
+                  Lv.{toPersianDigits(profile.level.level)} · {profile.level.title}
+                </span>
+              </div>
+
+              <div className="row g-3 mb-4">
+                <div className="col-6 col-md-3">
+                  <div className="sh-wrapup-stat">
+                    <div className="sh-wrapup-stat-label">مجموع XP</div>
+                    <div className="sh-wrapup-stat-val sh-tabular">
+                      {toPersianDigits(profile.xp.totalXp)}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-6 col-md-3">
+                  <div className="sh-wrapup-stat">
+                    <div className="sh-wrapup-stat-label">سوالات حل‌شده</div>
+                    <div className="sh-wrapup-stat-val sh-tabular">
+                      {toPersianDigits(profile.solvedAqIds.length)}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-6 col-md-3">
+                  <div className="sh-wrapup-stat">
+                    <div className="sh-wrapup-stat-label">رکورد Streak</div>
+                    <div className="sh-wrapup-stat-val sh-tabular">
+                      {toPersianDigits(profile.streak.longest)} روز
+                    </div>
+                  </div>
+                </div>
+                <div className="col-6 col-md-3">
+                  <div className="sh-wrapup-stat">
+                    <div className="sh-wrapup-stat-label">مدال‌های بازشده</div>
+                    <div className="sh-wrapup-stat-val sh-tabular">
+                      {toPersianDigits(profile.unlockedAchievementIds.length)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="sh-wrapup-badges-box">
+                <div className="small text-warning fw-semibold mb-2">برجسته‌ترین افتخارات</div>
+                {topBadges.length === 0 ? (
+                  <div className="small text-white-50">
+                    با حل اولین تمرین‌ها، مدال‌های این ترم اینجا نقش می‌بندند.
+                  </div>
+                ) : (
+                  <div className="d-flex flex-wrap gap-2">
+                    {profile.showcaseBadges.map((b) => (
+                      <span key={b.id} className="sh-wrapup-medal-pill sh-en-term">
+                        <i className={`${b.iconClass} me-1`} aria-hidden="true" />
+                        {b.title}
+                      </span>
+                    ))}
+                    {profile.taKudosCount > 0 && (
+                      <span className="sh-wrapup-medal-pill sh-tabular">
+                        🌟 {toPersianDigits(profile.taKudosCount)} تحسین TA
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer sh-no-print">
+            <button id="sh-wrapup-download-png" className="btn btn-primary btn-sm" type="button">
+              <i className="bi bi-download me-1" aria-hidden="true" />
+              دانلود کارت تصویر (PNG)
+            </button>
+            <button
+              id="sh-wrapup-print-btn"
+              className="btn btn-outline-secondary btn-sm"
+              type="button"
+            >
+              <i className="bi bi-printer me-1" aria-hidden="true" />
+              چاپ / ذخیره PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function StudentGradebook({
   resLocals,
   rows,
@@ -637,10 +981,13 @@ export function StudentGradebook({
   analyticsData,
   activityData,
   gamificationProfile = null,
+  personalGoal = null,
   showXpLevels = false,
   showAchievements = false,
   showWeeklyQuests = false,
   showSkillTreeLink = false,
+  showWhatIfSimulator = false,
+  showTermWrapUp = false,
 }: {
   resLocals: ResLocalsForPage<'course-instance'>;
   rows: StudentGradebookTableRow[];
@@ -648,10 +995,13 @@ export function StudentGradebook({
   analyticsData: StudentAnalyticsData | null;
   activityData: StudentActivityAndBadges | null;
   gamificationProfile?: StudentGamificationProfile | null;
+  personalGoal?: PersonalWeeklyGoalState | null;
   showXpLevels?: boolean;
   showAchievements?: boolean;
   showWeeklyQuests?: boolean;
   showSkillTreeLink?: boolean;
+  showWhatIfSimulator?: boolean;
+  showTermWrapUp?: boolean;
 }) {
   const assessmentGroups: StudentGradebookTableRow[][] = [];
   rows.forEach((row) => {
@@ -663,7 +1013,9 @@ export function StudentGradebook({
   });
 
   const hasActivityTab =
-    activityData !== null || (showWeeklyQuests && gamificationProfile !== null);
+    activityData !== null ||
+    (showWeeklyQuests && gamificationProfile !== null) ||
+    personalGoal !== null;
   const hasAchievementsTab =
     (showAchievements && gamificationProfile !== null) || activityData !== null;
   const useTabs = hasActivityTab || hasAchievementsTab;
@@ -752,6 +1104,9 @@ export function StudentGradebook({
         {showWeeklyQuests && (
           <script src={assetPath('javascripts/student-deadline-radar.js')} defer />
         )}
+        {(showWhatIfSimulator || showTermWrapUp) && (
+          <script src={assetPath('javascripts/student-phase3.js')} defer />
+        )}
       </>
     ),
     content: (
@@ -759,8 +1114,36 @@ export function StudentGradebook({
         {showXpLevels && gamificationProfile && (
           <LevelHeroBanner
             profile={gamificationProfile}
+            showTermWrapUp={showTermWrapUp}
             skillsUrl={showSkillTreeLink ? `${resLocals.urlPrefix}/skills` : null}
           />
+        )}
+
+        {showAchievements && gamificationProfile?.nextUnlock && (
+          <div className="sh-next-unlock-strip mb-4">
+            <div className="d-flex flex-wrap align-items-center justify-content-between gap-2">
+              <div className="d-flex align-items-center gap-2 small">
+                <span className="sh-next-unlock-icon">
+                  <i className={gamificationProfile.nextUnlock.iconClass} aria-hidden="true" />
+                </span>
+                <span>
+                  <strong className="text-body">نزدیک‌ترین مدال بعدی:</strong>{' '}
+                  {gamificationProfile.nextUnlock.messageFa}
+                </span>
+              </div>
+              <div className="d-flex align-items-center gap-2">
+                <div className="progress" style={{ width: '110px', height: '7px' }}>
+                  <div
+                    className="progress-bar sh-progress-brand"
+                    style={{ width: `${gamificationProfile.nextUnlock.progressPerc}%` }}
+                  />
+                </div>
+                <span className="small text-body-secondary sh-tabular">
+                  {toPersianDigits(gamificationProfile.nextUnlock.progressPerc)}٪
+                </span>
+              </div>
+            </div>
+          </div>
         )}
 
         {useTabs ? (
@@ -825,6 +1208,7 @@ export function StudentGradebook({
                 aria-labelledby="sh-tab-overview-btn"
               >
                 {analyticsData && <StudentAnalyticsSection data={analyticsData} />}
+                {showWhatIfSimulator && <WhatIfSimulatorSection analyticsData={analyticsData} />}
                 {gradebookTableCard}
               </div>
 
@@ -835,6 +1219,12 @@ export function StudentGradebook({
                   role="tabpanel"
                   aria-labelledby="sh-tab-activity-btn"
                 >
+                  {personalGoal && (
+                    <PersonalWeeklyGoalSection
+                      csrfToken={resLocals.__csrf_token}
+                      personalGoal={personalGoal}
+                    />
+                  )}
                   {showWeeklyQuests && gamificationProfile && (
                     <WeeklyQuestsSection weeklyQuests={gamificationProfile.weeklyQuests} />
                   )}
@@ -868,8 +1258,16 @@ export function StudentGradebook({
         ) : (
           <>
             {analyticsData && <StudentAnalyticsSection data={analyticsData} />}
+            {showWhatIfSimulator && <WhatIfSimulatorSection analyticsData={analyticsData} />}
             {gradebookTableCard}
           </>
+        )}
+        {showTermWrapUp && gamificationProfile && (
+          <TermWrapUpModal
+            analyticsData={analyticsData}
+            profile={gamificationProfile}
+            resLocals={resLocals}
+          />
         )}
       </div>
     ),

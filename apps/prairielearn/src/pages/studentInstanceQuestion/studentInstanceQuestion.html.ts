@@ -27,6 +27,16 @@ import { toPersianDigits } from '../../lib/jalali.js';
 import type { ResLocalsInstanceQuestionRender } from '../../lib/question-render.types.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
 import type { QuestionClassStat } from '../../lib/student-engagement.js';
+import type {
+  AchievementTier,
+  FirstBloodOwner,
+  NextUnlockHint,
+} from '../../lib/student-gamification.js';
+import type {
+  CommunitySpotlightSolution,
+  SubmissionKudosItem,
+  SubmissionSpeedComparison,
+} from '../../lib/student-phase3.js';
 import { CalculatorSettingsSchema } from '../../schemas/infoAssessment.js';
 
 export interface StepperQuestionItem {
@@ -46,7 +56,18 @@ export interface QuestionDelightConfig {
   isOneShot: boolean;
   estimatedXp: number;
   nextQuestionUrl: string | null;
-  unlockedAchievements: { id: string; title: string; description: string }[];
+  level: number | null;
+  levelTitle: string | null;
+  assessmentId: string;
+  assessmentLabel: string;
+  assessmentCompleted: boolean;
+  beatsClassPerc: number | null;
+  unlockedAchievements: {
+    id: string;
+    title: string;
+    description: string;
+    tier: AchievementTier;
+  }[];
 }
 
 export function StudentInstanceQuestion({
@@ -61,6 +82,14 @@ export function StudentInstanceQuestion({
   stepperQuestions = [],
   questionStat = null,
   delightConfig = null,
+  firstBloodOwner = null,
+  showFirstBloodBadge = false,
+  nextUnlock = null,
+  speedComparison = null,
+  instanceKudos = [],
+  spotlightSolutions = [],
+  canAwardKudos = false,
+  canToggleSpotlight = false,
 }: {
   independentScrolling: boolean;
   resLocals: ResLocalsForPage<'instance-question'>;
@@ -73,6 +102,14 @@ export function StudentInstanceQuestion({
   stepperQuestions?: StepperQuestionItem[];
   questionStat?: QuestionClassStat | null;
   delightConfig?: QuestionDelightConfig | null;
+  firstBloodOwner?: FirstBloodOwner | null;
+  showFirstBloodBadge?: boolean;
+  nextUnlock?: NextUnlockHint | null;
+  speedComparison?: SubmissionSpeedComparison | null;
+  instanceKudos?: SubmissionKudosItem[];
+  spotlightSolutions?: CommunitySpotlightSolution[];
+  canAwardKudos?: boolean;
+  canToggleSpotlight?: boolean;
 }) {
   const questionContext =
     resLocals.assessment.type === 'Exam' ? 'student_exam' : 'student_homework';
@@ -98,6 +135,11 @@ export function StudentInstanceQuestion({
       ${
         delightConfig
           ? html`<script defer src="${assetPath('javascripts/student-delight.js')}"></script>`
+          : ''
+      }
+      ${
+        spotlightSolutions.length > 0
+          ? html`<script defer src="${assetPath('javascripts/student-phase3.js')}"></script>`
           : ''
       }
       <meta
@@ -205,7 +247,31 @@ export function StudentInstanceQuestion({
                             </a>`;
                       })}
                     </div>
-                    <div class="d-flex align-items-center gap-2 small text-body-secondary">
+                    <div
+                      class="d-flex flex-wrap align-items-center gap-2 small text-body-secondary"
+                    >
+                      ${
+                        showFirstBloodBadge
+                          ? firstBloodOwner && firstBloodOwner.userId === resLocals.user.id
+                            ? html`<span class="sh-fb-mine-chip">
+                                <i class="bi bi-lightning-fill" aria-hidden="true"></i>
+                                <span class="sh-en-term">First Blood</span>: شما!
+                              </span>`
+                            : firstBloodOwner
+                              ? html`<span class="sh-fb-claimed-chip">
+                                  <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
+                                  <span class="sh-en-term">First Blood</span>:
+                                  ${firstBloodOwner.displayName}
+                                </span>`
+                              : resLocals.assessment_instance.open && resLocals.authz_result.active
+                                ? html`<span class="sh-fb-open-chip">
+                                    <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+                                    <span class="sh-en-term">First Blood</span> آزاد (+۶۰
+                                    <span class="sh-en-term">XP</span>)
+                                  </span>`
+                                : ''
+                          : ''
+                      }
                       <span class="badge sh-chip-neutral sh-tabular">
                         ${toPersianDigits(stepperQuestions.filter((q) => q.isSolved).length)} از
                         ${toPersianDigits(stepperQuestions.length)} کامل
@@ -216,6 +282,135 @@ export function StudentInstanceQuestion({
                       </span>
                     </div>
                   </nav>
+                `
+              : showFirstBloodBadge
+                ? html`
+                    <div class="d-flex justify-content-end mb-2">
+                      ${
+                        firstBloodOwner && firstBloodOwner.userId === resLocals.user.id
+                          ? html`<span class="sh-fb-mine-chip">
+                              <i class="bi bi-lightning-fill" aria-hidden="true"></i>
+                              <span class="sh-en-term">First Blood</span>: شما!
+                            </span>`
+                          : firstBloodOwner
+                            ? html`<span class="sh-fb-claimed-chip">
+                                <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
+                                <span class="sh-en-term">First Blood</span>:
+                                ${firstBloodOwner.displayName}
+                              </span>`
+                            : resLocals.assessment_instance.open && resLocals.authz_result.active
+                              ? html`<span class="sh-fb-open-chip">
+                                  <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+                                  <span class="sh-en-term">First Blood</span> آزاد (+۶۰
+                                  <span class="sh-en-term">XP</span>)
+                                </span>`
+                              : ''
+                      }
+                    </div>
+                  `
+                : ''
+          }
+          ${
+            speedComparison
+              ? html`
+                  <div class="sh-speed-banner mb-3">
+                    <div
+                      class="d-flex flex-wrap align-items-center justify-content-between gap-2 small"
+                    >
+                      <span>
+                        <i class="bi bi-speedometer2 me-1 text-success" aria-hidden="true"></i>
+                        <strong>عملکرد سرعت کد:</strong>
+                        کد شما سریع‌تر از
+                        <strong class="sh-tabular text-success">
+                          ${toPersianDigits(speedComparison.beatsPerc)}٪
+                        </strong>
+                        از ${toPersianDigits(speedComparison.cohortCount)} پاسخ پذیرفته‌شده کلاس اجرا
+                        شد!
+                      </span>
+                      <span class="badge bg-body-tertiary text-body border sh-en-term sh-tabular">
+                        ${toPersianDigits(speedComparison.myRuntimeMs)} ms
+                        ${speedComparison.isApproximateWallTime ? ' (Judge Wall-Time)' : ''}
+                      </span>
+                    </div>
+                  </div>
+                `
+              : ''
+          }
+          ${
+            instanceKudos.length > 0
+              ? html`
+                  <div class="sh-kudos-banner mb-3">
+                    ${instanceKudos.map((k) => {
+                      const labelFa =
+                        k.kudosType === 'clean_code'
+                          ? 'کد تمیز (Clean Code)'
+                          : 'راه‌حل خلاقانه (Creative Solution)';
+                      return html`
+                        <div
+                          class="d-flex flex-wrap align-items-center justify-content-between gap-2 py-1"
+                        >
+                          <div class="small">
+                            <i
+                              class="bi bi-patch-check-fill text-warning me-1"
+                              aria-hidden="true"
+                            ></i>
+                            <strong class="text-body">تحسین‌شده توسط TA:</strong>
+                            <span>${labelFa}</span>
+                            <span class="text-body-secondary">· ثبت: ${k.awarderDisplayName}</span>
+                            ${
+                              k.note
+                                ? html`<div class="text-body-secondary mt-1">«${k.note}»</div>`
+                                : ''
+                            }
+                          </div>
+                          ${
+                            canToggleSpotlight
+                              ? html`
+                                  <form method="POST" class="d-inline-flex align-items-center">
+                                    <input
+                                      type="hidden"
+                                      name="__csrf_token"
+                                      value="${resLocals.__csrf_token}"
+                                    />
+                                    <input
+                                      type="hidden"
+                                      name="__action"
+                                      value="toggle_spotlight_opt_in"
+                                    />
+                                    <input type="hidden" name="kudos_id" value="${k.kudosId}" />
+                                    <input
+                                      type="hidden"
+                                      name="opt_in"
+                                      value="${k.studentSpotlightOptIn ? 'false' : 'true'}"
+                                    />
+                                    <button
+                                      type="submit"
+                                      class="btn btn-xs ${
+                                        k.studentSpotlightOptIn
+                                          ? 'btn-success'
+                                          : 'btn-outline-secondary'
+                                      }"
+                                    >
+                                      <i
+                                        class="bi ${
+                                          k.studentSpotlightOptIn ? 'bi-eye-fill' : 'bi-eye'
+                                        } me-1"
+                                        aria-hidden="true"
+                                      ></i>
+                                      ${
+                                        k.studentSpotlightOptIn
+                                          ? 'در Spotlight نمایش داده می‌شود ✓'
+                                          : 'اجازه نمایش در Spotlight کلاس'
+                                      }
+                                    </button>
+                                  </form>
+                                `
+                              : ''
+                          }
+                        </div>
+                      `;
+                    })}
+                  </div>
                 `
               : ''
           }
@@ -255,6 +450,77 @@ export function StudentInstanceQuestion({
                   questionCopyTargets,
                   showFooter: resLocals.assessment_instance.open,
                 })
+          }
+          ${
+            spotlightSolutions.length > 0
+              ? html`
+                  <div class="card mb-4 sh-spotlight-card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <span class="fw-bold small d-flex align-items-center gap-2">
+                        <i class="bi bi-stars text-warning" aria-hidden="true"></i>
+                        <span>راه‌حل‌های برگزیده کلاس</span>
+                        <span class="sh-en-term text-body-secondary">(Community Spotlight)</span>
+                      </span>
+                      <span class="badge bg-body-tertiary text-body border sh-tabular">
+                        ${toPersianDigits(spotlightSolutions.length)} راه‌حل
+                      </span>
+                    </div>
+                    <div class="card-body">
+                      <details>
+                        <summary class="small fw-semibold text-primary" style="cursor: pointer;">
+                          مشاهده ${toPersianDigits(spotlightSolutions.length)} کد تمیز و خلاقانه با
+                          اجازه هم‌کلاسی‌ها
+                        </summary>
+                        <div class="d-flex flex-column gap-3 mt-3">
+                          ${spotlightSolutions.map(
+                            (sol) => html`
+                              <div class="sh-spotlight-item border rounded p-3 bg-body-tertiary">
+                                <div
+                                  class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2"
+                                >
+                                  <div class="small d-flex flex-wrap align-items-center gap-2">
+                                    <span class="fw-bold text-body">${sol.studentDisplayName}</span>
+                                    <span
+                                      class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle"
+                                    >
+                                      ${
+                                        sol.kudosType === 'clean_code'
+                                          ? 'کد تمیز (Clean Code)'
+                                          : 'راه‌حل خلاقانه'
+                                      }
+                                    </span>
+                                    <span class="text-body-secondary sh-en-term" dir="ltr">
+                                      ${sol.fileName}
+                                    </span>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    class="btn btn-xs btn-outline-secondary"
+                                    data-sh-copy-spotlight
+                                  >
+                                    کپی کد
+                                  </button>
+                                </div>
+                                ${
+                                  sol.note
+                                    ? html`<div class="small text-body-secondary mb-2">
+                                        یادداشت TA: «${sol.note}»
+                                      </div>`
+                                    : ''
+                                }
+                                <pre
+                                  dir="ltr"
+                                  class="sh-pulse-code mb-0"
+                                ><code>${sol.code}</code></pre>
+                              </div>
+                            `,
+                          )}
+                        </div>
+                      </details>
+                    </div>
+                  </div>
+                `
+              : ''
           }
         </div>
 
@@ -360,6 +626,149 @@ export function StudentInstanceQuestion({
                         ${toPersianDigits(questionStat.solveRatePerc)}٪ •
                         ${toPersianDigits(questionStat.avgAttempts)} تلاش
                       </span>
+                    </div>
+                  </div>
+                `
+              : ''
+          }
+          ${
+            nextUnlock && resLocals.assessment.type === 'Homework' && !resLocals.lockdown_browser
+              ? html`
+                  <div class="card mb-4 sh-next-unlock-sidebar">
+                    <div class="card-body py-2 px-3">
+                      <div class="d-flex align-items-center justify-content-between small mb-1">
+                        <span class="fw-bold text-body">
+                          <i
+                            class="${nextUnlock.iconClass} me-1 text-primary"
+                            aria-hidden="true"
+                          ></i>
+                          نزدیک‌ترین مدال بعدی
+                        </span>
+                        <span class="badge bg-body-tertiary text-body border sh-en-term sh-tabular">
+                          +${toPersianDigits(nextUnlock.xpReward)} XP
+                        </span>
+                      </div>
+                      <div class="small text-body-secondary mb-2">${nextUnlock.messageFa}</div>
+                      <div class="progress mb-1" style="height: 6px;">
+                        <div
+                          class="progress-bar sh-progress-brand"
+                          style="width: ${nextUnlock.progressPerc}%"
+                        ></div>
+                      </div>
+                      <div class="text-end">
+                        <a
+                          href="${resLocals.urlPrefix}/gradebook#tab-achievements"
+                          class="small text-decoration-none"
+                        >
+                          همه مدال‌ها ←
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                `
+              : ''
+          }
+          ${
+            canAwardKudos
+              ? html`
+                  <div class="card mb-4 sh-ta-kudos-admin">
+                    <div class="card-header py-2">
+                      <span class="fw-bold small d-flex align-items-center gap-1">
+                        <i class="bi bi-patch-check-fill text-warning" aria-hidden="true"></i>
+                        <span>تحسین توسط TA (TA Kudos)</span>
+                      </span>
+                    </div>
+                    <div class="card-body p-3">
+                      <form method="POST" class="d-flex flex-column gap-2">
+                        <input
+                          type="hidden"
+                          name="__csrf_token"
+                          value="${resLocals.__csrf_token}"
+                        />
+                        <input type="hidden" name="__action" value="award_ta_kudos" />
+                        <label class="form-label small mb-0" for="sh-kudos-sub-select">
+                          انتخاب ارسال
+                        </label>
+                        <select
+                          id="sh-kudos-sub-select"
+                          name="submission_id"
+                          class="form-select form-select-sm"
+                        >
+                          ${resLocals.submissions.map(
+                            (sub, idx) => html`
+                              <option value="${sub.id}">
+                                #${toPersianDigits(resLocals.submissions.length - idx)} —
+                                ${
+                                  sub.score != null
+                                    ? `${toPersianDigits(Math.round(sub.score * 100))}٪`
+                                    : 'نمره‌نداده'
+                                }
+                              </option>
+                            `,
+                          )}
+                        </select>
+                        <label class="form-label small mb-0" for="sh-kudos-type-select">
+                          نوع نشان
+                        </label>
+                        <select
+                          id="sh-kudos-type-select"
+                          name="kudos_type"
+                          class="form-select form-select-sm"
+                        >
+                          <option value="clean_code">کد تمیز (Clean Code)</option>
+                          <option value="creative_solution">
+                            راه‌حل خلاقانه (Creative Solution)
+                          </option>
+                        </select>
+                        <input
+                          type="text"
+                          name="note"
+                          maxlength="180"
+                          class="form-control form-control-sm"
+                          placeholder="یادداشت کوتاه تشویقی (اختیاری)..."
+                        />
+                        <button type="submit" class="btn btn-primary btn-sm">
+                          ثبت نشان تحسین (+۱۰۰ XP)
+                        </button>
+                      </form>
+                      ${
+                        instanceKudos.length > 0
+                          ? html`
+                              <div class="mt-2 pt-2 border-top d-flex flex-column gap-1">
+                                ${instanceKudos.map(
+                                  (k) => html`
+                                    <form
+                                      method="POST"
+                                      class="d-flex align-items-center justify-content-between gap-2 small"
+                                    >
+                                      <input
+                                        type="hidden"
+                                        name="__csrf_token"
+                                        value="${resLocals.__csrf_token}"
+                                      />
+                                      <input
+                                        type="hidden"
+                                        name="__action"
+                                        value="revoke_ta_kudos"
+                                      />
+                                      <input type="hidden" name="kudos_id" value="${k.kudosId}" />
+                                      <span class="text-truncate">
+                                        ${
+                                          k.kudosType === 'clean_code'
+                                            ? 'Clean Code'
+                                            : 'Creative Solution'
+                                        }
+                                      </span>
+                                      <button type="submit" class="btn btn-xs btn-outline-danger">
+                                        حذف
+                                      </button>
+                                    </form>
+                                  `,
+                                )}
+                              </div>
+                            `
+                          : ''
+                      }
                     </div>
                   </div>
                 `

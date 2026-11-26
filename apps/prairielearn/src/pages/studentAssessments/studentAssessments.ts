@@ -1,5 +1,7 @@
 import { Router } from 'express';
+import { z } from 'zod';
 
+import { HttpStatusError } from '@prairielearn/error';
 import { loadSqlEquiv, queryRows } from '@prairielearn/postgres';
 
 import { type AssessmentAuthzResult } from '../../lib/assessment-access-control/authz-result.js';
@@ -11,7 +13,16 @@ import { formatLegacyAssessmentAccess } from '../../lib/assessment-access-contro
 import { SprocAuthzAssessmentSchema } from '../../lib/db-types.js';
 import { features } from '../../lib/features/index.js';
 import { typedAsyncHandler } from '../../lib/res-locals.js';
-import { getStudentWeeklyQuests } from '../../lib/student-gamification.js';
+import { getDailyPulseState, submitDailyPulseAttempt } from '../../lib/student-daily-pulse.js';
+import {
+  getStudentGamificationProfile,
+  getStudentWeeklyQuests,
+} from '../../lib/student-gamification.js';
+import {
+  getClassCoopGoal,
+  getPersonalWeeklyGoal,
+  savePersonalWeeklyGoal,
+} from '../../lib/student-phase3.js';
 import logPageView from '../../middlewares/logPageView.js';
 
 import {
@@ -26,6 +37,60 @@ const router = Router();
 const StudentAssessmentsQueryRowSchema = StudentAssessmentsRowBaseSchema.extend({
   raw_authz_result: SprocAuthzAssessmentSchema,
 });
+
+const DailyPulseBodySchema = z.object({
+  puzzle_id: z.string().min(1),
+  selected_option: z.coerce.number().int().min(0).max(3),
+});
+
+const WeeklyGoalBodySchema = z.object({
+  tier: z.enum(['light', 'balanced', 'pro']),
+});
+
+router.post(
+  '/',
+  typedAsyncHandler<'course-instance'>(async (req, res) => {
+    if (res.locals.authz_data.mode === 'Exam' || res.locals.lockdown_browser) {
+      throw new HttpStatusError(403, 'این عملیات در حالت آزمون در دسترس نیست.');
+    }
+
+    const action = req.body.__action;
+    if (action === 'submit_daily_pulse') {
+      const enabled = await features.enabledFromLocals('student-daily-pulse', res.locals);
+      if (!enabled) {
+        throw new HttpStatusError(403, 'پالس روزانه برای این دوره غیرفعال است.');
+      }
+      const parsed = DailyPulseBodySchema.parse(req.body);
+      await submitDailyPulseAttempt({
+        courseInstanceId: res.locals.course_instance.id,
+        userId: res.locals.user.id,
+        timezone: res.locals.course_instance.display_timezone,
+        puzzleId: parsed.puzzle_id,
+        selectedOption: parsed.selected_option,
+      });
+      res.redirect(`${req.originalUrl.split('#')[0]}#sh-daily-pulse`);
+      return;
+    }
+
+    if (action === 'set_weekly_goal') {
+      const enabled = await features.enabledFromLocals('student-weekly-goal-simulator', res.locals);
+      if (!enabled) {
+        throw new HttpStatusError(403, 'تنظیم هدف هفتگی برای این دوره غیرفعال است.');
+      }
+      const parsed = WeeklyGoalBodySchema.parse(req.body);
+      await savePersonalWeeklyGoal({
+        courseInstanceId: res.locals.course_instance.id,
+        userId: res.locals.user.id,
+        timezone: res.locals.course_instance.display_timezone,
+        tier: parsed.tier,
+      });
+      res.redirect(`${req.originalUrl.split('#')[0]}#sh-weekly-goal`);
+      return;
+    }
+
+    throw new HttpStatusError(400, `unknown __action: ${String(action)}`);
+  }),
+);
 
 router.get(
   '/',
@@ -88,21 +153,70 @@ router.get(
         return row.authz_result.authorized;
       });
 
-    const isExamMode = res.locals.authz_data.mode === 'Exam';
-    const [deadlineRadarEnabled, weeklyQuestsEnabled] = await Promise.all([
+    const allowMotivation = res.locals.authz_data.mode !== 'Exam' && !res.locals.lockdown_browser;
+    const [
+      deadlineRadarEnabled,
+      weeklyQuestsEnabled,
+      coopGoalEnabled,
+      dailyPulseEnabled,
+      weeklyGoalEnabled,
+      achievementsEnabled,
+    ] = await Promise.all([
       features.enabledFromLocals('student-deadline-radar', res.locals),
-      isExamMode
-        ? Promise.resolve(false)
-        : features.enabledFromLocals('student-weekly-quests', res.locals),
+      allowMotivation
+        ? features.enabledFromLocals('student-weekly-quests', res.locals)
+        : Promise.resolve(false),
+      allowMotivation
+        ? features.enabledFromLocals('student-coop-goal', res.locals)
+        : Promise.resolve(false),
+      allowMotivation
+        ? features.enabledFromLocals('student-daily-pulse', res.locals)
+        : Promise.resolve(false),
+      allowMotivation
+        ? features.enabledFromLocals('student-weekly-goal-simulator', res.locals)
+        : Promise.resolve(false),
+      allowMotivation
+        ? features.enabledFromLocals('student-achievements', res.locals)
+        : Promise.resolve(false),
     ]);
 
-    const weeklyQuests = weeklyQuestsEnabled
-      ? await getStudentWeeklyQuests({
-          courseInstanceId: res.locals.course_instance.id,
-          userId: res.locals.user.id,
-          timezone: res.locals.course_instance.display_timezone,
-        }).catch(() => null)
-      : null;
+    const [weeklyQuests, coopGoal, dailyPulse, personalGoal, gamificationProfile] =
+      await Promise.all([
+        weeklyQuestsEnabled
+          ? getStudentWeeklyQuests({
+              courseInstanceId: res.locals.course_instance.id,
+              userId: res.locals.user.id,
+              timezone: res.locals.course_instance.display_timezone,
+            }).catch(() => null)
+          : Promise.resolve(null),
+        coopGoalEnabled
+          ? getClassCoopGoal({
+              courseInstanceId: res.locals.course_instance.id,
+              userId: res.locals.user.id,
+            }).catch(() => null)
+          : Promise.resolve(null),
+        dailyPulseEnabled
+          ? getDailyPulseState({
+              courseInstanceId: res.locals.course_instance.id,
+              userId: res.locals.user.id,
+              timezone: res.locals.course_instance.display_timezone,
+            }).catch(() => null)
+          : Promise.resolve(null),
+        weeklyGoalEnabled
+          ? getPersonalWeeklyGoal({
+              courseInstanceId: res.locals.course_instance.id,
+              userId: res.locals.user.id,
+              timezone: res.locals.course_instance.display_timezone,
+            }).catch(() => null)
+          : Promise.resolve(null),
+        achievementsEnabled
+          ? getStudentGamificationProfile({
+              courseInstanceId: res.locals.course_instance.id,
+              userId: res.locals.user.id,
+              timezone: res.locals.course_instance.display_timezone,
+            }).catch(() => null)
+          : Promise.resolve(null),
+      ]);
 
     res.send(
       StudentAssessments({
@@ -110,6 +224,10 @@ router.get(
         rows: resolvedRows,
         showDeadlineRadar: deadlineRadarEnabled,
         weeklyQuests,
+        coopGoal,
+        dailyPulse,
+        personalGoal,
+        nextUnlock: gamificationProfile?.nextUnlock ?? null,
       }),
     );
   }),

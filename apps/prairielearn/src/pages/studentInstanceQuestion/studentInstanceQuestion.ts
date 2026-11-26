@@ -21,7 +21,18 @@ import { getAndRenderVariant, renderPanelsForSubmission } from '../../lib/questi
 import { processSubmission } from '../../lib/question-submission.js';
 import { typedAsyncHandler } from '../../lib/res-locals.js';
 import { getAssessmentQuestionStats } from '../../lib/student-engagement.js';
-import { getStudentGamificationProfile } from '../../lib/student-gamification.js';
+import {
+  getStudentGamificationProfile,
+  invalidateStudentGamificationCache,
+} from '../../lib/student-gamification.js';
+import {
+  awardTaKudos,
+  getCommunitySpotlightSolutions,
+  getInstanceQuestionKudos,
+  getSubmissionSpeedComparison,
+  revokeTaKudos,
+  setSpotlightOptIn,
+} from '../../lib/student-phase3.js';
 import { getCanonicalHost } from '../../lib/url.js';
 import clientFingerprint from '../../middlewares/clientFingerprint.js';
 import { enterpriseOnly } from '../../middlewares/enterpriseOnly.js';
@@ -215,9 +226,84 @@ async function validateAndProcessSubmission(req: Request, res: Response) {
   return await processSubmission(req, res, { studentSubmission: true });
 }
 
+const AwardKudosBodySchema = z.object({
+  submission_id: IdSchema,
+  kudos_type: z.enum(['clean_code', 'creative_solution']),
+  note: z.string().max(180).optional(),
+});
+
+const RevokeKudosBodySchema = z.object({
+  kudos_id: IdSchema,
+});
+
+const ToggleSpotlightBodySchema = z.object({
+  kudos_id: IdSchema,
+  opt_in: z.enum(['true', 'false']),
+});
+
 router.post(
   '/',
   typedAsyncHandler<'instance-question', { client_fingerprint_id: string }>(async (req, res) => {
+    if (req.body.__action === 'award_ta_kudos') {
+      const taKudosEnabled =
+        res.locals.assessment.type === 'Homework' &&
+        (await features.enabledFromLocals('student-ta-kudos', res.locals));
+      if (!taKudosEnabled || !res.locals.authz_data.has_course_instance_permission_view) {
+        throw new HttpStatusError(403, 'Not authorized to award TA Kudos');
+      }
+      const parsed = AwardKudosBodySchema.parse(req.body);
+      const awarded = await awardTaKudos({
+        courseInstanceId: res.locals.course_instance.id,
+        instanceQuestionId: res.locals.instance_question.id,
+        submissionId: parsed.submission_id,
+        awardedByUserId: res.locals.authn_user.id,
+        kudosType: parsed.kudos_type,
+        note: parsed.note,
+      });
+      if (!awarded) {
+        throw new HttpStatusError(404, 'Submission not found for this instance question');
+      }
+      res.redirect(req.originalUrl);
+      return;
+    }
+
+    if (req.body.__action === 'revoke_ta_kudos') {
+      const taKudosEnabled =
+        res.locals.assessment.type === 'Homework' &&
+        (await features.enabledFromLocals('student-ta-kudos', res.locals));
+      if (!taKudosEnabled || !res.locals.authz_data.has_course_instance_permission_view) {
+        throw new HttpStatusError(403, 'Not authorized to manage TA Kudos');
+      }
+      const parsed = RevokeKudosBodySchema.parse(req.body);
+      await revokeTaKudos({
+        courseInstanceId: res.locals.course_instance.id,
+        instanceQuestionId: res.locals.instance_question.id,
+        kudosId: parsed.kudos_id,
+        studentUserId: res.locals.user.id,
+      });
+      res.redirect(req.originalUrl);
+      return;
+    }
+
+    if (req.body.__action === 'toggle_spotlight_opt_in') {
+      const taKudosEnabled =
+        res.locals.assessment.type === 'Homework' &&
+        !res.locals.lockdown_browser &&
+        (await features.enabledFromLocals('student-ta-kudos', res.locals));
+      if (!taKudosEnabled || !idsEqual(res.locals.user.id, res.locals.authn_user.id)) {
+        throw new HttpStatusError(403, 'Not authorized to update Community Spotlight preference');
+      }
+      const parsed = ToggleSpotlightBodySchema.parse(req.body);
+      await setSpotlightOptIn({
+        courseInstanceId: res.locals.course_instance.id,
+        studentUserId: res.locals.user.id,
+        kudosId: parsed.kudos_id,
+        optIn: parsed.opt_in === 'true',
+      });
+      res.redirect(req.originalUrl);
+      return;
+    }
+
     if (!res.locals.authz_result.authorized_edit) {
       throw new HttpStatusError(403, 'Not authorized');
     }
@@ -238,6 +324,9 @@ router.post(
         }
       }
       const variant_id = await validateAndProcessSubmission(req, res);
+      if (req.body.__action === 'grade' && res.locals.assessment.type === 'Homework') {
+        await invalidateStudentGamificationCache(res.locals.course_instance.id, res.locals.user.id);
+      }
       if (res.locals.assessment.type === 'Exam') {
         res.redirect(req.originalUrl);
       } else {
@@ -426,24 +515,40 @@ router.get(
       ? await selectUserById(res.locals.instance_question.last_grader)
       : null;
 
-    const isHomework = res.locals.assessment.type === 'Homework';
-    const [stepperRows, questionStatsEnabled, microDelightEnabled, achievementsEnabled] =
-      await Promise.all([
-        queryRows(
-          sql.select_assessment_question_stepper,
-          { assessment_instance_id: res.locals.assessment_instance.id },
-          StepperQuestionRowSchema,
-        ).catch(() => []),
-        isHomework
-          ? features.enabledFromLocals('student-question-stats', res.locals)
-          : Promise.resolve(false),
-        isHomework
-          ? features.enabledFromLocals('student-micro-delight', res.locals)
-          : Promise.resolve(false),
-        isHomework
-          ? features.enabledFromLocals('student-achievements', res.locals)
-          : Promise.resolve(false),
-      ]);
+    const isHomework = res.locals.assessment.type === 'Homework' && !res.locals.lockdown_browser;
+    const [
+      stepperRows,
+      questionStatsEnabled,
+      microDelightEnabled,
+      achievementsEnabled,
+      xpLevelsEnabled,
+      codeSpeedEnabled,
+      taKudosEnabled,
+    ] = await Promise.all([
+      queryRows(
+        sql.select_assessment_question_stepper,
+        { assessment_instance_id: res.locals.assessment_instance.id },
+        StepperQuestionRowSchema,
+      ).catch(() => []),
+      isHomework
+        ? features.enabledFromLocals('student-question-stats', res.locals)
+        : Promise.resolve(false),
+      isHomework
+        ? features.enabledFromLocals('student-micro-delight', res.locals)
+        : Promise.resolve(false),
+      isHomework
+        ? features.enabledFromLocals('student-achievements', res.locals)
+        : Promise.resolve(false),
+      isHomework
+        ? features.enabledFromLocals('student-xp-levels', res.locals)
+        : Promise.resolve(false),
+      isHomework
+        ? features.enabledFromLocals('student-code-speed', res.locals)
+        : Promise.resolve(false),
+      isHomework
+        ? features.enabledFromLocals('student-ta-kudos', res.locals)
+        : Promise.resolve(false),
+    ]);
 
     const stepperQuestions: StepperQuestionItem[] = stepperRows.map((row) => ({
       instanceQuestionId: row.instance_question_id,
@@ -459,27 +564,69 @@ router.get(
         row.question_access_mode === 'blocked_lockpoint',
     }));
 
-    const [questionStatsMap, gamificationProfile] = await Promise.all([
+    const isCurrentQuestionSolved =
+      (res.locals.instance_question.highest_submission_score ?? 0) >= 0.9999 ||
+      (res.locals.instance_question.score_perc ?? 0) >= 99.99;
+
+    const latestSub = res.locals.submissions.at(0) ?? null;
+    if (latestSub?.graded_at && Date.now() - latestSub.graded_at.getTime() < 25_000) {
+      await invalidateStudentGamificationCache(res.locals.course_instance.id, res.locals.user.id);
+    }
+
+    const canSeeSpotlight =
+      isCurrentQuestionSolved ||
+      !res.locals.authz_result.active ||
+      Boolean(res.locals.authz_data.has_course_instance_permission_view);
+
+    const [
+      questionStatsMap,
+      gamificationProfile,
+      speedComparison,
+      instanceKudos,
+      spotlightSolutions,
+    ] = await Promise.all([
       questionStatsEnabled
         ? getAssessmentQuestionStats({
             assessmentId: res.locals.assessment.id,
             courseInstanceId: res.locals.course_instance.id,
           }).catch(() => null)
         : Promise.resolve(null),
-      microDelightEnabled || achievementsEnabled
+      microDelightEnabled || achievementsEnabled || xpLevelsEnabled
         ? getStudentGamificationProfile({
             courseInstanceId: res.locals.course_instance.id,
             userId: res.locals.user.id,
             timezone: res.locals.course_instance.display_timezone,
           }).catch(() => null)
         : Promise.resolve(null),
+      codeSpeedEnabled && isCurrentQuestionSolved
+        ? getSubmissionSpeedComparison({
+            courseInstanceId: res.locals.course_instance.id,
+            assessmentQuestionId: res.locals.assessment_question.id,
+            userId: res.locals.user.id,
+          }).catch(() => null)
+        : Promise.resolve(null),
+      taKudosEnabled
+        ? getInstanceQuestionKudos({
+            courseInstanceId: res.locals.course_instance.id,
+            instanceQuestionId: res.locals.instance_question.id,
+          }).catch(() => [])
+        : Promise.resolve([]),
+      taKudosEnabled && canSeeSpotlight
+        ? getCommunitySpotlightSolutions({
+            courseInstanceId: res.locals.course_instance.id,
+            assessmentQuestionId: res.locals.assessment_question.id,
+            limit: 3,
+          }).catch(() => [])
+        : Promise.resolve([]),
     ]);
 
     const questionStat = questionStatsMap?.get(res.locals.assessment_question.id) ?? null;
+    const isAssessmentCompleted =
+      stepperQuestions.length > 0 && stepperQuestions.every((q) => q.isSolved);
 
     let delightConfig: QuestionDelightConfig | null = null;
     if (microDelightEnabled) {
-      const latestSubmission = res.locals.submissions.at(0) ?? null;
+      const latestSubmission = latestSub;
       const nextId = res.locals.instance_question_info.next_instance_question.id;
       const nextAccessible =
         nextId != null &&
@@ -514,6 +661,12 @@ router.get(
         nextQuestionUrl: nextAccessible
           ? `${res.locals.urlPrefix}/instance_question/${nextId}/`
           : null,
+        level: xpLevelsEnabled && gamificationProfile ? gamificationProfile.level.level : null,
+        levelTitle: xpLevelsEnabled && gamificationProfile ? gamificationProfile.level.title : null,
+        assessmentId: res.locals.assessment.id,
+        assessmentLabel: `${res.locals.assessment_set.abbreviation}${res.locals.assessment.number}`,
+        assessmentCompleted: isAssessmentCompleted,
+        beatsClassPerc: speedComparison?.beatsPerc ?? null,
         unlockedAchievements:
           achievementsEnabled && gamificationProfile
             ? gamificationProfile.achievements
@@ -522,6 +675,7 @@ router.get(
                   id: a.id,
                   title: a.title,
                   description: a.description,
+                  tier: a.tier,
                 }))
             : [],
       };
@@ -540,6 +694,23 @@ router.get(
         stepperQuestions,
         questionStat,
         delightConfig,
+        firstBloodOwner: gamificationProfile
+          ? (gamificationProfile.firstBloodByAqId[res.locals.assessment_question.id] ?? null)
+          : null,
+        showFirstBloodBadge: isHomework && achievementsEnabled,
+        nextUnlock:
+          isHomework && achievementsEnabled && gamificationProfile
+            ? gamificationProfile.nextUnlock
+            : null,
+        speedComparison,
+        instanceKudos,
+        spotlightSolutions,
+        canAwardKudos:
+          taKudosEnabled &&
+          Boolean(res.locals.authz_data.has_course_instance_permission_view) &&
+          res.locals.submissions.length > 0,
+        canToggleSpotlight:
+          taKudosEnabled && idsEqual(res.locals.user.id, res.locals.authn_user.id),
       }),
     );
   }),

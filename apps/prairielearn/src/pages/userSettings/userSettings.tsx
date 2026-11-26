@@ -11,6 +11,7 @@ import { generatePrefixCsrfToken } from '@prairielearn/signed-token';
 import { PageLayout } from '../../components/PageLayout.js';
 import { UserSettingsPurchasesCard } from '../../ee/lib/billing/components/UserSettingsPurchasesCard.js';
 import { getPurchasesForUser } from '../../ee/lib/billing/purchases.js';
+import { assetPath } from '../../lib/assets.js';
 import { getClientIpAddress } from '../../lib/client-ip.js';
 import { UserAccessTokenSchema } from '../../lib/client/safe-db-types.js';
 import { getUserTrpcUrl } from '../../lib/client/url.js';
@@ -18,6 +19,14 @@ import { config } from '../../lib/config.js';
 import { AccessTokenSchema, InstitutionSchema, UserSchema } from '../../lib/db-types.js';
 import { ipToMode } from '../../lib/exam-mode.js';
 import { isEnterprise } from '../../lib/license.js';
+import {
+  getStudentPublicProfileForSettings,
+  saveStudentPublicProfile,
+} from '../../lib/student-profile.js';
+import {
+  DEFAULT_STUDENT_PUBLIC_PROFILE,
+  sanitizePublicProfileInput,
+} from '../../lib/student-profile.shared.js';
 import { selectUserSettings } from '../../models/user-settings.js';
 
 import { UserSettingsPage } from './components/UserSettingsPage.js';
@@ -64,6 +73,13 @@ router.get(
       { url: getUserTrpcUrl(), authn_user_id: authn_user.id },
       config.secretKey,
     );
+    const { profile: initialPublicProfile, earnedBadges } = isExamMode
+      ? { profile: { ...DEFAULT_STUDENT_PUBLIC_PROFILE }, earnedBadges: [] }
+      : await getStudentPublicProfileForSettings(authn_user.id).catch(() => ({
+          profile: { ...DEFAULT_STUDENT_PUBLIC_PROFILE },
+          earnedBadges: [],
+        }));
+    const profileSaved = req.query.profile_saved === '1';
 
     res.send(
       PageLayout({
@@ -73,6 +89,12 @@ router.get(
           page: 'user_settings',
           type: 'plain',
         },
+        options: {
+          studentSurface: true,
+        },
+        headContent: (
+          <link href={assetPath('stylesheets/student-engagement.css')} rel="stylesheet" />
+        ),
         content: (
           <>
             <Hydrate>
@@ -95,6 +117,9 @@ router.get(
                 csrfToken={res.locals.__csrf_token}
                 trpcCsrfToken={trpcCsrfToken}
                 initialEnableSingleKeyShortcuts={userSettings.enable_single_key_shortcuts}
+                initialPublicProfile={initialPublicProfile}
+                earnedBadges={earnedBadges}
+                profileSaved={profileSaved}
               />
             </Hydrate>
             {
@@ -141,6 +166,19 @@ router.post(
         user_id: res.locals.authn_user.id,
       });
       res.redirect(req.originalUrl);
+    } else if (req.body.__action === 'update_public_profile') {
+      const mode = await ipToMode({
+        ip: req.ip,
+        date: res.locals.req_date,
+        authn_user_id: res.locals.authn_user.id,
+      });
+      if (mode !== 'Public') {
+        throw new HttpStatusError(403, 'ویرایش پروفایل عمومی در حالت آزمون در دسترس نیست.');
+      }
+
+      const sanitized = sanitizePublicProfileInput(req.body ?? {});
+      await saveStudentPublicProfile(res.locals.authn_user.id, sanitized);
+      res.redirect(`${req.originalUrl.split('?')[0]}?profile_saved=1#public-profile`);
     } else {
       throw new HttpStatusError(400, `unknown __action: ${req.body.__action}`);
     }

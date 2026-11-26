@@ -119,7 +119,8 @@ const AUTH_CLIENT_SCRIPT = String.raw`(function () {
         inp.type = show ? 'text' : 'password';
         btn.setAttribute('aria-pressed', show ? 'true' : 'false');
         btn.setAttribute('aria-label', show ? 'پنهان کردن رمز عبور' : 'نمایش رمز عبور');
-        var ic = btn.querySelector('i'); if (ic) ic.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+        var ic = btn.querySelector('i');
+        if (ic) ic.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
       });
     });
 
@@ -146,23 +147,31 @@ const AUTH_CLIENT_SCRIPT = String.raw`(function () {
     var li = document.getElementById('login_identifier');
     if (li) li.addEventListener('blur', function () { li.value = li.value.trim(); });
 
-    // Password strength + match
+    // Password strength + 4-bar meter + match
     var pw = document.getElementById('reg_password'), cf = document.getElementById('reg_confirm_password');
     var sh = document.getElementById('reg_password_strength'), mh = document.getElementById('reg_password_match');
+    var pwBars = document.getElementById('reg_password_bars');
     function updPw() {
       var v = pw.value, score = 0;
       if (v.length >= 6) score++;
       if (v.length >= 8) score++;
       if (/[a-z]/.test(v) && /[A-Z]/.test(v)) score++;
-      if (/\d/.test(v)) score++;
+      if (/\\d/.test(v)) score++;
       if (/[^A-Za-z0-9]/.test(v)) score++;
       var labels = ['خیلی ضعیف', 'ضعیف', 'متوسط', 'خوب', 'قوی', 'عالی'];
-      var cls = ['text-danger', 'text-danger', 'text-warning', 'text-success', 'text-success', 'text-success'];
+      var cls = ['text-danger', 'text-danger', 'text-warning', 'text-info', 'text-success', 'text-success'];
+      if (pwBars && pwBars.children && pwBars.children.length >= 4) {
+        var filled = !v ? 0 : score <= 1 ? 1 : score === 2 ? 2 : score === 3 ? 3 : 4;
+        var barCls = filled === 1 ? 'is-weak' : filled === 2 ? 'is-medium' : filled === 3 ? 'is-strong' : filled === 4 ? 'is-great' : '';
+        for (var bi = 0; bi < pwBars.children.length; bi++) {
+          pwBars.children[bi].className = bi < filled ? barCls : '';
+        }
+      }
       if (!v) { sh.textContent = 'ترجیحاً حداقل ۸ کاراکتر، ترکیب حروف و عدد.'; sh.className = 'form-text d-block text-muted'; }
-      else { sh.textContent = 'قدرت رمز عبور: ' + labels[score] + (v.length < 6 ? ' (حداقل ۶ کاراکتر)' : (v.length < 8 ? ' — ۸ کاراکتر یا بیشتر توصیه می‌شود' : '')); sh.className = 'form-text d-block ' + cls[score]; }
+      else { sh.textContent = 'قدرت رمز عبور: ' + labels[score] + (v.length < 6 ? ' (حداقل ۶ کاراکتر)' : (v.length < 8 ? ' — ۸ کاراکتر یا بیشتر توصیه می‌شود' : '')); sh.className = 'form-text d-block fw-medium ' + cls[score]; }
       if (!cf.value) { mh.textContent = ''; cf.setCustomValidity(''); }
-      else if (cf.value === v) { mh.textContent = 'رمزها مطابقت دارند ✓'; mh.className = 'form-text d-block text-success'; cf.setCustomValidity(''); }
-      else { mh.textContent = 'رمز عبور و تکرار آن یکسان نیست.'; mh.className = 'form-text d-block text-danger'; cf.setCustomValidity('رمز عبور و تکرار آن یکسان نیست.'); }
+      else if (cf.value === v) { mh.textContent = 'رمزها مطابقت دارند ✓'; mh.className = 'form-text d-block text-success fw-medium'; cf.setCustomValidity(''); }
+      else { mh.textContent = 'رمز عبور و تکرار آن یکسان نیست.'; mh.className = 'form-text d-block text-danger fw-medium'; cf.setCustomValidity('رمز عبور و تکرار آن یکسان نیست.'); }
     }
     if (pw && cf && sh && mh) { pw.addEventListener('input', updPw); cf.addEventListener('input', updPw); updPw(); }
   });
@@ -170,23 +179,77 @@ const AUTH_CLIENT_SCRIPT = String.raw`(function () {
 `;
 
 const AUTH_STYLE = `
-  .altcha-widget { display:flex; align-items:center; gap:.6rem; border:1px solid #ced4da; border-radius:.5rem; padding:.55rem .8rem; background:#f8f9fa; font-size:.9rem; cursor:default; }
-  .altcha-widget .altcha-box { width:1.4rem; height:1.4rem; border:2px solid #adb5bd; border-radius:.3rem; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; background:#fff; }
-  .altcha-widget .altcha-check { display:none; color:#fff; font-size:.8rem; }
-  .altcha-widget:not(.altcha-done):not(.altcha-error) .altcha-box { border-top-color:#0d6efd; animation:altcha-spin .8s linear infinite; border-radius:50%; }
-  .altcha-widget.altcha-done { border-color:#198754; background:#e9f7ef; color:#146c43; }
-  .altcha-widget.altcha-done .altcha-box { background:#198754; border-color:#198754; }
-  .altcha-widget.altcha-done .altcha-check { display:inline; }
-  .altcha-widget.altcha-error { border-color:#dc3545; background:#fdecee; color:#b02a37; cursor:pointer; }
-  @keyframes altcha-spin { to { transform:rotate(360deg); } }
-  .password-toggle { border-color:#ced4da; }
+  .altcha-widget {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    border: 1px solid var(--sh-border, #e2e8f0);
+    border-radius: 12px;
+    padding: .6rem .85rem;
+    background: var(--sh-bg-subtle, #f8fafc);
+    color: var(--sh-ink, #0f172a);
+    font-size: .88rem;
+    cursor: default;
+    transition: border-color .18s ease, background-color .18s ease;
+  }
+  .altcha-widget .altcha-box {
+    width: 1.4rem;
+    height: 1.4rem;
+    border: 2px solid var(--sh-border-strong, #cbd5e1);
+    border-radius: .35rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--sh-bg-surface, #ffffff);
+  }
+  .altcha-widget .altcha-check { display: none; color: #ffffff; font-size: .85rem; }
+  .altcha-widget:not(.altcha-done):not(.altcha-error) .altcha-box {
+    border-top-color: var(--sh-primary, #2563eb);
+    animation: altcha-spin .8s linear infinite;
+    border-radius: 50%;
+  }
+  .altcha-widget.altcha-done {
+    border-color: var(--sh-success-border, #a7f3d0);
+    background: var(--sh-success-bg, #ecfdf5);
+    color: var(--sh-success, #059669);
+  }
+  .altcha-widget.altcha-done .altcha-box {
+    background: var(--sh-success, #059669);
+    border-color: var(--sh-success, #059669);
+  }
+  .altcha-widget.altcha-done .altcha-check { display: inline; }
+  .altcha-widget.altcha-error {
+    border-color: var(--sh-danger-border, #fecaca);
+    background: var(--sh-danger-bg, #fef2f2);
+    color: var(--sh-danger, #dc2626);
+    cursor: pointer;
+  }
+  html[data-surface='student'][data-bs-theme='dark'] .altcha-widget.altcha-done {
+    color: #34d399;
+  }
+  html[data-surface='student'][data-bs-theme='dark'] .altcha-widget.altcha-error {
+    color: #f87171;
+  }
+  @keyframes altcha-spin { to { transform: rotate(360deg); } }
+  .password-toggle {
+    border-color: var(--sh-border, #e2e8f0);
+    color: var(--sh-ink-secondary, #475569);
+    background: var(--sh-bg-subtle, #f8fafc);
+  }
+  .password-toggle:hover {
+    background: var(--sh-bg-hover, #eef2f9);
+    color: var(--sh-ink, #0f172a);
+  }
 `;
 
 function AltchaWidget() {
   return html`
     <div class="mb-3">
       <div class="altcha-widget" data-altcha-widget dir="rtl" role="status" aria-live="polite">
-        <span class="altcha-box"><i class="fas fa-check altcha-check"></i></span>
+        <span class="altcha-box"
+          ><i class="bi bi-check-lg altcha-check" aria-hidden="true"></i
+        ></span>
         <span data-altcha-status>من ربات نیستم — بررسی امنیتی خودکار</span>
         <input type="hidden" name="altcha" value="" />
       </div>
@@ -228,7 +291,7 @@ function PasswordInput({
         aria-pressed="false"
         tabindex="0"
       >
-        <i class="fas fa-eye"></i>
+        <i class="bi bi-eye" aria-hidden="true"></i>
       </button>
     </div>
   `;
@@ -250,31 +313,70 @@ function LoginPageContainer({
   resLocals,
   errorMessage,
   initialTab = 'login',
+  showAuthTabs = true,
 }: {
   children: HtmlValue;
   service: string | null;
   resLocals: UntypedResLocals;
   errorMessage?: string;
   initialTab?: 'login' | 'register';
+  showAuthTabs?: boolean;
 }) {
   const isCourseRequestService = service?.includes('request_course');
+  const loginSubtitle = isCourseRequestService
+    ? 'جهت ثبت درخواست ایجاد درس یا دوره جدید'
+    : service
+      ? `دسترسی به بخش ${service}`
+      : uiStrings.landing.loginCardSubtitle;
+  const registerTitle = uiStrings.landing.registerCardTitle;
+  const registerSubtitle = uiStrings.landing.registerCardSubtitle;
+  const activeTitle =
+    showAuthTabs && initialTab === 'register' ? registerTitle : uiStrings.landing.loginCardTitle;
+  const activeSubtitle =
+    showAuthTabs && initialTab === 'register' ? registerSubtitle : loginSubtitle;
 
   return html`
     <!doctype html>
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" data-surface="student">
       <head>
-        ${HeadContents({ resLocals })}
+        ${HeadContents({
+          resLocals,
+          pageTitle: uiStrings.auth.loginTitle,
+          isStudentSurface: true,
+        })}
         <style>
           ${unsafeHtml(AUTH_STYLE)} html,
           body {
             min-height: 100vh;
-            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 60%, #e2e8f0 100%);
+            background-color: var(--sh-bg-canvas, #f3f6fb);
+            background-image:
+              radial-gradient(
+                ellipse 80% 50% at 15% 0%,
+                var(--sh-primary-soft, rgba(37, 99, 235, 0.1)),
+                transparent 65%
+              ),
+              radial-gradient(ellipse 65% 45% at 88% 12%, rgba(8, 145, 178, 0.08), transparent 60%);
             font-family:
               var(--font-persian),
               system-ui,
               -apple-system,
               sans-serif;
-            color: #1e293b;
+            color: var(--sh-ink, #0f172a);
+          }
+
+          .sh-auth-header {
+            background: var(--sh-nav-bg, rgba(255, 255, 255, 0.88));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--sh-border, #e2e8f0);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+          }
+
+          .sh-auth-footer {
+            background: var(--sh-bg-surface, #ffffff);
+            border-top: 1px solid var(--sh-border, #e2e8f0);
           }
 
           .login-wrapper {
@@ -285,37 +387,100 @@ function LoginPageContainer({
           }
 
           .landing-showcase-panel {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: var(--sh-bg-surface, #ffffff);
+            border: 1px solid var(--sh-border, #e2e8f0);
             border-radius: 20px;
-            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+            box-shadow: var(--sh-shadow-card, 0 6px 20px -6px rgba(15, 23, 42, 0.07));
           }
 
           .login-form-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: var(--sh-bg-surface, #ffffff);
+            border: 1px solid var(--sh-border, #e2e8f0);
             border-radius: 20px;
-            box-shadow:
-              0 10px 25px -5px rgba(15, 23, 42, 0.08),
-              0 8px 10px -6px rgba(15, 23, 42, 0.04);
+            box-shadow: var(--sh-shadow-popover, 0 12px 32px -6px rgba(15, 23, 42, 0.16));
+          }
+
+          .sh-auth-emblem {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: linear-gradient(
+              135deg,
+              var(--sh-primary, #2563eb),
+              var(--sh-cyan, #0891b2)
+            );
+            color: #ffffff;
+            box-shadow: 0 4px 12px var(--sh-primary-glow, rgba(37, 99, 235, 0.25));
+          }
+
+          .sh-hero-badge {
+            background: var(--sh-primary-soft, #eff6ff);
+            border: 1px solid var(--sh-primary-border, #bfdbfe);
+            color: var(--sh-primary, #2563eb);
+          }
+
+          .sh-code-preview {
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
+            box-shadow: 0 10px 26px -10px rgba(15, 23, 42, 0.45);
+            overflow: hidden;
+          }
+
+          html[data-surface='student'][data-bs-theme='dark'] .sh-code-preview {
+            background: #070b14;
+            border-color: #223047;
+          }
+
+          .sh-code-preview-bar {
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.5rem 0.85rem;
+          }
+
+          .sh-code-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+          }
+
+          .sh-code-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            font-weight: 600;
           }
 
           .benefit-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            transition: all 0.2s ease-in-out;
+            background: var(--sh-bg-subtle, #f8fafc);
+            border: 1px solid var(--sh-border, #e2e8f0);
+            border-radius: 14px;
+            transition:
+              transform 0.18s ease,
+              border-color 0.18s ease,
+              background-color 0.18s ease;
           }
 
           .benefit-card:hover {
-            background: #f1f5f9;
+            background: var(--sh-bg-hover, #eef2f9);
+            border-color: var(--sh-primary-border, #bfdbfe);
             transform: translateY(-2px);
           }
 
           .guide-callout {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
+            background: var(--sh-success-bg, #ecfdf5);
+            border: 1px solid var(--sh-success-border, #a7f3d0);
             border-radius: 14px;
+          }
+
+          .sh-auth-tabs {
+            background: var(--sh-bg-subtle, #f8fafc);
+            border: 1px solid var(--sh-border, #e2e8f0);
           }
 
           .btn .social-icon {
@@ -356,7 +521,7 @@ function LoginPageContainer({
 
           .institution-header:before,
           .institution-header:after {
-            background-color: #cbd5e1;
+            background-color: var(--sh-border-strong, #cbd5e1);
             content: '';
             display: inline-block;
             height: 1px;
@@ -377,13 +542,43 @@ function LoginPageContainer({
 
           .auth-tab-btn {
             cursor: pointer;
+            color: var(--sh-ink-secondary, #475569);
             transition: all 0.2s ease;
           }
 
           .auth-tab-btn.active {
-            background-color: #ffffff;
-            color: #0f172a;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            background-color: var(--sh-bg-surface, #ffffff);
+            color: var(--sh-ink, #0f172a);
+            box-shadow: var(--sh-shadow-card, 0 1px 3px rgba(0, 0, 0, 0.1));
+          }
+
+          .sh-pw-bars {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.35rem;
+          }
+
+          .sh-pw-bars span {
+            height: 5px;
+            border-radius: 999px;
+            background: var(--sh-border, #e2e8f0);
+            transition: background-color 0.18s ease;
+          }
+
+          .sh-pw-bars span.is-weak {
+            background: var(--sh-danger, #dc2626);
+          }
+
+          .sh-pw-bars span.is-medium {
+            background: var(--sh-warning, #d97706);
+          }
+
+          .sh-pw-bars span.is-strong {
+            background: #0ea5e9;
+          }
+
+          .sh-pw-bars span.is-great {
+            background: var(--sh-success, #059669);
           }
 
           /* Explicit RTL form alignment rules */
@@ -424,7 +619,7 @@ function LoginPageContainer({
       </head>
       <body class="d-flex flex-column min-vh-100" style="font-family: var(--font-persian);">
         <!-- Top Navigation Header -->
-        <header class="bg-white border-bottom py-2 py-sm-3 shadow-xs">
+        <header class="sh-auth-header py-2 py-sm-3">
           <div
             class="container d-flex justify-content-between align-items-center gap-2"
             style="max-width: 1140px;"
@@ -444,21 +639,20 @@ function LoginPageContainer({
                     />`
                   : html`
                       <div
-                        class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center shadow-sm flex-shrink-0"
-                        style="width: 38px; height: 38px;"
+                        class="sh-auth-emblem d-flex align-items-center justify-content-center flex-shrink-0"
                       >
-                        <i class="fas fa-graduation-cap fs-5"></i>
+                        <i class="bi bi-mortarboard-fill fs-5" aria-hidden="true"></i>
                       </div>
                     `
               }
               <div class="min-w-0" style="min-width: 0;">
-                <span class="fw-bold text-dark fs-6 d-block d-md-none text-truncate"
+                <span class="fw-bold text-body fs-6 d-block d-md-none text-truncate"
                   >${platformBranding.brandShortName}</span
                 >
-                <span class="fw-bold text-dark fs-5 d-none d-md-block text-truncate"
+                <span class="fw-bold text-body fs-5 d-none d-md-block text-truncate"
                   >${getEffectiveBrandName(resLocals.institution)}</span
                 >
-                <span class="text-secondary small d-none d-lg-block text-truncate"
+                <span class="text-body-secondary small d-none d-lg-block text-truncate"
                   >${platformBranding.brandSubtitle}</span
                 >
               </div>
@@ -470,19 +664,30 @@ function LoginPageContainer({
                 data-bs-toggle="modal"
                 data-bs-target="#courseRequestWarningModal"
               >
-                <i class="fas fa-plus-circle me-1"></i>
+                <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
                 <span class="d-none d-sm-inline">${uiStrings.landing.requestCourseBtn}</span>
                 <span class="d-inline d-sm-none">درخواست درس</span>
               </button>
               <button
                 type="button"
-                class="btn btn-light btn-sm fw-medium border text-secondary text-nowrap"
+                class="btn btn-outline-secondary btn-sm fw-medium text-nowrap"
                 data-bs-toggle="modal"
                 data-bs-target="#supportModal"
                 aria-label="${uiStrings.landing.supportBtn}"
               >
-                <i class="fas fa-question-circle text-primary"></i>
+                <i class="bi bi-question-circle text-primary" aria-hidden="true"></i>
                 <span class="d-none d-sm-inline ms-1">${uiStrings.landing.supportBtn}</span>
+              </button>
+              <button
+                type="button"
+                class="sh-theme-toggle"
+                data-sh-theme-toggle
+                aria-label="تغییر به حالت تاریک"
+                title="تغییر به حالت تاریک"
+                aria-pressed="false"
+              >
+                <i class="bi bi-moon sh-icon-moon" aria-hidden="true"></i>
+                <i class="bi bi-sun sh-icon-sun" aria-hidden="true"></i>
               </button>
             </div>
           </div>
@@ -499,32 +704,72 @@ function LoginPageContainer({
                 >
                   <div>
                     <div
-                      class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill bg-primary-subtle text-primary border border-primary-subtle small fw-medium"
+                      class="sh-hero-badge d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill small fw-semibold"
                     >
-                      <i class="fas fa-sparkles text-primary"></i>
+                      <i class="bi bi-stars" aria-hidden="true"></i>
                       <span>${uiStrings.landing.badge}</span>
                     </div>
 
-                    <h1 class="fw-bold text-dark display-6 mb-2 lh-base">
-                      ${uiStrings.landing.title}
-                    </h1>
+                    <h1 class="fw-bold text-body h2 mb-2 lh-base">${uiStrings.landing.title}</h1>
 
-                    <p class="text-secondary lead fs-6 mb-4 lh-lg">
-                      ${uiStrings.landing.description}
-                    </p>
+                    <p class="text-body-secondary mb-3 lh-lg">${uiStrings.landing.description}</p>
+
+                    <!-- Nova Studio Code Judge & XP Preview Widget -->
+                    <div class="sh-code-preview mb-4">
+                      <div
+                        class="sh-code-preview-bar d-flex align-items-center justify-content-between gap-2"
+                      >
+                        <div class="d-flex align-items-center gap-1" aria-hidden="true">
+                          <span class="sh-code-dot" style="background: #ef4444;"></span>
+                          <span class="sh-code-dot" style="background: #f59e0b;"></span>
+                          <span class="sh-code-dot" style="background: #10b981;"></span>
+                        </div>
+                        <span class="sh-en-term small text-white-50">solution.py · Auto Judge</span>
+                      </div>
+                      <pre
+                        class="m-0 p-3 small"
+                        dir="ltr"
+                        style="background: transparent; border: 0; color: #e2e8f0;"
+                      ><code>def solve(nums):
+    return sum(x * x for x in nums if x &gt; 0)</code></pre>
+                      <div
+                        class="px-3 pb-3 d-flex flex-wrap align-items-center gap-2 border-top border-white border-opacity-10 pt-2"
+                      >
+                        <span
+                          class="sh-code-chip"
+                          style="background: rgba(16, 185, 129, 0.16); color: #34d399;"
+                        >
+                          <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                          <span>۴/۴ تست‌کیس پاس</span>
+                        </span>
+                        <span
+                          class="sh-code-chip"
+                          style="background: rgba(56, 189, 248, 0.16); color: #38bdf8;"
+                        >
+                          <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+                          <span>سریع‌تر از ۸۸٪ کلاس</span>
+                        </span>
+                        <span
+                          class="sh-code-chip sh-en-term ms-auto"
+                          style="background: rgba(251, 191, 36, 0.16); color: #fbbf24;"
+                        >
+                          +۱۲۰ XP
+                        </span>
+                      </div>
+                    </div>
 
                     <!-- 3 Pillar Feature Cards -->
                     <div class="d-flex flex-column gap-3 mb-4">
                       <div class="benefit-card d-flex align-items-start gap-3 p-3">
                         <div
-                          class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
+                          class="rounded-3 bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
                           style="width: 44px; height: 44px; font-size: 1.2rem;"
                         >
-                          <i class="fas fa-shapes"></i>
+                          <i class="bi bi-cpu-fill" aria-hidden="true"></i>
                         </div>
                         <div>
-                          <h6 class="fw-bold mb-1 text-dark">${uiStrings.landing.benefit1Title}</h6>
-                          <small class="text-secondary d-block lh-base"
+                          <h6 class="fw-bold mb-1 text-body">${uiStrings.landing.benefit1Title}</h6>
+                          <small class="text-body-secondary d-block lh-base"
                             >${uiStrings.landing.benefit1Desc}</small
                           >
                         </div>
@@ -532,14 +777,14 @@ function LoginPageContainer({
 
                       <div class="benefit-card d-flex align-items-start gap-3 p-3">
                         <div
-                          class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center flex-shrink-0"
+                          class="rounded-3 bg-success-subtle text-success d-flex align-items-center justify-content-center flex-shrink-0"
                           style="width: 44px; height: 44px; font-size: 1.2rem;"
                         >
-                          <i class="fas fa-code"></i>
+                          <i class="bi bi-fire" aria-hidden="true"></i>
                         </div>
                         <div>
-                          <h6 class="fw-bold mb-1 text-dark">${uiStrings.landing.benefit2Title}</h6>
-                          <small class="text-secondary d-block lh-base"
+                          <h6 class="fw-bold mb-1 text-body">${uiStrings.landing.benefit2Title}</h6>
+                          <small class="text-body-secondary d-block lh-base"
                             >${uiStrings.landing.benefit2Desc}</small
                           >
                         </div>
@@ -547,14 +792,14 @@ function LoginPageContainer({
 
                       <div class="benefit-card d-flex align-items-start gap-3 p-3">
                         <div
-                          class="rounded-circle bg-warning-subtle text-warning-emphasis d-flex align-items-center justify-content-center flex-shrink-0"
+                          class="rounded-3 bg-warning-subtle text-warning-emphasis d-flex align-items-center justify-content-center flex-shrink-0"
                           style="width: 44px; height: 44px; font-size: 1.2rem;"
                         >
-                          <i class="fas fa-check-double"></i>
+                          <i class="bi bi-diagram-3-fill" aria-hidden="true"></i>
                         </div>
                         <div>
-                          <h6 class="fw-bold mb-1 text-dark">${uiStrings.landing.benefit3Title}</h6>
-                          <small class="text-secondary d-block lh-base"
+                          <h6 class="fw-bold mb-1 text-body">${uiStrings.landing.benefit3Title}</h6>
+                          <small class="text-body-secondary d-block lh-base"
                             >${uiStrings.landing.benefit3Desc}</small
                           >
                         </div>
@@ -562,23 +807,23 @@ function LoginPageContainer({
                     </div>
                   </div>
 
-                  <!-- Guidance Box («چگونه وارد شوم؟») -->
+                  <!-- Guidance Box -->
                   <div class="guide-callout p-4 mt-2">
-                    <h6 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
-                      <i class="fas fa-compass text-success fs-5"></i>
+                    <h6 class="fw-bold text-body mb-3 d-flex align-items-center gap-2">
+                      <i class="bi bi-compass-fill text-success fs-5" aria-hidden="true"></i>
                       <span>${uiStrings.landing.guideTitle}</span>
                     </h6>
-                    <div class="d-flex flex-column gap-2 text-secondary small lh-lg">
+                    <div class="d-flex flex-column gap-2 text-body-secondary small lh-lg">
                       <div>
                         <strong class="text-primary d-inline-block me-1">
-                          <i class="fas fa-user-graduate me-1"></i>
+                          <i class="bi bi-mortarboard-fill me-1" aria-hidden="true"></i>
                           ${uiStrings.landing.learnerHeading}
                         </strong>
                         <span>${uiStrings.landing.learnerDesc}</span>
                       </div>
                       <div>
                         <strong class="text-success d-inline-block me-1">
-                          <i class="fas fa-chalkboard-teacher me-1"></i>
+                          <i class="bi bi-person-workspace me-1" aria-hidden="true"></i>
                           ${uiStrings.landing.instructorHeading}
                         </strong>
                         <span>${uiStrings.landing.instructorDesc}</span>
@@ -587,11 +832,16 @@ function LoginPageContainer({
                         config.devMode
                           ? html`
                               <div class="mt-2 pt-2 border-top border-success-subtle">
-                                <strong class="text-dark d-inline-block me-1">
-                                  <i class="fas fa-bolt text-warning me-1"></i>
+                                <strong class="text-body d-inline-block me-1">
+                                  <i
+                                    class="bi bi-lightning-charge-fill text-warning me-1"
+                                    aria-hidden="true"
+                                  ></i>
                                   ${uiStrings.landing.devModeNoteHeading}
                                 </strong>
-                                <span class="text-muted">${uiStrings.landing.devModeNoteDesc}</span>
+                                <span class="text-body-secondary"
+                                  >${uiStrings.landing.devModeNoteDesc}</span
+                                >
                               </div>
                             `
                           : ''
@@ -604,7 +854,7 @@ function LoginPageContainer({
                         data-bs-toggle="modal"
                         data-bs-target="#courseRequestWarningModal"
                       >
-                        <i class="fas fa-plus-circle me-1"></i>
+                        <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
                         ${uiStrings.landing.requestCourseBtn}
                       </button>
                       <button
@@ -613,7 +863,8 @@ function LoginPageContainer({
                         data-bs-toggle="modal"
                         data-bs-target="#supportModal"
                       >
-                        <i class="fas fa-life-ring me-1"></i> ${uiStrings.landing.supportBtn}
+                        <i class="bi bi-life-preserver me-1" aria-hidden="true"></i>
+                        ${uiStrings.landing.supportBtn}
                       </button>
                     </div>
                   </div>
@@ -631,7 +882,10 @@ function LoginPageContainer({
                               class="alert alert-danger py-2 px-3 small mb-3 border-0 bg-danger-subtle text-danger-emphasis d-flex align-items-center gap-2"
                               role="alert"
                             >
-                              <i class="fas fa-exclamation-circle text-danger flex-shrink-0"></i>
+                              <i
+                                class="bi bi-exclamation-circle-fill text-danger flex-shrink-0"
+                                aria-hidden="true"
+                              ></i>
                               <span>${errorMessage}</span>
                             </div>
                           `
@@ -645,13 +899,14 @@ function LoginPageContainer({
                               role="alert"
                             >
                               <i
-                                class="fas fa-exclamation-triangle fs-4 text-warning flex-shrink-0 mt-1"
+                                class="bi bi-exclamation-triangle-fill fs-4 text-warning flex-shrink-0 mt-1"
+                                aria-hidden="true"
                               ></i>
                               <div>
-                                <h3 class="h6 fw-bold mb-1 text-dark">
+                                <h3 class="h6 fw-bold mb-1 text-body">
                                   ${uiStrings.auth.courseRequestWarningHeader}
                                 </h3>
-                                <p class="small mb-0 text-secondary">
+                                <p class="small mb-0 text-body-secondary">
                                   ${uiStrings.auth.courseRequestInstructorNotice}
                                 </p>
                               </div>
@@ -662,42 +917,68 @@ function LoginPageContainer({
 
                     <div class="text-center mb-3">
                       <div
+                        id="auth-card-icon"
                         class="bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
                         style="width: 52px; height: 52px;"
                       >
-                        <i class="fas fa-user-circle fs-3"></i>
+                        <i class="bi bi-person-circle fs-3" aria-hidden="true"></i>
                       </div>
-                      <h2 class="h5 fw-bold text-dark mb-1">${uiStrings.landing.loginCardTitle}</h2>
-                      <p class="text-secondary small mb-3">
-                        ${isCourseRequestService ? 'جهت ثبت درخواست ایجاد درس یا دوره جدید' : service ? `دسترسی به بخش ${service}` : uiStrings.landing.loginCardSubtitle}
+                      <h2
+                        id="auth-card-title"
+                        class="h5 fw-bold text-body mb-1"
+                        data-login-title="${uiStrings.landing.loginCardTitle}"
+                        data-register-title="${registerTitle}"
+                      >
+                        ${activeTitle}
+                      </h2>
+                      <p
+                        id="auth-card-subtitle"
+                        class="text-body-secondary small mb-3"
+                        data-login-subtitle="${loginSubtitle}"
+                        data-register-subtitle="${registerSubtitle}"
+                      >
+                        ${activeSubtitle}
                       </p>
                     </div>
 
-                    <!-- Mode Toggle (ورود / ثبت‌نام سریع) -->
-                    <div class="d-flex bg-light rounded-pill p-1 mb-3 border">
-                      <button
-                        type="button"
-                        class="btn btn-sm w-50 rounded-pill fw-medium auth-tab-btn ${initialTab === 'login' ? 'active' : 'text-secondary'}"
-                        id="tab-login-btn"
-                        onclick="setAuthMode('login')"
-                      >
-                        ${uiStrings.auth.loginTab}
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-sm w-50 rounded-pill fw-medium auth-tab-btn ${initialTab === 'register' ? 'active' : 'text-secondary'}"
-                        id="tab-signup-btn"
-                        onclick="setAuthMode('register')"
-                      >
-                        ${uiStrings.auth.registerTab}
-                      </button>
-                    </div>
-
+                    ${
+                      showAuthTabs
+                        ? html`
+                            <!-- Mode Toggle (ورود / ثبت‌نام) -->
+                            <div
+                              class="d-flex sh-auth-tabs rounded-pill p-1 mb-3"
+                              role="tablist"
+                              aria-label="نحوه ورود یا ثبت‌نام"
+                            >
+                              <button
+                                type="button"
+                                class="btn btn-sm w-50 rounded-pill fw-medium auth-tab-btn ${initialTab === 'login' ? 'active' : ''}"
+                                id="tab-login-btn"
+                                role="tab"
+                                aria-selected="${initialTab === 'login' ? 'true' : 'false'}"
+                                onclick="setAuthMode('login')"
+                              >
+                                ${uiStrings.auth.loginTab}
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-sm w-50 rounded-pill fw-medium auth-tab-btn ${initialTab === 'register' ? 'active' : ''}"
+                                id="tab-signup-btn"
+                                role="tab"
+                                aria-selected="${initialTab === 'register' ? 'true' : 'false'}"
+                                onclick="setAuthMode('register')"
+                              >
+                                ${uiStrings.auth.registerTab}
+                              </button>
+                            </div>
+                          `
+                        : ''
+                    }
                     ${children}
                   </div>
 
                   <div class="pt-3 border-top text-center mt-4">
-                    <small class="text-muted d-block mb-2"
+                    <small class="text-body-secondary d-block mb-2"
                       >${uiStrings.landing.loginFooterHelp}</small
                     >
                     <div
@@ -711,7 +992,7 @@ function LoginPageContainer({
                       >
                         ${uiStrings.landing.requestCourseBtn}
                       </button>
-                      <span class="text-muted">•</span>
+                      <span class="text-body-secondary">•</span>
                       <a
                         href="#"
                         data-bs-toggle="modal"
@@ -729,18 +1010,18 @@ function LoginPageContainer({
         </main>
 
         <!-- Cohesive Clean Footer -->
-        <footer class="bg-white border-top py-3 mt-auto">
+        <footer class="sh-auth-footer py-3 mt-auto">
           <div
             class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2"
             style="max-width: 1140px;"
           >
-            <span class="text-secondary small">
+            <span class="text-body-secondary small">
               توسعه و نگه‌داری:
               <a
                 href="${platformBranding.developer.telegramUrl}"
                 target="_blank"
                 rel="noreferrer"
-                class="text-secondary text-decoration-none fw-medium"
+                class="text-body text-decoration-none fw-medium"
               >
                 ${platformBranding.developer.name}
               </a>
@@ -751,27 +1032,30 @@ function LoginPageContainer({
                 href="${platformBranding.docsUrl}"
                 target="_blank"
                 rel="noreferrer"
-                class="text-secondary text-decoration-none"
+                class="text-body-secondary text-decoration-none"
               >
-                <i class="fas fa-book me-1"></i> ${uiStrings.landing.footerDocsLink}
+                <i class="bi bi-journal-code me-1" aria-hidden="true"></i>
+                ${uiStrings.landing.footerDocsLink}
               </a>
-              <span class="text-muted">•</span>
+              <span class="text-body-secondary">•</span>
               <a
                 href="${platformBranding.repoUrl}"
                 target="_blank"
                 rel="noreferrer"
-                class="text-secondary text-decoration-none"
+                class="text-body-secondary text-decoration-none"
               >
-                <i class="fab fa-github me-1"></i> ${uiStrings.landing.footerRepoLink}
+                <i class="bi bi-github me-1" aria-hidden="true"></i>
+                ${uiStrings.landing.footerRepoLink}
               </a>
-              <span class="text-muted">•</span>
+              <span class="text-body-secondary">•</span>
               <a
                 href="#"
                 data-bs-toggle="modal"
                 data-bs-target="#supportModal"
-                class="text-secondary text-decoration-none"
+                class="text-body-secondary text-decoration-none"
               >
-                <i class="fas fa-headset me-1"></i> ${uiStrings.landing.footerSupportLink}
+                <i class="bi bi-headset me-1" aria-hidden="true"></i>
+                ${uiStrings.landing.footerSupportLink}
               </a>
             </div>
           </div>
@@ -783,33 +1067,45 @@ function LoginPageContainer({
             const signupBtn = document.getElementById('tab-signup-btn');
             const loginPane = document.getElementById('login-form-pane');
             const registerPane = document.getElementById('register-form-pane');
+            const cardTitle = document.getElementById('auth-card-title');
+            const cardSubtitle = document.getElementById('auth-card-subtitle');
+            const cardIcon = document.getElementById('auth-card-icon');
+            const isRegister = mode === 'register' || mode === 'signup';
 
-            if (mode === 'register' || mode === 'signup') {
-              if (loginBtn) {
-                loginBtn.classList.remove('active');
-                loginBtn.classList.add('text-secondary');
+            if (loginBtn) {
+              loginBtn.classList.toggle('active', !isRegister);
+              loginBtn.setAttribute('aria-selected', !isRegister ? 'true' : 'false');
+            }
+            if (signupBtn) {
+              signupBtn.classList.toggle('active', isRegister);
+              signupBtn.setAttribute('aria-selected', isRegister ? 'true' : 'false');
+            }
+            if (loginPane) loginPane.classList.toggle('d-none', isRegister);
+            if (registerPane) registerPane.classList.toggle('d-none', !isRegister);
+
+            if (cardTitle) {
+              cardTitle.textContent = isRegister
+                ? cardTitle.getAttribute('data-register-title') || cardTitle.textContent
+                : cardTitle.getAttribute('data-login-title') || cardTitle.textContent;
+            }
+            if (cardSubtitle) {
+              cardSubtitle.textContent = isRegister
+                ? cardSubtitle.getAttribute('data-register-subtitle') || cardSubtitle.textContent
+                : cardSubtitle.getAttribute('data-login-subtitle') || cardSubtitle.textContent;
+            }
+            if (cardIcon) {
+              const iconEl = cardIcon.querySelector('i');
+              if (iconEl) {
+                iconEl.className = isRegister
+                  ? 'bi bi-person-plus-fill fs-3'
+                  : 'bi bi-person-circle fs-3';
               }
-              if (signupBtn) {
-                signupBtn.classList.add('active');
-                signupBtn.classList.remove('text-secondary');
-              }
-              if (loginPane) loginPane.classList.add('d-none');
-              if (registerPane) registerPane.classList.remove('d-none');
-            } else {
-              if (signupBtn) {
-                signupBtn.classList.remove('active');
-                signupBtn.classList.add('text-secondary');
-              }
-              if (loginBtn) {
-                loginBtn.classList.add('active');
-                loginBtn.classList.remove('text-secondary');
-              }
-              if (registerPane) registerPane.classList.add('d-none');
-              if (loginPane) loginPane.classList.remove('d-none');
             }
           }
           document.addEventListener('DOMContentLoaded', () => {
-            setAuthMode('${initialTab}');
+            if (document.getElementById('tab-login-btn')) {
+              setAuthMode('${initialTab}');
+            }
             if (window.location.search.includes('service=request_course')) {
               setTimeout(() => {
                 const modalEl = document.getElementById('courseRequestWarningModal');
@@ -851,7 +1147,7 @@ function CourseRequestWarningModal() {
               class="modal-title fw-bold fs-6 d-flex align-items-center gap-2 m-0"
               id="courseRequestWarningModalLabel"
             >
-              <i class="fas fa-exclamation-triangle fs-5 text-warning"></i>
+              <i class="bi bi-exclamation-triangle-fill fs-5 text-warning" aria-hidden="true"></i>
               <span>ورود یا ثبت‌نام الزامی است</span>
             </h5>
             <button
@@ -861,34 +1157,36 @@ function CourseRequestWarningModal() {
               aria-label="بستن"
             ></button>
           </div>
-          <div class="modal-body p-4 text-secondary lh-lg">
+          <div class="modal-body p-4 text-body-secondary lh-lg">
             <div class="d-flex align-items-center gap-3 mb-3">
               <div
                 class="bg-primary-subtle text-primary p-3 rounded-circle d-flex align-items-center justify-content-center"
                 style="width: 50px; height: 50px;"
               >
-                <i class="fas fa-chalkboard-teacher fs-4"></i>
+                <i class="bi bi-person-workspace fs-4" aria-hidden="true"></i>
               </div>
               <div>
-                <h6 class="fw-bold text-dark mb-1">درخواست ایجاد درس یا دوره آموزشی</h6>
-                <small class="text-muted">مخصوص اساتید، مدرسان و طراحان دوره</small>
+                <h6 class="fw-bold text-body mb-1">درخواست ایجاد درس یا دوره آموزشی</h6>
+                <small class="text-body-secondary">مخصوص اساتید، مدرسان و طراحان دوره</small>
               </div>
             </div>
-            <p class="mb-2 text-dark fw-medium">استاد یا متقاضی گرامی؛</p>
-            <p class="small text-secondary mb-0">
+            <p class="mb-2 text-body fw-medium">استاد یا متقاضی گرامی؛</p>
+            <p class="small text-body-secondary mb-0">
               برای ثبت درخواست دوره جدید و اتصال به مخزن اختصاصی، ابتدا لازم است در سامانه
               <strong>ثبت‌نام</strong> فرمایید یا در صورت داشتن حساب، <strong>وارد شوید</strong>. پس
               از ورود موفق، فرم ایجاد درس بلافاصله در اختیار شما قرار خواهد گرفت.
             </p>
           </div>
-          <div class="modal-footer bg-light border-0 py-3 px-4 d-flex justify-content-end gap-2">
+          <div
+            class="modal-footer bg-body-tertiary border-0 py-3 px-4 d-flex justify-content-end gap-2"
+          >
             <button
               type="button"
               class="btn btn-primary btn-sm px-3 fw-medium"
               data-bs-dismiss="modal"
               onclick="setAuthMode('login'); document.getElementById('login-form-pane')?.scrollIntoView({ behavior: 'smooth' });"
             >
-              <i class="fas fa-sign-in-alt me-1"></i> ورود به حساب
+              <i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i> ورود به حساب
             </button>
             <button
               type="button"
@@ -896,7 +1194,8 @@ function CourseRequestWarningModal() {
               data-bs-dismiss="modal"
               onclick="setAuthMode('register'); document.getElementById('register-form-pane')?.scrollIntoView({ behavior: 'smooth' });"
             >
-              <i class="fas fa-user-plus me-1"></i> ایجاد حساب کاربری (ثبت‌نام)
+              <i class="bi bi-person-plus-fill me-1" aria-hidden="true"></i> ایجاد حساب کاربری
+              (ثبت‌نام)
             </button>
           </div>
         </div>
@@ -988,11 +1287,19 @@ function LocalLoginForm({
         value="local_login"
       >
         <span class="fw-bold"
-          ><i class="fas fa-sign-in-alt me-1"></i> ${uiStrings.auth.loginBtn}</span
+          ><i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>
+          ${uiStrings.auth.loginBtn}</span
         >
       </button>
-      <div class="text-center mt-2">
-        <small class="text-muted">${uiStrings.auth.forgotPasswordHint}</small>
+      <div class="d-flex flex-column align-items-center gap-1 mt-2">
+        <button
+          type="button"
+          class="btn btn-link btn-sm p-0 text-decoration-none fw-medium"
+          onclick="setAuthMode('register')"
+        >
+          ${uiStrings.auth.dontHaveAccount}
+        </button>
+        <small class="text-body-secondary">${uiStrings.auth.forgotPasswordHint}</small>
       </div>
     </form>
   `;
@@ -1074,6 +1381,9 @@ function LocalRegisterForm({
         </div>
       </div>
       <div class="mb-3 mt-n2">
+        <div id="reg_password_bars" class="sh-pw-bars mt-1 mb-1" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
         <small
           id="reg_password_strength"
           class="form-text d-block text-muted"
@@ -1124,11 +1434,19 @@ function LocalRegisterForm({
         value="local_register"
       >
         <span class="fw-bold"
-          ><i class="fas fa-user-plus me-1"></i> ${uiStrings.auth.registerBtn}</span
+          ><i class="bi bi-person-plus-fill me-1" aria-hidden="true"></i>
+          ${uiStrings.auth.registerBtn}</span
         >
       </button>
-      <div class="text-center mt-2">
-        <small class="text-muted">${uiStrings.auth.registerNotice}</small>
+      <div class="d-flex flex-column align-items-center gap-1 mt-2">
+        <button
+          type="button"
+          class="btn btn-link btn-sm p-0 text-decoration-none fw-medium"
+          onclick="setAuthMode('login')"
+        >
+          ${uiStrings.auth.haveAccount}
+        </button>
+        <small class="text-body-secondary text-center">${uiStrings.auth.registerNotice}</small>
       </div>
     </form>
   `;
@@ -1191,8 +1509,8 @@ export function AuthLogin({
         config.devMode
           ? html`
               <div class="mt-4 pt-3 border-top">
-                <div class="d-flex align-items-center gap-2 mb-2 text-muted small">
-                  <i class="fas fa-bolt text-warning"></i>
+                <div class="d-flex align-items-center gap-2 mb-2 text-body-secondary small">
+                  <i class="bi bi-lightning-charge-fill text-warning" aria-hidden="true"></i>
                   <span class="fw-bold">${uiStrings.auth.devLoginTitle}</span>
                 </div>
                 ${DevModeBypass()}
@@ -1234,7 +1552,7 @@ export function AuthLogin({
                   (provider) => html`
                     <a
                       href="${provider.url}"
-                      class="btn btn-outline-dark d-block w-100 js-institution-option"
+                      class="btn btn-outline-secondary d-block w-100 js-institution-option"
                       data-institution-name="${provider.name.toLowerCase()}"
                     >
                       <span class="fw-bold">${provider.name}</span>
@@ -1334,6 +1652,7 @@ export function AuthLoginInstitution({
   return LoginPageContainer({
     service,
     resLocals,
+    showAuthTabs: false,
     children: html`
       ${run(() => {
         if (showUnsupportedMessage) {
@@ -1415,9 +1734,12 @@ export function AuthLoginInstitution({
 function DevModeBypass() {
   return html`
     <a class="btn btn-success w-100" href="/pl/dev_login">
-      <span class="fw-bold"><i class="fas fa-bolt me-1"></i> ${uiStrings.auth.devBypassBtn}</span>
+      <span class="fw-bold"
+        ><i class="bi bi-lightning-charge-fill me-1" aria-hidden="true"></i>
+        ${uiStrings.auth.devBypassBtn}</span
+      >
     </a>
-    <small class="text-muted d-block text-center mt-1"
+    <small class="text-body-secondary d-block text-center mt-1"
       >${uiStrings.auth.devBypassHint} <code>${config.authUid}</code></small
     >
   `;

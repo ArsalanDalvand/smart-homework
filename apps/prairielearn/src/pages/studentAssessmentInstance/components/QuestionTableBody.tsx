@@ -9,6 +9,7 @@ import { formatStudentQuestionTitle } from '../../../lib/assessment.shared.js';
 import type { EnumAssessmentType } from '../../../lib/db-types.js';
 import { formatPoints } from '../../../lib/format.js';
 import type { QuestionClassStat } from '../../../lib/student-engagement.js';
+import type { FirstBloodOwner } from '../../../lib/student-gamification.js';
 import type { InstanceQuestionRow } from '../studentAssessmentInstance.types.js';
 
 import { LockpointRow } from './LockpointRow.js';
@@ -33,6 +34,9 @@ export function QuestionTableBody({
   questionStatsMap = null,
   oneshotAqIds = null,
   firstBloodAqIds = null,
+  firstBloodByAqId = null,
+  currentUserId = null,
+  showFirstBloodHunt = false,
 }: {
   rows: InstanceQuestionRow[];
   courseInstanceId: string;
@@ -52,6 +56,9 @@ export function QuestionTableBody({
   questionStatsMap?: Map<string, QuestionClassStat> | null;
   oneshotAqIds?: Set<string> | null;
   firstBloodAqIds?: Set<string> | null;
+  firstBloodByAqId?: Record<string, FirstBloodOwner> | null;
+  currentUserId?: string | null;
+  showFirstBloodHunt?: boolean;
 }) {
   const zoneGroups: InstanceQuestionRow[][] = [];
   rows.forEach((row) => {
@@ -154,6 +161,9 @@ export function QuestionTableBody({
                     questionStat: questionStatsMap?.get(row.assessment_question.id) ?? null,
                     isOneShot: oneshotAqIds?.has(row.assessment_question.id) ?? false,
                     isFirstBlood: firstBloodAqIds?.has(row.assessment_question.id) ?? false,
+                    firstBloodOwner: firstBloodByAqId?.[row.assessment_question.id] ?? null,
+                    currentUserId,
+                    showFirstBloodHunt,
                     rowLabelText: formatStudentQuestionTitle({
                       assessmentType,
                       questionNumber: row.question_number,

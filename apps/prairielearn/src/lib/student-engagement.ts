@@ -58,6 +58,7 @@ export interface HeatmapCell {
   count: number;
   level: 0 | 1 | 2 | 3 | 4;
   isToday: boolean;
+  isFrozen: boolean;
 }
 
 export interface HeatmapWeekColumn {
@@ -75,12 +76,25 @@ export interface StudentBadge {
   progressText: string;
 }
 
+export interface StreakFreezeSummary {
+  currentStreakDays: number;
+  longestStreakDays: number;
+  frozenDayKeys: string[];
+  freezesUsedThisMonth: number;
+  freezesRemainingThisMonth: number;
+  maxFreezesPerMonth: number;
+}
+
 export interface StudentActivityAndBadges {
   weeks: HeatmapWeekColumn[];
   totalSubmissions140d: number;
   activeDaysCount: number;
   currentStreakDays: number;
   longestStreakDays: number;
+  freezesUsedThisMonth: number;
+  freezesRemainingThisMonth: number;
+  maxFreezesPerMonth: number;
+  frozenDaysCount: number;
   badges: StudentBadge[];
 }
 
@@ -94,6 +108,11 @@ export interface LeaderboardEntry {
   rank: number;
   userId: string;
   displayName: string;
+  avatarPreset: string;
+  avatarColor: string;
+  statusEmoji: string;
+  isAnonymous: boolean;
+  showPassportDetails: boolean;
   isCurrentUser: boolean;
   totalPoints: number;
   maxPoints: number;
@@ -166,8 +185,12 @@ const VisibleHomeworkSchema = z.object({
 
 const LeaderboardRowSchema = z.object({
   user_id: z.string(),
-  full_name: z.string().nullable(),
-  uid_handle: z.string(),
+  display_name: z.string(),
+  avatar_preset: z.string(),
+  avatar_color: z.string(),
+  status_emoji: z.string(),
+  is_anonymous: z.boolean(),
+  show_passport_details: z.boolean(),
   total_points: z.coerce.number(),
   max_points: z.coerce.number(),
   score_perc: z.coerce.number(),
@@ -332,6 +355,86 @@ function addGregorianDays(dateKey: string, deltaDays: number): string {
   return dt.toISOString().slice(0, 10);
 }
 
+function getJalaliMonthKey(dateKey: string): string {
+  const [gy, gm, gd] = dateKey.split('-').map(Number);
+  const j = gregorianToJalali(gy, gm, gd);
+  return `${j.jy}-${String(j.jm).padStart(2, '0')}`;
+}
+
+export function computeStreakWithFreezes({
+  activeDayKeys,
+  todayKey,
+  maxFreezesPerMonth = 2,
+}: {
+  activeDayKeys: string[];
+  todayKey: string;
+  maxFreezesPerMonth?: number;
+}): StreakFreezeSummary {
+  const currentMonthKey = getJalaliMonthKey(todayKey);
+  const filteredKeys = activeDayKeys.filter((k) => k <= todayKey).sort();
+  if (filteredKeys.length === 0) {
+    return {
+      currentStreakDays: 0,
+      longestStreakDays: 0,
+      frozenDayKeys: [],
+      freezesUsedThisMonth: 0,
+      freezesRemainingThisMonth: maxFreezesPerMonth,
+      maxFreezesPerMonth,
+    };
+  }
+
+  const activeSet = new Set(filteredKeys);
+  const frozenSet = new Set<string>();
+  const monthFreezesUsed = new Map<string, number>();
+
+  const earliest = filteredKeys[0];
+  const minWindowStart = addGregorianDays(todayKey, -400);
+  const startKey = earliest > minWindowStart ? earliest : minWindowStart;
+  const yesterdayKey = addGregorianDays(todayKey, -1);
+
+  let running = 0;
+  let longest = 0;
+
+  if (startKey <= yesterdayKey) {
+    for (let d = startKey; d <= yesterdayKey; d = addGregorianDays(d, 1)) {
+      if (activeSet.has(d)) {
+        running += 1;
+        if (running > longest) longest = running;
+      } else if (running > 0) {
+        const nextD = addGregorianDays(d, 1);
+        const monthKey = getJalaliMonthKey(d);
+        const usedInMonth = monthFreezesUsed.get(monthKey) ?? 0;
+        const canBridgeGap = activeSet.has(nextD) || d === yesterdayKey;
+
+        if (usedInMonth < maxFreezesPerMonth && canBridgeGap) {
+          frozenSet.add(d);
+          monthFreezesUsed.set(monthKey, usedInMonth + 1);
+        } else {
+          running = 0;
+        }
+      }
+    }
+  }
+
+  if (activeSet.has(todayKey)) {
+    running += 1;
+    if (running > longest) longest = running;
+  } else if (!activeSet.has(yesterdayKey) && !frozenSet.has(yesterdayKey)) {
+    running = 0;
+  }
+
+  const freezesUsedThisMonth = monthFreezesUsed.get(currentMonthKey) ?? 0;
+
+  return {
+    currentStreakDays: running,
+    longestStreakDays: longest,
+    frozenDayKeys: Array.from(frozenSet).sort(),
+    freezesUsedThisMonth,
+    freezesRemainingThisMonth: Math.max(0, maxFreezesPerMonth - freezesUsedThisMonth),
+    maxFreezesPerMonth,
+  };
+}
+
 export async function getStudentActivityAndBadges({
   courseInstanceId,
   userId,
@@ -357,15 +460,26 @@ export async function getStudentActivityAndBadges({
 
   const countsByDay = new Map<string, number>();
   let totalSubmissions140d = 0;
+  const activeDayKeys: string[] = [];
   for (const row of activityRows) {
     countsByDay.set(row.day_key, row.submission_count);
     totalSubmissions140d += row.submission_count;
+    if (row.submission_count > 0) {
+      activeDayKeys.push(row.day_key);
+    }
   }
 
   // Anchor heatmap in local Jalali calendar so weeks run Saturday (0) -> Friday (6)
   const todayJalali = getTodayJalali(tz);
   const todayGreg = jalaliToGregorian(todayJalali.jy, todayJalali.jm, todayJalali.jd);
   const todayKey = getDateKeyFromGregorian(todayGreg.gy, todayGreg.gm, todayGreg.gd);
+
+  const streakSummary = computeStreakWithFreezes({
+    activeDayKeys,
+    todayKey,
+    maxFreezesPerMonth: 2,
+  });
+  const frozenSet = new Set(streakSummary.frozenDayKeys);
 
   // Determine today's Persian day of week (0 = Saturday .. 6 = Friday)
   const jsDow = new Date(Date.UTC(todayGreg.gy, todayGreg.gm - 1, todayGreg.gd)).getUTCDay();
@@ -380,8 +494,7 @@ export async function getStudentActivityAndBadges({
   let prevMonth = -1;
   let lastMonthLabelWeek = -10;
   let activeDaysCount = 0;
-  let longestStreakDays = 0;
-  let runningStreak = 0;
+  let frozenDaysCount = 0;
 
   for (let w = 0; w < numWeeks; w++) {
     const cells: HeatmapCell[] = [];
@@ -394,13 +507,13 @@ export async function getStudentActivityAndBadges({
       const j = gregorianToJalali(gy, gm, gd);
       const isFuture = key > todayKey;
       const count = isFuture ? 0 : (countsByDay.get(key) ?? 0);
+      const isFrozen = !isFuture && count === 0 && frozenSet.has(key);
 
       if (!isFuture && count > 0) {
         activeDaysCount += 1;
-        runningStreak += 1;
-        if (runningStreak > longestStreakDays) longestStreakDays = runningStreak;
-      } else if (!isFuture) {
-        runningStreak = 0;
+      }
+      if (isFrozen) {
+        frozenDaysCount += 1;
       }
 
       const monthTransition =
@@ -429,23 +542,19 @@ export async function getStudentActivityAndBadges({
         count,
         level,
         isToday: key === todayKey,
+        isFrozen,
       });
     }
     weeks.push({ monthLabel: weekMonthLabel, cells });
   }
 
-  // Compute active streak up to today (or yesterday if nothing submitted yet today)
-  let currentStreakDays = 0;
-  let cursor = (countsByDay.get(todayKey) ?? 0) > 0 ? todayKey : addGregorianDays(todayKey, -1);
-  for (let i = 0; i < 145; i++) {
-    if ((countsByDay.get(cursor) ?? 0) > 0) {
-      currentStreakDays += 1;
-      cursor = addGregorianDays(cursor, -1);
-    } else {
-      break;
-    }
-  }
-  if (currentStreakDays > longestStreakDays) longestStreakDays = currentStreakDays;
+  const {
+    currentStreakDays,
+    longestStreakDays,
+    freezesUsedThisMonth,
+    freezesRemainingThisMonth,
+    maxFreezesPerMonth,
+  } = streakSummary;
 
   const badges: StudentBadge[] = [
     {
@@ -513,6 +622,10 @@ export async function getStudentActivityAndBadges({
     activeDaysCount,
     currentStreakDays,
     longestStreakDays,
+    freezesUsedThisMonth,
+    freezesRemainingThisMonth,
+    maxFreezesPerMonth,
+    frozenDaysCount,
     badges,
   };
 }
@@ -545,7 +658,12 @@ export async function getStudentLeaderboardData({
   const allEntries: LeaderboardEntry[] = rawRows.map((row, idx) => ({
     rank: idx + 1,
     userId: row.user_id,
-    displayName: row.full_name?.trim() || row.uid_handle,
+    displayName: row.display_name,
+    avatarPreset: row.avatar_preset,
+    avatarColor: row.avatar_color,
+    statusEmoji: row.status_emoji,
+    isAnonymous: row.is_anonymous,
+    showPassportDetails: row.show_passport_details,
     isCurrentUser: row.user_id === userId,
     totalPoints: Math.round(row.total_points * 10) / 10,
     maxPoints: Math.round(row.max_points * 10) / 10,

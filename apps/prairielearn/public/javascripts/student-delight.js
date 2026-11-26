@@ -6,6 +6,23 @@
     });
   }
 
+  var TIER_ORDER = {
+    none: 0,
+    bronze: 1,
+    silver: 2,
+    gold: 3,
+    diamond: 4,
+    secret: 5,
+  };
+
+  var TIER_FA = {
+    bronze: 'برنزی',
+    silver: 'نقره‌ای',
+    gold: 'طلایی',
+    diamond: 'الماسی',
+    secret: 'مخفی',
+  };
+
   function getToastStack() {
     var stack = document.getElementById('sh-toast-stack');
     if (stack) return stack;
@@ -88,14 +105,17 @@
       setTimeout(function () {
         if (toast.parentNode) toast.remove();
       }, 240);
-    }, opts.durationMs || 6500);
+    }, opts.durationMs || 6800);
   }
 
-  function launchConfetti() {
+  function launchConfetti(theme) {
     if (
       typeof window.matchMedia === 'function' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ) {
+      return;
+    }
+    if (document.getElementById('sh-confetti-canvas')) {
       return;
     }
 
@@ -111,20 +131,24 @@
       return;
     }
 
-    var colors = ['#15803d', '#4ade80', '#d97706', '#18181b', '#0f4c81'];
+    var colors =
+      theme === 'gold'
+        ? ['#f59e0b', '#fbbf24', '#2563eb', '#60a5fa', '#fcd34d']
+        : ['#15803d', '#4ade80', '#d97706', '#2563eb', '#0f4c81'];
+    var count = theme === 'gold' ? 56 : 42;
     var particles = [];
     var originX = canvas.width * 0.5;
     var originY = canvas.height * 0.35;
 
-    for (var i = 0; i < 42; i += 1) {
-      var angle = (Math.PI * 2 * i) / 42 + (Math.random() - 0.5) * 0.3;
-      var speed = 4 + Math.random() * 6;
+    for (var i = 0; i < count; i += 1) {
+      var angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+      var speed = 4 + Math.random() * 6.5;
       particles.push({
         x: originX,
         y: originY,
         vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 3.5,
-        size: 5 + Math.random() * 4,
+        vy: Math.sin(angle) * speed - 3.6,
+        size: 5 + Math.random() * 4.5,
         rot: Math.random() * Math.PI,
         vrot: (Math.random() - 0.5) * 0.25,
         color: colors[i % colors.length],
@@ -143,7 +167,7 @@
         p.vy += 0.22;
         p.vx *= 0.985;
         p.rot += p.vrot;
-        p.alpha = Math.max(0, 1 - elapsed / 1450);
+        p.alpha = Math.max(0, 1 - elapsed / 1500);
 
         ctx.save();
         ctx.globalAlpha = p.alpha;
@@ -154,7 +178,7 @@
         ctx.restore();
       });
 
-      if (elapsed < 1450) {
+      if (elapsed < 1500) {
         requestAnimationFrame(tick);
       } else {
         canvas.remove();
@@ -164,36 +188,143 @@
     requestAnimationFrame(tick);
   }
 
-  function detectNewAchievements(cfg) {
-    if (!cfg || !cfg.courseInstanceId || !Array.isArray(cfg.unlockedAchievements)) return;
-    var storageKey = 'sh-seen-ach-' + cfg.courseInstanceId;
+  function detectDelightMilestones(cfg) {
+    if (!cfg || !cfg.courseInstanceId) return;
+    var v2Key = 'sh-delight-state-v2-' + cfg.courseInstanceId;
+    var legacyKey = 'sh-seen-ach-' + cfg.courseInstanceId;
+    var unlocked = Array.isArray(cfg.unlockedAchievements) ? cfg.unlockedAchievements : [];
+
+    var currentTiers = {};
+    unlocked.forEach(function (a) {
+      currentTiers[a.id] = a.tier || 'secret';
+    });
+
     try {
-      var raw = window.localStorage.getItem(storageKey);
-      var currentIds = cfg.unlockedAchievements.map(function (a) {
-        return a.id;
-      });
-      if (!raw) {
-        window.localStorage.setItem(storageKey, JSON.stringify(currentIds));
+      var rawV2 = window.localStorage.getItem(v2Key);
+      var prevState = null;
+
+      if (rawV2) {
+        prevState = JSON.parse(rawV2);
+      } else {
+        var rawLegacy = window.localStorage.getItem(legacyKey);
+        if (rawLegacy) {
+          var legacySet = new Set(JSON.parse(rawLegacy));
+          var migratedTiers = {};
+          unlocked.forEach(function (a) {
+            if (legacySet.has(a.id)) {
+              migratedTiers[a.id] = a.tier || 'secret';
+            }
+          });
+          prevState = {
+            level: cfg.level || 1,
+            tiers: migratedTiers,
+            completedAssessments:
+              cfg.assessmentCompleted && cfg.assessmentId ? [cfg.assessmentId] : [],
+          };
+        }
+      }
+
+      if (!prevState) {
+        window.localStorage.setItem(
+          v2Key,
+          JSON.stringify({
+            level: cfg.level || 1,
+            tiers: currentTiers,
+            completedAssessments:
+              cfg.assessmentCompleted && cfg.assessmentId ? [cfg.assessmentId] : [],
+          }),
+        );
         return;
       }
-      var seenSet = new Set(JSON.parse(raw));
-      var newlyUnlocked = cfg.unlockedAchievements.filter(function (a) {
-        return !seenSet.has(a.id);
+
+      var prevTiers = prevState.tiers || {};
+      var prevCompleted = Array.isArray(prevState.completedAssessments)
+        ? prevState.completedAssessments
+        : [];
+      var toastQueue = [];
+
+      unlocked.forEach(function (ach) {
+        var curTier = ach.tier || 'secret';
+        var prevTier = prevTiers[ach.id] || 'none';
+        if (prevTier === 'none' && (TIER_ORDER[curTier] || 0) > 0) {
+          toastQueue.push({
+            variantClass: 'is-achievement',
+            iconClass: 'bi bi-trophy-fill',
+            title: 'دستاورد جدید باز شد: ' + ach.title,
+            subtitle: ach.description,
+            durationMs: 7500,
+          });
+        } else if (
+          prevTier !== 'none' &&
+          (TIER_ORDER[curTier] || 0) > (TIER_ORDER[prevTier] || 0)
+        ) {
+          var tierFa = TIER_FA[curTier] || curTier;
+          toastQueue.push({
+            variantClass: 'is-achievement',
+            iconClass: 'bi bi-award-fill',
+            title: 'ارتقای مدال! ' + ach.title + ' به سطح ' + tierFa + ' رسید',
+            subtitle: ach.description,
+            confettiTheme: 'gold',
+            durationMs: 8000,
+          });
+        }
       });
-      if (newlyUnlocked.length > 0) {
-        window.localStorage.setItem(storageKey, JSON.stringify(currentIds));
-        newlyUnlocked.slice(0, 2).forEach(function (ach, idx) {
+
+      if (cfg.level && prevState.level && cfg.level > prevState.level) {
+        toastQueue.push({
+          variantClass: 'is-levelup',
+          iconClass: 'bi bi-rocket-takeoff-fill',
+          title:
+            'تبریک! به Level ' +
+            toFa(cfg.level) +
+            (cfg.levelTitle ? ' (' + cfg.levelTitle + ')' : '') +
+            ' صعود کردی!',
+          subtitle: 'سطح تسلط و تجربه شما در این درس ارتقا یافت.',
+          confettiTheme: 'gold',
+          durationMs: 8500,
+        });
+      }
+
+      var updatedCompleted = prevCompleted.slice();
+      if (
+        cfg.assessmentCompleted &&
+        cfg.assessmentId &&
+        prevCompleted.indexOf(cfg.assessmentId) === -1
+      ) {
+        updatedCompleted.push(cfg.assessmentId);
+        toastQueue.push({
+          variantClass: 'is-series-complete',
+          iconClass: 'bi bi-patch-check-fill',
+          title:
+            'کل سری ' +
+            (cfg.assessmentLabel ? cfg.assessmentLabel + ' ' : '') +
+            'با موفقیت ۱۰۰٪ تکمیل شد!',
+          subtitle: 'همه سوالات این سری تمرین را کامل حل کرده‌اید.',
+          confettiTheme: 'gold',
+          durationMs: 9000,
+        });
+      }
+
+      var mergedTiers = Object.assign({}, prevTiers, currentTiers);
+      window.localStorage.setItem(
+        v2Key,
+        JSON.stringify({
+          level: Math.max(prevState.level || 1, cfg.level || 1),
+          tiers: mergedTiers,
+          completedAssessments: updatedCompleted,
+        }),
+      );
+
+      if (toastQueue.length > 0) {
+        toastQueue.slice(0, 3).forEach(function (item, idx) {
           setTimeout(
             function () {
-              showToast({
-                variantClass: 'is-achievement',
-                iconClass: 'bi bi-trophy-fill',
-                title: 'دستاورد جدید باز شد: ' + ach.title,
-                subtitle: ach.description,
-                durationMs: 7500,
-              });
+              if (item.confettiTheme) {
+                launchConfetti(item.confettiTheme);
+              }
+              showToast(item);
             },
-            450 + idx * 350,
+            500 + idx * 450,
           );
         });
       }
@@ -230,10 +361,13 @@
     }
 
     if (score >= 99.99) {
-      launchConfetti();
+      launchConfetti('default');
       var badges = [];
       if (cfg.estimatedXp > 0) badges.push('+' + toFa(cfg.estimatedXp) + ' XP');
       if (cfg.isOneShot) badges.push('One-Shot');
+      if (typeof cfg.beatsClassPerc === 'number' && cfg.beatsClassPerc > 0) {
+        badges.push('سریع‌تر از ' + toFa(cfg.beatsClassPerc) + '٪ کلاس');
+      }
 
       showToast({
         variantClass: 'is-success',
@@ -268,7 +402,7 @@
       return;
     }
 
-    detectNewAchievements(cfg);
+    detectDelightMilestones(cfg);
 
     // Check latest graded submission immediately after POST redirect
     var latestSub = document.querySelector('[data-testid="submission-with-feedback"]');

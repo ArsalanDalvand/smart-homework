@@ -299,6 +299,13 @@ router.get(
     ]);
     const oneshotAqIds = gamificationProfile ? gamificationProfile.oneshotAqIds : [];
     const firstBloodAqIds = gamificationProfile ? gamificationProfile.firstBloodAqIds : [];
+    const firstBloodByAqId = gamificationProfile ? gamificationProfile.firstBloodByAqId : null;
+    const nextUnlock = gamificationProfile ? gamificationProfile.nextUnlock : null;
+    const showFirstBloodHunt =
+      isHomework &&
+      achievementsEnabled &&
+      Boolean(res.locals.assessment_instance.open) &&
+      !res.locals.lockdown_browser;
 
     if (!res.locals.assessment.team_work) {
       res.send(
@@ -310,6 +317,9 @@ router.get(
           showDeadlineRadar: deadlineRadarEnabled,
           oneshotAqIds,
           firstBloodAqIds,
+          firstBloodByAqId,
+          nextUnlock,
+          showFirstBloodHunt,
           resLocals: res.locals,
         }),
       );
@@ -350,6 +360,9 @@ router.get(
         showDeadlineRadar: deadlineRadarEnabled,
         oneshotAqIds,
         firstBloodAqIds,
+        firstBloodByAqId,
+        nextUnlock,
+        showFirstBloodHunt,
         resLocals: res.locals,
       }),
     );

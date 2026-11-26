@@ -3,6 +3,7 @@ import { html } from '@prairielearn/html';
 import { getInstanceQuestionUrl } from '../../../lib/client/url.js';
 import { toPersianDigits } from '../../../lib/jalali.js';
 import type { QuestionClassStat } from '../../../lib/student-engagement.js';
+import type { FirstBloodOwner } from '../../../lib/student-gamification.js';
 import type { InstanceQuestionRow } from '../studentAssessmentInstance.types.js';
 
 export function RowLabel({
@@ -14,6 +15,9 @@ export function RowLabel({
   questionStat = null,
   isOneShot = false,
   isFirstBlood = false,
+  firstBloodOwner = null,
+  currentUserId = null,
+  showFirstBloodHunt = false,
 }: {
   courseInstanceId: string;
   row: InstanceQuestionRow;
@@ -23,6 +27,9 @@ export function RowLabel({
   questionStat?: QuestionClassStat | null;
   isOneShot?: boolean;
   isFirstBlood?: boolean;
+  firstBloodOwner?: FirstBloodOwner | null;
+  currentUserId?: string | null;
+  showFirstBloodHunt?: boolean;
 }) {
   let lockMessage: string | null = null;
   let showLink = true;
@@ -151,14 +158,32 @@ export function RowLabel({
         : ''
     }
     ${
-      isFirstBlood
+      isFirstBlood || (firstBloodOwner && currentUserId && firstBloodOwner.userId === currentUserId)
         ? html`
-            <span class="sh-honor-chip sh-en-term" title="نفر اول کلاس در حل کامل این سوال">
-              <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
-              First Blood
+            <span class="sh-fb-mine-chip" title="شما نفر اول کلاس در حل کامل این سوال شدید!">
+              <i class="bi bi-lightning-fill" aria-hidden="true"></i>
+              <span class="sh-en-term">First Blood</span>: شما!
             </span>
           `
-        : ''
+        : firstBloodOwner
+          ? html`
+              <span class="sh-fb-claimed-chip" title="نفر اول کلاس در حل کامل این سوال">
+                <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
+                <span class="sh-en-term">First Blood</span>: ${firstBloodOwner.displayName}
+              </span>
+            `
+          : showFirstBloodHunt && showLink
+            ? html`
+                <span
+                  class="sh-fb-open-chip"
+                  title="هنوز کسی این سوال را ۱۰۰٪ حل نکرده — نفر اول +۶۰ XP می‌گیرد"
+                >
+                  <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+                  <span class="sh-en-term">First Blood</span> آزاد (+۶۰{' '}
+                  <span class="sh-en-term">XP</span>)
+                </span>
+              `
+            : ''
     }
   `;
 }

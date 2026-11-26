@@ -28,6 +28,7 @@ import { type GroupInfo, getRoleNamesForUser } from '../../lib/groups.shared.js'
 import { toPersianDigits } from '../../lib/jalali.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
 import type { QuestionClassStat } from '../../lib/student-engagement.js';
+import type { FirstBloodOwner, NextUnlockHint } from '../../lib/student-gamification.js';
 
 import { ExamFooterContent } from './components/ExamFooterContent.js';
 import { QuestionTableBody } from './components/QuestionTableBody.js';
@@ -44,6 +45,9 @@ export function StudentAssessmentInstance({
   showDeadlineRadar = false,
   oneshotAqIds = [],
   firstBloodAqIds = [],
+  firstBloodByAqId = null,
+  nextUnlock = null,
+  showFirstBloodHunt = false,
   resLocals,
 }: {
   instance_question_rows: InstanceQuestionRow[];
@@ -53,6 +57,9 @@ export function StudentAssessmentInstance({
   showDeadlineRadar?: boolean;
   oneshotAqIds?: string[];
   firstBloodAqIds?: string[];
+  firstBloodByAqId?: Record<string, FirstBloodOwner> | null;
+  nextUnlock?: NextUnlockHint | null;
+  showFirstBloodHunt?: boolean;
   resLocals: ResLocalsForPage<'assessment-instance'> & {
     has_manual_grading_question: boolean;
     has_auto_grading_question: boolean;
@@ -456,6 +463,39 @@ export function StudentAssessmentInstance({
                 `
               : ''
           }
+          ${
+            nextUnlock && resLocals.assessment.type === 'Homework' && !resLocals.lockdown_browser
+              ? html`
+                  <div class="sh-next-unlock-strip mt-3">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                      <div class="d-flex align-items-center gap-2 small">
+                        <span class="sh-next-unlock-icon">
+                          <i class="${nextUnlock.iconClass}" aria-hidden="true"></i>
+                        </span>
+                        <span>
+                          <strong class="text-body">نزدیک‌ترین مدال بعدی:</strong>
+                          ${nextUnlock.messageFa}
+                        </span>
+                      </div>
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="progress" style="width: 96px; height: 7px;">
+                          <div
+                            class="progress-bar sh-progress-brand"
+                            style="width: ${nextUnlock.progressPerc}%"
+                          ></div>
+                        </div>
+                        <a
+                          href="${resLocals.urlPrefix}/gradebook#tab-achievements"
+                          class="small fw-semibold text-decoration-none"
+                        >
+                          همه مدال‌ها ←
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                `
+              : ''
+          }
         </div>
 
         <div class="table-responsive">
@@ -489,6 +529,9 @@ export function StudentAssessmentInstance({
               questionStatsMap,
               oneshotAqIds: oneshotAqSet,
               firstBloodAqIds: firstBloodAqSet,
+              firstBloodByAqId,
+              currentUserId: resLocals.user.id,
+              showFirstBloodHunt,
             })}
           </table>
         </div>

@@ -36,6 +36,14 @@ const featureNames = [
   'student-skill-tree',
   'student-hall-of-fame',
   'student-micro-delight',
+  'student-coop-goal',
+  'student-ta-kudos',
+  'student-weekly-leagues',
+  'student-code-speed',
+  'student-daily-pulse',
+  'student-coding-passport',
+  'student-weekly-goal-simulator',
+  'student-term-wrap-up',
 ] as const;
 
 const features = new FeatureManager(featureNames);

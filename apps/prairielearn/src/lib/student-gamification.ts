@@ -5,73 +5,9 @@ import { cache } from '@prairielearn/cache';
 import * as sqldb from '@prairielearn/postgres';
 
 import { getTodayJalali, gregorianToJalali, jalaliToGregorian, toPersianDigits } from './jalali.js';
-import { getStudentActivityAndBadges } from './student-engagement.js';
+import { computeStreakWithFreezes, getStudentActivityAndBadges } from './student-engagement.js';
 
 const sql = sqldb.loadSqlEquiv(import.meta.url);
-
-const GAMIFICATION_PROFILE_CACHE_MS = 30 * 1000;
-const GAMIFICATION_COHORT_CACHE_MS = 60 * 1000;
-
-// ---------- Types ----------
-
-export type AchievementTier = 'none' | 'bronze' | 'silver' | 'gold' | 'diamond' | 'secret';
-
-export interface StudentAchievement {
-  id: string;
-  title: string;
-  description: string;
-  secretHint: string | null;
-  category: 'tiered' | 'secret';
-  iconClass: string;
-  tier: AchievementTier;
-  earned: boolean;
-  currentValue: number;
-  nextTarget: number | null;
-  tierTargets: number[] | null;
-  progressPerc: number;
-  progressText: string;
-  xpReward: number;
-  rarityWeight: number;
-}
-
-export interface ShowcaseBadge {
-  id: string;
-  title: string;
-  tier: AchievementTier;
-  iconClass: string;
-  tooltip: string;
-}
-
-export interface StudentLevelInfo {
-  level: number;
-  title: string;
-  subtitleFa: string;
-  totalXp: number;
-  currentLevelXp: number;
-  nextLevelXp: number;
-  xpIntoLevel: number;
-  xpNeededForNext: number;
-  progressPerc: number;
-}
-
-export interface WeeklyQuestItem {
-  id: string;
-  title: string;
-  description: string;
-  iconClass: string;
-  current: number;
-  target: number;
-  progressPerc: number;
-  xpReward: number;
-  completed: boolean;
-}
-
-export interface WeeklyQuestsBundle {
-  weekLabel: string;
-  weekEndsAtIso: string;
-  completedCount: number;
-  quests: WeeklyQuestItem[];
-}
 
 export interface SkillTreeQuestionItem {
   assessmentId: string;
@@ -111,6 +47,89 @@ export interface StudentSkillTreeData {
   recommendedNodeId: string | null;
 }
 
+const GAMIFICATION_PROFILE_CACHE_MS = 30 * 1000;
+const GAMIFICATION_COHORT_CACHE_MS = 60 * 1000;
+
+// ---------- Types ----------
+
+export type AchievementTier = 'none' | 'bronze' | 'silver' | 'gold' | 'diamond' | 'secret';
+
+export interface StudentAchievement {
+  id: string;
+  title: string;
+  description: string;
+  secretHint: string | null;
+  category: 'tiered' | 'secret';
+  iconClass: string;
+  tier: AchievementTier;
+  earned: boolean;
+  currentValue: number;
+  nextTarget: number | null;
+  tierTargets: number[] | null;
+  progressPerc: number;
+  progressText: string;
+  xpReward: number;
+  rarityWeight: number;
+}
+
+export interface ShowcaseBadge {
+  id: string;
+  title: string;
+  tier: AchievementTier;
+  iconClass: string;
+  tooltip: string;
+}
+
+export interface NextUnlockHint {
+  achievementId: string;
+  title: string;
+  iconClass: string;
+  nextTier: Exclude<AchievementTier, 'none' | 'secret'>;
+  nextTierFa: string;
+  remaining: number;
+  nextTarget: number;
+  currentValue: number;
+  progressPerc: number;
+  xpReward: number;
+  messageFa: string;
+}
+
+export interface StudentLevelInfo {
+  level: number;
+  title: string;
+  subtitleFa: string;
+  totalXp: number;
+  currentLevelXp: number;
+  nextLevelXp: number;
+  xpIntoLevel: number;
+  xpNeededForNext: number;
+  progressPerc: number;
+}
+
+export interface WeeklyQuestItem {
+  id: string;
+  title: string;
+  description: string;
+  iconClass: string;
+  current: number;
+  target: number;
+  progressPerc: number;
+  xpReward: number;
+  completed: boolean;
+}
+
+export interface WeeklyQuestsBundle {
+  weekLabel: string;
+  weekEndsAtIso: string;
+  completedCount: number;
+  quests: WeeklyQuestItem[];
+}
+
+export interface FirstBloodOwner {
+  userId: string;
+  displayName: string;
+}
+
 export interface StudentGamificationProfile {
   xp: {
     totalXp: number;
@@ -121,16 +140,24 @@ export interface StudentGamificationProfile {
   achievements: StudentAchievement[];
   unlockedAchievementIds: string[];
   showcaseBadges: ShowcaseBadge[];
+  nextUnlock: NextUnlockHint | null;
   weeklyQuests: WeeklyQuestsBundle;
   streak: {
     current: number;
     longest: number;
     activeDays140d: number;
+    freezesUsedThisMonth: number;
+    freezesRemainingThisMonth: number;
+    maxFreezesPerMonth: number;
   };
   solvedAqIds: string[];
   oneshotAqIds: string[];
   firstBloodAqIds: string[];
+  firstBloodByAqId: Record<string, FirstBloodOwner>;
   masteredTopicsCount: number;
+  taKudosCount: number;
+  dailyPulseCorrectCount: number;
+  coopCompletedCount: number;
 }
 
 export interface StudentNavbarPulse {
@@ -145,8 +172,42 @@ export interface StudentNavbarPulse {
 export interface HallOfFameEntry {
   userId: string;
   displayName: string;
+  isAnonymous: boolean;
   metricLabel: string;
   metricValue: number;
+}
+
+export type WeeklyLeagueTier = 'diamond' | 'gold' | 'silver' | 'bronze';
+
+export interface WeeklyLeagueMember {
+  rank: number;
+  userId: string;
+  displayName: string;
+  avatarPreset: string;
+  avatarColor: string;
+  statusEmoji: string;
+  isAnonymous: boolean;
+  showPassportDetails: boolean;
+  weeklyXp: number;
+  solvedThisWeek: number;
+  level: number;
+  showcaseBadges: ShowcaseBadge[];
+  zone: 'promote' | 'safe' | 'relegate';
+}
+
+export interface WeeklyLeagueGroup {
+  id: string;
+  tier: WeeklyLeagueTier;
+  titleFa: string;
+  members: WeeklyLeagueMember[];
+  promoteCount: number;
+  relegateCount: number;
+}
+
+export interface WeeklyLeaguesBundle {
+  weekLabel: string;
+  weekEndsAtIso: string;
+  leagues: WeeklyLeagueGroup[];
 }
 
 export interface CohortGamificationBundle {
@@ -156,6 +217,12 @@ export interface CohortGamificationBundle {
       level: number;
       levelTitle: string;
       totalXp: number;
+      weeklyXp: number;
+      avatarPreset: string;
+      avatarColor: string;
+      statusEmoji: string;
+      isAnonymous: boolean;
+      showPassportDetails: boolean;
       showcaseBadges: ShowcaseBadge[];
     }
   >;
@@ -165,7 +232,48 @@ export interface CohortGamificationBundle {
     streakLegends: HallOfFameEntry[];
     firstBloodHunters: HallOfFameEntry[];
   };
-  firstBloodByAqId: Record<string, string>;
+  firstBloodByAqId: Record<string, FirstBloodOwner>;
+  weeklyLeagues: WeeklyLeaguesBundle;
+}
+
+export interface StudentCodingPassport {
+  userId: string;
+  displayName: string;
+  avatarPreset: string;
+  avatarColor: string;
+  bannerTheme: string;
+  bio: string | null;
+  statusEmoji: string;
+  favoriteTopic: string | null;
+  githubUsername: string | null;
+  featuredTitle: string;
+  privacyLocked: boolean;
+  showActivityStats: boolean;
+  level: StudentLevelInfo;
+  streak: {
+    current: number;
+    longest: number;
+    activeDays140d: number;
+  } | null;
+  solvedQuestions: number | null;
+  totalSubmissions: number | null;
+  acceptanceRate: number | null;
+  taKudosCount: number;
+  firstBloodCount: number;
+  earnedAchievements: {
+    id: string;
+    title: string;
+    tier: AchievementTier;
+    iconClass: string;
+    description: string;
+  }[];
+  topicMastery: {
+    title: string;
+    solvedQuestions: number;
+    totalQuestions: number;
+    masteryPerc: number;
+    status: SkillTreeNode['status'];
+  }[];
 }
 
 // ---------- Zod Schemas ----------
@@ -175,9 +283,10 @@ const CourseAqRowSchema = z.object({
   attempted_count: z.coerce.number(),
   solved_count: z.coerce.number(),
   first_blood_user_id: z.string().nullable(),
+  first_blood_display_name: z.string().nullable(),
 });
 
-const StudentSignalsRowSchema = z.object({
+const CanonicalSqlSignalsSchema = z.object({
   solved_aq_ids: z.array(z.string()).catch([]),
   oneshot_aq_ids: z.array(z.string()).catch([]),
   partial_score_sum: z.coerce.number(),
@@ -186,18 +295,48 @@ const StudentSignalsRowSchema = z.object({
   comeback_count: z.coerce.number(),
   perfect_hw_count: z.coerce.number(),
   early_bird_count: z.coerce.number(),
+  bonus_hunter_count: z.coerce.number(),
+  syntax_clean_max_run: z.coerce.number(),
   total_submissions: z.coerce.number(),
   accepted_submissions: z.coerce.number(),
   active_days_total: z.coerce.number(),
+  active_day_keys: z.array(z.string()).catch([]),
   night_owl_count: z.coerce.number(),
   dawn_coder_count: z.coerce.number(),
   buzzer_beater_count: z.coerce.number(),
   weekend_warrior_weeks: z.coerce.number(),
+  mastered_topics_count: z.coerce.number(),
+  ta_kudos_count: z.coerce.number(),
+  daily_pulse_correct_count: z.coerce.number(),
+  weekly_goal_met_weeks: z.coerce.number(),
+  weekly_goal_xp: z.coerce.number(),
+  coop_completed_count: z.coerce.number(),
+  active_days_week: z.coerce.number(),
+  solved_aq_ids_week: z.array(z.string()).catch([]),
+  clean_solves_week: z.coerce.number(),
+  oneshot_week: z.coerce.number(),
+  comeback_week: z.coerce.number(),
+  daily_pulse_correct_week: z.coerce.number(),
+  ta_kudos_week: z.coerce.number(),
+  pinned_badge_ids: z.array(z.string()).catch([]),
+  recent_7d_solved: z.coerce.number(),
+});
+
+const CohortGamificationRowSchema = CanonicalSqlSignalsSchema.extend({
+  user_id: z.string(),
+  display_name: z.string(),
+  avatar_preset: z.string(),
+  avatar_color: z.string(),
+  status_emoji: z.string(),
+  pinned_badge_ids: z.array(z.string()).catch([]),
+  is_anonymous: z.boolean(),
+  show_passport_details: z.boolean(),
 });
 
 const WeeklyQuestSignalsSchema = z.object({
   active_days_week: z.coerce.number(),
   solved_questions_week: z.coerce.number(),
+  solved_aq_ids_week: z.array(z.string()).catch([]),
   clean_solves_week: z.coerce.number(),
   oneshot_week: z.coerce.number(),
   comeback_week: z.coerce.number(),
@@ -225,22 +364,20 @@ const SkillTreeRowSchema = z.object({
   first_submission_score: z.coerce.number().nullable(),
 });
 
-const CohortGamificationRowSchema = z.object({
+const PassportIdentityRowSchema = z.object({
   user_id: z.string(),
   display_name: z.string(),
-  solved_count: z.coerce.number(),
-  partial_score_sum: z.coerce.number(),
-  oneshot_count: z.coerce.number(),
-  edge_hunter_count: z.coerce.number(),
-  perfect_hw_count: z.coerce.number(),
-  early_bird_count: z.coerce.number(),
-  total_submissions: z.coerce.number(),
-  accepted_submissions: z.coerce.number(),
-  recent_7d_solved: z.coerce.number(),
-  active_days_total: z.coerce.number(),
-  night_owl_count: z.coerce.number(),
-  buzzer_beater_count: z.coerce.number(),
-  active_day_keys: z.array(z.string()).catch([]),
+  avatar_preset: z.string(),
+  avatar_color: z.string(),
+  banner_theme: z.string(),
+  bio: z.string().nullable(),
+  status_emoji: z.string(),
+  favorite_topic: z.string().nullable(),
+  github_username: z.string().nullable(),
+  featured_title: z.string(),
+  show_on_leaderboard: z.boolean(),
+  show_passport_details: z.boolean(),
+  show_activity_stats: z.boolean(),
 });
 
 // ---------- Cache & Date Helpers ----------
@@ -262,6 +399,20 @@ async function withCache<T>(key: string, ttlMs: number, loader: () => Promise<T>
   return fresh;
 }
 
+export async function invalidateStudentGamificationCache(
+  courseInstanceId: string,
+  userId: string,
+): Promise<void> {
+  try {
+    await Promise.all([
+      cache.del(`sh-gamif-profile:${courseInstanceId}:${userId}`),
+      cache.del(`sh-gamif-cohort:${courseInstanceId}`),
+    ]);
+  } catch {
+    // Cache deletion failure must never break request handlers
+  }
+}
+
 function getDateKeyFromGregorian(gy: number, gm: number, gd: number): string {
   return `${gy}-${String(gm).padStart(2, '0')}-${String(gd).padStart(2, '0')}`;
 }
@@ -272,13 +423,16 @@ function addGregorianDays(dateKey: string, deltaDays: number): string {
   return dt.toISOString().slice(0, 10);
 }
 
-function getCurrentJalaliWeekBounds(timezone: string): {
+export interface JalaliWeekBounds {
   weekStartKey: string;
   weekEndKey: string;
   weekNumber: number;
   weekLabel: string;
   weekEndsAtIso: string;
-} {
+  todayKey: string;
+}
+
+export function getCurrentJalaliWeekBounds(timezone: string): JalaliWeekBounds {
   const tz = timezone || 'Asia/Tehran';
   const todayJalali = getTodayJalali(tz);
   const todayGreg = jalaliToGregorian(todayJalali.jy, todayJalali.jm, todayJalali.jd);
@@ -323,26 +477,29 @@ function getCurrentJalaliWeekBounds(timezone: string): {
     weekNumber,
     weekLabel: `هفته ${toPersianDigits(weekNumber)} (${toPersianDigits(startJalali.jd)}/${toPersianDigits(startJalali.jm)} تا ${toPersianDigits(endJalali.jd)}/${toPersianDigits(endJalali.jm)})`,
     weekEndsAtIso,
+    todayKey,
   };
 }
 
-function computeStreakFromDayKeys(dayKeys: string[], todayKey: string): number {
-  if (dayKeys.length === 0) return 0;
-  const set = new Set(dayKeys);
-  let streak = 0;
-  let cursor = set.has(todayKey) ? todayKey : addGregorianDays(todayKey, -1);
-  for (let i = 0; i < 65; i += 1) {
-    if (set.has(cursor)) {
-      streak += 1;
-      cursor = addGregorianDays(cursor, -1);
-    } else {
-      break;
-    }
-  }
-  return streak;
+export type WeeklyGoalTier = 'light' | 'balanced' | 'pro';
+
+export const WEEKLY_GOAL_TIERS: Record<
+  WeeklyGoalTier,
+  { target: number; xp: number; labelFa: string }
+> = {
+  light: { target: 2, xp: 35, labelFa: 'سبک (۲ سوال)' },
+  balanced: { target: 4, xp: 50, labelFa: 'متعادل (۴ سوال)' },
+  pro: { target: 6, xp: 80, labelFa: 'حرفه‌ای (۶ سوال)' },
+};
+
+export function computeCoopTargetSolves(totalQuestions: number, enrolledCount: number): number {
+  return Math.max(
+    totalQuestions * 3,
+    Math.round(Math.max(5, enrolledCount) * totalQuestions * 0.65),
+  );
 }
 
-// ---------- Level & Achievement Calculators ----------
+// ---------- Level, Achievement & Next Unlock Calculators ----------
 
 const LEVEL_RANKS: { title: string; subtitleFa: string }[] = [
   { title: 'Code Novice', subtitleFa: 'آغاز مسیر برنامه‌نویسی' },
@@ -356,6 +513,15 @@ const LEVEL_RANKS: { title: string; subtitleFa: string }[] = [
   { title: 'Term Legend', subtitleFa: 'ستاره برتر ترم' },
   { title: 'Grandmaster', subtitleFa: 'اوج تسلط و پشتکار' },
 ];
+
+const TIER_REWARDS: [number, number, number, number] = [50, 100, 175, 275];
+
+const TIER_NAMES_FA: Record<Exclude<AchievementTier, 'none' | 'secret'>, string> = {
+  bronze: 'برنزی',
+  silver: 'نقره‌ای',
+  gold: 'طلایی',
+  diamond: 'الماسی',
+};
 
 export function xpThresholdForLevel(level: number): number {
   if (level <= 1) return 0;
@@ -434,13 +600,15 @@ function evaluateTier(
   };
 }
 
-function buildAchievements(params: {
+export function buildAchievements(params: {
   oneshotCount: number;
   longestStreakDays: number;
   perfectHwCount: number;
   edgeHunterCount: number;
   earlyBirdCount: number;
   masteredTopicsCount: number;
+  syntaxCleanMaxRun: number;
+  bonusHunterCount: number;
   acceptanceRate: number;
   totalSubmissions: number;
   firstBloodCount: number;
@@ -450,20 +618,22 @@ function buildAchievements(params: {
   comebackCount: number;
   giantSlayerCount: number;
   weekendWarriorWeeks: number;
+  taKudosCount: number;
+  coopCompletedCount: number;
 }): StudentAchievement[] {
-  const tierRewards: [number, number, number, number] = [50, 100, 175, 275];
-
-  const oneShotTier = evaluateTier(params.oneshotCount, [1, 5, 12, 25], tierRewards);
-  const streakTier = evaluateTier(params.longestStreakDays, [3, 7, 14, 30], tierRewards);
-  const perfectTier = evaluateTier(params.perfectHwCount, [1, 3, 6, 10], tierRewards);
-  const edgeTier = evaluateTier(params.edgeHunterCount, [1, 4, 10, 20], tierRewards);
-  const earlyTier = evaluateTier(params.earlyBirdCount, [1, 3, 6, 10], tierRewards);
-  const topicTier = evaluateTier(params.masteredTopicsCount, [1, 3, 5, 8], tierRewards);
+  const oneShotTier = evaluateTier(params.oneshotCount, [1, 5, 12, 25], TIER_REWARDS);
+  const streakTier = evaluateTier(params.longestStreakDays, [3, 7, 14, 30], TIER_REWARDS);
+  const perfectTier = evaluateTier(params.perfectHwCount, [1, 3, 6, 10], TIER_REWARDS);
+  const edgeTier = evaluateTier(params.edgeHunterCount, [1, 4, 10, 20], TIER_REWARDS);
+  const earlyTier = evaluateTier(params.earlyBirdCount, [1, 3, 6, 10], TIER_REWARDS);
+  const topicTier = evaluateTier(params.masteredTopicsCount, [1, 3, 5, 8], TIER_REWARDS);
+  const syntaxTier = evaluateTier(params.syntaxCleanMaxRun, [5, 12, 25, 50], TIER_REWARDS);
+  const bonusTier = evaluateTier(params.bonusHunterCount, [1, 2, 4, 6], TIER_REWARDS);
 
   // Surgical Accuracy requires at least 15 gradable submissions so 1/1 doesn't trivialize it
   const accuracyEligible = params.totalSubmissions >= 15;
   const effectiveAcc = accuracyEligible ? params.acceptanceRate : 0;
-  const accTier = evaluateTier(effectiveAcc, [65, 75, 85, 92], tierRewards);
+  const accTier = evaluateTier(effectiveAcc, [65, 75, 85, 92], TIER_REWARDS);
 
   const tiered: StudentAchievement[] = [
     {
@@ -547,6 +717,38 @@ function buildAchievements(params: {
       rarityWeight: 56,
     },
     {
+      id: 'syntax-clean',
+      title: 'Syntax Clean',
+      description: 'ارسال‌های پیاپی معتبر بدون خطای نحوی (Syntax و Indentation)',
+      secretHint: null,
+      category: 'tiered',
+      iconClass: 'bi bi-code-slash',
+      ...syntaxTier,
+      currentValue: params.syntaxCleanMaxRun,
+      tierTargets: [5, 12, 25, 50],
+      progressText:
+        syntaxTier.nextTarget !== null
+          ? `رکورد: ${toPersianDigits(params.syntaxCleanMaxRun)} از ${toPersianDigits(syntaxTier.nextTarget)} ارسال`
+          : `${toPersianDigits(params.syntaxCleanMaxRun)} ارسال تمیز پیاپی`,
+      rarityWeight: syntaxTier.tier === 'diamond' ? 88 : syntaxTier.tier === 'gold' ? 73 : 52,
+    },
+    {
+      id: 'bonus-hunter',
+      title: 'Bonus Hunter',
+      description: 'کسب امتیاز تشویقی (بونوس) فراتر از سقف نمره اصلی یک سری تمرین',
+      secretHint: null,
+      category: 'tiered',
+      iconClass: 'bi bi-gem',
+      ...bonusTier,
+      currentValue: params.bonusHunterCount,
+      tierTargets: [1, 2, 4, 6],
+      progressText:
+        bonusTier.nextTarget !== null
+          ? `${toPersianDigits(params.bonusHunterCount)} از ${toPersianDigits(bonusTier.nextTarget)} سری بونوس‌دار`
+          : `${toPersianDigits(params.bonusHunterCount)} سری با امتیاز بونوس`,
+      rarityWeight: bonusTier.tier === 'diamond' ? 91 : bonusTier.tier === 'gold' ? 77 : 64,
+    },
+    {
       id: 'topic-master',
       title: 'Topic Master',
       description: 'حل کامل تمام سوالات یک مبحث یا سری در مسیر Skill Tree',
@@ -627,6 +829,17 @@ function buildAchievements(params: {
       countSuffix: 'سوال به عنوان نفر اول کلاس',
     }),
     makeSecret({
+      id: 'ta-kudos',
+      title: 'TA Kudos',
+      description: 'دریافت نشان تحسین کادر آموزشی برای کد تمیز یا راه‌حل خلاقانه',
+      secretHint: 'کد خوانا، با ساختار تمیز و نام‌گذاری خوب بنویسید تا نظر TAها را جلب کند.',
+      iconClass: 'bi bi-patch-check-fill',
+      count: params.taKudosCount,
+      xpReward: 0,
+      rarityWeight: 96,
+      countSuffix: 'تحسین از کادر آموزشی (+۱۰۰ XP)',
+    }),
+    makeSecret({
       id: 'giant-slayer',
       title: 'Giant Slayer',
       description: 'حل کامل یک سوال سخت که کمتر از ۳۵٪ کلاس آن را حل کرده‌اند',
@@ -692,23 +905,556 @@ function buildAchievements(params: {
       rarityWeight: 74,
       countSuffix: 'آخر هفته فعال',
     }),
+    makeSecret({
+      id: 'class-coop',
+      title: 'Class Co-op',
+      description: 'مشارکت در رسیدن کل کلاس به هدف مشترک یک سری تمرین',
+      secretHint: 'حل تمرین‌های سری فعال هم‌زمان با همراهی هم‌کلاسی‌ها.',
+      iconClass: 'bi bi-people-fill',
+      count: params.coopCompletedCount,
+      xpReward: 0,
+      rarityWeight: 69,
+      countSuffix: 'چالش تیمی تکمیل‌شده (+۷۵ XP)',
+    }),
   ];
 
   return [...tiered, ...secrets];
 }
 
-function selectShowcaseBadges(achievements: StudentAchievement[]): ShowcaseBadge[] {
-  return achievements
-    .filter((a) => a.earned)
-    .sort((a, b) => b.rarityWeight - a.rarityWeight)
-    .slice(0, 3)
-    .map((a) => ({
-      id: a.id,
-      title: a.title,
-      tier: a.tier,
-      iconClass: a.iconClass,
-      tooltip: `${a.title} — ${a.description}`,
-    }));
+const NEXT_UNLOCK_UNITS: Record<string, string> = {
+  'one-shot': 'سوال One-Shot',
+  streak: 'روز پیاپی',
+  perfectionist: 'سری تمرین کامل',
+  'edge-hunter': 'سوال چالشی',
+  'early-bird': 'تمرین زودهنگام',
+  'syntax-clean': 'ارسال پیاپی بدون خطای نحوی',
+  'bonus-hunter': 'سری بونوس‌دار',
+  'topic-master': 'مبحث تکمیل‌شده',
+};
+
+export function computeNextUnlockHint(
+  achievements: StudentAchievement[],
+  totalSubmissions: number,
+): NextUnlockHint | null {
+  const tierOrder: Exclude<AchievementTier, 'none' | 'secret'>[] = [
+    'bronze',
+    'silver',
+    'gold',
+    'diamond',
+  ];
+
+  const candidates: {
+    ach: StudentAchievement;
+    nextTier: Exclude<AchievementTier, 'none' | 'secret'>;
+    remaining: number;
+    xpReward: number;
+  }[] = [];
+
+  for (const ach of achievements) {
+    if (ach.category !== 'tiered' || ach.nextTarget === null || ach.tier === 'diamond') continue;
+    if (ach.id === 'surgical-accuracy' && totalSubmissions < 15) continue;
+
+    const currentIdx = ach.tier === 'none' ? -1 : tierOrder.indexOf(ach.tier);
+    const nextIdx = currentIdx + 1;
+    if (nextIdx >= tierOrder.length) continue;
+
+    const remaining = Math.max(1, ach.nextTarget - ach.currentValue);
+    candidates.push({
+      ach,
+      nextTier: tierOrder[nextIdx],
+      remaining,
+      xpReward: TIER_REWARDS[nextIdx],
+    });
+  }
+
+  if (candidates.length === 0) return null;
+
+  candidates.sort((a, b) => {
+    if (b.ach.progressPerc !== a.ach.progressPerc) return b.ach.progressPerc - a.ach.progressPerc;
+    if (a.remaining !== b.remaining) return a.remaining - b.remaining;
+    return b.xpReward - a.xpReward;
+  });
+
+  const best = candidates[0];
+  const nextTierFa = TIER_NAMES_FA[best.nextTier];
+  const nextTarget = best.ach.nextTarget ?? best.ach.currentValue + best.remaining;
+
+  const messageFa =
+    best.ach.id === 'surgical-accuracy'
+      ? `رساندن دقت به ${toPersianDigits(nextTarget)}٪ تا ${nextTierFa} شدن ${best.ach.title} (+${toPersianDigits(best.xpReward)} XP)`
+      : `فقط ${toPersianDigits(best.remaining)} ${NEXT_UNLOCK_UNITS[best.ach.id] ?? 'گام'} تا ${nextTierFa} شدن ${best.ach.title} (+${toPersianDigits(best.xpReward)} XP)`;
+
+  return {
+    achievementId: best.ach.id,
+    title: best.ach.title,
+    iconClass: best.ach.iconClass,
+    nextTier: best.nextTier,
+    nextTierFa,
+    remaining: best.remaining,
+    nextTarget,
+    currentValue: best.ach.currentValue,
+    progressPerc: best.ach.progressPerc,
+    xpReward: best.xpReward,
+    messageFa,
+  };
+}
+
+export function selectShowcaseBadges(
+  achievements: StudentAchievement[],
+  pinnedBadgeIds: string[] = [],
+): ShowcaseBadge[] {
+  const earnedById = new Map<string, StudentAchievement>();
+  for (const ach of achievements) {
+    if (ach.earned) earnedById.set(ach.id, ach);
+  }
+
+  const chosen: StudentAchievement[] = [];
+  for (const id of pinnedBadgeIds) {
+    const match = earnedById.get(id);
+    if (match && !chosen.includes(match)) {
+      chosen.push(match);
+    }
+    if (chosen.length >= 3) break;
+  }
+
+  if (chosen.length < 3) {
+    const remaining = achievements
+      .filter((a) => a.earned && !chosen.includes(a))
+      .sort((a, b) => b.rarityWeight - a.rarityWeight);
+    for (const ach of remaining) {
+      chosen.push(ach);
+      if (chosen.length >= 3) break;
+    }
+  }
+
+  return chosen.map((a) => ({
+    id: a.id,
+    title: a.title,
+    tier: a.tier,
+    iconClass: a.iconClass,
+    tooltip: `${a.title} — ${a.description}`,
+  }));
+}
+
+export function computeWeeklyQuestsFromSignals({
+  signals,
+  bounds,
+}: {
+  signals: {
+    activeDaysWeek: number;
+    solvedQuestionsWeek: number;
+    cleanSolvesWeek: number;
+    oneshotWeek: number;
+    comebackWeek: number;
+    hardSolvedWeek: number;
+  };
+  bounds: Pick<JalaliWeekBounds, 'weekNumber' | 'weekLabel' | 'weekEndsAtIso'>;
+}): WeeklyQuestsBundle {
+  const variant = ((bounds.weekNumber % 4) + 4) % 4;
+
+  const q1Target = 3;
+  const q1Cur = Math.min(q1Target, signals.activeDaysWeek);
+
+  const q2Meta =
+    variant === 1
+      ? {
+          title: 'One-Shot Sprint',
+          description: 'حل کامل ۱ سوال به صورت One-Shot (تلاش اول) در این هفته',
+          iconClass: 'bi bi-lightning-charge',
+          target: 1,
+          raw: signals.oneshotWeek,
+          xp: 100,
+        }
+      : variant === 2
+        ? {
+            title: 'Comeback Kid',
+            description: 'به ثمر رساندن ۱ سوالی که قبلاً تلاش ناموفق روی آن داشته‌اید',
+            iconClass: 'bi bi-arrow-repeat',
+            target: 1,
+            raw: signals.comebackWeek,
+            xp: 110,
+          }
+        : {
+            title: 'Clean Solver',
+            description: 'حل کامل ۲ سوال با حداکثر ۲ تلاش برای هر کدام در این هفته',
+            iconClass: 'bi bi-bullseye',
+            target: 2,
+            raw: signals.cleanSolvesWeek,
+            xp: 100,
+          };
+
+  const q3Meta =
+    variant === 1 || variant === 3
+      ? {
+          title: 'Challenge Breaker',
+          description: 'حل کامل ۱ سوال چالشی (سوالی با نرخ حل کلاس زیر ۵۰٪) در این هفته',
+          iconClass: 'bi bi-shield-check',
+          target: 1,
+          raw: signals.hardSolvedWeek,
+          xp: 140,
+        }
+      : variant === 2
+        ? {
+            title: 'Problem Sprinter',
+            description: 'حل کامل ۴ سوال جدید در طول این هفته',
+            iconClass: 'bi bi-rocket-takeoff',
+            target: 4,
+            raw: signals.solvedQuestionsWeek,
+            xp: 135,
+          }
+        : {
+            title: 'Problem Sprinter',
+            description: 'حل کامل ۳ سوال جدید در طول این هفته',
+            iconClass: 'bi bi-rocket-takeoff',
+            target: 3,
+            raw: signals.solvedQuestionsWeek,
+            xp: 125,
+          };
+
+  const q2Cur = Math.min(q2Meta.target, q2Meta.raw);
+  const q3Cur = Math.min(q3Meta.target, q3Meta.raw);
+
+  const quests: WeeklyQuestItem[] = [
+    {
+      id: 'weekly-consistency',
+      title: 'Weekly Consistency',
+      description: 'ثبت ارسال کد یا تمرین روزانه در ۳ روز مختلف از این هفته شمسی',
+      iconClass: 'bi bi-calendar-check',
+      current: q1Cur,
+      target: q1Target,
+      progressPerc: Math.round((q1Cur / q1Target) * 100),
+      xpReward: 75,
+      completed: signals.activeDaysWeek >= q1Target,
+    },
+    {
+      id: 'weekly-precision',
+      title: q2Meta.title,
+      description: q2Meta.description,
+      iconClass: q2Meta.iconClass,
+      current: q2Cur,
+      target: q2Meta.target,
+      progressPerc: Math.round((q2Cur / q2Meta.target) * 100),
+      xpReward: q2Meta.xp,
+      completed: q2Meta.raw >= q2Meta.target,
+    },
+    {
+      id: 'weekly-momentum',
+      title: q3Meta.title,
+      description: q3Meta.description,
+      iconClass: q3Meta.iconClass,
+      current: q3Cur,
+      target: q3Meta.target,
+      progressPerc: Math.round((q3Cur / q3Meta.target) * 100),
+      xpReward: q3Meta.xp,
+      completed: q3Meta.raw >= q3Meta.target,
+    },
+  ];
+
+  return {
+    weekLabel: bounds.weekLabel,
+    weekEndsAtIso: bounds.weekEndsAtIso,
+    completedCount: quests.filter((q) => q.completed).length,
+    quests,
+  };
+}
+
+export interface AqDifficultyMeta {
+  solveRatePerc: number;
+  attempted: number;
+  firstBloodUserId: string | null;
+  firstBloodDisplayName: string | null;
+}
+
+export interface CanonicalGamificationSignals {
+  solvedAqIds: string[];
+  oneshotAqIds: string[];
+  partialScoreSum: number;
+  oneshotCount: number;
+  edgeHunterCount: number;
+  comebackCount: number;
+  perfectHwCount: number;
+  earlyBirdCount: number;
+  bonusHunterCount: number;
+  syntaxCleanMaxRun: number;
+  totalSubmissions: number;
+  acceptedSubmissions: number;
+  activeDaysTotal: number;
+  activeDayKeys: string[];
+  nightOwlCount: number;
+  dawnCoderCount: number;
+  buzzerBeaterCount: number;
+  weekendWarriorWeeks: number;
+  masteredTopicsCount: number;
+  taKudosCount: number;
+  dailyPulseCorrectCount: number;
+  weeklyGoalMetWeeks: number;
+  weeklyGoalXp?: number;
+  coopCompletedCount: number;
+  firstBloodAqIds: string[];
+  activeDaysWeek: number;
+  solvedAqIdsWeek: string[];
+  cleanSolvesWeek: number;
+  oneshotWeek: number;
+  comebackWeek: number;
+  dailyPulseCorrectWeek: number;
+  taKudosWeek: number;
+}
+
+export function computeCanonicalGamificationState({
+  signals,
+  aqMeta,
+  bounds,
+}: {
+  signals: CanonicalGamificationSignals;
+  aqMeta: Map<string, AqDifficultyMeta>;
+  bounds: Pick<JalaliWeekBounds, 'weekNumber' | 'weekLabel' | 'weekEndsAtIso' | 'todayKey'>;
+}) {
+  const streak = computeStreakWithFreezes({
+    activeDayKeys: signals.activeDayKeys,
+    todayKey: bounds.todayKey,
+    maxFreezesPerMonth: 2,
+  });
+
+  let solvedXp = 0;
+  let giantSlayerCount = 0;
+  for (const aqId of signals.solvedAqIds) {
+    const meta = aqMeta.get(aqId);
+    let multiplier = 1.0;
+    if (meta && meta.attempted >= 5) {
+      if (meta.solveRatePerc < 35 && meta.attempted >= 10) {
+        giantSlayerCount += 1;
+      }
+      if (meta.solveRatePerc < 40) {
+        multiplier = 1.5;
+      } else if (meta.solveRatePerc < 70) {
+        multiplier = 1.25;
+      }
+    }
+    solvedXp += Math.round(100 * multiplier);
+  }
+  solvedXp += Math.floor(signals.partialScoreSum * 0.6);
+
+  let weeklySolvedXp = 0;
+  let hardSolvedWeek = 0;
+  for (const aqId of signals.solvedAqIdsWeek) {
+    const meta = aqMeta.get(aqId);
+    let multiplier = 1.0;
+    if (meta && meta.attempted >= 5) {
+      if (meta.solveRatePerc < 50) {
+        hardSolvedWeek += 1;
+      }
+      if (meta.solveRatePerc < 40) {
+        multiplier = 1.5;
+      } else if (meta.solveRatePerc < 70) {
+        multiplier = 1.25;
+      }
+    }
+    weeklySolvedXp += Math.round(100 * multiplier);
+  }
+
+  const weeklyQuests = computeWeeklyQuestsFromSignals({
+    signals: {
+      activeDaysWeek: signals.activeDaysWeek,
+      solvedQuestionsWeek: signals.solvedAqIdsWeek.length,
+      cleanSolvesWeek: signals.cleanSolvesWeek,
+      oneshotWeek: signals.oneshotWeek,
+      comebackWeek: signals.comebackWeek,
+      hardSolvedWeek,
+    },
+    bounds,
+  });
+
+  const acceptanceRate =
+    signals.totalSubmissions > 0
+      ? Math.round((signals.acceptedSubmissions / signals.totalSubmissions) * 100)
+      : 0;
+
+  const achievements = buildAchievements({
+    oneshotCount: signals.oneshotCount,
+    longestStreakDays: streak.longestStreakDays,
+    perfectHwCount: signals.perfectHwCount,
+    edgeHunterCount: signals.edgeHunterCount,
+    earlyBirdCount: signals.earlyBirdCount,
+    masteredTopicsCount: signals.masteredTopicsCount,
+    syntaxCleanMaxRun: signals.syntaxCleanMaxRun,
+    bonusHunterCount: signals.bonusHunterCount,
+    acceptanceRate,
+    totalSubmissions: signals.totalSubmissions,
+    firstBloodCount: signals.firstBloodAqIds.length,
+    nightOwlCount: signals.nightOwlCount,
+    buzzerBeaterCount: signals.buzzerBeaterCount,
+    dawnCoderCount: signals.dawnCoderCount,
+    comebackCount: signals.comebackCount,
+    giantSlayerCount,
+    weekendWarriorWeeks: signals.weekendWarriorWeeks,
+    taKudosCount: signals.taKudosCount,
+    coopCompletedCount: signals.coopCompletedCount,
+  });
+
+  const achievementXp = achievements.reduce((sum, a) => sum + a.xpReward, 0);
+  const weeklyQuestXp = weeklyQuests.quests.reduce(
+    (sum, q) => sum + (q.completed ? q.xpReward : 0),
+    0,
+  );
+  const goalXp = signals.weeklyGoalXp ?? signals.weeklyGoalMetWeeks * 50;
+
+  const bonusXp =
+    signals.oneshotCount * 35 +
+    signals.perfectHwCount * 150 +
+    signals.earlyBirdCount * 50 +
+    signals.activeDaysTotal * 15 +
+    signals.firstBloodAqIds.length * 60 +
+    signals.taKudosCount * 100 +
+    signals.dailyPulseCorrectCount * 25 +
+    goalXp +
+    signals.coopCompletedCount * 75 +
+    achievementXp +
+    weeklyQuestXp;
+
+  const totalXp = solvedXp + bonusXp;
+  const level = computeLevelInfo(totalXp);
+  const nextUnlock = computeNextUnlockHint(achievements, signals.totalSubmissions);
+
+  const weeklyXp =
+    weeklySolvedXp +
+    signals.oneshotWeek * 35 +
+    signals.activeDaysWeek * 15 +
+    signals.dailyPulseCorrectWeek * 25 +
+    signals.taKudosWeek * 100 +
+    weeklyQuestXp;
+
+  return {
+    solvedXp,
+    bonusXp,
+    totalXp,
+    weeklyXp,
+    acceptanceRate,
+    level,
+    streak,
+    weeklyQuests,
+    achievements,
+    unlockedAchievementIds: achievements.filter((a) => a.earned).map((a) => a.id),
+    showcaseBadges: selectShowcaseBadges(achievements),
+    nextUnlock,
+  };
+}
+
+// ---------- League Partitioning ----------
+
+const LEAGUE_TIER_META: Record<WeeklyLeagueTier, { titleFa: string }> = {
+  diamond: { titleFa: 'لیگ الماس' },
+  gold: { titleFa: 'لیگ طلا' },
+  silver: { titleFa: 'لیگ نقره' },
+  bronze: { titleFa: 'لیگ برنز' },
+};
+
+export function computeWeeklyLeagues(
+  students: {
+    userId: string;
+    displayName: string;
+    avatarPreset?: string;
+    avatarColor?: string;
+    statusEmoji?: string;
+    isAnonymous?: boolean;
+    showPassportDetails?: boolean;
+    totalXp: number;
+    weeklyXp: number;
+    solvedThisWeek: number;
+    level: number;
+    showcaseBadges: ShowcaseBadge[];
+  }[],
+  bounds: Pick<JalaliWeekBounds, 'weekLabel' | 'weekEndsAtIso'>,
+): WeeklyLeaguesBundle {
+  if (students.length === 0) {
+    return { weekLabel: bounds.weekLabel, weekEndsAtIso: bounds.weekEndsAtIso, leagues: [] };
+  }
+
+  // Partition cohort into ~15-student leagues balanced by overall skill tier
+  const rankedBySkill = [...students].sort((a, b) => {
+    if (b.totalXp !== a.totalXp) return b.totalXp - a.totalXp;
+    return a.userId.localeCompare(b.userId);
+  });
+
+  const groupCount =
+    rankedBySkill.length <= 20 ? 1 : Math.max(1, Math.round(rankedBySkill.length / 15));
+  const tierSequence: WeeklyLeagueTier[] =
+    groupCount === 1
+      ? ['silver']
+      : groupCount === 2
+        ? ['gold', 'silver']
+        : groupCount === 3
+          ? ['gold', 'silver', 'bronze']
+          : ['diamond', 'gold', 'silver', 'bronze'];
+
+  const leagues: WeeklyLeagueGroup[] = [];
+  let cursor = 0;
+
+  for (let g = 0; g < groupCount; g += 1) {
+    const remainingStudents = rankedBySkill.length - cursor;
+    const remainingGroups = groupCount - g;
+    const size = Math.ceil(remainingStudents / remainingGroups);
+    const slice = rankedBySkill.slice(cursor, cursor + size);
+    cursor += size;
+
+    const sortedWeekly = [...slice].sort((a, b) => {
+      if (b.weeklyXp !== a.weeklyXp) return b.weeklyXp - a.weeklyXp;
+      if (b.solvedThisWeek !== a.solvedThisWeek) return b.solvedThisWeek - a.solvedThisWeek;
+      if (b.totalXp !== a.totalXp) return b.totalXp - a.totalXp;
+      return a.displayName.localeCompare(b.displayName, 'fa');
+    });
+
+    const tier = tierSequence[Math.min(g, tierSequence.length - 1)];
+    const zoneSize = sortedWeekly.length >= 12 ? 5 : sortedWeekly.length >= 8 ? 3 : 0;
+
+    const members: WeeklyLeagueMember[] = sortedWeekly.map((s, idx) => {
+      let zone: WeeklyLeagueMember['zone'] = 'safe';
+      if (zoneSize > 0) {
+        if (idx < zoneSize && s.weeklyXp > 0) {
+          zone = 'promote';
+        } else if (idx >= sortedWeekly.length - zoneSize) {
+          zone = 'relegate';
+        }
+      }
+      return {
+        rank: idx + 1,
+        userId: s.userId,
+        displayName: s.displayName,
+        avatarPreset: s.avatarPreset ?? 'initials',
+        avatarColor: s.avatarColor ?? 'cobalt',
+        statusEmoji: s.statusEmoji ?? 'none',
+        isAnonymous: s.isAnonymous ?? false,
+        showPassportDetails: s.showPassportDetails ?? true,
+        weeklyXp: s.weeklyXp,
+        solvedThisWeek: s.solvedThisWeek,
+        level: s.level,
+        showcaseBadges: s.showcaseBadges,
+        zone,
+      };
+    });
+
+    const baseTitle = LEAGUE_TIER_META[tier].titleFa;
+    const groupSuffix =
+      groupCount > tierSequence.length
+        ? ` — دسته ${toPersianDigits(g + 1)}`
+        : groupCount === 1
+          ? ' (دسته هم‌سطح کلاس)'
+          : '';
+
+    leagues.push({
+      id: `league-${g + 1}`,
+      tier,
+      titleFa: `${baseTitle}${groupSuffix}`,
+      members,
+      promoteCount: members.filter((m) => m.zone === 'promote').length,
+      relegateCount: members.filter((m) => m.zone === 'relegate').length,
+    });
+  }
+
+  return {
+    weekLabel: bounds.weekLabel,
+    weekEndsAtIso: bounds.weekEndsAtIso,
+    leagues,
+  };
 }
 
 // ---------- Service Functions ----------
@@ -862,6 +1608,33 @@ export async function getStudentSkillTreeData({
   };
 }
 
+function buildAqMetaMap(courseAqRows: z.infer<typeof CourseAqRowSchema>[]): {
+  aqMeta: Map<string, AqDifficultyMeta>;
+  firstBloodByAqId: Record<string, FirstBloodOwner>;
+} {
+  const aqMeta = new Map<string, AqDifficultyMeta>();
+  const firstBloodByAqId: Record<string, FirstBloodOwner> = {};
+
+  for (const row of courseAqRows) {
+    const solveRatePerc =
+      row.attempted_count > 0 ? Math.round((row.solved_count / row.attempted_count) * 100) : 100;
+    aqMeta.set(row.assessment_question_id, {
+      solveRatePerc,
+      attempted: row.attempted_count,
+      firstBloodUserId: row.first_blood_user_id,
+      firstBloodDisplayName: row.first_blood_display_name,
+    });
+    if (row.first_blood_user_id && row.first_blood_display_name) {
+      firstBloodByAqId[row.assessment_question_id] = {
+        userId: row.first_blood_user_id,
+        displayName: row.first_blood_display_name,
+      };
+    }
+  }
+
+  return { aqMeta, firstBloodByAqId };
+}
+
 export async function getStudentWeeklyQuests({
   courseInstanceId,
   userId,
@@ -874,75 +1647,45 @@ export async function getStudentWeeklyQuests({
   const tz = timezone || 'Asia/Tehran';
   const bounds = getCurrentJalaliWeekBounds(tz);
 
-  const row = await sqldb.queryRow(
-    sql.select_student_weekly_quest_signals,
-    {
-      course_instance_id: courseInstanceId,
-      user_id: userId,
-      timezone: tz,
-      week_start_key: bounds.weekStartKey,
-      week_end_key: bounds.weekEndKey,
+  const [courseAqRows, row] = await Promise.all([
+    sqldb.queryRows(
+      sql.select_course_question_difficulty_and_first_blood,
+      { course_instance_id: courseInstanceId },
+      CourseAqRowSchema,
+    ),
+    sqldb.queryRow(
+      sql.select_student_weekly_quest_signals,
+      {
+        course_instance_id: courseInstanceId,
+        user_id: userId,
+        timezone: tz,
+        week_start_key: bounds.weekStartKey,
+        week_end_key: bounds.weekEndKey,
+      },
+      WeeklyQuestSignalsSchema,
+    ),
+  ]);
+
+  const { aqMeta } = buildAqMetaMap(courseAqRows);
+  let hardSolvedWeek = 0;
+  for (const aqId of row.solved_aq_ids_week) {
+    const meta = aqMeta.get(aqId);
+    if (meta && meta.attempted >= 5 && meta.solveRatePerc < 50) {
+      hardSolvedWeek += 1;
+    }
+  }
+
+  return computeWeeklyQuestsFromSignals({
+    signals: {
+      activeDaysWeek: row.active_days_week,
+      solvedQuestionsWeek: row.solved_questions_week,
+      cleanSolvesWeek: row.clean_solves_week,
+      oneshotWeek: row.oneshot_week,
+      comebackWeek: row.comeback_week,
+      hardSolvedWeek,
     },
-    WeeklyQuestSignalsSchema,
-  );
-
-  // Deterministic rotation across weeks so the quests feel fresh every Saturday
-  const variant = bounds.weekNumber % 2;
-
-  const q1Target = 3;
-  const q1Cur = Math.min(q1Target, row.active_days_week);
-
-  const q2Target = variant === 0 ? 2 : 1;
-  const q2Cur = Math.min(q2Target, variant === 0 ? row.clean_solves_week : row.oneshot_week);
-
-  const q3Target = variant === 0 ? 3 : 4;
-  const q3Cur = Math.min(q3Target, row.solved_questions_week);
-
-  const quests: WeeklyQuestItem[] = [
-    {
-      id: 'weekly-consistency',
-      title: 'Weekly Consistency',
-      description: 'ثبت ارسال کد معتبر در ۳ روز مختلف از این هفته شمسی',
-      iconClass: 'bi bi-calendar-check',
-      current: q1Cur,
-      target: q1Target,
-      progressPerc: Math.round((q1Cur / q1Target) * 100),
-      xpReward: 75,
-      completed: row.active_days_week >= q1Target,
-    },
-    {
-      id: 'weekly-precision',
-      title: variant === 0 ? 'Clean Solver' : 'One-Shot Sprint',
-      description:
-        variant === 0
-          ? 'حل کامل ۲ سوال با حداکثر ۲ تلاش برای هر کدام در این هفته'
-          : 'حل کامل ۱ سوال به صورت One-Shot (تلاش اول) در این هفته',
-      iconClass: 'bi bi-bullseye',
-      current: q2Cur,
-      target: q2Target,
-      progressPerc: Math.round((q2Cur / q2Target) * 100),
-      xpReward: 100,
-      completed: (variant === 0 ? row.clean_solves_week : row.oneshot_week) >= q2Target,
-    },
-    {
-      id: 'weekly-momentum',
-      title: 'Problem Sprinter',
-      description: `حل کامل ${toPersianDigits(q3Target)} سوال جدید در طول این هفته`,
-      iconClass: 'bi bi-rocket-takeoff',
-      current: q3Cur,
-      target: q3Target,
-      progressPerc: Math.round((q3Cur / q3Target) * 100),
-      xpReward: 125,
-      completed: row.solved_questions_week >= q3Target,
-    },
-  ];
-
-  return {
-    weekLabel: bounds.weekLabel,
-    weekEndsAtIso: bounds.weekEndsAtIso,
-    completedCount: quests.filter((q) => q.completed).length,
-    quests,
-  };
+    bounds,
+  });
 }
 
 export async function getStudentGamificationProfile({
@@ -958,7 +1701,8 @@ export async function getStudentGamificationProfile({
   const cacheKey = `sh-gamif-profile:${courseInstanceId}:${userId}`;
 
   return withCache(cacheKey, GAMIFICATION_PROFILE_CACHE_MS, async () => {
-    const [courseAqRows, signals, activity, skillTree, weeklyQuests] = await Promise.all([
+    const bounds = getCurrentJalaliWeekBounds(tz);
+    const [courseAqRows, signals, activity] = await Promise.all([
       sqldb.queryRows(
         sql.select_course_question_difficulty_and_first_blood,
         { course_instance_id: courseInstanceId },
@@ -966,115 +1710,91 @@ export async function getStudentGamificationProfile({
       ),
       sqldb.queryRow(
         sql.select_student_xp_and_achievement_signals,
-        { course_instance_id: courseInstanceId, user_id: userId, timezone: tz },
-        StudentSignalsRowSchema,
+        {
+          course_instance_id: courseInstanceId,
+          user_id: userId,
+          timezone: tz,
+          week_start_key: bounds.weekStartKey,
+          week_end_key: bounds.weekEndKey,
+        },
+        CanonicalSqlSignalsSchema,
       ),
       getStudentActivityAndBadges({ courseInstanceId, userId, timezone: tz }),
-      getStudentSkillTreeData({ courseInstanceId, userId }),
-      getStudentWeeklyQuests({ courseInstanceId, userId, timezone: tz }),
     ]);
 
-    const aqMeta = new Map<
-      string,
-      { solveRatePerc: number; attempted: number; firstBloodUserId: string | null }
-    >();
+    const { aqMeta, firstBloodByAqId } = buildAqMetaMap(courseAqRows);
     const firstBloodAqIds: string[] = [];
-
-    for (const row of courseAqRows) {
-      const solveRatePerc =
-        row.attempted_count > 0 ? Math.round((row.solved_count / row.attempted_count) * 100) : 100;
-      aqMeta.set(row.assessment_question_id, {
-        solveRatePerc,
-        attempted: row.attempted_count,
-        firstBloodUserId: row.first_blood_user_id,
-      });
-      if (row.first_blood_user_id === userId) {
-        firstBloodAqIds.push(row.assessment_question_id);
-      }
+    for (const [aqId, owner] of Object.entries(firstBloodByAqId)) {
+      if (owner.userId === userId) firstBloodAqIds.push(aqId);
     }
 
-    let solvedXp = 0;
-    let giantSlayerCount = 0;
-    for (const aqId of signals.solved_aq_ids) {
-      const meta = aqMeta.get(aqId);
-      let multiplier = 1.0;
-      if (meta && meta.attempted >= 5) {
-        if (meta.solveRatePerc < 35 && meta.attempted >= 10) {
-          giantSlayerCount += 1;
-        }
-        if (meta.solveRatePerc < 40) {
-          multiplier = 1.5;
-        } else if (meta.solveRatePerc < 70) {
-          multiplier = 1.25;
-        }
-      }
-      solvedXp += Math.round(100 * multiplier);
-    }
-
-    const partialXp = Math.floor(signals.partial_score_sum * 0.6);
-    solvedXp += partialXp;
-
-    const acceptanceRate =
-      signals.total_submissions > 0
-        ? Math.round((signals.accepted_submissions / signals.total_submissions) * 100)
-        : 0;
-
-    const achievements = buildAchievements({
-      oneshotCount: signals.oneshot_count,
-      longestStreakDays: activity.longestStreakDays,
-      perfectHwCount: signals.perfect_hw_count,
-      edgeHunterCount: signals.edge_hunter_count,
-      earlyBirdCount: signals.early_bird_count,
-      masteredTopicsCount: skillTree.masteredNodes,
-      acceptanceRate,
-      totalSubmissions: signals.total_submissions,
-      firstBloodCount: firstBloodAqIds.length,
-      nightOwlCount: signals.night_owl_count,
-      buzzerBeaterCount: signals.buzzer_beater_count,
-      dawnCoderCount: signals.dawn_coder_count,
-      comebackCount: signals.comeback_count,
-      giantSlayerCount,
-      weekendWarriorWeeks: signals.weekend_warrior_weeks,
+    const state = computeCanonicalGamificationState({
+      signals: {
+        solvedAqIds: signals.solved_aq_ids,
+        oneshotAqIds: signals.oneshot_aq_ids,
+        partialScoreSum: signals.partial_score_sum,
+        oneshotCount: signals.oneshot_count,
+        edgeHunterCount: signals.edge_hunter_count,
+        comebackCount: signals.comeback_count,
+        perfectHwCount: signals.perfect_hw_count,
+        earlyBirdCount: signals.early_bird_count,
+        bonusHunterCount: signals.bonus_hunter_count,
+        syntaxCleanMaxRun: signals.syntax_clean_max_run,
+        totalSubmissions: signals.total_submissions,
+        acceptedSubmissions: signals.accepted_submissions,
+        activeDaysTotal: signals.active_days_total,
+        activeDayKeys: signals.active_day_keys,
+        nightOwlCount: signals.night_owl_count,
+        dawnCoderCount: signals.dawn_coder_count,
+        buzzerBeaterCount: signals.buzzer_beater_count,
+        weekendWarriorWeeks: signals.weekend_warrior_weeks,
+        masteredTopicsCount: signals.mastered_topics_count,
+        taKudosCount: signals.ta_kudos_count,
+        dailyPulseCorrectCount: signals.daily_pulse_correct_count,
+        weeklyGoalMetWeeks: signals.weekly_goal_met_weeks,
+        weeklyGoalXp: signals.weekly_goal_xp,
+        coopCompletedCount: signals.coop_completed_count,
+        firstBloodAqIds,
+        activeDaysWeek: signals.active_days_week,
+        solvedAqIdsWeek: signals.solved_aq_ids_week,
+        cleanSolvesWeek: signals.clean_solves_week,
+        oneshotWeek: signals.oneshot_week,
+        comebackWeek: signals.comeback_week,
+        dailyPulseCorrectWeek: signals.daily_pulse_correct_week,
+        taKudosWeek: signals.ta_kudos_week,
+      },
+      aqMeta,
+      bounds,
     });
-
-    const achievementXp = achievements.reduce((sum, a) => sum + a.xpReward, 0);
-    const weeklyQuestXp = weeklyQuests.quests.reduce(
-      (sum, q) => sum + (q.completed ? q.xpReward : 0),
-      0,
-    );
-
-    const bonusXp =
-      signals.oneshot_count * 35 +
-      signals.perfect_hw_count * 150 +
-      signals.early_bird_count * 50 +
-      signals.active_days_total * 15 +
-      firstBloodAqIds.length * 60 +
-      achievementXp +
-      weeklyQuestXp;
-
-    const totalXp = solvedXp + bonusXp;
-    const level = computeLevelInfo(totalXp);
 
     return {
       xp: {
-        totalXp,
-        solvedXp,
-        bonusXp,
+        totalXp: state.totalXp,
+        solvedXp: state.solvedXp,
+        bonusXp: state.bonusXp,
       },
-      level,
-      achievements,
-      unlockedAchievementIds: achievements.filter((a) => a.earned).map((a) => a.id),
-      showcaseBadges: selectShowcaseBadges(achievements),
-      weeklyQuests,
+      level: state.level,
+      achievements: state.achievements,
+      unlockedAchievementIds: state.unlockedAchievementIds,
+      showcaseBadges: selectShowcaseBadges(state.achievements, signals.pinned_badge_ids),
+      nextUnlock: state.nextUnlock,
+      weeklyQuests: state.weeklyQuests,
       streak: {
-        current: activity.currentStreakDays,
-        longest: activity.longestStreakDays,
+        current: state.streak.currentStreakDays,
+        longest: state.streak.longestStreakDays,
         activeDays140d: activity.activeDaysCount,
+        freezesUsedThisMonth: state.streak.freezesUsedThisMonth,
+        freezesRemainingThisMonth: state.streak.freezesRemainingThisMonth,
+        maxFreezesPerMonth: state.streak.maxFreezesPerMonth,
       },
       solvedAqIds: signals.solved_aq_ids,
       oneshotAqIds: signals.oneshot_aq_ids,
       firstBloodAqIds,
-      masteredTopicsCount: skillTree.masteredNodes,
+      firstBloodByAqId,
+      masteredTopicsCount: signals.mastered_topics_count,
+      taKudosCount: signals.ta_kudos_count,
+      dailyPulseCorrectCount: signals.daily_pulse_correct_count,
+      coopCompletedCount: signals.coop_completed_count,
     };
   });
 }
@@ -1110,6 +1830,7 @@ export async function getCohortGamificationBundle({
   const cacheKey = `sh-gamif-cohort:${courseInstanceId}`;
 
   return withCache(cacheKey, GAMIFICATION_COHORT_CACHE_MS, async () => {
+    const bounds = getCurrentJalaliWeekBounds(tz);
     const [courseAqRows, cohortRows] = await Promise.all([
       sqldb.queryRows(
         sql.select_course_question_difficulty_and_first_blood,
@@ -1118,103 +1839,145 @@ export async function getCohortGamificationBundle({
       ),
       sqldb.queryRows(
         sql.select_cohort_gamification_rows,
-        { course_instance_id: courseInstanceId, timezone: tz },
+        {
+          course_instance_id: courseInstanceId,
+          timezone: tz,
+          week_start_key: bounds.weekStartKey,
+          week_end_key: bounds.weekEndKey,
+        },
         CohortGamificationRowSchema,
       ),
     ]);
 
-    const firstBloodCounts = new Map<string, number>();
-    const firstBloodByAqId: Record<string, string> = {};
-    for (const aq of courseAqRows) {
-      if (aq.first_blood_user_id) {
-        firstBloodByAqId[aq.assessment_question_id] = aq.first_blood_user_id;
-        firstBloodCounts.set(
-          aq.first_blood_user_id,
-          (firstBloodCounts.get(aq.first_blood_user_id) ?? 0) + 1,
-        );
-      }
+    const { aqMeta, firstBloodByAqId } = buildAqMetaMap(courseAqRows);
+    const firstBloodAqIdsByUser = new Map<string, string[]>();
+    for (const [aqId, owner] of Object.entries(firstBloodByAqId)) {
+      const arr = firstBloodAqIdsByUser.get(owner.userId) ?? [];
+      arr.push(aqId);
+      firstBloodAqIdsByUser.set(owner.userId, arr);
     }
 
-    const todayJalali = getTodayJalali(tz);
-    const todayGreg = jalaliToGregorian(todayJalali.jy, todayJalali.jm, todayJalali.jd);
-    const todayKey = getDateKeyFromGregorian(todayGreg.gy, todayGreg.gm, todayGreg.gd);
-
     const byUserId: CohortGamificationBundle['byUserId'] = {};
+    const leagueCandidates: {
+      userId: string;
+      displayName: string;
+      avatarPreset: string;
+      avatarColor: string;
+      statusEmoji: string;
+      isAnonymous: boolean;
+      showPassportDetails: boolean;
+      totalXp: number;
+      weeklyXp: number;
+      solvedThisWeek: number;
+      level: number;
+      showcaseBadges: ShowcaseBadge[];
+    }[] = [];
+
     const risingCandidates: HallOfFameEntry[] = [];
     const accuracyCandidates: HallOfFameEntry[] = [];
     const streakCandidates: HallOfFameEntry[] = [];
     const firstBloodCandidates: HallOfFameEntry[] = [];
 
     for (const row of cohortRows) {
-      const fbCount = firstBloodCounts.get(row.user_id) ?? 0;
-      const currentStreak = computeStreakFromDayKeys(row.active_day_keys, todayKey);
-      const acceptanceRate =
-        row.total_submissions > 0
-          ? Math.round((row.accepted_submissions / row.total_submissions) * 100)
-          : 0;
+      const firstBloodAqIds = firstBloodAqIdsByUser.get(row.user_id) ?? [];
+      const fbCount = firstBloodAqIds.length;
 
-      const achievements = buildAchievements({
-        oneshotCount: row.oneshot_count,
-        longestStreakDays: currentStreak,
-        perfectHwCount: row.perfect_hw_count,
-        edgeHunterCount: row.edge_hunter_count,
-        earlyBirdCount: row.early_bird_count,
-        masteredTopicsCount: 0,
-        acceptanceRate,
-        totalSubmissions: row.total_submissions,
-        firstBloodCount: fbCount,
-        nightOwlCount: row.night_owl_count,
-        buzzerBeaterCount: row.buzzer_beater_count,
-        dawnCoderCount: 0,
-        comebackCount: 0,
-        giantSlayerCount: 0,
-        weekendWarriorWeeks: 0,
+      const state = computeCanonicalGamificationState({
+        signals: {
+          solvedAqIds: row.solved_aq_ids,
+          oneshotAqIds: row.oneshot_aq_ids,
+          partialScoreSum: row.partial_score_sum,
+          oneshotCount: row.oneshot_count,
+          edgeHunterCount: row.edge_hunter_count,
+          comebackCount: row.comeback_count,
+          perfectHwCount: row.perfect_hw_count,
+          earlyBirdCount: row.early_bird_count,
+          bonusHunterCount: row.bonus_hunter_count,
+          syntaxCleanMaxRun: row.syntax_clean_max_run,
+          totalSubmissions: row.total_submissions,
+          acceptedSubmissions: row.accepted_submissions,
+          activeDaysTotal: row.active_days_total,
+          activeDayKeys: row.active_day_keys,
+          nightOwlCount: row.night_owl_count,
+          dawnCoderCount: row.dawn_coder_count,
+          buzzerBeaterCount: row.buzzer_beater_count,
+          weekendWarriorWeeks: row.weekend_warrior_weeks,
+          masteredTopicsCount: row.mastered_topics_count,
+          taKudosCount: row.ta_kudos_count,
+          dailyPulseCorrectCount: row.daily_pulse_correct_count,
+          weeklyGoalMetWeeks: row.weekly_goal_met_weeks,
+          weeklyGoalXp: row.weekly_goal_xp,
+          coopCompletedCount: row.coop_completed_count,
+          firstBloodAqIds,
+          activeDaysWeek: row.active_days_week,
+          solvedAqIdsWeek: row.solved_aq_ids_week,
+          cleanSolvesWeek: row.clean_solves_week,
+          oneshotWeek: row.oneshot_week,
+          comebackWeek: row.comeback_week,
+          dailyPulseCorrectWeek: row.daily_pulse_correct_week,
+          taKudosWeek: row.ta_kudos_week,
+        },
+        aqMeta,
+        bounds,
       });
 
-      const achievementXp = achievements.reduce((sum, a) => sum + a.xpReward, 0);
-      const totalXp =
-        row.solved_count * 110 +
-        Math.floor(row.partial_score_sum * 0.6) +
-        row.oneshot_count * 35 +
-        row.perfect_hw_count * 150 +
-        row.early_bird_count * 50 +
-        row.active_days_total * 15 +
-        fbCount * 60 +
-        achievementXp;
-
-      const levelInfo = computeLevelInfo(totalXp);
+      const showcaseBadges = selectShowcaseBadges(state.achievements, row.pinned_badge_ids);
 
       byUserId[row.user_id] = {
-        level: levelInfo.level,
-        levelTitle: levelInfo.title,
-        totalXp,
-        showcaseBadges: selectShowcaseBadges(achievements),
+        level: state.level.level,
+        levelTitle: state.level.title,
+        totalXp: state.totalXp,
+        weeklyXp: state.weeklyXp,
+        avatarPreset: row.avatar_preset,
+        avatarColor: row.avatar_color,
+        statusEmoji: row.status_emoji,
+        isAnonymous: row.is_anonymous,
+        showPassportDetails: row.show_passport_details,
+        showcaseBadges,
       };
+
+      leagueCandidates.push({
+        userId: row.user_id,
+        displayName: row.display_name,
+        avatarPreset: row.avatar_preset,
+        avatarColor: row.avatar_color,
+        statusEmoji: row.status_emoji,
+        isAnonymous: row.is_anonymous,
+        showPassportDetails: row.show_passport_details,
+        totalXp: state.totalXp,
+        weeklyXp: state.weeklyXp,
+        solvedThisWeek: row.solved_aq_ids_week.length,
+        level: state.level.level,
+        showcaseBadges,
+      });
 
       if (row.recent_7d_solved > 0) {
         risingCandidates.push({
           userId: row.user_id,
           displayName: row.display_name,
+          isAnonymous: row.is_anonymous,
           metricLabel: `${toPersianDigits(row.recent_7d_solved)} سوال جدید این هفته`,
           metricValue: row.recent_7d_solved,
         });
       }
 
-      if (row.solved_count >= 5 && row.total_submissions >= 5) {
+      if (row.solved_aq_ids.length >= 5 && row.total_submissions >= 5) {
         accuracyCandidates.push({
           userId: row.user_id,
           displayName: row.display_name,
-          metricLabel: `${toPersianDigits(acceptanceRate)}٪ قبولی (${toPersianDigits(row.oneshot_count)} One-Shot)`,
-          metricValue: acceptanceRate * 1000 + row.oneshot_count,
+          isAnonymous: row.is_anonymous,
+          metricLabel: `${toPersianDigits(state.acceptanceRate)}٪ قبولی (${toPersianDigits(row.oneshot_count)} One-Shot)`,
+          metricValue: state.acceptanceRate * 1000 + row.oneshot_count,
         });
       }
 
-      if (currentStreak >= 2) {
+      if (state.streak.currentStreakDays >= 2) {
         streakCandidates.push({
           userId: row.user_id,
           displayName: row.display_name,
-          metricLabel: `${toPersianDigits(currentStreak)} روز پیاپی`,
-          metricValue: currentStreak,
+          isAnonymous: row.is_anonymous,
+          metricLabel: `${toPersianDigits(state.streak.currentStreakDays)} روز پیاپی`,
+          metricValue: state.streak.currentStreakDays,
         });
       }
 
@@ -1222,6 +1985,7 @@ export async function getCohortGamificationBundle({
         firstBloodCandidates.push({
           userId: row.user_id,
           displayName: row.display_name,
+          isAnonymous: row.is_anonymous,
           metricLabel: `${toPersianDigits(fbCount)} First Blood`,
           metricValue: fbCount,
         });
@@ -1230,6 +1994,8 @@ export async function getCohortGamificationBundle({
 
     const top3 = (arr: HallOfFameEntry[]) =>
       arr.sort((a, b) => b.metricValue - a.metricValue).slice(0, 3);
+
+    const weeklyLeagues = computeWeeklyLeagues(leagueCandidates, bounds);
 
     return {
       byUserId,
@@ -1240,6 +2006,136 @@ export async function getCohortGamificationBundle({
         firstBloodHunters: top3(firstBloodCandidates),
       },
       firstBloodByAqId,
+      weeklyLeagues,
     };
   });
+}
+
+export async function getStudentCodingPassport({
+  courseInstanceId,
+  targetUserId,
+  viewerUserId,
+  timezone,
+}: {
+  courseInstanceId: string;
+  targetUserId: string;
+  viewerUserId?: string;
+  timezone: string;
+}): Promise<StudentCodingPassport | null> {
+  const identity = await sqldb.queryOptionalRow(
+    sql.select_student_passport_identity,
+    { course_instance_id: courseInstanceId, user_id: targetUserId },
+    PassportIdentityRowSchema,
+  );
+  if (!identity) return null;
+
+  const isOwner = viewerUserId === targetUserId;
+  if (!identity.show_on_leaderboard && !isOwner) {
+    return null;
+  }
+
+  const profile = await getStudentGamificationProfile({
+    courseInstanceId,
+    userId: targetUserId,
+    timezone,
+  });
+
+  if (!identity.show_passport_details && !isOwner) {
+    return {
+      userId: identity.user_id,
+      displayName: identity.display_name,
+      avatarPreset: identity.avatar_preset,
+      avatarColor: identity.avatar_color,
+      bannerTheme: identity.banner_theme,
+      bio: null,
+      statusEmoji: 'none',
+      favoriteTopic: null,
+      githubUsername: null,
+      featuredTitle:
+        identity.featured_title === 'auto' ? profile.level.title : identity.featured_title,
+      privacyLocked: true,
+      showActivityStats: false,
+      level: profile.level,
+      streak: null,
+      solvedQuestions: null,
+      totalSubmissions: null,
+      acceptanceRate: null,
+      taKudosCount: 0,
+      firstBloodCount: 0,
+      earnedAchievements: [],
+      topicMastery: [],
+    };
+  }
+
+  const showStats = identity.show_activity_stats || isOwner;
+  const bounds = getCurrentJalaliWeekBounds(timezone || 'Asia/Tehran');
+  const [skillTree, signals] = showStats
+    ? await Promise.all([
+        getStudentSkillTreeData({ courseInstanceId, userId: targetUserId }),
+        sqldb.queryRow(
+          sql.select_student_xp_and_achievement_signals,
+          {
+            course_instance_id: courseInstanceId,
+            user_id: targetUserId,
+            timezone: timezone || 'Asia/Tehran',
+            week_start_key: bounds.weekStartKey,
+            week_end_key: bounds.weekEndKey,
+          },
+          CanonicalSqlSignalsSchema,
+        ),
+      ])
+    : [null, null];
+
+  const acceptanceRate =
+    signals && signals.total_submissions > 0
+      ? Math.round((signals.accepted_submissions / signals.total_submissions) * 100)
+      : 0;
+
+  return {
+    userId: identity.user_id,
+    displayName: identity.display_name,
+    avatarPreset: identity.avatar_preset,
+    avatarColor: identity.avatar_color,
+    bannerTheme: identity.banner_theme,
+    bio: identity.bio,
+    statusEmoji: identity.status_emoji,
+    favoriteTopic: identity.favorite_topic,
+    githubUsername: identity.github_username,
+    featuredTitle:
+      identity.featured_title === 'auto' ? profile.level.title : identity.featured_title,
+    privacyLocked: false,
+    showActivityStats: showStats,
+    level: profile.level,
+    streak: showStats
+      ? {
+          current: profile.streak.current,
+          longest: profile.streak.longest,
+          activeDays140d: profile.streak.activeDays140d,
+        }
+      : null,
+    solvedQuestions: showStats ? profile.solvedAqIds.length : null,
+    totalSubmissions: showStats && signals ? signals.total_submissions : null,
+    acceptanceRate: showStats ? acceptanceRate : null,
+    taKudosCount: profile.taKudosCount,
+    firstBloodCount: profile.firstBloodAqIds.length,
+    earnedAchievements: profile.achievements
+      .filter((a) => a.earned)
+      .sort((a, b) => b.rarityWeight - a.rarityWeight)
+      .map((a) => ({
+        id: a.id,
+        title: a.title,
+        tier: a.tier,
+        iconClass: a.iconClass,
+        description: a.description,
+      })),
+    topicMastery: skillTree
+      ? skillTree.nodes.slice(0, 8).map((n) => ({
+          title: n.title,
+          solvedQuestions: n.solvedQuestions,
+          totalQuestions: n.totalQuestions,
+          masteryPerc: n.masteryPerc,
+          status: n.status,
+        }))
+      : [],
+  };
 }

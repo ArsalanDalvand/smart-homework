@@ -25,7 +25,14 @@ import {
 import { idsEqual } from '../../lib/id.js';
 import { formatJalaliFriendly, toPersianDigits } from '../../lib/jalali.js';
 import { type ResLocalsForPage } from '../../lib/res-locals.js';
-import type { WeeklyQuestsBundle } from '../../lib/student-gamification.js';
+import type { DailyPulseState } from '../../lib/student-daily-pulse.js';
+import {
+  type NextUnlockHint,
+  WEEKLY_GOAL_TIERS,
+  type WeeklyGoalTier,
+  type WeeklyQuestsBundle,
+} from '../../lib/student-gamification.js';
+import type { ClassCoopGoal, PersonalWeeklyGoalState } from '../../lib/student-phase3.js';
 
 export const StudentAssessmentsRowBaseSchema = z.object({
   assessment_id: AssessmentSchema.shape.id,
@@ -133,16 +140,235 @@ function WeeklyQuestsMiniStrip({
   `;
 }
 
+function CoopGoalBanner({ coopGoal }: { coopGoal: ClassCoopGoal }) {
+  return html`
+    <section class="se-section mb-4" aria-label="هدف همکاری کل کلاس">
+      <div class="sh-coop-banner ${coopGoal.isReached ? 'is-reached' : ''}">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="badge ${coopGoal.isReached ? 'bg-success' : 'bg-primary'}">
+              <i class="bi bi-people-fill me-1" aria-hidden="true"></i>
+              هدف مشترک کلاس
+            </span>
+            <strong class="text-body">
+              <span dir="ltr" class="me-1">${coopGoal.label}</span>
+              — ${coopGoal.title}
+            </strong>
+          </div>
+          <div class="d-flex flex-wrap align-items-center gap-2 small sh-tabular">
+            <span class="badge bg-body-tertiary text-body border sh-en-term">
+              +${toPersianDigits(coopGoal.rewardXp)} XP + Class Co-op
+            </span>
+            <span class="text-body-secondary">
+              ${toPersianDigits(coopGoal.participantCount)} دانشجوی مشارکت‌کننده
+              ${
+                coopGoal.userContributedSolves > 0
+                  ? ` (سهم شما: ${toPersianDigits(coopGoal.userContributedSolves)} حل)`
+                  : ''
+              }
+            </span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="progress flex-grow-1" style="height: 10px;">
+            <div
+              class="progress-bar ${coopGoal.isReached ? 'sh-progress-success' : 'sh-progress-brand'}"
+              style="width: ${coopGoal.progressPerc}%"
+            ></div>
+          </div>
+          <span class="fw-bold small text-body sh-tabular text-nowrap">
+            ${toPersianDigits(coopGoal.currentSolves)} از ${toPersianDigits(coopGoal.targetSolves)}
+            حل (${toPersianDigits(coopGoal.progressPerc)}٪)
+          </span>
+        </div>
+        <div class="small text-body-secondary mt-2">
+          ${
+            coopGoal.isReached
+              ? 'کلاس به هدف مشترک این سری رسید! نشان Class Co-op و +۷۵ XP برای همه مشارکت‌کنندگان فعال شد.'
+              : 'با حل هر سوال این سری، کل کلاس یک گام به هدف مشترک و پاداش همگانی نزدیک‌تر می‌شود.'
+          }
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function DailyPulseCard({
+  dailyPulse,
+  csrfToken,
+}: {
+  dailyPulse: DailyPulseState;
+  csrfToken: string;
+}) {
+  const { puzzle, attempt, jalaliDateLabel, xpReward } = dailyPulse;
+
+  return html`
+    <div id="sh-daily-pulse" class="se-card sh-pulse-card h-100">
+      <div class="se-card-header">
+        <h2 class="se-card-title">
+          <i class="bi bi-lightning-charge text-warning" aria-hidden="true"></i>
+          <span class="sh-en-term">Daily Python Pulse</span>
+          <span class="small text-body-secondary fw-normal">— گرم‌کن ۲ دقیقه‌ای</span>
+        </h2>
+        <div class="d-flex align-items-center gap-2 small">
+          <span class="badge bg-body-tertiary text-body border">${puzzle.topicFa}</span>
+          <span class="badge bg-body-tertiary text-body border sh-en-term sh-tabular">
+            +${toPersianDigits(xpReward)} XP
+          </span>
+        </div>
+      </div>
+      <div class="p-3 d-flex flex-column gap-2">
+        <div class="d-flex justify-content-between align-items-center small text-body-secondary">
+          <span>${puzzle.promptFa}</span>
+          <span class="sh-tabular">${jalaliDateLabel}</span>
+        </div>
+        <pre dir="ltr" class="sh-pulse-code mb-1"><code>${puzzle.codeSnippet}</code></pre>
+        ${
+          attempt == null
+            ? html`
+                <form method="POST" class="sh-pulse-options">
+                  <input type="hidden" name="__csrf_token" value="${csrfToken}" />
+                  <input type="hidden" name="__action" value="submit_daily_pulse" />
+                  <input type="hidden" name="puzzle_id" value="${puzzle.id}" />
+                  ${puzzle.options.map(
+                    (opt, idx) => html`
+                      <button
+                        type="submit"
+                        name="selected_option"
+                        value="${idx}"
+                        class="sh-pulse-opt"
+                        dir="auto"
+                      >
+                        <span class="badge bg-body-tertiary text-body border me-2 sh-tabular">
+                          ${toPersianDigits(idx + 1)}
+                        </span>
+                        <span>${opt}</span>
+                      </button>
+                    `,
+                  )}
+                </form>
+                <div class="small text-body-secondary">
+                  بدون نمره منفی · با پاسخ امروز، فعالیت روزانه و
+                  <span class="sh-en-term">Streak</span> شما نیز ثبت می‌شود.
+                </div>
+              `
+            : html`
+                <div class="sh-pulse-options">
+                  ${puzzle.options.map((opt, idx) => {
+                    const isCorrectOpt = idx === puzzle.correctIndex;
+                    const isSelectedOpt = idx === attempt.selectedOption;
+                    const optClass = isCorrectOpt
+                      ? 'sh-pulse-opt is-correct'
+                      : isSelectedOpt && !attempt.isCorrect
+                        ? 'sh-pulse-opt is-wrong'
+                        : 'sh-pulse-opt is-dimmed';
+                    return html`
+                      <div class="${optClass}" dir="auto">
+                        <span class="badge bg-body-tertiary text-body border me-2 sh-tabular">
+                          ${toPersianDigits(idx + 1)}
+                        </span>
+                        <span>${opt}</span>
+                      </div>
+                    `;
+                  })}
+                </div>
+                <div
+                  class="alert ${attempt.isCorrect ? 'alert-success' : 'alert-warning'} small py-2 px-3 mb-0"
+                >
+                  <strong>
+                    ${
+                      attempt.isCorrect
+                        ? `آفرین! پاسخ درست بود (+${toPersianDigits(xpReward)} XP و ثبت روز فعال Streak).`
+                        : 'پاسخ امروز ثبت شد (فعالیت روزانه برای Streak لحاظ گردید).'
+                    }
+                  </strong>
+                  <div class="mt-1">${puzzle.explanationFa}</div>
+                </div>
+              `
+        }
+      </div>
+    </div>
+  `;
+}
+
+function PersonalWeeklyGoalCard({
+  personalGoal,
+  csrfToken,
+}: {
+  personalGoal: PersonalWeeklyGoalState;
+  csrfToken: string;
+}) {
+  const tiers: WeeklyGoalTier[] = ['light', 'balanced', 'pro'];
+  return html`
+    <div id="sh-weekly-goal" class="se-card sh-weekly-goal-card">
+      <div class="se-card-header">
+        <h2 class="se-card-title">
+          <i class="bi bi-bullseye text-primary" aria-hidden="true"></i>
+          <span>تعهد هفتگی من</span>
+        </h2>
+        <span class="badge bg-body-tertiary text-body border sh-en-term sh-tabular">
+          +${toPersianDigits(personalGoal.xpReward)} XP
+        </span>
+      </div>
+      <div class="p-3">
+        <form method="POST" class="d-flex flex-wrap gap-2 mb-3">
+          <input type="hidden" name="__csrf_token" value="${csrfToken}" />
+          <input type="hidden" name="__action" value="set_weekly_goal" />
+          ${tiers.map((tierKey) => {
+            const meta = WEEKLY_GOAL_TIERS[tierKey];
+            const isSelected = personalGoal.tier === tierKey;
+            return html`
+              <button
+                type="submit"
+                name="tier"
+                value="${tierKey}"
+                class="sh-goal-pill ${isSelected ? 'is-active' : ''}"
+                aria-pressed="${isSelected ? 'true' : 'false'}"
+              >
+                ${meta.labelFa}
+              </button>
+            `;
+          })}
+        </form>
+        <div class="d-flex justify-content-between small text-body-secondary mb-1 sh-tabular">
+          <span>
+            ${
+              personalGoal.hasExplicitGoal
+                ? `پیشرفت این هفته: ${toPersianDigits(personalGoal.solvedThisWeek)} از ${toPersianDigits(personalGoal.targetQuestions)} سوال`
+                : 'یکی از سطوح بالا را برای هدف این هفته انتخاب کنید'
+            }
+          </span>
+          <span>${toPersianDigits(personalGoal.progressPerc)}٪</span>
+        </div>
+        <div class="progress" style="height: 8px;">
+          <div
+            class="progress-bar ${personalGoal.completed ? 'sh-progress-success' : 'sh-progress-brand'}"
+            style="width: ${personalGoal.progressPerc}%"
+          ></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 export function StudentAssessments({
   resLocals,
   rows,
   showDeadlineRadar = false,
   weeklyQuests = null,
+  coopGoal = null,
+  dailyPulse = null,
+  personalGoal = null,
+  nextUnlock = null,
 }: {
   resLocals: ResLocalsForPage<'course-instance'>;
   rows: StudentAssessmentsRow[];
   showDeadlineRadar?: boolean;
   weeklyQuests?: WeeklyQuestsBundle | null;
+  coopGoal?: ClassCoopGoal | null;
+  dailyPulse?: DailyPulseState | null;
+  personalGoal?: PersonalWeeklyGoalState | null;
+  nextUnlock?: NextUnlockHint | null;
 }) {
   const { urlPrefix, authz_data } = resLocals;
 
@@ -203,6 +429,81 @@ export function StudentAssessments({
     `,
     content: html`
       ${topRadarItems.length > 0 ? StudentDeadlineRadarStrip({ items: topRadarItems }) : ''}
+      ${coopGoal ? CoopGoalBanner({ coopGoal }) : ''}
+      ${
+        dailyPulse || personalGoal || nextUnlock
+          ? html`
+              <section class="se-section mb-4" aria-label="گرم‌کن روزانه و هدف شخصی">
+                <div class="row g-3">
+                  ${
+                    dailyPulse
+                      ? html`
+                          <div class="${personalGoal || nextUnlock ? 'col-lg-7' : 'col-12'}">
+                            ${DailyPulseCard({
+                              dailyPulse,
+                              csrfToken: resLocals.__csrf_token,
+                            })}
+                          </div>
+                        `
+                      : ''
+                  }
+                  ${
+                    personalGoal || nextUnlock
+                      ? html`
+                          <div
+                            class="${dailyPulse ? 'col-lg-5' : 'col-12'} d-flex flex-column gap-3"
+                          >
+                            ${
+                              personalGoal
+                                ? PersonalWeeklyGoalCard({
+                                    personalGoal,
+                                    csrfToken: resLocals.__csrf_token,
+                                  })
+                                : ''
+                            }
+                            ${
+                              nextUnlock
+                                ? html`
+                                    <div class="sh-next-unlock-strip flex-grow-1">
+                                      <div
+                                        class="d-flex align-items-center justify-content-between small mb-2"
+                                      >
+                                        <span class="fw-bold text-body">
+                                          <i
+                                            class="${nextUnlock.iconClass} me-1 text-primary"
+                                            aria-hidden="true"
+                                          ></i>
+                                          نزدیک‌ترین مدال بعدی
+                                        </span>
+                                        <a
+                                          href="${urlPrefix}/gradebook#tab-achievements"
+                                          class="small text-decoration-none"
+                                        >
+                                          مدال‌ها ←
+                                        </a>
+                                      </div>
+                                      <div class="small text-body-secondary mb-2">
+                                        ${nextUnlock.messageFa}
+                                      </div>
+                                      <div class="progress" style="height: 7px;">
+                                        <div
+                                          class="progress-bar sh-progress-brand"
+                                          style="width: ${nextUnlock.progressPerc}%"
+                                        ></div>
+                                      </div>
+                                    </div>
+                                  `
+                                : ''
+                            }
+                          </div>
+                        `
+                      : ''
+                  }
+                </div>
+              </section>
+            `
+          : ''
+      }
       ${
         weeklyQuests
           ? WeeklyQuestsMiniStrip({
