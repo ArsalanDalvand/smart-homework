@@ -14,14 +14,6 @@ const sql = sqldb.loadSqlEquiv(import.meta.url);
 
 export const MIN_ANALYTICS_COHORT = 5;
 
-let leaderboardTableEnsured = false;
-
-export async function ensureLeaderboardPreferencesTable(): Promise<void> {
-  if (leaderboardTableEnsured) return;
-  await sqldb.execute(sql.ensure_leaderboard_preferences_table, {});
-  leaderboardTableEnsured = true;
-}
-
 // ---------- Types & Schemas ----------
 
 export interface HistogramBucket {
@@ -102,8 +94,6 @@ export interface LeaderboardEntry {
   rank: number;
   userId: string;
   displayName: string;
-  isAlias: boolean;
-  isAnonymous: boolean;
   isCurrentUser: boolean;
   totalPoints: number;
   maxPoints: number;
@@ -117,10 +107,6 @@ export interface StudentLeaderboardData {
   topEntries: LeaderboardEntry[];
   currentUserEntry: LeaderboardEntry | null;
   totalParticipants: number;
-  preferences: {
-    displayAlias: string;
-    optOut: boolean;
-  };
 }
 
 export interface QuestionClassStat {
@@ -181,17 +167,10 @@ const LeaderboardRowSchema = z.object({
   user_id: z.string(),
   full_name: z.string().nullable(),
   uid_handle: z.string(),
-  display_alias: z.string().nullable(),
-  opt_out: z.boolean(),
   total_points: z.coerce.number(),
   max_points: z.coerce.number(),
   score_perc: z.coerce.number(),
   solved_questions: z.coerce.number(),
-});
-
-const LeaderboardPrefRowSchema = z.object({
-  display_alias: z.string().nullable(),
-  opt_out: z.boolean(),
 });
 
 const QuestionStatRowSchema = z.object({
@@ -541,9 +520,7 @@ export async function getStudentLeaderboardData({
   userId: string;
   assessmentId?: string | null;
 }): Promise<StudentLeaderboardData> {
-  await ensureLeaderboardPreferencesTable();
-
-  const [assessments, rawRows, prefRow] = await Promise.all([
+  const [assessments, rawRows] = await Promise.all([
     sqldb.queryRows(
       sql.select_visible_homework_list,
       { course_instance_id: courseInstanceId },
@@ -557,45 +534,18 @@ export async function getStudentLeaderboardData({
       },
       LeaderboardRowSchema,
     ),
-    sqldb.queryOptionalRow(
-      sql.select_user_leaderboard_preferences,
-      { user_id: userId },
-      LeaderboardPrefRowSchema,
-    ),
   ]);
 
-  let anonCounter = 0;
-  const allEntries: LeaderboardEntry[] = rawRows.map((row, idx) => {
-    const isCurrentUser = row.user_id === userId;
-    const isAnonymous = row.opt_out;
-    const trimmedAlias = row.display_alias?.trim() ?? '';
-    const isAlias = !isAnonymous && trimmedAlias.length > 0;
-
-    let displayName: string;
-    if (isAnonymous) {
-      anonCounter += 1;
-      displayName = isCurrentUser
-        ? `${row.full_name?.trim() || 'شما'} (مخفی از دیگران)`
-        : `دانشجوی ناشناس #${toPersianDigits(anonCounter)}`;
-    } else if (isAlias) {
-      displayName = trimmedAlias;
-    } else {
-      displayName = row.full_name?.trim() || row.uid_handle;
-    }
-
-    return {
-      rank: idx + 1,
-      userId: row.user_id,
-      displayName,
-      isAlias,
-      isAnonymous,
-      isCurrentUser,
-      totalPoints: Math.round(row.total_points * 10) / 10,
-      maxPoints: Math.round(row.max_points * 10) / 10,
-      scorePerc: Math.round(row.score_perc * 10) / 10,
-      solvedQuestions: row.solved_questions,
-    };
-  });
+  const allEntries: LeaderboardEntry[] = rawRows.map((row, idx) => ({
+    rank: idx + 1,
+    userId: row.user_id,
+    displayName: row.full_name?.trim() || row.uid_handle,
+    isCurrentUser: row.user_id === userId,
+    totalPoints: Math.round(row.total_points * 10) / 10,
+    maxPoints: Math.round(row.max_points * 10) / 10,
+    scorePerc: Math.round(row.score_perc * 10) / 10,
+    solvedQuestions: row.solved_questions,
+  }));
 
   const topEntries = allEntries.slice(0, 20);
   const currentUserEntry = allEntries.find((e) => e.isCurrentUser) ?? null;
@@ -610,42 +560,7 @@ export async function getStudentLeaderboardData({
     topEntries,
     currentUserEntry,
     totalParticipants: allEntries.length,
-    preferences: {
-      displayAlias: prefRow?.display_alias ?? '',
-      optOut: prefRow?.opt_out ?? false,
-    },
   };
-}
-
-export async function saveStudentLeaderboardPreferences({
-  userId,
-  displayAlias,
-  optOut,
-}: {
-  userId: string;
-  displayAlias: string;
-  optOut: boolean;
-}): Promise<{ ok: true } | { ok: false; error: string }> {
-  await ensureLeaderboardPreferencesTable();
-
-  const cleaned = displayAlias
-    .replaceAll(/[\u0000-\u001F\u007F<>]/g, '')
-    .trim();
-
-  if (cleaned.length > 0 && (cleaned.length < 2 || cleaned.length > 28)) {
-    return {
-      ok: false,
-      error: 'نام مستعار در صورت وارد شدن باید بین ۲ تا ۲۸ کاراکتر باشد.',
-    };
-  }
-
-  await sqldb.execute(sql.upsert_user_leaderboard_preferences, {
-    user_id: userId,
-    display_alias: cleaned.length > 0 ? cleaned : null,
-    opt_out: optOut,
-  });
-
-  return { ok: true };
 }
 
 export async function getAssessmentQuestionStats({

@@ -1,11 +1,3 @@
--- BLOCK ensure_leaderboard_preferences_table
-CREATE TABLE IF NOT EXISTS student_leaderboard_preferences (
-  user_id BIGINT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
-  display_alias TEXT,
-  opt_out BOOLEAN NOT NULL DEFAULT FALSE,
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
 -- BLOCK select_student_personal_submission_metrics
 WITH visible_hw AS (
   SELECT a.id
@@ -337,8 +329,6 @@ SELECT
   u.id::text AS user_id,
   u.name AS full_name,
   split_part(u.uid, '@', 1) AS uid_handle,
-  pref.display_alias,
-  COALESCE(pref.opt_out, FALSE) AS opt_out,
   SUM(psa.best_points)::double precision AS total_points,
   SUM(psa.max_points)::double precision AS max_points,
   CASE
@@ -349,35 +339,9 @@ SELECT
   MAX(psa.last_activity_at) AS last_activity_at
 FROM per_student_assessment AS psa
 JOIN users AS u ON u.id = psa.user_id
-LEFT JOIN student_leaderboard_preferences AS pref ON pref.user_id = u.id
 LEFT JOIN solved_counts AS sc ON sc.user_id = u.id
-GROUP BY u.id, u.name, u.uid, pref.display_alias, pref.opt_out, sc.solved_questions
+GROUP BY u.id, u.name, u.uid, sc.solved_questions
 ORDER BY total_points DESC, solved_questions DESC, last_activity_at ASC NULLS LAST, u.id ASC;
-
--- BLOCK select_user_leaderboard_preferences
-SELECT
-  display_alias,
-  opt_out
-FROM student_leaderboard_preferences
-WHERE user_id = $user_id;
-
--- BLOCK upsert_user_leaderboard_preferences
-INSERT INTO student_leaderboard_preferences (
-  user_id,
-  display_alias,
-  opt_out,
-  updated_at
-) VALUES (
-  $user_id,
-  $display_alias,
-  $opt_out,
-  CURRENT_TIMESTAMP
-)
-ON CONFLICT (user_id) DO UPDATE
-SET
-  display_alias = EXCLUDED.display_alias,
-  opt_out = EXCLUDED.opt_out,
-  updated_at = CURRENT_TIMESTAMP;
 
 -- BLOCK select_assessment_question_stats
 WITH real_students AS (

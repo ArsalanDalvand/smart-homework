@@ -22,19 +22,8 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
       </td>
       <td className="align-middle">
         <div className="d-flex flex-wrap align-items-center gap-2">
-          <span className="fw-semibold text-dark">
-            {entry.isAlias ? `@${entry.displayName}` : entry.displayName}
-          </span>
+          <span className="fw-semibold text-dark">{entry.displayName}</span>
           {entry.isCurrentUser && <span className="badge text-bg-primary">شما</span>}
-          {entry.isAnonymous && !entry.isCurrentUser && (
-            <span className="badge text-bg-light border text-secondary">
-              <i className="fas fa-user-secret me-1" aria-hidden="true" />
-              ناشناس
-            </span>
-          )}
-          {entry.isAlias && (
-            <span className="badge text-bg-light border text-secondary">نام مستعار</span>
-          )}
         </div>
       </td>
       <td className="text-center align-middle">{toPersianDigits(entry.solvedQuestions)} سوال</td>
@@ -52,15 +41,11 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
 export function StudentLeaderboard({
   resLocals,
   data,
-  savedBanner,
-  errorMessage,
 }: {
   resLocals: ResLocalsForPage<'course-instance'>;
   data: StudentLeaderboardData;
-  savedBanner: boolean;
-  errorMessage: string | null;
 }) {
-  const { urlPrefix, __csrf_token } = resLocals;
+  const { urlPrefix } = resLocals;
   const podium = data.topEntries.slice(0, 3);
   const currentInTop = data.topEntries.some((e) => e.isCurrentUser);
 
@@ -74,19 +59,6 @@ export function StudentLeaderboard({
     headContent: <link href={assetPath('stylesheets/student-engagement.css')} rel="stylesheet" />,
     content: (
       <div className="se-section" style={{ fontFamily: 'var(--font-persian)' }}>
-        {savedBanner && (
-          <div className="alert alert-success d-flex align-items-center gap-2" role="alert">
-            <i className="fas fa-circle-check" aria-hidden="true" />
-            <span>تنظیمات حریم خصوصی و نام نمایشی شما در جدول امتیازات ذخیره شد.</span>
-          </div>
-        )}
-        {errorMessage && (
-          <div className="alert alert-danger d-flex align-items-center gap-2" role="alert">
-            <i className="fas fa-circle-exclamation" aria-hidden="true" />
-            <span>{errorMessage}</span>
-          </div>
-        )}
-
         {/* Filter Header */}
         <div className="se-card mb-4">
           <div className="se-card-header bg-primary text-white border-0 py-3">
@@ -104,7 +76,7 @@ export function StudentLeaderboard({
             </span>
           </div>
 
-          <div className="p-3 bg-light border-bottom d-flex flex-wrap align-items-center gap-2">
+          <div className="p-3 bg-light d-flex flex-wrap align-items-center gap-2">
             <span className="small text-secondary fw-semibold me-1">بازه رتبه‌بندی:</span>
             <a
               href={`${urlPrefix}/leaderboard`}
@@ -124,55 +96,6 @@ export function StudentLeaderboard({
                 — {a.title}
               </a>
             ))}
-          </div>
-
-          {/* Privacy Settings Form */}
-          <div className="p-3">
-            <form
-              method="POST"
-              action={`${urlPrefix}/leaderboard`}
-              className="row g-2 align-items-end"
-            >
-              <input type="hidden" name="__csrf_token" value={__csrf_token} />
-              {data.selectedAssessmentId && (
-                <input type="hidden" name="assessment_id" value={data.selectedAssessmentId} />
-              )}
-              <div className="col-md-5">
-                <label className="form-label small fw-bold mb-1" htmlFor="lb_display_alias">
-                  نام مستعار اختیاری (Handle) در جدول:
-                </label>
-                <input
-                  type="text"
-                  id="lb_display_alias"
-                  name="display_alias"
-                  className="form-control form-control-sm"
-                  maxLength={28}
-                  defaultValue={data.preferences.displayAlias}
-                  placeholder="مثال: PythonWizard یا خالی برای نام واقعی"
-                />
-              </div>
-              <div className="col-md-5">
-                <div className="form-check mb-1">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="lb_opt_out"
-                    name="opt_out"
-                    value="on"
-                    defaultChecked={data.preferences.optOut}
-                  />
-                  <label className="form-check-label small" htmlFor="lb_opt_out">
-                    نام من مخفی بماند (نمایش به صورت «دانشجوی ناشناس» برای دیگران)
-                  </label>
-                </div>
-              </div>
-              <div className="col-md-2 text-md-end">
-                <button type="submit" className="btn btn-sm btn-outline-primary w-100">
-                  <i className="fas fa-shield-halved me-1" aria-hidden="true" />
-                  ذخیره حریم خصوصی
-                </button>
-              </div>
-            </form>
           </div>
         </div>
 
@@ -196,7 +119,7 @@ export function StudentLeaderboard({
                       رتبه {toPersianDigits(entry.rank)}
                     </div>
                     <div className="h6 fw-bold text-dark mt-1 mb-2">
-                      {entry.isAlias ? `@${entry.displayName}` : entry.displayName}
+                      {entry.displayName}
                       {entry.isCurrentUser && (
                         <span className="badge text-bg-primary ms-1">شما</span>
                       )}
@@ -245,7 +168,7 @@ export function StudentLeaderboard({
                 <thead className="table-light">
                   <tr>
                     <th className="text-center">رتبه</th>
-                    <th>دانشجو / نام نمایشی</th>
+                    <th>دانشجو</th>
                     <th className="text-center">سوالات کامل</th>
                     <th className="text-center">مجموع امتیاز</th>
                     <th className="text-center">درصد تکمیل</th>
