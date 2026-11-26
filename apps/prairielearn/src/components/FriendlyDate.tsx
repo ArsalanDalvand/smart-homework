@@ -35,9 +35,10 @@ export const FriendlyDate: FC<FriendlyDateProps> = ({
       title={gregorianTooltip}
       data-bs-toggle={tooltip ? 'tooltip' : undefined}
       data-bs-title={tooltip ? gregorianTooltip : undefined}
+      className="text-nowrap"
       style={{ fontVariantNumeric: 'tabular-nums' }}
     >
-      {friendlyString}
+      <bdi dir="rtl">{friendlyString}</bdi>
     </time>
   );
 };

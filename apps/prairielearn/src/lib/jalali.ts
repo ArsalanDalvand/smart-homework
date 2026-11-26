@@ -344,7 +344,7 @@ export function formatJalaliFriendly(
       result = `${datePart}، ${timePart}`;
     }
 
-    if (includeTz) {
+    if (includeTz && tz !== 'Asia/Tehran') {
       const tzParts = new Intl.DateTimeFormat('en-US', {
         timeZone: tz,
         timeZoneName: 'short',
@@ -378,7 +378,8 @@ export function formatGregorianTooltip(
       minute: '2-digit',
     }).formatToParts(resolved);
     const map = Object.fromEntries(parts.map((p) => [p.type, p.value]));
-    return `${map.year}-${map.month}-${map.day} ${map.hour}:${map.minute} (${tz})`;
+    const tzLabel = tz === 'Asia/Tehran' ? 'ساعت تهران / GMT+3:30' : tz;
+    return `${map.year}-${map.month}-${map.day} ${map.hour}:${map.minute} (${tzLabel})`;
   } catch {
     return resolved.toISOString();
   }
