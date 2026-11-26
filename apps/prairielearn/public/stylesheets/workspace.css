@@ -8,6 +8,11 @@ body {
   overflow: hidden;
 }
 
+body {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
 /* Hide global site footer in full-screen IDE workspace so VS Code gets 100% height */
 body footer,
 footer.bg-white {
@@ -15,18 +20,23 @@ footer.bg-white {
 }
 
 main#content {
-  height: calc(100vh - 50px) !important;
-  min-height: calc(100vh - 50px) !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
   background-color: #0d1117;
   padding: 0 !important;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .ws-topbar {
-  min-height: 50px;
-  background: linear-gradient(90deg, #0f172a 0%, #111827 55%, #0f172a 100%);
-  border-bottom: 1px solid #263042;
-  padding: 0.35rem 0.9rem;
+  flex: 0 0 auto;
+  min-height: 48px;
+  background: linear-gradient(90deg, #0f172a 0%, #111827 55%, #0f172a 100%) !important;
+  border-bottom: 1px solid #1e293b !important;
+  box-shadow: none !important;
+  padding: 0.35rem 0.85rem !important;
   z-index: 1030;
 }
 
@@ -43,11 +53,28 @@ main#content {
   flex-shrink: 0;
 }
 
+.ws-title-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  min-width: 0;
+}
+
+.ws-title {
+  font-size: 0.84rem !important;
+  line-height: 1.2 !important;
+  margin: 0 !important;
+  font-weight: 600;
+}
+
 .ws-title-link {
   color: #f8fafc !important;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
+  line-height: 1.2;
+  display: inline-block;
   transition: color 0.15s ease;
 }
 
@@ -57,7 +84,9 @@ main#content {
 
 .ws-subtitle {
   color: #94a3b8;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 /* Live Status Pill */
@@ -65,10 +94,12 @@ main#content {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.25rem 0.65rem;
+  height: 30px;
+  padding: 0 0.65rem;
   border-radius: 999px;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 600;
+  line-height: 1;
   background: rgba(148, 163, 184, 0.14);
   border: 1px solid rgba(148, 163, 184, 0.28);
   color: #cbd5e1;
@@ -76,8 +107,8 @@ main#content {
 }
 
 .ws-status-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #94a3b8;
   display: inline-block;
@@ -134,6 +165,7 @@ main#content {
   background: transparent !important;
   color: inherit !important;
   font-size: inherit;
+  line-height: 1;
 }
 
 .ws-msg-pill {
@@ -154,21 +186,25 @@ main#content {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.25rem 0.7rem;
+  height: 30px;
+  padding: 0 0.7rem;
   border-radius: 8px;
   background: rgba(56, 189, 248, 0.08);
   border: 1px solid rgba(56, 189, 248, 0.2);
   color: #bae6fd;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .ws-save-tip kbd {
   background: #1e293b;
   color: #f8fafc;
   border: 1px solid #334155;
-  padding: 0.08rem 0.35rem;
+  padding: 0.12rem 0.35rem;
   border-radius: 4px;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
+  line-height: 1;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -176,10 +212,13 @@ main#content {
 .ws-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.38rem;
-  padding: 0.3rem 0.65rem;
-  font-size: 0.78rem;
+  height: 30px;
+  padding: 0 0.65rem;
+  font-size: 0.76rem;
   font-weight: 500;
+  line-height: 1;
   border-radius: 8px;
   color: #e2e8f0;
   background: rgba(255, 255, 255, 0.06);
@@ -187,6 +226,7 @@ main#content {
   transition: all 0.15s ease;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .ws-btn:hover,
@@ -194,6 +234,11 @@ main#content {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.13);
   border-color: rgba(148, 163, 184, 0.42);
+}
+
+.ws-btn-icon {
+  width: 30px;
+  padding: 0;
 }
 
 .ws-btn-primary {

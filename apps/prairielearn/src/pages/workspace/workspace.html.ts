@@ -131,8 +131,8 @@ export function Workspace({
             <span class="ws-brand-icon" aria-hidden="true">
               <i class="fas fa-code"></i>
             </span>
-            <div class="d-flex flex-column lh-sm">
-              <h1 class="mb-0">
+            <div class="ws-title-group">
+              <h1 class="ws-title">
                 <a href="${navTitleHref}" target="_blank" class="ws-title-link" dir="ltr">
                   ${navTitle}
                 </a>
@@ -156,7 +156,7 @@ export function Workspace({
           <div class="d-none d-xl-flex align-items-center mx-auto">
             <div class="ws-save-tip">
               <i class="fas fa-circle-info text-info" aria-hidden="true"></i>
-              <span>ذخیره با <kbd>Ctrl+S</kbd> ← سپس در تب سوال <strong>«ارسال و تصحیح خودکار»</strong> را بزنید</span>
+              <span>ذخیره با <kbd dir="ltr">Ctrl+S</kbd> ← سپس در تب سوال <strong>«ارسال و تصحیح خودکار»</strong> را بزنید</span>
             </div>
           </div>
 
@@ -237,7 +237,7 @@ export function Workspace({
               <li class="nav-item">
                 <button
                   type="button"
-                  class="ws-btn"
+                  class="ws-btn ws-btn-icon"
                   data-bs-toggle="popover"
                   data-bs-container="body"
                   data-bs-placement="bottom"
