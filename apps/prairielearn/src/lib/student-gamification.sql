@@ -87,9 +87,7 @@ SELECT
   fb.first_blood_user_id::text AS first_blood_user_id,
   CASE
     WHEN fb.first_blood_user_id IS NULL THEN NULL
-    WHEN COALESCE(spp.show_on_leaderboard, TRUE) IS FALSE THEN 'دانشجوی ناشناس #' || (ABS(MOD(u.id * 2654435761, 8999)) + 1000)::text
     ELSE COALESCE(
-      NULLIF(BTRIM(spp.display_alias), ''),
       NULLIF(BTRIM(u.name), ''),
       split_part(u.uid, '@', 1)
     )
@@ -100,7 +98,6 @@ FROM
   LEFT JOIN aq_stats AS aqs ON aqs.assessment_question_id = aq.id
   LEFT JOIN first_blood AS fb ON fb.assessment_question_id = aq.id
   LEFT JOIN users AS u ON u.id = fb.first_blood_user_id
-  LEFT JOIN student_public_profiles AS spp ON spp.user_id = fb.first_blood_user_id
 WHERE
   aq.deleted_at IS NULL;
 
@@ -1599,23 +1596,24 @@ WITH
   )
 SELECT
   u.id::text AS user_id,
-  CASE
-    WHEN COALESCE(spp.show_on_leaderboard, TRUE) IS FALSE THEN 'دانشجوی ناشناس #' || (ABS(MOD(u.id * 2654435761, 8999)) + 1000)::text
-    ELSE COALESCE(
-      NULLIF(BTRIM(spp.display_alias), ''),
-      NULLIF(BTRIM(u.name), ''),
-      split_part(u.uid, '@', 1)
-    )
-  END AS display_name,
+  COALESCE(
+    NULLIF(BTRIM(u.name), ''),
+    split_part(u.uid, '@', 1)
+  ) AS display_name,
   COALESCE(spp.avatar_preset, 'initials') AS avatar_preset,
   COALESCE(spp.avatar_color, 'cobalt') AS avatar_color,
   CASE
-    WHEN COALESCE(spp.show_on_leaderboard, TRUE) IS FALSE THEN 'none'
-    ELSE COALESCE(spp.status_emoji, 'none')
-  END AS status_emoji,
+    WHEN spp.avatar_updated_at IS NOT NULL THEN FLOOR(
+      EXTRACT(
+        EPOCH
+        FROM
+          spp.avatar_updated_at
+      ) * 1000
+    )::bigint::text
+    ELSE NULL
+  END AS avatar_version,
+  COALESCE(spp.status_emoji, 'none') AS status_emoji,
   COALESCE(spp.pinned_badge_ids, ARRAY[]::text[]) AS pinned_badge_ids,
-  (COALESCE(spp.show_on_leaderboard, TRUE) IS FALSE) AS is_anonymous,
-  COALESCE(spp.show_passport_details, TRUE) AS show_passport_details,
   COALESCE(iqs.solved_aq_ids, ARRAY[]::text[]) AS solved_aq_ids,
   COALESCE(iqs.oneshot_aq_ids, ARRAY[]::text[]) AS oneshot_aq_ids,
   COALESCE(iqs.partial_score_sum, 0.0)::double precision AS partial_score_sum,
@@ -1668,25 +1666,28 @@ FROM
 -- BLOCK select_student_passport_identity
 SELECT
   u.id::text AS user_id,
-  CASE
-    WHEN COALESCE(spp.show_on_leaderboard, TRUE) IS FALSE THEN 'دانشجوی ناشناس #' || (ABS(MOD(u.id * 2654435761, 8999)) + 1000)::text
-    ELSE COALESCE(
-      NULLIF(BTRIM(spp.display_alias), ''),
-      NULLIF(BTRIM(u.name), ''),
-      split_part(u.uid, '@', 1)
-    )
-  END AS display_name,
+  COALESCE(
+    NULLIF(BTRIM(u.name), ''),
+    split_part(u.uid, '@', 1)
+  ) AS display_name,
   COALESCE(spp.avatar_preset, 'initials') AS avatar_preset,
   COALESCE(spp.avatar_color, 'cobalt') AS avatar_color,
+  CASE
+    WHEN spp.avatar_updated_at IS NOT NULL THEN FLOOR(
+      EXTRACT(
+        EPOCH
+        FROM
+          spp.avatar_updated_at
+      ) * 1000
+    )::bigint::text
+    ELSE NULL
+  END AS avatar_version,
   COALESCE(spp.banner_theme, 'nova') AS banner_theme,
   spp.bio,
   COALESCE(spp.status_emoji, 'none') AS status_emoji,
   spp.favorite_topic,
   spp.github_username,
-  COALESCE(spp.featured_title, 'auto') AS featured_title,
-  COALESCE(spp.show_on_leaderboard, TRUE) AS show_on_leaderboard,
-  COALESCE(spp.show_passport_details, TRUE) AS show_passport_details,
-  COALESCE(spp.show_activity_stats, TRUE) AS show_activity_stats
+  COALESCE(spp.featured_title, 'auto') AS featured_title
 FROM
   enrollments AS e
   JOIN course_instances AS ci ON ci.id = e.course_instance_id

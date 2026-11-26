@@ -1128,7 +1128,10 @@ export function StudentGradebook({
                 </span>
                 <span>
                   <strong className="text-body">نزدیک‌ترین مدال بعدی:</strong>{' '}
-                  {gamificationProfile.nextUnlock.messageFa}
+                  {gamificationProfile.nextUnlock.messageFa}{' '}
+                  <bdi className="badge sh-chip-primary sh-tabular sh-en-term ms-1" dir="ltr">
+                    +{toPersianDigits(gamificationProfile.nextUnlock.xpReward)} XP
+                  </bdi>
                 </span>
               </div>
               <div className="d-flex align-items-center gap-2">
@@ -1139,7 +1142,8 @@ export function StudentGradebook({
                   />
                 </div>
                 <span className="small text-body-secondary sh-tabular">
-                  {toPersianDigits(gamificationProfile.nextUnlock.progressPerc)}٪
+                  {toPersianDigits(gamificationProfile.nextUnlock.currentValue)} از{' '}
+                  {toPersianDigits(gamificationProfile.nextUnlock.nextTarget)}
                 </span>
               </div>
             </div>

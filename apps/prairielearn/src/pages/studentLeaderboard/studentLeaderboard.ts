@@ -41,7 +41,6 @@ router.get(
     const passport = await getStudentCodingPassport({
       courseInstanceId: res.locals.course_instance.id,
       targetUserId,
-      viewerUserId: res.locals.user.id,
       timezone: res.locals.course_instance.display_timezone,
     });
     if (!passport) {

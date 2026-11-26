@@ -10,6 +10,7 @@ import type {
   Variant,
 } from '../lib/db-types.js';
 import { formatPoints } from '../lib/format.js';
+import { toPersianDigits } from '../lib/jalali.js';
 import type { SimpleVariantWithScore } from '../models/variant.js';
 
 import { ExamQuestionAvailablePoints } from './ExamQuestionAvailablePoints.js';
@@ -225,13 +226,14 @@ function IssueReportingPanel({ variant, csrfToken }: { variant: Variant; csrfTok
       aria-expanded="false"
       aria-controls="issueCollapse"
     >
-      <i class="fa fa-bug me-1"></i> گزارش اشکال در سوال <i class="far fa-caret-square-down ms-1"></i>
+      <i class="fa fa-bug me-1"></i> گزارش اشکال در سوال
+      <i class="far fa-caret-square-down ms-1"></i>
     </button>
     <div class="collapse" id="issueCollapse">
       <form method="POST">
         <p class="small mt-3">
-          این فرم صرفاً برای گزارش اشکالات احتمالی در صورت مسئله، متغیرها یا تست‌کیس‌ها است.
-          برای راهنمایی علمی یا اشکال در کد خود از کانال یا گروه حل تمرین استفاده نمایید.
+          این فرم صرفاً برای گزارش اشکالات احتمالی در صورت مسئله، متغیرها یا تست‌کیس‌ها است. برای
+          راهنمایی علمی یا اشکال در کد خود از کانال یا گروه حل تمرین استفاده نمایید.
         </p>
         <div class="mb-3">
           <textarea
@@ -303,7 +305,10 @@ export function InstanceQuestionPoints({
   }
 
   return html`
-    <span class="text-nowrap ${instance_question.used_for_grade === false ? 'text-muted' : ''}" dir="ltr">
+    <span
+      class="text-nowrap sh-tabular ${instance_question.used_for_grade === false ? 'text-muted' : ''}"
+      dir="ltr"
+    >
       ${
         // If the question is unanswered show a dash instead of 0 points, unless
         // the question was manually graded or a regrading process forced the
@@ -316,9 +321,15 @@ export function InstanceQuestionPoints({
             ? html`<span class="badge text-bg-info">در حال تصحیح</span>`
             : !points && !maxPoints
               ? html`&mdash;`
-              : html`<span data-testid="awarded-points">${formatPoints(points)}</span>`
+              : html`<span data-testid="awarded-points"
+                  >${toPersianDigits(formatPoints(points))}</span
+                >`
       }
-      ${maxPoints ? html`<small> / <span class="text-muted">${maxPoints}</span></small>` : ''}
+      ${
+        maxPoints
+          ? html`<small> / <span class="text-muted">${toPersianDigits(maxPoints)}</span></small>`
+          : ''
+      }
       ${
         instance_question.used_for_grade === false && component === 'total' && (points ?? 0) !== 0
           ? html`
@@ -360,11 +371,7 @@ function QuestionValue({
 
   const popoverContent = run(() => {
     const parts: HtmlValue[] = [
-      html`
-        <p>
-          در صورت نزدیک‌تر شدن به پاسخ صحیح، این سوال به شما نمره جزئی اعطا می‌کند.
-        </p>
-      `,
+      html` <p>در صورت نزدیک‌تر شدن به پاسخ صحیح، این سوال به شما نمره جزئی اعطا می‌کند.</p> `,
     ];
 
     if (bestCurrentScore === 0) {
@@ -395,12 +402,11 @@ function QuestionValue({
       const perfectAdditionalPoints = (currentAutoValue * (100 - bestCurrentScore)) / 100;
       parts.push(html`
         <p>
-          اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید، ${formatPoints(perfectAdditionalPoints)} امتیاز اضافه
-          به شما تعلق می‌گیرد.
+          اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید، ${formatPoints(perfectAdditionalPoints)} امتیاز
+          اضافه به شما تعلق می‌گیرد.
         </p>
         <p>
-          اگر در ارسال بعدی نمره‌ای بین ${formatPoints(bestCurrentScore)}% تا ۱۰۰٪ کسب کنید، به
-          میزان
+          اگر در ارسال بعدی نمره‌ای بین ${formatPoints(bestCurrentScore)}% تا ۱۰۰٪ کسب کنید، به میزان
           <code>
             ${formatPoints(currentAutoValue)} * (score - ${formatPoints(bestCurrentScore)}) / 100
           </code>

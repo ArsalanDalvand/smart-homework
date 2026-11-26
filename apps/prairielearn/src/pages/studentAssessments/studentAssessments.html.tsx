@@ -484,12 +484,23 @@ export function StudentAssessments({
                                       </div>
                                       <div class="small text-body-secondary mb-2">
                                         ${nextUnlock.messageFa}
+                                        <bdi
+                                          dir="ltr"
+                                          class="badge sh-chip-primary sh-tabular sh-en-term ms-1"
+                                          >+${toPersianDigits(nextUnlock.xpReward)} XP</bdi
+                                        >
                                       </div>
-                                      <div class="progress" style="height: 7px;">
-                                        <div
-                                          class="progress-bar sh-progress-brand"
-                                          style="width: ${nextUnlock.progressPerc}%"
-                                        ></div>
+                                      <div class="d-flex align-items-center gap-2">
+                                        <div class="progress flex-grow-1" style="height: 7px;">
+                                          <div
+                                            class="progress-bar sh-progress-brand"
+                                            style="width: ${nextUnlock.progressPerc}%"
+                                          ></div>
+                                        </div>
+                                        <span class="small text-body-secondary sh-tabular">
+                                          ${toPersianDigits(nextUnlock.currentValue)} از
+                                          ${toPersianDigits(nextUnlock.nextTarget)}
+                                        </span>
                                       </div>
                                     </div>
                                   `

@@ -12,7 +12,8 @@ import {
   computeWeeklyQuestsFromSignals,
   selectShowcaseBadges,
 } from './student-gamification.js';
-import { sanitizePublicProfileInput } from './student-profile.shared.js';
+import { parseAndValidateAvatarDataUrl } from './student-profile.js';
+import { getUserAvatarUrl, sanitizePublicProfileInput } from './student-profile.shared.js';
 
 describe('computeStreakWithFreezes', () => {
   it('bridges a 1-day gap automatically without inflating streak length', () => {
@@ -104,6 +105,8 @@ describe('computeNextUnlockHint', () => {
     expect(hint?.xpReward).toBe(100);
     expect(hint?.messageFa).toContain('نقره‌ای');
     expect(hint?.messageFa).toContain('One-Shot');
+    expect(hint?.messageFa.match(/One-Shot/g)).toHaveLength(1);
+    expect(hint?.messageFa).not.toContain('سوال One-Shot');
   });
 });
 
@@ -284,11 +287,12 @@ describe('Daily Python Pulse puzzle bank', () => {
 });
 
 describe('Public profile studio helpers', () => {
-  it('sanitizes profile inputs, normalizes GitHub usernames, caps pinned badges, and parses flags', () => {
+  it('sanitizes profile inputs, normalizes GitHub usernames, and caps pinned badges without aliases or privacy flags', () => {
     const clean = sanitizePublicProfileInput({
-      display_alias: `  ${'A'.repeat(50)}  `,
+      display_alias: 'Ignored Alias',
       avatar_preset: 'rocket',
       avatar_color: 'violet',
+      avatar_version: '1795734900000',
       banner_theme: 'aurora',
       bio: `   ${'B'.repeat(200)}   `,
       status_emoji: 'coding',
@@ -296,14 +300,13 @@ describe('Public profile studio helpers', () => {
       github_username: 'https://github.com/@torvalds/',
       featured_title: 'Pythonista',
       pinned_badge_ids: 'streak, syntax-clean, streak, bonus-hunter, first-blood',
-      show_on_leaderboard: 'false',
-      show_passport_details: '0',
-      show_activity_stats: 'true',
     });
 
-    expect(clean.displayAlias).toBe('A'.repeat(36));
+    expect('displayAlias' in clean).toBe(false);
+    expect('showOnLeaderboard' in clean).toBe(false);
     expect(clean.avatarPreset).toBe('rocket');
     expect(clean.avatarColor).toBe('violet');
+    expect(clean.avatarVersion).toBe('1795734900000');
     expect(clean.bannerTheme).toBe('aurora');
     expect(clean.bio).toBe('B'.repeat(160));
     expect(clean.statusEmoji).toBe('coding');
@@ -311,13 +314,11 @@ describe('Public profile studio helpers', () => {
     expect(clean.githubUsername).toBe('torvalds');
     expect(clean.featuredTitle).toBe('Pythonista');
     expect(clean.pinnedBadgeIds).toEqual(['streak', 'syntax-clean', 'bonus-hunter']);
-    expect(clean.showOnLeaderboard).toBe(false);
-    expect(clean.showPassportDetails).toBe(false);
-    expect(clean.showActivityStats).toBe(true);
 
     const fallback = sanitizePublicProfileInput({
       avatar_preset: 'evil-preset',
       avatar_color: 'neon-pink',
+      avatar_version: '../bad',
       banner_theme: 'unknown',
       status_emoji: 'invalid',
       github_username: 'invalid username!!',
@@ -326,10 +327,63 @@ describe('Public profile studio helpers', () => {
 
     expect(fallback.avatarPreset).toBe('initials');
     expect(fallback.avatarColor).toBe('cobalt');
+    expect(fallback.avatarVersion).toBeNull();
     expect(fallback.bannerTheme).toBe('nova');
     expect(fallback.statusEmoji).toBe('none');
     expect(fallback.githubUsername).toBeNull();
     expect(fallback.featuredTitle).toBe('auto');
+  });
+
+  it('builds safe cache-busted user avatar URLs only when version exists', () => {
+    expect(getUserAvatarUrl('42', null)).toBeNull();
+    expect(getUserAvatarUrl('42', '123456')).toBe('/pl/user_avatar/42?v=123456');
+  });
+
+  it('validates real image magic bytes for avatar data URLs and rejects spoofs or oversized payloads', () => {
+    const validPng = Buffer.concat([
+      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+      Buffer.alloc(80, 1),
+    ]);
+    const pngRes = parseAndValidateAvatarDataUrl(
+      `data:image/png;base64,${validPng.toString('base64')}`,
+    );
+    expect(pngRes.mimeType).toBe('image/png');
+    expect(pngRes.buffer.length).toBe(validPng.length);
+
+    const validJpeg = Buffer.concat([Buffer.from([0xff, 0xd8, 0xff, 0xe0]), Buffer.alloc(80, 2)]);
+    const jpegRes = parseAndValidateAvatarDataUrl(
+      `data:image/jpeg;base64,${validJpeg.toString('base64')}`,
+    );
+    expect(jpegRes.mimeType).toBe('image/jpeg');
+
+    const validWebp = Buffer.concat([
+      Buffer.from('RIFF'),
+      Buffer.alloc(4, 0),
+      Buffer.from('WEBP'),
+      Buffer.alloc(80, 3),
+    ]);
+    const webpRes = parseAndValidateAvatarDataUrl(
+      `data:image/webp;base64,${validWebp.toString('base64')}`,
+    );
+    expect(webpRes.mimeType).toBe('image/webp');
+
+    const svgSpoof = Buffer.from(
+      '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',
+    );
+    expect(() =>
+      parseAndValidateAvatarDataUrl(`data:image/png;base64,${svgSpoof.toString('base64')}`),
+    ).toThrow();
+    expect(() =>
+      parseAndValidateAvatarDataUrl(`data:image/svg+xml;base64,${svgSpoof.toString('base64')}`),
+    ).toThrow();
+
+    const oversizedPng = Buffer.concat([
+      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+      Buffer.alloc(260 * 1024, 1),
+    ]);
+    expect(() =>
+      parseAndValidateAvatarDataUrl(`data:image/png;base64,${oversizedPng.toString('base64')}`),
+    ).toThrow();
   });
 
   it('selects pinned earned badges first and backfills up to 3 earned badges', () => {

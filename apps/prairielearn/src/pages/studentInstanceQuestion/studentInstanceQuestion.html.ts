@@ -253,21 +253,22 @@ export function StudentInstanceQuestion({
                       ${
                         showFirstBloodBadge
                           ? firstBloodOwner && firstBloodOwner.userId === resLocals.user.id
-                            ? html`<span class="sh-fb-mine-chip">
+                            ? html`<span class="sh-fb-mine-chip" dir="rtl">
                                 <i class="bi bi-lightning-fill" aria-hidden="true"></i>
-                                <span class="sh-en-term">First Blood</span>: شما!
+                                <bdi dir="ltr" class="sh-en-term">First Blood</bdi>
+                                <span>: شما!</span>
                               </span>`
                             : firstBloodOwner
-                              ? html`<span class="sh-fb-claimed-chip">
+                              ? html`<span class="sh-fb-claimed-chip" dir="rtl">
                                   <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
-                                  <span class="sh-en-term">First Blood</span>:
-                                  ${firstBloodOwner.displayName}
+                                  <bdi dir="ltr" class="sh-en-term">First Blood</bdi>
+                                  <span>: ${firstBloodOwner.displayName}</span>
                                 </span>`
                               : resLocals.assessment_instance.open && resLocals.authz_result.active
-                                ? html`<span class="sh-fb-open-chip">
+                                ? html`<span class="sh-fb-open-chip" dir="rtl">
                                     <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
-                                    <span class="sh-en-term">First Blood</span> آزاد (+۶۰
-                                    <span class="sh-en-term">XP</span>)
+                                    <span>شکار اول</span>
+                                    <bdi dir="ltr" class="sh-en-term">+60 XP</bdi>
                                   </span>`
                                 : ''
                           : ''
@@ -288,21 +289,22 @@ export function StudentInstanceQuestion({
                     <div class="d-flex justify-content-end mb-2">
                       ${
                         firstBloodOwner && firstBloodOwner.userId === resLocals.user.id
-                          ? html`<span class="sh-fb-mine-chip">
+                          ? html`<span class="sh-fb-mine-chip" dir="rtl">
                               <i class="bi bi-lightning-fill" aria-hidden="true"></i>
-                              <span class="sh-en-term">First Blood</span>: شما!
+                              <bdi dir="ltr" class="sh-en-term">First Blood</bdi>
+                              <span>: شما!</span>
                             </span>`
                           : firstBloodOwner
-                            ? html`<span class="sh-fb-claimed-chip">
+                            ? html`<span class="sh-fb-claimed-chip" dir="rtl">
                                 <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
-                                <span class="sh-en-term">First Blood</span>:
-                                ${firstBloodOwner.displayName}
+                                <bdi dir="ltr" class="sh-en-term">First Blood</bdi>
+                                <span>: ${firstBloodOwner.displayName}</span>
                               </span>`
                             : resLocals.assessment_instance.open && resLocals.authz_result.active
-                              ? html`<span class="sh-fb-open-chip">
+                              ? html`<span class="sh-fb-open-chip" dir="rtl">
                                   <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
-                                  <span class="sh-en-term">First Blood</span> آزاد (+۶۰
-                                  <span class="sh-en-term">XP</span>)
+                                  <span>شکار اول</span>
+                                  <bdi dir="ltr" class="sh-en-term">+60 XP</bdi>
                                 </span>`
                               : ''
                       }
@@ -644,16 +646,22 @@ export function StudentInstanceQuestion({
                           ></i>
                           نزدیک‌ترین مدال بعدی
                         </span>
-                        <span class="badge bg-body-tertiary text-body border sh-en-term sh-tabular">
+                        <bdi dir="ltr" class="badge sh-chip-primary sh-en-term sh-tabular">
                           +${toPersianDigits(nextUnlock.xpReward)} XP
-                        </span>
+                        </bdi>
                       </div>
                       <div class="small text-body-secondary mb-2">${nextUnlock.messageFa}</div>
-                      <div class="progress mb-1" style="height: 6px;">
-                        <div
-                          class="progress-bar sh-progress-brand"
-                          style="width: ${nextUnlock.progressPerc}%"
-                        ></div>
+                      <div class="d-flex align-items-center gap-2 mb-1">
+                        <div class="progress flex-grow-1" style="height: 6px;">
+                          <div
+                            class="progress-bar sh-progress-brand"
+                            style="width: ${nextUnlock.progressPerc}%"
+                          ></div>
+                        </div>
+                        <span class="small text-body-secondary sh-tabular">
+                          ${toPersianDigits(nextUnlock.currentValue)} از
+                          ${toPersianDigits(nextUnlock.nextTarget)}
+                        </span>
                       </div>
                       <div class="text-end">
                         <a

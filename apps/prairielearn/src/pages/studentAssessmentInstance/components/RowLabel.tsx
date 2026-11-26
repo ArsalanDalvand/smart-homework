@@ -160,27 +160,38 @@ export function RowLabel({
     ${
       isFirstBlood || (firstBloodOwner && currentUserId && firstBloodOwner.userId === currentUserId)
         ? html`
-            <span class="sh-fb-mine-chip" title="شما نفر اول کلاس در حل کامل این سوال شدید!">
+            <span
+              class="sh-fb-mine-chip ms-2"
+              dir="rtl"
+              title="شما نفر اول کلاس در حل کامل این سوال شدید!"
+            >
               <i class="bi bi-lightning-fill" aria-hidden="true"></i>
-              <span class="sh-en-term">First Blood</span>: شما!
+              <bdi dir="ltr" class="sh-en-term">First Blood</bdi>
+              <span>: شما!</span>
             </span>
           `
         : firstBloodOwner
           ? html`
-              <span class="sh-fb-claimed-chip" title="نفر اول کلاس در حل کامل این سوال">
+              <span
+                class="sh-fb-claimed-chip ms-2"
+                dir="rtl"
+                title="نفر اول کلاس در حل کامل این سوال"
+              >
                 <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
-                <span class="sh-en-term">First Blood</span>: ${firstBloodOwner.displayName}
+                <bdi dir="ltr" class="sh-en-term">First Blood</bdi>
+                <span>: ${firstBloodOwner.displayName}</span>
               </span>
             `
           : showFirstBloodHunt && showLink
             ? html`
                 <span
-                  class="sh-fb-open-chip"
+                  class="sh-fb-open-chip ms-2"
+                  dir="rtl"
                   title="هنوز کسی این سوال را ۱۰۰٪ حل نکرده — نفر اول +۶۰ XP می‌گیرد"
                 >
                   <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
-                  <span class="sh-en-term">First Blood</span> آزاد (+۶۰{' '}
-                  <span class="sh-en-term">XP</span>)
+                  <span>شکار اول</span>
+                  <bdi dir="ltr" class="sh-en-term">+60 XP</bdi>
                 </span>
               `
             : ''

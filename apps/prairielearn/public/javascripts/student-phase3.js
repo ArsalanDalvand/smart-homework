@@ -91,12 +91,29 @@
     var leftGroup = makeEl('div', 'd-flex align-items-center gap-3');
 
     var avatar = makeEl('div', 'sh-avatar sh-avatar-lg sh-av-color-' + avatarColor);
-    if (iconClass) {
-      var avIcon = makeEl('i', iconClass, '');
-      avIcon.setAttribute('aria-hidden', 'true');
-      avatar.appendChild(avIcon);
+    var fillAvatarFallback = function () {
+      avatar.innerHTML = '';
+      if (iconClass) {
+        var avIcon = makeEl('i', iconClass, '');
+        avIcon.setAttribute('aria-hidden', 'true');
+        avatar.appendChild(avIcon);
+      } else {
+        avatar.appendChild(makeEl('span', '', getInitials(data.displayName)));
+      }
+    };
+    if (data.avatarVersion && data.userId) {
+      var avImg = document.createElement('img');
+      avImg.src =
+        '/pl/user_avatar/' +
+        encodeURIComponent(data.userId) +
+        '?v=' +
+        encodeURIComponent(data.avatarVersion);
+      avImg.alt = '';
+      avImg.className = 'sh-avatar-img';
+      avImg.addEventListener('error', fillAvatarFallback);
+      avatar.appendChild(avImg);
     } else {
-      avatar.appendChild(makeEl('span', '', getInitials(data.displayName)));
+      fillAvatarFallback();
     }
     leftGroup.appendChild(avatar);
 
@@ -124,12 +141,12 @@
     }
     banner.appendChild(identityWrap);
 
-    if (data.bio && !data.privacyLocked) {
+    if (data.bio) {
       banner.appendChild(makeEl('p', 'small text-white text-opacity-90 mt-3 mb-0', data.bio));
     }
     body.appendChild(banner);
 
-    if (!data.privacyLocked && (data.favoriteTopic || data.githubUsername)) {
+    if (data.favoriteTopic || data.githubUsername) {
       var metaBar = makeEl('div', 'd-flex flex-wrap align-items-center gap-2 mb-3');
       if (data.favoriteTopic) {
         var topicBadge = makeEl(
@@ -159,25 +176,7 @@
       body.appendChild(metaBar);
     }
 
-    if (data.privacyLocked) {
-      var lockBox = makeEl(
-        'div',
-        'alert alert-secondary d-flex align-items-center gap-2 small mb-0',
-        '',
-      );
-      var lockIcon = makeEl('i', 'bi bi-shield-lock-fill fs-5', '');
-      lockIcon.setAttribute('aria-hidden', 'true');
-      lockBox.appendChild(lockIcon);
-      lockBox.appendChild(
-        document.createTextNode(
-          'این دانشجو نمایش جزئیات PassPort و آمار فعالیت‌های خود را محدود کرده است.',
-        ),
-      );
-      body.appendChild(lockBox);
-      return;
-    }
-
-    if (data.showActivityStats !== false && data.streak !== null && data.solvedQuestions !== null) {
+    if (data.streak && data.solvedQuestions !== null) {
       var statsRow = makeEl('div', 'row g-2 mb-3');
       var statItems = [
         { label: 'سوالات حل‌شده', val: toFa(data.solvedQuestions) + ' سوال' },
@@ -224,11 +223,7 @@
       body.appendChild(medalsGrid);
     }
 
-    if (
-      data.showActivityStats !== false &&
-      Array.isArray(data.topicMastery) &&
-      data.topicMastery.length > 0
-    ) {
+    if (Array.isArray(data.topicMastery) && data.topicMastery.length > 0) {
       body.appendChild(
         makeEl('h4', 'small fw-bold text-body mb-2', 'مسیر تسلط مباحث (Skill Tree)'),
       );

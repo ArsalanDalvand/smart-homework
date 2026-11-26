@@ -8,6 +8,7 @@ import { QuestionVariantHistory } from '../../../components/QuestionVariantHisto
 import { formatStudentQuestionTitle } from '../../../lib/assessment.shared.js';
 import type { EnumAssessmentType } from '../../../lib/db-types.js';
 import { formatPoints } from '../../../lib/format.js';
+import { toPersianDigits } from '../../../lib/jalali.js';
 import type { QuestionClassStat } from '../../../lib/student-engagement.js';
 import type { FirstBloodOwner } from '../../../lib/student-gamification.js';
 import type { InstanceQuestionRow } from '../studentAssessmentInstance.types.js';
@@ -287,16 +288,18 @@ function ExamQuestionCells({
             ${
               hasAutoGradingQuestion && hasManualGradingQuestion
                 ? html`
-                    <td class="text-center">
-                      ${formatPoints(row.assessment_question.max_auto_points)}
+                    <td class="text-center sh-tabular">
+                      ${toPersianDigits(formatPoints(row.assessment_question.max_auto_points))}
                     </td>
-                    <td class="text-center">
-                      ${formatPoints(row.assessment_question.max_manual_points)}
+                    <td class="text-center sh-tabular">
+                      ${toPersianDigits(formatPoints(row.assessment_question.max_manual_points))}
                     </td>
                   `
                 : ''
             }
-            <td class="text-center">${formatPoints(row.assessment_question.max_points)}</td>
+            <td class="text-center sh-tabular">
+              ${toPersianDigits(formatPoints(row.assessment_question.max_points))}
+            </td>
           `
     }
   `;
@@ -317,7 +320,7 @@ function HomeworkQuestionCells({
     ${
       hasAutoGradingQuestion
         ? html`
-            <td class="text-center">
+            <td class="text-center sh-tabular">
               ${run(() => {
                 if (!row.assessment_question.max_auto_points) {
                   return html`&mdash;`;
@@ -331,7 +334,7 @@ function HomeworkQuestionCells({
                   (row.instance_question.current_value ?? 0) -
                   (row.assessment_question.max_manual_points ?? 0);
 
-                return formatPoints(currentAutoValue);
+                return toPersianDigits(formatPoints(currentAutoValue));
               })}
             </td>
             <td class="text-center">

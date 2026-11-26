@@ -12,23 +12,35 @@ import type {
 } from '../../lib/student-gamification.js';
 import {
   getInitialsFromName,
+  getUserAvatarUrl,
   resolveAvatarIconClass,
   resolveStatusLabel,
 } from '../../lib/student-profile.shared.js';
 
 function UserAvatarBadge({
+  userId,
   displayName,
   avatarPreset,
   avatarColor,
+  avatarVersion = null,
 }: {
+  userId: string;
   displayName: string;
   avatarPreset: string;
   avatarColor: string;
+  avatarVersion?: string | null;
 }) {
+  const avatarUrl = getUserAvatarUrl(userId, avatarVersion);
   const iconClass = resolveAvatarIconClass(avatarPreset);
   return (
     <span className={`sh-avatar sh-av-color-${avatarColor}`} aria-hidden="true">
-      {iconClass ? <i className={iconClass} /> : <span>{getInitialsFromName(displayName)}</span>}
+      {avatarUrl ? (
+        <img alt="" className="sh-avatar-img" loading="lazy" src={avatarUrl} />
+      ) : iconClass ? (
+        <i className={iconClass} />
+      ) : (
+        <span>{getInitialsFromName(displayName)}</span>
+      )}
     </span>
   );
 }
@@ -37,16 +49,12 @@ function StudentNameLabel({
   userId,
   displayName,
   showCodingPassport,
-  isAnonymous = false,
-  isCurrentUser = false,
 }: {
   userId: string;
   displayName: string;
   showCodingPassport: boolean;
-  isAnonymous?: boolean;
-  isCurrentUser?: boolean;
 }) {
-  if (!showCodingPassport || (isAnonymous && !isCurrentUser)) {
+  if (!showCodingPassport) {
     return <span className="fw-semibold text-body">{displayName}</span>;
   }
   return (
@@ -116,7 +124,6 @@ function HallOfFameCard({
                 </span>
                 <StudentNameLabel
                   displayName={entry.displayName}
-                  isAnonymous={entry.isAnonymous}
                   showCodingPassport={showCodingPassport}
                   userId={entry.userId}
                 />
@@ -163,12 +170,12 @@ function LeaderboardRow({
           <UserAvatarBadge
             avatarColor={entry.avatarColor}
             avatarPreset={entry.avatarPreset}
+            avatarVersion={entry.avatarVersion}
             displayName={entry.displayName}
+            userId={entry.userId}
           />
           <StudentNameLabel
             displayName={entry.displayName}
-            isAnonymous={entry.isAnonymous}
-            isCurrentUser={entry.isCurrentUser}
             showCodingPassport={showCodingPassport}
             userId={entry.userId}
           />
@@ -276,12 +283,12 @@ function WeeklyLeagueCard({
                       <UserAvatarBadge
                         avatarColor={m.avatarColor}
                         avatarPreset={m.avatarPreset}
+                        avatarVersion={m.avatarVersion}
                         displayName={m.displayName}
+                        userId={m.userId}
                       />
                       <StudentNameLabel
                         displayName={m.displayName}
-                        isAnonymous={m.isAnonymous}
-                        isCurrentUser={isMe}
                         showCodingPassport={showCodingPassport}
                         userId={m.userId}
                       />
@@ -594,12 +601,12 @@ export function StudentLeaderboard({
                           <UserAvatarBadge
                             avatarColor={entry.avatarColor}
                             avatarPreset={entry.avatarPreset}
+                            avatarVersion={entry.avatarVersion}
                             displayName={entry.displayName}
+                            userId={entry.userId}
                           />
                           <StudentNameLabel
                             displayName={entry.displayName}
-                            isAnonymous={entry.isAnonymous}
-                            isCurrentUser={entry.isCurrentUser}
                             showCodingPassport={showCodingPassport}
                             userId={entry.userId}
                           />

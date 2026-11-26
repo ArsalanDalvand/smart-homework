@@ -162,7 +162,7 @@ function CreditSchedule({
   return html`
     <button
       type="button"
-      class="btn btn-xs btn-outline-secondary ms-1"
+      class="btn btn-xs sh-schedule-btn ms-1"
       data-bs-toggle="popover"
       data-bs-container="body"
       data-bs-html="true"
@@ -171,7 +171,7 @@ function CreditSchedule({
       data-bs-custom-class="popover-wide"
       data-bs-placement="bottom"
     >
-      <i class="far fa-calendar-alt me-1" aria-hidden="true"></i> زمان‌بندی تحویل
+      <i class="bi bi-calendar3 me-1" aria-hidden="true"></i> زمان‌بندی تحویل
     </button>
   `;
 }

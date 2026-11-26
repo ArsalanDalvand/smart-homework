@@ -89,6 +89,7 @@ import * as serverJobs from './lib/server-jobs.js';
 import * as serverJobProgressSocket from './lib/serverJobProgressSocket.js';
 import { PostgresSessionStore } from './lib/session-store.js';
 import * as socketServer from './lib/socket-server.js';
+import { getCachedUserAvatarMeta } from './lib/student-profile.js';
 import { SocketActivityMetrics } from './lib/telemetry/socket-activity-metrics.js';
 import { getSearchParams } from './lib/url.js';
 import * as workspace from './lib/workspace.js';
@@ -585,6 +586,23 @@ export async function initExpress(): Promise<Express> {
   app.use(/^(\/?)$|^(\/pl\/?)$/, (await import('./middlewares/clearCookies.js')).default);
 
   // some pages don't need authorization
+  app.use('/pl/user_avatar', (await import('./pages/userAvatar/userAvatar.js')).default);
+  app.use(async (req, res, next) => {
+    if (
+      req.method === 'GET' &&
+      res.locals.authn_user?.id &&
+      !req.path.startsWith('/pl/user_avatar') &&
+      !req.path.startsWith('/pl/api/') &&
+      !req.path.startsWith('/assets')
+    ) {
+      try {
+        res.locals.authn_user_avatar_meta = await getCachedUserAvatarMeta(res.locals.authn_user.id);
+      } catch {
+        res.locals.authn_user_avatar_meta = null;
+      }
+    }
+    next();
+  });
   app.use('/', (await import('./pages/home/home.js')).default);
   app.use('/pl', (await import('./pages/home/home.js')).default);
   app.use('/pl/user/trpc', userTrpcRouter);

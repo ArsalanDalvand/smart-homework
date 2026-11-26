@@ -252,7 +252,6 @@ SELECT
   k.kudos_type,
   k.note,
   COALESCE(
-    NULLIF(BTRIM(spp.display_alias), ''),
     NULLIF(BTRIM(u.name), ''),
     split_part(u.uid, '@', 1)
   ) AS student_display_name,
@@ -261,7 +260,6 @@ FROM
   student_submission_kudos AS k
   JOIN submissions AS s ON s.id = k.submission_id
   JOIN users AS u ON u.id = k.student_user_id
-  LEFT JOIN student_public_profiles AS spp ON spp.user_id = u.id
 WHERE
   k.course_instance_id = $course_instance_id
   AND k.assessment_question_id = $assessment_question_id

@@ -110,9 +110,8 @@ export interface LeaderboardEntry {
   displayName: string;
   avatarPreset: string;
   avatarColor: string;
+  avatarVersion: string | null;
   statusEmoji: string;
-  isAnonymous: boolean;
-  showPassportDetails: boolean;
   isCurrentUser: boolean;
   totalPoints: number;
   maxPoints: number;
@@ -188,9 +187,8 @@ const LeaderboardRowSchema = z.object({
   display_name: z.string(),
   avatar_preset: z.string(),
   avatar_color: z.string(),
+  avatar_version: z.string().nullable(),
   status_emoji: z.string(),
-  is_anonymous: z.boolean(),
-  show_passport_details: z.boolean(),
   total_points: z.coerce.number(),
   max_points: z.coerce.number(),
   score_perc: z.coerce.number(),
@@ -661,9 +659,8 @@ export async function getStudentLeaderboardData({
     displayName: row.display_name,
     avatarPreset: row.avatar_preset,
     avatarColor: row.avatar_color,
+    avatarVersion: row.avatar_version,
     statusEmoji: row.status_emoji,
-    isAnonymous: row.is_anonymous,
-    showPassportDetails: row.show_passport_details,
     isCurrentUser: row.user_id === userId,
     totalPoints: Math.round(row.total_points * 10) / 10,
     maxPoints: Math.round(row.max_points * 10) / 10,

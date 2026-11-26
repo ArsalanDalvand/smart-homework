@@ -475,6 +475,9 @@ export function StudentAssessmentInstance({
                         <span>
                           <strong class="text-body">نزدیک‌ترین مدال بعدی:</strong>
                           ${nextUnlock.messageFa}
+                          <bdi dir="ltr" class="badge sh-chip-primary sh-tabular sh-en-term ms-1"
+                            >+${toPersianDigits(nextUnlock.xpReward)} XP</bdi
+                          >
                         </span>
                       </div>
                       <div class="d-flex align-items-center gap-2">
@@ -484,6 +487,10 @@ export function StudentAssessmentInstance({
                             style="width: ${nextUnlock.progressPerc}%"
                           ></div>
                         </div>
+                        <span class="small text-body-secondary sh-tabular">
+                          ${toPersianDigits(nextUnlock.currentValue)} از
+                          ${toPersianDigits(nextUnlock.nextTarget)}
+                        </span>
                         <a
                           href="${resLocals.urlPrefix}/gradebook#tab-achievements"
                           class="small fw-semibold text-decoration-none"

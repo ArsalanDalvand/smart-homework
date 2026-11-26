@@ -8,6 +8,12 @@ import { toPersianDigits } from '../lib/jalali.js';
 import { isEnterprise } from '../lib/license.js';
 import type { UntypedResLocals } from '../lib/res-locals.types.js';
 import type { StudentNavbarPulse } from '../lib/student-gamification.js';
+import { type UserAvatarMeta } from '../lib/student-profile.js';
+import {
+  getInitialsFromName,
+  getUserAvatarUrl,
+  resolveAvatarIconClass,
+} from '../lib/student-profile.shared.js';
 import type { Override } from '../middlewares/authzCourseOrInstance.js';
 import { generateCsrfToken } from '../middlewares/csrfToken.js';
 
@@ -555,6 +561,38 @@ function UserDropdownMenu({
     displayedName = html`${displayedName} <span class="badge text-bg-success">کادر آموزشی</span>`;
   }
 
+  const effectiveAvatarUser = authz_data?.user ?? authn_user;
+  const isSelfAvatar = Boolean(
+    effectiveAvatarUser && authn_user && effectiveAvatarUser.id === authn_user.id,
+  );
+  const avatarMeta = isSelfAvatar
+    ? (resLocals.authn_user_avatar_meta as UserAvatarMeta | null | undefined)
+    : null;
+  const avatarRawName = effectiveAvatarUser?.name || effectiveAvatarUser?.uid || 'د';
+  const avatarInitials = getInitialsFromName(avatarRawName);
+  const avatarIcon = resolveAvatarIconClass(avatarMeta?.avatarPreset);
+  const avatarColor = avatarMeta?.avatarColor ?? 'cobalt';
+  const avatarUrl = effectiveAvatarUser
+    ? getUserAvatarUrl(effectiveAvatarUser.id, avatarMeta?.avatarVersion)
+    : null;
+  const navAvatarHtml = effectiveAvatarUser
+    ? html`<span
+        class="sh-avatar sh-nav-avatar sh-av-color-${avatarColor} me-2"
+        ${isSelfAvatar ? html`data-sh-my-avatar data-user-id="${effectiveAvatarUser.id}"` : ''}
+        data-initials="${avatarInitials}"
+        data-icon-class="${avatarIcon}"
+        aria-hidden="true"
+      >
+        ${
+          avatarUrl
+            ? html`<img src="${avatarUrl}" class="sh-avatar-img" alt="" />`
+            : avatarIcon
+              ? html`<i class="${avatarIcon}"></i>`
+              : html`<span>${avatarInitials}</span>`
+        }
+      </span>`
+    : '';
+
   return html`
     <ul
       class="nav navbar-nav"
@@ -567,7 +605,7 @@ function UserDropdownMenu({
     >
       <li class="nav-item dropdown mb-2 mb-md-0 ${navPage === 'effective' ? 'active' : ''}">
         <a
-          class="nav-link dropdown-toggle"
+          class="nav-link dropdown-toggle d-flex align-items-center"
           id="navbarDropdown"
           href="#"
           role="button"
@@ -576,7 +614,8 @@ function UserDropdownMenu({
           aria-haspopup="true"
           aria-expanded="false"
         >
-          ${displayedName}
+          ${navAvatarHtml}
+          <span>${displayedName}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-end">
           ${
@@ -608,6 +647,13 @@ function UserDropdownMenu({
               authz_data?.authn_has_course_permission_preview ||
               authz_data?.authn_has_course_instance_permission_view)
               ? html`<a class="dropdown-item" href="/pl/request_course">درخواست ایجاد درس جدید</a>`
+              : ''
+          }
+          ${
+            authz_data?.mode !== 'Exam'
+              ? html`<a class="dropdown-item" href="/pl/settings#public-profile">
+                  <i class="bi bi-person-circle me-2" aria-hidden="true"></i>پروفایل و عکس من
+                </a>`
               : ''
           }
           <a class="dropdown-item" href="/pl/settings">تنظیمات</a>

@@ -59,7 +59,7 @@ export function StudentDeadlineRadar({
     <div class="se-deadline-radar mt-3" dir="rtl">
       <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
         <div class="d-flex flex-wrap align-items-center gap-2">
-          <i class="fas fa-hourglass-half text-primary fs-5" aria-hidden="true"></i>
+          <i class="bi bi-hourglass-split text-primary fs-5" aria-hidden="true"></i>
           ${
             currentSeg.endDate
               ? html`
@@ -68,12 +68,16 @@ export function StudentDeadlineRadar({
                     <span data-deadline-iso="${currentSeg.endDate.toISOString()}">
                       تا ${formatJalaliFriendly(currentSeg.endDate, tz, { includeTz: false })}
                     </span>
-                    <span>برای نمره ${toPersianDigits(currentSeg.credit)}٪</span>
+                    <span
+                      >برای نمره
+                      <bdi class="sh-tabular">${toPersianDigits(currentSeg.credit)}٪</bdi></span
+                    >
                   </span>
                 `
               : html`
                   <span class="badge sh-chip-success px-2 py-1 sh-tabular">
-                    ارسال فعال با ضریب ${toPersianDigits(currentSeg.credit)}٪
+                    ارسال فعال با ضریب
+                    <bdi class="sh-tabular">${toPersianDigits(currentSeg.credit)}٪</bdi>
                   </span>
                 `
           }
@@ -85,7 +89,10 @@ export function StudentDeadlineRadar({
                     <strong class="text-body">
                       ${formatJalaliFriendly(nextSeg.endDate, tz, { includeTz: false })}
                     </strong>
-                    با ضریب <strong>${toPersianDigits(nextSeg.credit)}٪</strong>
+                    با ضریب
+                    <strong
+                      ><bdi class="sh-tabular">${toPersianDigits(nextSeg.credit)}٪</bdi></strong
+                    >
                   </span>
                 `
               : currentSeg.endDate
@@ -99,7 +106,7 @@ export function StudentDeadlineRadar({
           }
         </div>
         <span class="badge sh-chip-primary sh-tabular">
-          ضریب فعلی: ${toPersianDigits(currentSeg.credit)}٪
+          ضریب فعلی: <bdi class="sh-tabular">${toPersianDigits(currentSeg.credit)}٪</bdi>
         </span>
       </div>
 
@@ -111,10 +118,10 @@ export function StudentDeadlineRadar({
                   (step) => html`
                     <span class="se-credit-step ${step.current ? 'is-active' : ''}">
                       <i
-                        class="fas ${step.current ? 'fa-circle-play' : 'fa-calendar-check'}"
+                        class="bi ${step.current ? 'bi-play-circle-fill' : 'bi-calendar-check'}"
                         aria-hidden="true"
                       ></i>
-                      <span>${toPersianDigits(step.credit)}٪</span>
+                      <bdi class="sh-tabular">${toPersianDigits(step.credit)}٪</bdi>
                       ${
                         step.endDate
                           ? html`<span
@@ -149,7 +156,7 @@ export function StudentDeadlineRadarStrip({ items }: { items: DeadlineMiniItem[]
   return html`
     <div class="se-section mb-4" dir="rtl">
       <div class="d-flex align-items-center gap-2 mb-2">
-        <i class="fas fa-hourglass-half text-primary" aria-hidden="true"></i>
+        <i class="bi bi-hourglass-split text-primary" aria-hidden="true"></i>
         <h2 class="h6 fw-bold mb-0">رادار ددلاین‌های پیش‌رو</h2>
       </div>
       <div class="se-radar-strip">

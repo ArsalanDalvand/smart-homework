@@ -88,9 +88,9 @@ export const TITLE_PRESETS: readonly TitlePresetMeta[] = [
 ];
 
 export interface StudentPublicProfile {
-  displayAlias: string | null;
   avatarPreset: string;
   avatarColor: string;
+  avatarVersion: string | null;
   bannerTheme: string;
   bio: string | null;
   statusEmoji: string;
@@ -98,15 +98,12 @@ export interface StudentPublicProfile {
   githubUsername: string | null;
   featuredTitle: string;
   pinnedBadgeIds: string[];
-  showOnLeaderboard: boolean;
-  showPassportDetails: boolean;
-  showActivityStats: boolean;
 }
 
 export const DEFAULT_STUDENT_PUBLIC_PROFILE: StudentPublicProfile = {
-  displayAlias: null,
   avatarPreset: 'initials',
   avatarColor: 'cobalt',
+  avatarVersion: null,
   bannerTheme: 'nova',
   bio: null,
   statusEmoji: 'none',
@@ -114,10 +111,15 @@ export const DEFAULT_STUDENT_PUBLIC_PROFILE: StudentPublicProfile = {
   githubUsername: null,
   featuredTitle: 'auto',
   pinnedBadgeIds: [],
-  showOnLeaderboard: true,
-  showPassportDetails: true,
-  showActivityStats: true,
 };
+
+export function getUserAvatarUrl(
+  userId: string | null | undefined,
+  avatarVersion: string | null | undefined,
+): string | null {
+  if (!userId || !avatarVersion) return null;
+  return `/pl/user_avatar/${encodeURIComponent(userId)}?v=${encodeURIComponent(avatarVersion)}`;
+}
 
 const AVATAR_PRESET_MAP = new Map(AVATAR_PRESETS.map((p) => [p.id, p]));
 const AVATAR_COLOR_SET = new Set(AVATAR_COLORS.map((c) => c.id));
@@ -167,16 +169,6 @@ function normalizeGithubUsername(val: unknown): string | null {
   return GITHUB_USERNAME_REGEX.test(cleaned) ? cleaned : null;
 }
 
-function parseBoolFlag(val: unknown, fallback: boolean): boolean {
-  if (typeof val === 'boolean') return val;
-  if (typeof val === 'string') {
-    const v = val.trim().toLowerCase();
-    if (v === 'true' || v === '1' || v === 'on') return true;
-    if (v === 'false' || v === '0' || v === 'off') return false;
-  }
-  return fallback;
-}
-
 function parsePinnedBadges(val: unknown): string[] {
   const rawList: string[] = Array.isArray(val)
     ? val.filter((item): item is string => typeof item === 'string')
@@ -202,11 +194,15 @@ export function sanitizePublicProfileInput(raw: Record<string, unknown>): Studen
   const bannerThemeRaw = typeof raw.banner_theme === 'string' ? raw.banner_theme.trim() : '';
   const statusEmojiRaw = typeof raw.status_emoji === 'string' ? raw.status_emoji.trim() : '';
   const featuredTitleRaw = typeof raw.featured_title === 'string' ? raw.featured_title.trim() : '';
+  const avatarVersionRaw =
+    typeof raw.avatar_version === 'string' && /^\d{1,20}$/.test(raw.avatar_version.trim())
+      ? raw.avatar_version.trim()
+      : null;
 
   return {
-    displayAlias: normalizeOptionalText(raw.display_alias, 36),
     avatarPreset: AVATAR_PRESET_MAP.has(avatarPresetRaw) ? avatarPresetRaw : 'initials',
     avatarColor: AVATAR_COLOR_SET.has(avatarColorRaw) ? avatarColorRaw : 'cobalt',
+    avatarVersion: avatarVersionRaw,
     bannerTheme: BANNER_THEME_SET.has(bannerThemeRaw) ? bannerThemeRaw : 'nova',
     bio: normalizeOptionalText(raw.bio, 160),
     statusEmoji: STATUS_PRESET_MAP.has(statusEmojiRaw) ? statusEmojiRaw : 'none',
@@ -214,8 +210,5 @@ export function sanitizePublicProfileInput(raw: Record<string, unknown>): Studen
     githubUsername: normalizeGithubUsername(raw.github_username),
     featuredTitle: TITLE_PRESET_SET.has(featuredTitleRaw) ? featuredTitleRaw : 'auto',
     pinnedBadgeIds: parsePinnedBadges(raw.pinned_badge_ids),
-    showOnLeaderboard: parseBoolFlag(raw.show_on_leaderboard, true),
-    showPassportDetails: parseBoolFlag(raw.show_passport_details, true),
-    showActivityStats: parseBoolFlag(raw.show_activity_stats, true),
   };
 }

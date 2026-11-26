@@ -172,7 +172,6 @@ export interface StudentNavbarPulse {
 export interface HallOfFameEntry {
   userId: string;
   displayName: string;
-  isAnonymous: boolean;
   metricLabel: string;
   metricValue: number;
 }
@@ -185,9 +184,8 @@ export interface WeeklyLeagueMember {
   displayName: string;
   avatarPreset: string;
   avatarColor: string;
+  avatarVersion: string | null;
   statusEmoji: string;
-  isAnonymous: boolean;
-  showPassportDetails: boolean;
   weeklyXp: number;
   solvedThisWeek: number;
   level: number;
@@ -220,9 +218,8 @@ export interface CohortGamificationBundle {
       weeklyXp: number;
       avatarPreset: string;
       avatarColor: string;
+      avatarVersion: string | null;
       statusEmoji: string;
-      isAnonymous: boolean;
-      showPassportDetails: boolean;
       showcaseBadges: ShowcaseBadge[];
     }
   >;
@@ -241,23 +238,22 @@ export interface StudentCodingPassport {
   displayName: string;
   avatarPreset: string;
   avatarColor: string;
+  avatarVersion: string | null;
   bannerTheme: string;
   bio: string | null;
   statusEmoji: string;
   favoriteTopic: string | null;
   githubUsername: string | null;
   featuredTitle: string;
-  privacyLocked: boolean;
-  showActivityStats: boolean;
   level: StudentLevelInfo;
   streak: {
     current: number;
     longest: number;
     activeDays140d: number;
-  } | null;
-  solvedQuestions: number | null;
-  totalSubmissions: number | null;
-  acceptanceRate: number | null;
+  };
+  solvedQuestions: number;
+  totalSubmissions: number;
+  acceptanceRate: number;
   taKudosCount: number;
   firstBloodCount: number;
   earnedAchievements: {
@@ -327,10 +323,9 @@ const CohortGamificationRowSchema = CanonicalSqlSignalsSchema.extend({
   display_name: z.string(),
   avatar_preset: z.string(),
   avatar_color: z.string(),
+  avatar_version: z.string().nullable(),
   status_emoji: z.string(),
   pinned_badge_ids: z.array(z.string()).catch([]),
-  is_anonymous: z.boolean(),
-  show_passport_details: z.boolean(),
 });
 
 const WeeklyQuestSignalsSchema = z.object({
@@ -369,15 +364,13 @@ const PassportIdentityRowSchema = z.object({
   display_name: z.string(),
   avatar_preset: z.string(),
   avatar_color: z.string(),
+  avatar_version: z.string().nullable(),
   banner_theme: z.string(),
   bio: z.string().nullable(),
   status_emoji: z.string(),
   favorite_topic: z.string().nullable(),
   github_username: z.string().nullable(),
   featured_title: z.string(),
-  show_on_leaderboard: z.boolean(),
-  show_passport_details: z.boolean(),
-  show_activity_stats: z.boolean(),
 });
 
 // ---------- Cache & Date Helpers ----------
@@ -922,7 +915,7 @@ export function buildAchievements(params: {
 }
 
 const NEXT_UNLOCK_UNITS: Record<string, string> = {
-  'one-shot': 'سوال One-Shot',
+  'one-shot': 'سوال با حل در اولین تلاش',
   streak: 'روز پیاپی',
   perfectionist: 'سری تمرین کامل',
   'edge-hunter': 'سوال چالشی',
@@ -981,8 +974,8 @@ export function computeNextUnlockHint(
 
   const messageFa =
     best.ach.id === 'surgical-accuracy'
-      ? `رساندن دقت به ${toPersianDigits(nextTarget)}٪ تا ${nextTierFa} شدن ${best.ach.title} (+${toPersianDigits(best.xpReward)} XP)`
-      : `فقط ${toPersianDigits(best.remaining)} ${NEXT_UNLOCK_UNITS[best.ach.id] ?? 'گام'} تا ${nextTierFa} شدن ${best.ach.title} (+${toPersianDigits(best.xpReward)} XP)`;
+      ? `رساندن دقت به ${toPersianDigits(nextTarget)}٪ تا مدال ${nextTierFa} «${best.ach.title}»`
+      : `فقط ${toPersianDigits(best.remaining)} ${NEXT_UNLOCK_UNITS[best.ach.id] ?? 'گام'} تا مدال ${nextTierFa} «${best.ach.title}»`;
 
   return {
     achievementId: best.ach.id,
@@ -1354,9 +1347,8 @@ export function computeWeeklyLeagues(
     displayName: string;
     avatarPreset?: string;
     avatarColor?: string;
+    avatarVersion?: string | null;
     statusEmoji?: string;
-    isAnonymous?: boolean;
-    showPassportDetails?: boolean;
     totalXp: number;
     weeklyXp: number;
     solvedThisWeek: number;
@@ -1421,9 +1413,8 @@ export function computeWeeklyLeagues(
         displayName: s.displayName,
         avatarPreset: s.avatarPreset ?? 'initials',
         avatarColor: s.avatarColor ?? 'cobalt',
+        avatarVersion: s.avatarVersion ?? null,
         statusEmoji: s.statusEmoji ?? 'none',
-        isAnonymous: s.isAnonymous ?? false,
-        showPassportDetails: s.showPassportDetails ?? true,
         weeklyXp: s.weeklyXp,
         solvedThisWeek: s.solvedThisWeek,
         level: s.level,
@@ -1863,9 +1854,8 @@ export async function getCohortGamificationBundle({
       displayName: string;
       avatarPreset: string;
       avatarColor: string;
+      avatarVersion: string | null;
       statusEmoji: string;
-      isAnonymous: boolean;
-      showPassportDetails: boolean;
       totalXp: number;
       weeklyXp: number;
       solvedThisWeek: number;
@@ -1930,9 +1920,8 @@ export async function getCohortGamificationBundle({
         weeklyXp: state.weeklyXp,
         avatarPreset: row.avatar_preset,
         avatarColor: row.avatar_color,
+        avatarVersion: row.avatar_version,
         statusEmoji: row.status_emoji,
-        isAnonymous: row.is_anonymous,
-        showPassportDetails: row.show_passport_details,
         showcaseBadges,
       };
 
@@ -1941,9 +1930,8 @@ export async function getCohortGamificationBundle({
         displayName: row.display_name,
         avatarPreset: row.avatar_preset,
         avatarColor: row.avatar_color,
+        avatarVersion: row.avatar_version,
         statusEmoji: row.status_emoji,
-        isAnonymous: row.is_anonymous,
-        showPassportDetails: row.show_passport_details,
         totalXp: state.totalXp,
         weeklyXp: state.weeklyXp,
         solvedThisWeek: row.solved_aq_ids_week.length,
@@ -1955,7 +1943,6 @@ export async function getCohortGamificationBundle({
         risingCandidates.push({
           userId: row.user_id,
           displayName: row.display_name,
-          isAnonymous: row.is_anonymous,
           metricLabel: `${toPersianDigits(row.recent_7d_solved)} سوال جدید این هفته`,
           metricValue: row.recent_7d_solved,
         });
@@ -1965,7 +1952,6 @@ export async function getCohortGamificationBundle({
         accuracyCandidates.push({
           userId: row.user_id,
           displayName: row.display_name,
-          isAnonymous: row.is_anonymous,
           metricLabel: `${toPersianDigits(state.acceptanceRate)}٪ قبولی (${toPersianDigits(row.oneshot_count)} One-Shot)`,
           metricValue: state.acceptanceRate * 1000 + row.oneshot_count,
         });
@@ -1975,7 +1961,6 @@ export async function getCohortGamificationBundle({
         streakCandidates.push({
           userId: row.user_id,
           displayName: row.display_name,
-          isAnonymous: row.is_anonymous,
           metricLabel: `${toPersianDigits(state.streak.currentStreakDays)} روز پیاپی`,
           metricValue: state.streak.currentStreakDays,
         });
@@ -1985,7 +1970,6 @@ export async function getCohortGamificationBundle({
         firstBloodCandidates.push({
           userId: row.user_id,
           displayName: row.display_name,
-          isAnonymous: row.is_anonymous,
           metricLabel: `${toPersianDigits(fbCount)} First Blood`,
           metricValue: fbCount,
         });
@@ -2014,12 +1998,10 @@ export async function getCohortGamificationBundle({
 export async function getStudentCodingPassport({
   courseInstanceId,
   targetUserId,
-  viewerUserId,
   timezone,
 }: {
   courseInstanceId: string;
   targetUserId: string;
-  viewerUserId?: string;
   timezone: string;
 }): Promise<StudentCodingPassport | null> {
   const identity = await sqldb.queryOptionalRow(
@@ -2029,65 +2011,29 @@ export async function getStudentCodingPassport({
   );
   if (!identity) return null;
 
-  const isOwner = viewerUserId === targetUserId;
-  if (!identity.show_on_leaderboard && !isOwner) {
-    return null;
-  }
-
-  const profile = await getStudentGamificationProfile({
-    courseInstanceId,
-    userId: targetUserId,
-    timezone,
-  });
-
-  if (!identity.show_passport_details && !isOwner) {
-    return {
-      userId: identity.user_id,
-      displayName: identity.display_name,
-      avatarPreset: identity.avatar_preset,
-      avatarColor: identity.avatar_color,
-      bannerTheme: identity.banner_theme,
-      bio: null,
-      statusEmoji: 'none',
-      favoriteTopic: null,
-      githubUsername: null,
-      featuredTitle:
-        identity.featured_title === 'auto' ? profile.level.title : identity.featured_title,
-      privacyLocked: true,
-      showActivityStats: false,
-      level: profile.level,
-      streak: null,
-      solvedQuestions: null,
-      totalSubmissions: null,
-      acceptanceRate: null,
-      taKudosCount: 0,
-      firstBloodCount: 0,
-      earnedAchievements: [],
-      topicMastery: [],
-    };
-  }
-
-  const showStats = identity.show_activity_stats || isOwner;
   const bounds = getCurrentJalaliWeekBounds(timezone || 'Asia/Tehran');
-  const [skillTree, signals] = showStats
-    ? await Promise.all([
-        getStudentSkillTreeData({ courseInstanceId, userId: targetUserId }),
-        sqldb.queryRow(
-          sql.select_student_xp_and_achievement_signals,
-          {
-            course_instance_id: courseInstanceId,
-            user_id: targetUserId,
-            timezone: timezone || 'Asia/Tehran',
-            week_start_key: bounds.weekStartKey,
-            week_end_key: bounds.weekEndKey,
-          },
-          CanonicalSqlSignalsSchema,
-        ),
-      ])
-    : [null, null];
+  const [profile, skillTree, signals] = await Promise.all([
+    getStudentGamificationProfile({
+      courseInstanceId,
+      userId: targetUserId,
+      timezone,
+    }),
+    getStudentSkillTreeData({ courseInstanceId, userId: targetUserId }),
+    sqldb.queryRow(
+      sql.select_student_xp_and_achievement_signals,
+      {
+        course_instance_id: courseInstanceId,
+        user_id: targetUserId,
+        timezone: timezone || 'Asia/Tehran',
+        week_start_key: bounds.weekStartKey,
+        week_end_key: bounds.weekEndKey,
+      },
+      CanonicalSqlSignalsSchema,
+    ),
+  ]);
 
   const acceptanceRate =
-    signals && signals.total_submissions > 0
+    signals.total_submissions > 0
       ? Math.round((signals.accepted_submissions / signals.total_submissions) * 100)
       : 0;
 
@@ -2096,6 +2042,7 @@ export async function getStudentCodingPassport({
     displayName: identity.display_name,
     avatarPreset: identity.avatar_preset,
     avatarColor: identity.avatar_color,
+    avatarVersion: identity.avatar_version,
     bannerTheme: identity.banner_theme,
     bio: identity.bio,
     statusEmoji: identity.status_emoji,
@@ -2103,19 +2050,15 @@ export async function getStudentCodingPassport({
     githubUsername: identity.github_username,
     featuredTitle:
       identity.featured_title === 'auto' ? profile.level.title : identity.featured_title,
-    privacyLocked: false,
-    showActivityStats: showStats,
     level: profile.level,
-    streak: showStats
-      ? {
-          current: profile.streak.current,
-          longest: profile.streak.longest,
-          activeDays140d: profile.streak.activeDays140d,
-        }
-      : null,
-    solvedQuestions: showStats ? profile.solvedAqIds.length : null,
-    totalSubmissions: showStats && signals ? signals.total_submissions : null,
-    acceptanceRate: showStats ? acceptanceRate : null,
+    streak: {
+      current: profile.streak.current,
+      longest: profile.streak.longest,
+      activeDays140d: profile.streak.activeDays140d,
+    },
+    solvedQuestions: profile.solvedAqIds.length,
+    totalSubmissions: signals.total_submissions,
+    acceptanceRate,
     taKudosCount: profile.taKudosCount,
     firstBloodCount: profile.firstBloodAqIds.length,
     earnedAchievements: profile.achievements
@@ -2128,14 +2071,12 @@ export async function getStudentCodingPassport({
         iconClass: a.iconClass,
         description: a.description,
       })),
-    topicMastery: skillTree
-      ? skillTree.nodes.slice(0, 8).map((n) => ({
-          title: n.title,
-          solvedQuestions: n.solvedQuestions,
-          totalQuestions: n.totalQuestions,
-          masteryPerc: n.masteryPerc,
-          status: n.status,
-        }))
-      : [],
+    topicMastery: skillTree.nodes.slice(0, 8).map((n) => ({
+      title: n.title,
+      solvedQuestions: n.solvedQuestions,
+      totalQuestions: n.totalQuestions,
+      masteryPerc: n.masteryPerc,
+      status: n.status,
+    })),
   };
 }

@@ -363,7 +363,7 @@ html[data-surface='student'][data-bs-theme='dark'] {
     inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 14px 32px -10px rgba(37, 99, 235, 0.24);
   --sh-shadow-popover: 0 16px 36px -6px rgba(0, 0, 0, 0.65);
   --sh-nav-bg: rgba(11, 16, 27, 0.86);
-  --sh-track-bg: #25334d;
+  --sh-track-bg: #2f4163;
 
   --bs-primary: var(--sh-primary);
   --bs-primary-rgb: 59, 130, 246;
@@ -1761,4 +1761,41 @@ html[data-surface='student'][data-bs-theme='dark'] .sh-course-code {
     margin-inline: 0 !important;
     min-width: 110px !important;
   }
+}
+
+.sh-nav-avatar {
+  width: 26px !important;
+  height: 26px !important;
+  font-size: 0.72rem !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.16) !important;
+}
+
+.sh-schedule-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+  color: var(--sh-link, #1d4ed8);
+  background-color: var(--sh-primary-soft, #eff6ff);
+  border: 1px solid var(--sh-primary-border, #bfdbfe);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+
+.sh-schedule-btn:hover {
+  color: var(--sh-link-hover, #1e40af);
+  background-color: var(--sh-bg-hover, #eef2f9);
+  border-color: var(--sh-primary, #2563eb);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .sh-schedule-btn {
+  color: #93c5fd;
+  background-color: rgba(59, 130, 246, 0.16);
+  border-color: rgba(59, 130, 246, 0.36);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .sh-schedule-btn:hover {
+  color: #bfdbfe;
+  background-color: rgba(59, 130, 246, 0.25);
+  border-color: rgba(96, 165, 250, 0.6);
 }

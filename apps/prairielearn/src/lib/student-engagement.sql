@@ -483,22 +483,23 @@ WITH
   )
 SELECT
   u.id::text AS user_id,
-  CASE
-    WHEN COALESCE(spp.show_on_leaderboard, TRUE) IS FALSE THEN 'دانشجوی ناشناس #' || (ABS(MOD(u.id * 2654435761, 8999)) + 1000)::text
-    ELSE COALESCE(
-      NULLIF(BTRIM(spp.display_alias), ''),
-      NULLIF(BTRIM(u.name), ''),
-      split_part(u.uid, '@', 1)
-    )
-  END AS display_name,
+  COALESCE(
+    NULLIF(BTRIM(u.name), ''),
+    split_part(u.uid, '@', 1)
+  ) AS display_name,
   COALESCE(spp.avatar_preset, 'initials') AS avatar_preset,
   COALESCE(spp.avatar_color, 'cobalt') AS avatar_color,
   CASE
-    WHEN COALESCE(spp.show_on_leaderboard, TRUE) IS FALSE THEN 'none'
-    ELSE COALESCE(spp.status_emoji, 'none')
-  END AS status_emoji,
-  (COALESCE(spp.show_on_leaderboard, TRUE) IS FALSE) AS is_anonymous,
-  COALESCE(spp.show_passport_details, TRUE) AS show_passport_details,
+    WHEN spp.avatar_updated_at IS NOT NULL THEN FLOOR(
+      EXTRACT(
+        EPOCH
+        FROM
+          spp.avatar_updated_at
+      ) * 1000
+    )::bigint::text
+    ELSE NULL
+  END AS avatar_version,
+  COALESCE(spp.status_emoji, 'none') AS status_emoji,
   SUM(psa.best_points)::double precision AS total_points,
   SUM(psa.max_points)::double precision AS max_points,
   CASE
@@ -519,12 +520,10 @@ GROUP BY
   u.id,
   u.name,
   u.uid,
-  spp.show_on_leaderboard,
-  spp.display_alias,
   spp.avatar_preset,
   spp.avatar_color,
+  spp.avatar_updated_at,
   spp.status_emoji,
-  spp.show_passport_details,
   sc.solved_questions
 ORDER BY
   total_points DESC,

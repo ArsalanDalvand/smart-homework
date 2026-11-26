@@ -20,7 +20,9 @@ import { AccessTokenSchema, InstitutionSchema, UserSchema } from '../../lib/db-t
 import { ipToMode } from '../../lib/exam-mode.js';
 import { isEnterprise } from '../../lib/license.js';
 import {
+  deleteStudentAvatarImage,
   getStudentPublicProfileForSettings,
+  saveStudentAvatarImage,
   saveStudentPublicProfile,
 } from '../../lib/student-profile.js';
 import {
@@ -100,6 +102,7 @@ router.get(
             <Hydrate>
               <UserSettingsPage
                 user={{
+                  id: authn_user.id,
                   uid: authn_user.uid,
                   name: authn_user.name,
                   uin: authn_user.uin,
@@ -166,6 +169,38 @@ router.post(
         user_id: res.locals.authn_user.id,
       });
       res.redirect(req.originalUrl);
+    } else if (req.body.__action === 'upload_avatar') {
+      const mode = await ipToMode({
+        ip: req.ip,
+        date: res.locals.req_date,
+        authn_user_id: res.locals.authn_user.id,
+      });
+      if (mode !== 'Public') {
+        throw new HttpStatusError(403, 'ویرایش عکس پروفایل در حالت آزمون در دسترس نیست.');
+      }
+
+      try {
+        const result = await saveStudentAvatarImage(
+          res.locals.authn_user.id,
+          req.body.image_data_url,
+        );
+        res.json({ ok: true, avatarVersion: result.avatarVersion, avatarUrl: result.avatarUrl });
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : 'خطا در ذخیره‌سازی تصویر پروفایل.';
+        res.status(400).json({ ok: false, error: msg });
+      }
+    } else if (req.body.__action === 'delete_avatar') {
+      const mode = await ipToMode({
+        ip: req.ip,
+        date: res.locals.req_date,
+        authn_user_id: res.locals.authn_user.id,
+      });
+      if (mode !== 'Public') {
+        throw new HttpStatusError(403, 'حذف عکس پروفایل در حالت آزمون در دسترس نیست.');
+      }
+
+      await deleteStudentAvatarImage(res.locals.authn_user.id);
+      res.json({ ok: true });
     } else if (req.body.__action === 'update_public_profile') {
       const mode = await ipToMode({
         ip: req.ip,
