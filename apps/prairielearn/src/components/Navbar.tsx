@@ -110,9 +110,12 @@ export function Navbar({
               `
             : ''
         }
-        <a class="navbar-brand d-flex align-items-center gap-2" href="/" aria-label="${uiStrings.nav.brandAria}">
-          <i class="fas fa-graduation-cap text-info fs-5" aria-hidden="true"></i>
-          <span class="navbar-brand-label">${getEffectiveBrandName(resLocals.institution)}</span>
+        <a class="navbar-brand d-flex align-items-center gap-2 text-truncate" style="max-width: 65vw; min-width: 0;" href="/" aria-label="${uiStrings.nav.brandAria}">
+          <i class="fas fa-graduation-cap text-info fs-5 flex-shrink-0" aria-hidden="true"></i>
+          <span class="navbar-brand-label text-truncate">
+            <span class="d-inline d-md-none">${platformBranding.brandShortName}</span>
+            <span class="d-none d-md-inline">${getEffectiveBrandName(resLocals.institution)}</span>
+          </span>
           <span class="navbar-brand-hover-label">
             ${uiStrings.common.home} <i class="fa fa-angle-left" aria-hidden="true"></i>
           </span>

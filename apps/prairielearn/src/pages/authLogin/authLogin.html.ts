@@ -419,46 +419,52 @@ function LoginPageContainer({
       </head>
       <body class="d-flex flex-column min-vh-100" style="font-family: var(--font-persian);">
         <!-- Top Navigation Header -->
-        <header class="bg-white border-bottom py-3 shadow-xs">
-          <div class="container d-flex justify-content-between align-items-center" style="max-width: 1140px;">
-            <a href="/" class="text-decoration-none d-flex align-items-center gap-3">
+        <header class="bg-white border-bottom py-2 py-sm-3 shadow-xs">
+          <div class="container d-flex justify-content-between align-items-center gap-2" style="max-width: 1140px;">
+            <a href="/" class="text-decoration-none d-flex align-items-center gap-2 gap-sm-3 min-w-0" style="min-width: 0;">
               ${
                 platformBranding.logoUrl
                   ? html`<img
                       src="${platformBranding.logoUrl}"
                       alt="${getEffectiveBrandName(resLocals?.institution)}"
-                      style="height: 44px; width: auto;"
+                      class="flex-shrink-0"
+                      style="height: 40px; width: auto;"
                     />`
                   : html`
                       <div
-                        class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm"
-                        style="width: 42px; height: 42px;"
+                        class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center shadow-sm flex-shrink-0"
+                        style="width: 38px; height: 38px;"
                       >
-                        <i class="fas fa-graduation-cap fs-4"></i>
+                        <i class="fas fa-graduation-cap fs-5"></i>
                       </div>
                     `
               }
-              <div>
-                <span class="fw-bold text-dark fs-5 d-block">${getEffectiveBrandName(resLocals?.institution)}</span>
-                <span class="text-secondary small d-none d-sm-block">${platformBranding.brandSubtitle}</span>
+              <div class="min-w-0" style="min-width: 0;">
+                <span class="fw-bold text-dark fs-6 d-block d-md-none text-truncate">${platformBranding.brandShortName}</span>
+                <span class="fw-bold text-dark fs-5 d-none d-md-block text-truncate">${getEffectiveBrandName(resLocals?.institution)}</span>
+                <span class="text-secondary small d-none d-lg-block text-truncate">${platformBranding.brandSubtitle}</span>
               </div>
             </a>
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-1 gap-sm-2 flex-shrink-0">
               <button
                 type="button"
-                class="btn btn-outline-primary btn-sm fw-medium"
+                class="btn btn-outline-primary btn-sm fw-medium text-nowrap"
                 data-bs-toggle="modal"
                 data-bs-target="#courseRequestWarningModal"
               >
-                <i class="fas fa-plus-circle me-1"></i> ${uiStrings.landing.requestCourseBtn}
+                <i class="fas fa-plus-circle me-1"></i>
+                <span class="d-none d-sm-inline">${uiStrings.landing.requestCourseBtn}</span>
+                <span class="d-inline d-sm-none">درخواست درس</span>
               </button>
               <button
                 type="button"
-                class="btn btn-light btn-sm fw-medium border text-secondary"
+                class="btn btn-light btn-sm fw-medium border text-secondary text-nowrap"
                 data-bs-toggle="modal"
                 data-bs-target="#supportModal"
+                aria-label="${uiStrings.landing.supportBtn}"
               >
-                <i class="fas fa-question-circle me-1 text-primary"></i> ${uiStrings.landing.supportBtn}
+                <i class="fas fa-question-circle text-primary"></i>
+                <span class="d-none d-sm-inline ms-1">${uiStrings.landing.supportBtn}</span>
               </button>
             </div>
           </div>
