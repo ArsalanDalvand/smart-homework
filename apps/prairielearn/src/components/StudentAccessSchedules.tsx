@@ -1,19 +1,107 @@
 import { type HtmlValue, escapeHtml, html } from '@prairielearn/html';
 
-import type { LegacyAssessmentAccessRuleResult } from '../lib/assessment-access-control/authz-result.js';
+import type {
+  AssessmentAuthzResult,
+  LegacyAssessmentAccessRuleResult,
+} from '../lib/assessment-access-control/authz-result.js';
 import type { AccessTimelineEntry } from '../lib/assessment-access-control/timeline.js';
-import { formatGregorianTooltip, formatJalaliFriendly } from '../lib/jalali.js';
+import { formatGregorianTooltip, formatJalaliFriendly, toPersianDigits } from '../lib/jalali.js';
+
+function localizePercentLabel(raw: string): string {
+  if (raw === 'None') return 'بدون اعتبار';
+  return raw.replace(/\b(\d+)%/g, (_m, n: string) => `${toPersianDigits(n)}٪`);
+}
+
+function formatScheduleDate(date: Date | null | undefined, displayTimezone: string): HtmlValue {
+  if (!date) return '—';
+  return html`<span class="sh-tabular" title="${formatGregorianTooltip(date, displayTimezone)}"
+    >${formatJalaliFriendly(date, displayTimezone)}</span
+  >`;
+}
+
+export function formatStudentCreditDisplay(
+  authzResult: AssessmentAuthzResult,
+  displayTimezone: string,
+): HtmlValue {
+  const tz = displayTimezone || 'Asia/Tehran';
+  const rawString = authzResult.credit_date_string ?? 'None';
+
+  if (rawString.includes('(Staff override)')) {
+    return html`<span class="sh-tabular">
+      ${toPersianDigits(authzResult.credit ?? 100)}٪ (دسترسی کادر آموزشی)
+    </span>`;
+  }
+
+  const curSeg = authzResult.access_timeline.find((s) => s.current && s.submittable);
+  if (curSeg) {
+    if (curSeg.endDate) {
+      return html`<span class="sh-tabular" title="${formatGregorianTooltip(curSeg.endDate, tz)}"
+        >${toPersianDigits(curSeg.credit)}٪ تا
+        ${formatJalaliFriendly(curSeg.endDate, tz, { includeTz: false })}</span
+      >`;
+    }
+    return html`<span class="sh-tabular">${toPersianDigits(curSeg.credit)}٪</span>`;
+  }
+
+  if (authzResult.active && authzResult.credit_end_date) {
+    return html`<span
+      class="sh-tabular"
+      title="${formatGregorianTooltip(authzResult.credit_end_date, tz)}"
+      >${toPersianDigits(authzResult.credit ?? 100)}٪ تا
+      ${formatJalaliFriendly(authzResult.credit_end_date, tz, { includeTz: false })}</span
+    >`;
+  }
+
+  if (!authzResult.active && authzResult.next_active_date) {
+    return html`<span
+      class="sh-tabular"
+      title="${formatGregorianTooltip(authzResult.next_active_date, tz)}"
+      >شروع از ${formatJalaliFriendly(authzResult.next_active_date, tz, { includeTz: false })}</span
+    >`;
+  }
+
+  const localizedFallback = rawString
+    .replace('(Staff override)', '(دسترسی کادر آموزشی)')
+    .replace(' starting from ', ' از ')
+    .replace(' until ', ' تا ');
+  return html`<span class="sh-tabular">${localizePercentLabel(localizedFallback)}</span>`;
+}
+
+export function formatStudentNextActiveDisplay(
+  authzResult: AssessmentAuthzResult,
+  displayTimezone: string,
+): HtmlValue | null {
+  const tz = displayTimezone || 'Asia/Tehran';
+  const releaseDate =
+    authzResult.next_active_date ??
+    authzResult.access_timeline.find((s) => s.kind === 'beforeRelease')?.endDate ??
+    null;
+
+  if (releaseDate) {
+    return html`<span class="sh-tabular" title="${formatGregorianTooltip(releaseDate, tz)}"
+      >${formatJalaliFriendly(releaseDate, tz, { includeTz: false })}</span
+    >`;
+  }
+
+  return authzResult.next_active_time ?? null;
+}
 
 export function StudentAccessRulesSchedule({
   accessRules,
+  displayTimezone = 'Asia/Tehran',
 }: {
   accessRules: LegacyAssessmentAccessRuleResult[];
+  displayTimezone?: string;
 }) {
   return CreditSchedule({
     rows: accessRules.map((accessRule) => ({
-      credit: accessRule.credit,
-      start: accessRule.start_date,
-      end: accessRule.end_date,
+      credit: localizePercentLabel(accessRule.credit),
+      start: accessRule.start_date_raw
+        ? formatScheduleDate(accessRule.start_date_raw, displayTimezone)
+        : accessRule.start_date,
+      end: accessRule.end_date_raw
+        ? formatScheduleDate(accessRule.end_date_raw, displayTimezone)
+        : accessRule.end_date,
     })),
   });
 }
@@ -32,16 +120,11 @@ export function StudentAccessTimelineSchedule({
   const visibleEntries = accessTimeline.filter((entry) => entry.submittable);
   return CreditSchedule({
     rows: visibleEntries.map((entry) => ({
-      credit: `${entry.credit}%`,
+      credit: `${toPersianDigits(entry.credit)}٪`,
       start: formatScheduleDate(entry.startDate, displayTimezone),
       end: formatScheduleDate(entry.endDate, displayTimezone),
     })),
   });
-}
-
-function formatScheduleDate(date: Date | null | undefined, displayTimezone: string): HtmlValue {
-  if (!date) return '—';
-  return html`<span title="${formatGregorianTooltip(date, displayTimezone)}">${formatJalaliFriendly(date, displayTimezone)}</span>`;
 }
 
 function CreditSchedule({
@@ -65,7 +148,7 @@ function CreditSchedule({
           ${rows.map(
             (row) => html`
               <tr>
-                <td>${row.credit}</td>
+                <td class="sh-tabular">${row.credit}</td>
                 <td>${row.start}</td>
                 <td>${row.end}</td>
               </tr>

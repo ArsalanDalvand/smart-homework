@@ -29,7 +29,9 @@ export function formatLegacyAssessmentAccess(
       credit: rule.credit == null ? 'None' : `${rule.credit}%`,
       time_limit_min: rule.time_limit_min == null ? '—' : `${rule.time_limit_min} min`,
       start_date: rule.start_date ? formatDate(rule.start_date, displayTimezone) : '—',
+      start_date_raw: rule.start_date,
       end_date: rule.end_date ? formatDate(rule.end_date, displayTimezone) : '—',
+      end_date_raw: rule.end_date,
       mode: rule.mode,
       active: rule.active,
     })),
@@ -38,8 +40,10 @@ export function formatLegacyAssessmentAccess(
     authorized: raw.authorized,
     credit: raw.credit,
     credit_date_string: creditDateString,
+    credit_end_date: raw.credit_end_date,
     exam_access_end: raw.exam_access_end,
     mode: raw.mode,
+    next_active_date: raw.next_active_date,
     next_active_time: raw.next_active_date
       ? formatDate(raw.next_active_date, displayTimezone)
       : null,

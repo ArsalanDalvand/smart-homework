@@ -10,8 +10,10 @@ const LegacyAssessmentAccessRuleResultSchema = z.object({
   active: z.boolean().nullable(),
   credit: z.union([z.string(), z.literal('None')]),
   end_date: z.union([z.string(), z.literal('—')]),
+  end_date_raw: DateFromISOString.nullable().optional(),
   mode: EnumModeSchema.nullable(),
   start_date: z.union([z.string(), z.literal('—')]),
+  start_date_raw: DateFromISOString.nullable().optional(),
   time_limit_min: z.union([z.string(), z.literal('—')]),
 });
 export type LegacyAssessmentAccessRuleResult = z.infer<
@@ -26,8 +28,10 @@ const AssessmentAuthzResultSchema = z.object({
   authorized: z.boolean(),
   credit: z.number().nullable(),
   credit_date_string: z.string().nullable(),
+  credit_end_date: DateFromISOString.nullable().optional(),
   exam_access_end: DateFromISOString.nullable(),
   mode: EnumModeSchema.nullable(),
+  next_active_date: DateFromISOString.nullable().optional(),
   next_active_time: z.string().nullable(),
   password: z.string().nullable(),
   show_before_release: z.boolean(),

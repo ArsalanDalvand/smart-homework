@@ -59,10 +59,14 @@ function resolverResultToAssessmentAuthzResult(
   displayTimezone: string,
   hasCompletedInstance: boolean,
 ): AssessmentAuthzResult {
+  const currentDeadlineDate = result.submittable
+    ? (result.accessTimeline.find((s) => s.current)?.endDate ?? null)
+    : null;
   return {
     authorized: resolveAuthorization(result.authorization, hasCompletedInstance),
     credit: result.credit,
     credit_date_string: result.creditDateString,
+    credit_end_date: currentDeadlineDate,
     time_limit_min: result.timeLimitMin,
     password: result.password,
     // The resolver uses `submittable` (can the student submit work?
@@ -75,6 +79,7 @@ function resolverResultToAssessmentAuthzResult(
     // reservation (examAccessEnd is non-null), indicating a live exam session.
     mode: authzMode === 'Exam' && result.examAccessEnd ? 'Exam' : null,
     show_before_release: result.showBeforeRelease,
+    next_active_date: result.nextActiveDate,
     next_active_time: result.nextActiveDate
       ? formatDateShort(result.nextActiveDate, displayTimezone)
       : null,

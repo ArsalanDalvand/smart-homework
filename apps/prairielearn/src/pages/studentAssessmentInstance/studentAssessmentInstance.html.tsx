@@ -15,6 +15,7 @@ import { ScorebarHtml } from '../../components/Scorebar.js';
 import {
   StudentAccessRulesSchedule,
   StudentAccessTimelineSchedule,
+  formatStudentCreditDisplay,
 } from '../../components/StudentAccessSchedules.js';
 import { StudentDeadlineRadar } from '../../components/StudentDeadlineRadar.js';
 import { TimeLimitExpiredModal } from '../../components/TimeLimitExpiredModal.js';
@@ -568,13 +569,10 @@ function AssessmentStatus({
   authz_result: AssessmentInstanceAuthzResult;
 }) {
   if (assessment_instance.open && authz_result.active) {
-    const localizedCredit = (authz_result.credit_date_string ?? '')
-      .replace('(Staff override)', '(دسترسی کادر آموزشی)')
-      .replace(/\b(\d+)%/g, (_m, n: string) => `${toPersianDigits(n)}٪`);
     return html`
       تکلیف هم‌اکنون <strong>فعال (باز)</strong> است و می‌توانید به سوالات پاسخ دهید.
       <br />
-      مهلت و اعتبار: <span dir="rtl" class="sh-tabular">${localizedCredit}</span>
+      مهلت و اعتبار: ${formatStudentCreditDisplay(authz_result, displayTimezone)}
       ${
         assessment.modern_access_control
           ? StudentAccessTimelineSchedule({
@@ -583,6 +581,7 @@ function AssessmentStatus({
             })
           : StudentAccessRulesSchedule({
               accessRules: authz_result.access_rules,
+              displayTimezone,
             })
       }
     `;

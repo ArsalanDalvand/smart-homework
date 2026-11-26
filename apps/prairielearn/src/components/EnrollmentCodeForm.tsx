@@ -78,9 +78,12 @@ export function EnrollmentCodeForm({
     clearErrors();
   };
 
-  // Validate and format input - only alphanumeric, uppercase
+  // Validate and format input - normalize Persian/Arabic digits, alphanumeric uppercase only
   const formatInput = (value: string): string => {
-    return value.replaceAll(/[^A-Za-z0-9]/g, '').toUpperCase();
+    const normalizedDigits = value
+      .replaceAll(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+      .replaceAll(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
+    return normalizedDigits.replaceAll(/[^A-Za-z0-9]/g, '').toUpperCase();
   };
 
   // Handle input change for individual fields
@@ -290,13 +293,17 @@ export function EnrollmentCodeForm({
       )}
       <div className="d-flex flex-column gap-3">
         <div>
-          <div className="d-flex gap-2 align-items-center">
+          <div dir="ltr" className="d-flex gap-2 align-items-center sh-enrollment-code-group">
             <input
               type="text"
-              className="form-control text-center"
-              style={{ fontFamily: 'monospace', fontSize: '1.2em', letterSpacing: '0.1em' }}
+              dir="ltr"
+              aria-label="بخش اول کد عضویت"
+              autoComplete="off"
+              className="form-control text-center sh-code-input"
               maxLength={3}
               placeholder="ABC"
+              spellCheck={false}
+              style={{ fontFamily: 'monospace', fontSize: '1.2em', letterSpacing: '0.1em' }}
               {...code1Props}
               ref={(e) => {
                 input1Ref.current = e;
@@ -308,10 +315,14 @@ export function EnrollmentCodeForm({
             <span className="text-muted">-</span>
             <input
               type="text"
-              className="form-control text-center"
-              style={{ fontFamily: 'monospace', fontSize: '1.2em', letterSpacing: '0.1em' }}
+              dir="ltr"
+              aria-label="بخش دوم کد عضویت"
+              autoComplete="off"
+              className="form-control text-center sh-code-input"
               maxLength={3}
               placeholder="DEF"
+              spellCheck={false}
+              style={{ fontFamily: 'monospace', fontSize: '1.2em', letterSpacing: '0.1em' }}
               {...code2Props}
               ref={(e) => {
                 input2Ref.current = e;
@@ -323,10 +334,14 @@ export function EnrollmentCodeForm({
             <span className="text-muted">-</span>
             <input
               type="text"
-              className="form-control text-center"
-              style={{ fontFamily: 'monospace', fontSize: '1.2em', letterSpacing: '0.1em' }}
+              dir="ltr"
+              aria-label="بخش سوم کد عضویت"
+              autoComplete="off"
+              className="form-control text-center sh-code-input"
               maxLength={4}
               placeholder="GHIJ"
+              spellCheck={false}
+              style={{ fontFamily: 'monospace', fontSize: '1.2em', letterSpacing: '0.1em' }}
               {...code3Props}
               ref={(e) => {
                 input3Ref.current = e;
@@ -342,13 +357,9 @@ export function EnrollmentCodeForm({
             </div>
           )}
         </div>
-        <div className="small text-muted">
-          {uiStrings.enrollment.noCodeHelp}
-        </div>
+        <div className="small text-muted">{uiStrings.enrollment.noCodeHelp}</div>
         {showInstructorHelp && (
-          <div className="small text-muted">
-            {uiStrings.enrollment.instructorHelp}
-          </div>
+          <div className="small text-muted">{uiStrings.enrollment.instructorHelp}</div>
         )}
       </div>
     </>
@@ -374,9 +385,9 @@ export function EnrollmentCodeForm({
       key={show ? 'open' : 'closed'}
       show={show}
       size="md"
-      onHide={onHide}
-      onExited={resetModalState}
       style={{ fontFamily: 'var(--font-persian)' }}
+      onExited={resetModalState}
+      onHide={onHide}
     >
       <Modal.Header closeButton>
         <Modal.Title>{uiStrings.enrollment.modalTitle}</Modal.Title>

@@ -3,6 +3,8 @@ import { html } from '@prairielearn/html';
 import type { AssessmentAuthzResult } from '../lib/assessment-access-control/authz-result.js';
 import { formatJalaliFriendly, toPersianDigits } from '../lib/jalali.js';
 
+import { formatStudentCreditDisplay } from './StudentAccessSchedules.js';
+
 export function StudentDeadlineRadar({
   authzResult,
   displayTimezone,
@@ -17,16 +19,13 @@ export function StudentDeadlineRadar({
     if (!authzResult.credit_date_string || authzResult.credit_date_string === 'None') {
       return '';
     }
-    const localizedCredit = authzResult.credit_date_string
-      .replace('(Staff override)', '(دسترسی کادر آموزشی)')
-      .replace(/\b\d+%/g, (m) => `${toPersianDigits(m.slice(0, -1))}٪`);
     return html`
       <div class="se-deadline-radar mt-3" dir="rtl">
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
           <div class="d-flex align-items-center gap-2">
             <i class="bi bi-stopwatch text-primary" aria-hidden="true"></i>
             <span class="fw-bold small">وضعیت مهلت ارسال:</span>
-            <span class="small sh-tabular">${localizedCredit}</span>
+            <span class="small sh-tabular">${formatStudentCreditDisplay(authzResult, tz)}</span>
           </div>
           ${
             authzResult.credit != null

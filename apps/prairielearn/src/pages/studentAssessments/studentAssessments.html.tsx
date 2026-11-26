@@ -8,6 +8,8 @@ import { ScorebarHtml } from '../../components/Scorebar.js';
 import {
   StudentAccessRulesSchedule,
   StudentAccessTimelineSchedule,
+  formatStudentCreditDisplay,
+  formatStudentNextActiveDisplay,
 } from '../../components/StudentAccessSchedules.js';
 import {
   type DeadlineMiniItem,
@@ -336,7 +338,10 @@ export function StudentAssessments({
                           </div>
                         </td>
                         <td class="text-center align-middle" data-label="مهلت تحویل">
-                          ${AvailableCredit({ row })}
+                          ${AvailableCredit({
+                            row,
+                            displayTimezone: resLocals.course_instance.display_timezone,
+                          })}
                         </td>
                         <td class="text-center align-middle" data-label="نمره">
                           ${
@@ -389,21 +394,25 @@ function NewInstanceButton({ urlPrefix, row }: { urlPrefix: string; row: Student
   }
 }
 
-function AvailableCredit({ row }: { row: StudentAssessmentsRow }) {
+function AvailableCredit({
+  row,
+  displayTimezone,
+}: {
+  row: StudentAssessmentsRow;
+  displayTimezone: string;
+}) {
   const authzResult = row.authz_result;
   if (row.modern_access_control && row.assessment_instance_id == null && !authzResult.authorized) {
-    if (authzResult.next_active_time) {
-      return html`<span class="text-muted">در دسترس از ${authzResult.next_active_time}</span>`;
+    const nextActiveDisplay = formatStudentNextActiveDisplay(authzResult, displayTimezone);
+    if (nextActiveDisplay) {
+      return html`<span class="text-body-secondary">در دسترس از ${nextActiveDisplay}</span>`;
     }
-    return html`<span class="text-muted">هنوز فعال نشده است</span>`;
+    return html`<span class="text-body-secondary">هنوز فعال نشده است</span>`;
   }
   const creditDateString = authzResult.credit_date_string ?? 'None';
   if (creditDateString === 'None') return null;
   if (row.assessment_instance_open !== false) {
-    const localizedCredit = creditDateString
-      .replace('(Staff override)', '(دسترسی کادر آموزشی)')
-      .replace(/\b(\d+)%/g, (_m, n: string) => `${toPersianDigits(n)}٪`);
-    return html`<span dir="rtl" class="sh-tabular">${localizedCredit}</span>`;
+    return formatStudentCreditDisplay(authzResult, displayTimezone);
   }
   return html`تکلیف به پایان رسیده است.`;
 }
@@ -430,5 +439,8 @@ function AccessSchedule({
         accessTimeline: row.authz_result.access_timeline,
         displayTimezone,
       })
-    : StudentAccessRulesSchedule({ accessRules: row.authz_result.access_rules });
+    : StudentAccessRulesSchedule({
+        accessRules: row.authz_result.access_rules,
+        displayTimezone,
+      });
 }

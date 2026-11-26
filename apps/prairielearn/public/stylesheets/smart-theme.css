@@ -84,6 +84,17 @@ input.js-effective-uid-input,
   text-align: left !important;
 }
 
+.sh-enrollment-code-group {
+  direction: ltr !important;
+}
+
+.sh-code-input,
+.sh-code-input::placeholder {
+  direction: ltr !important;
+  text-align: center !important;
+  font-family: var(--font-code) !important;
+}
+
 input[type='email'],
 input[type='url'],
 input[type='password'] {
