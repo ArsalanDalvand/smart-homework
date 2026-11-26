@@ -25,17 +25,17 @@ export function AdministratorInstitutionCourse({
 }) {
   return PageLayout({
     resLocals: { ...resLocals, institution },
-    pageTitle: `${course.short_name} - Institution Admin`,
+    pageTitle: `${course.short_name} - مدیریت موسسه`,
     navContext: {
       type: 'administrator_institution',
       page: 'administrator_institution',
       subPage: 'courses',
     },
     content: html`
-      <nav aria-label="Breadcrumbs">
+      <nav aria-label="مسیر راهنما">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="/pl/administrator/institution/${institution.id}/courses">Courses</a>
+            <a href="/pl/administrator/institution/${institution.id}/courses">درس‌ها</a>
           </li>
           <li class="breadcrumb-item active" aria-current="page">
             ${course.short_name}: ${course.title}
@@ -43,13 +43,13 @@ export function AdministratorInstitutionCourse({
         </ol>
       </nav>
 
-      <p><a href="/pl/course/${course.id}">View as instructor</a></p>
+      <p><a href="/pl/course/${course.id}">مشاهده به عنوان مدرس</a></p>
 
-      <h2 class="h4">Limits</h2>
+      <h2 class="h4">محدودیت‌ها</h2>
       <form method="POST" class="mb-3">
         <div class="mb-3">
           <label class="form-label" for="institution_course_instance_enrollment_limit">
-            Course instance enrollment limit for institution
+            محدودیت ثبت‌نام ارائه درس برای موسسه
           </label>
           <input
             type="number"
@@ -59,13 +59,13 @@ export function AdministratorInstitutionCourse({
             value="${institution.course_instance_enrollment_limit}"
           />
           <small class="form-text text-muted">
-            This limit applies to all course instances without a specific enrollment limit set.
+            این محدودیت برای تمام ارائه‌های درسی که محدودیت ثبت‌نام اختصاصی ندارند اعمال می‌شود.
           </small>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="institution_yearly_enrollment_limit">
-            Yearly enrollment limit for institution
+            محدودیت ثبت‌نام سالانه برای موسسه
           </label>
           <input
             type="number"
@@ -75,13 +75,13 @@ export function AdministratorInstitutionCourse({
             value="${institution.yearly_enrollment_limit}"
           />
           <small class="form-text text-muted">
-            This limit applies to all enrollments in this course's institution.
+            این محدودیت برای تمام ثبت‌نام‌های موسسه این درس اعمال می‌شود.
           </small>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="course_instance_enrollment_limit">
-            Course instance enrollment limit override
+            بازنویسی محدودیت ثبت‌نام ارائه درس
           </label>
           <input
             type="number"
@@ -91,14 +91,13 @@ export function AdministratorInstitutionCourse({
             value="${course.course_instance_enrollment_limit}"
           />
           <small class="form-text text-muted">
-            This limit will apply to all course instances in this course. If no override is set, the
-            institution-wide limit will be used.
+            این محدودیت برای تمام ارائه‌های این درس اعمال می‌شود. اگر بازنویسی تنظیم نشود، از محدودیت سطح موسسه استفاده خواهد شد.
           </small>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="yearly_enrollment_limit">
-            Yearly enrollment limit for course
+            محدودیت ثبت‌نام سالانه برای درس
           </label>
           <input
             type="number"
@@ -108,23 +107,23 @@ export function AdministratorInstitutionCourse({
             value="${course.yearly_enrollment_limit}"
           />
           <small class="form-text text-muted">
-            This limit applies only to this course. It is applied
-            <i><strong>in addition to</strong></i> the institution-wide yearly enrollment limit.
+            این محدودیت فقط برای این درس اعمال می‌شود و
+            <i><strong>علاوه بر</strong></i> محدودیت ثبت‌نام سالانه سطح موسسه محاسبه می‌گردد.
           </small>
         </div>
 
         <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">ذخیره</button>
       </form>
 
-      <h2 class="h4">Course instances</h2>
+      <h2 class="h4">ارائه‌های درس</h2>
       <div class="table-responsive">
-        <table class="table table-hover table-striped table-bordered" aria-label="Course instances">
+        <table class="table table-hover table-striped table-bordered" aria-label="ارائه‌های درس">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Enrollments</th>
-              <th>Effective enrollment limit</th>
+              <th>نام</th>
+              <th>ثبت‌نام‌ها</th>
+              <th>محدودیت ثبت‌نام موثر</th>
             </tr>
           </thead>
           <tbody>
@@ -140,7 +139,7 @@ export function AdministratorInstitutionCourse({
                       >
                       ${
                         isDeleted
-                          ? html`<span class="badge text-bg-danger ms-2">Deleted</span>`
+                          ? html`<span class="badge text-bg-danger ms-2">حذف‌شده</span>`
                           : ''
                       }
                     </div>

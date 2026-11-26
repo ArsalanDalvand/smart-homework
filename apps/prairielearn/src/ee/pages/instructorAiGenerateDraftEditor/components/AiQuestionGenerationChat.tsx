@@ -127,20 +127,20 @@ function ToolCall({ part }: { part: QuestionGenerationToolUIPart }) {
       case 'tool-getElementDocumentation': {
         const elementCode = <code>&lt;{part.input?.elementName}&gt;</code>;
         return getStatusForState(part.state, {
-          streaming: 'Getting element documentation...',
-          pending: <>Reading documentation for {elementCode}...</>,
-          done: <>Read documentation for {elementCode}</>,
-          error: 'Error getting element documentation',
+          streaming: 'در حال دریافت مستندات المان...',
+          pending: <>در حال خواندن مستندات {elementCode}...</>,
+          done: <>مستندات {elementCode} خوانده شد</>,
+          error: 'خطا در دریافت مستندات المان',
         });
       }
 
       case 'tool-listElementExamples': {
         const elementCode = <code>&lt;{part.input?.elementName}&gt;</code>;
         return getStatusForState(part.state, {
-          streaming: 'Listing element examples...',
-          pending: <>Listing examples for {elementCode}...</>,
-          done: <>Listed examples for {elementCode}</>,
-          error: 'Error listing element examples',
+          streaming: 'در حال فهرست کردن نمونه‌های المان...',
+          pending: <>در حال فهرست کردن نمونه‌های {elementCode}...</>,
+          done: <>نمونه‌های {elementCode} فهرست شد</>,
+          error: 'خطا در فهرست کردن نمونه‌های المان',
         });
       }
 
@@ -148,49 +148,49 @@ function ToolCall({ part }: { part: QuestionGenerationToolUIPart }) {
         const questionCount = part.input?.qids?.length || 0;
         const pluralQuestions = questionCount === 1 ? 'question' : 'questions';
         return getStatusForState(part.state, {
-          streaming: 'Getting example questions...',
-          pending: `Reading ${questionCount} example ${pluralQuestions}...`,
-          done: `Read ${questionCount} example ${pluralQuestions}`,
-          error: 'Error getting example questions',
+          streaming: 'در حال دریافت سوالات نمونه...',
+          pending: `در حال خواندن ${questionCount} سوال نمونه...`,
+          done: `${questionCount} سوال نمونه خوانده شد`,
+          error: 'خطا در دریافت سوالات نمونه',
         });
       }
 
       case 'tool-writeFile': {
         const pathCode = <code>{part.input?.path}</code>;
         return getStatusForState(part.state, {
-          streaming: 'Writing file...',
-          pending: <>Writing file {pathCode}...</>,
-          done: <>Wrote file {pathCode}</>,
-          error: <>Error writing file {pathCode}</>,
+          streaming: 'در حال نوشتن فایل...',
+          pending: <>در حال نوشتن فایل {pathCode}...</>,
+          done: <>فایل {pathCode} نوشته شد</>,
+          error: <>خطا در نوشتن فایل {pathCode}</>,
         });
       }
 
       case 'tool-readFile': {
         const pathCode = <code>{part.input?.path}</code>;
         return getStatusForState(part.state, {
-          streaming: 'Reading file...',
-          pending: <>Reading file {pathCode}...</>,
-          done: <>Read file {pathCode}</>,
-          error: <>Error reading file {pathCode}</>,
+          streaming: 'در حال خواندن فایل...',
+          pending: <>در حال خواندن فایل {pathCode}...</>,
+          done: <>فایل {pathCode} خوانده شد</>,
+          error: <>خطا در خواندن فایل {pathCode}</>,
         });
       }
 
       case 'tool-saveAndValidateQuestion': {
         // TODO: check output for validation results.
         return getStatusForState(part.state, {
-          streaming: 'Saving and validating question...',
-          pending: 'Saving and validating question...',
-          done: 'Saved and validated question',
-          error: 'Error saving and validating question',
+          streaming: 'در حال ذخیره و اعتبارسنجی سوال...',
+          pending: 'در حال ذخیره و اعتبارسنجی سوال...',
+          done: 'سوال ذخیره و اعتبارسنجی شد',
+          error: 'خطا در ذخیره و اعتبارسنجی سوال',
         });
       }
 
       case 'tool-getPythonLibraries': {
         return getStatusForState(part.state, {
-          streaming: 'Reading available Python libraries...',
-          pending: 'Reading available Python libraries...',
-          done: 'Read available Python libraries',
-          error: 'Error reading available Python libraries',
+          streaming: 'در حال خواندن کتابخانه‌های پایتون در دسترس...',
+          pending: 'در حال خواندن کتابخانه‌های پایتون در دسترس...',
+          done: 'کتابخانه‌های پایتون در دسترس خوانده شد',
+          error: 'خطا در خواندن کتابخانه‌های پایتون در دسترس',
         });
       }
 
@@ -251,7 +251,7 @@ function ScrollToBottomButton({
           'fs-3',
         )}
         style={{ aspectRatio: '1 / 1' }}
-        aria-label="Scroll to bottom"
+        aria-label="اسکرول به پایین"
         onClick={() => scrollToBottom()}
       >
         <i className="bi bi-arrow-down-circle-fill lh-1" aria-hidden="true" />
@@ -321,7 +321,7 @@ function Message({
       <div
         className="d-flex flex-column align-items-end mb-3"
         role="article"
-        aria-label={`Message from ${userName ?? 'you'}`}
+        aria-label={`پیام از ${userName ?? 'شما'}`}
       >
         <div
           className="d-flex flex-column gap-2 p-3 rounded bg-secondary-subtle"
@@ -330,7 +330,7 @@ function Message({
           {textContent}
         </div>
         <div className="d-flex align-items-center gap-2 small text-muted mb-1 px-1">
-          <span className="fw-medium">{userName ?? 'Unknown user'}</span>
+          <span className="fw-medium">{userName ?? 'کاربر ناشناس'}</span>
           {createdAt && <MessageTimestamp createdAt={createdAt} />}
         </div>
       </div>
@@ -350,19 +350,19 @@ function Message({
     <div
       className="d-flex flex-column gap-2 mb-3"
       role="article"
-      aria-label="Message from PrairieLearn"
+      aria-label="پیام از سامانه"
     >
       <MessageParts parts={message.parts} />
       {message.metadata?.status === 'canceled' && (
         <div className="small text-muted fst-italic">
           <i className="bi bi-stop-circle me-1" aria-hidden="true" />
-          Generation was stopped
+          تولید متوقف شد
         </div>
       )}
-      {isLastMessage && showSpinner && <ProgressStatus state="streaming" statusText="Working..." />}
+      {isLastMessage && showSpinner && <ProgressStatus state="streaming" statusText="در حال انجام..." />}
       {jobLogsUrl && (
         <a className="small" href={jobLogsUrl} target="_blank" rel="noreferrer">
-          View job logs (link only visible to administrators)
+          مشاهده گزارش‌های کار (فقط برای مدیران قابل مشاهده است)
         </a>
       )}
     </div>
@@ -403,8 +403,7 @@ function Messages({
               aria-hidden="true"
             />
             <span>
-              {excludedMessages.length} earlier{' '}
-              {excludedMessages.length === 1 ? 'message' : 'messages'} excluded from context
+              {excludedMessages.length} پیام قبلی از زمینه (Context) حذف شده است
             </span>
           </button>
           {showExcluded && (
@@ -618,12 +617,12 @@ export function AiQuestionGenerationChat({
     if (isInitialRender && !isGenerating) return;
     if (isGenerating) {
       // oxlint-disable-next-line react/set-state-in-effect
-      setAnnouncement('Generating response…');
+      setAnnouncement('در حال تولید پاسخ…');
     } else if (status === 'error') {
       setAnnouncement('Generation failed.');
     } else {
       const wasCanceled = messages.at(-1)?.metadata?.status === 'canceled';
-      setAnnouncement(wasCanceled ? 'Generation stopped.' : 'Response ready.');
+      setAnnouncement(wasCanceled ? 'تولید متوقف شد.' : 'پاسخ آماده است.');
     }
   }, [isGenerating, messages, status]);
 
@@ -693,9 +692,9 @@ export function AiQuestionGenerationChat({
             <div className="alert alert-danger mb-2" role="alert">
               {run(() => {
                 if (error instanceof RateLimitError) {
-                  return 'Rate limit exceeded. Please try again later.';
+                  return 'محدودیت نرخ درخواست پر شده است. لطفاً بعداً دوباره تلاش کنید.';
                 }
-                return 'An error occurred. Please try again.';
+                return 'خطایی رخ داد. لطفاً دوباره تلاش کنید.';
               })}
             </div>
           )}
@@ -706,7 +705,7 @@ export function AiQuestionGenerationChat({
             refreshQuestionPreviewAfterChanges={refreshQuestionPreviewAfterChanges}
             setRefreshQuestionPreviewAfterChanges={setRefreshQuestionPreviewAfterChanges}
             placeholder={
-              isQuestionEmpty ? 'Describe the question you want to create...' : 'Ask anything...'
+              isQuestionEmpty ? 'سوالی را که می‌خواهید ایجاد کنید شرح دهید...' : 'هر چیزی بپرسید...'
             }
             onChange={setPromptInput}
             onSubmit={(text) => {
@@ -739,12 +738,11 @@ export function AiQuestionGenerationChat({
 
       <Modal show={showUnsavedChangesModal} onHide={() => setShowUnsavedChangesModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Unsaved changes</Modal.Title>
+          <Modal.Title>تغییرات ذخیره‌نشده</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>
-            You have unsaved changes to the question files. If you continue, your changes will be
-            discarded when the AI updates the files.
+            شما تغییرات ذخیره‌نشده‌ای در فایل‌های سوال دارید. در صورت ادامه، با به‌روزرسانی فایل‌ها توسط هوش مصنوعی، تغییرات شما از بین خواهد رفت.
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -753,7 +751,7 @@ export function AiQuestionGenerationChat({
             className="btn btn-secondary"
             onClick={() => setShowUnsavedChangesModal(false)}
           >
-            Cancel
+            انصراف
           </button>
           <button
             type="button"
@@ -779,7 +777,7 @@ export function AiQuestionGenerationChat({
               }
             }}
           >
-            Continue anyway
+            ادامه در هر صورت
           </button>
         </Modal.Footer>
       </Modal>

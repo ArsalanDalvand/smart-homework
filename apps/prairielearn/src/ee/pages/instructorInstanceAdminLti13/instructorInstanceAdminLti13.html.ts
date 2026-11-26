@@ -38,7 +38,7 @@ export function InstructorInstanceAdminLti13NoInstances({
 }): string {
   return PageLayout({
     resLocals,
-    pageTitle: 'LMS connections',
+    pageTitle: 'اتصال LMS (LTI 1.3)',
     navContext: {
       type: 'instructor',
       page: 'instance_admin',
@@ -50,25 +50,22 @@ export function InstructorInstanceAdminLti13NoInstances({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-primary text-white d-flex align-items-center">
-          <h1>LMS connections</h1>
+          <h1>اتصال LMS (LTI 1.3)</h1>
         </div>
         <div class="card-body">
           ${
             lti13_instances.length === 0
               ? html`
                   <p>
-                    No learning management systems (LMSes) at your institution are available for
-                    integration with PrairieLearn. Please contact your IT administrators to set up
-                    an integration. You can refer them to the
+                    هیچ سامانه مدیریت یادگیری (LMS) در موسسه شما برای یکپارچه‌سازی با سامانه در دسترس نیست. لطفاً برای راه‌اندازی اتصال با مدیران فناوری اطلاعات خود تماس بگیرید. می‌توانید آن‌ها را به
                     <a target="_blank" href="https://docs.prairielearn.com/lti13/" rel="noreferrer"
-                      >documentation</a
-                    >.
+                      >مستندات</a
+                    > ارجاع دهید.
                   </p>
                 `
               : html`
                   <p>
-                    The following learning management systems (LMSes) at your institution are
-                    available for integration with PrairieLearn:
+                    سامانه‌های مدیریت یادگیری (LMS) زیر در موسسه شما برای یکپارچه‌سازی با سامانه در دسترس هستند:
                   </p>
 
                   <ul>
@@ -82,13 +79,13 @@ export function InstructorInstanceAdminLti13NoInstances({
                       href="https://docs.prairielearn.com/lmsIntegrationInstructor/"
                       rel="noreferrer"
                     >
-                      How can I integrate my course with an LMS?
+                      چگونه درس خود را به یک LMS متصل کنم؟
                     </a>
                   </p>
                 `
           }
           <p class="mb-0">
-            Integrating will allow you to push assessment scores from PrairieLearn to the LMS.
+            یکپارچه‌سازی به شما امکان می‌دهد نمرات آزمون‌ها و تکالیف را از سامانه به LMS ارسال کنید.
           </p>
         </div>
       </div>
@@ -117,7 +114,7 @@ export function InstructorInstanceAdminLti13({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'LMS connections',
+    pageTitle: 'اتصال LMS (LTI 1.3)',
     navContext: {
       type: 'instructor',
       page: 'instance_admin',
@@ -129,7 +126,7 @@ export function InstructorInstanceAdminLti13({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-primary text-white d-flex">
-          <h1>LTI 1.3 configuration</h1>
+          <h1>پیکربندی LTI 1.3</h1>
         </div>
         <div class="card-body">
           <div class="row">
@@ -169,19 +166,19 @@ export function InstructorInstanceAdminLti13({
                   })}
                 </div>
               </div>
-              Quick links:
+              پیوندهای سریع:
               <ul>
-                <li><a href="#assessments">Linked Assessments</a></li>
-                <li><a href="#connection">Connection to LMS</a></li>
+                <li><a href="#assessments">آزمون‌ها و تکالیف متصل</a></li>
+                <li><a href="#connection">اتصال به LMS</a></li>
               </ul>
-              Created at:
+              ایجادشده در:
               ${formatDateYMDHM(
                 instance.lti13_course_instance.created_at,
                 resLocals.course_instance.display_timezone,
               )}
             </div>
             <div class="col-10">
-              <h3 id="assessments">Linked Assessments</h3>
+              <h3 id="assessments">آزمون‌ها و تکالیف متصل</h3>
               ${
                 instance.lti13_course_instance.context_memberships_url &&
                 instance.lti13_course_instance.lineitems_url
@@ -195,25 +192,23 @@ export function InstructorInstanceAdminLti13({
                     })
                   : html`
                       <p>
-                        PrairieLearn does not have enough LTI metadata to link assignments and do
-                        grade passback.
+                        سامانه متادیتای کافی LTI برای اتصال تکالیف و ارسال خودکار نمرات را در اختیار ندارد.
                       </p>
                       <p>
-                        To update our metadata, go back to the LMS and initiate a PrairieLearn
-                        connection via LTI as an instructor, then return here.
+                        برای به‌روزرسانی متادیتا، به LMS بازگردید و به عنوان مدرس یک اتصال جدید از طریق LTI برقرار کنید، سپس به این صفحه برگردید.
                       </p>
                     `
               }
 
-              <h3 id="connection">Connection to LMS</h3>
+              <h3 id="connection">اتصال به LMS</h3>
               <form method="POST">
                 <input type="hidden" name="__action" value="delete_lti13_course_instance" />
                 <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
                 <button
                   class="btn btn-danger btn-sm"
-                  onclick="return confirm('Are you sure you want to remove this connection?');"
+                  onclick="return confirm('آیا از حذف این اتصال اطمینان دارید؟');"
                 >
-                  Remove LTI 1.3 connection with ${instance.lti13_instance.name}:
+                  حذف اتصال LTI 1.3 با ${instance.lti13_instance.name}:
                   ${getLti13CourseDisplayName(instance.lti13_course_instance)}
                 </button>
               </form>
@@ -256,14 +251,14 @@ function LinkedAssessments({
       <table class="table table-sm table-hover">
         <thead>
           <tr>
-            <th colspan="2" scope="colgroup">PrairieLearn Assessment</th>
-            <th>Actions</th>
+            <th colspan="2" scope="colgroup">آزمون/تکلیف در سامانه</th>
+            <th>عملیات</th>
             <th>
               <form method="POST">
                 <input type="hidden" name="__action" value="poll_lti13_assessments" />
                 <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
-                ${lmsConnectionName} Assignment
-                <button class="btn btn-success btn-xs">Sync metadata</button>
+                تکلیف در ${lmsConnectionName}
+                <button class="btn btn-success btn-xs">همگام‌سازی متادیتا</button>
               </form>
             </th>
           </tr>
@@ -276,10 +271,9 @@ function LinkedAssessments({
                 <th colspan="4" scope="rowgroup">
                   ${Modal({
                     id: `bulk-${group.assessment_set_id}-${group.assessment_module_id}`,
-                    title: `${group.assessment_group_heading} ${assessments_group_by} Bulk Actions`,
+                    title: `عملیات گروهی ${group.assessment_group_heading}`,
                     body: html`<p>
-                        These bulk actions work collectively on every assessment in the group where
-                        the action makes sense.
+                        این عملیات گروهی به صورت یکجا روی تمام آزمون‌ها و تکالیف این گروه که امکان‌پذیر باشد اعمال می‌شوند.
                       </p>
 
                       <form method="POST">
@@ -307,11 +301,11 @@ function LinkedAssessments({
                                   class="btn btn-success"
                                   name="__action"
                                   value="bulk_create_assessments"
-                                  onclick="return confirm('Are you sure?');"
+                                  onclick="return confirm('آیا اطمینان دارید؟');"
                                 >
-                                  Create and link assignments in ${lmsConnectionName}
+                                  ایجاد و اتصال تکالیف در ${lmsConnectionName}
                                 </button>
-                                that aren't already linked.
+                                که هنوز متصل نشده‌اند.
                                 <br />
                               `
                             : ''
@@ -320,18 +314,18 @@ function LinkedAssessments({
                           class="btn btn-med-light"
                           name="__action"
                           value="bulk_unlink_assessments"
-                          onclick="return confirm('Are you sure?');"
+                          onclick="return confirm('آیا اطمینان دارید؟');"
                         >
-                          Unlink assessments
+                          قطع اتصال آزمون‌ها/تکالیف
                         </button>
-                        that are linked.
+                        که متصل هستند.
                       </form>`,
                     footer: html`<button
                       type="button"
                       class="btn btn-secondary"
                       data-bs-dismiss="modal"
                     >
-                      Close
+                      بستن
                     </button>`,
                   })}
                   ${group.assessment_group_heading}
@@ -341,7 +335,7 @@ function LinkedAssessments({
                     data-bs-toggle="modal"
                     data-bs-target="#bulk-${group.assessment_set_id}-${group.assessment_module_id}"
                   >
-                    Bulk actions
+                    عملیات گروهی
                   </button>
                 </th>
               </tr>
@@ -367,7 +361,7 @@ function LinkedAssessments({
                     <td>
                       ${Modal({
                         body: html`
-                          <p>Which ${lmsConnectionName} assignment should we link?</p>
+                          <p>کدام تکلیف در ${lmsConnectionName} متصل شود؟</p>
                           <form method="POST">
                             <input
                               type="hidden"
@@ -380,7 +374,7 @@ function LinkedAssessments({
                               name="__action"
                               value="create_link_assessment"
                             >
-                              Create a new assignment named ${row.label}: ${row.title}
+                              ایجاد تکلیف جدید با نام ${row.label}: ${row.title}
                             </button>
                           </form>
                           <form method="POST">
@@ -396,7 +390,7 @@ function LinkedAssessments({
                               hx-target="next .line-items-inputs"
                               onclick="this.querySelector('.refresh-button').classList.remove('d-none');"
                             >
-                              Pick from existing ${lmsConnectionName} assignments
+                              انتخاب از تکالیف موجود در ${lmsConnectionName}
                               <span class="refresh-button d-none"
                                 ><i class="fa fa-refresh"></i
                               ></span>
@@ -409,10 +403,10 @@ function LinkedAssessments({
                           class="btn btn-secondary"
                           data-bs-dismiss="modal"
                         >
-                          Close
+                          بستن
                         </button>`,
                         id: `assignment-${row.id}`,
-                        title: `Configure ${row.title} in ${lmsConnectionName}`,
+                        title: `پیکربندی ${row.title} در ${lmsConnectionName}`,
                       })}
 
                       <form method="POST">
@@ -431,20 +425,20 @@ function LinkedAssessments({
                                   data-bs-toggle="modal"
                                   data-bs-target="#assignment-${row.id}"
                                 >
-                                  Link assignment
+                                  اتصال تکلیف
                                 </button>
                               `
                             : html`
                                 <div class="btn-group">
                                   <button class="btn btn-info" name="__action" value="send_grades">
-                                    Send grades
+                                    ارسال نمرات
                                   </button>
                                   <button
                                     type="button"
                                     class="btn btn-info dropdown-toggle dropdown-toggle-split"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
-                                    aria-label="Toggle dropdown"
+                                    aria-label="باز و بسته کردن منو"
                                   ></button>
                                   <ul class="dropdown-menu">
                                     ${
@@ -456,7 +450,7 @@ function LinkedAssessments({
                                                 name="__action"
                                                 value="send_grades_all_lms_courses"
                                               >
-                                                Send grades to all LMS courses
+                                                ارسال نمرات به همه درس‌های LMS
                                               </button>
                                             </li>
                                           `
@@ -468,7 +462,7 @@ function LinkedAssessments({
                                         name="__action"
                                         value="unlink_assessment"
                                       >
-                                        Unlink assignment
+                                        قطع اتصال تکلیف
                                       </button>
                                     </li>
                                   </ul>
@@ -497,7 +491,7 @@ function LineItem(item: Lti13Assessment, timezone: string) {
   return html`
     <span title="${item.lineitem_id_url}">${item.lineitem.label}</span>
     <p>
-      <em>Last activity: ${formatDateYMDHM(item.last_activity, timezone)}</em>
+      <em>آخرین فعالیت: ${formatDateYMDHM(item.last_activity, timezone)}</em>
     </p>
   `;
 }
@@ -505,20 +499,18 @@ function LineItem(item: Lti13Assessment, timezone: string) {
 export function LineitemsInputs(lineitems: Lineitems) {
   const disclaimer = html`
     <details>
-      <summary>Why don't I see my assignment here?</summary>
+      <summary>چرا تکلیف من اینجا نمایش داده نمی‌شود؟</summary>
       <p>
-        PrairieLearn can only poll for assignments in the LMS that are associated with PrairieLearn.
+        سامانه فقط می‌تواند تکالیفی در LMS را دریافت کند که به سامانه متصل شده باشند.
       </p>
       <p>
-        In Canvas, edit the assignment Submission Type to "External Tool" and set the External Tool
-        URL to the students' link to the assessment. (You can get this from the assessment
-        instructor settings page.) Then, return here and refresh the listing.
+        در Canvas، نوع ارسال تکلیف (Submission Type) را به «External Tool» تغییر دهید و نشانی External Tool را روی پیوند دانشجویی آزمون تنظیم کنید (این پیوند در صفحه تنظیمات مدرس آزمون قرار دارد). سپس به اینجا بازگردید و فهرست را بازنشانی کنید.
       </p>
     </details>
   `;
   if (lineitems.length === 0) {
     return html`
-      <p>None found.</p>
+      <p>موردی یافت نشد.</p>
       ${disclaimer}
     `.toString();
   }
@@ -539,7 +531,7 @@ export function LineitemsInputs(lineitems: Lineitems) {
         </div>
       `,
     )}
-    <button name="__action" value="link_assessment" class="btn btn-primary">Link assignment</button>
+    <button name="__action" value="link_assessment" class="btn btn-primary">اتصال تکلیف</button>
     ${disclaimer}
   `.toString();
 }

@@ -177,7 +177,7 @@ export function MagicConnector() {
         style={{ zIndex: 1, borderColor: 'rgba(var(--bs-primary-rgb), 0.2)' }}
       >
         <i className="bi bi-stars text-primary" style={{ fontSize: '0.75rem' }} />
-        <span className="small fw-medium">AI generates</span>
+        <span className="small fw-medium">تولید توسط هوش مصنوعی</span>
       </div>
     </div>
   );

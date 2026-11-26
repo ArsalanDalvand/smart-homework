@@ -21,7 +21,7 @@ export function InstitutionAdminGeneral({
       ...resLocals,
       institution,
     },
-    pageTitle: `General — ${institution.short_name}`,
+    pageTitle: `عمومی — ${institution.short_name}`,
     navContext: {
       type: 'institution',
       page: 'institution_admin',
@@ -31,10 +31,8 @@ export function InstitutionAdminGeneral({
       ${CourseRequestMessageSection({
         csrfToken: resLocals.__csrf_token,
         description: html`
-          This message is shown to users from your institution on the
-          <a href="/pl/request_course">course request page</a>. Use it to share institution-specific
-          information such as licensing, costs, training resources, or contacts. Markdown formatting
-          is supported; HTML tags are not rendered.
+          این پیام به کاربران موسسه شما در
+          <a href="/pl/request_course">صفحه درخواست درس</a> نمایش داده می‌شود. از آن برای اشتراک‌گذاری اطلاعات مخصوص موسسه مانند مجوزها، هزینه‌ها، منابع آموزشی یا راه‌های ارتباطی استفاده کنید. قالب‌بندی Markdown پشتیبانی می‌شود؛ تگ‌های HTML رندر نمی‌شوند.
         `,
         courseRequestMessage,
         courseRequestMessageHtml,

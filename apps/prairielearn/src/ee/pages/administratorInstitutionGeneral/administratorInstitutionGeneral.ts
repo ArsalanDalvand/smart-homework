@@ -108,7 +108,7 @@ router.post(
           row_id: req.params.institution_id,
         });
       });
-      flash('success', 'Successfully updated institution settings.');
+      flash('success', 'تنظیمات موسسه با موفقیت به‌روزرسانی شد.');
       res.redirect(req.originalUrl);
     } else if (req.body.__action === 'update_course_request_message') {
       const newMessage =
@@ -128,7 +128,7 @@ router.post(
         value: newMessage,
         authn_user_id: res.locals.authn_user.id,
       });
-      flash('success', 'Successfully updated the course request message.');
+      flash('success', 'پیام درخواست درس با موفقیت به‌روزرسانی شد.');
       res.redirect(req.originalUrl);
     } else if (req.body.__action === 'update_plans') {
       const desiredPlans = parseDesiredPlanGrants({
@@ -142,7 +142,7 @@ router.post(
         desiredPlans,
         res.locals.authn_user.id,
       );
-      flash('success', 'Successfully updated institution plan grants.');
+      flash('success', 'مجوزهای طرح موسسه با موفقیت به‌روزرسانی شد.');
       res.redirect(req.originalUrl);
     } else if (req.body.__action === 'update_github_course_owner') {
       const raw =
@@ -164,7 +164,7 @@ router.post(
         value: newValue,
         authn_user_id: res.locals.authn_user.id,
       });
-      flash('success', 'Successfully updated default GitHub organization.');
+      flash('success', 'سازمان پیش‌فرض GitHub با موفقیت به‌روزرسانی شد.');
       res.redirect(req.originalUrl);
     } else {
       throw new error.HttpStatusError(400, `Unknown action: ${req.body.__action}`);

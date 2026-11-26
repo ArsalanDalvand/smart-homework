@@ -392,7 +392,7 @@ router.post(
       // Re-fetch the question in case the QID was changed to avoid conflicts.
       const updatedQuestion = await selectQuestionById(res.locals.question.id);
 
-      flash('success', `Your question is ready for use as ${updatedQuestion.qid}.`);
+      flash('success', `سوال شما با شناسه ${updatedQuestion.qid} آماده استفاده است.`);
 
       res.redirect(res.locals.urlPrefix + '/question/' + res.locals.question.id + '/preview');
     } else if (req.body.__action === 'rename_draft_question') {

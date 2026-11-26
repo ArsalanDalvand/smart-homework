@@ -19,21 +19,21 @@ export function Lti13CourseNavigationInstructor({
 }): string {
   return PageLayout({
     resLocals,
-    pageTitle: 'LTI 1.3 - Course',
+    pageTitle: 'LTI 1.3 - درس',
     navContext: { type: 'plain', page: 'lti13_course_navigation' },
     content: html`
       ${TerminologyModal()}
-      <h1>Welcome to PrairieLearn</h1>
+      <h1>به سامانه خوش آمدید</h1>
       <p>
-        To finish the integration for your course, you need to connect
-        <strong>${courseName}</strong> with a PrairieLearn course instance.
+        برای تکمیل یکپارچه‌سازی درس خود، باید
+        <strong>${courseName}</strong> را به یک ارائه درس در سامانه متصل کنید.
       </p>
 
       ${
         courses.length === 0
           ? html`<p>
               <strong>
-                You don't have course owner or editor permissions in any PrairieLearn courses.
+                شما در هیچ درسی دسترسی مالک یا ویرایشگر ندارید.
               </strong>
             </p>`
           : html`
@@ -42,7 +42,7 @@ export function Lti13CourseNavigationInstructor({
                   <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
 
                   <label class="form-label" for="connect_course">
-                    Select a PrairieLearn course:
+                    یک درس در سامانه انتخاب کنید:
                   </label>
                   <select
                     id="connect_course"
@@ -53,13 +53,13 @@ export function Lti13CourseNavigationInstructor({
                     hx-target="#course_instances"
                     required
                   >
-                    <option selected disabled value="">Select a course to continue</option>
+                    <option selected disabled value="">برای ادامه یک درس انتخاب کنید</option>
                     ${courses.map((c) => {
                       return html`<option value="${c.id}">${c.short_name}: ${c.title}</option>`;
                     })}
                   </select>
                   <label class="form-label" for="course_instances">
-                    Select a course instance to connect:
+                    یک ارائه درس برای اتصال انتخاب کنید:
                   </label>
                   <select
                     id="course_instances"
@@ -67,9 +67,9 @@ export function Lti13CourseNavigationInstructor({
                     class="form-select mb-3"
                     required
                   >
-                    <option selected disabled value="">See above</option>
+                    <option selected disabled value="">ابتدا درس را انتخاب کنید</option>
                   </select>
-                  <button type="submit" class="btn btn-primary">Connect course instance</button>
+                  <button type="submit" class="btn btn-primary">اتصال ارائه درس</button>
                 </form>
               </div>
             `
@@ -77,21 +77,19 @@ export function Lti13CourseNavigationInstructor({
 
       <p>
         <details>
-          <summary>Why don't I see my course or course instances here?</summary>
+          <summary>چرا درس یا ارائه‌های درس من اینجا نمایش داده نمی‌شوند؟</summary>
           <p>
-            You must have PrairieLearn course <strong>Editor</strong> and course instance
-            <strong>Student Data Editor</strong> permissions to link a course.
+            برای اتصال درس باید دسترسی <strong>ویرایشگر (Editor)</strong> درس و دسترسی <strong>ویرایشگر داده‌های دانشجو (Student Data Editor)</strong> ارائه درس را داشته باشید.
           </p>
         </details>
       </p>
       <p>
-        If you need a new PrairieLearn course,
-        <a href="/pl/request_course">request one here</a>.
+        اگر به یک درس جدید نیاز دارید،
+        <a href="/pl/request_course">از اینجا درخواست دهید</a>.
       </p>
 
       <p>
-        If you need a new course instance, create one in PrairieLearn first then revisit this course
-        linking flow.
+        اگر به ارائه درس جدیدی نیاز دارید، ابتدا آن را در سامانه ایجاد کنید و سپس دوباره به این صفحه برگردید.
       </p>
       <button
         type="button"
@@ -99,7 +97,7 @@ export function Lti13CourseNavigationInstructor({
         data-bs-toggle="modal"
         data-bs-target="#terminology-modal"
       >
-        New here? Learn about PrairieLearn terminology
+        تازه‌وارد هستید؟ با اصطلاحات سامانه آشنا شوید
       </button>
     `,
   });
@@ -116,18 +114,18 @@ export function Lti13CourseNavigationNotReady({
 }): string {
   return PageLayout({
     resLocals,
-    pageTitle: 'LTI 1.3 - Course',
+    pageTitle: 'LTI 1.3 - درس',
     navContext: { type: 'student', page: 'lti13_course_navigation' },
     content: html`
-      <h1 class="h1">Welcome to PrairieLearn</h1>
-      <h2 class="h2">... but your course isn't ready yet!</h2>
+      <h1 class="h1">به سامانه خوش آمدید</h1>
+      <h2 class="h2">... اما درس شما هنوز آماده نیست!</h2>
 
-      <p>An instructor has not yet configured ${courseName} in PrairieLearn.</p>
-      <p>Please come back later.</p>
+      <p>مدرس هنوز درس ${courseName} را در سامانه پیکربندی نکرده است.</p>
+      <p>لطفاً بعداً دوباره مراجعه کنید.</p>
       <p>
         <a href="/pl" class="btn btn-primary">
           <i class="fa fa-home" aria-hidden="true"></i>
-          PrairieLearn home
+          صفحه اصلی سامانه
         </a>
       </p>
       ${
@@ -135,14 +133,12 @@ export function Lti13CourseNavigationNotReady({
           ? ''
           : html`
               <div class="card">
-                <div class="card-header bg-info">Debugging information</div>
+                <div class="card-header bg-info">اطلاعات اشکال‌زدایی</div>
                 <div class="card-body">
                   <p>
-                    You do not have the permissions to integrate PrairieLearn course instances. An
-                    instructor or designer (and not Teaching Assistant) LMS role is needed to do
-                    this.
+                    شما مجوز لازم برای یکپارچه‌سازی ارائه‌های درس را ندارید. برای انجام این کار نقش مدرس یا طراح (و نه دستیار آموزشی) در LMS مورد نیاز است.
                   </p>
-                  <p>Here are your roles that we received from your LMS:</p>
+                  <p>نقش‌های شما که از LMS دریافت شده است:</p>
                   <ul class="mb-0">
                     ${ltiRoles.map((role) => html`<li><code>${role}</code></li>`)}
                   </ul>
@@ -163,26 +159,24 @@ export function Lti13CourseNavigationDone({
 }): string {
   return PageLayout({
     resLocals,
-    pageTitle: 'LTI 1.3 - Course',
+    pageTitle: 'LTI 1.3 - درس',
     navContext: { type: 'plain', page: 'lti13_course_navigation' },
     content: html`
-      <h1 class="h1">Welcome to PrairieLearn</h1>
+      <h1 class="h1">به سامانه خوش آمدید</h1>
 
       <p>
-        <strong>You're all set.</strong> Next time you or students click on the link in your LMS,
-        they will be taken directly to your PrairieLearn course instance.
+        <strong>همه‌چیز آماده است.</strong> دفعه بعد که شما یا دانشجویان روی پیوند در LMS کلیک کنید، مستقیماً به ارائه درس در سامانه هدایت خواهید شد.
       </p>
 
       <div class="alert alert-warning">
-        The course instance and assessment <code>allowAccess</code> rules still apply and may need
-        to be configured.
+        قوانین دسترسی (<code>allowAccess</code>) ارائه درس و آزمون‌ها همچنان اعمال می‌شوند و ممکن است نیاز به پیکربندی داشته باشند.
       </div>
 
-      <p>To change this connection, go to your course instance LTI 1.3 page.</p>
+      <p>برای تغییر این اتصال، به صفحه LTI 1.3 ارائه درس خود بروید.</p>
 
       <p>
         <a href="/pl/lti13_instance/${lti13_instance_id}/course_navigation" class="btn btn-primary">
-          Continue to your course instance
+          ادامه به ارائه درس
         </a>
       </p>
     `,
@@ -192,28 +186,25 @@ export function Lti13CourseNavigationDone({
 function TerminologyModal() {
   return Modal({
     id: 'terminology-modal',
-    title: 'Understanding PrairieLearn',
+    title: 'آشنایی با مفاهیم سامانه',
     body: html`
       <p>
-        PrairieLearn defines a <strong>course</strong> as a collection of questions and course
-        instances. It is the overarching umbrella that spans multiple runnings of the course with
-        students. Things that live across multiple semesters live at the course level.
+        در سامانه، یک <strong>درس (Course)</strong> مجموعه‌ای از سوالات و ارائه‌های درس است و دربرگیرنده اجراهای مختلف یک درس در ترم‌های گوناگون است. مواردی که در طول چند ترم مشترک هستند در سطح درس قرار می‌گیرند.
       </p>
 
       <p>
-        A <strong>course instance</strong> is the running of an edition of a course that has
-        assessments, enrollments, grades, etc. Like a semester or quarter.
+        یک <strong>ارائه درس (Course instance)</strong> اجرای مشخصی از یک درس است که شامل آزمون‌ها، ثبت‌نام‌ها، نمرات و غیره می‌شود؛ مانند یک ترم تحصیلی.
       </p>
 
       <p class="fst-italic">
-        Example: A course might be MATH 101 and have a course instance MATH 101 Fall 2023.
+        مثال: یک درس ممکن است ریاضی ۱۰۱ باشد و ارائه درس آن ریاضی ۱۰۱ پاییز ۱۴۰۲ باشد.
       </p>
 
       <p>
-        For more, see the
+        برای اطلاعات بیشتر،
         <a href="https://docs.prairielearn.com/" target="_blank" rel="noreferrer"
-          >PrairieLearn User Guide</a
-        >
+          >راهنمای کاربری سامانه</a
+        > را مشاهده کنید.
       </p>
     `,
   });

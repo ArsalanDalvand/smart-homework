@@ -59,7 +59,7 @@ function QuestionCodeEditorsInner({
             role="alert"
           >
             <span>
-              <strong>Error loading files:</strong> {filesError.message}
+              <strong>خطا در بارگذاری فایل‌ها:</strong> {filesError.message}
             </span>
             {onRetryFiles && (
               <button
@@ -68,25 +68,25 @@ function QuestionCodeEditorsInner({
                 onClick={onRetryFiles}
               >
                 <i className="fa fa-refresh me-1" aria-hidden="true" />
-                Retry
+                تلاش مجدد
               </button>
             )}
           </div>
         ) : isGenerating ? (
           <div className="alert alert-info mb-0 py-2 d-flex align-items-center" role="alert">
             <div className="spinner-border spinner-border-sm me-2" role="status">
-              <span className="visually-hidden">Loading...</span>
+              <span className="visually-hidden">در حال بارگذاری...</span>
             </div>
-            Editors are read-only while generation is in progress
+            ویرایشگرها در حین تولید فقط-خواندنی هستند
           </div>
         ) : (
           <div className="d-flex flex-row align-items-center justify-content-between ps-2">
-            <span>{hasChanges ? 'Unsaved changes.' : 'No unsaved changes.'}</span>
+            <span>{hasChanges ? 'تغییرات ذخیره‌نشده وجود دارد.' : 'تغییر ذخیره‌نشده‌ای وجود ندارد.'}</span>
             <form method="post">
               <input type="hidden" name="__action" value="submit_manual_revision" />
               <input type="hidden" name="__csrf_token" value={csrfToken} />
               <button type="submit" className="btn btn-sm btn-primary" disabled={!hasChanges}>
-                Save edits
+                ذخیره ویرایش‌ها
               </button>
               <input type="hidden" name="html" value={b64EncodeUnicode(htmlValue)} />
               <input type="hidden" name="python" value={b64EncodeUnicode(pythonValue)} />

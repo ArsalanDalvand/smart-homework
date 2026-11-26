@@ -66,7 +66,7 @@ const RichTextEditor = ({
     },
     editorProps: {
       attributes: {
-        'aria-label': 'Main content area, start typing to enter text.',
+        'aria-label': 'ناحیه محتوای اصلی، برای وارد کردن متن شروع به تایپ کنید.',
         autocapitalize: 'off',
         autocomplete: 'off',
         autocorrect: 'off',
@@ -146,11 +146,11 @@ const RichTextEditor = ({
       <Card className="m-3">
         <Card.Header>
           <div className="d-flex align-items-center justify-content-between">
-            Rich text editor
+            ویرایشگر متن غنی (Rich text)
             <Form.Check
               type="switch"
               id="rich-text-editor-debug-mode"
-              label="Debug mode"
+              label="حالت اشکال‌زدایی"
               checked={debugMode}
               onChange={(e) => setDebugMode(e.currentTarget.checked)}
             />
@@ -160,9 +160,9 @@ const RichTextEditor = ({
           {isGenerating && (
             <div className="alert alert-info mb-3 py-2 d-flex align-items-center" role="alert">
               <div className="spinner-border spinner-border-sm me-2" role="status">
-                <span className="visually-hidden">Loading...</span>
+                <span className="visually-hidden">در حال بارگذاری...</span>
               </div>
-              Editor is read-only while generation is in progress
+              ویرایشگر در حین تولید فقط-خواندنی است
             </div>
           )}
           <div className="d-flex align-items-center gap-2 mb-2" />
@@ -172,7 +172,7 @@ const RichTextEditor = ({
           {debugMode && (
             <>
               <Card className="mt-3">
-                <Card.Header>Formatted HTML</Card.Header>
+                <Card.Header>HTML قالب‌بندی‌شده</Card.Header>
                 <Card.Body>
                   <pre className="mb-0">
                     <code>{formattedHtml ?? ''}</code>
@@ -180,7 +180,7 @@ const RichTextEditor = ({
                 </Card.Body>
               </Card>
               <Card className="mt-3">
-                <Card.Header>Internal HTML</Card.Header>
+                <Card.Header>HTML داخلی</Card.Header>
                 <Card.Body>
                   <pre className="mb-0">
                     <code>{rawHtml ?? ''}</code>

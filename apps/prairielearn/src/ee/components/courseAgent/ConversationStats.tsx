@@ -29,34 +29,34 @@ export function ConversationStats({
     refetchInterval: 5_000,
   });
   const usage = usageQuery.data;
-  const missing = usageQuery.isError ? 'Unavailable' : 'Loading';
+  const missing = usageQuery.isError ? 'در دسترس نیست' : 'در حال بارگذاری';
   return (
     <Dropdown drop="up" show={show} autoClose="outside" onToggle={setShow}>
       <Dropdown.Toggle variant="outline-secondary" size="sm">
-        Stats
+        آمار
       </Dropdown.Toggle>
       {show && (
         <Dropdown.Menu align="end" className="p-3 text-nowrap">
           <dl className="mb-0">
-            <dt>State</dt>
-            <dd>{state?.status ?? 'Connecting'}</dd>
-            <dt>Time to next deadline</dt>
+            <dt>وضعیت</dt>
+            <dd>{state?.status ?? 'در حال اتصال'}</dd>
+            <dt>زمان تا مهلت بعدی</dt>
             <dd>
               <DeadlineCountdown key={state?.deadlineAt} deadlineAt={state?.deadlineAt ?? null} />
             </dd>
-            <dt>Input tokens</dt>
+            <dt>توکن‌های ورودی</dt>
             <dd>{usage?.input_tokens.toLocaleString() ?? missing}</dd>
-            <dt>Cached input tokens</dt>
+            <dt>توکن‌های ورودی کش‌شده</dt>
             <dd>{usage?.input_tokens_cache_read.toLocaleString() ?? missing}</dd>
-            <dt>Cache write tokens</dt>
+            <dt>توکن‌های نوشتن کش</dt>
             <dd>{usage?.input_tokens_cache_write.toLocaleString() ?? missing}</dd>
-            <dt>Output tokens</dt>
+            <dt>توکن‌های خروجی</dt>
             <dd>{usage?.output_tokens.toLocaleString() ?? missing}</dd>
-            <dt>Reasoning tokens</dt>
+            <dt>توکن‌های استدلال</dt>
             <dd>{usage?.output_tokens_reasoning.toLocaleString() ?? missing}</dd>
-            <dt>Web searches</dt>
+            <dt>جستجوهای وب</dt>
             <dd>{usage?.web_search_calls.toLocaleString() ?? missing}</dd>
-            <dt>Cost</dt>
+            <dt>هزینه</dt>
             <dd className="mb-0">{usage ? currencyFormat.format(usage.cost) : missing}</dd>
           </dl>
         </Dropdown.Menu>
@@ -73,6 +73,6 @@ function DeadlineCountdown({ deadlineAt }: { deadlineAt: string | null }) {
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(timer);
   }, [deadlineAt]);
-  if (!deadlineAt) return <>No deadline</>;
-  return <>{Math.max(0, Math.ceil((Date.parse(deadlineAt) - now) / 1000))} seconds</>;
+  if (!deadlineAt) return <>بدون مهلت</>;
+  return <>{Math.max(0, Math.ceil((Date.parse(deadlineAt) - now) / 1000))} ثانیه</>;
 }

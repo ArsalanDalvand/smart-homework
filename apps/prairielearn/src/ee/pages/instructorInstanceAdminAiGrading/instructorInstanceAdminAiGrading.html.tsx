@@ -62,7 +62,7 @@ function DeleteApiKeyModal({
       }}
     >
       <Modal.Header closeButton={!isPending}>
-        <Modal.Title>Delete API key</Modal.Title>
+        <Modal.Title>حذف کلید API</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {deleteError && (
@@ -78,9 +78,9 @@ function DeleteApiKeyModal({
           </Alert>
         )}
         <p>
-          Are you sure you want to delete the{' '}
-          <strong>{data ? AI_GRADING_PROVIDER_DISPLAY_NAMES[data.provider] : ''}</strong> API key?
-          This action cannot be undone.
+          آیا از حذف کلید API مربوط به{' '}
+          <strong>{data ? AI_GRADING_PROVIDER_DISPLAY_NAMES[data.provider] : ''}</strong> اطمینان دارید؟
+          این عمل قابل بازگشت نیست.
         </p>
       </Modal.Body>
       <Modal.Footer>
@@ -90,7 +90,7 @@ function DeleteApiKeyModal({
           disabled={isPending}
           onClick={onHide}
         >
-          Cancel
+          انصراف
         </button>
         <button
           type="button"
@@ -105,7 +105,7 @@ function DeleteApiKeyModal({
             }
           }}
         >
-          {isPending ? 'Deleting...' : 'Delete'}
+          {isPending ? 'در حال حذف...' : 'حذف'}
         </button>
       </Modal.Footer>
     </Modal>
@@ -199,7 +199,7 @@ function AiGradingSettingsContent({
   return (
     <div className="card mb-4">
       <div className="card-header bg-primary text-white d-flex align-items-center">
-        <h1 className="h6 mb-0">AI grading settings</h1>
+        <h1 className="h6 mb-0">تنظیمات تصحیح هوشمند (AI Grading)</h1>
       </div>
       <div className="card-body">
         {toggleMutation.isError && (
@@ -215,11 +215,11 @@ function AiGradingSettingsContent({
             disabled={!canEdit || toggleMutation.isPending}
             onChange={() => toggleMutation.mutate({ enabled: !useCustomApiKeys })}
           />
-          <Form.Check.Label htmlFor="use-custom-api-keys">Use custom API keys</Form.Check.Label>
+          <Form.Check.Label htmlFor="use-custom-api-keys">استفاده از کلیدهای API اختصاصی</Form.Check.Label>
           <div className="small text-muted">
             {canEdit
-              ? 'Provide your own API keys instead of using the platform defaults.'
-              : 'You must be a course owner to manage custom API keys.'}
+              ? 'به جای استفاده از پیش‌فرض‌های سامانه، کلیدهای API خودتان را وارد کنید.'
+              : 'برای مدیریت کلیدهای API اختصاصی باید مالک درس باشید.'}
           </div>
         </Form.Check>
 
@@ -227,8 +227,8 @@ function AiGradingSettingsContent({
           <div className="border-top pt-3 mt-3">
             <div className="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
               <div>
-                <h2 className="h5 mb-1">API key credentials</h2>
-                <p className="text-muted small mb-0">Manage your provider API keys.</p>
+                <h2 className="h5 mb-1">اعتبارنامه‌های کلید API</h2>
+                <p className="text-muted small mb-0">کلیدهای API ارائه‌دهندگان خود را مدیریت کنید.</p>
               </div>
               {canEdit && (
                 <button
@@ -237,21 +237,21 @@ function AiGradingSettingsContent({
                   onClick={() => addModalState.showWithData(null)}
                 >
                   <i className="bi-plus" aria-hidden="true" />
-                  Add key
+                  افزودن کلید
                 </button>
               )}
             </div>
 
             <div className="table-responsive border rounded overflow-hidden">
-              <table className="table table-sm table-hover mb-0" aria-label="API key credentials">
+              <table className="table table-sm table-hover mb-0" aria-label="اعتبارنامه‌های کلید API">
                 <thead>
                   <tr>
-                    <th className="px-3 py-2">Provider</th>
-                    <th className="px-3 py-2">API key</th>
-                    <th className="px-3 py-2">Date added</th>
+                    <th className="px-3 py-2">ارائه‌دهنده</th>
+                    <th className="px-3 py-2">کلید API</th>
+                    <th className="px-3 py-2">تاریخ افزودن</th>
                     {canEdit && (
                       <th className="px-3 py-2" style={{ width: '1%' }}>
-                        <span className="visually-hidden">Actions</span>
+                        <span className="visually-hidden">عملیات</span>
                       </th>
                     )}
                   </tr>
@@ -260,7 +260,7 @@ function AiGradingSettingsContent({
                   {credentials.length === 0 ? (
                     <tr>
                       <td colSpan={canEdit ? 4 : 3} className="text-muted text-center py-4 px-3">
-                        No API keys added yet.
+                        هنوز کلید API اضافه نشده است.
                       </td>
                     </tr>
                   ) : (
@@ -283,7 +283,7 @@ function AiGradingSettingsContent({
                             <button
                               type="button"
                               className="btn btn-sm btn-outline-danger"
-                              aria-label={`Delete ${AI_GRADING_PROVIDER_DISPLAY_NAMES[cred.provider]} API key`}
+                              aria-label={`حذف کلید API برای ${AI_GRADING_PROVIDER_DISPLAY_NAMES[cred.provider]}`}
                               onClick={() => deleteModalState.showWithData(cred)}
                             >
                               <i className="bi-trash" aria-hidden="true" />
@@ -298,7 +298,7 @@ function AiGradingSettingsContent({
             </div>
             {!canEdit && (
               <Alert variant="warning" className="mt-3 mb-0">
-                You must be a course owner to edit provider API keys.
+                برای ویرایش کلیدهای API ارائه‌دهنده باید مالک درس باشید.
               </Alert>
             )}
           </div>
@@ -413,14 +413,14 @@ function CreditPoolSection({
         <Alert variant="success" dismissible onClose={dismissSuccessAlert}>
           <i className="bi bi-check-circle-fill me-2" aria-hidden="true" />
           {successAlertAmount != null
-            ? `${formatMilliDollars(successAlertAmount)} in credits were`
-            : 'Credits have been'}{' '}
-          added to your course instance.
+            ? `مبلغ ${formatMilliDollars(successAlertAmount)} اعتبار`
+            : 'اعتبار'}{' '}
+          به ارائه درس شما اضافه شد.
         </Alert>
       )}
       {checkoutStatus === 'cancelled' && (
         <Alert variant="info" dismissible onClose={() => setCheckoutStatus(null)}>
-          Payment cancelled. No credits were added.
+          پرداخت لغو شد. هیچ اعتباری اضافه نشد.
         </Alert>
       )}
       <Accordion
@@ -430,8 +430,8 @@ function CreditPoolSection({
         <Accordion.Item eventKey="credits">
           <Accordion.Header>
             <span className="d-flex align-items-center gap-2">
-              AI grading credits
-              {useCustomApiKeys && <span className="badge text-bg-secondary">Inactive</span>}
+              اعتبارهای تصحیح هوشمند (AI Grading)
+              {useCustomApiKeys && <span className="badge text-bg-secondary">غیرفعال</span>}
             </span>
           </Accordion.Header>
           <Accordion.Body>
@@ -453,7 +453,7 @@ function CreditPoolSection({
                       onClick={() => redeemModalState.showWithData(null)}
                     >
                       <i className="bi bi-gift" aria-hidden="true" />
-                      Redeem free credit
+                      دریافت اعتبار رایگان
                     </button>
                   )}
                   {stripePurchasingEnabled && (
@@ -464,7 +464,7 @@ function CreditPoolSection({
                       onClick={() => purchaseModalState.showWithData(null)}
                     >
                       <i className="bi bi-cart-plus" aria-hidden="true" />
-                      Purchase credits
+                      خرید اعتبار
                     </button>
                   )}
                 </div>
@@ -472,12 +472,12 @@ function CreditPoolSection({
             </div>
             {useCustomApiKeys && (
               <p className="text-muted small mb-3">
-                While custom API keys are active, PrairieLearn AI grading credits are not deducted.
+                در زمان فعال بودن کلیدهای API اختصاصی، اعتبارهای تصحیح هوشمند سامانه کسر نمی‌شوند.
               </p>
             )}
             {!canEdit && !isLoading && !isCreditPoolEmpty && (
               <p className="text-muted small mb-3">
-                You must be a course owner to purchase or redeem AI grading credits.
+                برای خرید یا دریافت اعتبار رایگان تصحیح هوشمند باید مالک درس باشید.
               </p>
             )}
             <CreditPoolDashboard

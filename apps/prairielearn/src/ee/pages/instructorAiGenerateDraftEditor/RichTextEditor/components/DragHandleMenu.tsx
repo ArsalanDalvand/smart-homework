@@ -27,7 +27,7 @@ export function DragHandleMenu({ editor }: { editor: Editor | null }) {
   const isInsidePanel = Object.values(tagActiveMap).some(Boolean);
 
   const popover = {
-    header: <h3 className="h6 mb-0">Visibility</h3>,
+    header: <h3 className="h6 mb-0">نمایش (Visibility)</h3>,
     body: (
       <div className="d-flex flex-column gap-2">
         {Object.entries(panelMeta).map(([tag, meta]) => (
@@ -118,7 +118,7 @@ export function DragHandleMenu({ editor }: { editor: Editor | null }) {
           <button
             type="button"
             className="btn btn-sm btn-ghost"
-            aria-label="Panel visibility options"
+            aria-label="گزینه‌های نمایش پنل"
           >
             <i className="bi bi-grip-vertical" aria-hidden="true" />
           </button>

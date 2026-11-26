@@ -44,7 +44,7 @@ const RawHtmlComponent = (
               >
                 <i
                   className="bi bi-exclamation-triangle text-danger"
-                  aria-label="Raw HTML warning"
+                  aria-label="هشدار HTML خام"
                   role="img"
                 />
               </OverlayTrigger>
@@ -62,7 +62,7 @@ const RawHtmlComponent = (
               props: { id: 'raw-html-help-tooltip' },
             }}
           >
-            <i className="bi bi-question-circle" aria-label="Raw HTML help" role="img" />
+            <i className="bi bi-question-circle" aria-label="راهنمای HTML خام" role="img" />
           </OverlayTrigger>
         </Card.Header>
         <Card.Body>

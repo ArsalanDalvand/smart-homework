@@ -24,11 +24,11 @@ export function SampleQuestions({ initialVariant }: { initialVariant: SampleQues
       }}
     >
       <AccordionItem eventKey="0">
-        <AccordionHeader>Example prompts</AccordionHeader>
+        <AccordionHeader>پرامپت‌های نمونه</AccordionHeader>
         <AccordionBody className="p-3">
           <FormSelect
             value={selectedQuestionIndex}
-            aria-label="Select example prompt"
+            aria-label="انتخاب پرامپت نمونه"
             onChange={(e) => setSelectedQuestionIndex(Number(e.target.value))}
           >
             {examplePromptsArray.map((prompt, index) => (
@@ -46,7 +46,7 @@ export function SampleQuestions({ initialVariant }: { initialVariant: SampleQues
             header={
               <div className="d-flex align-items-center gap-2">
                 <i className="bi bi-check-circle-fill text-success" />
-                <span className="fw-medium">Example output</span>
+                <span className="fw-medium">خروجی نمونه</span>
               </div>
             }
           />
@@ -121,11 +121,11 @@ function SampleQuestionPrompt({ prompt }: { prompt: string }) {
     >
       <div className="d-flex align-items-center gap-2 mb-2">
         <i className="bi bi-chat-left-text text-primary small" />
-        <span className="fw-medium text-primary">Prompt</span>
+        <span className="fw-medium text-primary">پرامپت</span>
       </div>
       <p className="mb-2">{prompt}</p>
       <Button variant="link" className="p-0 text-decoration-none" onClick={handleUsePrompt}>
-        Use this prompt <i className="bi bi-arrow-right small" />
+        استفاده از این پرامپت <i className="bi bi-arrow-right small" />
       </Button>
     </div>
   );

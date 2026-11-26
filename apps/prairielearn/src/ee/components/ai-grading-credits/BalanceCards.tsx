@@ -6,14 +6,14 @@ import { formatMilliDollars } from '../../../lib/ai-grading-credits.js';
 
 const TOOLTIP_TEXT = {
   instructor: {
-    transferable: 'These credits can be transferred between course instances in your institution.',
+    transferable: 'این اعتبارها قابل انتقال بین ارائه‌های درس در موسسه شما هستند.',
     nonTransferable:
-      'These credits are specifically for this course instance and cannot be transferred.',
+      'این اعتبارها مخصوص همین ارائه درس هستند و قابل انتقال نیستند.',
   },
   admin: {
     transferable:
-      'Credits that can be transferred between course instances within the same institution.',
-    nonTransferable: 'Credits locked to this course instance that cannot be transferred.',
+      'اعتبارهایی که بین ارائه‌های درس در همان موسسه قابل انتقال هستند.',
+    nonTransferable: 'اعتبارهای قفل‌شده به این ارائه درس که قابل انتقال نیستند.',
   },
 };
 
@@ -41,14 +41,14 @@ export function BalanceCards({
       <div className="row mb-3 g-3">
         <div className="col-md-4">
           <div className="border rounded p-3 text-center" style={dimStyle}>
-            <div className="text-muted small">Total available</div>
+            <div className="text-muted small">کل اعتبار در دسترس</div>
             <div className="h4 mb-0">{formatMilliDollars(pool.total_milli_dollars)}</div>
           </div>
         </div>
         <div className="col-md-4">
           <div className="border rounded p-3 text-center" style={dimStyle}>
             <div className="text-muted small">
-              Transferable{' '}
+              قابل انتقال{' '}
               <OverlayTrigger
                 placement="top"
                 tooltip={{
@@ -59,7 +59,7 @@ export function BalanceCards({
                 <button
                   type="button"
                   className="btn btn-link p-0 border-0 align-baseline"
-                  aria-label="More information about transferable credits"
+                  aria-label="اطلاعات بیشتر درباره اعتبارهای قابل انتقال"
                 >
                   <i className="bi bi-info-circle" aria-hidden="true" />
                 </button>
@@ -73,7 +73,7 @@ export function BalanceCards({
         <div className="col-md-4">
           <div className="border rounded p-3 text-center" style={dimStyle}>
             <div className="text-muted small">
-              Non-transferable{' '}
+              غیرقابل انتقال{' '}
               <OverlayTrigger
                 placement="top"
                 tooltip={{
@@ -84,7 +84,7 @@ export function BalanceCards({
                 <button
                   type="button"
                   className="btn btn-link p-0 border-0 align-baseline"
-                  aria-label="More information about non-transferable credits"
+                  aria-label="اطلاعات بیشتر درباره اعتبارهای غیرقابل انتقال"
                 >
                   <i className="bi bi-info-circle" aria-hidden="true" />
                 </button>
@@ -98,9 +98,7 @@ export function BalanceCards({
       </div>
       {context === 'instructor' && pool.credit_transferable_milli_dollars < 0 && (
         <p className="text-muted small mb-3">
-          A negative transferable balance happens when in-flight AI grading requests complete after
-          your credits run out. The outstanding amount will be deducted from your next credit
-          purchase.
+          موجودی قابل انتقال منفی زمانی رخ می‌دهد که درخواست‌های تصحیح هوشمند در حال انجام پس از اتمام اعتبار شما تکمیل شوند. مبلغ بدهی از خرید اعتبار بعدی شما کسر خواهد شد.
         </p>
       )}
     </>

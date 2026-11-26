@@ -39,7 +39,7 @@ export function AdministratorInstitutionGeneral({
   resLocals: ResLocalsForPage<'plain'>;
 }) {
   return PageLayout({
-    pageTitle: 'Institution Administration',
+    pageTitle: 'مدیریت موسسه',
     resLocals: {
       ...resLocals,
       institution,
@@ -66,19 +66,19 @@ export function AdministratorInstitutionGeneral({
       subPage: 'general',
     },
     content: html`
-      <h2 class="h4">Statistics</h2>
+      <h2 class="h4">آمار</h2>
       <div class="card-grid mb-3">
-        ${StatisticsCard({ title: 'Courses', value: statistics.course_count })}
+        ${StatisticsCard({ title: 'درس‌ها', value: statistics.course_count })}
         ${StatisticsCard({
-          title: 'Course instances',
+          title: 'ارائه‌های درس',
           value: statistics.course_instance_count,
         })}
-        ${StatisticsCard({ title: 'Enrollments', value: statistics.enrollment_count })}
+        ${StatisticsCard({ title: 'ثبت‌نام‌ها', value: statistics.enrollment_count })}
       </div>
-      <h2 class="h4">General Information</h2>
+      <h2 class="h4">اطلاعات عمومی</h2>
       <form method="POST" class="mb-3">
         <div class="mb-3">
-          <label class="form-label" for="short_name">Short name</label>
+          <label class="form-label" for="short_name">نام کوتاه</label>
           <input
             type="text"
             class="form-control"
@@ -87,12 +87,11 @@ export function AdministratorInstitutionGeneral({
             value="${institution.short_name}"
           />
           <small id="short_name_help" class="form-text text-muted">
-            An abbreviation or short name, e.g. "illinois.edu" or "ubc.ca". Usually this should be
-            the institution's domain.
+            یک نام کوتاه یا مخفف، مثلاً «illinois.edu» یا «ubc.ca». معمولاً این مقدار باید دامنه موسسه باشد.
           </small>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="long_name">Long name</label>
+          <label class="form-label" for="long_name">نام کامل</label>
           <input
             type="text"
             class="form-control"
@@ -101,11 +100,11 @@ export function AdministratorInstitutionGeneral({
             value="${institution.long_name}"
           />
           <small id="long_name_help" class="form-text text-muted">
-            The full name of the university, e.g. "University of Illinois Urbana-Champaign".
+            نام کامل دانشگاه یا موسسه، مثلاً «دانشگاه صنعتی شریف».
           </small>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="display_timezone">Timezone</label>
+          <label class="form-label" for="display_timezone">منطقه زمانی</label>
           <select
             class="form-select"
             id="display_timezone"
@@ -124,18 +123,17 @@ export function AdministratorInstitutionGeneral({
             )}
           </select>
           <small id="display_timezone_help" class="form-text text-muted">
-            The allowable timezones are from the
+            مناطق زمانی مجاز بر اساس
             <a
               href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
               target="_blank"
               rel="noreferrer"
-              >tz database</a
-            >. It's best to use a city-based timezone that has the same times as the institution,
-            e.g. "America/Chicago".
+              >پایگاه داده tz</a
+            > هستند. بهتر است از منطقه زمانی مبتنی بر شهر هم‌زمان با موسسه استفاده کنید، مثلاً «Asia/Tehran».
           </small>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="uid_regexp">UID regexp</label>
+          <label class="form-label" for="uid_regexp">عبارت باقاعده UID</label>
           <input
             type="text"
             class="form-control"
@@ -144,16 +142,13 @@ export function AdministratorInstitutionGeneral({
             value="${institution.uid_regexp}"
           />
           <small id="uid_regexp_help" class="form-text text-muted">
-            Should match the non-username part of user UIDs, e.g. <code>@example\\.com$</code>. This
-            must be a valid regular expression that starts with <code>@</code> and ends with
-            <code>$</code>. Periods must be escaped as <code>\\.</code>. This should be set for
-            institution-based access restrictions to work correctly.
+            باید با بخش غیرنام‌کاربریِ UID کاربران مطابقت داشته باشد، مثلاً <code>@example\\.com$</code>. این مقدار باید یک عبارت باقاعده معتبر باشد که با <code>@</code> شروع و با <code>$</code> تمام شود. نقطه‌ها باید به صورت <code>\\.</code> اسکیپ شوند. برای عملکرد صحیح محدودیت‌های دسترسی مبتنی بر موسسه، تنظیم این مورد ضروری است.
           </small>
         </div>
-        <h2 class="h4">Limits</h2>
+        <h2 class="h4">محدودیت‌ها</h2>
         <div class="mb-3">
           <label class="form-label" for="course_instance_enrollment_limit">
-            Course instance enrollment limit
+            محدودیت ثبت‌نام ارائه درس
           </label>
           <input
             type="number"
@@ -165,12 +160,11 @@ export function AdministratorInstitutionGeneral({
             aria-describedby="course_instance_enrollment_limit_help"
           />
           <small id="course_instance_enrollment_limit_help" class="form-text text-muted">
-            The maximum number of enrollments allowed for a single course instance. This value can
-            be overridden on individual courses and course instances.
+            حداکثر تعداد ثبت‌نام مجاز برای یک ارائه درس. این مقدار در سطح درس‌ها و ارائه‌های درس قابل بازنویسی است.
           </small>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="yearly_enrollment_limit">Yearly enrollment limit</label>
+          <label class="form-label" for="yearly_enrollment_limit">محدودیت ثبت‌نام سالانه</label>
           <input
             type="number"
             class="form-control"
@@ -181,9 +175,7 @@ export function AdministratorInstitutionGeneral({
             aria-describedby="yearly_enrollment_limit_help"
           />
           <small id="yearly_enrollment_limit_help" class="form-text text-muted">
-            The maximum number of enrollments allowed per year. The limit is applied on a rolling
-            basis; that is, it applies to the previous 365 days from the instant a student attempts
-            to enroll.
+            حداکثر تعداد ثبت‌نام مجاز در سال. این محدودیت به صورت متحرک (Rolling) اعمال می‌شود؛ یعنی ۳۶۵ روز گذشته از لحظه تلاش دانشجو برای ثبت‌نام محاسبه می‌گردد.
           </small>
         </div>
         <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
@@ -193,16 +185,15 @@ export function AdministratorInstitutionGeneral({
           value="update_enrollment_limits"
           class="btn btn-primary"
         >
-          Save
+          ذخیره
         </button>
       </form>
 
       ${CourseRequestMessageSection({
         csrfToken: resLocals.__csrf_token,
         description: html`
-          This message is shown to users from this institution on the
-          <a href="/pl/request_course">course request page</a>. Markdown formatting is supported;
-          HTML tags are not rendered.
+          این پیام به کاربران این موسسه در
+          <a href="/pl/request_course">صفحه درخواست درس</a> نمایش داده می‌شود. قالب‌بندی Markdown پشتیبانی می‌شود؛ تگ‌های HTML رندر نمی‌شوند.
         `,
         courseRequestMessage,
         courseRequestMessageHtml,
@@ -211,7 +202,7 @@ export function AdministratorInstitutionGeneral({
       <h2 class="h4">GitHub</h2>
       <form method="POST" class="mb-3">
         <div class="mb-3">
-          <label class="form-label" for="github_course_owner">Default GitHub organization</label>
+          <label class="form-label" for="github_course_owner">سازمان پیش‌فرض GitHub</label>
           <input
             type="text"
             class="form-control"
@@ -222,10 +213,7 @@ export function AdministratorInstitutionGeneral({
             aria-describedby="github_course_owner_help"
           />
           <small id="github_course_owner_help" class="form-text text-muted">
-            When approved course requests for this institution are turned into courses, repositories
-            are created in this GitHub organization. Leave blank to use the platform default
-            (<code>${defaultGithubCourseOwner}</code>). Saving validates that the PrairieLearn
-            machine account is an active member of the organization.
+            هنگامی که درخواست‌های درس تاییدشده برای این موسسه به درس تبدیل می‌شوند، مخازن در این سازمان GitHub ایجاد خواهند شد. برای استفاده از پیش‌فرض سامانه (<code>${defaultGithubCourseOwner}</code>) خالی بگذارید. با ذخیره کردن، عضویت فعال حساب سیستمی در این سازمان بررسی می‌شود.
           </small>
         </div>
         <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
@@ -235,11 +223,11 @@ export function AdministratorInstitutionGeneral({
           value="update_github_course_owner"
           class="btn btn-primary"
         >
-          Save
+          ذخیره
         </button>
       </form>
 
-      <h2 class="h4">Plans</h2>
+      <h2 class="h4">طرح‌ها (Plans)</h2>
       ${PlanGrantsEditor({
         planGrants,
         // The basic plan is never available at the institution level; it's only

@@ -22,7 +22,7 @@ router.get(
     if (!found) {
       flash(
         'warning',
-        'That file is not in the course. It may be part of course agent changes that have not been approved.',
+        'این فایل در درس وجود ندارد. ممکن است بخشی از تغییرات دستیار درس باشد که هنوز تایید نشده‌اند.',
       );
     }
     res.redirect(url);

@@ -16,19 +16,19 @@ export const panelMeta = {
   'pl-question-panel': {
     color: 'primary',
     icon: 'bi-question-circle',
-    label: 'Question Panel',
+    label: 'پنل سوال',
     name: 'question',
   },
   'pl-answer-panel': {
     color: 'success',
     icon: 'bi-check-circle',
-    label: 'Answer Panel',
+    label: 'پنل پاسخ',
     name: 'answer',
   },
   'pl-submission-panel': {
     color: 'warning',
     icon: 'bi-arrow-repeat',
-    label: 'Submission Panel',
+    label: 'پنل ارسال',
     name: 'submission',
   },
 } as const;

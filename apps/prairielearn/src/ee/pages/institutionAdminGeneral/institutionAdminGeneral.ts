@@ -79,7 +79,7 @@ router.post(
       authn_user_id: res.locals.authn_user.id,
     });
 
-    flash('success', 'Successfully updated the course request message.');
+    flash('success', 'پیام درخواست درس با موفقیت به‌روزرسانی شد.');
     res.redirect(req.originalUrl);
   }),
 );

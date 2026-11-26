@@ -74,12 +74,12 @@ export function InstructorAIGenerateDrafts({
       <div class="mb-3">
         <a href="${resLocals.urlPrefix}/course_admin/questions" class="btn btn-sm btn-primary">
           <i class="fa fa-arrow-left" aria-hidden="true"></i>
-          Back to all questions
+          بازگشت به همه سوالات
         </a>
       </div>
       <div class="card mb-3 mx-auto" style="max-width: 700px">
         <div class="card-body position-relative">
-          <h1 class="h3 text-center">Generate a new question with AI</h1>
+          <h1 class="h3 text-center">تولید سوال جدید با هوش مصنوعی</h1>
           <form
             id="add-question-form"
             name="add-question-form"
@@ -93,8 +93,7 @@ export function InstructorAIGenerateDrafts({
 
             <div class="mb-3">
               <label class="form-label" for="user-prompt-llm">
-                Give a high-level overview of the question, including what parameters should be
-                generated and how students should provide their response.
+                توضیح کلی سوال را بنویسید، از جمله اینکه چه پارامترهایی باید تولید شوند و دانشجویان چگونه باید پاسخ خود را وارد کنند.
               </label>
               <textarea
                 name="prompt"
@@ -111,11 +110,11 @@ export function InstructorAIGenerateDrafts({
                 data-loading-class-remove="d-none"
               >
               </span>
-              Create question
+              ایجاد سوال
             </button>
 
             <div class="text-muted small text-center mt-2">
-              AI can make mistakes. Review the generated question.
+              هوش مصنوعی ممکن است اشتباه کند. سوال تولیدشده را بازبینی کنید.
             </div>
             <div id="generation-results"></div>
           </form>
@@ -134,28 +133,28 @@ export function InstructorAIGenerateDrafts({
         hasDrafts
           ? html`
               <div class="d-flex flex-row align-items-center justify-content-between mb-2">
-                <h1 class="h5 mb-0">Continue working on a draft question</h1>
+                <h1 class="h5 mb-0">ادامه کار روی یک سوال پیش‌نویس</h1>
                 <button
                   class="btn btn-sm btn-outline-danger ms-2"
                   data-bs-toggle="modal"
                   data-bs-target="#deleteModal"
                 >
                   <i class="fa fa-trash" aria-hidden="true"></i>
-                  <span class="d-none d-sm-inline">Delete all drafts</span>
+                  <span class="d-none d-sm-inline">حذف همه پیش‌نویس‌ها</span>
                 </button>
               </div>
               <div class="card">
                 <div class="table-responsive">
                   <table
                     class="table table-sm table-hover"
-                    aria-label="AI question generation jobs"
+                    aria-label="فهرست سوالات تولیدشده با هوش مصنوعی"
                   >
                     <thead>
                       <tr>
-                        <th>QID</th>
-                        <th>Created At</th>
-                        <th>Created By</th>
-                        <th>Actions</th>
+                        <th>شناسه سوال (QID)</th>
+                        <th>تاریخ ایجاد</th>
+                        <th>ایجادکننده</th>
+                        <th>عملیات</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -173,13 +172,13 @@ export function InstructorAIGenerateDrafts({
                                     )
                               }
                             </td>
-                            <td>${row.uid ?? '(System)'}</td>
+                            <td>${row.uid ?? '(سیستم)'}</td>
                             <td>
                               <a
                                 href="${resLocals.urlPrefix}/ai_generate_editor/${row.question_id}"
                                 class="btn btn-xs btn-primary"
                               >
-                                Continue editing
+                                ادامه ویرایش
                               </a>
                             </td>
                           </tr>
@@ -201,7 +200,7 @@ export function RateLimitExceeded(): string {
   return html`
     <div id="generation-results">
       <div class="alert alert-danger mt-2 mb-0">
-        You've reached the hourly usage cap for AI question generation. Please try again later.
+        به سقف مصرف ساعتی تولید سوال با هوش مصنوعی رسیده‌اید. لطفاً بعداً دوباره تلاش کنید.
       </div>
     </div>
   `.toString();
@@ -210,15 +209,15 @@ export function RateLimitExceeded(): string {
 function DeleteQuestionsModal({ csrfToken }: { csrfToken: string }) {
   return Modal({
     id: 'deleteModal',
-    title: 'Delete all draft questions',
-    body: 'Are you sure you want to permanently delete all draft questions?',
+    title: 'حذف همه سوالات پیش‌نویس',
+    body: 'آیا از حذف دائمی همه سوالات پیش‌نویس اطمینان دارید؟',
     footer: html`
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
       <button type="submit" class="btn btn-danger" name="__action" value="delete_drafts">
         <i class="fa fa-trash" aria-hidden="true"></i>
-        Delete all drafts
+        حذف همه پیش‌نویس‌ها
       </button>
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
     `,
   });
 }

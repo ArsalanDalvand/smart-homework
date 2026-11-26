@@ -50,7 +50,7 @@ export function InstructorAiGenerateDraftEditor({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'AI Question Editor',
+    pageTitle: 'ویرایشگر سوال هوش مصنوعی',
     navContext: {
       type: 'instructor',
       page: 'course_admin',
@@ -104,7 +104,7 @@ export function InstructorAiGenerateDraftEditor({
 export function DraftNotFound({ resLocals }: { resLocals: ResLocalsForPage<'course'> }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Draft question not found',
+    pageTitle: 'سوال پیش‌نویس یافت نشد',
     navContext: {
       type: 'instructor',
       page: 'course_admin',
@@ -112,11 +112,10 @@ export function DraftNotFound({ resLocals }: { resLocals: ResLocalsForPage<'cour
     },
     content: (
       <div className="card mb-4">
-        <div className="card-header bg-primary text-white">Draft question not found</div>
+        <div className="card-header bg-primary text-white">سوال پیش‌نویس یافت نشد</div>
         <div className="card-body">
           <p className="mb-0">
-            The draft question you're looking for could not be found. It may have been deleted or
-            already finalized.
+            سوال پیش‌نویس مورد نظر شما یافت نشد. ممکن است حذف شده یا قبلاً نهایی شده باشد.
           </p>
         </div>
         <div className="card-footer">
@@ -125,7 +124,7 @@ export function DraftNotFound({ resLocals }: { resLocals: ResLocalsForPage<'cour
             className="btn btn-primary"
           >
             <i className="fa fa-arrow-left" aria-hidden="true" />
-            Back to AI question drafts
+            بازگشت به پیش‌نویس‌های سوال هوش مصنوعی
           </a>
         </div>
       </div>

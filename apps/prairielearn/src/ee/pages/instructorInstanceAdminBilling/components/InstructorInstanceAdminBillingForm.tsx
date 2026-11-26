@@ -76,12 +76,10 @@ export function instructorInstanceAdminBillingState({
   let studentBillingAlert: AlertProps | null = null;
   if (studentBillingInitialEnabled && enrollmentCount > enrollmentLimit) {
     studentBillingCanChange = false;
-    const inflectedCountVerb = enrollmentCount === 1 ? 'is' : 'are';
-    const inflectedCountNoun = enrollmentCount === 1 ? 'enrollment' : 'enrollments';
     studentBillingAlert = {
       message: [
-        `There ${inflectedCountVerb} ${enrollmentCount} ${inflectedCountNoun} in this course, which exceeds the limit of ${enrollmentLimit}.`,
-        'To disable student billing, first remove excess enrollments.',
+        `در حال حاضر ${enrollmentCount} ثبت‌نام در این درس وجود دارد که از سقف ${enrollmentLimit} بیشتر است.`,
+        'برای غیرفعال کردن صورت‌حساب دانشجویی، ابتدا ثبت‌نام‌های مازاد را حذف کنید.',
       ].join(' '),
       color: 'warning',
     };
@@ -95,7 +93,7 @@ export function instructorInstanceAdminBillingState({
     computeCanChange = false;
     computeAlert = {
       message:
-        'This course instance already has access to compute features without additional payment.',
+        'این ارائه درس هم‌اکنون بدون نیاز به پرداخت اضافه به امکانات محاسباتی دسترسی دارد.',
       color: 'success',
     };
   }
@@ -211,20 +209,17 @@ export function InstructorInstanceAdminBillingForm({
           onChange={(e) => setBasicPlanEnabled(e.currentTarget.checked)}
         />
         <label className="form-check-label" htmlFor="studentBillingEnabled">
-          Enable student billing for enrollments
+          فعال‌سازی صورت‌حساب دانشجویی برای ثبت‌نام‌ها
         </label>
         <p className="small text-muted">
-          When student billing is enabled, students pay for access to your course instance. Enabling
-          student billing will allow your course instance to exceed any enrollment limits that would
-          otherwise apply.
+          با فعال‌سازی صورت‌حساب دانشجویی، دانشجویان برای دسترسی به ارائه درس شما هزینه پرداخت می‌کنند. فعال کردن این گزینه به ارائه درس اجازه می‌دهد از محدودیت‌های ثبت‌نام معمول فراتر برود.
         </p>
         {studentBillingAlert && <Alert {...studentBillingAlert} />}
       </div>
 
-      <h2 className="h4">Features</h2>
+      <h2 className="h4">امکانات</h2>
       <p>
-        If your course requires certain features, you can enable them so that students can pay for
-        them.
+        اگر درس شما به امکانات خاصی نیاز دارد، می‌توانید آن‌ها را فعال کنید تا دانشجویان بتوانند هزینه آن‌ها را بپردازند.
       </p>
 
       <div className="form-check">
@@ -239,29 +234,26 @@ export function InstructorInstanceAdminBillingForm({
           onChange={(e) => setComputePlanEnabled(e.currentTarget.checked)}
         />
         <label className="form-check-label" htmlFor="computeEnabled">
-          External grading and workspaces
+          تصحیح خارجی (External grading) و محیط‌های کاری (Workspaces)
         </label>
         <p className="small text-muted">
-          Students will be able to use questions that utilize external grading and/or workspaces.
-          This course has <strong>{pluralizeQuestionCount(externalGradingQuestionCount)}</strong>{' '}
-          that use external grading and{' '}
-          <strong>{pluralizeQuestionCount(workspaceQuestionCount)}</strong> that use workspaces.
+          دانشجویان قادر خواهند بود از سوالاتی که دارای تصحیح خارجی و/یا محیط کاری هستند استفاده کنند.
+          این درس دارای <strong>{pluralizeQuestionCount(externalGradingQuestionCount)}</strong>{' '}
+          با تصحیح خارجی و{' '}
+          <strong>{pluralizeQuestionCount(workspaceQuestionCount)}</strong> با محیط کاری است.
         </p>
         {computeAlert && <Alert {...computeAlert} />}
       </div>
 
       {showEnableAlert && (
         <div className="alert alert-warning" role="alert">
-          Any students currently enrolled in your course will lose access until they have paid for
-          the above features. If your course is currently in session, you should carefully consider
-          the impact of enabling student billing. Before proceeding, you should communicate this
-          change to your students.
+          تمام دانشجویانی که هم‌اکنون در درس شما ثبت‌نام کرده‌اند تا زمان پرداخت هزینه امکانات بالا دسترسی خود را از دست خواهند داد. اگر درس شما در حال برگزاری است، پیش از فعال‌سازی صورت‌حساب دانشجویی تاثیر آن را به دقت بررسی کرده و این تغییر را به دانشجویان اطلاع دهید.
         </div>
       )}
 
       <input type="hidden" name="__csrf_token" value={csrfToken} />
       <button type="submit" className="btn btn-primary" disabled={!editable}>
-        Save
+        ذخیره
       </button>
     </form>
   );
@@ -283,18 +275,18 @@ function enrollmentLimitExplanation({
   enrollmentLimitSource: 'course_instance' | 'institution';
 }): string {
   if (studentBillingEnabled) {
-    return 'Student billing for enrollments is enabled, so there is no enrollment limit.';
+    return 'صورت‌حساب دانشجویی برای ثبت‌نام‌ها فعال است، بنابراین محدودیت ثبت‌نام وجود ندارد.';
   }
 
   if (enrollmentLimitSource === 'course_instance') {
-    return `This course instance has an enrollment limit of ${enrollmentLimit}.`;
+    return `این ارائه درس دارای محدودیت ثبت‌نام ${enrollmentLimit} نفر است.`;
   }
 
-  return `This course's institution has a per-course-instance enrollment limit of ${enrollmentLimit}.`;
+  return `موسسه این درس برای هر ارائه درس محدودیت ثبت‌نام ${enrollmentLimit} نفر دارد.`;
 }
 
 function pluralizeQuestionCount(count: number) {
-  return count === 1 ? `${count} question` : `${count} questions`;
+  return `${count} سوال`;
 }
 
 function formatEnrollmentCount(
@@ -303,13 +295,9 @@ function formatEnrollmentCount(
   studentBillingEnabled: boolean,
 ) {
   if (studentBillingEnabled) {
-    const pluralizedEnrollments = enrollmentCount === 1 ? 'enrollment' : 'enrollments';
-
     // Student billing doesn't have a limit, so don't show it.
-    return `${enrollmentCount} ${pluralizedEnrollments}`;
+    return `${enrollmentCount} ثبت‌نام`;
   } else {
-    const pluralizedEnrollments = enrollmentLimit === 1 ? 'enrollment' : 'enrollments';
-
-    return `${enrollmentCount} / ${enrollmentLimit} ${pluralizedEnrollments}`;
+    return `${enrollmentCount} / ${enrollmentLimit} ثبت‌نام`;
   }
 }

@@ -6,11 +6,11 @@ export function UserSettingsPurchasesCard({ purchases }: { purchases: Purchase[]
   return (
     <div className="card mb-4">
       <div className="card-header bg-primary text-white d-flex">
-        <h2>Purchases</h2>
+        <h2>خریدها</h2>
       </div>
 
       {purchases.length === 0 ? (
-        <div className="card-body text-muted">You don't currently have any purchases.</div>
+        <div className="card-body text-muted">در حال حاضر هیچ خریدی ندارید.</div>
       ) : (
         <PurchaseTable purchases={purchases} />
       )}
@@ -23,24 +23,24 @@ UserSettingsPurchasesCard.displayName = 'UserSettingsPurchasesCard';
 function PurchaseTable({ purchases }: { purchases: Purchase[] }) {
   return (
     <div className="table-responsive">
-      <table className="table" aria-label="Purchases">
+      <table className="table" aria-label="خریدها">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Course</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Status</th>
+            <th>شناسه</th>
+            <th>درس</th>
+            <th>تاریخ</th>
+            <th>مبلغ</th>
+            <th>وضعیت</th>
           </tr>
         </thead>
         <tbody>
           {purchases.map((purchase) => {
             const courseName = purchase.course
               ? `${purchase.course.short_name}: ${purchase.course.title}`
-              : 'Unknown course';
+              : 'درس ناشناخته';
 
             const courseInstanceName =
-              purchase.course_instance?.long_name ?? 'Unknown course instance';
+              purchase.course_instance?.long_name ?? 'ارائه درس ناشناخته';
 
             return (
               <tr key={purchase.stripe_checkout_session.id}>
@@ -67,8 +67,7 @@ function PurchaseTable({ purchases }: { purchases: Purchase[] }) {
         </tbody>
       </table>
       <div className="card-footer">
-        Contact <a href="mailto:support@prairielearn.com">support@prairielearn.com</a> to request a
-        refund or if you have any questions about your purchases.
+        برای درخواست بازپرداخت یا هرگونه سوال درباره خریدهایتان، با <a href="mailto:support@prairielearn.com">support@prairielearn.com</a> تماس بگیرید.
       </div>
     </div>
   );
@@ -76,10 +75,10 @@ function PurchaseTable({ purchases }: { purchases: Purchase[] }) {
 
 function StripeCheckoutSessionPaymentStatus({ session }: { session: StripeCheckoutSession }) {
   if (session.data.payment_status === 'paid') {
-    return <span className="badge text-bg-success">Payment received</span>;
+    return <span className="badge text-bg-success">پرداخت دریافت شد</span>;
   } else if (session.data.payment_status === 'unpaid') {
-    return <span className="badge text-bg-secondary">Pending</span>;
+    return <span className="badge text-bg-secondary">در انتظار</span>;
   } else {
-    return <span className="badge text-bg-warning">Unknown</span>;
+    return <span className="badge text-bg-warning">نامشخص</span>;
   }
 }

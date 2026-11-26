@@ -5,14 +5,14 @@ import type { ConversationState } from '@prairielearn/course-agent-types';
 import { formatIntervalMinutes } from '@prairielearn/formatter';
 
 const blockedMessage = {
-  usage_limit: "You've reached the hourly AI usage limit.",
+  usage_limit: "به سقف مصرف ساعتی هوش مصنوعی رسیده‌اید.",
   startup_failed:
-    'The course agent could not start. Resume to clear the incomplete setup, then send a new message.',
+    'دستیار درس نتوانست شروع به کار کند. برای پاک‌سازی راه‌اندازی ناقص روی «ادامه» کلیک کنید و سپس پیام جدیدی بفرستید.',
   runtime_failed:
-    "The course agent was interrupted. It may have made some changes, and its reply may be incomplete. Resume to continue; your previous message won't run again.",
+    "دستیار درس متوقف شد. ممکن است تغییراتی اعمال کرده باشد و پاسخش ناقص باشد. برای ادامه روی «ادامه» کلیک کنید؛ پیام قبلی شما دوباره اجرا نخواهد شد.",
   checkpoint_failed:
-    "The course agent couldn't pause. Resume to try again; its changes are still there.",
-  cleanup_failed: 'The course agent paused, but cleanup did not finish. Resume to finish cleanup.',
+    "دستیار درس نتوانست متوقف شود. برای تلاش مجدد روی «ادامه» کلیک کنید؛ تغییرات آن همچنان محفوظ است.",
+  cleanup_failed: 'دستیار درس متوقف شد، اما پاک‌سازی به پایان نرسید. برای تکمیل پاک‌سازی روی «ادامه» کلیک کنید.',
 } satisfies Record<Extract<ConversationState, { status: 'blocked' }>['reason'], string>;
 
 export function BlockedNotice({
@@ -41,9 +41,9 @@ export function BlockedNotice({
     <Alert variant="warning">
       <p>
         {retryAt && remaining === 0
-          ? 'The hourly AI usage limit has reset.'
+          ? 'سقف مصرف ساعتی هوش مصنوعی بازنشانی شد.'
           : blockedMessage[state.reason]}
-        {retryAt && remaining > 0 && ` It resets in ${formatIntervalMinutes(remaining)}.`}
+        {retryAt && remaining > 0 && ` تا ${formatIntervalMinutes(remaining)} دیگر بازنشانی می‌شود.`}
       </p>
       <Button
         variant="outline-dark"
@@ -51,7 +51,7 @@ export function BlockedNotice({
         disabled={disabled || remaining > 0}
         onClick={onResume}
       >
-        Resume
+        ادامه
       </Button>
     </Alert>
   );

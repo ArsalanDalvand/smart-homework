@@ -126,18 +126,18 @@ function AiQuestionGenerationEditorInner({
                 aria-current="page"
                 href="#question-preview"
               >
-                Preview
+                پیش‌نمایش
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" data-bs-toggle="tab" href="#question-code">
-                Files
+                فایل‌ها
               </a>
             </li>
             {richTextEditorEnabled ? (
               <li className="nav-item">
                 <a className="nav-link" data-bs-toggle="tab" href="#question-rich-text-editor">
-                  Rich text editor
+                  ویرایشگر متن غنی (Rich text)
                 </a>
               </li>
             ) : null}
@@ -148,12 +148,12 @@ function AiQuestionGenerationEditorInner({
                 type="button"
                 className="btn btn-sm btn-primary"
                 data-bs-toggle="tooltip"
-                data-bs-title="Finalize a question to use it on assessments and make manual edits"
+                data-bs-title="سوال را نهایی کنید تا در آزمون‌ها استفاده شود و بتوانید آن را دستی ویرایش کنید"
                 disabled={isGenerating}
                 onClick={() => setShowFinalizeModal(true)}
               >
                 <i className="fa fa-check" aria-hidden="true" />
-                Finalize question
+                نهایی‌سازی سوال
               </button>
             )}
           </div>

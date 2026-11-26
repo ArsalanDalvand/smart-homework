@@ -7,7 +7,7 @@ export function PromptInput({
   onStop,
   refreshQuestionPreviewAfterChanges,
   setRefreshQuestionPreviewAfterChanges,
-  placeholder = 'Ask anything...',
+  placeholder = 'هر چیزی بپرسید...',
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -38,7 +38,7 @@ export function PromptInput({
         id="user-prompt-llm"
         className="form-control mb-2"
         placeholder={placeholder}
-        aria-label="Modification instructions"
+        aria-label="دستورالعمل‌های تغییر"
         value={value}
         required
         onInput={(e) => onChange(e.currentTarget.value)}
@@ -62,33 +62,33 @@ export function PromptInput({
             className="form-check-label small text-muted"
             htmlFor="refresh-question-preview-after-changes"
           >
-            Refresh question preview after changes
+            بازنشانی پیش‌نمایش سوال پس از تغییرات
           </label>
         </div>
 
         {isGenerating ? (
           <button
             type="button"
-            aria-label="Stop generation"
+            aria-label="توقف تولید"
             className="btn btn-outline-danger btn-sm text-nowrap"
             onClick={onStop}
           >
             <i className="bi bi-stop-fill me-1" />
-            Stop
+            توقف
           </button>
         ) : (
           <button
             type="submit"
             className="btn btn-primary btn-sm"
             disabled={disabled || value.trim().length === 0}
-            aria-label="Send prompt"
+            aria-label="ارسال پرامپت"
           >
             <i className="bi bi-send-fill" />
           </button>
         )}
       </div>
       <div className="text-muted small text-center mt-1">
-        AI can make mistakes. Review the generated question.
+        هوش مصنوعی ممکن است اشتباه کند. سوال تولیدشده را بازبینی کنید.
       </div>
     </form>
   );

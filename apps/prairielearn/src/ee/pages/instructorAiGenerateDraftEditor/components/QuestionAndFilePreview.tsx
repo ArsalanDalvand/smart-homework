@@ -342,15 +342,15 @@ export function QuestionAndFilePreview({
                   role="status"
                   style={{ width: '2rem', height: '2rem' }}
                 >
-                  <span className="visually-hidden">Generating...</span>
+                  <span className="visually-hidden">در حال تولید...</span>
                 </div>
-                <p className="text-muted mb-0">Creating your question...</p>
+                <p className="text-muted mb-0">در حال ایجاد سوال شما...</p>
               </div>
             ) : (
               <div className="text-center px-4" style={{ maxWidth: '26rem' }}>
-                <h3 className="h5 mb-2">Create a question</h3>
+                <h3 className="h5 mb-2">ایجاد یک سوال</h3>
                 <p className="text-muted mb-3" style={{ textWrap: 'balance' }}>
-                  You can write code in the{' '}
+                  می‌توانید کد را در تب{' '}
                   <button
                     type="button"
                     className="btn btn-link p-0 align-baseline fw-bold"
@@ -360,9 +360,9 @@ export function QuestionAndFilePreview({
                       tab?.click();
                     }}
                   >
-                    Files
+                    فایل‌ها
                   </button>{' '}
-                  tab, or use the chat to create a question with AI.
+                  بنویسید، یا از گفتگو برای ایجاد سوال با هوش مصنوعی استفاده کنید.
                 </p>
                 <div className="mt-4">
                   <NewToPrairieLearnCard />

@@ -21,15 +21,15 @@ export function CourseRequestMessageSection({
   courseRequestMessageHtml: string;
 }): HtmlValue {
   return html`
-    <h2 class="h4">Course request message</h2>
+    <h2 class="h4">پیام درخواست درس</h2>
     <p>${description}</p>
     <form method="POST" class="mb-4">
       <div class="mb-3">
-        <label class="form-label" for="course_request_message">Message (Markdown)</label>
+        <label class="form-label" for="course_request_message">پیام (Markdown)</label>
         ${CourseRequestMessageTextarea({ courseRequestMessage })}
         <small id="course_request_message_help" class="form-text text-muted">
-          Leave blank to avoid showing a message on the course request page. Maximum
-          ${COURSE_REQUEST_MESSAGE_MAX_LENGTH.toLocaleString()} characters.
+          برای نمایش ندادن پیام در صفحه درخواست درس، خالی بگذارید. حداکثر
+          ${COURSE_REQUEST_MESSAGE_MAX_LENGTH.toLocaleString()} کاراکتر.
         </small>
       </div>
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
@@ -39,13 +39,13 @@ export function CourseRequestMessageSection({
         value="update_course_request_message"
         class="btn btn-primary"
       >
-        Save
+        ذخیره
       </button>
     </form>
     ${
       courseRequestMessageHtml
         ? html`
-            <h3 class="h5">Preview</h3>
+            <h3 class="h5">پیش‌نمایش</h3>
             <div class="card mb-3">
               <div class="card-body">${unsafeHtml(courseRequestMessageHtml)}</div>
             </div>

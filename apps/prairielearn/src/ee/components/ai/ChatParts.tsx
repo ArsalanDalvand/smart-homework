@@ -58,7 +58,7 @@ export function ReasoningBlock({ part }: { part: ReasoningUIPart }) {
   return (
     <Disclosure
       className="d-flex flex-column gap-1 border rounded p-1 small"
-      summary={<span className="small">{isStreaming ? 'Thinking...' : 'Thinking'}</span>}
+      summary={<span className="small">{isStreaming ? 'در حال تفکر...' : 'تفکر'}</span>}
       expanded={isExpanded}
       onToggle={() => {
         setUserControlled(true);

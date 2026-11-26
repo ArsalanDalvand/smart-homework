@@ -22,7 +22,7 @@ const LazyReviewDiff = lazy(() =>
 function ReviewDiffLoadError() {
   return (
     <Alert variant="danger" className="m-3">
-      Could not load the changes. Reload this page to try again.
+      بارگذاری تغییرات ناموفق بود. برای تلاش مجدد این صفحه را بازنشانی کنید.
     </Alert>
   );
 }
@@ -87,23 +87,23 @@ export function RequestChangesCard({
       )}
       {data?.status === 'decided' && !data.result && (
         <p className="small text-muted mt-2 mb-0" role="status">
-          Saving and syncing…
+          در حال ذخیره و همگام‌سازی…
         </p>
       )}
       {data?.status === 'unavailable' && (
-        <p className="small text-muted mt-2 mb-0">This review is no longer available.</p>
+        <p className="small text-muted mt-2 mb-0">این بازبینی دیگر در دسترس نیست.</p>
       )}
       {/* The composer delivers a denial by message again when the instructor resends it. */}
       {canResume && data?.status === 'decided' && data.result && !data.result.viaMessage && (
         <div className="d-flex align-items-center gap-2 mt-2">
-          <span className="small text-muted">The course agent has not received this result.</span>
+          <span className="small text-muted">دستیار درس این نتیجه را دریافت نکرده است.</span>
           <Button
             variant="outline-secondary"
             size="sm"
             disabled={resume.isPending}
             onClick={() => resume.mutate({ conversationId })}
           >
-            Resume
+            ادامه
           </Button>
         </div>
       )}
@@ -115,7 +115,7 @@ export function RequestChangesCard({
           variant="outline-secondary"
           onClick={() => void review.refetch()}
         >
-          Reload review
+          بارگذاری مجدد بازبینی
         </Button>
       )}
       {pending?.diff.error && (
@@ -165,16 +165,16 @@ function ReviewActions({
     <div className="d-flex flex-wrap align-items-center gap-2">
       <div className="d-flex align-items-center gap-2">
         <i className="bi bi-exclamation-triangle text-warning" aria-hidden="true" />
-        <span>Review course changes</span>
+        <span>بازبینی تغییرات درس</span>
       </div>
       <Button variant="link" size="sm" className="p-0 text-nowrap" onClick={onViewChanges}>
         {fileCount === null
-          ? 'View changes'
-          : `View ${fileCount === 1 ? '1 changed file' : `${fileCount} changed files`}`}
+          ? 'مشاهده تغییرات'
+          : `مشاهده ${fileCount} فایل تغییریافته`}
       </Button>
       <div className="d-flex align-items-center gap-2 flex-shrink-0 ms-auto">
         <Button size="sm" disabled={disabled || !canApprove} onClick={() => onDecision('approved')}>
-          Approve
+          تایید
         </Button>
         <Button
           variant="outline-secondary"
@@ -182,7 +182,7 @@ function ReviewActions({
           disabled={disabled}
           onClick={() => onDecision('denied')}
         >
-          Deny
+          رد
         </Button>
       </div>
     </div>
@@ -213,7 +213,7 @@ function ReviewChangesModal({
   const loadingSpinner = (
     <div className="d-flex justify-content-center p-4">
       <Spinner animation="border" size="sm" role="status">
-        <span className="visually-hidden">Loading changes</span>
+        <span className="visually-hidden">در حال بارگذاری تغییرات</span>
       </Spinner>
     </div>
   );
@@ -227,7 +227,7 @@ function ReviewChangesModal({
       onHide={onHide}
     >
       <Modal.Header closeButton>
-        <Modal.Title id={`review-title-${id}`}>Review course changes</Modal.Title>
+        <Modal.Title id={`review-title-${id}`}>بازبینی تغییرات درس</Modal.Title>
       </Modal.Header>
       <Modal.Body className={clsx(files && files.length > 0 && 'p-0 d-flex flex-column')}>
         {loading && loadingSpinner}
@@ -236,25 +236,25 @@ function ReviewChangesModal({
             <LazyReviewDiff files={files} />
           </Suspense>
         )}
-        {files?.length === 0 && <p className="m-3">No files were changed.</p>}
+        {files?.length === 0 && <p className="m-3">هیچ فایلی تغییر نکرده است.</p>}
         {files === null && !loading && !error && (
-          <p className="mb-0">This review is no longer pending.</p>
+          <p className="mb-0">این بازبینی دیگر در انتظار تایید نیست.</p>
         )}
         {error}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-secondary" onClick={onHide}>
-          Close
+          بستن
         </Button>
         <Button
           variant="outline-danger"
           disabled={actionsDisabled}
           onClick={() => onDecision('denied')}
         >
-          Deny
+          رد
         </Button>
         <Button disabled={actionsDisabled || !canApprove} onClick={() => onDecision('approved')}>
-          Approve
+          تایید
         </Button>
       </Modal.Footer>
     </Modal>
@@ -262,24 +262,24 @@ function ReviewChangesModal({
 }
 
 function ReviewResult({ result }: { result: RequestChangesResult }) {
-  let message = 'Changes could not be saved.';
+  let message = 'ذخیره تغییرات ناموفق بود.';
   if (result.decision === 'denied') {
-    message = 'Changes denied.';
+    message = 'تغییرات رد شدند.';
   } else if (result.publication.status === 'conflict') {
-    message = 'Course files changed since this proposal. No proposed changes were saved.';
+    message = 'فایل‌های درس از زمان این پیشنهاد تغییر کرده‌اند. هیچ تغییر پیشنهادی ذخیره نشد.';
   } else if (result.publication.status === 'unknown') {
     message =
-      'Saving was interrupted before its outcome was recorded, so these changes may or may not have been saved. Check the course files or repository.';
+      'فرآیند ذخیره پیش از ثبت نتیجه متوقف شد، بنابراین ممکن است این تغییرات ذخیره شده یا نشده باشند. فایل‌های درس یا مخزن را بررسی کنید.';
   } else if (result.publication.status === 'saved_locally') {
     message =
       result.sync.status === 'succeeded'
-        ? 'Changes saved locally and course synced.'
-        : 'Changes saved locally, but the course sync failed.';
+        ? 'تغییرات به صورت محلی ذخیره و درس همگام‌سازی شد.'
+        : 'تغییرات به صورت محلی ذخیره شد، اما همگام‌سازی درس ناموفق بود.';
   } else if (result.publication.status === 'published') {
     message =
       result.sync.status === 'succeeded'
-        ? 'Changes saved and course synced.'
-        : 'Changes saved, but the course sync failed.';
+        ? 'تغییرات ذخیره و درس همگام‌سازی شد.'
+        : 'تغییرات ذخیره شد، اما همگام‌سازی درس ناموفق بود.';
   }
   return (
     <div role="status">
@@ -298,7 +298,7 @@ function ReviewResult({ result }: { result: RequestChangesResult }) {
       )}
       {result.sync.status === 'failed' && (
         <details className="mt-2">
-          <summary>Error</summary>
+          <summary>خطا</summary>
           <pre className="small text-wrap mt-2 mb-0">{result.sync.error}</pre>
         </details>
       )}

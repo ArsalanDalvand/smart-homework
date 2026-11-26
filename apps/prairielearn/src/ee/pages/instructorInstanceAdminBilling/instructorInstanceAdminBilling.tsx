@@ -86,7 +86,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: res.locals,
-        pageTitle: 'Billing',
+        pageTitle: 'صورت‌حساب و اعتبار',
         navContext: {
           type: 'instructor',
           page: 'instance_admin',
@@ -96,11 +96,11 @@ router.get(
           <>
             {!editable && (
               <div className="alert alert-warning">
-                Only course owners can change billing settings.
+                فقط مالکان درس می‌توانند تنظیمات صورت‌حساب را تغییر دهند.
               </div>
             )}
             <div className="card mb-4">
-              <div className="card-header bg-primary text-white d-flex">Billing</div>
+              <div className="card-header bg-primary text-white d-flex">صورت‌حساب و اعتبار</div>
               <div className="card-body">
                 <Hydrate>
                   <InstructorInstanceAdminBillingForm

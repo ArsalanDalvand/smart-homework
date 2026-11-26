@@ -13,7 +13,7 @@ export function LinkedLtiUserRequired({
   resLocals: UntypedResLocals;
 }) {
   return PageLayout({
-    pageTitle: 'Missing LTI connection',
+    pageTitle: 'اتصال LTI یافت نشد',
     navContext: {
       type: 'student',
       page: undefined,
@@ -22,7 +22,7 @@ export function LinkedLtiUserRequired({
     content: html`
       <div class="card mb-4">
         <div class="card-header bg-warning">
-          <h1>Missing LTI connection</h1>
+          <h1>اتصال LTI یافت نشد</h1>
         </div>
         <div class="card-body">
           ${run(() => {
@@ -30,17 +30,15 @@ export function LinkedLtiUserRequired({
               const instance = instancesWithMissingIdentities[0].lti13_instance;
               return html`
                 <p>
-                  To continue, please log into PrairieLearn via <strong>${instance.name}</strong>.
-                  This creates a connection between your PrairieLearn account and your
-                  ${instance.name} account.
+                  برای ادامه، لطفاً از طریق <strong>${instance.name}</strong> وارد سامانه شوید.
+                  این کار حساب کاربری شما در سامانه را به حساب ${instance.name} متصل می‌کند.
                 </p>
               `;
             }
 
             return html`
               <p>
-                To continue to this course, please log into PrairieLearn via all of the following
-                platforms:
+                برای ادامه و دسترسی به این درس، لطفاً از طریق تمام پلتفرم‌های زیر وارد سامانه شوید:
               </p>
               <ul>
                 ${instancesWithMissingIdentities.map(
@@ -48,15 +46,13 @@ export function LinkedLtiUserRequired({
                 )}
               </ul>
               <p>
-                This will create a connection between your PrairieLearn account and your accounts on
-                these platforms.
+                این کار حساب کاربری شما در سامانه را به حساب‌هایتان در این پلتفرم‌ها متصل می‌کند.
               </p>
             `;
           })}
 
           <p class="mb-0">
-            After completing this step, you'll be able to access this course directly in
-            PrairieLearn in the future.
+            پس از تکمیل این مرحله، در آینده می‌توانید مستقیماً در سامانه به این درس دسترسی داشته باشید.
           </p>
         </div>
       </div>

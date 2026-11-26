@@ -61,14 +61,14 @@ export function CreditPoolDashboard({
   });
 
   if (poolQuery.isError) {
-    return <Alert variant="danger">Failed to load credit pool data.</Alert>;
+    return <Alert variant="danger">بارگذاری اطلاعات مخزن اعتبار ناموفق بود.</Alert>;
   }
 
   if (!poolQuery.data) {
     return (
       <div className="text-center py-4">
         <Spinner animation="border" size="sm" className="me-2" />
-        Loading AI grading credits...
+        در حال بارگذاری اعتبارهای تصحیح هوشمند...
       </div>
     );
   }
@@ -80,13 +80,13 @@ export function CreditPoolDashboard({
 
   if (hasNoBalance && showEmptyState && !dimmed) {
     if (changesQuery.isError) {
-      return <Alert variant="danger">Failed to load transaction history.</Alert>;
+      return <Alert variant="danger">بارگذاری تاریخچه تراکنش‌ها ناموفق بود.</Alert>;
     }
     if (!changesQuery.isFetched) {
       return (
         <div className="text-center py-4">
           <Spinner animation="border" size="sm" className="me-2" />
-          Loading AI grading credits...
+          در حال بارگذاری اعتبارهای تصحیح هوشمند...
         </div>
       );
     }
@@ -99,11 +99,11 @@ export function CreditPoolDashboard({
             aria-hidden="true"
             style={{ fontSize: '2.5rem' }}
           />
-          <h3 className="h5 mb-2">Get started with AI grading</h3>
+          <h3 className="h5 mb-2">شروع به کار با تصحیح هوشمند (AI Grading)</h3>
           <p className="text-muted mb-3">
             {canEdit
-              ? 'Buy credits to start grading submissions with AI.'
-              : 'You must be a course owner to purchase or redeem AI grading credits.'}
+              ? 'برای شروع تصحیح ارسال‌ها با هوش مصنوعی اعتبار خریداری کنید.'
+              : 'برای خرید یا دریافت اعتبار رایگان تصحیح هوشمند باید مالک درس باشید.'}
           </p>
           <div className="d-flex flex-column align-items-center gap-2">
             {onRedeemFreeCreditClick && (
@@ -114,7 +114,7 @@ export function CreditPoolDashboard({
                 onClick={onRedeemFreeCreditClick}
               >
                 <i className="bi bi-gift-fill" aria-hidden="true" />
-                Redeem free credit
+                دریافت اعتبار رایگان
               </button>
             )}
             {onPurchaseClick && (
@@ -125,7 +125,7 @@ export function CreditPoolDashboard({
                 onClick={onPurchaseClick}
               >
                 <i className="bi bi-cart-plus" aria-hidden="true" />
-                Purchase credits
+                خرید اعتبار
               </button>
             )}
           </div>
@@ -142,31 +142,31 @@ export function CreditPoolDashboard({
       <div>
         <div className="mb-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h3 className="h6 mb-0">Daily usage</h3>
+            <h3 className="h6 mb-0">مصرف روزانه</h3>
             <div className="d-flex align-items-center gap-2">
               <Dropdown onSelect={(key) => setGroupBy((key ?? 'none') as GroupByOption)}>
                 <Dropdown.Toggle variant="outline-secondary" size="sm">
-                  {groupBy === 'none' && 'Group by'}
-                  {groupBy === 'user' && 'Group by user'}
-                  {groupBy === 'assessment' && 'Group by assessment'}
-                  {groupBy === 'question' && 'Group by question'}
+                  {groupBy === 'none' && 'گروه‌بندی بر اساس'}
+                  {groupBy === 'user' && 'گروه‌بندی بر اساس کاربر'}
+                  {groupBy === 'assessment' && 'گروه‌بندی بر اساس آزمون/تکلیف'}
+                  {groupBy === 'question' && 'گروه‌بندی بر اساس سوال'}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item eventKey="none" active={groupBy === 'none'}>
-                    Group by
+                    بدون گروه‌بندی
                   </Dropdown.Item>
                   <Dropdown.Item eventKey="user" active={groupBy === 'user'}>
-                    Group by user
+                    بر اساس کاربر
                   </Dropdown.Item>
                   <Dropdown.Item eventKey="assessment" active={groupBy === 'assessment'}>
-                    Group by assessment
+                    بر اساس آزمون/تکلیف
                   </Dropdown.Item>
                   <Dropdown.Item eventKey="question" active={groupBy === 'question'}>
-                    Group by question
+                    بر اساس سوال
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-              <div className="btn-group btn-group-sm" role="group" aria-label="Time range">
+              <div className="btn-group btn-group-sm" role="group" aria-label="بازه زمانی">
                 {CHART_DAYS_OPTIONS.map((d) => (
                   <button
                     key={d}
@@ -177,7 +177,7 @@ export function CreditPoolDashboard({
                     )}
                     onClick={() => setChartDays(d)}
                   >
-                    {d}d
+                    {d} روز
                   </button>
                 ))}
               </div>
@@ -200,16 +200,16 @@ export function CreditPoolDashboard({
               if (!showHistory) setPage(1);
             }}
           >
-            {showHistory ? 'Hide transaction history' : 'Show transaction history'}
+            {showHistory ? 'پنهان کردن تاریخچه تراکنش‌ها' : 'نمایش تاریخچه تراکنش‌ها'}
           </button>
 
           {showHistory && (
             <div className="mt-3">
               {changesQuery.isLoading && (
-                <p className="text-muted">Loading transaction history...</p>
+                <p className="text-muted">در حال بارگذاری تاریخچه تراکنش‌ها...</p>
               )}
               {changesQuery.isError && (
-                <Alert variant="danger">Failed to load transaction history.</Alert>
+                <Alert variant="danger">بارگذاری تاریخچه تراکنش‌ها ناموفق بود.</Alert>
               )}
               {changesQuery.data && (
                 <TransactionHistoryTable

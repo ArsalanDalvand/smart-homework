@@ -80,7 +80,7 @@ export const SamlTest = ({
     <!doctype html>
     <html lang="en">
       <head>
-        ${HeadContents({ resLocals, pageTitle: 'SAML test' })}
+        ${HeadContents({ resLocals, pageTitle: 'آزمون SAML' })}
       </head>
       <body>
         <main id="content" class="container mb-4">
@@ -88,11 +88,9 @@ export const SamlTest = ({
             usedNameFallback
               ? html`
                   <div class="alert alert-warning">
-                    <h2 class="h4">Using fallback name attribute</h2>
+                    <h2 class="h4">استفاده از صفت نام جایگزین (Fallback)</h2>
                     <p class="mb-0">
-                      Given name and family name mappings are configured, but one or more values
-                      were missing in this SAML response. PrairieLearn used the configured name
-                      attribute (<code>${nameAttribute}</code>) as a fallback.
+                      نگاشت‌های نام و نام خانوادگی پیکربندی شده‌اند، اما یک یا چند مقدار در این پاسخ SAML یافت نشد. سامانه از صفت نام پیکربندی‌شده (<code>${nameAttribute}</code>) به عنوان جایگزین استفاده کرد.
                     </p>
                   </div>
                 `
@@ -103,41 +101,41 @@ export const SamlTest = ({
               ? html`
                   <div class="alert alert-danger">
                     <h2 class="h4">
-                      One or more errors were encountered while validating the SAML response.
+                      هنگام اعتبارسنجی پاسخ SAML یک یا چند خطا رخ داد.
                     </h2>
                     <ul class="mb-0">
                       ${
                         !hasUidAttribute
                           ? html`<li>
-                              No UID attribute mapping is configured for this institution
+                              هیچ نگاشت صفت UID برای این موسسه پیکربندی نشده است
                             </li>`
                           : ''
                       }
                       ${
                         !hasUinAttribute
                           ? html`<li>
-                              No UIN attribute mapping is configured for this institution
+                              هیچ نگاشت صفت UIN برای این موسسه پیکربندی نشده است
                             </li>`
                           : ''
                       }
                       ${
                         !hasNameMapping
                           ? html`<li>
-                              No name attribute mapping is configured for this institution
+                              هیچ نگاشت صفت نام برای این موسسه پیکربندی نشده است
                             </li>`
                           : ''
                       }
                       ${
                         !hasEmailAttribute
                           ? html`<li>
-                              No email attribute mapping is configured for this institution
+                              هیچ نگاشت صفت ایمیل برای این موسسه پیکربندی نشده است
                             </li>`
                           : ''
                       }
                       ${
                         hasUidAttribute && !hasUid
                           ? html`<li>
-                              No value found for configured UID attribute
+                              مقداری برای صفت UID پیکربندی‌شده یافت نشد
                               (<code>${uidAttribute}</code>)
                             </li>`
                           : ''
@@ -145,7 +143,7 @@ export const SamlTest = ({
                       ${
                         hasUinAttribute && !hasUin
                           ? html`<li>
-                              No value found for configured UIN attribute
+                              مقداری برای صفت UIN پیکربندی‌شده یافت نشد
                               (<code>${uinAttribute}</code>)
                             </li>`
                           : ''
@@ -153,7 +151,7 @@ export const SamlTest = ({
                       ${
                         hasNameAttribute && !hasName
                           ? html`<li>
-                              No value found for configured name attribute
+                              مقداری برای صفت نام پیکربندی‌شده یافت نشد
                               (<code>${nameAttribute}</code>)
                             </li>`
                           : ''
@@ -161,7 +159,7 @@ export const SamlTest = ({
                       ${
                         hasGivenNameAttribute && !hasGivenName
                           ? html`<li>
-                              No value found for configured given name attribute
+                              مقداری برای صفت نام کوچک پیکربندی‌شده یافت نشد
                               (<code>${givenNameAttribute}</code>)
                             </li>`
                           : ''
@@ -169,7 +167,7 @@ export const SamlTest = ({
                       ${
                         hasFamilyNameAttribute && !hasFamilyName
                           ? html`<li>
-                              No value found for configured family name attribute
+                              مقداری برای صفت نام خانوادگی پیکربندی‌شده یافت نشد
                               (<code>${familyNameAttribute}</code>)
                             </li>`
                           : ''
@@ -177,7 +175,7 @@ export const SamlTest = ({
                       ${
                         hasEmailAttribute && !hasEmail
                           ? html`<li>
-                              No value found for configured email attribute
+                              مقداری برای صفت ایمیل پیکربندی‌شده یافت نشد
                               (<code>${emailAttribute}</code>)
                             </li>`
                           : ''
@@ -190,28 +188,28 @@ export const SamlTest = ({
           ${
             hasUid || hasUin || hasName
               ? html`
-                  <h2 class="h4">Mapped SAML attributes</h2>
+                  <h2 class="h4">صفات نگاشت‌شده SAML</h2>
                   <ul>
                     ${
                       hasUid
-                        ? html`<li><strong>UID:</strong> ${uid} (<code>${uidAttribute}</code>)</li>`
+                        ? html`<li><strong>شناسه کاربری (UID):</strong> ${uid} (<code>${uidAttribute}</code>)</li>`
                         : ''
                     }
                     ${
                       hasUin
-                        ? html`<li><strong>UIN:</strong> ${uin} (<code>${uinAttribute}</code>)</li>`
+                        ? html`<li><strong>شماره شناسایی (UIN):</strong> ${uin} (<code>${uinAttribute}</code>)</li>`
                         : ''
                     }
                     ${
                       hasName
                         ? html`<li>
-                            <strong>Name:</strong> ${name}
+                            <strong>نام:</strong> ${name}
                             ${
                               hasSplitNameValues
                                 ? html`(<code>${givenNameAttribute}</code> +
                                     <code>${familyNameAttribute}</code>)`
                                 : usedNameFallback
-                                  ? html`(<code>${nameAttribute}</code>, fallback)`
+                                  ? html`(<code>${nameAttribute}</code>، جایگزین)`
                                   : html`(<code>${nameAttribute}</code>)`
                             }
                           </li>`
@@ -220,7 +218,7 @@ export const SamlTest = ({
                     ${
                       hasEmail
                         ? html`<li>
-                            <strong>Email:</strong> ${email} (<code>${emailAttribute}</code>)
+                            <strong>ایمیل:</strong> ${email} (<code>${emailAttribute}</code>)
                           </li>`
                         : ''
                     }
@@ -229,7 +227,7 @@ export const SamlTest = ({
               : ''
           }
 
-          <h2 class="h4">All SAML attributes</h2>
+          <h2 class="h4">تمامی صفات SAML</h2>
           <pre><code>${JSON.stringify(attributes, null, 2)}</code></pre>
         </main>
       </body>

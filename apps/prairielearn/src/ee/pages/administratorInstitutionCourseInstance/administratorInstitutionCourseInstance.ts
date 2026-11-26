@@ -102,7 +102,7 @@ router.post(
         course_instance_id: course_instance.id,
         enrollment_limit: req.body.enrollment_limit || null,
       });
-      flash('success', 'Successfully updated enrollment limit.');
+      flash('success', 'محدودیت ثبت‌نام با موفقیت به‌روزرسانی شد.');
       res.redirect(req.originalUrl);
     } else if (req.body.__action === 'update_plans') {
       const desiredPlans = parseDesiredPlanGrants({
@@ -116,7 +116,7 @@ router.post(
         desiredPlans,
         res.locals.authn_user.id,
       );
-      flash('success', 'Successfully updated institution plan grants.');
+      flash('success', 'مجوزهای طرح موسسه با موفقیت به‌روزرسانی شد.');
       res.redirect(req.originalUrl);
     } else {
       throw new error.HttpStatusError(400, `Unknown action: ${req.body.__action}`);

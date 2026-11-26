@@ -87,13 +87,13 @@ router.post(
       });
 
       if (validUids.length > 0) {
-        flash('success', `Successfully added institution admins: ${validUids.join(', ')}`);
+        flash('success', `مدیران موسسه با موفقیت اضافه شدند: ${validUids.join('، ')}`);
       }
 
       if (invalidUids.length > 0) {
         flash(
           'error',
-          `The following users either don't exist or aren't in this institution: ${invalidUids.join(', ')}`,
+          `کاربران زیر وجود ندارند یا در این موسسه عضو نیستند: ${invalidUids.join('، ')}`,
         );
       }
 
@@ -104,7 +104,7 @@ router.post(
         unsafe_institution_administrator_id: req.body.unsafe_institution_administrator_id,
         authn_user_id: res.locals.authn_user.id,
       });
-      flash('notice', 'Removed institution administrator.');
+      flash('notice', 'مدیر موسسه حذف شد.');
       res.redirect(req.originalUrl);
     } else {
       throw new HttpStatusError(400, `Unknown action: ${req.body.__action}`);

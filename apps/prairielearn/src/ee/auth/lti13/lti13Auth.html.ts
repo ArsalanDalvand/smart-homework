@@ -27,27 +27,27 @@ export function Lti13Test({
     <!doctype html>
     <html lang="en">
       <head>
-        ${HeadContents({ resLocals, pageTitle: 'LTI 1.3 test' })}
+        ${HeadContents({ resLocals, pageTitle: 'آزمون LTI 1.3' })}
       </head>
       <body>
         <main id="content" class="container mb-4">
-          <h1>LTI 1.3 authentication testing</h1>
+          <h1>آزمون احراز هویت LTI 1.3</h1>
           <p>
-            Once you're satisfied, remove <code>?test</code> from the end of your configured
-            <a href="${url.href}">OpenID Connection Initiation URL</a>
-            to bypass this debugging report and continue to authentication.
+            پس از اطمینان از صحت تنظیمات، عبارت <code>?test</code> را از انتهای
+            <a href="${url.href}">نشانی شروع اتصال OpenID</a>
+            حذف کنید تا از این گزارش اشکال‌زدایی عبور کرده و وارد فرآیند احراز هویت شوید.
           </p>
-          <h2>Mapped LTI 1.3 claims</h2>
-          <p>The configured claim mappings produced:</p>
+          <h2>نگاشت ادعاهای (Claims) LTI 1.3</h2>
+          <p>نگاشت‌های پیکربندی‌شده خروجی زیر را تولید کردند:</p>
           <ul>
-            <li><b>UID:</b> ${userInfo.uid} (<code>${lti13_instance.uid_attribute}</code>)</li>
-            <li><b>UIN:</b> ${userInfo.uin} (<code>${lti13_instance.uin_attribute}</code>)</li>
-            <li><b>Name:</b> ${userInfo.name} (<code>${lti13_instance.name_attribute}</code>)</li>
+            <li><b>شناسه کاربری (UID):</b> ${userInfo.uid} (<code>${lti13_instance.uid_attribute}</code>)</li>
+            <li><b>شماره شناسایی (UIN):</b> ${userInfo.uin} (<code>${lti13_instance.uin_attribute}</code>)</li>
+            <li><b>نام:</b> ${userInfo.name} (<code>${lti13_instance.name_attribute}</code>)</li>
             <li>
-              <b>Email:</b> ${userInfo.email} (<code>${lti13_instance.email_attribute}</code>)
+              <b>ایمیل:</b> ${userInfo.email} (<code>${lti13_instance.email_attribute}</code>)
             </li>
           </ul>
-          <h2>All LTI 1.3 claims</h2>
+          <h2>تمامی ادعاهای LTI 1.3</h2>
           <pre><code>${JSON.stringify(lti13_claims, null, 2)}</code></pre>
         </main>
       </body>
@@ -60,7 +60,7 @@ export function Lti13AuthIframe({ parameters }: { parameters: Record<string, any
     <!doctype html>
     <html lang="en">
       <head>
-        ${HeadContents({ resLocals: {}, pageTitle: 'LTI 1.3 redirect' })}
+        ${HeadContents({ resLocals: {}, pageTitle: 'هدایت LTI 1.3' })}
       </head>
       <body>
         <main id="content" class="m-3">
@@ -70,10 +70,10 @@ export function Lti13AuthIframe({ parameters }: { parameters: Record<string, any
                 html`<input type="hidden" name="${key}" value="${String(value)}" />`,
             )}
             <button id="submitButton" class="btn btn-primary mb-2">
-              Open PrairieLearn in a new window
+              باز کردن سامانه در پنجره جدید
             </button>
           </form>
-          <div id="message">If there are login errors, reload this page to start again.</div>
+          <div id="message">در صورت بروز خطا در ورود، این صفحه را بازنشانی (Reload) کنید تا دوباره شروع شود.</div>
 
           <script>
             const form = document.getElementById('interceptForm');
@@ -82,8 +82,8 @@ export function Lti13AuthIframe({ parameters }: { parameters: Record<string, any
 
             form.addEventListener('submit', function () {
               button.disabled = true;
-              button.textContent = 'Opened PrairieLearn in a new window';
-              messageDiv.textContent = 'Reload this page to access PrairieLearn again.';
+              button.textContent = 'سامانه در پنجره جدید باز شد';
+              messageDiv.textContent = 'برای دسترسی مجدد به سامانه، این صفحه را بازنشانی کنید.';
             });
           </script>
         </main>
@@ -101,7 +101,7 @@ export function Lti13AuthRequired({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Complete your sign-in',
+    pageTitle: 'تکمیل ورود به حساب',
     navContext: {
       type: 'plain',
       page: undefined,
@@ -115,13 +115,12 @@ export function Lti13AuthRequired({
         <div class="col-md-8 col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body p-4 text-center">
-              <h1 class="h3 mb-3">Complete your sign-in</h1>
+              <h1 class="h3 mb-3">تکمیل ورود به حساب</h1>
               <p class="text-body-secondary mb-4" style="text-wrap: balance;">
-                Sign in once to finish setting up your PrairieLearn access. When you're done, we'll
-                return you to your course.
+                برای تکمیل راه‌اندازی دسترسی خود، یک‌بار وارد شوید. پس از اتمام، به درس خود بازگردانده خواهید شد.
               </p>
               <a class="btn btn-primary" href="/pl/login?institution_id=${institution_id}">
-                Continue to sign in
+                ادامه برای ورود
               </a>
             </div>
           </div>

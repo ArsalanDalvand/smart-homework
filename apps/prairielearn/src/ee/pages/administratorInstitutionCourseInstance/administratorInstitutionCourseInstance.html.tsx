@@ -40,7 +40,7 @@ export function AdministratorInstitutionCourseInstance({
 
   return PageLayout({
     resLocals: { ...resLocals, institution },
-    pageTitle: `${course.short_name}, ${course_instance.short_name} - Institution Admin`,
+    pageTitle: `${course.short_name}، ${course_instance.short_name} - مدیریت موسسه`,
     headContent: compiledScriptTag('administratorInstitutionCourseInstanceClient.ts'),
     navContext: {
       type: 'administrator_institution',
@@ -48,10 +48,10 @@ export function AdministratorInstitutionCourseInstance({
       subPage: 'courses',
     },
     content: html`
-      <nav aria-label="Breadcrumbs">
+      <nav aria-label="مسیر راهنما">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="/pl/administrator/institution/${institution.id}/courses">Courses</a>
+            <a href="/pl/administrator/institution/${institution.id}/courses">درس‌ها</a>
           </li>
           <li class="breadcrumb-item">
             <a href="/pl/administrator/institution/${institution.id}/course/${course.id}">
@@ -66,18 +66,18 @@ export function AdministratorInstitutionCourseInstance({
       ${
         isDeleted
           ? html`<div class="alert alert-danger" role="alert">
-              <strong>This course instance has been deleted.</strong> You cannot make changes to it.
+              <strong>این ارائه درس حذف شده است.</strong> امکان اعمال تغییر در آن وجود ندارد.
             </div>`
           : html`<p>
-              <a href="/pl/course_instance/${course_instance.id}/instructor">View as instructor</a>
+              <a href="/pl/course_instance/${course_instance.id}/instructor">مشاهده به عنوان مدرس</a>
             </p>`
       }
 
-      <h2 class="h4">Limits</h2>
+      <h2 class="h4">محدودیت‌ها</h2>
       <form method="POST" class="mb-3">
         <div class="mb-3">
           <label class="form-label" for="course_instance_enrollment_limit_from_institution">
-            Enrollment limit from institution
+            محدودیت ثبت‌نام از طرف موسسه
           </label>
           <input
             type="number"
@@ -87,13 +87,13 @@ export function AdministratorInstitutionCourseInstance({
             value="${institution.course_instance_enrollment_limit}"
           />
           <small class="form-text text-muted">
-            This limit applies to all course instances without a specific enrollment limit set.
+            این محدودیت برای تمام ارائه‌های درسی که محدودیت ثبت‌نام اختصاصی ندارند اعمال می‌شود.
           </small>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="course_instance_enrollment_limit_from_course">
-            Enrollment limit from course
+            محدودیت ثبت‌نام از طرف درس
           </label>
           <input
             type="number"
@@ -103,12 +103,12 @@ export function AdministratorInstitutionCourseInstance({
             value="${course.course_instance_enrollment_limit}"
           />
           <small class="form-text text-muted">
-            This limit applies to all course instances without a specific enrollment limit set.
+            این محدودیت برای تمام ارائه‌های درسی که محدودیت ثبت‌نام اختصاصی ندارند اعمال می‌شود.
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="enrollment_limit">Enrollment limit override</label>
+          <label class="form-label" for="enrollment_limit">بازنویسی محدودیت ثبت‌نام</label>
           <input
             type="number"
             class="form-control"
@@ -118,8 +118,7 @@ export function AdministratorInstitutionCourseInstance({
             ${isDeleted ? 'disabled' : ''}
           />
           <small class="form-text text-muted">
-            This limit overrides any course-wide or institution-wide limits. If no override is set,
-            the enrollment limit from either the course or the institution (if any) will be used.
+            این محدودیت جایگزین محدودیت‌های سطح درس و موسسه می‌شود. در صورت تنظیم نشدن، از محدودیت درس یا موسسه (در صورت وجود) استفاده خواهد شد.
           </small>
         </div>
         ${
@@ -133,13 +132,13 @@ export function AdministratorInstitutionCourseInstance({
                   value="update_enrollment_limit"
                   class="btn btn-primary"
                 >
-                  Save
+                  ذخیره
                 </button>
               `
         }
       </form>
 
-      <h2 class="h4">Plans</h2>
+      <h2 class="h4">طرح‌ها (Plans)</h2>
       ${PlanGrantsEditor({
         planGrants,
         // The basic plan is never available at the course instance level; it's only

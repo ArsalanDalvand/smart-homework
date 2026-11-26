@@ -80,7 +80,7 @@ export function PlanGrantsEditor({
           : html`
               <input type="hidden" name="__csrf_token" value="${csrfToken}" />
               <button type="submit" name="__action" value="update_plans" class="btn btn-primary">
-                Save
+                ذخیره
               </button>
             `
       }

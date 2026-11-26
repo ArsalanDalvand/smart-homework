@@ -15,7 +15,7 @@ export function AdministratorInstitutionCourses({
 }) {
   return PageLayout({
     resLocals: { ...resLocals, institution },
-    pageTitle: 'Courses - Institution Admin',
+    pageTitle: 'درس‌ها - مدیریت موسسه',
     navContext: {
       type: 'administrator_institution',
       page: 'administrator_institution',
@@ -23,11 +23,11 @@ export function AdministratorInstitutionCourses({
     },
     content: html`
       <div class="table-responsive">
-        <table class="table table-hover table-striped table-bordered" aria-label="Courses">
+        <table class="table table-hover table-striped table-bordered" aria-label="درس‌ها">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Effective yearly enrollment limit</th>
+              <th>نام</th>
+              <th>محدودیت ثبت‌نام سالانه موثر</th>
             </tr>
           </thead>
           <tbody>

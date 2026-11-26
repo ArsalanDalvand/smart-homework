@@ -53,21 +53,21 @@ export function TransactionHistoryTable({
   return (
     <>
       <div className="table-responsive border rounded overflow-hidden">
-        <table className="table table-sm table-hover mb-0" aria-label="Transaction history">
+        <table className="table table-sm table-hover mb-0" aria-label="تاریخچه تراکنش‌ها">
           <thead>
             <tr>
-              <th className="px-3 py-2">Date</th>
-              <th className="px-3 py-2">Change</th>
-              <th className="px-3 py-2">Balance after</th>
-              <th className="px-3 py-2">Reason</th>
-              <th className="px-3 py-2">User</th>
+              <th className="px-3 py-2">تاریخ</th>
+              <th className="px-3 py-2">تغییر</th>
+              <th className="px-3 py-2">موجودی پس از تراکنش</th>
+              <th className="px-3 py-2">دلیل</th>
+              <th className="px-3 py-2">کاربر</th>
             </tr>
           </thead>
           <tbody>
             {rows.length === 0 ? (
               <tr>
                 <td colSpan={5} className="text-muted text-center py-4 px-3">
-                  No transactions yet.
+                  هنوز تراکنشی ثبت نشده است.
                 </td>
               </tr>
             ) : (
@@ -88,12 +88,12 @@ export function TransactionHistoryTable({
                   </td>
                   <td className="align-middle px-3 py-2">
                     {change.submission_count > 1
-                      ? `${change.reason} (${change.submission_count} submissions)`
+                      ? `${change.reason} (${change.submission_count} ارسال)`
                       : change.reason}
                     {change.checkout_session_refunded_at != null &&
                       change.delta_milli_dollars > 0 && (
                         <Badge bg="secondary" className="ms-2">
-                          Refunded
+                          بازپرداخت‌شده
                         </Badge>
                       )}
                     {showRefundActions && (
@@ -113,7 +113,7 @@ export function TransactionHistoryTable({
         </table>
       </div>
       {totalPages > 1 && (
-        <nav aria-label="Transaction history pagination" className="mt-3">
+        <nav aria-label="صفحه‌بندی تاریخچه تراکنش‌ها" className="mt-3">
           <ul className="pagination pagination-sm justify-content-center mb-0">
             <li className={clsx('page-item', page <= 1 && 'disabled')}>
               <button
@@ -122,12 +122,12 @@ export function TransactionHistoryTable({
                 disabled={page <= 1}
                 onClick={() => onPageChange(page - 1)}
               >
-                Previous
+                قبلی
               </button>
             </li>
             <li className="page-item disabled">
               <span className="page-link">
-                Page {page} of {totalPages}
+                صفحه {page} از {totalPages}
               </span>
             </li>
             <li className={clsx('page-item', page >= totalPages && 'disabled')}>
@@ -137,7 +137,7 @@ export function TransactionHistoryTable({
                 disabled={page >= totalPages}
                 onClick={() => onPageChange(page + 1)}
               >
-                Next
+                بعدی
               </button>
             </li>
           </ul>
@@ -178,7 +178,7 @@ function RefundActionInline({
 
   return (
     <Button variant="outline-danger" size="sm" className="ms-2" onClick={onClickRefund}>
-      Refund
+      بازپرداخت
     </Button>
   );
 }
@@ -202,26 +202,26 @@ function RefundConfirmationModal({
   return (
     <Modal show centered onHide={isRefunding ? undefined : onCancel}>
       <Modal.Header closeButton={!isRefunding}>
-        <Modal.Title>Confirm refund</Modal.Title>
+        <Modal.Title>تایید بازپرداخت</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Are you sure you want to refund this credit purchase?</p>
+        <p>آیا از بازپرداخت این خرید اعتبار اطمینان دارید؟</p>
         <div
           className={clsx(
             'alert',
             newTransferableMilliDollars < 0 ? 'alert-warning' : 'alert-info',
           )}
         >
-          <div>Stripe refund amount: {formatMilliDollars(creditAmount)}</div>
-          <div>New transferable balance: {formatMilliDollars(newTransferableMilliDollars)}</div>
+          <div>مبلغ بازپرداخت Stripe: {formatMilliDollars(creditAmount)}</div>
+          <div>موجودی قابل انتقال جدید: {formatMilliDollars(newTransferableMilliDollars)}</div>
         </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" disabled={isRefunding} onClick={onCancel}>
-          Cancel
+          انصراف
         </Button>
         <Button variant="danger" disabled={isRefunding} onClick={onConfirm}>
-          {isRefunding ? 'Processing...' : 'Confirm refund'}
+          {isRefunding ? 'در حال پردازش...' : 'تایید بازپرداخت'}
         </Button>
       </Modal.Footer>
     </Modal>

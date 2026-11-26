@@ -60,7 +60,7 @@ router.get(
             subPage: 'lms_connections',
           },
           courseOwners,
-          pageTitle: 'LMS connections',
+          pageTitle: 'اتصال LMS (LTI 1.3)',
           requiredPermissions: 'Student Data Editor',
         }),
       );
@@ -257,7 +257,7 @@ router.post(
 
       flash(
         'success',
-        `${lineitems.length} assessment${lineitems.length === 1 ? '' : 's'} unlinked.`,
+        `اتصال ${lineitems.length} آزمون/تکلیف قطع شد.`,
       );
       return res.redirect(req.originalUrl);
     } else if (req.body.__action === 'bulk_create_assessments') {
@@ -280,7 +280,7 @@ router.post(
       );
 
       if (assessments.length === 0) {
-        flash('warning', 'No unlinked assessments to create');
+        flash('warning', 'آزمون/تکلیف متصل‌نشده‌ای برای ایجاد وجود ندارد');
         return res.redirect(req.originalUrl);
       }
 

@@ -90,7 +90,7 @@ export function InputRequestCard({
                   type="radio"
                   id={`${name}-other`}
                   name={name}
-                  aria-label="Other"
+                  aria-label="سایر"
                   checked={selected[index] === OTHER}
                   disabled={!canAnswer}
                   onChange={() => setSelected(replaceAt(selected, index, OTHER))}
@@ -98,8 +98,8 @@ export function InputRequestCard({
               ) : null}
               <Form.Control
                 size="sm"
-                placeholder={prompt.options?.length ? 'Something else…' : 'Your answer…'}
-                aria-label={prompt.options?.length ? 'Other answer' : 'Answer'}
+                placeholder={prompt.options?.length ? 'مورد دیگر…' : 'پاسخ شما…'}
+                aria-label={prompt.options?.length ? 'پاسخ دیگر' : 'پاسخ'}
                 value={other[index]}
                 disabled={!canAnswer}
                 // Selecting on focus would strand keyboard users tabbing past the field to Send.
@@ -114,7 +114,7 @@ export function InputRequestCard({
       })}
       <div className="d-flex justify-content-end mt-2">
         <Button type="submit" size="sm" disabled={!complete || !canAnswer}>
-          {part.prompts.length === 1 ? 'Send answer' : 'Send answers'}
+          {part.prompts.length === 1 ? 'ارسال پاسخ' : 'ارسال پاسخ‌ها'}
         </Button>
       </div>
     </Form>

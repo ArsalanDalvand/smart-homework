@@ -50,7 +50,7 @@ export function RedeemFreeCreditModal({
       }}
     >
       <Modal.Header closeButton>
-        <Modal.Title>Redeem free credits</Modal.Title>
+        <Modal.Title>دریافت اعتبار رایگان</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {redeemMutation.isError && (
@@ -59,18 +59,18 @@ export function RedeemFreeCreditModal({
           </Alert>
         )}
         <dl className="row mb-0">
-          <dt className="col-sm-5 fw-normal">Credits to add:</dt>
+          <dt className="col-sm-5 fw-normal">اعتبار افزوده‌شونده:</dt>
           <dd className="col-sm-7 mb-2 fw-bold">
             {formatMilliDollars(FREE_AI_GRADING_CREDIT_MILLI_DOLLARS_PER_REDEMPTION)}
           </dd>
-          <dt className="col-sm-5 fw-normal">Free credit remaining:</dt>
+          <dt className="col-sm-5 fw-normal">تعداد باقی‌مانده اعتبار رایگان:</dt>
           <dd className="col-sm-7 mb-0 fw-bold">
-            {redemptionsRemaining} of {maxRedemptions}
+            {redemptionsRemaining} از {maxRedemptions}
           </dd>
         </dl>
         {hasRedemptionsAvailable && (
           <p className="text-muted small mt-3 mb-0">
-            You may redeem {maxRedemptions} times across all {courseLabel} course instances.
+            می‌توانید تا {maxRedemptions} بار در تمام ارائه‌های درس {courseLabel} از این اعتبار استفاده کنید.
           </p>
         )}
       </Modal.Body>
@@ -81,7 +81,7 @@ export function RedeemFreeCreditModal({
           disabled={redeemMutation.isPending}
           onClick={onHide}
         >
-          Cancel
+          انصراف
         </button>
         <button
           type="button"
@@ -89,7 +89,7 @@ export function RedeemFreeCreditModal({
           disabled={redeemMutation.isPending || redemptionsRemaining <= 0}
           onClick={() => redeemMutation.mutate()}
         >
-          {redeemMutation.isPending ? 'Redeeming...' : 'Redeem'}
+          {redeemMutation.isPending ? 'در حال دریافت...' : 'دریافت اعتبار'}
         </button>
       </Modal.Footer>
     </Modal>

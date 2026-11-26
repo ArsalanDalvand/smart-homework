@@ -230,10 +230,10 @@ export function SampleQuestionDemo({
           <div className="flex-grow-1" />
           <div className="d-flex align-items-center gap-2">
             <Button onClick={handleGenerateNewVariant}>
-              <span className="text-nowrap">New variant</span>
+              <span className="text-nowrap">نسخه جدید</span>
             </Button>
 
-            <Button onClick={handleGrade}>Grade</Button>
+            <Button onClick={handleGrade}>تصحیح</Button>
           </div>
         </div>
       </CardFooter>

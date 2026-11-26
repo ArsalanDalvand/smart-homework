@@ -26,7 +26,7 @@ async function renameDraftQuestion({
   });
   if (!response.ok) {
     const data = await response.json();
-    throw new Error(data.error ?? 'Failed to rename question');
+    throw new Error(data.error ?? 'تغییر نام سوال ناموفق بود');
   }
   return response.json();
 }
@@ -140,7 +140,7 @@ function InlineEditableField({
       <button
         type="button"
         className="d-inline-flex align-items-center gap-1 rounded px-1 inline-editable-display"
-        aria-label={`${fieldLabel}: ${shownValue || placeholder}. Click to edit.`}
+        aria-label={`${fieldLabel}: ${shownValue || placeholder}. برای ویرایش کلیک کنید.`}
         disabled={disabled}
         onClick={handleEditStart}
       >
@@ -184,13 +184,13 @@ function InlineEditableField({
         <button
           type="button"
           className="btn btn-sm btn-primary flex-shrink-0"
-          aria-label="Save"
+          aria-label="ذخیره"
           disabled={isSaveDisabled}
           onClick={handleSave}
         >
           {isPending ? (
             <span className="spinner-border spinner-border-text" role="status">
-              <span className="visually-hidden">Saving...</span>
+              <span className="visually-hidden">در حال ذخیره...</span>
             </span>
           ) : (
             <i className="bi bi-check2" aria-hidden="true" />
@@ -199,7 +199,7 @@ function InlineEditableField({
         <button
           type="button"
           className="btn btn-sm btn-secondary flex-shrink-0"
-          aria-label="Cancel"
+          aria-label="انصراف"
           disabled={isPending}
           onClick={handleCancel}
         >
@@ -262,8 +262,8 @@ export function QuestionTitleAndQid({
     <div className="d-flex flex-wrap align-items-center gap-2 px-1 py-1 border-bottom bg-light question-title-bar">
       <InlineEditableField
         value={currentTitle ?? ''}
-        placeholder="Untitled question"
-        fieldLabel="Question title"
+        placeholder="سوال بدون عنوان"
+        fieldLabel="عنوان سوال"
         displayClassName="fw-semibold"
         isPending={renameMutation.isPending}
         serverError={editingField === 'title' ? serverError : null}
@@ -279,7 +279,7 @@ export function QuestionTitleAndQid({
         value={qidSuffix}
         displayValue={qid}
         placeholder="add-random-numbers"
-        fieldLabel="Question QID"
+        fieldLabel="شناسه سوال (QID)"
         displayClassName="font-monospace small text-muted"
         inputClassName="font-monospace"
         displayPrefix={

@@ -35,7 +35,7 @@ router.get(
           ...res.locals,
           institution,
         },
-        pageTitle: `Courses — ${institution.short_name}`,
+        pageTitle: `درس‌ها — ${institution.short_name}`,
         navContext: {
           type: 'institution',
           page: 'institution_admin',

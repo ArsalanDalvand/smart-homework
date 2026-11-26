@@ -48,7 +48,7 @@ export function AdministratorInstitutionSaml({
       ...resLocals,
       institution,
     },
-    pageTitle: 'SAML - Institution Admin',
+    pageTitle: 'ورود یکپارچه (SAML / SSO) - مدیریت موسسه',
     navContext: {
       type: 'administrator_institution',
       page: 'administrator_institution',
@@ -60,8 +60,8 @@ export function AdministratorInstitutionSaml({
         hasRosterSyncAllowed
           ? html`
               <div class="alert alert-info" id="saml-lti-roster-sync-dependencies">
-                <h2 class="h6">Roster syncing dependencies</h2>
-                <p>Roster syncing is allowed for the following LTI 1.3 instances:</p>
+                <h2 class="h6">وابستگی‌های همگام‌سازی فهرست دانشجویان</h2>
+                <p>همگام‌سازی فهرست دانشجویان برای نمونه‌های LTI 1.3 زیر مجاز شده است:</p>
                 <ul>
                   ${lti13InstancesWithRosterSyncAllowed.map(
                     (instance) => html`
@@ -75,8 +75,7 @@ export function AdministratorInstitutionSaml({
                   )}
                 </ul>
                 <p class="mb-0">
-                  The SAML issuer and UIN attribute are locked. Disallow roster syncing for every
-                  listed instance before changing them or deleting this configuration.
+                  صادرکننده SAML و صفت UIN قفل شده‌اند. پیش از تغییر آن‌ها یا حذف این پیکربندی، همگام‌سازی فهرست را برای تمام نمونه‌های فهرست‌شده غیرمجاز کنید.
                 </p>
               </div>
             `
@@ -86,11 +85,10 @@ export function AdministratorInstitutionSaml({
         hasSamlProvider && !hasEnabledSaml
           ? html`
               <div class="alert alert-warning">
-                <h2 class="h5">SAML single sign-on is not enabled</h2>
+                <h2 class="h5">ورود یکپارچه SAML فعال نیست</h2>
                 <p class="mb-0">
-                  After <a href="${testSamlUrl}">testing your SAML configuration</a>, you must visit
-                  the <a href="${resLocals.urlPrefix}/sso">single sign-on configuration</a> page and
-                  enable SAML authentication.
+                  پس از <a href="${testSamlUrl}">آزمایش پیکربندی SAML</a>، باید به صفحه
+                  <a href="${resLocals.urlPrefix}/sso">پیکربندی ورود یکپارچه (SSO)</a> بروید و احراز هویت SAML را فعال کنید.
                 </p>
               </div>
             `
@@ -100,10 +98,9 @@ export function AdministratorInstitutionSaml({
         hasSamlProvider && missingAttributeMappings
           ? html`
               <div class="alert alert-warning">
-                <h2 class="h5">Missing attribute mappings</h2>
+                <h2 class="h5">نگاشت صفات ناقص است</h2>
                 <p class="mb-0">
-                  One or more attribute mappings are missing. These are necessary for authentication
-                  to work correctly.
+                  یک یا چند نگاشت صفت تنظیم نشده‌اند. این موارد برای عملکرد صحیح احراز هویت ضروری هستند.
                 </p>
               </div>
             `
@@ -113,10 +110,9 @@ export function AdministratorInstitutionSaml({
         hasSamlProvider && hasPartialSplitNameMapping
           ? html`
               <div class="alert alert-warning">
-                <h2 class="h5">Incomplete split name configuration</h2>
+                <h2 class="h5">پیکربندی ناقص نام تفکیک‌شده</h2>
                 <p class="mb-0">
-                  Only one of the given name and family name attributes is configured. Both must be
-                  configured together for split name mapping to take effect.
+                  فقط یکی از صفات نام کوچک یا نام خانوادگی پیکربندی شده است. برای اعمال نگاشت تفکیک‌شده نام، هر دو باید با هم تنظیم شوند.
                 </p>
               </div>
             `
@@ -126,9 +122,9 @@ export function AdministratorInstitutionSaml({
         hasSamlProvider && hasEnabledSaml && !missingAttributeMappings
           ? html`
               <div class="alert alert-success">
-                <h2 class="h5">SAML single sign-on is configured and enabled!</h2>
+                <h2 class="h5">ورود یکپارچه SAML پیکربندی و فعال شده است!</h2>
                 <p class="mb-0">
-                  Users can sign into your institution using your configured SAML provider.
+                  کاربران می‌توانند با استفاده از ارائه‌دهنده SAML پیکربندی‌شده وارد موسسه شما شوند.
                 </p>
               </div>
             `
@@ -139,21 +135,20 @@ export function AdministratorInstitutionSaml({
           ? html`
               <div class="card mb-4">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
-                  Information required by your Identity Provider
+                  اطلاعات مورد نیاز ارائه‌دهنده هویت (Identity Provider) شما
                 </div>
                 <div class="card-body">
                   <p>
-                    If your Identity Provider supports obtaining Service Provider configuration from
-                    a metadata URL, use the following:
+                    اگر ارائه‌دهنده هویت شما از دریافت پیکربندی ارائه‌دهنده سرویس (SP) از طریق نشانی متادیتا پشتیبانی می‌کند، از نشانی زیر استفاده کنید:
                   </p>
-                  <small class="text-muted">Metadata URL</small>
+                  <small class="text-muted">نشانی متادیتا (Metadata URL)</small>
                   <div class="form-control mb-3">${metadataUrl}</div>
-                  <p>Otherwise, use the following values to configure your Identity Provider:</p>
-                  <small class="text-muted">Issuer / Entity ID</small>
+                  <p>در غیر این صورت، از مقادیر زیر برای پیکربندی ارائه‌دهنده هویت خود استفاده کنید:</p>
+                  <small class="text-muted">صادرکننده / شناسه موجودیت (Issuer / Entity ID)</small>
                   <div class="form-control mb-3">${issuer}</div>
-                  <small class="text-muted">Assertion Consumer Service URL</small>
+                  <small class="text-muted">نشانی سرویس مصرف‌کننده ادعا (ACS URL)</small>
                   <div class="form-control mb-3">${assertionConsumerServiceUrl}</div>
-                  <small class="text-muted">Public Key</small>
+                  <small class="text-muted">کلید عمومی (Public Key)</small>
                   <pre
                     class="form-control mb-0"
                     style="height: auto;"
@@ -164,10 +159,10 @@ export function AdministratorInstitutionSaml({
           : ''
       }
 
-      <h2 class="h4">Identity Provider configuration</h2>
+      <h2 class="h4">پیکربندی ارائه‌دهنده هویت (IdP)</h2>
       <form method="POST" class="mb-3 js-configure-form" ${!hasSamlProvider ? 'hidden' : ''}>
         <div class="mb-3">
-          <label class="form-label" for="issuer">Issuer / Entity ID</label>
+          <label class="form-label" for="issuer">صادرکننده / شناسه موجودیت (Issuer / Entity ID)</label>
           <input
             type="text"
             class="form-control"
@@ -180,12 +175,12 @@ export function AdministratorInstitutionSaml({
             ${hasRosterSyncAllowed ? 'disabled' : ''}
           />
           <small id="issuerHelp" class="form-text text-muted">
-            Typically a unique URL generated by your Identity Provider.
+            معمولاً یک نشانی یکتا است که توسط ارائه‌دهنده هویت شما تولید می‌شود.
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="sso_login_url">SSO Login URL</label>
+          <label class="form-label" for="sso_login_url">نشانی ورود یکپارچه (SSO Login URL)</label>
           <input
             type="text"
             class="form-control"
@@ -195,13 +190,12 @@ export function AdministratorInstitutionSaml({
             aria-describedby="ssoLoginUrlHelp"
           />
           <small id="ssoLoginUrlHelp" class="form-text text-muted">
-            The SAML endpoint URL generated by your Identity Provider. PrairieLearn only supports
-            the HTTP Redirect binding; HTTP POST is not supported.
+            نشانی نقطه پایانی SAML که توسط ارائه‌دهنده هویت شما تولید شده است. سامانه فقط از اتصال HTTP Redirect پشتیبانی می‌کند؛ HTTP POST پشتیبانی نمی‌شود.
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="certificate">Public Certificate</label>
+          <label class="form-label" for="certificate">گواهی عمومی (Public Certificate)</label>
           <textarea
             class="form-control"
             name="certificate"
@@ -211,9 +205,7 @@ export function AdministratorInstitutionSaml({
           >
 ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----'}</textarea>
           <small id="certificateHelp" class="form-text text-muted">
-            The public certificate of the Identity Provider. This is used to verify the signature of
-            the SAML response. This <strong>must</strong> be a valid X.509 certificate in PEM
-            format, including the header and footer.
+            گواهی عمومی ارائه‌دهنده هویت. این گواهی برای تایید امضای پاسخ SAML استفاده می‌شود و <strong>باید</strong> یک گواهی معتبر X.509 در قالب PEM شامل سرآیند و پاورقی باشد.
           </small>
         </div>
 
@@ -227,10 +219,9 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             ${(samlProvider?.validate_audience ?? true) ? 'checked' : ''}
             aria-describedby="validateAudienceHelp"
           />
-          <label class="form-check-label" for="validate_audience">Validate audience</label>
+          <label class="form-check-label" for="validate_audience">اعتبارسنجی مخاطب (Validate audience)</label>
           <div id="validateAudienceHelp" class="small text-muted">
-            Whether or not to validate the audience of the SAML response. This should be enabled
-            unless the Identity Provider doesn't send a correct value for the audience.
+            مشخص می‌کند که مخاطب پاسخ SAML اعتبارسنجی شود یا خیر. این گزینه باید فعال باشد مگر اینکه ارائه‌دهنده هویت مقدار صحیحی برای مخاطب ارسال نکند.
           </div>
         </div>
 
@@ -245,11 +236,10 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             aria-describedby="wantAssertionsSignedHelp"
           />
           <label class="form-check-label" for="want_assertions_signed">
-            Require signed assertions
+            الزام به امضای ادعاها (Signed assertions)
           </label>
           <div id="wantAssertionsSignedHelp" class="small text-muted">
-            Whether or not to require that assertions are signed. This should be enabled unless the
-            Identity Provider doesn't sign assertions.
+            مشخص می‌کند که امضای ادعاها الزامی باشد یا خیر. این گزینه باید فعال باشد مگر اینکه ارائه‌دهنده هویت ادعاها را امضا نکند.
           </div>
         </div>
 
@@ -264,33 +254,29 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             aria-describedby="wantAuthnResponseSignedHelp"
           />
           <label class="form-check-label" for="want_authn_response_signed">
-            Require signed response
+            الزام به امضای پاسخ (Signed response)
           </label>
           <div id="wantAuthnResponseSignedHelp" class="small text-muted">
-            Whether or not to require that the response is signed. This should be enabled unless the
-            Identity Provider doesn't sign responses.
+            مشخص می‌کند که امضای پاسخ الزامی باشد یا خیر. این گزینه باید فعال باشد مگر اینکه ارائه‌دهنده هویت پاسخ‌ها را امضا نکند.
           </div>
         </div>
 
-        <h3 class="h5">Attribute mappings</h3>
+        <h3 class="h5">نگاشت صفات</h3>
         <p>
-          You must specify a mapping from your Identity Provider's attributes to PrairieLearn's user
-          attributes. This will vary from provider to provider, but they will typically have the
-          form
-          <code>urn:oid:...</code>.
+          باید نگاشتی از صفات ارائه‌دهنده هویت خود به صفات کاربر در سامانه مشخص کنید. این مقادیر بسته به ارائه‌دهنده متفاوت است، اما معمولاً به شکل
+          <code>urn:oid:...</code> هستند.
         </p>
 
         ${
           !hasSamlProvider
             ? html`<div class="alert alert-info">
-                If you're not sure which attributes are available, you can leave these blank for now
-                and use the "Test SAML login" link after setting up your Identity Provider.
+                اگر مطمئن نیستید کدام صفات در دسترس هستند، فعلاً می‌توانید این فیلدها را خالی بگذارید و پس از راه‌اندازی ارائه‌دهنده هویت از پیوند «آزمایش ورود SAML» استفاده کنید.
               </div>`
             : ''
         }
 
         <div class="mb-3">
-          <label class="form-label" for="name_attribute">Name attribute</label>
+          <label class="form-label" for="name_attribute">صفت نام</label>
           <input
             type="text"
             class="form-control"
@@ -300,16 +286,12 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             aria-describedby="nameAttributeHelp"
           />
           <small id="nameAttributeHelp" class="form-text text-muted">
-            This attribute should contain the full name of the user, like "Jasmine Wang". If your
-            Identity Provider cannot provide a full name, you can instead configure separate given
-            name and family name attributes below. If both given name and family name mappings are
-            configured and both values are present in a SAML response, they take precedence. If one
-            is missing, PrairieLearn falls back to this name attribute.
+            این صفت باید شامل نام کامل کاربر باشد، مانند «سارا محمدی». اگر ارائه‌دهنده هویت شما نام کامل را ارائه نمی‌دهد، می‌توانید صفات نام کوچک و نام خانوادگی را در پایین به صورت جداگانه پیکربندی کنید. در صورتی که هر دو مقدار در پاسخ SAML موجود باشند، اولویت با آن‌هاست و در صورت نبود یکی، سامانه به این صفت نام برمی‌گردد.
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="given_name_attribute">Given name attribute</label>
+          <label class="form-label" for="given_name_attribute">صفت نام کوچک</label>
           <input
             type="text"
             class="form-control"
@@ -319,15 +301,13 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             aria-describedby="givenNameAttributeHelp"
           />
           <small id="givenNameAttributeHelp" class="form-text text-muted">
-            Optional. The given (first) name of the user. Often named <code>givenName</code> or
-            <code>urn:oid:2.5.4.42</code>. When both given name and family name attributes are
-            configured and present, they will be combined as "Given Family" and used instead of the
-            name attribute above. If one is missing, PrairieLearn falls back to the name attribute.
+            اختیاری. نام کوچک کاربر. معمولاً با نام <code>givenName</code> یا
+            <code>urn:oid:2.5.4.42</code> شناخته می‌شود. وقتی هر دو صفت نام کوچک و نام خانوادگی پیکربندی و ارسال شوند، با هم ترکیب شده و به جای صفت نام بالا استفاده می‌شوند. در صورت نبود یکی، سامانه به صفت نام برمی‌گردد.
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="family_name_attribute">Family name attribute</label>
+          <label class="form-label" for="family_name_attribute">صفت نام خانوادگی</label>
           <input
             type="text"
             class="form-control"
@@ -337,8 +317,8 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             aria-describedby="familyNameAttributeHelp"
           />
           <small id="familyNameAttributeHelp" class="form-text text-muted">
-            Optional. The family (last) name of the user. Often named <code>sn</code> or
-            <code>urn:oid:2.5.4.4</code>.
+            اختیاری. نام خانوادگی کاربر. معمولاً با نام <code>sn</code> یا
+            <code>urn:oid:2.5.4.4</code> شناخته می‌شود.
           </small>
         </div>
 
@@ -353,17 +333,15 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             aria-describedby="allowMissingNameHelp"
           />
           <label class="form-check-label" for="allow_missing_name">
-            Allow login without a name
+            اجازه ورود بدون نام
           </label>
           <div id="allowMissingNameHelp" class="small text-muted">
-            Allow users to log in when the configured name attributes are missing from their SAML
-            response. Existing names will be preserved; users without a stored name will be shown
-            using their UID until a name becomes available.
+            به کاربران اجازه می‌دهد حتی زمانی که صفات نام پیکربندی‌شده در پاسخ SAML وجود ندارند وارد شوند. نام‌های قبلی حفظ می‌شوند و کاربران بدون نام ذخیره‌شده تا زمان دریافت نام با UID نمایش داده می‌شوند.
           </div>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="uid_attribute">UID attribute</label>
+          <label class="form-label" for="uid_attribute">صفت UID</label>
           <input
             type="text"
             class="form-control"
@@ -373,15 +351,12 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             aria-describedby="uidAttributeHelp"
           />
           <small id="uidAttributeHelp" class="form-text text-muted">
-            The UID is a user-facing identifier for the user. This must be an email-like identifier,
-            like "jwang@example.com". However, it doesn't have to be an email address; PrairieLearn
-            will never try to route email to it. This attribute may change, for instance if a
-            student changes their name with their university.
+            شناسه UID یک شناسه قابل مشاهده برای کاربر است و باید شبیه ایمیل باشد، مانند «user@example.com». با این حال نیازی نیست حتماً آدرس ایمیل واقعی باشد؛ سامانه هرگز ایمیلی به آن ارسال نمی‌کند. این صفت ممکن است تغییر کند، مثلاً اگر دانشجو نام خود را در دانشگاه تغییر دهد.
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="uin_attribute">UIN attribute</label>
+          <label class="form-label" for="uin_attribute">صفت UIN</label>
           <input
             type="text"
             class="form-control"
@@ -394,14 +369,12 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             ${hasRosterSyncAllowed ? 'disabled' : ''}
           />
           <small id="uinAttributeHelp" class="form-text text-muted">
-            The UIN is used as an internal, immutable identifier for the user. It
-            <strong>MUST</strong> never change for a given individual, even if they change their
-            name or email.
+            شناسه UIN به عنوان یک شناسه داخلی و تغییرناپذیر برای کاربر استفاده می‌شود و برای یک فرد <strong>هرگز نباید</strong> تغییر کند، حتی اگر نام یا ایمیل او تغییر یابد.
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="email_attribute">Email attribute</label>
+          <label class="form-label" for="email_attribute">صفت ایمیل</label>
           <input
             type="text"
             class="form-control"
@@ -411,40 +384,34 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
             aria-describedby="emailAttributeHelp"
           />
           <small id="emailAttributeHelp" class="form-text text-muted">
-            The email attribute should contain the email address of the user, like
-            "jwang123@example.com". This may be the same as the UID attribute for some institutions.
-            You should confirm that the values received in this attribute are routable email
-            addresses.
+            صفت ایمیل باید شامل آدرس ایمیل کاربر باشد، مانند «user@example.com». در برخی موسسات ممکن است با صفت UID یکسان باشد. باید مطمئن شوید مقادیر دریافتی در این صفت آدرس‌های ایمیل قابل ارسال هستند.
           </small>
         </div>
 
         <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
-        <button type="submit" class="btn btn-primary" name="__action" value="save">Save</button>
-        <a class="btn btn-secondary" href="">Cancel</a>
+        <button type="submit" class="btn btn-primary" name="__action" value="save">ذخیره</button>
+        <a class="btn btn-secondary" href="">انصراف</a>
       </form>
       <div class="js-configure-prompt" ${hasSamlProvider ? 'hidden' : ''}>
-        <p>A SAML identity provider has not been configured.</p>
+        <p>هنوز ارائه‌دهنده هویت SAML پیکربندی نشده است.</p>
         <button type="button" class="btn btn-primary js-configure-prompt-button">
-          Configure SAML identity provider
+          پیکربندی ارائه‌دهنده هویت SAML
         </button>
       </div>
       ${
         hasSamlProvider
           ? html`
               <p>
-                <a href="${testSamlUrl}" target="_blank">Test SAML login</a>: Shows all attributes
-                from the SAML IdP without establishing a session.
+                <a href="${testSamlUrl}" target="_blank">آزمایش ورود SAML</a>: تمام صفات دریافتی از IdP را بدون ایجاد نشست نمایش می‌دهد.
               </p>
 
               <p>
-                <a href="${testSamlStrictUrl}" target="_blank">Test SAML login (strict mode)</a>:
-                Forces "validate audience", "require signed assertions", and "require signed
-                response" to be enabled.
+                <a href="${testSamlStrictUrl}" target="_blank">آزمایش ورود SAML (حالت سخت‌گیرانه)</a>:
+                گزینه‌های «اعتبارسنجی مخاطب»، «الزام به امضای ادعاها» و «الزام به امضای پاسخ» را به صورت اجباری فعال می‌کند.
               </p>
 
               <p>
-                <a href="${metadataUrl}" target="_blank">View SAML metadata</a>: Metadata can be
-                provided to institutions to help them configure their SAML IdP.
+                <a href="${metadataUrl}" target="_blank">مشاهده متادیتای SAML</a>: این متادیتا می‌تواند برای کمک به پیکربندی IdP در اختیار موسسات قرار گیرد.
               </p>
 
               <p>
@@ -455,24 +422,24 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
                   data-bs-target="#deleteModal"
                   ${hasRosterSyncAllowed ? 'disabled' : ''}
                 >
-                  Delete SAML configuration
+                  حذف پیکربندی SAML
                 </button>
                 ${
                   hasRosterSyncAllowed
                     ? html`
                         <small class="d-block text-muted">
-                          Disallow roster syncing for every listed LTI 1.3 instance first.
+                          ابتدا همگام‌سازی فهرست را برای تمام نمونه‌های LTI 1.3 فهرست‌شده غیرمجاز کنید.
                         </small>
                       `
                     : ''
                 }
               </p>
 
-              <h2 class="h4">Decode SAML assertion</h2>
+              <h2 class="h4">رمزگشایی ادعای SAML</h2>
 
               <form method="POST">
                 <div class="mb-3">
-                  <label class="form-label" for="encodedAssertion">Encoded assertion</label>
+                  <label class="form-label" for="encodedAssertion">ادعای کدگذاری‌شده (Encoded assertion)</label>
                   <textarea
                     class="form-control"
                     id="encodedAssertion"
@@ -481,8 +448,8 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
                     aria-describedby="encodedAssertionHelp"
                   ></textarea>
                   <small class="form-text text-muted">
-                    This should be raw base64-encoded data from the
-                    <code>SAMLResponse</code> parameter in the POST request from the IdP.
+                    این مقدار باید داده خام کدگذاری‌شده در base64 از پارامتر
+                    <code>SAMLResponse</code> در درخواست POST ارسالی از IdP باشد.
                   </small>
                 </div>
 
@@ -495,10 +462,9 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
                     value="1"
                     aria-describedby="strictModeHelp"
                   />
-                  <label class="form-check-label" for="strictMode">Strict mode</label>
+                  <label class="form-check-label" for="strictMode">حالت سخت‌گیرانه (Strict mode)</label>
                   <small id="strictModeHelp" class="form-text text-muted mt-0">
-                    Forces "validate audience", "require signed assertions", and "require signed
-                    response" to be enabled.
+                    گزینه‌های «اعتبارسنجی مخاطب»، «الزام به امضای ادعاها» و «الزام به امضای پاسخ» را به صورت اجباری فعال می‌کند.
                   </small>
                 </div>
 
@@ -512,7 +478,7 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
                   hx-target="#decodedAssertion"
                   hx-swap="innerHTML show:top"
                 >
-                  Decode
+                  رمزگشایی
                 </button>
                 <div id="decodedAssertion"></div>
               </form>
@@ -539,18 +505,17 @@ ${samlProvider?.certificate ?? '-----BEGIN CERTIFICATE-----\n-----END CERTIFICAT
 function DeleteSamlConfigurationModal({ csrfToken }: { csrfToken: string }) {
   return Modal({
     id: 'deleteModal',
-    title: 'Confirm deletion',
+    title: 'تایید حذف',
     body: html`
       <p>
-        Are you sure you want to delete the SAML configuration? Users in your institution, including
-        yourself, may be unable to log in to PrairieLearn.
+        آیا از حذف پیکربندی SAML اطمینان دارید؟ کاربران موسسه شما، از جمله خودتان، ممکن است نتوانند وارد سامانه شوند.
       </p>
     `,
     footer: html`
       <input type="hidden" name="__csrf_token" value="${csrfToken}" />
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
       <button class="btn btn-danger" type="submit" name="__action" value="delete">
-        Delete SAML configuration
+        حذف پیکربندی SAML
       </button>
     `,
   });
@@ -558,10 +523,10 @@ function DeleteSamlConfigurationModal({ csrfToken }: { csrfToken: string }) {
 
 export function DecodedAssertion({ xml, profile }: { xml: string; profile: string }) {
   return html`
-    <h3 class="h5 mt-3">Decoded XML</h3>
+    <h3 class="h5 mt-3">XML رمزگشایی‌شده</h3>
     <pre class="bg-dark text-white rounded p-3 mt-3 mb-0">${xml}</pre>
 
-    <h3 class="h5 mt-3">Profile</h3>
+    <h3 class="h5 mt-3">پروفایل</h3>
     <pre class="bg-dark text-white rounded p-3 mt-3 mb-0">${profile}</pre>
   `.toString();
 }

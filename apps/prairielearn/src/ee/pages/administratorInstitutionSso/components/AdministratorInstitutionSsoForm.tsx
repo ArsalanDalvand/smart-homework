@@ -6,14 +6,14 @@ import type { AuthnProvider } from '../../../../lib/db-types.js';
 
 function formatProviderList(providers: AuthnProvider[]) {
   if (providers.length === 2) {
-    return `${providers[0].name} and ${providers[1].name}`;
+    return `${providers[0].name} و ${providers[1].name}`;
   }
   if (providers.length > 2) {
     return (
       providers
         .slice(0, -1)
         .map((p) => p.name)
-        .join(', ') + `, and ${providers[providers.length - 1].name}`
+        .join('، ') + ` و ${providers[providers.length - 1].name}`
     );
   }
 }
@@ -51,13 +51,10 @@ export function AdministratorInstitutionSsoForm({
   return (
     <form method="POST">
       <div className="mb-3">
-        <h2 className="h4">Enabled single sign-on providers</h2>
+        <h2 className="h4">ارائه‌دهندگان فعال ورود یکپارچه (SSO)</h2>
         {hasRosterSyncAllowed && (
           <div className="alert alert-info" role="alert">
-            Roster syncing is allowed for an LTI 1.3 instance. SAML must remain the only enabled
-            institutional sign-on provider. LTI and LTI 1.3 may remain enabled because those
-            sessions begin in a Learning Management System (LMS). Disallow roster syncing for all
-            affected LTI 1.3 instances before changing these settings.
+            همگام‌سازی فهرست دانشجویان (Roster syncing) برای یک نمونه LTI 1.3 مجاز شده است. SAML باید تنها ارائه‌دهنده فعال ورود یکپارچه موسسه باقی بماند. LTI و LTI 1.3 می‌توانند فعال بمانند زیرا نشست‌های آن‌ها در سامانه مدیریت یادگیری (LMS) آغاز می‌شوند. پیش از تغییر این تنظیمات، همگام‌سازی فهرست را برای تمام نمونه‌های LTI 1.3 مرتبط غیرفعال کنید.
           </div>
         )}
         {supportedAuthenticationProviders.map((provider) => {
@@ -107,8 +104,7 @@ export function AdministratorInstitutionSsoForm({
                 {provider.name}
                 {provider.name === 'SAML' && !hasSamlProvider ? (
                   <small className="d-block">
-                    You must <a href={`${urlPrefix}/saml`}>configure SAML</a> before you can enable
-                    it.
+                    پیش از فعال‌سازی باید <a href={`${urlPrefix}/saml`}>SAML را پیکربندی کنید</a>.
                   </small>
                 ) : (
                   ''
@@ -119,23 +115,19 @@ export function AdministratorInstitutionSsoForm({
         })}
         {enabledInstitutionalProviders.length > 1 && (
           <div className="alert alert-warning mt-2" role="alert">
-            It is <strong>not recommended</strong> to enable{' '}
-            {formatProviderList(enabledInstitutionalProviders)} at the same time. It may be
-            appropriate in situations where students use one sign-on provider and staff use a
-            different one, or while transitioning from one provider to another. Contact a technical
-            administrator if you have questions.
+            فعال‌سازی هم‌زمان {formatProviderList(enabledInstitutionalProviders)}{' '}
+            <strong>توصیه نمی‌شود</strong>. این کار ممکن است تنها در شرایطی مناسب باشد که دانشجویان از یک ارائه‌دهنده ورود و کارکنان از ارائه‌دهنده دیگری استفاده می‌کنند، یا در حال انتقال از یک ارائه‌دهنده به دیگری هستید. در صورت داشتن سوال با مدیر فنی تماس بگیرید.
           </div>
         )}
         {enabledProviderIds.size === 0 && (
           <div className="alert alert-warning mt-2" role="alert">
-            No single sign-on providers are currently enabled for this institution. Users will not
-            be able to log in unless at least one provider is enabled.
+            در حال حاضر هیچ ارائه‌دهنده ورود یکپارچه‌ای برای این موسسه فعال نیست. تا زمانی که حداقل یک ارائه‌دهنده فعال نشود، کاربران امکان ورود نخواهند داشت.
           </div>
         )}
       </div>
       <div className="mb-3">
         <h2 className="h4" id="defaultProviderLabel">
-          Default single sign-on provider
+          ارائه‌دهنده پیش‌فرض ورود یکپارچه (SSO)
         </h2>
         <select
           className="form-select js-default-authentication-provider"
@@ -145,7 +137,7 @@ export function AdministratorInstitutionSsoForm({
           value={defaultProviderId || ''}
           onChange={(e) => setDefaultProviderId(e.currentTarget.value || null)}
         >
-          <option value="">None</option>
+          <option value="">هیچ‌کدام</option>
           {supportedAuthenticationProviders.map((provider) => {
             if (provider.name === 'LTI' || provider.name === 'LTI 1.3') return null;
 
@@ -161,14 +153,12 @@ export function AdministratorInstitutionSsoForm({
           })}
         </select>
         <div className="form-text">
-          When a default single sign-on provider is configured, users can click on your
-          institution's name on the login screen and be taken directly to the appropriate provider.
-          Note that LTI and LTI 1.3 cannot be set as the default provider.
+          هنگامی که یک ارائه‌دهنده پیش‌فرض ورود یکپارچه تنظیم شده باشد، کاربران می‌توانند در صفحه ورود روی نام موسسه شما کلیک کرده و مستقیماً به ارائه‌دهنده مناسب هدایت شوند. توجه داشته باشید که LTI و LTI 1.3 نمی‌توانند به عنوان ارائه‌دهنده پیش‌فرض انتخاب شوند.
         </div>
       </div>
       <input type="hidden" name="__csrf_token" value={csrfToken} />
       <button type="submit" className="btn btn-primary">
-        Save
+        ذخیره
       </button>
     </form>
   );

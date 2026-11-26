@@ -37,7 +37,7 @@ const LazyCourseAgentChat = lazy(() =>
 function ChatLoadError() {
   return (
     <Alert variant="danger" className="m-3">
-      Could not load the course agent. Reload this page to try again.
+      بارگذاری دستیار درس ناموفق بود. برای تلاش مجدد این صفحه را بازنشانی کنید.
     </Alert>
   );
 }
@@ -46,7 +46,7 @@ function ChatLoading() {
   return (
     <div className="d-flex flex-grow-1 justify-content-center align-items-center">
       <Spinner animation="border" size="sm" role="status">
-        <span className="visually-hidden">Loading course agent</span>
+        <span className="visually-hidden">در حال بارگذاری دستیار درس</span>
       </Spinner>
     </div>
   );
@@ -154,7 +154,7 @@ export function CourseAgentPanel({
       backdrop={false}
       role={mobile ? 'dialog' : 'complementary'}
       aria-modal={mobile && open ? true : undefined}
-      aria-label="Course agent"
+      aria-label="دستیار درس"
       data-open={open}
       inert={!open}
       aria-hidden={!open}
@@ -168,12 +168,12 @@ export function CourseAgentPanel({
       <div className="d-flex align-items-center justify-content-between border-bottom px-3 py-2">
         <h2 className="h6 mb-0">
           <i className="bi bi-stars me-2 text-primary" aria-hidden="true" />
-          Course agent
+          دستیار درس
         </h2>
         <Button
           variant="link"
           className="p-0 text-muted"
-          aria-label="Close course agent"
+          aria-label="بستن دستیار درس"
           onClick={() => changeOpen(false)}
         >
           <i className="bi bi-x-lg" aria-hidden="true" />
@@ -199,7 +199,7 @@ export function CourseAgentPanel({
 
   const launcherButtonProps = {
     ref: toggleRef,
-    'aria-label': 'Course agent',
+    'aria-label': 'دستیار درس',
     'aria-expanded': open,
     'aria-controls': 'course-agent-panel',
     onPointerEnter: preloadChat,
@@ -215,7 +215,7 @@ export function CourseAgentPanel({
       trigger={['hover', 'focus']}
       placement="bottom"
       show={launcherTooltipShown}
-      tooltip={{ body: 'Course agent', props: { id: 'course-agent-launcher-tooltip' } }}
+      tooltip={{ body: 'دستیار درس', props: { id: 'course-agent-launcher-tooltip' } }}
       // Skip focus that isn't `:focus-visible`, such as focus returning after a mouse user closes the panel.
       onToggle={(nextShow) => {
         const launcherElement = toggleRef.current;

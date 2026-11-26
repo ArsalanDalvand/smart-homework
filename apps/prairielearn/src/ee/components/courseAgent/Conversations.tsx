@@ -175,11 +175,11 @@ function ConversationPicker({
           <Dropdown.Toggle
             variant="light"
             className="border bg-white w-100 d-flex justify-content-between align-items-center gap-2"
-            aria-label="Conversation"
+            aria-label="گفتگو"
             disabled={conversations.length === 0 || create.isPending}
           >
             <span className="text-truncate">
-              {selectedConversation?.title ?? 'New conversation'}
+              {selectedConversation?.title ?? 'گفتگوی جدید'}
             </span>
           </Dropdown.Toggle>
           <Dropdown.Menu className="w-100 overflow-y-auto" style={{ maxHeight: '50vh' }}>
@@ -197,12 +197,12 @@ function ConversationPicker({
         </Dropdown>
         <OverlayTrigger
           placement="bottom"
-          tooltip={{ body: 'New conversation', props: { id: 'new-course-agent-conversation' } }}
+          tooltip={{ body: 'گفتگوی جدید', props: { id: 'new-course-agent-conversation' } }}
         >
           <Button
             variant="outline-primary"
             className="flex-shrink-0"
-            aria-label="New conversation"
+            aria-label="گفتگوی جدید"
             disabled={create.isPending}
             onClick={() => {
               setPickedId(NEW_CONVERSATION);
@@ -235,11 +235,11 @@ function ConversationPicker({
             {create.isPending ? (
               <div className="d-flex flex-column gap-3">
                 <UserMessage text={create.variables.text} />
-                <PendingStatus label="Starting sandbox…" />
+                <PendingStatus label="در حال راه‌اندازی محیط ایزوله…" />
               </div>
             ) : (
               <p className="text-muted text-center my-4">
-                Ask the course agent about your course or about PrairieLearn.
+                درباره درس خود یا درباره سامانه از دستیار درس بپرسید.
               </p>
             )}
             {create.isError && (
@@ -266,7 +266,7 @@ function Loading() {
   return (
     <div className="d-flex flex-grow-1 justify-content-center align-items-center">
       <Spinner animation="border" size="sm" role="status">
-        <span className="visually-hidden">Loading</span>
+        <span className="visually-hidden">در حال بارگذاری</span>
       </Spinner>
     </div>
   );
@@ -505,7 +505,7 @@ function Chat({
     (lifecycle?.status === 'starting' ||
       ((lifecycle === null || lifecycle.status === 'offline') &&
         (awaitingStart || responseActive)));
-  const pendingLabel = startingSandbox ? 'Starting sandbox…' : showThinking ? 'Thinking…' : null;
+  const pendingLabel = startingSandbox ? 'در حال راه‌اندازی محیط ایزوله…' : showThinking ? 'در حال تفکر…' : null;
   const showInitialText =
     initialText !== undefined && !messages.some((message) => message.role === 'user');
   const awaitingReviewId =
@@ -552,7 +552,7 @@ function Chat({
           )}
           {historyReady && !showInitialText && messages.length === 0 && (
             <p className="text-muted text-center my-4">
-              Ask the course agent about your course or about PrairieLearn.
+              درباره درس خود یا درباره سامانه از دستیار درس بپرسید.
             </p>
           )}
           {messages.map((message, index) => (
@@ -595,15 +595,14 @@ function Chat({
           )}
           {lifecycle?.sandboxLost && (
             <Alert variant="warning">
-              The course agent stopped unexpectedly and lost the changes it made since it last
-              paused. Reviews you already decided are not affected; each shows what was saved.
+              دستیار درس به طور غیرمنتظره‌ای متوقف شد و تغییراتی را که از آخرین توقف انجام داده بود از دست داد. بازبینی‌هایی که قبلاً درباره آن‌ها تصمیم گرفته‌اید تحت تاثیر قرار نمی‌گیرند؛ هر یک آنچه ذخیره شده را نشان می‌دهد.
             </Alert>
           )}
           {(lifecycle?.status === 'stopping' || lifecycle?.status === 'suspending') && (
             <p className="text-muted" role="status">
               {lifecycle.status === 'stopping'
-                ? 'Stopping the course agent…'
-                : 'Pausing the course agent…'}
+                ? 'در حال متوقف کردن دستیار درس…'
+                : 'در حال مکث کردن دستیار درس…'}
             </p>
           )}
           {resume.isError && (
@@ -614,12 +613,12 @@ function Chat({
           )}
           {(connectionError || connectionFailed) && (
             <Alert variant="danger">
-              Could not connect to the course agent.{!connectionError && ' Reconnecting…'}
+              اتصال به دستیار درس برقرار نشد.{!connectionError && ' در حال اتصال مجدد…'}
             </Alert>
           )}
           {error && (
             <Alert variant="danger" className="mb-0">
-              {error.message || 'Something went wrong. Please try again.'}
+              {error.message || 'مشکلی پیش آمد. لطفاً دوباره تلاش کنید.'}
             </Alert>
           )}
         </div>
@@ -629,12 +628,12 @@ function Chat({
         disabled={!connected || !(readyToSend || replyDenies) || deny.isPending}
         placeholder={
           replyDenies
-            ? 'Explain what to change…'
+            ? 'توضیح دهید چه چیزی باید تغییر کند…'
             : inputRequestOpen
-              ? 'Reply to the agent, or ask something else…'
+              ? 'به دستیار پاسخ دهید یا سوال دیگری بپرسید…'
               : undefined
         }
-        sendLabel={replyDenies ? 'Deny and send' : undefined}
+        sendLabel={replyDenies ? 'رد و ارسال' : undefined}
         pending={sending || deny.isPending}
         attachments={drafts.attachments}
         stopDisabled={!connected || !canStop}
@@ -657,8 +656,8 @@ function Composer({
   onDraftChange,
   onSubmit,
   disabled,
-  placeholder = 'Ask the course agent…',
-  sendLabel = 'Send',
+  placeholder = 'از دستیار درس بپرسید…',
+  sendLabel = 'ارسال',
   pending = false,
   attachments,
   onAttach,
@@ -729,7 +728,7 @@ function Composer({
           className="course-agent-composer-input border-0 shadow-none bg-transparent mb-1"
           value={draft}
           placeholder={placeholder}
-          aria-label="Message"
+          aria-label="پیام"
           disabled={pending}
           onChange={(event) => onDraftChange(event.target.value)}
           onKeyDown={onKeyDown}
@@ -761,7 +760,7 @@ function Composer({
             variant="link"
             size="sm"
             className="course-agent-icon-button"
-            aria-label="Attach files"
+            aria-label="پیوست فایل"
             disabled={pending}
             onClick={() => fileInputRef.current?.click()}
           >
@@ -777,7 +776,7 @@ function Composer({
                 onClick={onStop}
               >
                 <i className="bi bi-stop-fill me-1" aria-hidden="true" />
-                Stop
+                توقف
               </Button>
             ) : (
               <Button

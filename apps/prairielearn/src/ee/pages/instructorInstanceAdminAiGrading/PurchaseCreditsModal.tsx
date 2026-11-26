@@ -71,7 +71,7 @@ function PresetPackageCard({
           <div className="d-flex flex-column flex-lg-row flex-lg-fill gap-lg-3">
             <div className="text-muted me-lg-auto">{tagline}</div>
             <div>
-              Grades about <strong>{estimate}</strong> submissions
+              حدود <strong>{estimate}</strong> ارسال را تصحیح می‌کند
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@ function CustomPackageCard({
                 min={minDollars}
                 max={maxDollars}
                 value={customAmount}
-                aria-label="Custom dollar amount"
+                aria-label="مبلغ دلخواه به دلار"
                 onFocus={onSelect}
                 onChange={(e) => {
                   const raw = e.target.value;
@@ -150,14 +150,14 @@ function CustomPackageCard({
             </div>
           </div>
           <div className="d-flex flex-column flex-lg-row flex-lg-fill gap-lg-3">
-            <div className="text-muted me-lg-auto">Enter your own amount</div>
+            <div className="text-muted me-lg-auto">مبلغ دلخواه خود را وارد کنید</div>
             <div>
               {estimate != null ? (
                 <span>
-                  Grades about <strong>{formatSubmissionCount(estimate)}</strong> submissions
+                  حدود <strong>{formatSubmissionCount(estimate)}</strong> ارسال را تصحیح می‌کند
                 </span>
               ) : (
-                <span className="text-muted">Enter amount for estimate</span>
+                <span className="text-muted">برای مشاهده برآورد، مبلغ را وارد کنید</span>
               )}
             </div>
           </div>
@@ -219,8 +219,8 @@ export function PurchaseCreditsModal({
 
   const hintMessage = showHint
     ? purchaseDollars < minDollars
-      ? `Enter an amount of at least $${minDollars}.`
-      : `Enter an amount of at most $${maxDollars.toLocaleString()}.`
+      ? `حداقل مبلغ باید $${minDollars} باشد.`
+      : `حداکثر مبلغ می‌تواند $${maxDollars.toLocaleString()} باشد.`
     : null;
 
   function handleProceed() {
@@ -241,7 +241,7 @@ export function PurchaseCreditsModal({
       }}
     >
       <Modal.Header closeButton>
-        <Modal.Title>Purchase AI grading credits</Modal.Title>
+        <Modal.Title>خرید اعتبار تصحیح هوشمند (AI Grading)</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {checkoutMutation.isError && (
@@ -250,9 +250,9 @@ export function PurchaseCreditsModal({
           </Alert>
         )}
         <div className="mb-2 fw-semibold" style={{ fontSize: '0.85rem' }}>
-          Package
+          بسته
         </div>
-        <div className="d-flex flex-column gap-2" role="radiogroup" aria-label="Credit package">
+        <div className="d-flex flex-column gap-2" role="radiogroup" aria-label="بسته اعتبار">
           {CREDIT_PACKAGES.map((pkg) => (
             <PresetPackageCard
               key={pkg.dollars}
@@ -264,7 +264,7 @@ export function PurchaseCreditsModal({
           ))}
 
           <div className="mt-2 mb-1 fw-semibold" style={{ fontSize: '0.85rem' }}>
-            Custom package
+            بسته دلخواه
           </div>
           <CustomPackageCard
             isSelected={selected.type === 'custom'}
@@ -280,7 +280,7 @@ export function PurchaseCreditsModal({
         </div>
 
         <p className="text-muted mt-3 mb-0 small">
-          Actual number of graded submissions varies based on question, submission, and rubric size.
+          تعداد واقعی ارسال‌های تصحیح‌شده بسته به اندازه سوال، پاسخ ارسالی و معیار تصحیح (Rubric) متغیر است.
         </p>
       </Modal.Body>
       <Modal.Footer>
@@ -290,7 +290,7 @@ export function PurchaseCreditsModal({
           disabled={checkoutMutation.isPending}
           onClick={onHide}
         >
-          Cancel
+          انصراف
         </button>
         <button
           type="button"
@@ -298,7 +298,7 @@ export function PurchaseCreditsModal({
           disabled={checkoutMutation.isPending || !canProceed}
           onClick={handleProceed}
         >
-          {checkoutMutation.isPending ? 'Redirecting...' : 'Proceed to payment'}
+          {checkoutMutation.isPending ? 'در حال انتقال...' : 'ادامه به پرداخت'}
         </button>
       </Modal.Footer>
     </Modal>

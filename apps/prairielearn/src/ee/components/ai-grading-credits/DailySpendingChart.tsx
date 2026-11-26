@@ -118,7 +118,7 @@ function buildGroupedOption({
         const nonZero = params.filter((p) => p.value > 0);
         const lines =
           nonZero.length === 0
-            ? html`Credits used: $0.00`
+            ? html`اعتبار مصرف‌شده: $0.00`
             : nonZero.map((p) => {
                 const displayName = p.seriesName?.split('\n')[0];
                 const amount = formatMilliDollars(p.value);
@@ -152,7 +152,7 @@ function buildSimpleOption({
       trigger: 'axis' as const,
       formatter: axisTooltipFormatter((params) => {
         const p = params[0];
-        const label = `Credits used: ${formatMilliDollars(p.value)}`;
+        const label = `اعتبار مصرف‌شده: ${formatMilliDollars(p.value)}`;
         return html`${formatDate(p.name)}${tooltipDivider()}${label}`.toString();
       }),
     },

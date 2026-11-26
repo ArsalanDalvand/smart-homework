@@ -54,7 +54,7 @@ export function AdministratorInstitutionLti13({
       ...resLocals,
       institution,
     },
-    pageTitle: 'LTI 1.3 - Institution Admin',
+    pageTitle: 'اتصال LMS (LTI 1.3) - مدیریت موسسه',
     headContent: compiledScriptTag('administratorInstitutionLti13Client.ts'),
     navContext: {
       type: 'administrator_institution',
@@ -62,13 +62,13 @@ export function AdministratorInstitutionLti13({
       subPage: 'lti13',
     },
     content: html`
-      <h2 class="h4">LTI 1.3 / Learning Tools Interoperability</h2>
-      <p>${lti13Instances.length} instance${lti13Instances.length === 1 ? '' : 's'} configured.</p>
+      <h2 class="h4">اتصال LMS (LTI 1.3) / تعامل‌پذیری ابزارهای یادگیری</h2>
+      <p>${lti13Instances.length} نمونه پیکربندی شده است.</p>
       <hr />
 
       <div class="row">
         <div class="col-3">
-          ${lti13Instances.length > 0 ? 'Please select an instance:' : ''}
+          ${lti13Instances.length > 0 ? 'لطفاً یک نمونه را انتخاب کنید:' : ''}
 
           <nav class="nav nav-pills flex-column">
             ${lti13Instances.map((i) => {
@@ -88,7 +88,7 @@ export function AdministratorInstitutionLti13({
               name="__action"
               value="add_instance"
             >
-              Add a new LTI 1.3 instance
+              افزودن نمونه جدید LTI 1.3
             </button>
           </form>
         </div>
@@ -127,16 +127,16 @@ function LTI13Instance({
     const platformConfigurationLocked = instance.roster_sync_allowed;
 
     return html`
-      <h3>${instance.name} (ID #${instance.id})</h3>
+      <h3>${instance.name} (شناسه #${instance.id})</h3>
       <p>
-        Created at ${instance.created_at.toString()}
+        ایجادشده در ${instance.created_at.toString()}
         <button
           class="btn btn-sm btn-secondary"
           type="button"
           data-bs-toggle="modal"
           data-bs-target="#instanceData"
         >
-          <i class="fa-solid fa-screwdriver-wrench"></i> Show details
+          <i class="fa-solid fa-screwdriver-wrench"></i> نمایش جزئیات
         </button>
       </p>
 
@@ -144,12 +144,12 @@ function LTI13Instance({
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">LTI 1.3 instance data</h5>
+              <h5 class="modal-title">داده‌های نمونه LTI 1.3</h5>
               <button
                 type="button"
                 class="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
+                aria-label="بستن"
               ></button>
             </div>
             <div class="modal-body">
@@ -161,19 +161,18 @@ function LTI13Instance({
 
       <p>
         <a href="${canonicalHost}/pl/lti13_instance/${instance.id}/config"
-          >LTI 1.3 config for instance</a
+          >پیکربندی LTI 1.3 برای نمونه</a
         >
         |
-        <a href="${canonicalHost}/pl/lti13_instance/${instance.id}/jwks">JWKS keystore link</a>
-        (${instance.keystore?.keys ? instance.keystore.keys.length : 0}
-        key${instance.keystore?.keys.length === 1 ? '' : 's'})
+        <a href="${canonicalHost}/pl/lti13_instance/${instance.id}/jwks">پیوند مخزن کلید JWKS</a>
+        (${instance.keystore?.keys ? instance.keystore.keys.length : 0} کلید)
       </p>
 
       <hr />
-      <h5>Name:</h5>
+      <h5>نام:</h5>
       ${
         instance.tool_platform_name
-          ? html` The LMS has referred to itself as:
+          ? html` سامانه LMS خود را با نام زیر معرفی کرده است:
               <strong>${instance.tool_platform_name}</strong>`
           : ''
       }
@@ -181,7 +180,7 @@ function LTI13Instance({
         <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
         <input type="hidden" name="__action" value="update_name" />
         <div class="mb-3 my-2">
-          <label for="name" class="form-label">Branded platform name: </label>
+          <label for="name" class="form-label">نام نمایشی پلتفرم: </label>
           <input
             id="name"
             class="form-control"
@@ -193,15 +192,15 @@ function LTI13Instance({
             aria-describedby="nameHelp"
           />
           <small id="nameHelp" class="form-text text-muted">
-            Use this name inside PL to refer to the LMS, i.e. whatever your institution calls it
+            از این نام در داخل سامانه برای اشاره به LMS استفاده کنید (هر نامی که موسسه شما به آن می‌دهد).
           </small>
         </div>
-        <button type="submit" class="btn btn-info">Save name</button>
-        <input type="reset" class="btn btn-secondary" value="Reset options" />
+        <button type="submit" class="btn btn-info">ذخیره نام</button>
+        <input type="reset" class="btn btn-secondary" value="بازنشانی گزینه‌ها" />
       </form>
 
       <hr />
-      <h5>Platform:</h5>
+      <h5>پلتفرم:</h5>
 
       ${EncodedData(platform_defaults, 'platform_defaults_data')}
 
@@ -214,7 +213,7 @@ function LTI13Instance({
             ? html`
                 <div class="alert alert-info">
                   Platform configuration is locked while roster syncing is allowed.
-                  <a href="#roster-sync-controls">Disallow roster syncing below</a> before changing
+                  <a href="#roster-sync-controls">همگام‌سازی فهرست را در پایین غیرفعال کنید</a> before changing
                   these options.
                 </div>
               `
@@ -222,7 +221,7 @@ function LTI13Instance({
         }
 
         <div class="mb-3">
-          <label class="form-label" for="choosePlatform">Platform type: </label>
+          <label class="form-label" for="choosePlatform">نوع پلتفرم: </label>
           <select
             class="form-select mb-2"
             id="choosePlatform"
@@ -249,13 +248,13 @@ function LTI13Instance({
                 checked
                 ${platformConfigurationLocked ? 'disabled' : ''}
               />
-              On change, load defaults into form&nbsp;<em>(remember to edit and save!)</em>
+              هنگام تغییر، مقادیر پیش‌فرض در فرم بارگذاری شوند&nbsp;<em>(ویرایش و ذخیره را فراموش نکنید!)</em>
             </label>
           </div>
         </div>
 
         <div class="mb-3 mt-2">
-          <label for="issuer_params"> Issuer params: </label>
+          <label for="issuer_params"> پارامترهای صادرکننده (Issuer params): </label>
           <textarea
             class="form-control"
             id="issuer_params"
@@ -268,7 +267,7 @@ ${JSON.stringify(instance.issuer_params, null, 3)}</textarea>
         </div>
 
         <div class="mb-3 mt-2">
-          <label for="client_id">Client ID: </label>
+          <label for="client_id">شناسه کلاینت (Client ID): </label>
           <input
             id="client_id"
             class="form-control"
@@ -280,12 +279,12 @@ ${JSON.stringify(instance.issuer_params, null, 3)}</textarea>
             ${platformConfigurationLocked ? 'disabled' : ''}
           />
           <small id="client_idHelp" class="form-text text-muted">
-            Get this unique ID from the LMS.
+            این شناسه یکتا را از LMS دریافت کنید.
           </small>
         </div>
 
         <div class="mb-3 mt-2">
-          <label for="custom_fields">Custom fields suggestions: </label>
+          <label for="custom_fields">پیشنهادهای فیلدهای سفارشی (Custom fields): </label>
           <textarea
             class="form-control"
             id="custom_fields"
@@ -296,13 +295,12 @@ ${JSON.stringify(instance.issuer_params, null, 3)}</textarea>
           >
 ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
           <small id="custom_fieldsHelp" class="form-text text-muted">
-            Provide suggestions to the LMS in the config JSON for how to setup LTI 1.3 custom
-            fields.
+            پیشنهادهایی را در JSON پیکربندی برای نحوه تنظیم فیلدهای سفارشی LTI 1.3 به LMS ارائه دهید.
             <a
               href="https://canvas.instructure.com/doc/api/file.tools_variable_substitutions.html"
               target="_blank"
               rel="noreferrer"
-              >Canvas variable substitution docs</a
+              >مستندات جایگزینی متغیرهای Canvas</a
             >
           </small>
         </div>
@@ -313,23 +311,22 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
             class="btn btn-info"
             ${platformConfigurationLocked ? 'disabled' : ''}
           >
-            Save platform options
+            ذخیره گزینه‌های پلتفرم
           </button>
           <input
             type="reset"
             class="btn btn-secondary"
-            value="Reset options"
+            value="بازنشانی گزینه‌ها"
             ${platformConfigurationLocked ? 'disabled' : ''}
           />
         </div>
       </form>
 
       <hr />
-      <h5>Keystore:</h5>
+      <h5>مخزن کلید (Keystore):</h5>
 
-      <a href="${canonicalHost}/pl/lti13_instance/${instance.id}/jwks">JWKS keystore</a>
-      contains ${instance.keystore?.keys ? instance.keystore.keys.length : 0}
-      key${instance.keystore?.keys.length === 1 ? '' : 's'}.<br />
+      <a href="${canonicalHost}/pl/lti13_instance/${instance.id}/jwks">مخزن کلید JWKS</a>
+      شامل ${instance.keystore?.keys ? instance.keystore.keys.length : 0} کلید است.<br />
       <ul>
         ${instance.keystore?.keys.map((k) => {
           return html`<li>
@@ -341,8 +338,8 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
               <input
                 class="btn btn-xs btn-outline-warning"
                 type="submit"
-                value="Delete key"
-                onclick="return confirm('Really delete this key: ${k.kid}?')"
+                value="حذف کلید"
+                onclick="return confirm('آیا از حذف کلید ${k.kid} اطمینان دارید؟')"
               />
             </form>
           </li>`;
@@ -351,29 +348,29 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
       <form method="POST">
         <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
         <button type="submit" name="__action" value="add_key" class="btn btn-success">
-          Add key to keystore
+          افزودن کلید به مخزن
         </button>
         <button
           type="submit"
           name="__action"
           value="delete_keys"
           class="btn btn-warning"
-          onclick="return confirm('Really delete all keys from keystore?')"
+          onclick="return confirm('آیا از حذف همه کلیدها از مخزن اطمینان دارید؟')"
         >
-          Delete all keys from keystore
+          حذف همه کلیدها از مخزن
         </button>
       </form>
 
       <hr />
-      <h5>PrairieLearn configuration</h5>
+      <h5>پیکربندی سامانه</h5>
 
       <form method="POST">
         <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
         <input type="hidden" name="__action" value="save_pl_config" />
 
-        <h6>Which attributes from the LTI 1.3 user claim should be mapped to PL identities?</h6>
+        <h6>کدام صفات از ادعای کاربر LTI 1.3 باید به هویت‌های سامانه نگاشت شوند؟</h6>
         <div class="mb-3">
-          <label class="form-label" for="name_attribute">Name attribute</label>
+          <label class="form-label" for="name_attribute">صفت نام</label>
           <input
             type="text"
             class="form-control"
@@ -383,12 +380,12 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
             aria-describedby="nameAttributeHelp"
           />
           <small id="nameAttributeHelp" class="form-text text-muted">
-            This attribute should contain the full name of the user, like "Jasmine Wang".
+            این صفت باید شامل نام کامل کاربر باشد، مانند «سارا محمدی».
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="uid_attribute">UID attribute</label>
+          <label class="form-label" for="uid_attribute">صفت UID</label>
           <input
             type="text"
             class="form-control"
@@ -398,15 +395,12 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
             aria-describedby="uidAttributeHelp"
           />
           <small id="uidAttributeHelp" class="form-text text-muted">
-            The UID is a user-facing identifier for the user. This should generally be an email-like
-            identifier, like "jwang@example.com". However, it doesn't have to be an email address;
-            PrairieLearn will never try to route email to it. This attribute may change, for
-            instance if a student changes their name with their university.
+            شناسه UID یک شناسه قابل مشاهده برای کاربر است. معمولاً باید شبیه ایمیل باشد، مانند «user@example.com». با این حال، نیازی نیست حتماً آدرس ایمیل واقعی باشد؛ سامانه هرگز ایمیلی به آن ارسال نمی‌کند. این صفت ممکن است تغییر کند، مثلاً اگر دانشجو نام خود را در دانشگاه تغییر دهد.
           </small>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="uin_attribute">UIN attribute</label>
+          <label class="form-label" for="uin_attribute">صفت UIN</label>
           <input
             type="text"
             class="form-control"
@@ -419,9 +413,7 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
             ${instance.roster_sync_allowed ? 'disabled' : ''}
           />
           <small id="uinAttributeHelp" class="form-text text-muted">
-            The UIN is used as an internal, immutable identifier for the user. It
-            <strong>MUST</strong> never change for a given individual, even if they change their
-            name or UID. Possibly
+            شناسه UIN به عنوان یک شناسه داخلی و تغییرناپذیر برای کاربر استفاده می‌شود. این مقدار برای یک فرد <strong>هرگز نباید</strong> تغییر کند، حتی اگر نام یا UID او تغییر یابد. مثلاً
             <code>["https://purl.imsglobal.org/spec/lti/claim/lis"]["person_sourcedid"]</code> or
             <code>["https://purl.imsglobal.org/spec/lti/claim/custom"]["uin"]</code>
           </small>
@@ -429,9 +421,8 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
             instance.roster_sync_allowed
               ? html`
                   <small id="uinAttributeLockedHelp" class="form-text text-muted d-block">
-                    This attribute is locked while roster syncing is allowed.
-                    <a href="#roster-sync-controls">Disallow roster syncing below</a>
-                    before changing it.
+                    این صفت تا زمانی که همگام‌سازی فهرست مجاز است، قفل شده است.
+                    <a href="#roster-sync-controls">همگام‌سازی فهرست را در پایین غیرفعال کنید</a> پیش از تغییر آن.
                   </small>
                 `
               : ''
@@ -439,7 +430,7 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="email_attribute">Email attribute</label>
+          <label class="form-label" for="email_attribute">صفت ایمیل</label>
           <input
             type="text"
             class="form-control"
@@ -449,8 +440,7 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
             aria-describedby="emailAttributeHelp"
           />
           <small id="emailAttributeHelp" class="form-text text-muted">
-            This attribute should contain the email address of the user. If present, PrairieLearn
-            will use this to send email to the user.
+            این صفت باید شامل آدرس ایمیل کاربر باشد. در صورت وجود، سامانه از آن برای ارسال ایمیل به کاربر استفاده خواهد کرد.
           </small>
         </div>
 
@@ -465,17 +455,14 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
             ${instance.require_linked_lti_user ? 'checked' : ''}
           />
           <label class="form-check-label" for="require_linked_lti_user">
-            Require LTI authentication
+            الزام به احراز هویت LTI
           </label>
           <small id="requireLtiUserHelp" class="form-text text-muted d-block">
-            When enabled, students who authenticate via a non-LTI provider will be required to
-            authenticate via the LTI platform before they can access any course instances linked to
-            this LTI instance. This should not be enabled in most cases. It is primarily useful for
-            institutions that don't provide UIDs or useful emails to PrairieLearn via LTI.
+            در صورت فعال بودن، دانشجویانی که از طریق ارائه‌دهنده غیر-LTI وارد می‌شوند، پیش از دسترسی به ارائه‌های درس متصل به این نمونه LTI، باید از طریق پلتفرم LTI نیز احراز هویت شوند. در اکثر موارد نباید فعال شود و عمدتاً برای موسساتی کاربرد دارد که UID یا ایمیل معتبری از طریق LTI ارائه نمی‌دهند.
           </small>
         </div>
 
-        <button type="submit" class="btn btn-info">Save PrairieLearn config</button>
+        <button type="submit" class="btn btn-info">ذخیره پیکربندی سامانه</button>
       </form>
 
       <hr />
@@ -490,7 +477,7 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
 
       <hr />
       <p>
-        For testing, have the LMS admin configure their OpenID Connect Initiation URL to
+        برای آزمایش، از مدیر LMS بخواهید نشانی شروع OpenID Connect خود را روی مقدار زیر تنظیم کند:
         <a href="${canonicalHost}/pl/lti13_instance/${instance.id}/auth/login?test">
           ${canonicalHost}/pl/lti13_instance/${instance.id}/auth/login?test
         </a>
@@ -502,14 +489,14 @@ ${JSON.stringify(instance.custom_fields, null, 3)}</textarea>
         <button
           type="submit"
           class="btn btn-danger my-2"
-          onclick="return confirm('Really delete this LTI 1.3 instance?')"
+          onclick="return confirm('آیا از حذف این نمونه LTI 1.3 اطمینان دارید؟')"
         >
-          Remove LTI 1.3 instance
+          حذف نمونه LTI 1.3
         </button>
       </form>
     `;
   } else {
-    return html`Please select an instance on the left.`;
+    return html`لطفاً یک نمونه را از منو انتخاب کنید.`;
   }
 }
 
@@ -523,13 +510,12 @@ function RosterSyncControls({
   resLocals: ResLocalsForPage<'plain'>;
 }) {
   return html`
-    <h5 id="roster-sync-controls">Roster syncing</h5>
+    <h5 id="roster-sync-controls">همگام‌سازی فهرست دانشجویان (Roster syncing)</h5>
     ${
       instance.roster_sync_allowed
         ? html`
             <div class="alert alert-success">
-              Roster syncing is allowed for this LTI 1.3 instance. Its platform and UIN settings,
-              and the institution's SAML identity settings, are locked to protect user matching.
+              همگام‌سازی فهرست برای این نمونه LTI 1.3 مجاز است. تنظیمات پلتفرم و UIN آن و همچنین تنظیمات هویت SAML موسسه برای محافظت از تطبیق کاربران قفل شده‌اند.
             </div>
             <form method="POST">
               <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
@@ -537,30 +523,29 @@ function RosterSyncControls({
               <button
                 type="submit"
                 class="btn btn-outline-danger"
-                onclick="return confirm('Disallow roster syncing for this instance?')"
+                onclick="return confirm('همگام‌سازی فهرست برای این نمونه غیرمجاز شود؟')"
               >
-                Disallow roster syncing
+                غیرمجاز کردن همگام‌سازی فهرست
               </button>
             </form>
           `
         : rosterSyncPrerequisiteIssues.length > 0
           ? html`
               <div class="alert alert-warning mb-0">
-                <p>Roster syncing cannot be allowed until the following prerequisites are met:</p>
+                <p>تا زمانی که پیش‌نیازهای زیر برآورده نشوند، همگام‌سازی فهرست مجاز نخواهد بود:</p>
                 <ul>
                   ${rosterSyncPrerequisiteIssues.map((issue) => html`<li>${issue}</li>`)}
                 </ul>
                 <p class="mb-0">
-                  Update the UIN attribute above or the institution's
-                  <a href="${resLocals.urlPrefix}/saml">SAML</a> and
-                  <a href="${resLocals.urlPrefix}/sso">single sign-on</a> settings as needed.
+                  در صورت نیاز، صفت UIN در بالا یا تنظیمات
+                  <a href="${resLocals.urlPrefix}/saml">SAML</a> و
+                  <a href="${resLocals.urlPrefix}/sso">ورود یکپارچه (SSO)</a> موسسه را به‌روزرسانی کنید.
                 </p>
               </div>
             `
           : html`
               <p>
-                Allow roster syncing only after confirming that SAML and LTI identify users with the
-                same immutable UIN.
+                تنها پس از اطمینان از اینکه SAML و LTI کاربران را با یک UIN یکسان و تغییرناپذیر شناسایی می‌کنند، همگام‌سازی فهرست را مجاز کنید.
               </p>
               <form method="POST">
                 <input type="hidden" name="__csrf_token" value="${resLocals.__csrf_token}" />
@@ -575,7 +560,7 @@ function RosterSyncControls({
                     required
                   />
                   <label class="form-check-label" for="lti13-roster-sync-same-canonical-uin">
-                    I confirm that SAML and LTI provide the same canonical UIN for each user.
+                    تایید می‌کنم که SAML و LTI برای هر کاربر یک UIN یکسان و استاندارد ارائه می‌دهند.
                   </label>
                 </div>
                 <div class="form-check mb-3">
@@ -588,11 +573,10 @@ function RosterSyncControls({
                     required
                   />
                   <label class="form-check-label" for="lti13-roster-sync-users-backfilled">
-                    I confirm that existing users who may be roster-synced have been backfilled with
-                    this UIN.
+                    تایید می‌کنم که کاربران فعلی که ممکن است همگام‌سازی شوند، با این UIN به‌روزرسانی (Backfill) شده‌اند.
                   </label>
                 </div>
-                <button type="submit" class="btn btn-primary">Allow roster syncing</button>
+                <button type="submit" class="btn btn-primary">مجاز کردن همگام‌سازی فهرست</button>
               </form>
             `
     }
@@ -607,16 +591,13 @@ function RosterInspector({
   resLocals: ResLocalsForPage<'plain'>;
 }) {
   return html`
-    <h5>NRPS roster inspector</h5>
+    <h5>بازرس فهرست NRPS</h5>
     <p class="text-muted">
-      Read-only diagnostic. Dumps the raw Names and Role Provisioning Service (NRPS) roster for a
-      linked course instance, optionally requesting per-member custom claims for a chosen resource
-      link. This exposes every member's <code>sub</code>, email, and UIN. No enrollments or users
-      are created or modified.
+      ابزار عیب‌یابی فقط-خواندنی. خروجی خام سرویس Names and Role Provisioning Service (NRPS) را برای یک ارائه درس متصل نمایش می‌دهد و به صورت اختیاری ادعاهای سفارشی هر عضو را برای پیوند منبع انتخاب‌شده درخواست می‌کند. این کار <code>sub</code>، ایمیل و UIN هر عضو را نمایش می‌دهد. هیچ ثبت‌نام یا کاربری ایجاد یا تغییر داده نمی‌شود.
     </p>
     ${
       linkedCourseInstances.length === 0
-        ? html`<p>No course instances are linked to this LTI 1.3 instance yet.</p>`
+        ? html`<p>هنوز هیچ ارائه درسی به این نمونه LTI 1.3 متصل نشده است.</p>`
         : linkedCourseInstances.map((linked) => RosterInspectorForm({ linked, resLocals }))
     }
   `;
@@ -632,7 +613,7 @@ function RosterInspectorForm({
   const lci = linked.lti13_course_instance;
   const courseLabel =
     `${linked.course_short_name ?? ''} ${linked.course_instance_short_name ?? ''}`.trim() ||
-    `Course instance ${lci.course_instance_id}`;
+    `ارائه درس ${lci.course_instance_id}`;
 
   return html`
     <div class="card mb-2">
@@ -651,8 +632,7 @@ function RosterInspectorForm({
           lci.context_memberships_url === null
             ? html`
                 <p class="text-muted mb-0">
-                  No <code>context_memberships_url</code> stored yet. Have an instructor launch
-                  PrairieLearn from this course in the LMS to populate it.
+                  هنوز <code>context_memberships_url</code> ذخیره نشده است. از یک مدرس بخواهید سامانه را از طریق این درس در LMS اجرا کند تا مقداردهی شود.
                 </p>
               `
             : html`
@@ -661,14 +641,14 @@ function RosterInspectorForm({
                   <input type="hidden" name="__action" value="inspect_roster" />
                   <input type="hidden" name="lti13_course_instance_id" value="${lci.id}" />
                   <div class="col-md-9">
-                    <label class="form-label" for="rlid-${lci.id}">Resource link</label>
+                    <label class="form-label" for="rlid-${lci.id}">پیوند منبع (Resource link)</label>
                     <select class="form-select" id="rlid-${lci.id}" name="rlid">
-                      <option value="">None (plain roster, no custom claims)</option>
+                      <option value="">هیچ‌کدام (فهرست ساده، بدون ادعاهای سفارشی)</option>
                       ${
                         lci.resource_link_id
                           ? html`
                               <option value="${lci.resource_link_id}">
-                                Course navigation (${lci.resource_link_id})
+                                ناوبری درس (${lci.resource_link_id})
                               </option>
                             `
                           : ''
@@ -676,7 +656,7 @@ function RosterInspectorForm({
                       ${linked.lineitem_resource_links.map(
                         (li) => html`
                           <option value="${li.resource_link_id}">
-                            Assessment: ${li.assessment_title ?? li.label ?? li.resource_link_id}
+                            آزمون/تکلیف: ${li.assessment_title ?? li.label ?? li.resource_link_id}
                             (${li.resource_link_id})
                           </option>
                         `,
@@ -684,7 +664,7 @@ function RosterInspectorForm({
                     </select>
                   </div>
                   <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary w-100">Dump roster</button>
+                    <button type="submit" class="btn btn-primary w-100">دریافت فهرست</button>
                   </div>
                 </form>
               `

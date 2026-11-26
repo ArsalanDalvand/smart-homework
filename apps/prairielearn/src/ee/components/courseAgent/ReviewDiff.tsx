@@ -45,17 +45,17 @@ const ADDED_COLOR = 'var(--review-diff-added)';
 const DELETED_COLOR = 'var(--review-diff-deleted)';
 
 const CHANGES = {
-  added: { icon: 'bi-file-earmark-plus', color: ADDED_COLOR, label: 'Added', type: 'new' },
+  added: { icon: 'bi-file-earmark-plus', color: ADDED_COLOR, label: 'افزوده‌شده', type: 'new' },
   modified: {
     icon: 'bi-file-earmark-diff',
     color: 'var(--bs-warning)',
-    label: 'Modified',
+    label: 'ویرایش‌شده',
     type: 'change',
   },
   deleted: {
     icon: 'bi-file-earmark-minus',
     color: DELETED_COLOR,
-    label: 'Deleted',
+    label: 'حذف‌شده',
     type: 'deleted',
   },
 } as const;
@@ -192,7 +192,7 @@ export default function ReviewDiff({ files }: { files: ReviewDiffFile[] }) {
           <Form.Select
             size="sm"
             className="w-auto mw-100"
-            aria-label="Jump to file"
+            aria-label="پرش به فایل"
             value=""
             onChange={(event) => jumpTo(event.target.value)}
           >
@@ -212,15 +212,15 @@ export default function ReviewDiff({ files }: { files: ReviewDiffFile[] }) {
             name={`${id}-layout`}
             size="sm"
             className="ms-auto"
-            aria-label="Diff layout"
+            aria-label="چیدمان نمایش تفاوت‌ها"
             value={split ? 'split' : 'unified'}
             onChange={(value: 'split' | 'unified') => setPreferSplit(value === 'split')}
           >
             <ToggleButton id={`${id}-split`} value="split" variant="outline-secondary">
-              Split
+              دوتایی (Split)
             </ToggleButton>
             <ToggleButton id={`${id}-unified`} value="unified" variant="outline-secondary">
-              Unified
+              یکپارچه (Unified)
             </ToggleButton>
           </ToggleButtonGroup>
         )}
@@ -228,7 +228,7 @@ export default function ReviewDiff({ files }: { files: ReviewDiffFile[] }) {
       <div className="d-flex flex-grow-1" style={{ minHeight: 0 }}>
         {wide && files.length > 1 && (
           <nav
-            aria-label="Changed files"
+            aria-label="فایل‌های تغییریافته"
             className="border-end overflow-auto position-relative flex-shrink-0 py-2"
             style={{ width: 280 }}
           >
@@ -296,13 +296,13 @@ export default function ReviewDiff({ files }: { files: ReviewDiffFile[] }) {
                 ) : (
                   <FileNotice
                     file={file}
-                    message={file.change === 'modified' ? 'No content changes.' : 'Empty file.'}
+                    message={file.change === 'modified' ? 'تغییری در محتوا وجود ندارد.' : 'فایل خالی است.'}
                   />
                 )
               ) : (
                 <FileNotice
                   file={file}
-                  message={`Binary file (${filesize(file.bytes)}) can't be previewed.`}
+                  message={`فایل باینری (${filesize(file.bytes)}) قابل پیش‌نمایش نیست.`}
                 />
               )}
             </section>

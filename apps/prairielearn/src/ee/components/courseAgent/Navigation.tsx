@@ -16,7 +16,7 @@ export function NavigationCard({ navigation }: { navigation: NavigationPart }) {
     <a
       href={navigation.url}
       className="course-agent-page-link border rounded p-2 d-flex align-items-center gap-2 text-body text-decoration-none"
-      aria-label={`Open ${navigation.label} (${navigation.subtitle})`}
+      aria-label={`باز کردن ${navigation.label} (${navigation.subtitle})`}
     >
       <span className="course-agent-page-link-icon rounded d-flex align-items-center justify-content-center flex-shrink-0">
         <i className="bi bi-window" aria-hidden="true" />
@@ -46,8 +46,8 @@ export function ReloadCard() {
         <i className="bi bi-arrow-clockwise" aria-hidden="true" />
       </span>
       <span className="course-agent-page-link-text d-flex flex-column flex-grow-1">
-        <span className="fw-semibold text-truncate">Reload this page</span>
-        <span className="small text-muted text-truncate">Shows the latest saved changes</span>
+        <span className="fw-semibold text-truncate">بازنشانی این صفحه</span>
+        <span className="small text-muted text-truncate">نمایش آخرین تغییرات ذخیره‌شده</span>
       </span>
     </button>
   );

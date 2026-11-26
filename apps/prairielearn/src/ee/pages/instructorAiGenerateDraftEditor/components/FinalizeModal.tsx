@@ -18,17 +18,16 @@ export function FinalizeModal({
   return (
     <Modal show={show} size="lg" backdrop="static" onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Finalize question</Modal.Title>
+        <Modal.Title>نهایی‌سازی سوال</Modal.Title>
       </Modal.Header>
       <form method="POST" autoComplete="off">
         <Modal.Body>
           <div className="alert alert-primary" role="alert">
-            After finalizing the question, you will be able to use it on assessments and make manual
-            edits.
+            پس از نهایی‌سازی سوال، می‌توانید از آن در آزمون‌ها و تکالیف استفاده کرده و ویرایش‌های دستی انجام دهید.
           </div>
           <div className="mb-3">
             <label htmlFor="question-title" className="form-label">
-              Title
+              عنوان
             </label>
             <input
               type="text"
@@ -39,13 +38,12 @@ export function FinalizeModal({
               required
             />
             <div className="form-text text-muted">
-              The title of the question as it will appear in the question bank, e.g. "Add two random
-              numbers".
+              عنوان سوال به شکلی که در بانک سوالات نمایش داده می‌شود، مثلاً «جمع دو عدد تصادفی».
             </div>
           </div>
           <div className="mb-3">
             <label htmlFor="question-qid" className="form-label">
-              QID
+              شناسه سوال (QID)
             </label>
             <input
               type="text"
@@ -57,7 +55,7 @@ export function FinalizeModal({
               required
             />
             <div className="form-text text-muted">
-              A unique identifier that will be used to include this question in assessments, e.g.{' '}
+              یک شناسه یکتا که برای افزودن این سوال به آزمون‌ها و تکالیف استفاده می‌شود، مثلاً{' '}
               <code>add-random-numbers</code>.
             </div>
           </div>
@@ -66,10 +64,10 @@ export function FinalizeModal({
           <input type="hidden" name="__action" value="save_question" />
           <input type="hidden" name="__csrf_token" value={csrfToken} />
           <button type="button" className="btn btn-secondary" onClick={onHide}>
-            Close
+            بستن
           </button>
           <button type="submit" className="btn btn-primary">
-            Finalize question
+            نهایی‌سازی سوال
           </button>
         </Modal.Footer>
       </form>

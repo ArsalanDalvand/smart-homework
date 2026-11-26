@@ -19,16 +19,16 @@ type Verb =
   | 'summarize';
 
 const VERBS: Record<Verb, [running: string, done: string]> = {
-  read: ['Reading', 'Read'],
-  list: ['Listing', 'Listed'],
-  search: ['Searching for', 'Searched for'],
-  browse: ['Browsing', 'Browsed'],
-  run: ['Running', 'Ran'],
-  edit: ['Editing', 'Edited'],
-  create: ['Creating', 'Created'],
-  delete: ['Deleting', 'Deleted'],
-  call: ['Calling', 'Called'],
-  summarize: ['Summarizing', 'Summarized'],
+  read: ['در حال خواندن', 'خوانده شد:'],
+  list: ['در حال فهرست‌کردن', 'فهرست شد:'],
+  search: ['در حال جستجو برای', 'جستجو شد:'],
+  browse: ['در حال مرور', 'مرور شد:'],
+  run: ['در حال اجرا', 'اجرا شد:'],
+  edit: ['در حال ویرایش', 'ویرایش شد:'],
+  create: ['در حال ایجاد', 'ایجاد شد:'],
+  delete: ['در حال حذف', 'حذف شد:'],
+  call: ['در حال فراخوانی', 'فراخوانی شد:'],
+  summarize: ['در حال خلاصه‌سازی', 'خلاصه‌سازی شد:'],
 };
 
 /** Codex runs commands through a login shell; the inner script is what the agent wrote. */
@@ -74,32 +74,32 @@ function category(call: ToolCall): {
     case 'command': {
       const types = new Set(call.actions.map((action) => action.type));
       if (types.size === 1 && types.has('read')) {
-        return { key: 'read', icon: 'bi-file-earmark-text', group: (n) => `Read ${n} files` };
+        return { key: 'read', icon: 'bi-file-earmark-text', group: (n) => `${n} فایل خوانده شد` };
       }
       if (call.actions.length === 1 && types.has('listFiles')) {
-        return { key: 'list', icon: 'bi-folder2-open', group: (n) => `Listed ${n} folders` };
+        return { key: 'list', icon: 'bi-folder2-open', group: (n) => `${n} پوشه فهرست شد` };
       }
       if (call.actions.length === 1 && types.has('search')) {
-        return { key: 'search', icon: 'bi-search', group: (n) => `Searched ${n} times` };
+        return { key: 'search', icon: 'bi-search', group: (n) => `${n} بار جستجو شد` };
       }
-      return { key: 'run', icon: 'bi-terminal', group: (n) => `Ran ${n} commands` };
+      return { key: 'run', icon: 'bi-terminal', group: (n) => `${n} دستور اجرا شد` };
     }
     case 'fileChange':
-      return { key: 'edit', icon: 'bi-pencil-square', group: (n) => `Made ${n} edits` };
+      return { key: 'edit', icon: 'bi-pencil-square', group: (n) => `${n} ویرایش انجام شد` };
     case 'tool':
       if (call.server === 'web') {
-        return { key: 'web', icon: 'bi-globe', group: (n) => `Browsed the web ${n} times` };
+        return { key: 'web', icon: 'bi-globe', group: (n) => `${n} بار وب مرور شد` };
       }
       return {
         key: `call:${toolName(call)}`,
         icon: 'bi-plug',
-        group: (n) => `Called ${toolName(call)} ${n} times`,
+        group: (n) => `${n} بار ${toolName(call)} فراخوانی شد`,
       };
     case 'compaction':
       return {
         key: 'compaction',
         icon: 'bi-arrows-collapse',
-        group: (n) => `Summarized earlier conversation ${n} times`,
+        group: (n) => `${n} بار گفتگوی قبلی خلاصه‌سازی شد`,
       };
   }
 }
@@ -134,7 +134,7 @@ function describe(call: ToolCall): { verb: Verb; subject: ReactNode; meta?: stri
               <Code>{action.query ?? 'files'}</Code>
               {action.path && (
                 <>
-                  {' in '}
+                  {' در '}
                   <Code>{action.path}</Code>
                 </>
               )}
@@ -147,7 +147,7 @@ function describe(call: ToolCall): { verb: Verb; subject: ReactNode; meta?: stri
     case 'fileChange': {
       const meta = changeMeta([call]);
       const count = call.changes.length + call.omittedChanges;
-      if (count !== 1) return { verb: 'edit', subject: `${count} files`, meta };
+      if (count !== 1) return { verb: 'edit', subject: `${count} فایل`, meta };
       const [change] = call.changes;
       const verb =
         change.change === 'add' ? 'create' : change.change === 'delete' ? 'delete' : 'edit';
@@ -157,7 +157,7 @@ function describe(call: ToolCall): { verb: Verb; subject: ReactNode; meta?: stri
       if (call.server === 'web') return describeWeb(call.tool, call.arguments.text);
       return { verb: 'call', subject: <Code>{toolName(call)}</Code> };
     case 'compaction':
-      return { verb: 'summarize', subject: 'earlier conversation' };
+      return { verb: 'summarize', subject: 'گفتگوی قبلی' };
   }
 }
 
@@ -173,7 +173,7 @@ function describeWeb(action: string, text: string): { verb: Verb; subject: React
   if ((action === 'search' || action === 'findInPage') && lines.length > 0) {
     return { verb: 'search', subject: <Code>{lines.at(-1)}</Code> };
   }
-  return { verb: 'browse', subject: 'the web' };
+  return { verb: 'browse', subject: 'وب' };
 }
 
 function changeMeta(calls: ToolCall[]) {
@@ -190,11 +190,11 @@ function statusOf(call: ToolCall, live: boolean): ToolCall['status'] {
 
 function statusNote(call: ToolCall, live: boolean) {
   const status = statusOf(call, live);
-  if (status === 'interrupted') return { text: 'Interrupted', failed: false };
+  if (status === 'interrupted') return { text: 'متوقف شد', failed: false };
   if (call.kind === 'command' && call.exitCode !== null && call.exitCode !== 0) {
     return { text: `Exit ${call.exitCode}`, failed: true };
   }
-  return status === 'failed' ? { text: 'Failed', failed: true } : null;
+  return status === 'failed' ? { text: 'ناموفق', failed: true } : null;
 }
 
 /** The collapsed line: icon or spinner, label, and status in text as well as colour. */
@@ -231,7 +231,7 @@ function Summary({
       <span className="text-truncate">{label}</span>
       {/* The spaces separate words in the button's accessible name; flex layout drops them. */}
       {meta && <span className="flex-shrink-0"> {meta}</span>}
-      {running && <span className="visually-hidden"> (in progress)</span>}
+      {running && <span className="visually-hidden"> (در حال انجام)</span>}
       {note && (
         <span className={clsx('flex-shrink-0 fw-semibold', note.failed && 'text-danger')}>
           {' '}
@@ -361,14 +361,14 @@ function ToolCallDetails({ call }: { call: ToolCall }) {
   switch (call.kind) {
     case 'command':
       return (
-        <Output label="Command output" clip={call.output}>
+        <Output label="خروجی دستور" clip={call.output}>
           <span className="text-body-secondary">$ </span>
           {unwrapShell(call.command)}
           {'\n'}
           {call.output ? (
             call.output.text
           ) : (
-            <span className="text-body-secondary">(no output)</span>
+            <span className="text-body-secondary">(بدون خروجی)</span>
           )}
         </Output>
       );
@@ -385,14 +385,14 @@ function ToolCallDetails({ call }: { call: ToolCall }) {
                   +{change.added} −{change.removed}
                 </span>
               </div>
-              <Output label={`Changes to ${change.path}`} clip={change.diff}>
+              <Output label={`تغییرات در ${change.path}`} clip={change.diff}>
                 <DiffLines diff={change.diff.text} />
               </Output>
             </div>
           ))}
           {call.omittedChanges > 0 && (
             <div className="small text-body-secondary">
-              {call.omittedChanges} more {call.omittedChanges === 1 ? 'file' : 'files'} not shown
+              {call.omittedChanges} فایل دیگر نمایش داده نشده است
             </div>
           )}
         </>
@@ -400,11 +400,11 @@ function ToolCallDetails({ call }: { call: ToolCall }) {
     case 'tool':
       return (
         <>
-          <Output label="Arguments" clip={call.arguments}>
-            {call.arguments.text || <span className="text-body-secondary">(no arguments)</span>}
+          <Output label="آرگومان‌ها" clip={call.arguments}>
+            {call.arguments.text || <span className="text-body-secondary">(بدون آرگومان)</span>}
           </Output>
           {call.output && (
-            <Output label="Result" clip={call.output}>
+            <Output label="نتیجه" clip={call.output}>
               {call.output.text}
             </Output>
           )}
@@ -414,8 +414,7 @@ function ToolCallDetails({ call }: { call: ToolCall }) {
     case 'compaction':
       return (
         <div className="small text-body-secondary">
-          The conversation got long, so the agent replaced earlier messages with a summary to make
-          room. It may not remember every detail from before this point.
+          گفتگو طولانی شد، بنابراین دستیار پیام‌های قبلی را با یک خلاصه جایگزین کرد تا فضا باز شود. ممکن است تمام جزئیات پیش از این نقطه را به خاطر نیاورد.
         </div>
       );
   }
@@ -467,8 +466,8 @@ function Output({
       {clip && clip.omitted > 0 && (
         <div className="small text-body-secondary">
           {clip.text
-            ? `${clip.omitted.toLocaleString()} characters not shown`
-            : `Not kept in this conversation (${clip.omitted.toLocaleString()} characters)`}
+            ? `${clip.omitted.toLocaleString()} کاراکتر نمایش داده نشده است`
+            : `در این گفتگو نگهداری نشده است (${clip.omitted.toLocaleString()} کاراکتر)`}
         </div>
       )}
     </div>

@@ -33,7 +33,7 @@ export function StudentCourseInstanceUpgrade({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Upgrade required',
+    pageTitle: 'نیاز به ارتقا',
     navContext: {
       type: 'student',
       page: 'upgrade',
@@ -42,16 +42,16 @@ export function StudentCourseInstanceUpgrade({
     content: html`
       <h1>
         <i class="fa-solid fa-lock"></i>
-        Upgrade required
+        نیاز به ارتقا
       </h1>
       <p>
         <strong>${course.short_name}: ${course.title}, ${courseInstance.long_name}</strong>
-        requires an upgrade to support certain features selected by your instructor.
+        برای پشتیبانی از برخی امکانات انتخاب‌شده توسط مدرس، نیاز به ارتقا دارد.
       </p>
 
       ${
         planPrices == null
-          ? html`<p>Please contact your instructor for more information.</p>`
+          ? html`<p>لطفاً برای اطلاعات بیشتر با مدرس خود تماس بگیرید.</p>`
           : html`
               ${PriceTable({ planNames: missingPlans, planPrices })}
 
@@ -65,9 +65,9 @@ export function StudentCourseInstanceUpgrade({
                     value="1"
                   />
                   <label class="form-check-label" for="js-terms-agreement">
-                    I agree to the PrairieLearn
-                    <a href="https://www.prairielearn.com/legal/terms">Terms of Service</a> and
-                    <a href="https://www.prairielearn.com/legal/privacy">Privacy Policy</a>.
+                    با
+                    <a href="https://www.prairielearn.com/legal/terms">شرایط استفاده از خدمات</a> و
+                    <a href="https://www.prairielearn.com/legal/privacy">سیاست حفظ حریم خصوصی</a> سامانه موافقم.
                   </label>
                 </div>
 
@@ -90,7 +90,7 @@ export function StudentCourseInstanceUpgrade({
                   class="btn btn-primary d-block w-100"
                   disabled
                 >
-                  Upgrade
+                  ارتقا
                 </button>
               </form>
             `
@@ -110,16 +110,15 @@ export function Lti13CourseInstanceRelaunch({
 }) {
   return PageLayout({
     resLocals,
-    pageTitle: 'Return to your LMS',
+    pageTitle: 'بازگشت به LMS',
     navContext: {
       type: 'student',
       page: 'upgrade',
     },
     content: html`
-      <h1>Return to your LMS</h1>
+      <h1>بازگشت به LMS</h1>
       <p>
-        ${course.short_name}: ${courseInstance.long_name} is ready. Return to your LMS and relaunch
-        this course to finish enrollment.
+        درس ${course.short_name}: ${courseInstance.long_name} آماده است. به LMS خود بازگردید و برای تکمیل ثبت‌نام، این درس را دوباره باز کنید.
       </p>
     `,
   });
@@ -148,26 +147,26 @@ export function CourseInstanceStudentUpdateSuccess({
 
   return PageLayout({
     resLocals,
-    pageTitle: 'Upgrade successful',
+    pageTitle: 'ارتقا با موفقیت انجام شد',
     navContext: {
       type: 'student',
       page: 'upgrade',
     },
     content: html`
-      <h1>Thanks!</h1>
+      <h1>سپاسگزاریم!</h1>
 
       ${
         paid
           ? html`
-              <p>Your payment was successfully processed. You may now access the course.</p>
+              <p>پرداخت شما با موفقیت انجام شد. اکنون می‌توانید به درس دسترسی داشته باشید.</p>
 
               <a href="/pl/course_instance/${courseInstance.id}" class="btn btn-primary">
-                Continue to ${course.short_name}
+                ادامه به ${course.short_name}
               </a>
             `
           : html`
               <p>
-                Once your payment has been fully processed, check back for access to the course.
+                پس از پردازش کامل پرداخت شما، برای دسترسی به درس دوباره به این صفحه مراجعه کنید.
               </p>
             `
       }
@@ -179,13 +178,13 @@ function getPlanDetails(planName: PlanName) {
   switch (planName) {
     case 'basic':
       return {
-        name: 'Course access',
-        description: 'Provides access to this course.',
+        name: 'دسترسی به درس',
+        description: 'دسترسی به این درس را فراهم می‌کند.',
       };
     case 'compute':
       return {
-        name: 'Compute',
-        description: 'Enables features like in-browser IDEs and code autograding.',
+        name: 'محاسبات (Compute)',
+        description: 'امکاناتی مانند محیط توسعه در مرورگر و تصحیح خودکار کد را فعال می‌کند.',
       };
     default:
       throw new Error(`Unknown plan name: ${planName}`);
@@ -224,7 +223,7 @@ function PriceTable({
     <ul class="list-group mb-3">
       ${planNames.map((planName) => BillingLineItem({ planName, planPrice: planPrices[planName] }))}
       <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
-        <strong>Total</strong>
+        <strong>جمع کل</strong>
         <strong class="text-nowrap">${formattedTotalPrice} USD</strong>
       </li>
     </ul>

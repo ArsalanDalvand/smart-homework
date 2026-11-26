@@ -51,7 +51,7 @@ export function AddApiKeyModal({
   const selectedProvider = watch('provider');
   const isCustom = selectedProvider === 'openai-compatible';
   const validateBaseUrl = (value: string) =>
-    !isCustom || value.trim().length > 0 || 'Base URL is required';
+    !isCustom || value.trim().length > 0 || 'نشانی پایه (Base URL) الزامی است';
   const existingProvider = credentials.find((c) => c.provider === selectedProvider);
   const addMutation = useMutation({
     ...trpc.addCredential.mutationOptions(),
@@ -103,7 +103,7 @@ export function AddApiKeyModal({
     >
       <Modal.Header closeButton={!isPending}>
         <Modal.Title ref={titleRef} id={titleId} tabIndex={-1}>
-          {confirmation ? 'Confirm provider models' : 'Add API key'}
+          {confirmation ? 'تایید مدل‌های ارائه‌دهنده' : 'افزودن کلید API'}
         </Modal.Title>
       </Modal.Header>
       <Form
@@ -131,19 +131,18 @@ export function AddApiKeyModal({
           {confirmation ? (
             <>
               <p>
-                Models found at <span className="text-break">{confirmation.base_url}</span>:
+                مدل‌های یافت‌شده در <span className="text-break">{confirmation.base_url}</span>:
               </p>
               {confirmation.models.length === 0 ? (
                 <Alert variant="warning">
-                  No models were found. You can save the configuration, but grading requires an
-                  available model.
+                  هیچ مدلی یافت نشد. می‌توانید پیکربندی را ذخیره کنید، اما تصحیح نیازمند وجود حداقل یک مدل در دسترس است.
                 </Alert>
               ) : (
                 <div
                   className="border rounded p-3 mb-3 overflow-auto"
                   style={{ maxHeight: '18rem' }}
                 >
-                  <ul className="mb-0" aria-label="Provider models">
+                  <ul className="mb-0" aria-label="مدل‌های ارائه‌دهنده">
                     {confirmation.models.map((id) => (
                       <li key={id} className="text-break">
                         {id}
@@ -153,14 +152,13 @@ export function AddApiKeyModal({
                 </div>
               )}
               <p className="small text-muted mb-0">
-                Use models that support structured outputs. We recommend models that also support
-                images and PDFs. Pricing is unavailable for custom models.
+                از مدل‌هایی استفاده کنید که از خروجی ساختاریافته (Structured outputs) پشتیبانی می‌کنند. مدل‌هایی که از تصویر و PDF نیز پشتیبانی کنند توصیه می‌شوند. اطلاعات قیمت‌گذاری برای مدل‌های سفارشی در دسترس نیست.
               </p>
             </>
           ) : (
             <>
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="add-key-provider">Provider</Form.Label>
+                <Form.Label htmlFor="add-key-provider">ارائه‌دهنده</Form.Label>
                 <Form.Select
                   id="add-key-provider"
                   defaultValue={AI_GRADING_PROVIDER_OPTIONS[0].value}
@@ -178,12 +176,12 @@ export function AddApiKeyModal({
                       {p.label}
                     </option>
                   ))}
-                  <option value="openai-compatible">OpenAI-compatible</option>
+                  <option value="openai-compatible">سازگار با OpenAI</option>
                 </Form.Select>
               </Form.Group>
               {isCustom && (
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="add-key-url">Base URL</Form.Label>
+                  <Form.Label htmlFor="add-key-url">نشانی پایه (Base URL)</Form.Label>
                   <Form.Control
                     id="add-key-url"
                     type="url"
@@ -201,16 +199,16 @@ export function AddApiKeyModal({
                     </div>
                   )}
                   <Form.Text>
-                    Enter the HTTPS API base URL, including /v1 if required by your provider.
+                    نشانی پایه API با پروتکل HTTPS را وارد کنید (در صورت نیاز ارائه‌دهنده، /v1 را نیز اضافه کنید).
                   </Form.Text>
                 </Form.Group>
               )}
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="add-key-value">API key</Form.Label>
+                <Form.Label htmlFor="add-key-value">کلید API</Form.Label>
                 <Form.Control
                   id="add-key-value"
                   type="password"
-                  placeholder="Enter your API key"
+                  placeholder="کلید API خود را وارد کنید"
                   autoComplete="off"
                   defaultValue=""
                   disabled={isPending}
@@ -218,7 +216,7 @@ export function AddApiKeyModal({
                   aria-invalid={!!errors.apiKey}
                   aria-errormessage={errors.apiKey ? 'add-key-value-error' : undefined}
                   {...register('apiKey', {
-                    validate: (value) => value.trim().length > 0 || 'API key is required',
+                    validate: (value) => value.trim().length > 0 || 'کلید API الزامی است',
                   })}
                 />
                 {errors.apiKey && (
@@ -229,24 +227,23 @@ export function AddApiKeyModal({
               </Form.Group>
               {isCustom && (
                 <p className="small text-muted">
-                  Models must support structured outputs. We recommend support for images and PDFs.
-                  You can review the discovered models before saving.
+                  مدل‌ها باید از خروجی ساختاریافته پشتیبانی کنند. پشتیبانی از تصویر و PDF نیز توصیه می‌شود. پیش از ذخیره می‌توانید مدل‌های شناسایی‌شده را بررسی کنید.
                 </p>
               )}
             </>
           )}
           {existingProvider && (
             <Alert variant="warning" className="mb-0">
-              <i className="bi bi-exclamation-triangle-fill me-2" aria-hidden="true" />A key for{' '}
+              <i className="bi bi-exclamation-triangle-fill me-2" aria-hidden="true" />کلیدی برای{' '}
               <strong>{AI_GRADING_PROVIDER_DISPLAY_NAMES[existingProvider.provider]}</strong>{' '}
-              already exists. Saving will{' '}
-              {isCustom ? 'replace the existing configuration' : 'overwrite the existing key'}.
+              از قبل وجود دارد. ذخیره کردن باعث{' '}
+              {isCustom ? 'جایگزینی پیکربندی فعلی' : 'بازنویسی کلید فعلی'} می‌شود.
             </Alert>
           )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-secondary" disabled={isPending} onClick={onHide}>
-            Cancel
+            انصراف
           </Button>
           {confirmation && (
             <Button
@@ -257,17 +254,17 @@ export function AddApiKeyModal({
                 saveMutation.reset();
               }}
             >
-              Back
+              بازگشت
             </Button>
           )}
           <Button type="submit" disabled={isPending}>
             {isPending
               ? discoverMutation.isPending
-                ? 'Loading models...'
-                : 'Saving...'
+                ? 'در حال بارگذاری مدل‌ها...'
+                : 'در حال ذخیره...'
               : isCustom && !confirmation
-                ? 'Next'
-                : 'Save key'}
+                ? 'بعدی'
+                : 'ذخیره کلید'}
           </Button>
         </Modal.Footer>
       </Form>

@@ -96,10 +96,10 @@ function AdminCreditPoolContent({
         dimmed={useCustomApiKeys}
         header={
           <>
-            <h2 className="h4 mt-4">AI grading credits</h2>
+            <h2 className="h4 mt-4">اعتبارهای تصحیح هوشمند (AI Grading)</h2>
             {useCustomApiKeys && (
               <p className="text-muted">
-                While custom API keys are active, PrairieLearn AI grading credits are not deducted.
+                در زمان فعال بودن کلیدهای API اختصاصی، اعتبارهای تصحیح هوشمند سامانه کسر نمی‌شوند.
               </p>
             )}
           </>
@@ -137,12 +137,12 @@ function AdminCreditPoolContent({
         />
         {refundMutation.isError && (
           <Alert variant="danger" dismissible onClose={() => refundMutation.reset()}>
-            Refund failed: {refundMutation.error.message}
+            بازپرداخت ناموفق بود: {refundMutation.error.message}
           </Alert>
         )}
         {refundMutation.isSuccess && (
           <Alert variant="success" dismissible onClose={() => refundMutation.reset()}>
-            Refund processed successfully.
+            بازپرداخت با موفقیت پردازش شد.
           </Alert>
         )}
       </CreditPoolDashboard>
@@ -244,7 +244,7 @@ function AdjustCreditsForm({
 
   return (
     <div className="border rounded p-3 mb-3">
-      <h3 className="h6 mb-3">Adjust credits</h3>
+      <h3 className="h6 mb-3">تنظیم اعتبارها</h3>
       {error && (
         <Alert variant="danger" dismissible onClose={onDismissError}>
           {error}
@@ -259,7 +259,7 @@ function AdjustCreditsForm({
         <div className="row g-3 align-items-end">
           <div className="col-auto">
             <label className="form-label" htmlFor="adjustment_action">
-              Action
+              عملیات
             </label>
             <select
               className="form-select"
@@ -271,14 +271,14 @@ function AdjustCreditsForm({
                 setAmountStr('');
               }}
             >
-              <option value="add">Add</option>
-              <option value="deduct">Deduct</option>
-              <option value="set">Set balance</option>
+              <option value="add">افزودن</option>
+              <option value="deduct">کسر کردن</option>
+              <option value="set">تنظیم موجودی</option>
             </select>
           </div>
           <div className="col-auto">
             <label className="form-label" htmlFor="amount_dollars">
-              {action === 'set' ? 'New balance (USD)' : 'Amount (USD)'}
+              {action === 'set' ? 'موجودی جدید (دلار)' : 'مبلغ (دلار)'}
             </label>
             <div className="input-group">
               <span className="input-group-text">$</span>
@@ -300,7 +300,7 @@ function AdjustCreditsForm({
           </div>
           <div className="col-auto">
             <label className="form-label" htmlFor="credit_type">
-              Credit type
+              نوع اعتبار
             </label>
             <select
               className="form-select"
@@ -309,14 +309,14 @@ function AdjustCreditsForm({
               disabled={isDeleted}
               onChange={(e) => setCreditType(e.target.value as 'transferable' | 'non_transferable')}
             >
-              <option value="non_transferable">Non-transferable</option>
-              <option value="transferable">Transferable</option>
+              <option value="non_transferable">غیرقابل انتقال</option>
+              <option value="transferable">قابل انتقال</option>
             </select>
           </div>
           {!isDeleted && (
             <div className="col-auto">
               <button type="submit" className="btn btn-primary" disabled={!isSubmitEnabled}>
-                {isPending ? 'Applying...' : 'Apply'}
+                {isPending ? 'در حال اعمال...' : 'اعمال'}
               </button>
             </div>
           )}
@@ -340,7 +340,7 @@ function AdjustCreditsForm({
           dismissible
           onClose={onDismissSuccess}
         >
-          Credits updated successfully.
+          اعتبارها با موفقیت به‌روزرسانی شد.
         </Alert>
       )}
     </div>
@@ -368,13 +368,13 @@ function AdjustCreditsFormFeedback({
   parsedAmountMilliDollars: number;
   setBalanceDelta: number | null;
 }) {
-  const creditTypeLabel = creditType.replace('_', '-');
+  const creditTypeLabel = creditType === 'transferable' ? 'قابل انتقال' : 'غیرقابل انتقال';
 
   if (!amountValid) {
     return (
       <div id="amount-error" className="text-danger small mt-3">
-        Enter an amount between {formatMilliDollars(amountMinMilliDollars)} and{' '}
-        {formatMilliDollars(amountMaxMilliDollars)}, with at most 2 decimal places.
+        مبلغی بین {formatMilliDollars(amountMinMilliDollars)} و{' '}
+        {formatMilliDollars(amountMaxMilliDollars)} با حداکثر ۲ رقم اعشار وارد کنید.
       </div>
     );
   }
@@ -383,16 +383,16 @@ function AdjustCreditsFormFeedback({
     if (currentBalanceMilliDollars <= 0) {
       return (
         <div className="text-warning-emphasis small mt-3">
-          The {creditTypeLabel} balance is {formatMilliDollars(currentBalanceMilliDollars)}.
-          Deductions are only allowed from a positive balance.
+          موجودی {creditTypeLabel} برابر با {formatMilliDollars(currentBalanceMilliDollars)} است.
+          کسر اعتبار فقط از موجودی مثبت مجاز است.
         </div>
       );
     }
     if (amountEntered && parsedAmountMilliDollars > currentBalanceMilliDollars) {
       return (
         <div className="text-warning-emphasis small mt-3">
-          Amount exceeds the {creditTypeLabel} balance.{' '}
-          {formatMilliDollars(currentBalanceMilliDollars)} will be deducted.
+          مبلغ از موجودی {creditTypeLabel} بیشتر است.{' '}
+          {formatMilliDollars(currentBalanceMilliDollars)} کسر خواهد شد.
         </div>
       );
     }
@@ -401,8 +401,8 @@ function AdjustCreditsFormFeedback({
   if (setBalanceDelta != null && setBalanceDelta !== 0) {
     return (
       <div className="text-muted small mt-3">
-        Will record {setBalanceDelta > 0 ? '+' : '−'}
-        {formatMilliDollars(Math.abs(setBalanceDelta))} in transaction history.
+        تغییر {setBalanceDelta > 0 ? '+' : '−'}
+        {formatMilliDollars(Math.abs(setBalanceDelta))} در تاریخچه تراکنش‌ها ثبت خواهد شد.
       </div>
     );
   }

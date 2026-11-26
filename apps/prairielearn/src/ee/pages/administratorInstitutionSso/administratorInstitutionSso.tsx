@@ -87,7 +87,7 @@ router.get(
     res.send(
       PageLayout({
         resLocals: { ...res.locals, institution },
-        pageTitle: 'SSO - Institution Admin',
+        pageTitle: 'ورود یکپارچه (SSO) - مدیریت موسسه',
         navContext: {
           type: 'administrator_institution',
           page: 'administrator_institution',

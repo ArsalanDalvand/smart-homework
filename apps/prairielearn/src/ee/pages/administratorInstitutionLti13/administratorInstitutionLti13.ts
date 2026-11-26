@@ -178,7 +178,7 @@ router.post(
         // true to include private keys
         keystore: keystore.toJSON(true),
       });
-      flash('success', `Key ${kid} added.`);
+      flash('success', `کلید ${kid} اضافه شد.`);
       return res.redirect(req.originalUrl);
     } else if (req.body.__action === 'delete_keys') {
       await execute(sql.update_keystore, {
@@ -186,7 +186,7 @@ router.post(
         institution_id: req.params.institution_id,
         keystore: null,
       });
-      flash('success', 'All keys deleted.');
+      flash('success', 'همه کلیدها حذف شدند.');
       return res.redirect(req.originalUrl);
     } else if (req.body.__action === 'delete_key') {
       const keystoreJson = await queryOptionalScalar(
@@ -211,7 +211,7 @@ router.post(
           // true to include private keys
           keystore: keystore.toJSON(true),
         });
-        flash('success', `Key ${key.kid} deleted.`);
+        flash('success', `کلید ${key.kid} حذف شد.`);
         return res.redirect(req.originalUrl);
       } else {
         throw new HttpStatusError(500, 'error removing key');
@@ -253,7 +253,7 @@ router.post(
       });
       flash(
         'success',
-        shouldAllowRosterSync ? 'Roster syncing allowed.' : 'Roster syncing disallowed.',
+        shouldAllowRosterSync ? 'همگام‌سازی فهرست دانشجویان مجاز شد.' : 'همگام‌سازی فهرست دانشجویان غیرمجاز شد.',
       );
       return res.redirect(req.originalUrl);
     } else if (req.body.__action === 'update_platform') {
@@ -295,7 +295,7 @@ router.post(
           custom_fields,
         });
       });
-      flash('success', 'Platform updated.');
+      flash('success', 'پلتفرم به‌روزرسانی شد.');
       return res.redirect(req.originalUrl);
     } else if (req.body.__action === 'add_instance') {
       const new_li = await queryScalar(
@@ -306,7 +306,7 @@ router.post(
         },
         z.string(),
       );
-      flash('success', `Instance #${new_li} added.`);
+      flash('success', `نمونه #${new_li} اضافه شد.`);
 
       return res.redirect(
         `/pl/administrator/institution/${req.params.institution_id}/lti13/${new_li}`,
@@ -317,7 +317,7 @@ router.post(
         institution_id: req.params.institution_id,
         unsafe_lti13_instance_id: req.params.unsafe_lti13_instance_id,
       });
-      flash('success', 'Name updated.');
+      flash('success', 'نام به‌روزرسانی شد.');
       return res.redirect(req.originalUrl);
     } else if (req.body.__action === 'save_pl_config') {
       await runInTransactionAsync(async () => {
@@ -351,14 +351,14 @@ router.post(
           unsafe_lti13_instance_id: req.params.unsafe_lti13_instance_id,
         });
       });
-      flash('success', 'PrairieLearn config updated.');
+      flash('success', 'پیکربندی سامانه به‌روزرسانی شد.');
       res.redirect(req.originalUrl);
     } else if (req.body.__action === 'remove_instance') {
       await execute(sql.remove_instance, {
         institution_id: req.params.institution_id,
         unsafe_lti13_instance_id: req.params.unsafe_lti13_instance_id,
       });
-      flash('success', 'Instance deleted.');
+      flash('success', 'نمونه حذف شد.');
       return res.redirect(`/pl/administrator/institution/${req.params.institution_id}/lti13`);
     } else if (req.body.__action === 'inspect_roster') {
       const instance = await queryRow(

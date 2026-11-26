@@ -16,7 +16,7 @@ export function AdministratorInstitutionAdmins({
       ...resLocals,
       institution,
     },
-    pageTitle: 'Admins - Institution Admin',
+    pageTitle: 'مدیران - مدیریت موسسه',
     navContext: {
       type: 'administrator_institution',
       page: 'administrator_institution',
@@ -24,8 +24,9 @@ export function AdministratorInstitutionAdmins({
     },
     content: html`
       <p>
-        Institution administrators can be managed
-        <a href="/pl/institution/${institution.id}/admin/admins">here</a>.
+        مدیران موسسه را می‌توانید از
+        <a href="/pl/institution/${institution.id}/admin/admins">اینجا</a>
+        مدیریت کنید.
       </p>
     `,
   });

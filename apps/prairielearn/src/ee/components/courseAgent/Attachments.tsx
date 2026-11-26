@@ -35,8 +35,8 @@ export interface DraftAttachment {
 
 function statusOf(file: File): AttachmentStatus {
   const invalid = (problem: string) => ({ kind: 'invalid', problem }) as const;
-  if (file.size > MAX_ATTACHMENT_BYTES) return invalid(`Over ${MAX_ATTACHMENT_SIZE}`);
-  if (file.size === 0) return invalid('Empty file');
+  if (file.size > MAX_ATTACHMENT_BYTES) return invalid(`بیش از ${MAX_ATTACHMENT_SIZE}`);
+  if (file.size === 0) return invalid('فایل خالی');
   return { kind: 'ready' };
 }
 
@@ -46,7 +46,7 @@ export function revokePreviews(attachments: DraftAttachment[]) {
 
 /** Why an attachment can't be sent. The file limit depends on position, so removing one clears it. */
 function invalidProblem({ status }: DraftAttachment, position: number) {
-  if (position >= MAX_ATTACHMENTS_PER_MESSAGE) return `Over ${MAX_ATTACHMENTS_PER_MESSAGE} files`;
+  if (position >= MAX_ATTACHMENTS_PER_MESSAGE) return `بیش از ${MAX_ATTACHMENTS_PER_MESSAGE} فایل`;
   return status.kind === 'invalid' ? status.problem : null;
 }
 
@@ -298,7 +298,7 @@ function AttachmentTile({
         <button
           type="button"
           className="d-block w-100 h-100 p-0 border-0 bg-transparent text-reset"
-          aria-label={`View ${filename}`}
+          aria-label={`مشاهده ${filename}`}
           onClick={onView}
         >
           {content}
@@ -308,7 +308,7 @@ function AttachmentTile({
           href={downloadUrl}
           download={filename}
           className="d-block h-100 text-reset text-decoration-none"
-          aria-label={`Download ${filename}`}
+          aria-label={`دانلود ${filename}`}
         >
           {content}
         </a>
@@ -320,7 +320,7 @@ function AttachmentTile({
           variant="light"
           size="sm"
           className="course-agent-attachment-remove position-absolute rounded-circle border p-0 d-flex align-items-center justify-content-center"
-          aria-label={`Remove ${filename}`}
+          aria-label={`حذف ${filename}`}
           onClick={onRemove}
         >
           <i className="bi bi-x" aria-hidden="true" />
@@ -333,7 +333,7 @@ function AttachmentTile({
 function draftProblem(attachment: DraftAttachment, position: number) {
   return (
     invalidProblem(attachment, position) ??
-    (attachment.status.kind === 'failed' ? 'Upload failed' : null)
+    (attachment.status.kind === 'failed' ? 'بارگذاری ناموفق' : null)
   );
 }
 
@@ -348,7 +348,7 @@ export function DraftAttachmentList({
 }) {
   if (attachments.length === 0) return null;
   return (
-    <ul className="list-unstyled d-flex flex-wrap gap-2 m-0 px-2 pt-2" aria-label="Attachments">
+    <ul className="list-unstyled d-flex flex-wrap gap-2 m-0 px-2 pt-2" aria-label="پیوست‌ها">
       {attachments.map((attachment, position) => (
         <AttachmentTile
           key={attachment.key}
@@ -394,9 +394,9 @@ function ImageViewer({
               className="btn btn-sm btn-outline-secondary text-nowrap"
             >
               <i className="bi bi-download me-1" aria-hidden="true" />
-              Download
+              دانلود
             </a>
-            <CloseButton aria-label="Close" className="ms-0" onClick={onHide} />
+            <CloseButton aria-label="بستن" className="ms-0" onClick={onHide} />
           </Modal.Header>
           <Modal.Body className="course-agent-image-viewer d-flex justify-content-center p-2">
             <img src={image.url} alt={image.filename} className="mw-100" />
@@ -431,7 +431,7 @@ export function SentAttachments({
     <>
       <ul
         className="list-unstyled d-flex flex-wrap justify-content-end gap-2 m-0"
-        aria-label="Attachments"
+        aria-label="پیوست‌ها"
       >
         {files.map(({ part, url }) => {
           const filename = part.filename ?? 'File';
@@ -497,9 +497,9 @@ export function FileDropArea({
       {dragging && (
         <div className="course-agent-drop-target position-absolute d-flex flex-column align-items-center justify-content-center text-primary">
           <i className="bi bi-upload fs-4" aria-hidden="true" />
-          <span className="fw-medium">Drop files to attach</span>
+          <span className="fw-medium">فایل‌ها را برای پیوست رها کنید</span>
           <span className="small">
-            Up to {MAX_ATTACHMENTS_PER_MESSAGE} files, {MAX_ATTACHMENT_SIZE} each
+            حداکثر {MAX_ATTACHMENTS_PER_MESSAGE} فایل، هر کدام تا {MAX_ATTACHMENT_SIZE}
           </span>
         </div>
       )}
