@@ -61,30 +61,30 @@ export async function getGettingStartedTasks({
 
   const tasks: GettingStartedTaskInfo[] = [
     {
-      header: 'Add course staff (optional)',
+      header: 'افزودن کادر آموزشی درس (اختیاری)',
       description:
-        'Invite users to the course staff to help manage and deliver the course. If you are working alone, you can skip this task.',
+        'اساتید و دستیاران آموزشی (TA) را برای مدیریت و ارائه درس دعوت کنید. اگر به تنهایی کار می‌کنید می‌توانید از این مرحله بگذرید.',
       link: 'staff',
       isComplete: courseHasAddedStaff,
     },
     {
-      header: 'Create a question',
+      header: 'ایجاد اولین سوال',
       description:
-        "A question is a problem or task that tests a student's understanding of a specific concept.",
+        'سوال یک مسئله یا تمرین است که میزان درک دانشجو از یک مبحث مشخص را می‌سنجد.',
       link: 'questions',
       isComplete: courseHasQuestions,
     },
     {
-      header: 'Create a course instance',
+      header: 'ایجاد ترم یا دوره ارائه',
       description:
-        'A course instance contains the assessments and other configuration for a single offering of a course.',
+        'دوره یا ترم ارائه شامل تکالیف، آزمون‌ها، دانشجویان و تنظیمات اختصاصی یک نیمسال از درس است.',
       link: 'instances',
       isComplete: courseHasCourseInstance,
     },
     {
-      header: 'Create an assessment',
+      header: 'ایجاد اولین تکلیف یا آزمون',
       description:
-        "An assessment is a collection of questions designed to build or evaluate a student's knowledge.",
+        'ارزیابی (تکلیف، کوییز یا امتحان) مجموعه‌ای از سوالات است که برای یادگیری و سنجش دانشجو طراحی می‌شود.',
       link: assessmentsPageLink,
       isComplete: courseHasAssessments,
     },
