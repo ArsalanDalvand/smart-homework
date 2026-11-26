@@ -19,12 +19,12 @@ export interface InstitutionBrandContext {
 
 export const platformBranding = {
   // Brand Names & Slogans
-  brandName: env.PL_BRAND_NAME || 'سامانه جامع ارزیابی و یادگیری هوشمند',
-  brandShortName: env.PL_BRAND_SHORT_NAME || 'سامانه یادگیری هوشمند',
-  brandTitle: env.PL_BRAND_TITLE || 'سامانه جامع یادگیری، آموزش و آزمون‌های هوشمند',
+  brandName: env.PL_BRAND_NAME || 'سامانه ارزیابی هوشمند دانشگاه علم و صنعت ایران',
+  brandShortName: env.PL_BRAND_SHORT_NAME || 'سامانه ارزیابی IUST',
+  brandTitle: env.PL_BRAND_TITLE || 'سامانه جامع تمرین، آزمون و ارزیابی هوشمند — دانشگاه علم و صنعت ایران',
   brandSubtitle:
     env.PL_BRAND_SUBTITLE ||
-    'پلتفرم جامع سنجش مهارتی، آزمون‌های برخط و تصحیح خودکار',
+    'پلتفرم برخط تمرین‌ها، آزمون‌های برنامه‌نویسی و تصحیح خودکار — دانشگاه علم و صنعت ایران (IUST)',
   logoUrl: env.PL_LOGO_URL || '',
 
   // Contact & Links
@@ -174,8 +174,8 @@ export const uiStrings = {
     loginSubtitle: 'جهت دسترسی به دوره‌ها، آزمون‌ها و محتوای آموزشی',
     loginTab: 'ورود به سامانه',
     registerTab: 'ثبت‌نام کاربر جدید',
-    identifierLabel: 'شناسه کاربری یا ایمیل:',
-    identifierPlaceholder: 'user@example.com یا نام کاربری',
+    identifierLabel: 'ایمیل یا شماره دانشجویی:',
+    identifierPlaceholder: 'ایمیل یا شماره دانشجویی (مثلاً 405441001)',
     passwordLabel: 'رمز عبور:',
     passwordPlaceholder: 'حداقل ۶ کاراکتر',
     confirmPasswordLabel: 'تکرار رمز عبور:',
@@ -199,6 +199,10 @@ export const uiStrings = {
     invalidNameError: 'لطفاً نام و نام خانوادگی خود را کامل وارد نمایید.',
     registrationSuccess: 'حساب کاربری با موفقیت ایجاد شد.',
     loginSuccess: 'ورود با موفقیت انجام شد.',
+    altchaError: 'تایید امنیتی انجام نشد یا منقضی شده است. لطفاً صفحه را تازه‌سازی کرده و دوباره تلاش کنید.',
+    uinFormatError: 'شماره دانشجویی / پرسنلی باید فقط شامل ۸ تا ۱۲ رقم باشد.',
+    uinFakeError: 'شماره دانشجویی / پرسنلی وارد شده معتبر به نظر نمی‌رسد. لطفاً شماره واقعی خود را وارد نمایید.',
+    uinExistsError: 'این شماره دانشجویی / پرسنلی قبلاً در سامانه ثبت شده است.',
     courseRequestInstructorNotice:
       'استاد / متقاضی گرامی: برای ثبت درخواست ایجاد درس یا دوره جدید، ابتدا باید وارد حساب کاربری خود شوید یا ثبت‌نام نمایید. پس از تکمیل ورود، به‌صورت خودکار به فرم درخواست درس هدایت خواهید شد.',
     courseRequestWarningHeader: 'هشدار دسترسی: ورود یا ثبت‌نام الزامی است',

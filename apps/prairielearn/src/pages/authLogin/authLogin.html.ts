@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { type HtmlValue, html } from '@prairielearn/html';
+import { type HtmlValue, html, unsafeHtml } from '@prairielearn/html';
 import { run } from '@prairielearn/run';
 
 import { HeadContents } from '../../components/HeadContents.js';
@@ -11,6 +11,228 @@ import { config } from '../../lib/config.js';
 import type { AuthnProvider } from '../../lib/db-types.js';
 import { isEnterprise } from '../../lib/license.js';
 import type { UntypedResLocals } from '../../lib/res-locals.types.js';
+
+const AUTH_CLIENT_SCRIPT = String.raw`(function () {
+  var PERSIAN = '۰۱۲۳۴۵۶۷۸۹', ARABIC = '٠١٢٣٤٥٦٧٨٩';
+  function normUin(v) {
+    return v.replace(/[۰-۹]/g, function (d) { return PERSIAN.indexOf(d); })
+      .replace(/[٠-٩]/g, function (d) { return ARABIC.indexOf(d); })
+      .replace(/[\s\u200B-\u200F\u202A-\u202E\uFEFF]/g, '');
+  }
+  var FACULTIES = {
+    '44': 'دانشکده ریاضی و علوم کامپیوتر',
+    '52': 'دانشکده مهندسی کامپیوتر',
+    '41': 'دانشکده مهندسی برق',
+    '42': 'دانشکده مهندسی عمران / علوم پایه',
+    '43': 'دانشکده مهندسی مکانیک'
+  };
+  function toFa(s) { return String(s).replace(/\d/g, function (d) { return PERSIAN[Number(d)]; }); }
+  function isDummy(u) {
+    if (u.indexOf('000') === 0 || /^(\d)\1+$/.test(u) || /^(\d{2})\1+$/.test(u)) return true;
+    var d = {}, n = 0;
+    for (var i = 1; i < u.length; i++) { var x = (Number(u[i]) - Number(u[i - 1]) + 10) % 10; if (!d[x]) { d[x] = 1; n++; } }
+    return n === 1 && (d[1] || d[9]);
+  }
+  function uinState(u, isStaff) {
+    if (!u) return { ok: false, msg: '' };
+    if (!/^[0-9]+$/.test(u)) return { ok: false, msg: 'فقط ارقام مجاز است.' };
+    if (isStaff) {
+      if (u.length < 5 || u.length > 12) return { ok: false, msg: 'کد پرسنلی باید ۵ تا ۱۲ رقم باشد (اکنون ' + toFa(u.length) + ' رقم).' };
+      if (isDummy(u)) return { ok: false, msg: 'کد پرسنلی وارد شده معتبر به نظر نمی‌رسد.' };
+      return { ok: true, msg: '✓ کد پرسنلی / کادر آموزشی معتبر است' };
+    }
+    if (u.length < 8 || u.length > 10) return { ok: false, msg: 'شماره دانشجویی علم و صنعت ۹ رقم (ورودی ۱۴۰۰ به بعد) یا ۸ رقم (قبل از ۱۴۰۰) است — اکنون ' + toFa(u.length) + ' رقم.' };
+    if (isDummy(u)) return { ok: false, msg: 'شماره دانشجویی وارد شده معتبر به نظر نمی‌رسد. لطفاً شماره واقعی گلستان خود را وارد کنید.' };
+    if (u.length === 9) {
+      var y3 = Number(u.slice(0, 3));
+      if (y3 < 400 || y3 > 410) return { ok: false, msg: 'سه رقم اول شماره ۹ رقمی باید سال ورود معتبر (۴۰۰ تا ۴۱۰، مثلاً 404) باشد.' };
+      var fac = u.slice(3, 5), ser = u.slice(6, 9);
+      if (Number(fac) < 10 || ser === '000') return { ok: false, msg: 'ساختار کد دانشکده یا شماره سریال نامعتبر است.' };
+      var fn = FACULTIES[fac];
+      return { ok: true, msg: '✓ ساختار معتبر علم و صنعت — ورودی ' + toFa(1000 + y3) + (fn ? ' | ' + fn : ' (کد دانشکده ' + toFa(fac) + ')') };
+    }
+    if (u.length === 8) {
+      var y2 = Number(u.slice(0, 2));
+      if (y2 < 90 || y2 > 99) return { ok: false, msg: 'شماره ۸ رقمی مخصوص ورودی‌های ۹۰ تا ۹۹ است؛ برای ۱۴۰۰ به بعد ۹ رقم وارد کنید.' };
+      var fac8 = u.slice(2, 4), ser8 = u.slice(5, 8);
+      if (Number(fac8) < 10 || ser8 === '000') return { ok: false, msg: 'ساختار شماره دانشجویی نامعتبر است.' };
+      var fn8 = FACULTIES[fac8];
+      return { ok: true, msg: '✓ ساختار معتبر علم و صنعت — ورودی ' + toFa(1300 + y2) + (fn8 ? ' | ' + fn8 : '') };
+    }
+    var y3g = Number(u.slice(0, 3)), y2g = Number(u.slice(0, 2));
+    if (!((y3g >= 400 && y3g <= 410) || (y2g >= 90 && y2g <= 99))) return { ok: false, msg: 'پیش‌شماره سال ورود معتبر نیست.' };
+    return { ok: true, msg: '✓ ساختار معتبر علم و صنعت — ورودی ' + toFa(y3g >= 400 && y3g <= 410 ? 1000 + y3g : 1300 + y2g) };
+  }
+
+  // ---- Altcha-style proof of work ----
+  function b64(obj) { return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); }
+  async function sha256Hex(text) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    var a = new Uint8Array(buf), h = '';
+    for (var i = 0; i < a.length; i++) h += (a[i] < 16 ? '0' : '') + a[i].toString(16);
+    return h;
+  }
+  async function solveWidget(w) {
+    var input = w.querySelector('input[name="altcha"]');
+    var status = w.querySelector('[data-altcha-status]');
+    var form = w.closest('form');
+    var btns = form ? form.querySelectorAll('button[type="submit"]') : [];
+    function setBtns(dis) { for (var i = 0; i < btns.length; i++) btns[i].disabled = dis; }
+    w.classList.remove('altcha-done', 'altcha-error');
+    input.value = '';
+    setBtns(true);
+    status.textContent = 'من ربات نیستم — بررسی امنیتی خودکار';
+    try {
+      if (!window.crypto || !crypto.subtle) throw new Error('nocrypto');
+      var res = await fetch('/pl/login/altcha-challenge', { cache: 'no-store', credentials: 'same-origin' });
+      if (!res.ok) throw new Error('fetch');
+      var c = await res.json();
+      var found = -1;
+      for (var n = 0; n <= c.maxnumber; n++) {
+        if ((await sha256Hex(c.salt + n)) === c.challenge) { found = n; break; }
+        if (n % 2000 === 0) await new Promise(function (r) { setTimeout(r, 0); });
+      }
+      if (found < 0) throw new Error('nosolution');
+      input.value = b64({ algorithm: c.algorithm, salt: c.salt, challenge: c.challenge, maxnumber: c.maxnumber, expires: c.expires, signature: c.signature, number: found });
+      w.classList.add('altcha-done');
+      status.textContent = 'تایید امنیتی انجام شد';
+      setBtns(false);
+      setTimeout(function () { solveWidget(w); }, Math.max(10000, c.expires - Date.now() - 20000));
+    } catch (e) {
+      w.classList.add('altcha-error');
+      status.textContent = 'تایید امنیتی ناموفق بود. برای تلاش دوباره کلیک کنید.';
+      setBtns(false);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var widgets = document.querySelectorAll('[data-altcha-widget]');
+    (async function () { for (var i = 0; i < widgets.length; i++) await solveWidget(widgets[i]); })();
+    widgets.forEach(function (w) { w.addEventListener('click', function () { if (w.classList.contains('altcha-error')) solveWidget(w); }); });
+
+    // Show/hide password
+    document.querySelectorAll('[data-toggle-password]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var inp = document.getElementById(btn.getAttribute('data-toggle-password'));
+        if (!inp) return;
+        var show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        btn.setAttribute('aria-pressed', show ? 'true' : 'false');
+        btn.setAttribute('aria-label', show ? 'پنهان کردن رمز عبور' : 'نمایش رمز عبور');
+        var ic = btn.querySelector('i'); if (ic) ic.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+      });
+    });
+
+    // UIN live normalization + IUST decoder badge + staff toggle
+    var uin = document.getElementById('reg_uin'), hint = document.getElementById('reg_uin_live'), staffCb = document.getElementById('reg_is_staff_uin');
+    function updUin() {
+      var v = normUin(uin.value);
+      if (v !== uin.value) uin.value = v;
+      var isStaff = !!(staffCb && staffCb.checked);
+      var s = uinState(v, isStaff);
+      hint.textContent = s.msg;
+      hint.className = 'form-text d-block fw-medium ' + (v ? (s.ok ? 'text-success' : 'text-danger') : 'text-muted');
+      uin.setCustomValidity(v && !s.ok ? s.msg : '');
+    }
+    if (uin && hint) {
+      uin.addEventListener('input', updUin);
+      if (staffCb) staffCb.addEventListener('change', updUin);
+      updUin();
+    }
+
+    // Email normalization
+    var em = document.getElementById('reg_email');
+    if (em) em.addEventListener('blur', function () { em.value = em.value.trim().toLowerCase(); });
+    var li = document.getElementById('login_identifier');
+    if (li) li.addEventListener('blur', function () { li.value = li.value.trim(); });
+
+    // Password strength + match
+    var pw = document.getElementById('reg_password'), cf = document.getElementById('reg_confirm_password');
+    var sh = document.getElementById('reg_password_strength'), mh = document.getElementById('reg_password_match');
+    function updPw() {
+      var v = pw.value, score = 0;
+      if (v.length >= 6) score++;
+      if (v.length >= 8) score++;
+      if (/[a-z]/.test(v) && /[A-Z]/.test(v)) score++;
+      if (/\d/.test(v)) score++;
+      if (/[^A-Za-z0-9]/.test(v)) score++;
+      var labels = ['خیلی ضعیف', 'ضعیف', 'متوسط', 'خوب', 'قوی', 'عالی'];
+      var cls = ['text-danger', 'text-danger', 'text-warning', 'text-success', 'text-success', 'text-success'];
+      if (!v) { sh.textContent = 'ترجیحاً حداقل ۸ کاراکتر، ترکیب حروف و عدد.'; sh.className = 'form-text d-block text-muted'; }
+      else { sh.textContent = 'قدرت رمز عبور: ' + labels[score] + (v.length < 6 ? ' (حداقل ۶ کاراکتر)' : (v.length < 8 ? ' — ۸ کاراکتر یا بیشتر توصیه می‌شود' : '')); sh.className = 'form-text d-block ' + cls[score]; }
+      if (!cf.value) { mh.textContent = ''; cf.setCustomValidity(''); }
+      else if (cf.value === v) { mh.textContent = 'رمزها مطابقت دارند ✓'; mh.className = 'form-text d-block text-success'; cf.setCustomValidity(''); }
+      else { mh.textContent = 'رمز عبور و تکرار آن یکسان نیست.'; mh.className = 'form-text d-block text-danger'; cf.setCustomValidity('رمز عبور و تکرار آن یکسان نیست.'); }
+    }
+    if (pw && cf && sh && mh) { pw.addEventListener('input', updPw); cf.addEventListener('input', updPw); updPw(); }
+  });
+})();
+`;
+
+const AUTH_STYLE = `
+  .altcha-widget { display:flex; align-items:center; gap:.6rem; border:1px solid #ced4da; border-radius:.5rem; padding:.55rem .8rem; background:#f8f9fa; font-size:.9rem; cursor:default; }
+  .altcha-widget .altcha-box { width:1.4rem; height:1.4rem; border:2px solid #adb5bd; border-radius:.3rem; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; background:#fff; }
+  .altcha-widget .altcha-check { display:none; color:#fff; font-size:.8rem; }
+  .altcha-widget:not(.altcha-done):not(.altcha-error) .altcha-box { border-top-color:#0d6efd; animation:altcha-spin .8s linear infinite; border-radius:50%; }
+  .altcha-widget.altcha-done { border-color:#198754; background:#e9f7ef; color:#146c43; }
+  .altcha-widget.altcha-done .altcha-box { background:#198754; border-color:#198754; }
+  .altcha-widget.altcha-done .altcha-check { display:inline; }
+  .altcha-widget.altcha-error { border-color:#dc3545; background:#fdecee; color:#b02a37; cursor:pointer; }
+  @keyframes altcha-spin { to { transform:rotate(360deg); } }
+  .password-toggle { border-color:#ced4da; }
+`;
+
+function AltchaWidget() {
+  return html`
+    <div class="mb-3">
+      <div class="altcha-widget" data-altcha-widget dir="rtl" role="status" aria-live="polite">
+        <span class="altcha-box"><i class="fas fa-check altcha-check"></i></span>
+        <span data-altcha-status>من ربات نیستم — بررسی امنیتی خودکار</span>
+        <input type="hidden" name="altcha" value="" />
+      </div>
+    </div>
+  `;
+}
+
+function PasswordInput({
+  id,
+  name,
+  placeholder,
+  autocomplete,
+  minlength,
+}: {
+  id: string;
+  name: string;
+  placeholder: string;
+  autocomplete: string;
+  minlength?: number;
+}) {
+  return html`
+    <div class="input-group" dir="ltr">
+      <input
+        type="password"
+        class="form-control"
+        dir="ltr"
+        id="${id}"
+        name="${name}"
+        placeholder="${placeholder}"
+        ${minlength ? html`minlength="${minlength}"` : ''}
+        required
+        autocomplete="${autocomplete}"
+      />
+      <button
+        type="button"
+        class="btn btn-outline-secondary password-toggle"
+        data-toggle-password="${id}"
+        aria-label="نمایش رمز عبور"
+        aria-pressed="false"
+        tabindex="0"
+      >
+        <i class="fas fa-eye"></i>
+      </button>
+    </div>
+  `;
+}
 
 export interface InstitutionAuthnProvider {
   name: string;
@@ -43,6 +265,7 @@ function LoginPageContainer({
       <head>
         ${HeadContents({ resLocals })}
         <style>
+          ${unsafeHtml(AUTH_STYLE)}
           html,
           body {
             min-height: 100vh;
@@ -502,6 +725,10 @@ function LoginPageContainer({
           });
         </script>
 
+        <script>
+          ${unsafeHtml(AUTH_CLIENT_SCRIPT)}
+        </script>
+
         ${CourseRequestWarningModal()}
         ${SupportModal()}
       </body>
@@ -629,6 +856,10 @@ function LocalLoginForm({
           class="form-control"
           id="login_identifier"
           name="identifier"
+          dir="ltr"
+          maxlength="254"
+          autocapitalize="none"
+          spellcheck="false"
           value="${initialIdentifier ?? ''}"
           placeholder="${uiStrings.auth.identifierPlaceholder}"
           required
@@ -639,16 +870,14 @@ function LocalLoginForm({
         <label class="form-label fw-bold d-block" for="login_password">
           <bdi>${uiStrings.auth.passwordLabel}</bdi>
         </label>
-        <input
-          type="password"
-          class="form-control"
-          id="login_password"
-          name="password"
-          placeholder="${uiStrings.auth.passwordPlaceholder}"
-          required
-          autocomplete="current-password"
-        />
+        ${PasswordInput({
+          id: 'login_password',
+          name: 'password',
+          placeholder: uiStrings.auth.passwordPlaceholder,
+          autocomplete: 'current-password',
+        })}
       </div>
+      ${AltchaWidget()}
       <button
         type="submit"
         class="btn btn-primary d-block w-100 py-2 shadow-sm mb-2"
@@ -667,9 +896,15 @@ function LocalLoginForm({
 function LocalRegisterForm({
   csrfToken,
   initialIdentifier,
+  initialName,
+  initialUin,
+  initialIsStaffUin,
 }: {
   csrfToken: string;
   initialIdentifier?: string;
+  initialName?: string;
+  initialUin?: string;
+  initialIsStaffUin?: boolean;
 }) {
   return html`
     <form method="POST" dir="rtl">
@@ -681,6 +916,8 @@ function LocalRegisterForm({
           class="form-control"
           id="reg_name"
           name="name"
+          value="${initialName ?? ''}"
+          maxlength="200"
           placeholder="${uiStrings.auth.namePlaceholder}"
           required
           autocomplete="name"
@@ -695,6 +932,10 @@ function LocalRegisterForm({
           class="form-control"
           id="reg_email"
           name="email"
+          dir="ltr"
+          maxlength="254"
+          autocapitalize="none"
+          spellcheck="false"
           value="${initialIdentifier ?? ''}"
           placeholder="${uiStrings.auth.emailPlaceholder}"
           required
@@ -706,32 +947,30 @@ function LocalRegisterForm({
           <label class="form-label fw-bold d-block" for="reg_password">
             <bdi>${uiStrings.auth.passwordLabel}</bdi>
           </label>
-          <input
-            type="password"
-            class="form-control"
-            id="reg_password"
-            name="password"
-            placeholder="${uiStrings.auth.passwordPlaceholder}"
-            minlength="6"
-            required
-            autocomplete="new-password"
-          />
+          ${PasswordInput({
+            id: 'reg_password',
+            name: 'password',
+            placeholder: uiStrings.auth.passwordPlaceholder,
+            autocomplete: 'new-password',
+            minlength: 6,
+          })}
         </div>
         <div class="col-12 col-sm-6">
           <label class="form-label fw-bold d-block" for="reg_confirm_password">
             <bdi>${uiStrings.auth.confirmPasswordLabel}</bdi>
           </label>
-          <input
-            type="password"
-            class="form-control"
-            id="reg_confirm_password"
-            name="confirm_password"
-            placeholder="${uiStrings.auth.confirmPasswordPlaceholder}"
-            minlength="6"
-            required
-            autocomplete="new-password"
-          />
+          ${PasswordInput({
+            id: 'reg_confirm_password',
+            name: 'confirm_password',
+            placeholder: uiStrings.auth.confirmPasswordPlaceholder,
+            autocomplete: 'new-password',
+            minlength: 6,
+          })}
         </div>
+      </div>
+      <div class="mb-3 mt-n2">
+        <small id="reg_password_strength" class="form-text d-block text-muted" aria-live="polite"></small>
+        <small id="reg_password_match" class="form-text d-block" aria-live="polite"></small>
       </div>
       <div class="mb-3">
         <label class="form-label fw-bold d-block" for="reg_uin">${uiStrings.auth.uinLabel}</label>
@@ -740,14 +979,34 @@ function LocalRegisterForm({
           class="form-control"
           id="reg_uin"
           name="uin"
+          dir="ltr"
+          value="${initialUin ?? ''}"
+          inputmode="numeric"
+          autocomplete="off"
+          maxlength="16"
           placeholder="${uiStrings.auth.uinPlaceholder}"
           required
           aria-describedby="reg_uin_help"
         />
         <small id="reg_uin_help" class="form-text text-muted d-block">
-          ${uiStrings.auth.uinHelp}
+          شماره دانشجویی ۹ رقمی گلستان دانشگاه علم و صنعت (مثلاً <code>405441001</code>) — ارقام فارسی خودکار تبدیل می‌شوند.
         </small>
+        <small id="reg_uin_live" class="form-text d-block text-muted" aria-live="polite"></small>
+        <div class="form-check mt-2">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="reg_is_staff_uin"
+            name="is_staff_uin"
+            value="on"
+            ${initialIsStaffUin ? 'checked' : ''}
+          />
+          <label class="form-check-label small text-secondary" for="reg_is_staff_uin">
+            استاد، دستیار آموزشی یا کادر دانشگاه (کد پرسنلی) هستم
+          </label>
+        </div>
       </div>
+      ${AltchaWidget()}
       <button
         type="submit"
         class="btn btn-success d-block w-100 py-2 shadow-sm mb-2"
@@ -770,6 +1029,9 @@ export function AuthLogin({
   errorMessage,
   initialTab = 'login',
   initialIdentifier,
+  initialName,
+  initialUin,
+  initialIsStaffUin,
 }: {
   institutionAuthnProviders: InstitutionAuthnProvider[] | null;
   service: string | null;
@@ -777,6 +1039,9 @@ export function AuthLogin({
   errorMessage?: string;
   initialTab?: 'login' | 'register';
   initialIdentifier?: string;
+  initialName?: string;
+  initialUin?: string;
+  initialIsStaffUin?: boolean;
 }) {
   const hasExternalProviders =
     (config.hasShib && !config.hideShibLogin) ||
@@ -803,6 +1068,9 @@ export function AuthLogin({
         ${LocalRegisterForm({
           csrfToken: resLocals.__csrf_token,
           initialIdentifier,
+          initialName,
+          initialUin,
+          initialIsStaffUin,
         })}
       </div>
 
@@ -962,18 +1230,18 @@ export function AuthLoginInstitution({
               })}"
               role="alert"
             >
-              The authentication method you tried to use is not supported by your institution.
+              روش احراز هویت انتخاب‌شده توسط دانشگاه یا موسسه شما پشتیبانی نمی‌شود.
               ${run(() => {
                 if (loginOptions.length > 0) {
-                  return 'Try again with a supported method.';
+                  return 'لطفاً با یکی از روش‌های پشتیبانی‌شده مجدداً تلاش کنید.';
                 }
 
                 if (supportsAnyLti) {
-                  return "You must start a session from your course's Learning Management System (LMS).";
+                  return 'لطفاً ورود خود را از طریق سامانه مدیریت یادگیری (LMS) دانشگاه آغاز نمایید.';
                 }
 
                 // This institution somehow has no login options.
-                return 'Contact your institution for more information.';
+                return 'برای اطلاعات بیشتر با پشتیبانی دانشگاه تماس بگیرید.';
               })}
             </div>
           `;
@@ -982,7 +1250,7 @@ export function AuthLoginInstitution({
         if (!supportsNonLti && supportsAnyLti) {
           return html`
             <div class="alert alert-danger text-center mb-0" role="alert">
-              You must start a session from your course's Learning Management System (LMS).
+              لطفاً ورود خود را از طریق سامانه مدیریت یادگیری (LMS) دانشگاه آغاز نمایید.
             </div>
           `;
         }
@@ -990,7 +1258,7 @@ export function AuthLoginInstitution({
         if (loginOptions.length === 0) {
           return html`
             <div class="alert alert-danger text-center mb-0" role="alert">
-              No authentication methods found. Contact your institution for more information.
+              هیچ روش احراز هویتی برای این موسسه پیکربندی نشده است. لطفاً با پشتیبانی تماس بگیرید.
             </div>
           `;
         }

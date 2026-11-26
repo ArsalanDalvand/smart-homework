@@ -10,8 +10,10 @@ import * as authLib from '../../lib/authn.js';
 import { uiStrings } from '../../lib/branding.js';
 import { config } from '../../lib/config.js';
 import { AuthnProviderSchema } from '../../lib/db-types.js';
+import { createAltchaChallenge, verifyAltchaPayload } from '../../lib/altcha.js';
 import {
   registerLocalUser,
+  validateUin,
   verifyLocalCredentials,
 } from '../../lib/local-auth.js';
 
@@ -123,6 +125,11 @@ router.get(
   }),
 );
 
+router.get('/altcha-challenge', (_req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json(createAltchaChallenge());
+});
+
 const DevLoginBodySchema = z.object({
   uid: z.string().min(1),
   name: z.string().min(1),
@@ -143,6 +150,21 @@ router.post(
 
     // 1. Password Login
     if (action === 'local_login') {
+      if (!verifyAltchaPayload(req.body.altcha).ok) {
+        const providers = await getInstitutionAuthnProviders();
+        res.status(400).send(
+          AuthLogin({
+            service: query.service,
+            institutionAuthnProviders: providers,
+            resLocals: res.locals,
+            errorMessage: uiStrings.auth.altchaError,
+            initialTab: 'login',
+            initialIdentifier: typeof req.body.identifier === 'string' ? req.body.identifier : '',
+          }),
+        );
+        return;
+      }
+
       const bodyResult = LocalLoginBodySchema.safeParse(req.body);
       if (!bodyResult.success) {
         const providers = await getInstitutionAuthnProviders();
@@ -200,90 +222,67 @@ router.post(
     // 2. Fast Self-Registration
     if (action === 'local_register') {
       const body = req.body;
-      const initialIdentifier = typeof body.email === 'string' ? body.email : '';
+      const str = (v: unknown) => (typeof v === 'string' ? v : '');
+      const name = str(body.name).trim();
+      const email = str(body.email).trim().toLowerCase();
+      const rawUin = str(body.uin);
+      const isStaffUin = body.is_staff_uin === 'on' || body.is_staff_uin === 'true' || body.is_staff_uin === '1';
+      const password = str(body.password);
 
-      if (!body.name || !body.email || !body.password || !body.confirm_password || typeof body.uin !== 'string' || !body.uin.trim()) {
+      const fail = async (status: number, errorMessage: string) => {
         const providers = await getInstitutionAuthnProviders();
-        res.status(400).send(
+        res.status(status).send(
           AuthLogin({
             service: query.service,
             institutionAuthnProviders: providers,
             resLocals: res.locals,
-            errorMessage: uiStrings.auth.requiredFieldsError,
+            errorMessage,
             initialTab: 'register',
-            initialIdentifier,
+            initialIdentifier: email,
+            initialName: name,
+            initialUin: rawUin.trim().slice(0, 32),
+            initialIsStaffUin: isStaffUin,
           }),
         );
+      };
+
+      if (!verifyAltchaPayload(body.altcha).ok) {
+        await fail(400, uiStrings.auth.altchaError);
         return;
       }
-
-      if (typeof body.name !== 'string' || body.name.trim().length < 2) {
-        const providers = await getInstitutionAuthnProviders();
-        res.status(400).send(
-          AuthLogin({
-            service: query.service,
-            institutionAuthnProviders: providers,
-            resLocals: res.locals,
-            errorMessage: uiStrings.auth.invalidNameError,
-            initialTab: 'register',
-            initialIdentifier,
-          }),
-        );
+      if (!name || !email || !password || !str(body.confirm_password) || !rawUin.trim()) {
+        await fail(400, uiStrings.auth.requiredFieldsError);
         return;
       }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (typeof body.email !== 'string' || !emailRegex.test(body.email.trim())) {
-        const providers = await getInstitutionAuthnProviders();
-        res.status(400).send(
-          AuthLogin({
-            service: query.service,
-            institutionAuthnProviders: providers,
-            resLocals: res.locals,
-            errorMessage: uiStrings.auth.invalidEmailError,
-            initialTab: 'register',
-            initialIdentifier,
-          }),
-        );
+      if (name.length < 2 || name.length > 200) {
+        await fail(400, uiStrings.auth.invalidNameError);
         return;
       }
-
-      if (typeof body.password !== 'string' || body.password.length < 6) {
-        const providers = await getInstitutionAuthnProviders();
-        res.status(400).send(
-          AuthLogin({
-            service: query.service,
-            institutionAuthnProviders: providers,
-            resLocals: res.locals,
-            errorMessage: uiStrings.auth.passwordLengthError,
-            initialTab: 'register',
-            initialIdentifier,
-          }),
-        );
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
+        await fail(400, uiStrings.auth.invalidEmailError);
         return;
       }
-
-      if (body.password !== body.confirm_password) {
-        const providers = await getInstitutionAuthnProviders();
-        res.status(400).send(
-          AuthLogin({
-            service: query.service,
-            institutionAuthnProviders: providers,
-            resLocals: res.locals,
-            errorMessage: uiStrings.auth.passwordMismatchError,
-            initialTab: 'register',
-            initialIdentifier,
-          }),
-        );
+      const uinResult = validateUin(rawUin, { isStaff: isStaffUin });
+      if (!uinResult.ok) {
+        await fail(400, uinResult.message);
+        return;
+      }
+      if (password.length < 6 || password.length > 256) {
+        await fail(400, uiStrings.auth.passwordLengthError);
+        return;
+      }
+      if (password !== body.confirm_password) {
+        await fail(400, uiStrings.auth.passwordMismatchError);
         return;
       }
 
       try {
         const { user_id } = await registerLocalUser({
-          name: body.name.trim(),
-          email: body.email.trim(),
-          password: body.password,
-          uin: body.uin.trim(),
+          name,
+          email,
+          password,
+          uin: uinResult.uin,
+          isStaff: isStaffUin,
         });
 
         await authLib.loadUser(
@@ -300,17 +299,11 @@ router.post(
         return;
       } catch (err: any) {
         if (err.message === 'EMAIL_EXISTS') {
-          const providers = await getInstitutionAuthnProviders();
-          res.status(409).send(
-            AuthLogin({
-              service: query.service,
-              institutionAuthnProviders: providers,
-              resLocals: res.locals,
-              errorMessage: uiStrings.auth.emailExistsError,
-              initialTab: 'register',
-              initialIdentifier,
-            }),
-          );
+          await fail(409, uiStrings.auth.emailExistsError);
+          return;
+        }
+        if (err.message === 'UIN_EXISTS') {
+          await fail(409, uiStrings.auth.uinExistsError);
           return;
         }
         throw err;

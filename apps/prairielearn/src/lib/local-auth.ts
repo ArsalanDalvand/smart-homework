@@ -5,6 +5,12 @@ import { z } from 'zod';
 import * as sqldb from '@prairielearn/postgres';
 import { IdSchema } from '@prairielearn/zod';
 
+import {
+  type IustUinValidation,
+  normalizeDigits,
+  validateIustUin,
+} from './iust-student-id.js';
+
 const sql = sqldb.loadSqlEquiv(import.meta.url);
 const scryptAsync = promisify(crypto.scrypt);
 
@@ -46,13 +52,17 @@ export async function verifyPassword(password: string, storedHash: string): Prom
 }
 
 /**
- * Finds user by UID or email, including password_hash if present.
+ * Finds user by UID, email, or normalized student/staff UIN, including password_hash if present.
  */
 export async function findUserByIdentifier(identifier: string): Promise<UserWithPassword | null> {
   const clean = identifier.trim().toLowerCase();
+  const normalizedUin = normalizeDigits(identifier);
   return await sqldb.queryOptionalRow(
     sql.select_user_with_password,
-    { identifier: clean },
+    {
+      identifier: clean,
+      uin_identifier: /^[0-9]{5,12}$/.test(normalizedUin) ? normalizedUin : null,
+    },
     UserWithPasswordSchema,
   );
 }
@@ -66,26 +76,49 @@ export async function checkUserExists(identifier: string): Promise<boolean> {
   return res !== null;
 }
 
+export function normalizeUin(raw: string): string {
+  return normalizeDigits(raw);
+}
+
+export function validateUin(raw: string, options?: { isStaff?: boolean }): IustUinValidation {
+  return validateIustUin(raw, options);
+}
+
+export async function checkUinExists(uin: string): Promise<boolean> {
+  const res = await sqldb.queryOptionalScalar(sql.check_uin_exists, { uin }, IdSchema);
+  return res !== null;
+}
+
 export interface RegisterLocalUserParams {
   name: string;
   email: string;
   password: string;
   uin?: string | null;
+  isStaff?: boolean;
 }
 
 /**
- * Registers a new user with email and hashed password.
+ * Registers a new user with email, validated IUST student/staff ID, and hashed password.
+ * Defaults institution_id to IUST when present in the institutions table.
  */
 export async function registerLocalUser(
   params: RegisterLocalUserParams,
 ): Promise<{ user_id: string; uid: string }> {
   const email = params.email.trim().toLowerCase();
   const name = params.name.trim();
-  const uin = params.uin?.trim() || null;
+  const uinCheck = params.uin
+    ? validateIustUin(params.uin, { isStaff: params.isStaff })
+    : null;
+  if (uinCheck && !uinCheck.ok) throw new Error('UIN_INVALID');
+  const uin = uinCheck?.ok ? uinCheck.uin : null;
 
   const exists = await checkUserExists(email);
   if (exists) {
     throw new Error('EMAIL_EXISTS');
+  }
+
+  if (uin && (await checkUinExists(uin))) {
+    throw new Error('UIN_EXISTS');
   }
 
   const passwordHash = await hashPassword(params.password);
@@ -114,7 +147,7 @@ export type VerifyResult =
   | { success: false; reason: 'USER_NOT_FOUND' | 'INVALID_PASSWORD' | 'NO_PASSWORD_SET' };
 
 /**
- * Verifies identifier and password.
+ * Verifies identifier (email, uid, or student ID) and password.
  */
 export async function verifyLocalCredentials(
   identifier: string,

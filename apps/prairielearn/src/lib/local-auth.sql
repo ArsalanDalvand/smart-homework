@@ -12,6 +12,7 @@ FROM
 WHERE
   lower(u.uid) = lower($identifier)
   OR lower(coalesce(u.email, '')) = lower($identifier)
+  OR ($uin_identifier::text IS NOT NULL AND u.uin = $uin_identifier)
 LIMIT 1;
 
 -- BLOCK check_user_exists
@@ -22,6 +23,15 @@ FROM
 WHERE
   lower(uid) = lower($identifier)
   OR lower(coalesce(email, '')) = lower($identifier)
+LIMIT 1;
+
+-- BLOCK check_uin_exists
+SELECT
+  id
+FROM
+  users
+WHERE
+  uin = $uin
 LIMIT 1;
 
 -- BLOCK insert_user
@@ -37,7 +47,7 @@ WITH new_u AS (
     $name,
     $email,
     $uin,
-    1
+    COALESCE((SELECT id FROM institutions WHERE short_name = 'IUST' LIMIT 1), 1)
   )
   RETURNING *
 ),
