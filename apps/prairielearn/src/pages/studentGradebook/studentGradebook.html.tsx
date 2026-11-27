@@ -322,14 +322,14 @@ function StudentHeatmapAndBadgesSection({
                 <span className="se-hm-cell se-hm-freeze" />
                 <span>محافظ ❄️</span>
               </span>
-              <div className="d-flex align-items-center gap-1" dir="ltr">
-                <span className="me-1">کمتر</span>
+              <div className="d-flex align-items-center gap-1" dir="rtl">
+                <span className="ms-1">کمتر</span>
                 <span className="se-hm-cell se-hm-l0" />
                 <span className="se-hm-cell se-hm-l1" />
                 <span className="se-hm-cell se-hm-l2" />
                 <span className="se-hm-cell se-hm-l3" />
                 <span className="se-hm-cell se-hm-l4" />
-                <span className="ms-1">بیشتر</span>
+                <span className="me-1">بیشتر</span>
               </div>
             </div>
           </div>
@@ -439,7 +439,7 @@ function LevelHeroBanner({
             {skillsUrl && (
               <a href={skillsUrl} className="btn btn-outline-primary btn-sm">
                 <i className="bi bi-diagram-3 me-1" aria-hidden="true" />
-                <span className="sh-en-term">Skill Tree</span>
+                درخت مهارت
               </a>
             )}
             <a href="/pl/settings#public-profile" className="btn btn-outline-secondary btn-sm">
@@ -451,9 +451,7 @@ function LevelHeroBanner({
 
         <div className="mt-3">
           <div className="d-flex justify-content-between small text-body-secondary mb-1 sh-tabular">
-            <span>
-              پیشرفت به <span className="sh-en-term">Level {toPersianDigits(level.level + 1)}</span>
-            </span>
+            <span>پیشرفت به سطح {toPersianDigits(level.level + 1)}</span>
             <span dir="ltr" className="sh-en-term">
               {toPersianDigits(level.xpIntoLevel)} / {toPersianDigits(level.xpNeededForNext)} XP (
               {toPersianDigits(level.progressPerc)}٪)
@@ -798,7 +796,7 @@ function WhatIfSimulatorSection({ analyticsData }: { analyticsData: StudentAnaly
                 </label>
                 <select
                   id="sh-whatif-remaining"
-                  className="form-select form-select-sm w-auto sh-tabular"
+                  className="form-select form-select-sm w-auto sh-whatif-select sh-tabular"
                   defaultValue={String(defaultRemainingCount)}
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
@@ -1181,7 +1179,7 @@ export function StudentGradebook({
                     aria-selected="false"
                   >
                     <i className="bi bi-calendar3 me-1" aria-hidden="true" />
-                    فعالیت{showWeeklyQuests ? ' و Weekly Quests' : ''}
+                    فعالیت{showWeeklyQuests ? ' و ماموریت‌ها' : ''}
                   </button>
                 </li>
               )}

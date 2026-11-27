@@ -98,7 +98,13 @@
     if (!blocks.length) return;
 
     blocks.forEach(function (pre) {
-      if (pre.closest('.ace_editor') || pre.closest('.sh-pre-wrap')) return;
+      if (
+        pre.closest(
+          '.ace_editor, .sh-pre-wrap, .pl-order-blocks-container, .pl-order-blocks-answer-container, .pl-order-block',
+        )
+      ) {
+        return;
+      }
       var text = (pre.textContent || '').trim();
       if (!text) return;
 

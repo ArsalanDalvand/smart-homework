@@ -1,44 +1,51 @@
 .pl-matching-container {
   display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.5rem 2.25rem;
   margin-bottom: 1em;
 }
 
 .pl-matching-statement {
   display: flex;
   align-items: center;
-  margin-top: 1ex;
-}
-
-.pl-matching-statement-text,
-.pl-matching-statement-submission {
-  margin-right: 1ex;
+  gap: 0.65rem;
+  margin-top: 0.55rem;
 }
 
 .pl-matching-statement-select {
-  margin-right: 1ex;
-  min-width: 4em;
+  min-width: 4.8em;
+  flex-shrink: 0;
 }
 
 .pl-matching-options ol {
-  margin-top: 0.5em;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  padding-inline-start: 0;
   counter-reset: item;
+  list-style: none;
 }
 
 .pl-matching-options ol > li {
-  margin-bottom: 1em;
-  padding: 0 0 0 2em;
-  text-indent: -1em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+  padding: 0;
+  text-indent: 0;
   list-style-type: none;
   counter-increment: item;
 }
 
 .pl-matching-options ol > li:before {
   content: counter(item, var(--pl-matching-counter-type)) '.';
+  direction: ltr;
+  unicode-bidi: isolate;
   display: inline-block;
-  width: 1em;
-  padding-right: 0.5em;
-  font-weight: bold;
-  text-align: right;
+  min-width: 1.5em;
+  font-weight: 700;
+  text-align: end;
+  flex-shrink: 0;
 }
 
 .pl-matching-answer {
@@ -46,7 +53,7 @@
   border-radius: 5px !important;
   padding: 0.4rem 0.4rem;
   background-color: rgba(0, 0, 0, 0.03);
-  margin-right: 0.5rem;
+  margin-inline-end: 0.5rem;
 }
 
 .pl-matching-container-bottom {

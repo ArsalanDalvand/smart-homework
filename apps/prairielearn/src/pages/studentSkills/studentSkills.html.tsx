@@ -1,8 +1,34 @@
+import type { ReactNode } from 'react';
+
 import { PageLayout } from '../../components/PageLayout.js';
 import { assetPath } from '../../lib/assets.js';
 import { toPersianDigits } from '../../lib/jalali.js';
 import type { ResLocalsForPage } from '../../lib/res-locals.js';
 import type { SkillTreeNode, StudentSkillTreeData } from '../../lib/student-gamification.js';
+
+const EN_PAREN_REGEX = /\([A-Za-z][^()]*[A-Za-z0-9]\)/g;
+
+function renderBidiText(text: string): ReactNode {
+  const parts: ReactNode[] = [];
+  let lastIndex = 0;
+  for (const match of text.matchAll(EN_PAREN_REGEX)) {
+    const start = match.index;
+    if (start > lastIndex) {
+      parts.push(text.slice(lastIndex, start));
+    }
+    parts.push(
+      <bdi key={`${start}-${match[0]}`} dir="ltr">
+        {match[0]}
+      </bdi>,
+    );
+    lastIndex = start + match[0].length;
+  }
+  if (lastIndex === 0) return text;
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts;
+}
 
 const STATUS_META: Record<SkillTreeNode['status'], { label: string; badgeClass: string }> = {
   unstarted: { label: 'شروع‌نشده', badgeClass: 'bg-body-tertiary text-body-secondary border' },
@@ -12,7 +38,7 @@ const STATUS_META: Record<SkillTreeNode['status'], { label: string; badgeClass: 
   },
   proficient: { label: 'مسلط', badgeClass: 'bg-body-tertiary text-body border' },
   mastered: {
-    label: 'Mastered',
+    label: 'تسلط کامل',
     badgeClass: 'bg-success-subtle text-success-emphasis border border-success-subtle',
   },
 };
@@ -85,7 +111,7 @@ export function StudentSkills({
             <div>
               <h1 className="h4 fw-bold text-body mb-1">
                 <i className="bi bi-diagram-3 me-2" aria-hidden="true" />
-                مسیر یادگیری و <span className="sh-en-term">Skill Tree</span>
+                درخت مهارت و مسیر یادگیری
               </h1>
               <div className="se-card-subtitle">
                 گروه‌بندی بر اساس {SOURCE_LABEL[data.groupingSource]} — روی هر گره کلیک کنید تا سوالات
@@ -115,9 +141,7 @@ export function StudentSkills({
             <div className="sh-stat-sub">سوالات با نمره ۱۰۰٪</div>
           </div>
           <div className="sh-stat-cell">
-            <div className="sh-stat-label">
-              مباحث <span className="sh-en-term">Mastered</span>
-            </div>
+            <div className="sh-stat-label">مباحث تکمیل‌شده</div>
             <div className="sh-stat-value">
               {toPersianDigits(data.masteredNodes)} از {toPersianDigits(data.nodes.length)}
             </div>
@@ -156,20 +180,18 @@ export function StudentSkills({
                       <SkillProgressRing perc={node.masteryPerc} status={node.status} />
                       <div className="flex-grow-1 min-w-0 text-start">
                         <div className="d-flex flex-wrap align-items-center justify-content-between gap-2">
-                          <span className="fw-bold text-body text-truncate">
+                          <span className="fw-bold text-body text-break lh-sm">
                             <span className="text-body-secondary me-1 sh-tabular">
                               {toPersianDigits(idx + 1)}.
                             </span>
-                            {node.title}
+                            {renderBidiText(node.title)}
                           </span>
-                          <span
-                            className={`badge ${meta.badgeClass} ${node.status === 'mastered' ? 'sh-en-term' : ''}`}
-                          >
+                          <span className={`badge flex-shrink-0 ${meta.badgeClass}`}>
                             {meta.label}
                           </span>
                         </div>
-                        <div className="small text-body-secondary text-truncate mt-1">
-                          {node.subtitle}
+                        <div className="small text-body-secondary text-break mt-1">
+                          {renderBidiText(node.subtitle)}
                         </div>
                         <div className="small text-body-secondary mt-1 sh-tabular">
                           {toPersianDigits(node.solvedQuestions)} از{' '}
@@ -223,8 +245,8 @@ export function StudentSkills({
                             <div className="d-flex align-items-center gap-2 min-w-0">
                               <i className={`bi ${icon} flex-shrink-0`} aria-hidden="true" />
                               <div className="min-w-0">
-                                <div className="fw-medium text-body text-truncate">
-                                  {q.questionTitle}
+                                <div className="fw-medium text-body text-break lh-sm">
+                                  {renderBidiText(q.questionTitle)}
                                 </div>
                                 <div className="small text-body-secondary">
                                   <span dir="ltr" className="me-1">

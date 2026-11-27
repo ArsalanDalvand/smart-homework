@@ -84,8 +84,11 @@ router.get(
         resLocals: res.locals,
         pageTitle: 'کد ثبت‌نام الزامی است',
         navContext: {
-          type: 'student',
+          type: 'plain',
           page: 'enroll',
+        },
+        options: {
+          studentSurface: true,
         },
         content: (
           <Hydrate>

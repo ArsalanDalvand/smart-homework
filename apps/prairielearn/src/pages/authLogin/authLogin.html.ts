@@ -271,7 +271,7 @@ function PasswordInput({
   minlength?: number;
 }) {
   return html`
-    <div class="input-group" dir="ltr">
+    <div class="input-group" dir="rtl">
       <input
         type="password"
         class="form-control"
@@ -542,14 +542,20 @@ function LoginPageContainer({
 
           .auth-tab-btn {
             cursor: pointer;
+            border: 1px solid transparent;
             color: var(--sh-ink-secondary, #475569);
             transition: all 0.2s ease;
           }
 
           .auth-tab-btn.active {
             background-color: var(--sh-bg-surface, #ffffff);
-            color: var(--sh-ink, #0f172a);
+            border-color: var(--sh-border, #e2e8f0);
+            color: var(--sh-primary, #2563eb);
             box-shadow: var(--sh-shadow-card, 0 1px 3px rgba(0, 0, 0, 0.1));
+          }
+
+          html[data-surface='student'][data-bs-theme='dark'] .auth-tab-btn.active {
+            color: #93c5fd;
           }
 
           .sh-pw-bars {
@@ -751,6 +757,7 @@ function LoginPageContainer({
                         </span>
                         <span
                           class="sh-code-chip sh-en-term ms-auto"
+                          dir="ltr"
                           style="background: rgba(251, 191, 36, 0.16); color: #fbbf24;"
                         >
                           +۱۲۰ XP
@@ -1354,33 +1361,31 @@ function LocalRegisterForm({
           autocomplete="email"
         />
       </div>
-      <div class="row g-2 mb-3">
-        <div class="col-12 col-sm-6">
-          <label class="form-label fw-bold d-block" for="reg_password">
-            <bdi>${uiStrings.auth.passwordLabel}</bdi>
-          </label>
-          ${PasswordInput({
-            id: 'reg_password',
-            name: 'password',
-            placeholder: uiStrings.auth.passwordPlaceholder,
-            autocomplete: 'new-password',
-            minlength: 6,
-          })}
-        </div>
-        <div class="col-12 col-sm-6">
-          <label class="form-label fw-bold d-block" for="reg_confirm_password">
-            <bdi>${uiStrings.auth.confirmPasswordLabel}</bdi>
-          </label>
-          ${PasswordInput({
-            id: 'reg_confirm_password',
-            name: 'confirm_password',
-            placeholder: uiStrings.auth.confirmPasswordPlaceholder,
-            autocomplete: 'new-password',
-            minlength: 6,
-          })}
-        </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold d-block" for="reg_password">
+          <bdi>${uiStrings.auth.passwordLabel}</bdi>
+        </label>
+        ${PasswordInput({
+          id: 'reg_password',
+          name: 'password',
+          placeholder: uiStrings.auth.passwordPlaceholder,
+          autocomplete: 'new-password',
+          minlength: 6,
+        })}
       </div>
-      <div class="mb-3 mt-n2">
+      <div class="mb-2">
+        <label class="form-label fw-bold d-block" for="reg_confirm_password">
+          <bdi>${uiStrings.auth.confirmPasswordLabel}</bdi>
+        </label>
+        ${PasswordInput({
+          id: 'reg_confirm_password',
+          name: 'confirm_password',
+          placeholder: uiStrings.auth.confirmPasswordPlaceholder,
+          autocomplete: 'new-password',
+          minlength: 6,
+        })}
+      </div>
+      <div class="mb-3">
         <div id="reg_password_bars" class="sh-pw-bars mt-1 mb-1" aria-hidden="true">
           <span></span><span></span><span></span><span></span>
         </div>
@@ -1408,13 +1413,14 @@ function LocalRegisterForm({
           aria-describedby="reg_uin_help"
         />
         <small id="reg_uin_help" class="form-text text-muted d-block">
-          شماره دانشجویی ۹ رقمی گلستان دانشگاه علم و صنعت (مثلاً <code>405441001</code>) — ارقام فارسی
-          خودکار تبدیل می‌شوند.
+          شماره دانشجویی ۹ رقمی گلستان دانشگاه علم و صنعت (مثلاً
+          <bdi dir="ltr"><code>405441001</code></bdi
+          >) — ارقام فارسی خودکار تبدیل می‌شوند.
         </small>
         <small id="reg_uin_live" class="form-text d-block text-muted" aria-live="polite"></small>
-        <div class="form-check mt-2">
+        <div class="form-check d-flex align-items-start gap-2 ps-0 mt-2">
           <input
-            class="form-check-input"
+            class="form-check-input m-0 mt-1 flex-shrink-0"
             type="checkbox"
             id="reg_is_staff_uin"
             name="is_staff_uin"

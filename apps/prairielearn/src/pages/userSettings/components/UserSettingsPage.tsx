@@ -8,6 +8,7 @@ import { AppErrorAlert, QueryClientProviderDebug } from '@prairielearn/trpc/reac
 import { FriendlyDate } from '../../../components/FriendlyDate.js';
 import { uiStrings } from '../../../lib/branding.js';
 import type { UserAccessToken } from '../../../lib/client/safe-db-types.js';
+import { toPersianDigits } from '../../../lib/jalali.js';
 import {
   AVATAR_COLORS,
   AVATAR_PRESETS,
@@ -310,6 +311,17 @@ function AvatarCropModal({
     });
   }, [imgSize, isDragging, pan.x, pan.y, rotationDeg, zoom]);
 
+  // Allow closing the avatar cropper with Escape when no upload is in flight
+  useEffect(() => {
+    const onKeyDown = (ev: KeyboardEvent) => {
+      if (ev.key === 'Escape' && !isSaving) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isSaving, onClose]);
+
   const applyTransform = (nextZoom: number, nextRot: number, rawPanX: number, rawPanY: number) => {
     const clampedZoom = Math.max(1, Math.min(3, Math.round(nextZoom * 100) / 100));
     setZoom(clampedZoom);
@@ -359,7 +371,16 @@ function AvatarCropModal({
       role="dialog"
       tabIndex={-1}
     >
-      <div className="modal-dialog modal-dialog-centered">
+      <button
+        aria-label="بستن پنجره برش عکس"
+        className="border-0 bg-transparent p-0 position-fixed top-0 start-0 w-100 h-100"
+        disabled={isSaving}
+        style={{ zIndex: 0 }}
+        tabIndex={-1}
+        type="button"
+        onClick={onClose}
+      />
+      <div className="modal-dialog modal-dialog-centered position-relative" style={{ zIndex: 1 }}>
         <div className="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
           <div className="modal-header border-bottom">
             <h3 className="modal-title h6 fw-bold mb-0" id="sh-avatar-crop-title">
@@ -446,7 +467,7 @@ function AvatarCropModal({
               >
                 <span>بزرگ‌نمایی</span>
                 <span className="sh-tabular" dir="ltr">
-                  {Math.round(zoom * 100)}%
+                  {toPersianDigits(Math.round(zoom * 100))}٪
                 </span>
               </label>
               <div className="d-flex align-items-center gap-2">
@@ -784,7 +805,7 @@ function PublicProfileStudioCard({
             >
               <input
                 ref={fileInputRef}
-                accept="image/png,image/jpeg,image/webp,image/gif"
+                accept="image/*"
                 className="d-none"
                 type="file"
                 onChange={handleFileChange}
@@ -942,7 +963,9 @@ function PublicProfileStudioCard({
                       <label className="form-label fw-semibold mb-1" htmlFor="sh-profile-bio">
                         معرفی کوتاه یا شعار کدنویسی (Bio)
                       </label>
-                      <small className="text-body-secondary sh-tabular">{bio.length} / ۱۶۰</small>
+                      <small className="text-body-secondary sh-tabular">
+                        {toPersianDigits(bio.length)} / ۱۶۰
+                      </small>
                     </div>
                     <textarea
                       id="sh-profile-bio"

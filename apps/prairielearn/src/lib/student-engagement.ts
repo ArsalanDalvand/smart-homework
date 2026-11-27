@@ -433,66 +433,42 @@ export function computeStreakWithFreezes({
   };
 }
 
-export async function getStudentActivityAndBadges({
-  courseInstanceId,
-  userId,
-  timezone,
+export function buildJalaliHeatmapWeeks({
+  countsByDay,
+  frozenSet,
+  todayKey,
+  numWeeks = 20,
 }: {
-  courseInstanceId: string;
-  userId: string;
-  timezone: string;
-}): Promise<StudentActivityAndBadges> {
-  const tz = timezone || 'Asia/Tehran';
-  const [activityRows, badgeSignals] = await Promise.all([
-    sqldb.queryRows(
-      sql.select_student_daily_activity,
-      { course_instance_id: courseInstanceId, user_id: userId, timezone: tz },
-      DailyActivityRowSchema,
-    ),
-    sqldb.queryRow(
-      sql.select_student_badge_signals,
-      { course_instance_id: courseInstanceId, user_id: userId },
-      BadgeSignalsSchema,
-    ),
-  ]);
-
-  const countsByDay = new Map<string, number>();
-  let totalSubmissions140d = 0;
-  const activeDayKeys: string[] = [];
-  for (const row of activityRows) {
-    countsByDay.set(row.day_key, row.submission_count);
-    totalSubmissions140d += row.submission_count;
-    if (row.submission_count > 0) {
-      activeDayKeys.push(row.day_key);
-    }
-  }
-
-  // Anchor heatmap in local Jalali calendar so weeks run Saturday (0) -> Friday (6)
-  const todayJalali = getTodayJalali(tz);
-  const todayGreg = jalaliToGregorian(todayJalali.jy, todayJalali.jm, todayJalali.jd);
-  const todayKey = getDateKeyFromGregorian(todayGreg.gy, todayGreg.gm, todayGreg.gd);
-
-  const streakSummary = computeStreakWithFreezes({
-    activeDayKeys,
-    todayKey,
-    maxFreezesPerMonth: 2,
-  });
-  const frozenSet = new Set(streakSummary.frozenDayKeys);
-
-  // Determine today's Persian day of week (0 = Saturday .. 6 = Friday)
-  const jsDow = new Date(Date.UTC(todayGreg.gy, todayGreg.gm - 1, todayGreg.gd)).getUTCDay();
+  countsByDay: Map<string, number>;
+  frozenSet: Set<string>;
+  todayKey: string;
+  numWeeks?: number;
+}): {
+  weeks: HeatmapWeekColumn[];
+  activeDaysCount: number;
+  frozenDaysCount: number;
+} {
+  const [tGy, tGm, tGd] = todayKey.split('-').map(Number);
+  const jsDow = new Date(Date.UTC(tGy, tGm - 1, tGd)).getUTCDay();
   const todayPersianDow = (jsDow + 1) % 7;
 
-  // Build 20 week columns ending on the current week (Saturday .. today's week Friday)
-  const numWeeks = 20;
+  // Anchor heatmap in local Jalali calendar so weeks run Saturday (0) -> Friday (6)
   const currentWeekSaturdayKey = addGregorianDays(todayKey, -todayPersianDow);
   const firstDayKey = addGregorianDays(currentWeekSaturdayKey, -(numWeeks - 1) * 7);
 
-  const weeks: HeatmapWeekColumn[] = [];
-  let prevMonth = -1;
+  const [fGy, fGm, fGd] = firstDayKey.split('-').map(Number);
+  const firstJalali = gregorianToJalali(fGy, fGm, fGd);
+  const week2EndKey = addGregorianDays(firstDayKey, 20);
+  const [w2Gy, w2Gm, w2Gd] = week2EndKey.split('-').map(Number);
+  const week2EndJalali = gregorianToJalali(w2Gy, w2Gm, w2Gd);
+
+  // If the first Jalali month transitions within weeks 0..2, suppress its stub label at w=0
+  // so the first full month isn't skipped by the 3-week minimum spacing rule.
+  let prevMonth = firstJalali.jm !== week2EndJalali.jm ? firstJalali.jm : -1;
   let lastMonthLabelWeek = -10;
   let activeDaysCount = 0;
   let frozenDaysCount = 0;
+  const weeks: HeatmapWeekColumn[] = [];
 
   for (let w = 0; w < numWeeks; w++) {
     const cells: HeatmapCell[] = [];
@@ -545,6 +521,62 @@ export async function getStudentActivityAndBadges({
     }
     weeks.push({ monthLabel: weekMonthLabel, cells });
   }
+
+  return { weeks, activeDaysCount, frozenDaysCount };
+}
+
+export async function getStudentActivityAndBadges({
+  courseInstanceId,
+  userId,
+  timezone,
+}: {
+  courseInstanceId: string;
+  userId: string;
+  timezone: string;
+}): Promise<StudentActivityAndBadges> {
+  const tz = timezone || 'Asia/Tehran';
+  const [activityRows, badgeSignals] = await Promise.all([
+    sqldb.queryRows(
+      sql.select_student_daily_activity,
+      { course_instance_id: courseInstanceId, user_id: userId, timezone: tz },
+      DailyActivityRowSchema,
+    ),
+    sqldb.queryRow(
+      sql.select_student_badge_signals,
+      { course_instance_id: courseInstanceId, user_id: userId },
+      BadgeSignalsSchema,
+    ),
+  ]);
+
+  const countsByDay = new Map<string, number>();
+  let totalSubmissions140d = 0;
+  const activeDayKeys: string[] = [];
+  for (const row of activityRows) {
+    countsByDay.set(row.day_key, row.submission_count);
+    totalSubmissions140d += row.submission_count;
+    if (row.submission_count > 0) {
+      activeDayKeys.push(row.day_key);
+    }
+  }
+
+  // Anchor heatmap in local Jalali calendar so weeks run Saturday (0) -> Friday (6)
+  const todayJalali = getTodayJalali(tz);
+  const todayGreg = jalaliToGregorian(todayJalali.jy, todayJalali.jm, todayJalali.jd);
+  const todayKey = getDateKeyFromGregorian(todayGreg.gy, todayGreg.gm, todayGreg.gd);
+
+  const streakSummary = computeStreakWithFreezes({
+    activeDayKeys,
+    todayKey,
+    maxFreezesPerMonth: 2,
+  });
+  const frozenSet = new Set(streakSummary.frozenDayKeys);
+
+  const { weeks, activeDaysCount, frozenDaysCount } = buildJalaliHeatmapWeeks({
+    countsByDay,
+    frozenSet,
+    todayKey,
+    numWeeks: 20,
+  });
 
   const {
     currentStreakDays,

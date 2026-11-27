@@ -61,14 +61,14 @@ FIRST_WRONG_TYPES = frozenset([
 
 
 FIRST_WRONG_FEEDBACK = {
-    "incomplete": "Your answer is correct so far, but it is incomplete.",
-    "wrong-at-block": r"""Your answer is incorrect starting at <span style="color:red;">block number {}</span>.
-        The problem is most likely one of the following:
-        <ul><li> This block is not a part of the correct solution </li>
-        <li>This block needs to come after a block that did not appear before it </li>""",
-    "indentation": r"""<li>This line is indented incorrectly </li>""",
-    "block-group": r"""<li> You have attempted to start a new section of the answer without finishing the previous section </li>""",
-    "distractor-feedback": r"""Your answer is incorrect starting at <span style="color:red;">block number {}</span> as the block at that location is not a part of any correct solution.""",
+    "incomplete": "پاسخ شما تا اینجا صحیح است، اما هنوز کامل نشده است.",
+    "wrong-at-block": r"""پاسخ شما از <span style="color:red;">بلوک شماره {}</span> به بعد نادرست است.
+        احتمالاً مشکل یکی از موارد زیر است:
+        <ul><li>این بلوک جزئی از راه‌حل صحیح نیست</li>
+        <li>این بلوک باید پس از بلوک دیگری بیاید که هنوز در پاسخ قرار نگرفته است</li>""",
+    "indentation": r"""<li>تورفتگی (Indentation) این خط نادرست است</li>""",
+    "block-group": r"""<li>شما بخش جدیدی از پاسخ را بدون تکمیل بخش قبلی آغاز کرده‌اید</li>""",
+    "distractor-feedback": r"""پاسخ شما از <span style="color:red;">بلوک شماره {}</span> به بعد نادرست است؛ زیرا بلوکِ این جایگاه جزئی از هیچ راه‌حل صحیحی نیست.""",
 }
 
 
@@ -392,21 +392,30 @@ def render(element_html: str, data: pl.QuestionData) -> str:
                 max(0, submission_indent) if submission_indent is not None else 0
             )
 
+        placement_fa = (
+            "به کادر پایین"
+            if dropzone_layout is SolutionPlacementType.BOTTOM
+            else "به کادر سمت راست"
+        )
         help_text = (
-            f"Move answer blocks from the options area to the {dropzone_layout.value}."
+            '<div dir="rtl" style="text-align: right;">'
+            f'<p class="mb-2">بلوک‌های پاسخ را از ناحیه گزینه‌ها بکشید و {placement_fa} رها کنید.</p>'  # ruff: ignore[ambiguous-unicode-character-string]
         )
 
         if grading_method is GradingMethodType.UNORDERED:
-            help_text += "<p>Your answer ordering does not matter. </p>"
+            help_text += (
+                '<p class="mb-2">ترتیب قرارگیری بلوک‌ها در پاسخ شما اهمیتی ندارد.</p>'  # ruff: ignore[ambiguous-unicode-character-string]
+            )
         elif grading_method is not GradingMethodType.EXTERNAL:
-            help_text += "<p>The ordering of your answer matters and is graded.</p>"
+            help_text += '<p class="mb-2">ترتیب قرارگیری بلوک‌ها مهم است و در نمره‌دهی بررسی می‌شود.</p>'  # ruff: ignore[ambiguous-unicode-character-string]
         else:
-            help_text += "<p>Your answer will be autograded; be sure to indent and order your answer properly.</p>"
+            help_text += '<p class="mb-2">پاسخ شما به‌صورت خودکار تصحیح می‌شود؛ ترتیب و تورفتگی خطوط را دقیق رعایت کنید.</p>'
 
-        help_text += "<p>Keyboard Controls: Arrows to navigate; Enter to select; Escape to deselect blocks. With a block selected, up/down arrows to reorder; left/right arrows to move between the options area and answer area.</p>"
+        help_text += '<p class="mb-2">کلیدهای میانبر صفحه‌کلید: با کلیدهای جهت‌نما حرکت کنید؛ با Enter بلوک را انتخاب و با Escape از انتخاب خارج کنید. هنگام انتخاب بلوک، با کلیدهای بالا/پایین ترتیب را تغییر دهید و با چپ/راست آن را بین ناحیه گزینه‌ها و ناحیه پاسخ جابه‌جا کنید.</p>'  # ruff: ignore[ambiguous-unicode-character-string]
         check_indentation = order_blocks_options.indentation
         if check_indentation:
-            help_text += "<p><strong>Your answer should be indented.</strong> Indent your tiles by dragging them horizontally in the answer area, or by using left/right arrows with the block selected.</p>"
+            help_text += '<p class="mb-0"><strong>تورفتگی (Indentation) در پاسخ شما مهم است.</strong> برای تنظیم تورفتگی، بلوک‌ها را به‌صورت افقی در کادر پاسخ بکشید یا در حالت انتخاب‌شده از کلیدهای چپ و راست استفاده کنید.</p>'  # ruff: ignore[ambiguous-unicode-character-string]
+        help_text += "</div>"
 
         html_params = {
             "question": True,
@@ -510,19 +519,19 @@ def render(element_html: str, data: pl.QuestionData) -> str:
                     solution_file = file.read()
                 return f'<pl-code language="python">{solution_file}</pl-code>'
             except FileNotFoundError:
-                return "The reference solution is not provided for this question."
+                return "راه‌حل مرجع برای این سوال ارائه نشده است."
 
         if grading_method is GradingMethodType.UNORDERED:
-            ordering_message = "in any order"
+            ordering_message = "به هر ترتیبی"
         elif grading_method is GradingMethodType.DAG:
             if not has_optional_blocks:
-                ordering_message = "there may be other correct orders"
+                ordering_message = "ممکن است ترتیب‌های صحیح دیگری نیز وجود داشته باشد"
             else:
-                ordering_message = "there may be other answers"
+                ordering_message = "ممکن است پاسخ‌های صحیح دیگری نیز وجود داشته باشد"
         elif grading_method is GradingMethodType.RANKING:
-            ordering_message = "there may be other correct orders"
+            ordering_message = "ممکن است ترتیب‌های صحیح دیگری نیز وجود داشته باشد"
         else:
-            ordering_message = "in the specified order"
+            ordering_message = "به ترتیب مشخص‌شده"
         check_indentation = order_blocks_options.indentation
         # Older generated variants may store None for omitted indent; normalize it
         # to -1 so the answer panel does not show indentation as required.
@@ -533,9 +542,9 @@ def render(element_html: str, data: pl.QuestionData) -> str:
         indentation_message = ""
         if check_indentation:
             if -1 not in required_indents:
-                indentation_message = ", correct indentation required"
+                indentation_message = "، تورفتگی صحیح الزامی است"
             elif len(required_indents) > 1:
-                indentation_message = ", some blocks require correct indentation"
+                indentation_message = "، برخی بلوک‌ها نیاز به تورفتگی صحیح دارند"  # ruff: ignore[ambiguous-unicode-character-string]
 
         distractors = get_distractors(data["params"][answer_name], correct_answers)
 
@@ -612,7 +621,7 @@ def parse(element_html: str, data: pl.QuestionData) -> None:
         data["submitted_answers"][answer_name] = []
         data["submitted_answers"].pop(answer_raw_name, None)
         data["format_errors"][answer_name] = (
-            "Your submitted answer was blank; the answer area must contain at least one block."
+            "پاسخ ارسالی شما خالی است؛ ناحیه پاسخ باید شامل حداقل یک بلوک باشد."
         )
         return
 

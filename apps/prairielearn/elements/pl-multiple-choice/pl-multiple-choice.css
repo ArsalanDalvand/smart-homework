@@ -10,14 +10,16 @@
 :not(.form-check-inline) > .pl-multiple-choice-key-label {
   min-width: 1.25em;
   overflow-wrap: normal;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .pl-multiple-choice-feedback {
-  border-left: 0.25rem solid rgba(0, 0, 0, 0.4);
+  border-inline-start: 0.25rem solid rgba(0, 0, 0, 0.4);
   background-color: rgba(0, 0, 0, 0.03);
   padding: 0.25rem 0.5rem;
-  margin-left: 0.75rem;
-  margin-right: 0.5rem;
+  margin-inline-start: 0.75rem;
+  margin-inline-end: 0.5rem;
   border-radius: 0.2rem;
 }
 

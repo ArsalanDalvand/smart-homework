@@ -2,6 +2,8 @@ import clsx from 'clsx';
 
 import { renderHtml } from '@prairielearn/react';
 
+import { toPersianDigits } from '../lib/jalali.js';
+
 export function Scorebar({
   score,
   className = '',
@@ -16,6 +18,7 @@ export function Scorebar({
   if (score == null) return '';
   const tier = score >= 100 ? 'perfect' : score >= 70 ? 'high' : score >= 40 ? 'mid' : 'low';
   const clampedPct = Math.max(0, Math.floor(Math.min(100, score)));
+  const label = `${toPersianDigits(Math.floor(score))}٪`;
 
   return (
     <div
@@ -25,13 +28,13 @@ export function Scorebar({
       data-score-tier={tier}
     >
       <div className="progress-bar" style={{ width: `${clampedPct}%` }}>
-        {score >= 50 ? `${Math.floor(score)}%` : ''}
+        {score >= 50 ? label : ''}
       </div>
       <div
         className="d-flex flex-column justify-content-center text-center sh-scorebar-remainder"
         style={{ width: `${100 - clampedPct}%` }}
       >
-        {score >= 50 ? '' : `${Math.floor(score)}%`}
+        {score >= 50 ? '' : label}
       </div>
     </div>
   );

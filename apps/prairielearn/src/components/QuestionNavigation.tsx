@@ -1,5 +1,7 @@
 import { type HtmlValue, html } from '@prairielearn/html';
 
+import { toPersianDigits } from '../lib/jalali.js';
+
 type QuestionAccessMode =
   | 'default'
   | 'blocked_sequence'
@@ -74,11 +76,13 @@ export function QuestionNavSideButton({
     whichButton === 'next'
       ? {
           buttonId: 'question-nav-next',
-          buttonContent: html`سوال بعدی <i class="fa fa-arrow-left ms-1"></i>`,
+          buttonContent: html`<span>سوال بعدی</span>
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>`,
         }
       : {
           buttonId: 'question-nav-prev',
-          buttonContent: html`<i class="fa fa-arrow-right me-1"></i> سوال قبلی`,
+          buttonContent: html`<i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <span>سوال قبلی</span>`,
         };
   let disabledExplanation: HtmlValue | null = null;
 
@@ -88,8 +92,8 @@ export function QuestionNavSideButton({
         ? html`دسترسی به این سوال برای نقش شما (${userGroupRoles}) محدود است.`
         : html`دسترسی به این سوال برای نقش شما محدود است.`;
     } else if (nextQuestionAccessMode === 'blocked_sequence') {
-      disabledExplanation = html`برای باز شدن سوال بعدی باید حداقل <b>${advanceScorePerc}%</b> نمره
-        این سوال را کسب کنید.`;
+      disabledExplanation = html`برای باز شدن سوال بعدی باید حداقل
+        <b>${toPersianDigits(advanceScorePerc ?? 0)}٪</b> نمره این سوال را کسب کنید.`;
     } else if (nextQuestionAccessMode === 'blocked_lockpoint') {
       disabledExplanation = html`از بخش
         <a href="${urlPrefix}/assessment_instance/${assessmentInstanceId}/">نمای کلی ارزیابی</a>

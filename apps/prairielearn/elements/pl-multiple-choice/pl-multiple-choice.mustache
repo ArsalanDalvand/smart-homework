@@ -49,7 +49,7 @@
         data-name="{{name}}"
         aria-label="Clear multiple choice selection"
         onclick="window.PLMultipleChoiceClearRadio(this)"
-    >Clear</button>
+    >پاک کردن</button>
     {{/allow_blank}}{{/editable}}
 
 {{#display_score_badge}}
@@ -121,7 +121,7 @@
 {{#parse_error}}
     <span class="small" style="white-space: nowrap">
         <span class="badge text-bg-danger">
-            Invalid <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            نامعتبر <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
         </span>
         <a
             class="link-primary"
@@ -130,10 +130,10 @@
             data-bs-placement="auto"
             data-bs-toggle="popover"
             data-bs-html="true"
-            title="Format error"
+            title="خطای قالب"
             data-bs-content="{{parse_error}}"
         >
-            More info…
+            اطلاعات بیشتر…
         </a>
     </span>
 {{/parse_error}}

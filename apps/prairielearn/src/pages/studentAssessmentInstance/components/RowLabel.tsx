@@ -1,10 +1,30 @@
-import { html } from '@prairielearn/html';
+import { type HtmlValue, html, joinHtml } from '@prairielearn/html';
 
 import { getInstanceQuestionUrl } from '../../../lib/client/url.js';
 import { toPersianDigits } from '../../../lib/jalali.js';
 import type { QuestionClassStat } from '../../../lib/student-engagement.js';
 import type { FirstBloodOwner } from '../../../lib/student-gamification.js';
 import type { InstanceQuestionRow } from '../studentAssessmentInstance.types.js';
+
+const EN_PAREN_REGEX = /\([A-Za-z][^()]*[A-Za-z0-9]\)/g;
+
+function formatBidiQuestionLabel(text: string): HtmlValue {
+  const parts: HtmlValue[] = [];
+  let lastIndex = 0;
+  for (const match of text.matchAll(EN_PAREN_REGEX)) {
+    const start = match.index;
+    if (start > lastIndex) {
+      parts.push(html`${text.slice(lastIndex, start)}`);
+    }
+    parts.push(html`<bdi dir="ltr">${match[0]}</bdi>`);
+    lastIndex = start + match[0].length;
+  }
+  if (lastIndex === 0) return text;
+  if (lastIndex < text.length) {
+    parts.push(html`${text.slice(lastIndex)}`);
+  }
+  return joinHtml(parts);
+}
 
 export function RowLabel({
   courseInstanceId,
@@ -63,22 +83,26 @@ export function RowLabel({
         ? 'bi bi-circle-half text-warning'
         : 'bi bi-circle text-body-secondary';
 
+  const renderedLabel = formatBidiQuestionLabel(rowLabelText);
+
   return html`
-    <i class="${statusIconClass} me-2 flex-shrink-0" aria-hidden="true"></i>
-    ${
-      showLink
-        ? html`
-            <a
-              href="${getInstanceQuestionUrl({
-                courseInstanceId,
-                instanceQuestionId: row.instance_question.id,
-              })}"
-              class="sh-q-link"
-              >${rowLabelText}</a
-            >
-          `
-        : html`<span class="text-body-secondary">${rowLabelText}</span>`
-    }
+    <span class="d-inline-flex align-items-center gap-2 min-w-0">
+      <i class="${statusIconClass} flex-shrink-0" aria-hidden="true"></i>
+      ${
+        showLink
+          ? html`
+              <a
+                href="${getInstanceQuestionUrl({
+                  courseInstanceId,
+                  instanceQuestionId: row.instance_question.id,
+                })}"
+                class="sh-q-link text-break"
+                >${renderedLabel}</a
+              >
+            `
+          : html`<span class="text-body-secondary text-break">${renderedLabel}</span>`
+      }
+    </span>
     ${
       // On exams, blocked_lockpoint questions show "Locked" in the Status column,
       // so we skip the inline badge to avoid duplication. On homeworks (no Status
@@ -161,7 +185,7 @@ export function RowLabel({
       isFirstBlood || (firstBloodOwner && currentUserId && firstBloodOwner.userId === currentUserId)
         ? html`
             <span
-              class="sh-fb-mine-chip ms-2"
+              class="sh-fb-mine-chip"
               dir="rtl"
               title="شما نفر اول کلاس در حل کامل این سوال شدید!"
             >
@@ -172,11 +196,7 @@ export function RowLabel({
           `
         : firstBloodOwner
           ? html`
-              <span
-                class="sh-fb-claimed-chip ms-2"
-                dir="rtl"
-                title="نفر اول کلاس در حل کامل این سوال"
-              >
+              <span class="sh-fb-claimed-chip" dir="rtl" title="نفر اول کلاس در حل کامل این سوال">
                 <i class="bi bi-trophy-fill text-warning" aria-hidden="true"></i>
                 <bdi dir="ltr" class="sh-en-term">First Blood</bdi>
                 <span>: ${firstBloodOwner.displayName}</span>
@@ -185,13 +205,13 @@ export function RowLabel({
           : showFirstBloodHunt && showLink
             ? html`
                 <span
-                  class="sh-fb-open-chip ms-2"
+                  class="sh-fb-open-chip"
                   dir="rtl"
                   title="هنوز کسی این سوال را ۱۰۰٪ حل نکرده — نفر اول +۶۰ XP می‌گیرد"
                 >
                   <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
                   <span>شکار اول</span>
-                  <bdi dir="ltr" class="sh-en-term">+60 XP</bdi>
+                  <bdi dir="ltr" class="sh-en-term">+${toPersianDigits(60)} XP</bdi>
                 </span>
               `
             : ''

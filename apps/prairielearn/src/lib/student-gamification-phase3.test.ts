@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { DAILY_PULSE_PUZZLES, getTodayPulsePuzzle } from './student-daily-pulse.js';
-import { computeStreakWithFreezes } from './student-engagement.js';
+import { buildJalaliHeatmapWeeks, computeStreakWithFreezes } from './student-engagement.js';
 import {
   type CanonicalGamificationSignals,
   type StudentAchievement,
@@ -416,5 +416,19 @@ describe('Public profile studio helpers', () => {
     const selected = selectShowcaseBadges(achievements, ['ta-kudos', 'syntax-clean', 'streak']);
     expect(selected.map((b) => b.id)).toEqual(['syntax-clean', 'streak', 'first-blood']);
     expect(selected).toHaveLength(3);
+  });
+});
+
+describe('buildJalaliHeatmapWeeks', () => {
+  it('does not skip a full Jalali month when week 0 starts late in the preceding month', () => {
+    const res = buildJalaliHeatmapWeeks({
+      countsByDay: new Map(),
+      frozenSet: new Set(),
+      todayKey: '2026-11-27',
+      numWeeks: 20,
+    });
+
+    const monthLabels = res.weeks.map((w) => w.monthLabel).filter((m) => m !== null);
+    expect(monthLabels).toEqual(['مرداد', 'شهریور', 'مهر', 'آبان', 'آذر']);
   });
 });

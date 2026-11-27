@@ -153,7 +153,7 @@ export function QuestionTableBody({
               }"
             >
               <td>
-                <div class="d-flex align-items-center">
+                <div class="d-flex flex-wrap align-items-center gap-2">
                   ${RowLabel({
                     courseInstanceId,
                     row,

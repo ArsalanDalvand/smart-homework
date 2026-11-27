@@ -377,8 +377,8 @@ function QuestionValue({
     if (bestCurrentScore === 0) {
       parts.push(html`
         <p>
-          اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید، ${formatPoints(currentAutoValue)} امتیاز اضافه به
-          شما تعلق می‌گیرد.
+          اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید، ${toPersianDigits(formatPoints(currentAutoValue))}
+          امتیاز اضافه به شما تعلق می‌گیرد.
         </p>
         <p class="mb-0">
           اگر در ارسال بعدی نمره‌ای کمتر از ۱۰۰٪ کسب کنید، به میزان
@@ -390,31 +390,34 @@ function QuestionValue({
         parts.push(html`
           <p>
             بالاترین نمره ارسال شما پس از آخرین ارسال ۱۰۰٪، برابر با
-            ${formatPoints(bestCurrentScore)}% است.
+            ${toPersianDigits(formatPoints(bestCurrentScore))}٪ است.
           </p>
         `);
       } else {
         parts.push(
-          html`<p>بالاترین نمره ارسال شما تاکنون ${formatPoints(bestCurrentScore)}% است.</p>`,
+          html`<p>
+            بالاترین نمره ارسال شما تاکنون ${toPersianDigits(formatPoints(bestCurrentScore))}٪ است.
+          </p>`,
         );
       }
 
       const perfectAdditionalPoints = (currentAutoValue * (100 - bestCurrentScore)) / 100;
       parts.push(html`
         <p>
-          اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید، ${formatPoints(perfectAdditionalPoints)} امتیاز
-          اضافه به شما تعلق می‌گیرد.
+          اگر در ارسال بعدی نمره ۱۰۰٪ کسب کنید،
+          ${toPersianDigits(formatPoints(perfectAdditionalPoints))} امتیاز اضافه به شما تعلق می‌گیرد.
         </p>
         <p>
-          اگر در ارسال بعدی نمره‌ای بین ${formatPoints(bestCurrentScore)}% تا ۱۰۰٪ کسب کنید، به میزان
+          اگر در ارسال بعدی نمره‌ای بین ${toPersianDigits(formatPoints(bestCurrentScore))}٪ تا ۱۰۰٪
+          کسب کنید، به میزان
           <code>
             ${formatPoints(currentAutoValue)} * (score - ${formatPoints(bestCurrentScore)}) / 100
           </code>
           امتیاز اضافه دریافت خواهید کرد.
         </p>
         <p class="mb-0">
-          اگر در ارسال بعدی نمره‌ای کمتر از ${formatPoints(bestCurrentScore)}% کسب کنید، برای آن
-          ارسال امتیاز اضافه‌ای دریافت نخواهید کرد.
+          اگر در ارسال بعدی نمره‌ای کمتر از ${toPersianDigits(formatPoints(bestCurrentScore))}٪ کسب
+          کنید، برای آن ارسال امتیاز اضافه‌ای دریافت نخواهید کرد.
         </p>
       `);
     }
@@ -423,7 +426,7 @@ function QuestionValue({
   });
 
   return html`
-    ${currentAutoValue}
+    <span class="sh-tabular">${toPersianDigits(formatPoints(currentAutoValue))}</span>
     <button
       type="button"
       class="btn btn-xs js-value-popover"

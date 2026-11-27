@@ -268,7 +268,9 @@ export function StudentInstanceQuestion({
                                 ? html`<span class="sh-fb-open-chip" dir="rtl">
                                     <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
                                     <span>شکار اول</span>
-                                    <bdi dir="ltr" class="sh-en-term">+60 XP</bdi>
+                                    <bdi dir="ltr" class="sh-en-term"
+                                      >+${toPersianDigits(60)} XP</bdi
+                                    >
                                   </span>`
                                 : ''
                           : ''
@@ -304,7 +306,7 @@ export function StudentInstanceQuestion({
                               ? html`<span class="sh-fb-open-chip" dir="rtl">
                                   <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
                                   <span>شکار اول</span>
-                                  <bdi dir="ltr" class="sh-en-term">+60 XP</bdi>
+                                  <bdi dir="ltr" class="sh-en-term">+${toPersianDigits(60)} XP</bdi>
                                 </span>`
                               : ''
                       }

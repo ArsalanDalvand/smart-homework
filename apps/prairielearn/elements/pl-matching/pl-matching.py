@@ -215,7 +215,7 @@ def prepare(element_html: str, data: pl.QuestionData) -> None:
         options.append({
             "index": len(options),
             "name": "__nota__",
-            "html": "None of the above",
+            "html": "هیچ‌کدام",
         })
 
     # Build the options to display to the student.
@@ -385,7 +385,7 @@ def render(element_html: str, data: pl.QuestionData) -> str:
                     counter = f"{get_counter(student_answer + 1, counter_type)}. "
                 statement_html = {
                     "option": (
-                        "[blank]"
+                        "[خالی]"
                         if student_answer == -1
                         else display_options[student_answer]["html"]
                     ),

@@ -2,6 +2,7 @@ import { html } from '@prairielearn/html';
 
 import type { Assessment, AssessmentInstance, AssessmentSet } from '../lib/db-types.js';
 import { formatPoints } from '../lib/format.js';
+import { toPersianDigits } from '../lib/jalali.js';
 
 import { ScorebarHtml } from './Scorebar.js';
 
@@ -21,7 +22,7 @@ export function AssessmentScorePanel({
       <div class="card-header bg-secondary">
         <h2>
           <a class="text-white" href="${urlPrefix}/assessment_instance/${assessment_instance.id}/">
-            ${assessment_set.name} ${assessment.number}
+            ${assessment_set.name} ${toPersianDigits(assessment.number)}
           </a>
         </h2>
       </div>
@@ -40,10 +41,10 @@ export function AssessmentScorePanel({
           <tr>
             <td>مجموع امتیازات:</td>
             <td>
-              <span dir="ltr"
-                >${formatPoints(assessment_instance.points)} /
-                ${formatPoints(assessment_instance.max_points)}</span
-              >
+              <span class="sh-tabular" dir="ltr">
+                ${toPersianDigits(formatPoints(assessment_instance.points))} /
+                ${toPersianDigits(formatPoints(assessment_instance.max_points))}
+              </span>
             </td>
           </tr>
           <tr>

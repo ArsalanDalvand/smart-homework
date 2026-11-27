@@ -14,17 +14,18 @@ $(function() {
 
     <div
         class="d-flex flex-wrap pl-order-blocks-question-{{uuid}}"
+        dir="ltr"
         data-ordering-required="{{ordering_required}}"
         data-indentation-required="{{check_indentation}}"
     >
         <div class="pl-order-blocks-container {{block_layout}} {{block_scroll}} {{dropzone_layout}} " >
-            <div class="card-header pl-order-blocks-header bg-primary-subtle">
-                <span class="me-2">{{source-header}}</span>
-                <button type="button" class="btn btn-light btn-sm align-middle" data-bs-toggle="popover" data-bs-html="true" title="Order Blocks Help Button" data-bs-content="{{help_text}}">
+            <div class="card-header pl-order-blocks-header bg-primary-subtle" dir="rtl">
+                <span>{{source-header}}</span>
+                <button type="button" class="btn btn-light btn-sm align-middle" data-bs-toggle="popover" data-bs-html="true" data-bs-container="body" data-bs-placement="auto" data-bs-custom-class="sh-rtl-popover" title="راهنمای مرتب‌سازی بلوک‌ها" data-bs-content="{{help_text}}">
                     <i class="fas fa-question-circle" aria-hidden="true"></i>
                 </button>
             </div>
-            <ul id="order-blocks-options-{{uuid}}" role="listbox" name="{{answer_name}}" class="card-body list-group pl-order-blocks-connected-sortable" aria-label="Options Area">
+            <ul id="order-blocks-options-{{uuid}}" role="listbox" name="{{answer_name}}" class="card-body list-group pl-order-blocks-connected-sortable" aria-label="ناحیه بلوک‌های گزینه">
                 {{#options}}
                     <li class="{{block_formatting}} shadow pl-order-block {{^editable}}nodrag{{/editable}}"
                         uuid="{{uuid}}"
@@ -46,8 +47,8 @@ $(function() {
             </ul>
         </div>
         <div class="pl-order-blocks-container form-control {{#parse-error}}has-validation is-invalid{{/parse-error}} {{block_layout}} {{block_scroll}} {{dropzone_layout}}">
-            <div class="card-header pl-order-blocks-header bg-primary-subtle">
-                <span class="me-2">
+            <div class="card-header pl-order-blocks-header bg-primary-subtle" dir="rtl">
+                <span>
                     {{solution-header}}
                     {{#submission_was_graded}}
                         {{#correct}}
@@ -62,7 +63,7 @@ $(function() {
                     {{/submission_was_graded}}
                 </span>
             </div>
-            <ul id="order-blocks-dropzone-{{uuid}}" role="listbox" name="{{answer_name}}" class="card-body list-group pl-order-blocks-connected-sortable dropzone" aria-label="Answer Area" {{#parse-error}}aria-invalid="true" aria-errormessage="pl-order-blocks-{{uuid}}-error"{{/parse-error}}>
+            <ul id="order-blocks-dropzone-{{uuid}}" role="listbox" name="{{answer_name}}" class="card-body list-group pl-order-blocks-connected-sortable dropzone" aria-label="ناحیه چیدمان پاسخ" {{#parse-error}}aria-invalid="true" aria-errormessage="pl-order-blocks-{{uuid}}-error"{{/parse-error}}>
                 {{#submission_dict}}
                     <li class="{{block_formatting}} shadow pl-order-block {{^editable}}nodrag{{/editable}}"
                         style="margin-left: calc(var(--pl-order-block-indent-ch, 4) * {{indent_depth}} * 1ch);"
@@ -87,9 +88,9 @@ $(function() {
 
     {{! TODO: this invalid-feedback block is duplicated in the submission panel below; extract into a shared chevron partial if elements adopt partials. }}
     {{#parse-error}}
-        <span id="pl-order-blocks-{{uuid}}-error" class="invalid-feedback d-block">
+        <span id="pl-order-blocks-{{uuid}}-error" class="invalid-feedback d-block" dir="rtl">
             <span class="badge text-bg-danger">
-                Invalid
+                نامعتبر
                 <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
             </span>
             <a
@@ -99,10 +100,11 @@ $(function() {
                 data-bs-placement="auto"
                 data-bs-toggle="popover"
                 data-bs-html="true"
-                title="Format error"
+                data-bs-custom-class="sh-rtl-popover"
+                title="خطای قالب"
                 data-bs-content="{{parse-error}}"
             >
-                More info…
+                اطلاعات بیشتر…
             </a>
         </span>
     {{/parse-error}}
@@ -114,9 +116,9 @@ $(function() {
 
 {{#submission}}
     {{^parse-error}}
-    <div class="pl-order-blocks-answer-container {{block_layout}} {{block_scroll}} {{dropzone_layout}}">
-        <div class="card-header">
-            Your answer:
+    <div class="pl-order-blocks-answer-container {{block_layout}} {{block_scroll}} {{dropzone_layout}}" dir="ltr">
+        <div class="card-header" dir="rtl">
+            پاسخ شما:
         {{#correct}}
             <span class="badge text-bg-success"><i class="fas fa-check" aria-hidden="true"></i> 100%</span>
         {{/correct}}
@@ -180,13 +182,13 @@ $(function() {
             {{/student_submission}}
         </ul>
     </div>
-    <p>{{{feedback}}}</p>
+    <div dir="rtl" class="mt-2">{{{feedback}}}</div>
     {{/parse-error}}
 
     {{#parse-error}}
-        <span id="pl-order-blocks-{{uuid}}-error" class="invalid-feedback d-block">
+        <span id="pl-order-blocks-{{uuid}}-error" class="invalid-feedback d-block" dir="rtl">
             <span class="badge text-bg-danger">
-                Invalid
+                نامعتبر
                 <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
             </span>
             <a
@@ -196,18 +198,19 @@ $(function() {
                 data-bs-placement="auto"
                 data-bs-toggle="popover"
                 data-bs-html="true"
-                title="Format error"
+                data-bs-custom-class="sh-rtl-popover"
+                title="خطای قالب"
                 data-bs-content="{{parse-error}}"
             >
-                More info…
+                اطلاعات بیشتر…
             </a>
         </span>
     {{/parse-error}}
 {{/submission}}
 
 {{#true_answer}}
-    <div class="pl-order-blocks-answer-container pl-order-blocks-correct-answer {{block_layout}} {{block_scroll}} {{dropzone_layout}}">
-        <div class="card-header bg-success-subtle">Correct answer ({{ordering_message}}{{indentation_message}}):</div>
+    <div class="pl-order-blocks-answer-container pl-order-blocks-correct-answer {{block_layout}} {{block_scroll}} {{dropzone_layout}}" dir="ltr">
+        <div class="card-header bg-success-subtle" dir="rtl">پاسخ صحیح ({{ordering_message}}{{indentation_message}}):</div>
         <ul class="card-body list-group">
         {{#question_solution}}
             <li class="{{block_formatting}} pl-order-block" style="margin-left: calc(var(--pl-order-block-indent-ch, 4) * {{indent_depth}} * 1ch)">{{{inner_html}}}</li>
@@ -217,8 +220,8 @@ $(function() {
 
     {{#show_distractors}}
     <br><br>
-    <div class="pl-order-blocks-answer-container pl-order-blocks-distractors {{block_layout}} {{block_scroll}} {{dropzone_layout}}">
-        <div class="card-header bg-danger-subtle">Incorrect Blocks (these blocks should not be included in your solution):</div>
+    <div class="pl-order-blocks-answer-container pl-order-blocks-distractors {{block_layout}} {{block_scroll}} {{dropzone_layout}}" dir="ltr">
+        <div class="card-header bg-danger-subtle" dir="rtl">بلوک‌های نادرست (این بلوک‌ها نباید در پاسخ نهایی شما باشند):</div>
         <ul class="card-body list-group list-unstyled">
         {{#distractors}}
             {{#distractor_feedback}}

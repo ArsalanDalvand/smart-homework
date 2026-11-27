@@ -81,23 +81,28 @@ export function PageFooter() {
             </span>
             <span>
               بر پایه پلتفرم آزاد{' '}
-              <a
-                href="https://www.prairielearn.com"
-                target="_blank"
-                rel="noreferrer"
-                className="text-body-secondary text-decoration-none"
-              >
-                PrairieLearn
-              </a>{' '}
-              &copy; PrairieLearn, Inc. &amp; هیئت امنای دانشگاه ایلینوی (UIUC) تحت پروانه{' '}
-              <a
-                href={platformBranding.licenseUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="text-body-secondary text-decoration-none"
-              >
-                {platformBranding.licenseName}
-              </a>
+              <bdi dir="ltr">
+                <a
+                  href="https://www.prairielearn.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-body-secondary text-decoration-none"
+                >
+                  PrairieLearn
+                </a>{' '}
+                &copy; PrairieLearn, Inc.
+              </bdi>{' '}
+              و هیئت امنای دانشگاه ایلینوی (<bdi dir="ltr">UIUC</bdi>) تحت پروانه{' '}
+              <bdi dir="ltr">
+                <a
+                  href={platformBranding.licenseUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-body-secondary text-decoration-none"
+                >
+                  {platformBranding.licenseName}
+                </a>
+              </bdi>
             </span>
           </div>
         </div>

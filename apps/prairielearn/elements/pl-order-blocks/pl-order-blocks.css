@@ -152,6 +152,8 @@ div.pl-order-blocks-container {
 div.pl-order-blocks-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .pl-order-blocks-container.is-invalid {

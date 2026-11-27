@@ -309,7 +309,8 @@ window.PLOrderBlocks = function (uuid, options) {
       indicator.classList.add('pl-order-blocks-pairing-indicator', 'bg-info-subtle');
       indicator.setAttribute('data-distractor-bin', uuid);
       indicator.id = 'indicator-' + uuid;
-      indicator.innerHTML += '<span style="font-size:13px;">Pick one:</span>';
+      indicator.innerHTML +=
+        '<span dir="rtl" style="font-size:13px; display:block; text-align:right;">یکی را انتخاب کنید:</span>';
       indicator.innerHTML += '<ul class="inner-list" style="padding:0px;"></ul>';
       if (createAt) {
         createAt.before(indicator);

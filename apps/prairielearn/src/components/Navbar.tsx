@@ -1231,7 +1231,7 @@ function NavbarStudent({
                 href="${urlPrefix}/skills"
               >
                 <i class="bi bi-diagram-3" aria-hidden="true"></i>
-                <span class="sh-en-term">Skill Tree</span>
+                <span>درخت مهارت</span>
               </a>
             </li>
           `

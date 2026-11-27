@@ -86,21 +86,49 @@ export function EnrollmentCodeForm({
     return normalizedDigits.replaceAll(/[^A-Za-z0-9]/g, '').toUpperCase();
   };
 
-  // Handle input change for individual fields
+  // Handle input change for individual fields, distributing any overflow into subsequent boxes
   const handleInputChange = (value: string, field: keyof EnrollmentCodeFormData) => {
     const formatted = formatInput(value);
-    setValue(field, formatted);
 
     // Clear server errors when user starts typing
     if (errors.root?.serverError) {
       clearErrors('root.serverError');
     }
 
-    if (field === 'code1' && formatted.length === 3 && input2Ref.current) {
-      input2Ref.current.focus();
-    } else if (field === 'code2' && formatted.length === 3 && input3Ref.current) {
-      input3Ref.current.focus();
+    if (field === 'code1') {
+      if (formatted.length > 3) {
+        setValue('code1', formatted.slice(0, 3));
+        setValue('code2', formatted.slice(3, 6));
+        if (formatted.length > 6) {
+          setValue('code3', formatted.slice(6, 10));
+          input3Ref.current?.focus();
+        } else {
+          input2Ref.current?.focus();
+        }
+      } else {
+        setValue('code1', formatted);
+        if (formatted.length === 3) {
+          input2Ref.current?.focus();
+        }
+      }
+      return;
     }
+
+    if (field === 'code2') {
+      if (formatted.length > 3) {
+        setValue('code2', formatted.slice(0, 3));
+        setValue('code3', formatted.slice(3, 7));
+        input3Ref.current?.focus();
+      } else {
+        setValue('code2', formatted);
+        if (formatted.length === 3) {
+          input3Ref.current?.focus();
+        }
+      }
+      return;
+    }
+
+    setValue('code3', formatted.slice(0, 4));
   };
 
   const fields: {
@@ -300,7 +328,7 @@ export function EnrollmentCodeForm({
               aria-label="بخش اول کد عضویت"
               autoComplete="off"
               className="form-control text-center sh-code-input"
-              maxLength={3}
+              maxLength={12}
               placeholder="ABC"
               spellCheck={false}
               style={{ fontFamily: 'monospace', fontSize: '1.2em', letterSpacing: '0.1em' }}
@@ -319,7 +347,7 @@ export function EnrollmentCodeForm({
               aria-label="بخش دوم کد عضویت"
               autoComplete="off"
               className="form-control text-center sh-code-input"
-              maxLength={3}
+              maxLength={9}
               placeholder="DEF"
               spellCheck={false}
               style={{ fontFamily: 'monospace', fontSize: '1.2em', letterSpacing: '0.1em' }}

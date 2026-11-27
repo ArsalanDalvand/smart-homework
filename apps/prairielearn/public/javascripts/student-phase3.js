@@ -186,14 +186,28 @@
         },
         { label: 'بیشترین Streak', val: toFa(data.streak.longest) + ' روز' },
         {
-          label: 'تحسین TA / First Blood',
+          labelNodes: function () {
+            var frag = document.createDocumentFragment();
+            frag.appendChild(document.createTextNode('تحسین '));
+            var bdi = makeEl('bdi', '', 'TA');
+            bdi.setAttribute('dir', 'ltr');
+            frag.appendChild(bdi);
+            frag.appendChild(document.createTextNode(' و شکار اول'));
+            return frag;
+          },
           val: toFa(data.taKudosCount) + ' / ' + toFa(data.firstBloodCount),
         },
       ];
       statItems.forEach(function (st) {
         var col = makeEl('div', 'col-6 col-md-3');
         var box = makeEl('div', 'p-2 rounded border bg-body-tertiary text-center h-100');
-        box.appendChild(makeEl('div', 'text-body-secondary small', st.label));
+        if (st.labelNodes) {
+          var lbl = makeEl('div', 'text-body-secondary small', '');
+          lbl.appendChild(st.labelNodes());
+          box.appendChild(lbl);
+        } else {
+          box.appendChild(makeEl('div', 'text-body-secondary small', st.label));
+        }
         box.appendChild(makeEl('div', 'fw-bold text-body mt-1 sh-tabular', st.val));
         col.appendChild(box);
         statsRow.appendChild(col);
@@ -268,6 +282,17 @@
     var urlPrefix = modalEl.getAttribute('data-url-prefix') || '';
     if (!bodyEl) return;
 
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key !== 'Escape' || !modalEl.classList.contains('show')) return;
+      if (window.bootstrap && window.bootstrap.Modal) {
+        window.bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+      } else {
+        modalEl.classList.remove('show');
+        modalEl.setAttribute('aria-hidden', 'true');
+        modalEl.style.display = 'none';
+      }
+    });
+
     document.addEventListener('click', function (ev) {
       var btn =
         ev.target && ev.target.closest ? ev.target.closest('[data-sh-passport-user]') : null;
@@ -284,7 +309,10 @@
       bodyEl.appendChild(loadingWrap);
 
       if (window.bootstrap && window.bootstrap.Modal) {
-        window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        window.bootstrap.Modal.getOrCreateInstance(modalEl, {
+          keyboard: true,
+          backdrop: true,
+        }).show();
       }
 
       fetch(urlPrefix + '/leaderboard/passport/' + encodeURIComponent(userId), {

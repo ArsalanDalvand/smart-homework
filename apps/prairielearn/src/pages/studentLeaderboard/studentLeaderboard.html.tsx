@@ -229,7 +229,7 @@ function WeeklyLeagueCard({
             <span className="small text-body-secondary fw-normal">— {weekLabel}</span>
           </h2>
           <div className="se-card-subtitle mt-1">
-            رتبه‌بندی فقط بر اساس XP همین هفته شمسی · پنج شنبه بازنشانی می‌شود
+            رتبه‌بندی فقط بر اساس XP همین هفته شمسی · هر شنبه بازنشانی می‌شود
           </div>
         </div>
         <div className="d-flex flex-wrap align-items-center gap-2 small">
@@ -253,7 +253,7 @@ function WeeklyLeagueCard({
       <div className="table-responsive">
         <table
           aria-label={`جدول ${league.titleFa}`}
-          className="table table-hover sh-question-table mb-0"
+          className="table table-hover sh-question-table sh-league-table mb-0"
         >
           <thead>
             <tr>
@@ -362,6 +362,7 @@ export function StudentLeaderboard({
       : null;
 
   const leagues = cohortBundle?.weeklyLeagues.leagues ?? [];
+  const leagueMemberCount = leagues.reduce((sum, l) => sum + l.members.length, 0);
   const fallbackLeague = leagues.at(0);
   const myLeague =
     leagues.find((l) => l.members.some((m) => m.userId === resLocals.user.id)) ??
@@ -407,7 +408,9 @@ export function StudentLeaderboard({
                 ویرایش پروفایل من
               </a>
               <span className="badge bg-body-tertiary text-body border px-3 py-2 sh-tabular">
-                {toPersianDigits(data.totalParticipants)} دانشجوی فعال
+                {view === 'league' && showWeeklyLeagues
+                  ? `${toPersianDigits(leagueMemberCount)} عضو در لیگ‌ها`
+                  : `${toPersianDigits(data.totalParticipants)} دانشجوی فعال`}
               </span>
             </div>
           </div>

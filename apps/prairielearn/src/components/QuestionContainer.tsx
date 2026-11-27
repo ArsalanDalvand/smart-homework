@@ -1,5 +1,5 @@
 import { EncodedData } from '@prairielearn/browser-utils';
-import { type HtmlValue, escapeHtml, html, unsafeHtml } from '@prairielearn/html';
+import { type HtmlValue, escapeHtml, html, joinHtml, unsafeHtml } from '@prairielearn/html';
 import { run } from '@prairielearn/run';
 
 import type {
@@ -7,7 +7,6 @@ import type {
   InstanceQuestionAIGradingInfo,
 } from '../ee/lib/ai-grading/types.js';
 import { formatStudentQuestionTitle } from '../lib/assessment.shared.js';
-import { formatGregorianTooltip, formatJalaliFriendly } from '../lib/jalali.js';
 import { ansiToHtml } from '../lib/chalk.js';
 import { config } from '../lib/config.js';
 import { type CopyTarget } from '../lib/copy-content.js';
@@ -24,6 +23,7 @@ import type {
 import { type GroupInfo, getRoleNamesForUser } from '../lib/groups.shared.js';
 import { idsEqual } from '../lib/id.js';
 import { issueMailtoLink } from '../lib/issues.shared.js';
+import { formatGregorianTooltip, formatJalaliFriendly, toPersianDigits } from '../lib/jalali.js';
 import type { IssueRenderData } from '../lib/question-render.types.js';
 import type { UntypedResLocals } from '../lib/res-locals.types.js';
 import type { SimpleVariantWithScore } from '../models/variant.js';
@@ -272,7 +272,8 @@ export function AIGradingExplanation({
             hasImage && rotationCorrectionApplied
               ? html`<div class="alert alert-warning mb-3" role="alert">
                   <p>
-                    یک یا چند تصویر ارسالی دانشجو چرخش غیرصحیح داشتند. سامانه زاویه آن‌ها را پیش از داوری هوش مصنوعی به صورت خودکار اصلاح نمود.
+                    یک یا چند تصویر ارسالی دانشجو چرخش غیرصحیح داشتند. سامانه زاویه آن‌ها را پیش از
+                    داوری هوش مصنوعی به صورت خودکار اصلاح نمود.
                   </p>
                   <div class="card table-responsive mb-0" style="max-width: 800px;">
                     <table class="table table-sm mb-0">
@@ -310,7 +311,8 @@ ${explanation}
         <div class="card-footer small text-body-secondary">
           ${
             model
-              ? html`داوری‌شده توسط مدل هوشمند <span class="font-monospace text-break">${model}</span>`
+              ? html`داوری‌شده توسط مدل هوشمند
+                  <span class="font-monospace text-break">${model}</span>`
               : 'مدل ثبت نشده است'
           }
         </div>
@@ -500,6 +502,26 @@ ${JSON.stringify(data, null, '    ')}</pre>
   `;
 }
 
+const EN_PAREN_REGEX = /\([A-Za-z][^()]*[A-Za-z0-9]\)/g;
+
+function formatBidiTitleText(text: string): HtmlValue {
+  const parts: HtmlValue[] = [];
+  let lastIndex = 0;
+  for (const match of text.matchAll(EN_PAREN_REGEX)) {
+    const start = match.index;
+    if (start > lastIndex) {
+      parts.push(html`${text.slice(lastIndex, start)}`);
+    }
+    parts.push(html`<bdi dir="ltr">${match[0]}</bdi>`);
+    lastIndex = start + match[0].length;
+  }
+  if (lastIndex === 0) return text;
+  if (lastIndex < text.length) {
+    parts.push(html`${text.slice(lastIndex)}`);
+  }
+  return joinHtml(parts);
+}
+
 export function QuestionTitle({
   questionContext,
   question,
@@ -514,24 +536,30 @@ export function QuestionTitle({
   const hasTitle = !!question.title?.trim();
 
   if (questionContext === 'student_homework') {
-    return formatStudentQuestionTitle({
-      assessmentType: 'Homework',
-      questionNumber,
-      questionTitle: question.title,
-      showQuestionTitles,
-    });
+    return formatBidiTitleText(
+      formatStudentQuestionTitle({
+        assessmentType: 'Homework',
+        questionNumber,
+        questionTitle: question.title,
+        showQuestionTitles,
+      }),
+    );
   }
 
   if (questionContext === 'student_exam') {
-    return formatStudentQuestionTitle({
-      assessmentType: 'Exam',
-      questionNumber,
-      questionTitle: question.title,
-      showQuestionTitles,
-    });
+    return formatBidiTitleText(
+      formatStudentQuestionTitle({
+        assessmentType: 'Exam',
+        questionNumber,
+        questionTitle: question.title,
+        showQuestionTitles,
+      }),
+    );
   }
 
-  return hasTitle ? question.title : html`<span class="font-monospace">${question.qid}</span>`;
+  return hasTitle
+    ? formatBidiTitleText(question.title ?? '')
+    : html`<span class="font-monospace">${question.qid}</span>`;
 }
 
 interface QuestionFooterResLocals {
@@ -638,7 +666,8 @@ export function QuestionFooterContent({
 
     if (authz_result?.authorized_edit === false) {
       return html`<div class="alert alert-warning mb-0" role="alert">
-        شما در حال مشاهده سوال کاربری دیگر هستید و مجاز به ذخیره پاسخ، ارسال برای تصحیح یا امتحان گونه جدید نیستید.
+        شما در حال مشاهده سوال کاربری دیگر هستید و مجاز به ذخیره پاسخ، ارسال برای تصحیح یا امتحان
+        گونه جدید نیستید.
       </div>`;
     }
 
@@ -674,8 +703,8 @@ export function QuestionFooterContent({
                         variantAttemptsTotal > 0
                           ? variantAttemptsLeft > 1
                             ? html`
-                                <small class="fst-italic ms-2">
-                                  (${variantAttemptsLeft} تلاش باقی‌مانده)
+                                <small class="fst-italic ms-2 sh-tabular">
+                                  (${toPersianDigits(variantAttemptsLeft)} تلاش باقی‌مانده)
                                 </small>
                               `
                             : variantAttemptsLeft === 1 && variantAttemptsTotal > 1
@@ -698,10 +727,9 @@ export function QuestionFooterContent({
                       type="button"
                       class="btn btn-xs btn-ghost me-1"
                       data-bs-toggle="popover"
-                      data-bs-content="نقش گروهی شما (${getRoleNamesForUser(
-                        group_info,
-                        user,
-                      ).join(', ')}) مجاز به ارسال پاسخ برای این سوال نیست."
+                      data-bs-content="نقش گروهی شما (${getRoleNamesForUser(group_info, user).join(
+                        ', ',
+                      )}) مجاز به ارسال پاسخ برای این سوال نیست."
                       aria-label="ارسال پاسخ مسدود شده است"
                     >
                       <i class="fa fa-lock" aria-hidden="true"></i>
@@ -811,8 +839,8 @@ function SubmitRateFooter({
   if (!showGradeButton || !assessment_question?.grade_rate_minutes) return '';
   const popoverContent = html`
     <p>
-      پس از کلیک روی دکمه <strong>ارسال و تصحیح خودکار</strong>، پیش از آنکه بتوانید دوباره تصحیح
-      را انجام دهید باید ${assessment_question.grade_rate_minutes} دقیقه صبر کنید.
+      پس از کلیک روی دکمه <strong>ارسال و تصحیح خودکار</strong>، پیش از آنکه بتوانید دوباره تصحیح را
+      انجام دهید باید ${toPersianDigits(assessment_question.grade_rate_minutes)} دقیقه صبر کنید.
     </p>
     <p>
       همچنان می‌توانید پاسخ خود را هر چند بار که مایل هستید ذخیره کنید.
@@ -846,8 +874,8 @@ function SubmitRateFooter({
           }
         </span>
         <span class="d-flex align-self-center">
-          <small class="fst-italic">
-            امکان تصحیح مجدد هر ${assessment_question.grade_rate_minutes} دقیقه
+          <small class="fst-italic sh-tabular">
+            امکان تصحیح مجدد هر ${toPersianDigits(assessment_question.grade_rate_minutes)} دقیقه
           </small>
           <button
             type="button"
@@ -876,7 +904,8 @@ function NewVariantInfo({
 }) {
   return html`
     <p>
-      این سوال امکان تمرین با گونه‌های مختلف را فراهم می‌کند. هر گونه از نظر مفهومی معادل سوال جاری است اما پارامترها و اعداد تصادفی متفاوتی دارد. با وجود اینکه
+      این سوال امکان تمرین با گونه‌های مختلف را فراهم می‌کند. هر گونه از نظر مفهومی معادل سوال جاری
+      است اما پارامترها و اعداد تصادفی متفاوتی دارد. با وجود اینکه
       ${
         variantAttemptsLeft > 1
           ? `شما ${variantAttemptsLeft} تلاش دیگر در این گونه دارید`
@@ -999,7 +1028,11 @@ function QuestionPanel({
                       >
                         حالت نمایش&hellip;
                       </button>
-                      <ul class="dropdown-menu dropdown-menu-end" dir="rtl" style="font-family: var(--font-persian)">
+                      <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        dir="rtl"
+                        style="font-family: var(--font-persian)"
+                      >
                         ${
                           manualGradingPreviewUrl
                             ? html`
@@ -1105,20 +1138,17 @@ function CopyQuestionModal({
       questionCopyTargets.length === 0
         ? html`
             <p>
-              شما دسترسی ویرایشگر در هیچ درسی ندارید، بنابراین امکان کپی این سوال وجود ندارد.
-              اگر درسی ندارید، می‌توانید <a href="/pl/request_course">درخواست ایجاد درس جدید</a> ثبت نمایید، یا با استاد و مالک درسی که قرار است به آن دسترسی داشته باشید تماس بگیرید.
+              شما دسترسی ویرایشگر در هیچ درسی ندارید، بنابراین امکان کپی این سوال وجود ندارد. اگر
+              درسی ندارید، می‌توانید <a href="/pl/request_course">درخواست ایجاد درس جدید</a> ثبت
+              نمایید، یا با استاد و مالک درسی که قرار است به آن دسترسی داشته باشید تماس بگیرید.
             </p>
           `
         : html`
             <p>
-              این سوال می‌تواند به درسی که در آن دسترسی ویرایشگری دارید کپی شود. درس مقصد را انتخاب نمایید:
+              این سوال می‌تواند به درسی که در آن دسترسی ویرایشگری دارید کپی شود. درس مقصد را انتخاب
+              نمایید:
             </p>
-            <select
-              class="form-select"
-              name="to_course_id"
-              required
-              aria-label="درس مقصد"
-            >
+            <select class="form-select" name="to_course_id" required aria-label="درس مقصد">
               ${questionCopyTargets.map(
                 (course, index) => html`
                   <option
