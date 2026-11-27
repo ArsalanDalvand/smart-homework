@@ -211,7 +211,7 @@ export function RowLabel({
                 >
                   <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
                   <span>شکار اول</span>
-                  <bdi dir="ltr" class="sh-en-term">+${toPersianDigits(60)} XP</bdi>
+                  (<bdi dir="ltr" class="sh-en-term">+${toPersianDigits(60)} XP</bdi>)
                 </span>
               `
             : ''

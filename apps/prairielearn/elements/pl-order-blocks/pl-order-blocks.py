@@ -395,7 +395,7 @@ def render(element_html: str, data: pl.QuestionData) -> str:
         placement_fa = (
             "به کادر پایین"
             if dropzone_layout is SolutionPlacementType.BOTTOM
-            else "به کادر سمت راست"
+            else "به کادر راه‌حل (سمت راست)"
         )
         help_text = (
             '<div dir="rtl" style="text-align: right;">'

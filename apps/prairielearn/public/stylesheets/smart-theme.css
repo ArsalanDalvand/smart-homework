@@ -100,8 +100,13 @@ html[data-surface='student'] .form-select {
   border-color: var(--sh-border-strong);
 }
 
+html[data-surface='student'] .form-select::picker-icon {
+  display: none !important;
+  content: none !important;
+}
+
 .sh-whatif-select {
-  min-width: 6.4rem;
+  min-width: 7.25rem;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -1473,6 +1478,21 @@ html[data-surface='student'][data-bs-theme='dark'] .pl-order-blocks-header {
   color: var(--sh-ink) !important;
 }
 
+html[data-surface='student'][data-bs-theme='dark'] .pl-order-blocks-header .btn-light {
+  background-color: var(--sh-bg-subtle);
+  border-color: var(--sh-border-strong);
+  color: var(--sh-ink);
+}
+
+html[data-surface='student'][data-bs-theme='dark'] .pl-order-blocks-header .btn-light:hover,
+html[data-surface='student'][data-bs-theme='dark']
+  .pl-order-blocks-header
+  .btn-light:focus-visible {
+  background-color: var(--sh-bg-hover);
+  border-color: var(--sh-primary-border);
+  color: var(--sh-ink);
+}
+
 html[data-surface='student'][data-bs-theme='dark'] .pl-order-blocks-container .pl-order-block,
 html[data-surface='student'][data-bs-theme='dark']
   .pl-order-blocks-answer-container
@@ -1484,10 +1504,16 @@ html[data-surface='student'][data-bs-theme='dark'] li.pl-order-blocks-code {
 }
 
 html[data-surface='student'][data-bs-theme='dark'] .pl-order-blocks-code .pl-code,
-html[data-surface='student'][data-bs-theme='dark'] .pl-order-blocks-code .pl-code div,
+html[data-surface='student'][data-bs-theme='dark'] .pl-order-blocks-code .pl-code div {
+  background-color: transparent !important;
+  --pl-code-background-color: transparent;
+  --pl-code-foreground-color: #0f172a;
+}
+
 html[data-surface='student'][data-bs-theme='dark'] .pl-order-blocks-code .pl-code pre {
   background-color: transparent !important;
-  color: #e2e8f0 !important;
+  color: #0f172a !important;
+  filter: invert(0.92) hue-rotate(180deg) brightness(1.12);
 }
 
 html[data-surface='student'][data-bs-theme='dark'] .pl-matching-answer,
